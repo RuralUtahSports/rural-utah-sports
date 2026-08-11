@@ -1360,10 +1360,8 @@ function displaySeasons(
         FIND TEAM COLOR
       */
 
-      const teamColor =
-        teamColors[
-          teamName.toUpperCase()
-        ];
+    const teamColor =
+  findTeamColor(teamName);
 
 
       /*
@@ -1562,7 +1560,48 @@ function displaySeasons(
 
 }
 
+/* ==========================================
+   FIND TEAM COLOR
+========================================== */
 
+function normalizeTeamName(name) {
+
+  return String(name ?? "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
+
+}
+
+
+function findTeamColor(teamName) {
+
+  const normalizedName =
+    normalizeTeamName(teamName);
+
+
+  /*
+    First try an exact normalized match.
+  */
+
+  for (
+    const team in teamColors
+  ) {
+
+    if (
+      normalizeTeamName(team) ===
+      normalizedName
+    ) {
+
+      return teamColors[team];
+
+    }
+
+  }
+
+
+  return null;
+
+}
 /* ==========================================
    FILTER TEXT
 ========================================== */
