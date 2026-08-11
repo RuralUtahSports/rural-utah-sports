@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Greatest Seasons | Rural Utah Sports</title>
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Greatest Seasons | Rural Utah Sports
+  </title>
+
 
   <style>
 
@@ -14,11 +23,18 @@
       padding: 0;
     }
 
+
     body {
-      font-family: Arial, Helvetica, sans-serif;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       background: #111111;
+
       color: #ffffff;
     }
+
 
     /* =========================
        HEADER
@@ -26,36 +42,54 @@
 
     header {
       background: #000000;
-      border-bottom: 4px solid #F14D07;
+
+      border-bottom:
+        4px solid #F14D07;
+
       padding: 15px 25px;
     }
 
+
     .header-content {
       max-width: 1400px;
+
       margin: auto;
+
       display: flex;
+
       align-items: center;
+
       gap: 20px;
     }
+
 
     .logo {
       width: 80px;
       height: 80px;
+
       object-fit: contain;
     }
 
+
     .site-title h1 {
       font-size: 30px;
+
       font-weight: 900;
+
       letter-spacing: 2px;
+
       text-transform: uppercase;
     }
 
+
     .site-title p {
       color: #F14D07;
+
       font-weight: bold;
+
       margin-top: 5px;
     }
+
 
     /* =========================
        NAVIGATION
@@ -63,30 +97,45 @@
 
     nav {
       background: #000000;
-      border-bottom: 1px solid #333333;
+
+      border-bottom:
+        1px solid #333333;
     }
+
 
     .nav-content {
       max-width: 1400px;
+
       margin: auto;
+
       display: flex;
+
       flex-wrap: wrap;
     }
 
+
     nav a {
       color: #ffffff;
+
       text-decoration: none;
+
       padding: 15px 18px;
+
       font-size: 14px;
+
       font-weight: bold;
+
       text-transform: uppercase;
     }
+
 
     nav a:hover,
     nav a.active {
       background: #F14D07;
+
       color: #000000;
     }
+
 
     /* =========================
        MAIN
@@ -94,47 +143,76 @@
 
     .container {
       max-width: 1400px;
+
       margin: auto;
-      padding: 35px 20px 60px;
+
+      padding:
+        35px
+        20px
+        60px;
     }
 
+
     .page-title {
-      border-left: 6px solid #F14D07;
+      border-left:
+        6px solid #F14D07;
+
       padding-left: 15px;
+
       margin-bottom: 10px;
+
       font-size: 34px;
+
       text-transform: uppercase;
     }
 
+
     .subtitle {
       color: #aaaaaa;
+
       margin-bottom: 25px;
+
       font-size: 16px;
     }
 
+
     /* =========================
-       FILTERS
+       FILTER PANEL
     ========================= */
 
     .filter-panel {
       background: #000000;
-      border: 1px solid #333333;
-      border-top: 4px solid #F14D07;
+
+      border:
+        1px solid #333333;
+
+      border-top:
+        4px solid #F14D07;
+
       padding: 20px;
+
       margin-bottom: 20px;
+
       border-radius: 7px;
     }
 
+
     .filter-title {
       font-size: 18px;
+
       font-weight: 900;
+
       text-transform: uppercase;
+
       color: #F14D07;
+
       margin-bottom: 15px;
     }
 
+
     .filter-grid {
       display: grid;
+
       grid-template-columns:
         2fr
         1fr
@@ -142,56 +220,94 @@
         1fr
         1fr
         auto;
+
       gap: 12px;
+
       align-items: end;
     }
 
+
     .filter-group {
       display: flex;
+
       flex-direction: column;
+
       gap: 6px;
     }
 
+
     .filter-group label {
       color: #aaaaaa;
+
       font-size: 12px;
+
       font-weight: bold;
+
       text-transform: uppercase;
     }
+
 
     .filter-input,
     .filter-select {
       width: 100%;
+
       height: 42px;
-      padding: 0 12px;
+
+      padding:
+        0
+        12px;
+
       background: #222222;
-      border: 1px solid #444444;
+
+      border:
+        1px solid #444444;
+
       color: #ffffff;
+
       border-radius: 4px;
+
       font-size: 14px;
+
       outline: none;
     }
 
+
     .filter-input:focus,
     .filter-select:focus {
-      border-color: #F14D07;
+      border-color:
+        #F14D07;
     }
+
 
     .clear-button {
       height: 42px;
-      padding: 0 18px;
-      background: #F14D07;
+
+      padding:
+        0
+        18px;
+
+      background:
+        #F14D07;
+
       color: #000000;
+
       border: none;
+
       border-radius: 4px;
+
       font-weight: 900;
+
       cursor: pointer;
+
       text-transform: uppercase;
     }
 
+
     .clear-button:hover {
-      background: #ffffff;
+      background:
+        #ffffff;
     }
+
 
     /* =========================
        RESULTS
@@ -199,23 +315,35 @@
 
     .result-bar {
       display: flex;
-      justify-content: space-between;
+
+      justify-content:
+        space-between;
+
       align-items: center;
+
       margin-bottom: 12px;
+
       gap: 15px;
     }
 
+
     .result-count {
       color: #999999;
+
       font-size: 14px;
     }
 
+
     .active-filter-text {
       color: #F14D07;
+
       font-size: 13px;
+
       font-weight: bold;
+
       text-align: right;
     }
+
 
     /* =========================
        TABLE
@@ -223,97 +351,206 @@
 
     .table-wrapper {
       width: 100%;
+
       overflow-x: auto;
+
       background: #000000;
-      border: 1px solid #333333;
+
+      border:
+        1px solid #333333;
+
       border-radius: 7px;
     }
 
+
     table {
       width: 100%;
-      border-collapse: collapse;
-      min-width: 1200px;
+
+      border-collapse:
+        collapse;
+
+      min-width:
+        1200px;
     }
+
 
     th {
-      background: #F14D07;
-      color: #000000;
-      padding: 14px 10px;
-      text-align: center;
-      font-size: 12px;
-      text-transform: uppercase;
-      font-weight: 900;
-      white-space: nowrap;
+      background:
+        #F14D07;
+
+      color:
+        #000000;
+
+      padding:
+        14px 10px;
+
+      text-align:
+        center;
+
+      font-size:
+        12px;
+
+      text-transform:
+        uppercase;
+
+      font-weight:
+        900;
+
+      white-space:
+        nowrap;
     }
+
 
     td {
-      padding: 12px 10px;
-      text-align: center;
-      border-bottom: 1px solid #333333;
-      font-size: 14px;
-      white-space: nowrap;
+      padding:
+        12px 10px;
+
+      text-align:
+        center;
+
+      border-bottom:
+        1px solid #333333;
+
+      font-size:
+        14px;
+
+      white-space:
+        nowrap;
     }
+
 
     tbody tr:hover {
-      background: #222222;
+      filter:
+        brightness(1.12);
     }
+
 
     .rank {
-      font-weight: 900;
-      color: #F14D07;
+      font-weight:
+        900;
+
+      color:
+        #F14D07;
     }
+
 
     .team {
-      text-align: left;
-      font-weight: 900;
+      text-align:
+        left;
+
+      font-weight:
+        900;
+
+      padding:
+        0 !important;
     }
+
+
+    /*
+      This is the actual school-color
+      area inside the Team cell.
+    */
+
+    .team-badge {
+      display:
+        block;
+
+      width:
+        100%;
+
+      padding:
+        12px 10px;
+
+      font-weight:
+        900;
+
+      text-decoration:
+        none;
+    }
+
 
     .rating {
-      font-weight: 900;
-      color: #F14D07;
+      font-weight:
+        900;
+
+      color:
+        #F14D07;
     }
 
-    /* Top 3 */
+
+    /* =========================
+       TOP 3
+    ========================= */
 
     .top-one {
-      background: rgba(255, 215, 0, 0.08);
+      box-shadow:
+        inset 4px 0 0 #FFD700;
     }
+
 
     .top-two {
-      background: rgba(192, 192, 192, 0.08);
+      box-shadow:
+        inset 4px 0 0 #C0C0C0;
     }
+
 
     .top-three {
-      background: rgba(205, 127, 50, 0.08);
+      box-shadow:
+        inset 4px 0 0 #CD7F32;
     }
+
 
     .loading {
-      padding: 40px;
-      text-align: center;
-      color: #999999;
+      padding:
+        40px;
+
+      text-align:
+        center;
+
+      color:
+        #999999;
     }
 
+
     .error {
-      padding: 30px;
-      text-align: center;
-      color: #ff5555;
+      padding:
+        30px;
+
+      text-align:
+        center;
+
+      color:
+        #ff5555;
     }
+
 
     /* =========================
        FOOTER
     ========================= */
 
     footer {
-      background: #000000;
-      border-top: 4px solid #F14D07;
-      text-align: center;
-      padding: 30px 20px;
-      color: #888888;
+      background:
+        #000000;
+
+      border-top:
+        4px solid #F14D07;
+
+      text-align:
+        center;
+
+      padding:
+        30px 20px;
+
+      color:
+        #888888;
     }
 
+
     footer strong {
-      color: #F14D07;
+      color:
+        #F14D07;
     }
+
 
     /* =========================
        MOBILE
@@ -322,73 +559,144 @@
     @media (max-width: 950px) {
 
       .filter-grid {
-        grid-template-columns: 1fr 1fr;
+
+        grid-template-columns:
+          1fr 1fr;
+
       }
+
 
       .search-group {
-        grid-column: 1 / -1;
+
+        grid-column:
+          1 / -1;
+
       }
+
 
       .clear-group {
-        grid-column: 1 / -1;
+
+        grid-column:
+          1 / -1;
+
       }
 
+
       .clear-button {
-        width: 100%;
+
+        width:
+          100%;
+
       }
 
     }
 
+
     @media (max-width: 700px) {
 
       header {
-        padding: 15px;
+
+        padding:
+          15px;
+
       }
+
 
       .header-content {
-        flex-direction: column;
-        text-align: center;
+
+        flex-direction:
+          column;
+
+        text-align:
+          center;
+
       }
+
 
       .site-title h1 {
-        font-size: 24px;
+
+        font-size:
+          24px;
+
       }
+
 
       .logo {
-        width: 70px;
-        height: 70px;
+
+        width:
+          70px;
+
+        height:
+          70px;
+
       }
+
 
       nav a {
-        flex: 1 1 50%;
-        text-align: center;
-        padding: 13px 8px;
+
+        flex:
+          1 1 50%;
+
+        text-align:
+          center;
+
+        padding:
+          13px 8px;
+
       }
+
 
       .container {
-        padding: 25px 12px 45px;
+
+        padding:
+          25px
+          12px
+          45px;
+
       }
+
 
       .page-title {
-        font-size: 27px;
+
+        font-size:
+          27px;
+
       }
 
+
       .filter-grid {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+          1fr;
+
       }
+
 
       .search-group,
       .clear-group {
-        grid-column: auto;
+
+        grid-column:
+          auto;
+
       }
+
 
       .result-bar {
-        flex-direction: column;
-        align-items: flex-start;
+
+        flex-direction:
+          column;
+
+        align-items:
+          flex-start;
+
       }
 
+
       .active-filter-text {
-        text-align: left;
+
+        text-align:
+          left;
+
       }
 
     }
@@ -409,15 +717,20 @@
 
   <div class="header-content">
 
+
     <img
       src="RUSlogoNew.png"
       alt="Rural Utah Sports"
       class="logo"
     >
 
+
     <div class="site-title">
 
-      <h1>Rural Utah Sports</h1>
+      <h1>
+        Rural Utah Sports
+      </h1>
+
 
       <p>
         Utah High School Sports History & Data
@@ -425,9 +738,11 @@
 
     </div>
 
+
   </div>
 
 </header>
+
 
 
 <!-- =========================
@@ -438,33 +753,44 @@
 
   <div class="nav-content">
 
+
     <a href="index.html">
       Home
     </a>
 
-    <a href="greatest-seasons.html" class="active">
+
+    <a
+      href="greatest-seasons.html"
+      class="active"
+    >
       Greatest Seasons
     </a>
+
 
     <a href="#">
       Teams
     </a>
 
+
     <a href="#">
       Games
     </a>
+
 
     <a href="#">
       Rankings
     </a>
 
+
     <a href="#">
       Simulators
     </a>
 
+
   </div>
 
 </nav>
+
 
 
 <!-- =========================
@@ -480,16 +806,21 @@
 
 
   <p class="subtitle">
-    The greatest Utah high school football seasons,
-    ranked using the Rural Utah Sports rating system.
+
+    The greatest Utah high school
+    football seasons, ranked using
+    the Rural Utah Sports rating system.
+
   </p>
 
 
+
   <!-- =========================
-       FILTER PANEL
+       FILTERS
   ========================= -->
 
   <div class="filter-panel">
+
 
     <div class="filter-title">
       Filter & Sort
@@ -501,11 +832,14 @@
 
       <!-- SEARCH -->
 
-      <div class="filter-group search-group">
+      <div
+        class="filter-group search-group"
+      >
 
         <label for="searchBox">
           Search
         </label>
+
 
         <input
           type="text"
@@ -517,6 +851,7 @@
       </div>
 
 
+
       <!-- YEAR -->
 
       <div class="filter-group">
@@ -524,6 +859,7 @@
         <label for="yearFilter">
           Year
         </label>
+
 
         <select
           id="yearFilter"
@@ -539,6 +875,7 @@
       </div>
 
 
+
       <!-- TEAM -->
 
       <div class="filter-group">
@@ -546,6 +883,7 @@
         <label for="teamFilter">
           Team
         </label>
+
 
         <select
           id="teamFilter"
@@ -561,6 +899,7 @@
       </div>
 
 
+
       <!-- SORT -->
 
       <div class="filter-group">
@@ -568,6 +907,7 @@
         <label for="sortBy">
           Sort By
         </label>
+
 
         <select
           id="sortBy"
@@ -639,6 +979,7 @@
       </div>
 
 
+
       <!-- DIRECTION -->
 
       <div class="filter-group">
@@ -646,6 +987,7 @@
         <label for="sortDirection">
           Direction
         </label>
+
 
         <select
           id="sortDirection"
@@ -665,6 +1007,7 @@
       </div>
 
 
+
       <!-- CLEAR -->
 
       <div class="filter-group clear-group">
@@ -672,6 +1015,7 @@
         <label>
           &nbsp;
         </label>
+
 
         <button
           class="clear-button"
@@ -682,16 +1026,19 @@
 
       </div>
 
+
     </div>
 
   </div>
 
 
+
   <!-- =========================
-       RESULT BAR
+       RESULTS
   ========================= -->
 
   <div class="result-bar">
+
 
     <div
       id="resultCount"
@@ -700,12 +1047,15 @@
       Loading seasons...
     </div>
 
+
     <div
       id="activeFilterText"
       class="active-filter-text"
     ></div>
 
+
   </div>
+
 
 
   <!-- =========================
@@ -714,27 +1064,73 @@
 
   <div class="table-wrapper">
 
+
     <table>
+
 
       <thead>
 
         <tr>
 
-          <th>Rank</th>
-          <th>Team</th>
-          <th>Year</th>
-          <th>Record</th>
-          <th>Win %</th>
-          <th>Games</th>
-          <th>Points For</th>
-          <th>Points Against</th>
-          <th>PPG</th>
-          <th>PAPG</th>
-          <th>Avg Margin</th>
-          <th>Opponent Win %</th>
-          <th>Opp. Opp. Win %</th>
-          <th>SOS</th>
-          <th>Rating</th>
+          <th>
+            Rank
+          </th>
+
+          <th>
+            Team
+          </th>
+
+          <th>
+            Year
+          </th>
+
+          <th>
+            Record
+          </th>
+
+          <th>
+            Win %
+          </th>
+
+          <th>
+            Games
+          </th>
+
+          <th>
+            Points For
+          </th>
+
+          <th>
+            Points Against
+          </th>
+
+          <th>
+            PPG
+          </th>
+
+          <th>
+            PAPG
+          </th>
+
+          <th>
+            Avg Margin
+          </th>
+
+          <th>
+            Opponent Win %
+          </th>
+
+          <th>
+            Opp. Opp. Win %
+          </th>
+
+          <th>
+            SOS
+          </th>
+
+          <th>
+            Rating
+          </th>
 
         </tr>
 
@@ -743,24 +1139,32 @@
 
       <tbody id="seasonRows">
 
+
         <tr>
 
           <td
             colspan="15"
             class="loading"
           >
+
             Loading Greatest Seasons...
+
           </td>
 
         </tr>
 
+
       </tbody>
+
 
     </table>
 
+
   </div>
 
+
 </main>
+
 
 
 <!-- =========================
@@ -770,8 +1174,11 @@
 <footer>
 
   <p>
-    <strong>RURAL UTAH SPORTS</strong>
+    <strong>
+      RURAL UTAH SPORTS
+    </strong>
   </p>
+
 
   <p>
     Utah High School Sports History & Data
@@ -780,15 +1187,39 @@
 </footer>
 
 
+
 <script>
 
+
 /* ==========================================
-   GLOBAL DATA
+   DATA
 ========================================== */
 
 let allSeasons = [];
 
 let teamColors = {};
+
+
+
+/* ==========================================
+   NORMALIZE TEAM NAME
+========================================== */
+
+function normalizeTeamName(
+  name
+) {
+
+  return String(
+    name ?? ""
+  )
+    .toUpperCase()
+    .replace(
+      /[^A-Z0-9]/g,
+      ""
+    );
+
+}
+
 
 
 /* ==========================================
@@ -799,8 +1230,9 @@ async function loadData() {
 
   try {
 
+
     /*
-      Load Greatest Seasons
+      LOAD GREATEST SEASONS
     */
 
     const seasonsResponse =
@@ -809,7 +1241,9 @@ async function loadData() {
       );
 
 
-    if (!seasonsResponse.ok) {
+    if (
+      !seasonsResponse.ok
+    ) {
 
       throw new Error(
         "Could not load Greatest Seasons data."
@@ -822,13 +1256,14 @@ async function loadData() {
       await seasonsResponse.json();
 
 
+
     /*
-      Load Team Colors
+      LOAD EXACT TEAM COLORS
     */
 
     const colorsResponse =
       await fetch(
-        "team-colors-data.json"
+        "team-colors-exact.json"
       );
 
 
@@ -836,74 +1271,95 @@ async function loadData() {
       colorsResponse.ok
     ) {
 
+
       const colors =
         await colorsResponse.json();
 
 
-      /*
-        The corrected Team Colors file
-        uses:
-
-        team
-        classification
-        color
-      */
-
       colors.forEach(
         item => {
+
 
           const team =
             String(
               item.team ?? ""
-            )
-            .trim()
-            .toUpperCase();
+            ).trim();
 
 
-const color =
-  String(
-    item.textColor ?? ""
-  )
-  .trim();
+          const normalizedTeam =
+            normalizeTeamName(
+              team
+            );
+
+
+          const background =
+            String(
+              item.backgroundColor ?? ""
+            ).trim();
+
+
+          const text =
+            String(
+              item.textColor ?? ""
+            ).trim();
 
 
           if (
-            team &&
+            normalizedTeam &&
             /^#[0-9A-F]{6}$/i.test(
-              color
+              background
             )
           ) {
 
-            teamColors[team] =
-              color;
+
+            teamColors[
+              normalizedTeam
+            ] = {
+
+              background:
+                background,
+
+              text:
+                /^#[0-9A-F]{6}$/i.test(
+                  text
+                )
+                  ? text
+                  : "#FFFFFF"
+
+            };
+
 
           }
 
         }
       );
 
+
     }
 
 
     /*
-      Build filters
+      BUILD FILTERS
     */
 
     buildFilters();
 
 
     /*
-      Display seasons
+      DISPLAY
     */
 
     applyFilters();
 
-  }
 
+  }
 
   catch (error) {
 
-    console.error(error);
+
+    console.error(
+      error
+    );
 
 
     document.getElementById(
@@ -917,15 +1373,21 @@ const color =
           class="error"
         >
 
-          Could not load Greatest Seasons data.
+          Could not load the
+          Greatest Seasons data.
 
           <br><br>
 
-          Please check that
-          <strong>
-            greatest-seasons-data-v2.json
-          </strong>
-          is uploaded.
+          Make sure these files
+          are uploaded:
+
+          <br><br>
+
+          greatest-seasons-data-v2.json
+
+          <br>
+
+          team-colors-exact.json
 
         </td>
 
@@ -938,11 +1400,13 @@ const color =
 }
 
 
+
 /* ==========================================
    BUILD FILTERS
 ========================================== */
 
 function buildFilters() {
+
 
   const yearFilter =
     document.getElementById(
@@ -954,6 +1418,7 @@ function buildFilters() {
     document.getElementById(
       "teamFilter"
     );
+
 
 
   /*
@@ -987,6 +1452,7 @@ function buildFilters() {
   years.forEach(
     year => {
 
+
       const option =
         document.createElement(
           "option"
@@ -1005,8 +1471,10 @@ function buildFilters() {
         option
       );
 
+
     }
   );
+
 
 
   /*
@@ -1040,6 +1508,7 @@ function buildFilters() {
   teams.forEach(
     team => {
 
+
       const option =
         document.createElement(
           "option"
@@ -1058,10 +1527,12 @@ function buildFilters() {
         option
       );
 
+
     }
   );
 
 }
+
 
 
 /* ==========================================
@@ -1069,6 +1540,7 @@ function buildFilters() {
 ========================================== */
 
 function applyFilters() {
+
 
   const search =
     document
@@ -1112,14 +1584,17 @@ function applyFilters() {
       .value;
 
 
+
   let filtered =
     allSeasons.filter(
       season => {
 
+
         const team =
           String(
             season["Team"] ?? ""
-          ).toLowerCase();
+          )
+            .toLowerCase();
 
 
         const year =
@@ -1152,8 +1627,10 @@ function applyFilters() {
           matchesTeam
         );
 
+
       }
     );
+
 
 
   /*
@@ -1162,6 +1639,7 @@ function applyFilters() {
 
   filtered.sort(
     (a, b) => {
+
 
       let valueA =
         Number(
@@ -1176,13 +1654,21 @@ function applyFilters() {
 
 
       if (
-        Number.isFinite(valueA) &&
-        Number.isFinite(valueB)
+        Number.isFinite(
+          valueA
+        ) &&
+        Number.isFinite(
+          valueB
+        )
       ) {
 
+
         return direction === "asc"
+
           ? valueA - valueB
+
           : valueB - valueA;
+
 
       }
 
@@ -1223,8 +1709,10 @@ function applyFilters() {
 
       return 0;
 
+
     }
   );
+
 
 
   displaySeasons(
@@ -1243,6 +1731,7 @@ function applyFilters() {
 }
 
 
+
 /* ==========================================
    DISPLAY SEASONS
 ========================================== */
@@ -1251,18 +1740,22 @@ function displaySeasons(
   seasons
 ) {
 
+
   const tbody =
     document.getElementById(
       "seasonRows"
     );
 
 
-  tbody.innerHTML = "";
+  tbody.innerHTML =
+    "";
+
 
 
   if (
     seasons.length === 0
   ) {
+
 
     tbody.innerHTML = `
 
@@ -1273,7 +1766,8 @@ function displaySeasons(
           class="loading"
         >
 
-          No seasons match your filters.
+          No seasons match
+          your filters.
 
         </td>
 
@@ -1293,8 +1787,10 @@ function displaySeasons(
   }
 
 
+
   const fragment =
     document.createDocumentFragment();
+
 
 
   seasons.forEach(
@@ -1305,6 +1801,7 @@ function displaySeasons(
         document.createElement(
           "tr"
         );
+
 
 
       /*
@@ -1346,6 +1843,7 @@ function displaySeasons(
       }
 
 
+
       /*
         TEAM NAME
       */
@@ -1356,65 +1854,23 @@ function displaySeasons(
         ).trim();
 
 
+      const normalizedTeam =
+        normalizeTeamName(
+          teamName
+        );
+
+
+
       /*
-        FIND TEAM COLOR
+        EXACT TEAM COLORS
       */
 
-    const teamColor =
-  findTeamColor(teamName);
+      const colors =
+        teamColors[
+          normalizedTeam
+        ];
 
 
-      /*
-        Build style.
-        If there is no color,
-        use white.
-      */
-
-let teamStyle = "";
-
-if (teamColor) {
-
-  teamStyle =
-    `background-color: ${teamColor};`;
-
-  /*
-    If the background is light,
-    use black text.
-  */
-
-  const hex =
-    teamColor.replace("#", "");
-
-  const r =
-    parseInt(hex.substring(0, 2), 16);
-
-  const g =
-    parseInt(hex.substring(2, 4), 16);
-
-  const b =
-    parseInt(hex.substring(4, 6), 16);
-
-  const brightness =
-    (r * 299 + g * 587 + b * 114) / 1000;
-
-  if (brightness > 155) {
-
-    teamStyle +=
-      "color: #000000;";
-
-  } else {
-
-    teamStyle +=
-      "color: #FFFFFF;";
-
-  }
-
-} else {
-
-  teamStyle =
-    "background-color: #222222; color: #FFFFFF;";
-
-}
 
       /*
         RANK
@@ -1462,117 +1918,190 @@ if (teamColor) {
         topClass;
 
 
+
       /*
-        BUILD ROW
+        TEAM BADGE STYLE
+      */
+
+      let badgeStyle =
+        "";
+
+
+      if (
+        colors
+      ) {
+
+
+        badgeStyle =
+          "background-color:" +
+          colors.background +
+          ";" +
+          "color:" +
+          colors.text +
+          ";";
+
+
+      }
+
+      else {
+
+
+        badgeStyle =
+          "background-color:#222222;" +
+          "color:#FFFFFF;";
+
+
+      }
+
+
+
+      /*
+        TABLE ROW
       */
 
       row.innerHTML = `
 
         <td class="rank">
+
           ${season["Rank"] ?? ""}
+
         </td>
 
 
-        <td
-          class="team"
-          style="${teamStyle}"
-        >
-          ${teamName}
+        <td class="team">
+
+          <span
+            class="team-badge"
+            style="${badgeStyle}"
+          >
+
+            ${escapeHTML(
+              teamName
+            )}
+
+          </span>
+
         </td>
 
 
         <td>
+
           ${season["Year"] ?? ""}
+
         </td>
 
 
         <td>
+
           ${record}
+
         </td>
 
 
         <td>
+
           ${formatNumber(
             season["Win %"],
             3
           )}
+
         </td>
 
 
         <td>
+
           ${season["Games"] ?? ""}
+
         </td>
 
 
         <td>
+
           ${formatWhole(
             season["Points For"]
           )}
+
         </td>
 
 
         <td>
+
           ${formatWhole(
             season["Points Against"]
           )}
+
         </td>
 
 
         <td>
+
           ${formatNumber(
             season["PPG"],
             2
           )}
+
         </td>
 
 
         <td>
+
           ${formatNumber(
             season["PAPG"],
             2
           )}
+
         </td>
 
 
         <td>
+
           ${formatNumber(
             season["Avg Margin"],
             2
           )}
+
         </td>
 
 
         <td>
+
           ${formatNumber(
             season["Opponent Win %"],
             3
           )}
+
         </td>
 
 
         <td>
+
           ${formatNumber(
             season[
               "Opponents' Opponent Win %"
             ],
             3
           )}
+
         </td>
 
 
         <td>
+
           ${formatNumber(
             season["SOS"],
             2
           )}
+
         </td>
 
 
         <td class="rating">
+
           ${formatNumber(
             season["Rating"],
             2
           )}
+
         </td>
 
       `;
@@ -1581,6 +2110,7 @@ if (teamColor) {
       fragment.appendChild(
         row
       );
+
 
     }
   );
@@ -1600,48 +2130,44 @@ if (teamColor) {
 
 }
 
+
+
 /* ==========================================
-   FIND TEAM COLOR
+   ESCAPE HTML
 ========================================== */
 
-function normalizeTeamName(name) {
+function escapeHTML(
+  value
+) {
 
-  return String(name ?? "")
-    .toUpperCase()
-    .replace(/[^A-Z0-9]/g, "");
-
-}
-
-
-function findTeamColor(teamName) {
-
-  const normalizedName =
-    normalizeTeamName(teamName);
-
-
-  /*
-    First try an exact normalized match.
-  */
-
-  for (
-    const team in teamColors
-  ) {
-
-    if (
-      normalizeTeamName(team) ===
-      normalizedName
-    ) {
-
-      return teamColors[team];
-
-    }
-
-  }
-
-
-  return null;
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
+
+
+
 /* ==========================================
    FILTER TEXT
 ========================================== */
@@ -1654,10 +2180,13 @@ function updateFilterText(
   direction
 ) {
 
+
   const parts = [];
 
 
-  if (search) {
+  if (
+    search
+  ) {
 
     parts.push(
       'Search: "' +
@@ -1694,7 +2223,9 @@ function updateFilterText(
 
   const directionText =
     direction === "asc"
+
       ? "Lowest → Highest"
+
       : "Highest → Lowest";
 
 
@@ -1710,9 +2241,12 @@ function updateFilterText(
   document.getElementById(
     "activeFilterText"
   ).textContent =
-    parts.join(" • ");
+    parts.join(
+      " • "
+    );
 
 }
+
 
 
 /* ==========================================
@@ -1721,34 +2255,41 @@ function updateFilterText(
 
 function clearFilters() {
 
+
   document.getElementById(
     "searchBox"
-  ).value = "";
+  ).value =
+    "";
 
 
   document.getElementById(
     "yearFilter"
-  ).value = "all";
+  ).value =
+    "all";
 
 
   document.getElementById(
     "teamFilter"
-  ).value = "all";
+  ).value =
+    "all";
 
 
   document.getElementById(
     "sortBy"
-  ).value = "Rank";
+  ).value =
+    "Rank";
 
 
   document.getElementById(
     "sortDirection"
-  ).value = "asc";
+  ).value =
+    "asc";
 
 
   applyFilters();
 
 }
+
 
 
 /* ==========================================
@@ -1759,12 +2300,17 @@ function formatWhole(
   value
 ) {
 
+
   const number =
-    Number(value);
+    Number(
+      value
+    );
 
 
   if (
-    !Number.isFinite(number)
+    !Number.isFinite(
+      number
+    )
   ) {
 
     return "";
@@ -1779,17 +2325,23 @@ function formatWhole(
 }
 
 
+
 function formatNumber(
   value,
   decimals
 ) {
 
+
   const number =
-    Number(value);
+    Number(
+      value
+    );
 
 
   if (
-    !Number.isFinite(number)
+    !Number.isFinite(
+      number
+    )
   ) {
 
     return "";
@@ -1802,6 +2354,7 @@ function formatNumber(
   );
 
 }
+
 
 
 /* ==========================================
@@ -1858,6 +2411,7 @@ document
   );
 
 
+
 /* ==========================================
    START
 ========================================== */
@@ -1868,4 +2422,5 @@ loadData();
 
 
 </body>
+
 </html>
