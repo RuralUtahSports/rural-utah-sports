@@ -28,6 +28,10 @@
       color: #ffffff;
     }
 
+    /* =========================
+       HEADER
+    ========================= */
+
     header {
       background: #000000;
       border-bottom: 4px solid #F14D07;
@@ -61,6 +65,11 @@
       margin-top: 5px;
     }
 
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
     nav {
       background: #000000;
       border-bottom: 1px solid #333333;
@@ -88,6 +97,11 @@
       color: #000000;
     }
 
+
+    /* =========================
+       MAIN
+    ========================= */
+
     .container {
       max-width: 1400px;
       margin: auto;
@@ -107,6 +121,11 @@
       margin-bottom: 25px;
       font-size: 16px;
     }
+
+
+    /* =========================
+       FILTERS
+    ========================= */
 
     .filter-panel {
       background: #000000;
@@ -185,6 +204,11 @@
       font-size: 14px;
     }
 
+
+    /* =========================
+       TEAM CARDS
+    ========================= */
+
     .teams-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -197,7 +221,9 @@
       border-radius: 7px;
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.15s, border-color 0.15s;
+      transition:
+        transform 0.15s,
+        border-color 0.15s;
     }
 
     .team-card:hover {
@@ -216,7 +242,10 @@
     .team-name {
       font-size: 20px;
       font-weight: 900;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      display: block;
     }
 
     .team-meta {
@@ -262,7 +291,10 @@
       margin-top: 3px;
     }
 
-    /* PROFILE */
+
+    /* =========================
+       TEAM PROFILE
+    ========================= */
 
     #teamProfile {
       display: none;
@@ -312,6 +344,11 @@
       font-size: 16px;
     }
 
+
+    /* =========================
+       PROFILE STATS
+    ========================= */
+
     .profile-stats {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -339,6 +376,11 @@
       margin-top: 5px;
     }
 
+
+    /* =========================
+       SECTIONS
+    ========================= */
+
     .section-title {
       border-left: 6px solid #F14D07;
       padding-left: 14px;
@@ -346,6 +388,11 @@
       font-size: 25px;
       text-transform: uppercase;
     }
+
+
+    /* =========================
+       SCHOOL INFORMATION
+    ========================= */
 
     .info-box {
       background: #000000;
@@ -372,6 +419,11 @@
       text-transform: uppercase;
       margin-bottom: 4px;
     }
+
+
+    /* =========================
+       GREATEST SEASONS
+    ========================= */
 
     .best-seasons {
       overflow-x: auto;
@@ -405,12 +457,22 @@
       font-weight: 900;
     }
 
+
+    /* =========================
+       LOADING / ERROR
+    ========================= */
+
     .loading,
     .error {
       padding: 40px;
       text-align: center;
       color: #999999;
     }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
 
     footer {
       background: #000000;
@@ -424,21 +486,37 @@
       color: #F14D07;
     }
 
+
+    /* =========================
+       TABLET
+    ========================= */
+
     @media (max-width: 1100px) {
+
       .teams-grid {
         grid-template-columns: repeat(3, 1fr);
       }
 
       .filter-grid {
-        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-columns:
+          2fr
+          1fr
+          1fr;
       }
 
       .clear-group {
         grid-column: 1 / -1;
       }
+
     }
 
+
+    /* =========================
+       MOBILE
+    ========================= */
+
     @media (max-width: 800px) {
+
       .teams-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -458,9 +536,12 @@
       .clear-button {
         width: 100%;
       }
+
     }
 
+
     @media (max-width: 600px) {
+
       .header-content {
         flex-direction: column;
         text-align: center;
@@ -499,13 +580,20 @@
       .info-grid {
         grid-template-columns: 1fr;
       }
+
     }
 
   </style>
 
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
@@ -519,7 +607,9 @@
 
     <div class="site-title">
 
-      <h1>Rural Utah Sports</h1>
+      <h1>
+        Rural Utah Sports
+      </h1>
 
       <p>
         Utah High School Sports History & Data
@@ -532,13 +622,22 @@
 </header>
 
 
+<!-- =========================
+     NAVIGATION
+========================= -->
+
 <nav>
 
   <div class="nav-content">
 
-    <a href="index.html">Home</a>
+    <a href="index.html">
+      Home
+    </a>
 
-    <a href="teams.html" class="active">
+    <a
+      href="teams.html"
+      class="active"
+    >
       Teams
     </a>
 
@@ -565,7 +664,10 @@
 
 <main class="container">
 
-  <!-- TEAM LIST -->
+
+  <!-- =========================
+       TEAM LIST
+  ========================= -->
 
   <section id="teamList">
 
@@ -580,13 +682,17 @@
     </p>
 
 
+    <!-- FILTERS -->
+
     <div class="filter-panel">
 
       <div class="filter-title">
         Find a Team
       </div>
 
+
       <div class="filter-grid">
+
 
         <div class="filter-group">
 
@@ -675,6 +781,7 @@
 
         </div>
 
+
       </div>
 
     </div>
@@ -702,7 +809,9 @@
   </section>
 
 
-  <!-- TEAM PROFILE -->
+  <!-- =========================
+       TEAM PROFILE
+  ========================= -->
 
   <section id="teamProfile">
 
@@ -723,6 +832,10 @@
 </main>
 
 
+<!-- =========================
+     FOOTER
+========================= -->
+
 <footer>
 
   <p>
@@ -739,6 +852,7 @@
 
 
 <script>
+
 
 let allTeams = [];
 
@@ -868,7 +982,7 @@ function normalize(
 
 
 /* ==========================================
-   CLASSIFICATION FILTER
+   BUILD CLASSIFICATION FILTER
 ========================================== */
 
 function buildClassificationFilter() {
@@ -939,27 +1053,29 @@ function classificationSort(
 ) {
 
   const order = {
+
     "1A": 1,
     "2A": 2,
     "3A": 3,
     "4A": 4,
     "5A": 5,
     "6A": 6,
-    "7A": 7,
     "8P": 8,
-    "8-MAN": 8,
-    "8 MAN": 8
+    "8-PLAYER": 8
+
   };
 
 
   const aValue =
-    order[a.toUpperCase()] ||
-    99;
+    order[
+      a.toUpperCase()
+    ] || 99;
 
 
   const bValue =
-    order[b.toUpperCase()] ||
-    99;
+    order[
+      b.toUpperCase()
+    ] || 99;
 
 
   if (
@@ -971,7 +1087,9 @@ function classificationSort(
   }
 
 
-  return a.localeCompare(b);
+  return a.localeCompare(
+    b
+  );
 
 }
 
@@ -1051,6 +1169,84 @@ function displayTeams(
           : "#FFFFFF";
 
 
+      /*
+        If the stored team text color
+        is black, make it white here
+        so it remains readable.
+      */
+
+      const displayText =
+        text
+          .toUpperCase()
+          .replace(
+            /\s/g,
+            ""
+          ) === "#000000"
+          ? "#FFFFFF"
+          : text;
+
+
+      /*
+        Build classification / region text.
+      */
+
+      let metaText = "";
+
+
+      if (
+        team.classification
+      ) {
+
+        metaText =
+          escapeHTML(
+            team.classification
+          );
+
+      }
+
+
+      if (
+        team.region
+      ) {
+
+        if (
+          metaText
+        ) {
+
+          metaText +=
+            " • ";
+
+        }
+
+
+        metaText +=
+          escapeHTML(
+            String(
+              team.region
+            )
+          );
+
+      }
+
+
+      /*
+        8-player schools don't have
+        a region on the provided chart.
+      */
+
+      if (
+        !team.region &&
+        team.classification
+      ) {
+
+        metaText =
+          escapeHTML(
+            team.classification
+          );
+
+      }
+
+
       card.innerHTML = `
 
         <div
@@ -1063,9 +1259,13 @@ function displayTeams(
 
         <div class="team-card-content">
 
+
           <div
             class="team-name"
-            style="color:${text};"
+            style="
+              background:${background};
+              color:${displayText};
+            "
           >
 
             ${escapeHTML(
@@ -1077,44 +1277,40 @@ function displayTeams(
 
           <div class="team-meta">
 
-            ${escapeHTML(
-              team.classification || ""
-            )}
-
-            ${
-              team.region
-                ? " • " +
-                  escapeHTML(
-                    String(
-                      team.region
-                    )
-                  )
-                : ""
-            }
+            ${metaText}
 
           </div>
 
 
           <div class="team-record">
 
-            ${team.wins}-
-            ${team.losses}-
-            ${team.ties}
+            ${formatRecord(
+              team.wins,
+              team.losses,
+              team.ties
+            )}
 
           </div>
 
 
           <div class="team-record-label">
+
             All-Time Record
+
           </div>
 
 
           <div class="team-stat-row">
 
+
             <div class="team-stat">
 
               <div class="team-stat-number">
-                ${team.games.toLocaleString()}
+
+                ${Number(
+                  team.games || 0
+                ).toLocaleString()}
+
               </div>
 
               <div class="team-stat-label">
@@ -1127,9 +1323,11 @@ function displayTeams(
             <div class="team-stat">
 
               <div class="team-stat-number">
+
                 ${formatPct(
                   team.winPct
                 )}
+
               </div>
 
               <div class="team-stat-label">
@@ -1142,7 +1340,11 @@ function displayTeams(
             <div class="team-stat">
 
               <div class="team-stat-number">
-                ${team.seasons}
+
+                ${Number(
+                  team.seasons || 0
+                ).toLocaleString()}
+
               </div>
 
               <div class="team-stat-label">
@@ -1151,7 +1353,9 @@ function displayTeams(
 
             </div>
 
+
           </div>
+
 
         </div>
 
@@ -1216,6 +1420,17 @@ function showTeamProfile(
       : "#FFFFFF";
 
 
+  const profileText =
+    text
+      .toUpperCase()
+      .replace(
+        /\s/g,
+        ""
+      ) === "#000000"
+      ? "#FFFFFF"
+      : text;
+
+
   const bestSeasons =
     team.bestSeasons || [];
 
@@ -1231,7 +1446,9 @@ function showTeamProfile(
     seasonsHTML = `
 
       <h2 class="section-title">
+
         Greatest Seasons
+
       </h2>
 
 
@@ -1243,12 +1460,29 @@ function showTeamProfile(
 
             <tr>
 
-              <th>Year</th>
-              <th>Record</th>
-              <th>Win %</th>
-              <th>Avg Margin</th>
-              <th>SOS</th>
-              <th>Rating</th>
+              <th>
+                Year
+              </th>
+
+              <th>
+                Record
+              </th>
+
+              <th>
+                Win %
+              </th>
+
+              <th>
+                Avg Margin
+              </th>
+
+              <th>
+                SOS
+              </th>
+
+              <th>
+                Rating
+              </th>
 
             </tr>
 
@@ -1268,9 +1502,11 @@ function showTeamProfile(
                     </td>
 
                     <td>
-                      ${season.wins}-
-                      ${season.losses}-
-                      ${season.ties}
+                      ${formatRecord(
+                        season.wins,
+                        season.losses,
+                        season.ties
+                      )}
                     </td>
 
                     <td>
@@ -1317,11 +1553,78 @@ function showTeamProfile(
   }
 
 
+  /*
+    Classification and region.
+  */
+
+  let profileSubtitle = "";
+
+
+  if (
+    team.classification
+  ) {
+
+    profileSubtitle =
+      escapeHTML(
+        team.classification
+      );
+
+  }
+
+
+  if (
+    team.region
+  ) {
+
+    if (
+      profileSubtitle
+    ) {
+
+      profileSubtitle +=
+        " • ";
+
+    }
+
+
+    profileSubtitle +=
+      escapeHTML(
+        String(
+          team.region
+        )
+      );
+
+  }
+
+
+  if (
+    team.mascot
+  ) {
+
+    if (
+      profileSubtitle
+    ) {
+
+      profileSubtitle +=
+        " • ";
+
+    }
+
+
+    profileSubtitle +=
+      escapeHTML(
+        team.mascot
+      );
+
+  }
+
+
   document.getElementById(
     "profileContent"
   ).innerHTML = `
 
+
     <div class="profile-hero">
+
 
       <div
         class="profile-color"
@@ -1333,10 +1636,11 @@ function showTeamProfile(
 
       <div class="profile-content">
 
+
         <div
           class="profile-title"
           style="
-            color:${text};
+            color:${profileText};
           "
         >
 
@@ -1349,34 +1653,30 @@ function showTeamProfile(
 
         <div class="profile-subtitle">
 
-          ${escapeHTML(
-            team.classification || ""
-          )}
-
-          ${
-            team.mascot
-              ? " • " +
-                escapeHTML(
-                  team.mascot
-                )
-              : ""
-          }
+          ${profileSubtitle}
 
         </div>
 
 
         <div class="profile-stats">
 
+
           <div class="profile-stat">
 
             <div class="profile-stat-number">
-              ${team.wins}-
-              ${team.losses}-
-              ${team.ties}
+
+              ${formatRecord(
+                team.wins,
+                team.losses,
+                team.ties
+              )}
+
             </div>
 
             <div class="profile-stat-label">
+
               All-Time Record
+
             </div>
 
           </div>
@@ -1385,13 +1685,17 @@ function showTeamProfile(
           <div class="profile-stat">
 
             <div class="profile-stat-number">
+
               ${formatPct(
                 team.winPct
               )}
+
             </div>
 
             <div class="profile-stat-label">
+
               Win %
+
             </div>
 
           </div>
@@ -1400,11 +1704,17 @@ function showTeamProfile(
           <div class="profile-stat">
 
             <div class="profile-stat-number">
-              ${team.games.toLocaleString()}
+
+              ${Number(
+                team.games || 0
+              ).toLocaleString()}
+
             </div>
 
             <div class="profile-stat-label">
+
               Games
+
             </div>
 
           </div>
@@ -1413,11 +1723,17 @@ function showTeamProfile(
           <div class="profile-stat">
 
             <div class="profile-stat-number">
-              ${team.seasons}
+
+              ${Number(
+                team.seasons || 0
+              ).toLocaleString()}
+
             </div>
 
             <div class="profile-stat-label">
+
               Seasons
+
             </div>
 
           </div>
@@ -1426,17 +1742,22 @@ function showTeamProfile(
           <div class="profile-stat">
 
             <div class="profile-stat-number">
+
               ${formatNumber(
                 team.avgMargin,
                 1
               )}
+
             </div>
 
             <div class="profile-stat-label">
+
               Avg Margin
+
             </div>
 
           </div>
+
 
         </div>
 
@@ -1446,13 +1767,16 @@ function showTeamProfile(
 
 
     <h2 class="section-title">
+
       School Information
+
     </h2>
 
 
     <div class="info-box">
 
       <div class="info-grid">
+
 
         <div class="info-item">
 
@@ -1521,18 +1845,6 @@ function showTeamProfile(
         </div>
 
 
-        <div class="info-item">
-
-          <div class="info-label">
-            Address
-          </div>
-
-          ${escapeHTML(
-            team.address || "—"
-          )}
-
-        </div>
-
       </div>
 
     </div>
@@ -1600,7 +1912,7 @@ function showTeamList(
 
 
 /* ==========================================
-   FILTER
+   FILTER TEAMS
 ========================================== */
 
 function filterTeams() {
@@ -1629,9 +1941,12 @@ function filterTeams() {
     allTeams.filter(
       team => {
 
+
         const matchesSearch =
           !search ||
-          team.team
+          String(
+            team.team
+          )
             .toLowerCase()
             .includes(
               search
@@ -1657,11 +1972,19 @@ function filterTeams() {
   teams.sort(
     (a, b) => {
 
+
       if (
         sort === "wins"
       ) {
 
-        return b.wins - a.wins;
+        return (
+          Number(
+            b.wins || 0
+          ) -
+          Number(
+            a.wins || 0
+          )
+        );
 
       }
 
@@ -1670,7 +1993,14 @@ function filterTeams() {
         sort === "winPct"
       ) {
 
-        return b.winPct - a.winPct;
+        return (
+          Number(
+            b.winPct || 0
+          ) -
+          Number(
+            a.winPct || 0
+          )
+        );
 
       }
 
@@ -1679,7 +2009,14 @@ function filterTeams() {
         sort === "games"
       ) {
 
-        return b.games - a.games;
+        return (
+          Number(
+            b.games || 0
+          ) -
+          Number(
+            a.games || 0
+          )
+        );
 
       }
 
@@ -1688,13 +2025,24 @@ function filterTeams() {
         sort === "seasons"
       ) {
 
-        return b.seasons - a.seasons;
+        return (
+          Number(
+            b.seasons || 0
+          ) -
+          Number(
+            a.seasons || 0
+          )
+        );
 
       }
 
 
-      return a.team.localeCompare(
-        b.team
+      return String(
+        a.team
+      ).localeCompare(
+        String(
+          b.team
+        )
       );
 
     }
@@ -1738,21 +2086,47 @@ function clearFilters() {
 
 
 /* ==========================================
-   HELPERS
+   RECORD FORMAT
 ========================================== */
 
-function validColor(
-  color
+function formatRecord(
+  wins,
+  losses,
+  ties
 ) {
 
-  return /^#[0-9A-F]{6}$/i.test(
-    String(
-      color ?? ""
-    )
+  const w =
+    Number(
+      wins || 0
+    );
+
+
+  const l =
+    Number(
+      losses || 0
+    );
+
+
+  const t =
+    Number(
+      ties || 0
+    );
+
+
+  return (
+    w +
+    "-" +
+    l +
+    "-" +
+    t
   );
 
 }
 
+
+/* ==========================================
+   PERCENTAGE FORMAT
+========================================== */
 
 function formatPct(
   value
@@ -1782,6 +2156,10 @@ function formatPct(
 }
 
 
+/* ==========================================
+   NUMBER FORMAT
+========================================== */
+
 function formatNumber(
   value,
   decimals
@@ -1810,6 +2188,27 @@ function formatNumber(
 
 }
 
+
+/* ==========================================
+   VALID COLOR
+========================================== */
+
+function validColor(
+  color
+) {
+
+  return /^#[0-9A-F]{6}$/i.test(
+    String(
+      color ?? ""
+    )
+  );
+
+}
+
+
+/* ==========================================
+   ESCAPE HTML
+========================================== */
 
 function escapeHTML(
   value
@@ -1876,6 +2275,10 @@ document
   );
 
 
+/* ==========================================
+   BROWSER BACK BUTTON
+========================================== */
+
 window.addEventListener(
   "popstate",
   () => {
@@ -1886,7 +2289,9 @@ window.addEventListener(
       ).get("team");
 
 
-    if (!teamFromUrl) {
+    if (
+      !teamFromUrl
+    ) {
 
       document.getElementById(
         "teamProfile"
@@ -1898,6 +2303,7 @@ window.addEventListener(
         "teamList"
       ).style.display =
         "block";
+
 
       return;
 
@@ -1916,7 +2322,9 @@ window.addEventListener(
       );
 
 
-    if (found) {
+    if (
+      found
+    ) {
 
       showTeamProfile(
         found
@@ -1935,6 +2343,7 @@ window.addEventListener(
 loadTeams();
 
 </script>
+
 
 </body>
 
