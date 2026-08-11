@@ -1074,10 +1074,10 @@ function displayTeams(
         school name is readable.
       */
 
-      const displayText =
-        text.toUpperCase() === "#000000"
-          ? "#FFFFFF"
-          : text;
+const displayText =
+  text.toUpperCase().replace(/\s/g, "") === "#000000"
+    ? "#FFFFFF"
+    : text;
 
 
       card.innerHTML = `
