@@ -131,10 +131,13 @@
 
     nav a:hover,
     nav a.active {
-      background: #F14D07;
+th {
+  background: #F14D07;
+  color: #000000;
 
-      color: #000000;
-    }
+  position: sticky;
+  top: 0;
+  z-index: 10;
 
 
     /* =========================
@@ -349,10 +352,11 @@
        TABLE
     ========================= */
 
-    .table-wrapper {
-      width: 100%;
-
-      overflow-x: auto;
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  max-height: 75vh;
+  overflow-y: auto;
 
       background: #000000;
 
