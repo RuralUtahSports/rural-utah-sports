@@ -7,6 +7,7 @@
   <title>Greatest Seasons | Rural Utah Sports</title>
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -18,6 +19,10 @@
       background: #111111;
       color: #ffffff;
     }
+
+    /* =========================
+       HEADER
+    ========================= */
 
     header {
       background: #000000;
@@ -52,6 +57,10 @@
       margin-top: 5px;
     }
 
+    /* =========================
+       NAVIGATION
+    ========================= */
+
     nav {
       background: #000000;
       border-bottom: 1px solid #333333;
@@ -79,6 +88,10 @@
       color: #000000;
     }
 
+    /* =========================
+       MAIN
+    ========================= */
+
     .container {
       max-width: 1400px;
       margin: auto;
@@ -98,6 +111,10 @@
       margin-bottom: 25px;
       font-size: 16px;
     }
+
+    /* =========================
+       FILTERS
+    ========================= */
 
     .filter-panel {
       background: #000000;
@@ -176,6 +193,10 @@
       background: #ffffff;
     }
 
+    /* =========================
+       RESULTS
+    ========================= */
+
     .result-bar {
       display: flex;
       justify-content: space-between;
@@ -195,6 +216,10 @@
       font-weight: bold;
       text-align: right;
     }
+
+    /* =========================
+       TABLE
+    ========================= */
 
     .table-wrapper {
       width: 100%;
@@ -248,6 +273,8 @@
       color: #F14D07;
     }
 
+    /* Top 3 */
+
     .top-one {
       background: rgba(255, 215, 0, 0.08);
     }
@@ -272,6 +299,10 @@
       color: #ff5555;
     }
 
+    /* =========================
+       FOOTER
+    ========================= */
+
     footer {
       background: #000000;
       border-top: 4px solid #F14D07;
@@ -283,6 +314,10 @@
     footer strong {
       color: #F14D07;
     }
+
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 950px) {
 
@@ -301,6 +336,7 @@
       .clear-button {
         width: 100%;
       }
+
     }
 
     @media (max-width: 700px) {
@@ -354,11 +390,20 @@
       .active-filter-text {
         text-align: left;
       }
+
     }
+
   </style>
+
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
@@ -374,7 +419,9 @@
 
       <h1>Rural Utah Sports</h1>
 
-      <p>Utah High School Sports History & Data</p>
+      <p>
+        Utah High School Sports History & Data
+      </p>
 
     </div>
 
@@ -382,6 +429,10 @@
 
 </header>
 
+
+<!-- =========================
+     NAVIGATION
+========================= -->
 
 <nav>
 
@@ -391,7 +442,7 @@
       Home
     </a>
 
-    <a href="#" class="active">
+    <a href="greatest-seasons.html" class="active">
       Greatest Seasons
     </a>
 
@@ -416,11 +467,17 @@
 </nav>
 
 
+<!-- =========================
+     MAIN
+========================= -->
+
 <main class="container">
+
 
   <h2 class="page-title">
     Greatest Seasons
   </h2>
+
 
   <p class="subtitle">
     The greatest Utah high school football seasons,
@@ -428,13 +485,21 @@
   </p>
 
 
+  <!-- =========================
+       FILTER PANEL
+  ========================= -->
+
   <div class="filter-panel">
 
     <div class="filter-title">
       Filter & Sort
     </div>
 
+
     <div class="filter-grid">
+
+
+      <!-- SEARCH -->
 
       <div class="filter-group search-group">
 
@@ -451,6 +516,8 @@
 
       </div>
 
+
+      <!-- YEAR -->
 
       <div class="filter-group">
 
@@ -472,6 +539,8 @@
       </div>
 
 
+      <!-- TEAM -->
+
       <div class="filter-group">
 
         <label for="teamFilter">
@@ -492,6 +561,8 @@
       </div>
 
 
+      <!-- SORT -->
+
       <div class="filter-group">
 
         <label for="sortBy">
@@ -503,28 +574,72 @@
           class="filter-select"
         >
 
-          <option value="Rank">Rank</option>
-          <option value="Rating">Rating</option>
-          <option value="Wins">Wins</option>
-          <option value="Losses">Losses</option>
-          <option value="Win %">Win %</option>
-          <option value="Games">Games</option>
-          <option value="Points For">Points For</option>
-          <option value="Points Against">Points Against</option>
-          <option value="PPG">PPG</option>
-          <option value="PAPG">PAPG</option>
-          <option value="Avg Margin">Avg Margin</option>
-          <option value="Opponent Win %">Opponent Win %</option>
+          <option value="Rank">
+            Rank
+          </option>
+
+          <option value="Rating">
+            Rating
+          </option>
+
+          <option value="Wins">
+            Wins
+          </option>
+
+          <option value="Losses">
+            Losses
+          </option>
+
+          <option value="Win %">
+            Win %
+          </option>
+
+          <option value="Games">
+            Games
+          </option>
+
+          <option value="Points For">
+            Points For
+          </option>
+
+          <option value="Points Against">
+            Points Against
+          </option>
+
+          <option value="PPG">
+            PPG
+          </option>
+
+          <option value="PAPG">
+            PAPG
+          </option>
+
+          <option value="Avg Margin">
+            Avg Margin
+          </option>
+
+          <option value="Opponent Win %">
+            Opponent Win %
+          </option>
+
           <option value="Opponents' Opponent Win %">
             Opp. Opp. Win %
           </option>
-          <option value="SOS">SOS</option>
-          <option value="Year">Year</option>
+
+          <option value="SOS">
+            SOS
+          </option>
+
+          <option value="Year">
+            Year
+          </option>
 
         </select>
 
       </div>
 
+
+      <!-- DIRECTION -->
 
       <div class="filter-group">
 
@@ -550,6 +665,8 @@
       </div>
 
 
+      <!-- CLEAR -->
+
       <div class="filter-group clear-group">
 
         <label>
@@ -570,6 +687,10 @@
   </div>
 
 
+  <!-- =========================
+       RESULT BAR
+  ========================= -->
+
   <div class="result-bar">
 
     <div
@@ -587,9 +708,13 @@
   </div>
 
 
+  <!-- =========================
+       TABLE
+  ========================= -->
+
   <div class="table-wrapper">
 
-    <table id="seasonsTable">
+    <table>
 
       <thead>
 
@@ -615,6 +740,7 @@
 
       </thead>
 
+
       <tbody id="seasonRows">
 
         <tr>
@@ -637,6 +763,10 @@
 </main>
 
 
+<!-- =========================
+     FOOTER
+========================= -->
+
 <footer>
 
   <p>
@@ -652,22 +782,32 @@
 
 <script>
 
+/* ==========================================
+   GLOBAL DATA
+========================================== */
+
 let allSeasons = [];
+
 let teamColors = {};
 
 
 /* ==========================================
-   LOAD BOTH DATA FILES
+   LOAD DATA
 ========================================== */
 
 async function loadData() {
 
   try {
 
+    /*
+      Load Greatest Seasons
+    */
+
     const seasonsResponse =
       await fetch(
         "greatest-seasons-data-v2.json"
       );
+
 
     if (!seasonsResponse.ok) {
 
@@ -677,92 +817,94 @@ async function loadData() {
 
     }
 
+
     allSeasons =
       await seasonsResponse.json();
 
+
+    /*
+      Load Team Colors
+    */
 
     const colorsResponse =
       await fetch(
         "team-colors-data.json"
       );
 
-    if (colorsResponse.ok) {
+
+    if (
+      colorsResponse.ok
+    ) {
 
       const colors =
         await colorsResponse.json();
 
 
-      colors.forEach(item => {
+      /*
+        The corrected Team Colors file
+        uses:
 
-        const team =
-          String(
-            item.team ?? ""
-          )
-          .trim()
-          .toUpperCase();
+        team
+        classification
+        color
+      */
 
+      colors.forEach(
+        item => {
 
-        if (!team) {
-          return;
-        }
-
-
-        /*
-          Look for the first usable font color.
-        */
-
-        let color = null;
+          const team =
+            String(
+              item.team ?? ""
+            )
+            .trim()
+            .toUpperCase();
 
 
-        if (
-          Array.isArray(item.fonts)
-        ) {
+          const color =
+            String(
+              item.color ?? ""
+            )
+            .trim();
 
-          for (
-            const possibleColor
-            of item.fonts
+
+          if (
+            team &&
+            /^#[0-9A-F]{6}$/i.test(
+              color
+            )
           ) {
 
-            if (
-              possibleColor &&
-              /^#[0-9A-F]{6}$/i.test(
-                possibleColor
-              )
-            ) {
-
-              color =
-                possibleColor;
-
-              break;
-
-            }
+            teamColors[team] =
+              color;
 
           }
 
         }
-
-
-        if (color) {
-
-          teamColors[team] =
-            color;
-
-        }
-
-      });
+      );
 
     }
 
 
+    /*
+      Build filters
+    */
+
     buildFilters();
+
+
+    /*
+      Display seasons
+    */
 
     applyFilters();
 
   }
 
+
   catch (error) {
 
     console.error(error);
+
 
     document.getElementById(
       "seasonRows"
@@ -779,15 +921,11 @@ async function loadData() {
 
           <br><br>
 
-          Check that both
+          Please check that
           <strong>
             greatest-seasons-data-v2.json
           </strong>
-          and
-          <strong>
-            team-colors-data.json
-          </strong>
-          are uploaded.
+          is uploaded.
 
         </td>
 
@@ -811,25 +949,32 @@ function buildFilters() {
       "yearFilter"
     );
 
+
   const teamFilter =
     document.getElementById(
       "teamFilter"
     );
 
 
+  /*
+    YEARS
+  */
+
   const years =
-    [...new Set(
-      allSeasons
-        .map(
-          season =>
-            season["Year"]
-        )
-        .filter(
-          year =>
-            year !== null &&
-            year !== ""
-        )
-    )];
+    [
+      ...new Set(
+        allSeasons
+          .map(
+            season =>
+              season["Year"]
+          )
+          .filter(
+            year =>
+              year !== null &&
+              year !== ""
+          )
+      )
+    ];
 
 
   years.sort(
@@ -847,11 +992,14 @@ function buildFilters() {
           "option"
         );
 
+
       option.value =
         year;
 
+
       option.textContent =
         year;
+
 
       yearFilter.appendChild(
         option
@@ -861,20 +1009,26 @@ function buildFilters() {
   );
 
 
+  /*
+    TEAMS
+  */
+
   const teams =
-    [...new Set(
-      allSeasons
-        .map(
-          season =>
-            String(
-              season["Team"] ?? ""
-            ).trim()
-        )
-        .filter(
-          team =>
-            team !== ""
-        )
-    )];
+    [
+      ...new Set(
+        allSeasons
+          .map(
+            season =>
+              String(
+                season["Team"] ?? ""
+              ).trim()
+          )
+          .filter(
+            team =>
+              team !== ""
+          )
+      )
+    ];
 
 
   teams.sort(
@@ -891,11 +1045,14 @@ function buildFilters() {
           "option"
         );
 
+
       option.value =
         team;
 
+
       option.textContent =
         team;
+
 
       teamFilter.appendChild(
         option
@@ -971,35 +1128,37 @@ function applyFilters() {
           );
 
 
+        const matchesSearch =
+          !search ||
+          team.includes(search) ||
+          year.includes(search);
+
+
+        const matchesYear =
+          selectedYear === "all" ||
+          year === selectedYear;
+
+
+        const matchesTeam =
+          selectedTeam === "all" ||
+          String(
+            season["Team"] ?? ""
+          ) === selectedTeam;
+
+
         return (
-
-          (
-            !search ||
-            team.includes(search) ||
-            year.includes(search)
-          )
-
-          &&
-
-          (
-            selectedYear === "all" ||
-            year === selectedYear
-          )
-
-          &&
-
-          (
-            selectedTeam === "all" ||
-            String(
-              season["Team"] ?? ""
-            ) === selectedTeam
-          )
-
+          matchesSearch &&
+          matchesYear &&
+          matchesTeam
         );
 
       }
     );
 
+
+  /*
+    SORT
+  */
 
   filtered.sort(
     (a, b) => {
@@ -1008,6 +1167,7 @@ function applyFilters() {
         Number(
           a[sortBy]
         );
+
 
       let valueB =
         Number(
@@ -1039,9 +1199,29 @@ function applyFilters() {
         ).toLowerCase();
 
 
-      return direction === "asc"
-        ? valueA.localeCompare(valueB)
-        : valueB.localeCompare(valueA);
+      if (
+        valueA < valueB
+      ) {
+
+        return direction === "asc"
+          ? -1
+          : 1;
+
+      }
+
+
+      if (
+        valueA > valueB
+      ) {
+
+        return direction === "asc"
+          ? 1
+          : -1;
+
+      }
+
+
+      return 0;
 
     }
   );
@@ -1064,7 +1244,7 @@ function applyFilters() {
 
 
 /* ==========================================
-   DISPLAY TABLE
+   DISPLAY SEASONS
 ========================================== */
 
 function displaySeasons(
@@ -1101,10 +1281,12 @@ function displaySeasons(
 
     `;
 
+
     document.getElementById(
       "resultCount"
     ).textContent =
       "Showing 0 seasons";
+
 
     return;
 
@@ -1118,11 +1300,16 @@ function displaySeasons(
   seasons.forEach(
     season => {
 
+
       const row =
         document.createElement(
           "tr"
         );
 
+
+      /*
+        RECORD
+      */
 
       const wins =
         Number(
@@ -1160,7 +1347,7 @@ function displaySeasons(
 
 
       /*
-        TEAM COLOR
+        TEAM NAME
       */
 
       const teamName =
@@ -1169,20 +1356,30 @@ function displaySeasons(
         ).trim();
 
 
+      /*
+        FIND TEAM COLOR
+      */
+
       const teamColor =
         teamColors[
           teamName.toUpperCase()
         ];
 
 
+      /*
+        Build style.
+        If there is no color,
+        use white.
+      */
+
       const teamStyle =
         teamColor
           ? `color: ${teamColor};`
-          : "";
+          : "color: #FFFFFF;";
 
 
       /*
-        TOP 3
+        RANK
       */
 
       const rank =
@@ -1195,7 +1392,9 @@ function displaySeasons(
         "";
 
 
-      if (rank === 1) {
+      if (
+        rank === 1
+      ) {
 
         topClass =
           "top-one";
@@ -1225,11 +1424,16 @@ function displaySeasons(
         topClass;
 
 
+      /*
+        BUILD ROW
+      */
+
       row.innerHTML = `
 
         <td class="rank">
           ${season["Rank"] ?? ""}
         </td>
+
 
         <td
           class="team"
@@ -1238,13 +1442,16 @@ function displaySeasons(
           ${teamName}
         </td>
 
+
         <td>
           ${season["Year"] ?? ""}
         </td>
 
+
         <td>
           ${record}
         </td>
+
 
         <td>
           ${formatNumber(
@@ -1253,9 +1460,11 @@ function displaySeasons(
           )}
         </td>
 
+
         <td>
           ${season["Games"] ?? ""}
         </td>
+
 
         <td>
           ${formatWhole(
@@ -1263,11 +1472,13 @@ function displaySeasons(
           )}
         </td>
 
+
         <td>
           ${formatWhole(
             season["Points Against"]
           )}
         </td>
+
 
         <td>
           ${formatNumber(
@@ -1276,12 +1487,14 @@ function displaySeasons(
           )}
         </td>
 
+
         <td>
           ${formatNumber(
             season["PAPG"],
             2
           )}
         </td>
+
 
         <td>
           ${formatNumber(
@@ -1290,12 +1503,14 @@ function displaySeasons(
           )}
         </td>
 
+
         <td>
           ${formatNumber(
             season["Opponent Win %"],
             3
           )}
         </td>
+
 
         <td>
           ${formatNumber(
@@ -1306,12 +1521,14 @@ function displaySeasons(
           )}
         </td>
 
+
         <td>
           ${formatNumber(
             season["SOS"],
             2
           )}
         </td>
+
 
         <td class="rating">
           ${formatNumber(
@@ -1420,7 +1637,7 @@ function updateFilterText(
 
 
 /* ==========================================
-   CLEAR
+   CLEAR FILTERS
 ========================================== */
 
 function clearFilters() {
@@ -1509,7 +1726,7 @@ function formatNumber(
 
 
 /* ==========================================
-   EVENTS
+   EVENT LISTENERS
 ========================================== */
 
 document
@@ -1569,6 +1786,7 @@ document
 loadData();
 
 </script>
+
 
 </body>
 </html>
