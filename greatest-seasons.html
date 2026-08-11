@@ -19,8 +19,6 @@
       color: #ffffff;
     }
 
-    /* HEADER */
-
     header {
       background: #000000;
       border-bottom: 4px solid #F14D07;
@@ -54,8 +52,6 @@
       margin-top: 5px;
     }
 
-    /* NAVIGATION */
-
     nav {
       background: #000000;
       border-bottom: 1px solid #333333;
@@ -83,10 +79,8 @@
       color: #000000;
     }
 
-    /* MAIN */
-
     .container {
-      max-width: 1300px;
+      max-width: 1400px;
       margin: auto;
       padding: 35px 20px 60px;
     }
@@ -104,8 +98,6 @@
       margin-bottom: 30px;
       font-size: 16px;
     }
-
-    /* SEARCH */
 
     .controls {
       background: #000000;
@@ -131,8 +123,6 @@
       border-color: #F14D07;
     }
 
-    /* TABLE */
-
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
@@ -144,7 +134,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 850px;
+      min-width: 1000px;
     }
 
     th {
@@ -159,7 +149,7 @@
     }
 
     td {
-      padding: 13px 10px;
+      padding: 12px 10px;
       text-align: center;
       border-bottom: 1px solid #333333;
       font-size: 14px;
@@ -185,15 +175,23 @@
       color: #F14D07;
     }
 
-    /* PLACEHOLDER */
-
     .loading {
       padding: 40px;
       text-align: center;
       color: #999999;
     }
 
-    /* FOOTER */
+    .error {
+      padding: 30px;
+      text-align: center;
+      color: #ff5555;
+    }
+
+    .result-count {
+      color: #999999;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
 
     footer {
       background: #000000;
@@ -206,8 +204,6 @@
     footer strong {
       color: #F14D07;
     }
-
-    /* MOBILE */
 
     @media (max-width: 700px) {
 
@@ -243,17 +239,13 @@
         font-size: 27px;
       }
 
-      .subtitle {
-        line-height: 1.5;
-      }
-
       .controls {
         padding: 15px;
       }
 
       th,
       td {
-        padding: 11px 8px;
+        padding: 10px 8px;
       }
     }
   </style>
@@ -261,262 +253,453 @@
 
 <body>
 
-  <!-- HEADER -->
+<header>
 
-  <header>
+  <div class="header-content">
 
-    <div class="header-content">
+    <img
+      src="RUSlogoNew.png"
+      alt="Rural Utah Sports"
+      class="logo"
+    >
 
-      <img
-        src="RUSlogoNew.png"
-        alt="Rural Utah Sports"
-        class="logo"
-      >
+    <div class="site-title">
 
-      <div class="site-title">
+      <h1>Rural Utah Sports</h1>
 
-        <h1>Rural Utah Sports</h1>
-
-        <p>Utah High School Sports History & Data</p>
-
-      </div>
+      <p>Utah High School Sports History & Data</p>
 
     </div>
 
-  </header>
+  </div>
+
+</header>
 
 
-  <!-- NAVIGATION -->
+<nav>
 
-  <nav>
+  <div class="nav-content">
 
-    <div class="nav-content">
+    <a href="index.html">
+      Home
+    </a>
 
-      <a href="index.html">
-        Home
-      </a>
-
-      <a href="#" class="active">
-        Greatest Seasons
-      </a>
-
-      <a href="#">
-        Teams
-      </a>
-
-      <a href="#">
-        Games
-      </a>
-
-      <a href="#">
-        Rankings
-      </a>
-
-      <a href="#">
-        Simulators
-      </a>
-
-    </div>
-
-  </nav>
-
-
-  <!-- MAIN -->
-
-  <main class="container">
-
-    <h2 class="page-title">
+    <a href="#" class="active">
       Greatest Seasons
-    </h2>
+    </a>
 
-    <p class="subtitle">
-      The greatest Utah high school football seasons,
-      ranked using the Rural Utah Sports rating system.
-    </p>
+    <a href="#">
+      Teams
+    </a>
 
+    <a href="#">
+      Games
+    </a>
 
-    <!-- SEARCH -->
+    <a href="#">
+      Rankings
+    </a>
 
-    <div class="controls">
+    <a href="#">
+      Simulators
+    </a>
 
-      <input
-        type="text"
-        id="searchBox"
-        class="search-box"
-        placeholder="Search for a team or year..."
-        onkeyup="filterTable()"
-      >
+  </div>
 
-    </div>
+</nav>
 
 
-    <!-- TABLE -->
+<main class="container">
 
-    <div class="table-wrapper">
+  <h2 class="page-title">
+    Greatest Seasons
+  </h2>
 
-      <table id="seasonsTable">
+  <p class="subtitle">
+    The greatest Utah high school football seasons,
+    ranked using the Rural Utah Sports rating system.
+  </p>
 
-        <thead>
 
-          <tr>
+  <div class="controls">
 
-            <th>Rank</th>
+    <input
+      type="text"
+      id="searchBox"
+      class="search-box"
+      placeholder="Search for a team or year..."
+    >
 
-            <th>Team</th>
+  </div>
 
-            <th>Year</th>
 
-            <th>Record</th>
+  <div id="resultCount" class="result-count">
+    Loading seasons...
+  </div>
 
-            <th>Win %</th>
 
-            <th>Avg Margin</th>
+  <div class="table-wrapper">
 
-            <th>SOS</th>
+    <table id="seasonsTable">
 
-            <th>Rating</th>
+      <thead>
 
-          </tr>
+        <tr>
 
-        </thead>
+          <th>Rank</th>
+          <th>Team</th>
+          <th>Year</th>
+          <th>Record</th>
+          <th>Win %</th>
+          <th>Games</th>
+          <th>Points For</th>
+          <th>Points Against</th>
+          <th>PPG</th>
+          <th>PAPG</th>
+          <th>Avg Margin</th>
+          <th>Opponent Win %</th>
+          <th>Opp. Opp. Win %</th>
+          <th>SOS</th>
+          <th>Rating</th>
 
-        <tbody>
+        </tr>
 
-          <!--
-            Temporary sample rows.
+      </thead>
 
-            We will replace these with your
-            actual Google Sheets data next.
-          -->
+      <tbody id="seasonRows">
 
-          <tr>
+        <tr>
+          <td colspan="15" class="loading">
+            Loading Greatest Seasons...
+          </td>
+        </tr>
 
-            <td class="rank">1</td>
+      </tbody>
 
-            <td class="team">
-              Example Team
-            </td>
+    </table>
 
-            <td>2025</td>
+  </div>
 
-            <td>12-1</td>
+</main>
 
-            <td>.923</td>
 
-            <td>18.4</td>
+<footer>
 
-            <td>16.8</td>
+  <p>
+    <strong>RURAL UTAH SPORTS</strong>
+  </p>
 
-            <td class="rating">94.52</td>
+  <p>
+    Utah High School Sports History & Data
+  </p>
 
-          </tr>
+</footer>
 
 
-          <tr>
+<script>
 
-            <td class="rank">2</td>
+let allSeasons = [];
 
-            <td class="team">
-              Example Team
-            </td>
 
-            <td>2007</td>
+/* ==========================================
+   LOAD DATA
+========================================== */
 
-            <td>13-0</td>
+async function loadSeasons() {
 
-            <td>1.000</td>
+  try {
 
-            <td>21.2</td>
+    const response =
+      await fetch("greatest-seasons-data-v2.json");
 
-            <td>14.5</td>
+    if (!response.ok) {
 
-            <td class="rating">93.87</td>
-
-          </tr>
-
-
-          <tr>
-
-            <td class="rank">3</td>
-
-            <td class="team">
-              Example Team
-            </td>
-
-            <td>1995</td>
-
-            <td>11-1</td>
-
-            <td>.917</td>
-
-            <td>19.7</td>
-
-            <td>15.2</td>
-
-            <td class="rating">92.64</td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </main>
-
-
-  <!-- FOOTER -->
-
-  <footer>
-
-    <p>
-      <strong>RURAL UTAH SPORTS</strong>
-    </p>
-
-    <p>
-      Utah High School Sports History & Data
-    </p>
-
-  </footer>
-
-
-  <!-- SEARCH SCRIPT -->
-
-  <script>
-
-    function filterTable() {
-
-      const input =
-        document
-          .getElementById("searchBox")
-          .value
-          .toLowerCase();
-
-      const rows =
-        document
-          .querySelectorAll("#seasonsTable tbody tr");
-
-      rows.forEach(row => {
-
-        const text =
-          row.textContent.toLowerCase();
-
-        if (text.includes(input)) {
-
-          row.style.display = "";
-
-        } else {
-
-          row.style.display = "none";
-
-        }
-
-      });
+      throw new Error(
+        "Could not load greatest-seasons-data-v2.json"
+      );
 
     }
 
-  </script>
+    allSeasons = await response.json();
+
+    displaySeasons(allSeasons);
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    document.getElementById("seasonRows").innerHTML = `
+
+      <tr>
+
+        <td colspan="15" class="error">
+
+          Could not load Greatest Seasons data.
+
+          <br><br>
+
+          Make sure
+          <strong>
+            greatest-seasons-data-v2.json
+          </strong>
+          is uploaded to the same GitHub repository.
+
+        </td>
+
+      </tr>
+
+    `;
+
+    document.getElementById("resultCount").textContent =
+      "Error loading data.";
+
+  }
+
+}
+
+
+/* ==========================================
+   DISPLAY SEASONS
+========================================== */
+
+function displaySeasons(seasons) {
+
+  const tbody =
+    document.getElementById("seasonRows");
+
+  tbody.innerHTML = "";
+
+
+  if (seasons.length === 0) {
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td colspan="15" class="loading">
+
+          No seasons found.
+
+        </td>
+
+      </tr>
+
+    `;
+
+    return;
+
+  }
+
+
+  const fragment =
+    document.createDocumentFragment();
+
+
+  seasons.forEach(season => {
+
+    const row =
+      document.createElement("tr");
+
+
+    const wins =
+      Number(season["Wins"]) || 0;
+
+    const losses =
+      Number(season["Losses"]) || 0;
+
+    const ties =
+      Number(season["Ties"]) || 0;
+
+
+    let record =
+      wins + "-" + losses;
+
+    if (ties > 0) {
+
+      record += "-" + ties;
+
+    }
+
+
+    row.innerHTML = `
+
+      <td class="rank">
+        ${season["Rank"] ?? ""}
+      </td>
+
+      <td class="team">
+        ${season["Team"] ?? ""}
+      </td>
+
+      <td>
+        ${season["Year"] ?? ""}
+      </td>
+
+      <td>
+        ${record}
+      </td>
+
+      <td>
+        ${formatNumber(season["Win %"], 3)}
+      </td>
+
+      <td>
+        ${season["Games"] ?? ""}
+      </td>
+
+      <td>
+        ${formatWhole(season["Points For"])}
+      </td>
+
+      <td>
+        ${formatWhole(season["Points Against"])}
+      </td>
+
+      <td>
+        ${formatNumber(season["PPG"], 2)}
+      </td>
+
+      <td>
+        ${formatNumber(season["PAPG"], 2)}
+      </td>
+
+      <td>
+        ${formatNumber(season["Avg Margin"], 2)}
+      </td>
+
+      <td>
+        ${formatNumber(season["Opponent Win %"], 3)}
+      </td>
+
+      <td>
+        ${formatNumber(
+          season["Opponents' Opponent Win %"],
+          3
+        )}
+      </td>
+
+      <td>
+        ${formatNumber(season["SOS"], 2)}
+      </td>
+
+      <td class="rating">
+        ${formatNumber(season["Rating"], 2)}
+      </td>
+
+    `;
+
+
+    fragment.appendChild(row);
+
+  });
+
+
+  tbody.appendChild(fragment);
+
+
+  document.getElementById("resultCount").textContent =
+    "Showing " +
+    seasons.length.toLocaleString() +
+    " seasons";
+
+}
+
+
+/* ==========================================
+   SEARCH
+========================================== */
+
+document
+  .getElementById("searchBox")
+  .addEventListener("input", function() {
+
+    const search =
+      this.value
+        .trim()
+        .toLowerCase();
+
+
+    if (!search) {
+
+      displaySeasons(allSeasons);
+
+      return;
+
+    }
+
+
+    const filtered =
+      allSeasons.filter(season => {
+
+        const team =
+          String(
+            season["Team"] ?? ""
+          ).toLowerCase();
+
+        const year =
+          String(
+            season["Year"] ?? ""
+          ).toLowerCase();
+
+
+        return (
+          team.includes(search) ||
+          year.includes(search)
+        );
+
+      });
+
+
+    displaySeasons(filtered);
+
+  });
+
+
+/* ==========================================
+   FORMATTING
+========================================== */
+
+function formatWhole(value) {
+
+  const number =
+    Number(value);
+
+  if (!Number.isFinite(number)) {
+
+    return "";
+
+  }
+
+  return Math.round(number).toLocaleString();
+
+}
+
+
+function formatNumber(value, decimals) {
+
+  const number =
+    Number(value);
+
+  if (!Number.isFinite(number)) {
+
+    return "";
+
+  }
+
+  return number.toFixed(decimals);
+
+}
+
+
+/* ==========================================
+   START
+========================================== */
+
+loadSeasons();
+
+</script>
 
 </body>
 </html>
