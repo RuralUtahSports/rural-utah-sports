@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Teams | Rural Utah Sports
+  </title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111111;
+      color: #ffffff;
+    }
+
+    header {
+      background: #000000;
+      border-bottom: 4px solid #F14D07;
+      padding: 15px 25px;
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+
+    .site-title h1 {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .site-title p {
+      color: #F14D07;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    nav {
+      background: #000000;
+      border-bottom: 1px solid #333333;
+    }
+
+    .nav-content {
+      max-width: 1400px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 15px 18px;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: #F14D07;
+      color: #000000;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: auto;
+      padding: 35px 20px 60px;
+    }
+
+    .page-title {
+      border-left: 6px solid #F14D07;
+      padding-left: 15px;
+      margin-bottom: 10px;
+      font-size: 34px;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      color: #aaaaaa;
+      margin-bottom: 25px;
+      font-size: 16px;
+    }
+
+    .filter-panel {
+      background: #000000;
+      border: 1px solid #333333;
+      border-top: 4px solid #F14D07;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 7px;
+    }
+
+    .filter-title {
+      color: #F14D07;
+      font-size: 18px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-group label {
+      color: #aaaaaa;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .filter-input,
+    .filter-select {
+      width: 100%;
+      height: 42px;
+      padding: 0 12px;
+      background: #222222;
+      border: 1px solid #444444;
+      color: #ffffff;
+      border-radius: 4px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .filter-input:focus,
+    .filter-select:focus {
+      border-color: #F14D07;
+    }
+
+    .clear-button {
+      height: 42px;
+      padding: 0 18px;
+      background: #F14D07;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      font-weight: 900;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .clear-button:hover {
+      background: #ffffff;
+    }
+
+    .result-count {
+      color: #999999;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .team-card {
+      background: #000000;
+      border: 1px solid #333333;
+      border-radius: 7px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .team-card:hover {
+      transform: translateY(-3px);
+      border-color: #F14D07;
+    }
+
+    .team-color-bar {
+      height: 8px;
+    }
+
+    .team-card-content {
+      padding: 16px;
+    }
+
+    .team-name {
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .team-meta {
+      color: #999999;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    .team-record {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .team-record-label {
+      color: #888888;
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .team-stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .team-stat {
+      background: #1c1c1c;
+      border-radius: 4px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .team-stat-number {
+      font-weight: 900;
+    }
+
+    .team-stat-label {
+      color: #888888;
+      font-size: 9px;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    /* PROFILE */
+
+    #teamProfile {
+      display: none;
+    }
+
+    .back-button {
+      display: inline-block;
+      background: #F14D07;
+      color: #000000;
+      padding: 10px 16px;
+      text-decoration: none;
+      font-weight: 900;
+      text-transform: uppercase;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .back-button:hover {
+      background: #ffffff;
+    }
+
+    .profile-hero {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #333333;
+      margin-bottom: 25px;
+    }
+
+    .profile-color {
+      height: 14px;
+    }
+
+    .profile-content {
+      padding: 28px;
+      background: #000000;
+    }
+
+    .profile-title {
+      font-size: 40px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .profile-subtitle {
+      color: #aaaaaa;
+      font-size: 16px;
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .profile-stat {
+      background: #1c1c1c;
+      border: 1px solid #333333;
+      padding: 18px;
+      text-align: center;
+      border-radius: 6px;
+    }
+
+    .profile-stat-number {
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .profile-stat-label {
+      color: #999999;
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    .section-title {
+      border-left: 6px solid #F14D07;
+      padding-left: 14px;
+      margin: 35px 0 15px;
+      font-size: 25px;
+      text-transform: uppercase;
+    }
+
+    .info-box {
+      background: #000000;
+      border: 1px solid #333333;
+      border-radius: 7px;
+      padding: 20px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .info-item {
+      padding: 10px;
+      background: #1c1c1c;
+      border-radius: 4px;
+    }
+
+    .info-label {
+      color: #888888;
+      font-size: 10px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .best-seasons {
+      overflow-x: auto;
+      background: #000000;
+      border: 1px solid #333333;
+      border-radius: 7px;
+    }
+
+    .best-seasons table {
+      width: 100%;
+      min-width: 700px;
+      border-collapse: collapse;
+    }
+
+    .best-seasons th {
+      background: #F14D07;
+      color: #000000;
+      padding: 12px 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .best-seasons td {
+      padding: 11px 10px;
+      text-align: center;
+      border-bottom: 1px solid #333333;
+    }
+
+    .rating {
+      color: #F14D07;
+      font-weight: 900;
+    }
+
+    .loading,
+    .error {
+      padding: 40px;
+      text-align: center;
+      color: #999999;
+    }
+
+    footer {
+      background: #000000;
+      border-top: 4px solid #F14D07;
+      text-align: center;
+      padding: 30px 20px;
+      color: #888888;
+    }
+
+    footer strong {
+      color: #F14D07;
+    }
+
+    @media (max-width: 1100px) {
+      .teams-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .filter-grid {
+        grid-template-columns: 2fr 1fr 1fr;
+      }
+
+      .clear-group {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .teams-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .profile-stats {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .clear-group {
+        grid-column: auto;
+      }
+
+      .clear-button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .site-title h1 {
+        font-size: 24px;
+      }
+
+      nav a {
+        flex: 1 1 50%;
+        text-align: center;
+        padding: 13px 8px;
+      }
+
+      .container {
+        padding: 25px 12px 45px;
+      }
+
+      .page-title {
+        font-size: 28px;
+      }
+
+      .teams-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-title {
+        font-size: 30px;
+      }
+
+      .profile-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header>
+
+  <div class="header-content">
+
+    <img
+      src="RUSlogoNew.png"
+      alt="Rural Utah Sports"
+      class="logo"
+    >
+
+    <div class="site-title">
+
+      <h1>Rural Utah Sports</h1>
+
+      <p>
+        Utah High School Sports History & Data
+      </p>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<nav>
+
+  <div class="nav-content">
+
+    <a href="index.html">Home</a>
+
+    <a href="teams.html" class="active">
+      Teams
+    </a>
+
+    <a href="greatest-seasons.html">
+      Greatest Seasons
+    </a>
+
+    <a href="#">
+      Games
+    </a>
+
+    <a href="#">
+      Rankings
+    </a>
+
+    <a href="#">
+      Simulators
+    </a>
+
+  </div>
+
+</nav>
+
+
+<main class="container">
+
+  <!-- TEAM LIST -->
+
+  <section id="teamList">
+
+    <h2 class="page-title">
+      Utah Football Teams
+    </h2>
+
+    <p class="subtitle">
+      Browse Utah high school football teams
+      and explore their historical records
+      and greatest seasons.
+    </p>
+
+
+    <div class="filter-panel">
+
+      <div class="filter-title">
+        Find a Team
+      </div>
+
+      <div class="filter-grid">
+
+        <div class="filter-group">
+
+          <label for="searchBox">
+            Search
+          </label>
+
+          <input
+            type="text"
+            id="searchBox"
+            class="filter-input"
+            placeholder="Search for a team..."
+          >
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label for="classificationFilter">
+            Classification
+          </label>
+
+          <select
+            id="classificationFilter"
+            class="filter-select"
+          >
+
+            <option value="all">
+              All Classifications
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-group">
+
+          <label for="sortFilter">
+            Sort
+          </label>
+
+          <select
+            id="sortFilter"
+            class="filter-select"
+          >
+
+            <option value="name">
+              Team Name
+            </option>
+
+            <option value="wins">
+              Most Wins
+            </option>
+
+            <option value="winPct">
+              Best Win %
+            </option>
+
+            <option value="games">
+              Most Games
+            </option>
+
+            <option value="seasons">
+              Most Seasons
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="filter-group clear-group">
+
+          <label>
+            &nbsp;
+          </label>
+
+          <button
+            class="clear-button"
+            onclick="clearFilters()"
+          >
+            Clear
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="resultCount"
+      class="result-count"
+    >
+      Loading teams...
+    </div>
+
+
+    <div
+      id="teamsGrid"
+      class="teams-grid"
+    >
+
+      <div class="loading">
+        Loading teams...
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- TEAM PROFILE -->
+
+  <section id="teamProfile">
+
+    <a
+      href="teams.html"
+      class="back-button"
+      onclick="showTeamList(event)"
+    >
+      ← All Teams
+    </a>
+
+
+    <div id="profileContent">
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer>
+
+  <p>
+    <strong>
+      RURAL UTAH SPORTS
+    </strong>
+  </p>
+
+  <p>
+    Utah High School Sports History & Data
+  </p>
+
+</footer>
+
+
+<script>
+
+let allTeams = [];
+
+
+/* ==========================================
+   LOAD TEAMS
+========================================== */
+
+async function loadTeams() {
+
+  try {
+
+    const response =
+      await fetch(
+        "teams-data.json"
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Could not load teams-data.json"
+      );
+
+    }
+
+
+    allTeams =
+      await response.json();
+
+
+    buildClassificationFilter();
+
+
+    const teamFromUrl =
+      new URLSearchParams(
+        window.location.search
+      ).get("team");
+
+
+    if (teamFromUrl) {
+
+      const normalized =
+        normalize(
+          teamFromUrl
+        );
+
+
+      const found =
+        allTeams.find(
+          team =>
+            normalize(
+              team.team
+            ) === normalized
+        );
+
+
+      if (found) {
+
+        showTeamProfile(
+          found
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    displayTeams(
+      allTeams
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    document.getElementById(
+      "teamsGrid"
+    ).innerHTML = `
+
+      <div class="error">
+
+        Could not load the team data.
+
+        <br><br>
+
+        Make sure
+        <strong>
+          teams-data.json
+        </strong>
+        is uploaded to GitHub.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* ==========================================
+   NORMALIZE
+========================================== */
+
+function normalize(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .toUpperCase()
+    .replace(
+      /[^A-Z0-9]/g,
+      ""
+    );
+
+}
+
+
+/* ==========================================
+   CLASSIFICATION FILTER
+========================================== */
+
+function buildClassificationFilter() {
+
+  const select =
+    document.getElementById(
+      "classificationFilter"
+    );
+
+
+  const classifications =
+    [
+      ...new Set(
+        allTeams
+          .map(
+            team =>
+              String(
+                team.classification ?? ""
+              ).trim()
+          )
+          .filter(
+            value =>
+              value !== ""
+          )
+      )
+    ];
+
+
+  classifications.sort(
+    classificationSort
+  );
+
+
+  classifications.forEach(
+    classification => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        classification;
+
+
+      option.textContent =
+        classification;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* ==========================================
+   CLASSIFICATION SORT
+========================================== */
+
+function classificationSort(
+  a,
+  b
+) {
+
+  const order = {
+    "1A": 1,
+    "2A": 2,
+    "3A": 3,
+    "4A": 4,
+    "5A": 5,
+    "6A": 6,
+    "7A": 7,
+    "8P": 8,
+    "8-MAN": 8,
+    "8 MAN": 8
+  };
+
+
+  const aValue =
+    order[a.toUpperCase()] ||
+    99;
+
+
+  const bValue =
+    order[b.toUpperCase()] ||
+    99;
+
+
+  if (
+    aValue !== bValue
+  ) {
+
+    return aValue - bValue;
+
+  }
+
+
+  return a.localeCompare(b);
+
+}
+
+
+/* ==========================================
+   DISPLAY TEAMS
+========================================== */
+
+function displayTeams(
+  teams
+) {
+
+  const grid =
+    document.getElementById(
+      "teamsGrid"
+    );
+
+
+  grid.innerHTML =
+    "";
+
+
+  document.getElementById(
+    "resultCount"
+  ).textContent =
+    "Showing " +
+    teams.length.toLocaleString() +
+    " teams";
+
+
+  if (
+    teams.length === 0
+  ) {
+
+    grid.innerHTML = `
+
+      <div class="loading">
+
+        No teams match
+        your search.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  teams.forEach(
+    team => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "team-card";
+
+
+      const background =
+        validColor(
+          team.backgroundColor
+        )
+          ? team.backgroundColor
+          : "#222222";
+
+
+      const text =
+        validColor(
+          team.textColor
+        )
+          ? team.textColor
+          : "#FFFFFF";
+
+
+      card.innerHTML = `
+
+        <div
+          class="team-color-bar"
+          style="
+            background:${background};
+          "
+        ></div>
+
+
+        <div class="team-card-content">
+
+          <div
+            class="team-name"
+            style="color:${text};"
+          >
+
+            ${escapeHTML(
+              team.team
+            )}
+
+          </div>
+
+
+          <div class="team-meta">
+
+            ${escapeHTML(
+              team.classification || ""
+            )}
+
+            ${
+              team.region
+                ? " • " +
+                  escapeHTML(
+                    String(
+                      team.region
+                    )
+                  )
+                : ""
+            }
+
+          </div>
+
+
+          <div class="team-record">
+
+            ${team.wins}-
+            ${team.losses}-
+            ${team.ties}
+
+          </div>
+
+
+          <div class="team-record-label">
+            All-Time Record
+          </div>
+
+
+          <div class="team-stat-row">
+
+            <div class="team-stat">
+
+              <div class="team-stat-number">
+                ${team.games.toLocaleString()}
+              </div>
+
+              <div class="team-stat-label">
+                Games
+              </div>
+
+            </div>
+
+
+            <div class="team-stat">
+
+              <div class="team-stat-number">
+                ${formatPct(
+                  team.winPct
+                )}
+              </div>
+
+              <div class="team-stat-label">
+                Win %
+              </div>
+
+            </div>
+
+
+            <div class="team-stat">
+
+              <div class="team-stat-number">
+                ${team.seasons}
+              </div>
+
+              <div class="team-stat-label">
+                Seasons
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      card.addEventListener(
+        "click",
+        () => {
+
+          showTeamProfile(
+            team
+          );
+
+        }
+      );
+
+
+      grid.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* ==========================================
+   SHOW TEAM PROFILE
+========================================== */
+
+function showTeamProfile(
+  team
+) {
+
+  document.getElementById(
+    "teamList"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "teamProfile"
+  ).style.display =
+    "block";
+
+
+  const background =
+    validColor(
+      team.backgroundColor
+    )
+      ? team.backgroundColor
+      : "#222222";
+
+
+  const text =
+    validColor(
+      team.textColor
+    )
+      ? team.textColor
+      : "#FFFFFF";
+
+
+  const bestSeasons =
+    team.bestSeasons || [];
+
+
+  let seasonsHTML =
+    "";
+
+
+  if (
+    bestSeasons.length
+  ) {
+
+    seasonsHTML = `
+
+      <h2 class="section-title">
+        Greatest Seasons
+      </h2>
+
+
+      <div class="best-seasons">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Year</th>
+              <th>Record</th>
+              <th>Win %</th>
+              <th>Avg Margin</th>
+              <th>SOS</th>
+              <th>Rating</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            ${
+              bestSeasons.map(
+                season => `
+
+                  <tr>
+
+                    <td>
+                      ${season.year}
+                    </td>
+
+                    <td>
+                      ${season.wins}-
+                      ${season.losses}-
+                      ${season.ties}
+                    </td>
+
+                    <td>
+                      ${formatPct(
+                        season.winPct
+                      )}
+                    </td>
+
+                    <td>
+                      ${formatNumber(
+                        season.avgMargin,
+                        2
+                      )}
+                    </td>
+
+                    <td>
+                      ${formatNumber(
+                        season.sos,
+                        2
+                      )}
+                    </td>
+
+                    <td class="rating">
+                      ${formatNumber(
+                        season.rating,
+                        2
+                      )}
+                    </td>
+
+                  </tr>
+
+                `
+              ).join("")
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    `;
+
+  }
+
+
+  document.getElementById(
+    "profileContent"
+  ).innerHTML = `
+
+    <div class="profile-hero">
+
+      <div
+        class="profile-color"
+        style="
+          background:${background};
+        "
+      ></div>
+
+
+      <div class="profile-content">
+
+        <div
+          class="profile-title"
+          style="
+            color:${text};
+          "
+        >
+
+          ${escapeHTML(
+            team.team
+          )}
+
+        </div>
+
+
+        <div class="profile-subtitle">
+
+          ${escapeHTML(
+            team.classification || ""
+          )}
+
+          ${
+            team.mascot
+              ? " • " +
+                escapeHTML(
+                  team.mascot
+                )
+              : ""
+          }
+
+        </div>
+
+
+        <div class="profile-stats">
+
+          <div class="profile-stat">
+
+            <div class="profile-stat-number">
+              ${team.wins}-
+              ${team.losses}-
+              ${team.ties}
+            </div>
+
+            <div class="profile-stat-label">
+              All-Time Record
+            </div>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <div class="profile-stat-number">
+              ${formatPct(
+                team.winPct
+              )}
+            </div>
+
+            <div class="profile-stat-label">
+              Win %
+            </div>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <div class="profile-stat-number">
+              ${team.games.toLocaleString()}
+            </div>
+
+            <div class="profile-stat-label">
+              Games
+            </div>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <div class="profile-stat-number">
+              ${team.seasons}
+            </div>
+
+            <div class="profile-stat-label">
+              Seasons
+            </div>
+
+          </div>
+
+
+          <div class="profile-stat">
+
+            <div class="profile-stat-number">
+              ${formatNumber(
+                team.avgMargin,
+                1
+              )}
+            </div>
+
+            <div class="profile-stat-label">
+              Avg Margin
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <h2 class="section-title">
+      School Information
+    </h2>
+
+
+    <div class="info-box">
+
+      <div class="info-grid">
+
+        <div class="info-item">
+
+          <div class="info-label">
+            School
+          </div>
+
+          ${escapeHTML(
+            team.team
+          )}
+
+        </div>
+
+
+        <div class="info-item">
+
+          <div class="info-label">
+            Mascot
+          </div>
+
+          ${escapeHTML(
+            team.mascot || "—"
+          )}
+
+        </div>
+
+
+        <div class="info-item">
+
+          <div class="info-label">
+            Classification
+          </div>
+
+          ${escapeHTML(
+            team.classification || "—"
+          )}
+
+        </div>
+
+
+        <div class="info-item">
+
+          <div class="info-label">
+            Region
+          </div>
+
+          ${escapeHTML(
+            String(
+              team.region || "—"
+            )
+          )}
+
+        </div>
+
+
+        <div class="info-item">
+
+          <div class="info-label">
+            School Colors
+          </div>
+
+          ${escapeHTML(
+            team.schoolColors || "—"
+          )}
+
+        </div>
+
+
+        <div class="info-item">
+
+          <div class="info-label">
+            Address
+          </div>
+
+          ${escapeHTML(
+            team.address || "—"
+          )}
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    ${seasonsHTML}
+
+  `;
+
+
+  history.pushState(
+    {},
+    "",
+    "teams.html?team=" +
+    encodeURIComponent(
+      team.team
+    )
+  );
+
+
+  window.scrollTo(
+    0,
+    0
+  );
+
+}
+
+
+/* ==========================================
+   BACK TO TEAM LIST
+========================================== */
+
+function showTeamList(
+  event
+) {
+
+  event.preventDefault();
+
+
+  document.getElementById(
+    "teamProfile"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "teamList"
+  ).style.display =
+    "block";
+
+
+  history.pushState(
+    {},
+    "",
+    "teams.html"
+  );
+
+
+  window.scrollTo(
+    0,
+    0
+  );
+
+}
+
+
+/* ==========================================
+   FILTER
+========================================== */
+
+function filterTeams() {
+
+  const search =
+    document.getElementById(
+      "searchBox"
+    ).value
+      .trim()
+      .toLowerCase();
+
+
+  const classification =
+    document.getElementById(
+      "classificationFilter"
+    ).value;
+
+
+  const sort =
+    document.getElementById(
+      "sortFilter"
+    ).value;
+
+
+  let teams =
+    allTeams.filter(
+      team => {
+
+        const matchesSearch =
+          !search ||
+          team.team
+            .toLowerCase()
+            .includes(
+              search
+            );
+
+
+        const matchesClassification =
+          classification === "all" ||
+          String(
+            team.classification
+          ) === classification;
+
+
+        return (
+          matchesSearch &&
+          matchesClassification
+        );
+
+      }
+    );
+
+
+  teams.sort(
+    (a, b) => {
+
+      if (
+        sort === "wins"
+      ) {
+
+        return b.wins - a.wins;
+
+      }
+
+
+      if (
+        sort === "winPct"
+      ) {
+
+        return b.winPct - a.winPct;
+
+      }
+
+
+      if (
+        sort === "games"
+      ) {
+
+        return b.games - a.games;
+
+      }
+
+
+      if (
+        sort === "seasons"
+      ) {
+
+        return b.seasons - a.seasons;
+
+      }
+
+
+      return a.team.localeCompare(
+        b.team
+      );
+
+    }
+  );
+
+
+  displayTeams(
+    teams
+  );
+
+}
+
+
+/* ==========================================
+   CLEAR FILTERS
+========================================== */
+
+function clearFilters() {
+
+  document.getElementById(
+    "searchBox"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "classificationFilter"
+  ).value =
+    "all";
+
+
+  document.getElementById(
+    "sortFilter"
+  ).value =
+    "name";
+
+
+  filterTeams();
+
+}
+
+
+/* ==========================================
+   HELPERS
+========================================== */
+
+function validColor(
+  color
+) {
+
+  return /^#[0-9A-F]{6}$/i.test(
+    String(
+      color ?? ""
+    )
+  );
+
+}
+
+
+function formatPct(
+  value
+) {
+
+  const number =
+    Number(
+      value
+    );
+
+
+  if (
+    !Number.isFinite(
+      number
+    )
+  ) {
+
+    return "—";
+
+  }
+
+
+  return number.toFixed(
+    3
+  );
+
+}
+
+
+function formatNumber(
+  value,
+  decimals
+) {
+
+  const number =
+    Number(
+      value
+    );
+
+
+  if (
+    !Number.isFinite(
+      number
+    )
+  ) {
+
+    return "—";
+
+  }
+
+
+  return number.toFixed(
+    decimals
+  );
+
+}
+
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* ==========================================
+   EVENTS
+========================================== */
+
+document
+  .getElementById(
+    "searchBox"
+  )
+  .addEventListener(
+    "input",
+    filterTeams
+  );
+
+
+document
+  .getElementById(
+    "classificationFilter"
+  )
+  .addEventListener(
+    "change",
+    filterTeams
+  );
+
+
+document
+  .getElementById(
+    "sortFilter"
+  )
+  .addEventListener(
+    "change",
+    filterTeams
+  );
+
+
+window.addEventListener(
+  "popstate",
+  () => {
+
+    const teamFromUrl =
+      new URLSearchParams(
+        window.location.search
+      ).get("team");
+
+
+    if (!teamFromUrl) {
+
+      document.getElementById(
+        "teamProfile"
+      ).style.display =
+        "none";
+
+
+      document.getElementById(
+        "teamList"
+      ).style.display =
+        "block";
+
+      return;
+
+    }
+
+
+    const found =
+      allTeams.find(
+        team =>
+          normalize(
+            team.team
+          ) ===
+          normalize(
+            teamFromUrl
+          )
+      );
+
+
+    if (found) {
+
+      showTeamProfile(
+        found
+      );
+
+    }
+
+  }
+);
+
+
+/* ==========================================
+   START
+========================================== */
+
+loadTeams();
+
+</script>
+
+</body>
+
+</html>
