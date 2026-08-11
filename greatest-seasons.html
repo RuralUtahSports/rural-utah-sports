@@ -31,10 +31,6 @@
       color: #ffffff;
     }
 
-    /* =========================
-       HEADER
-    ========================= */
-
     header {
       background: #000000;
       border-bottom: 4px solid #F14D07;
@@ -68,10 +64,6 @@
       margin-top: 5px;
     }
 
-    /* =========================
-       NAVIGATION
-    ========================= */
-
     nav {
       background: #000000;
       border-bottom: 1px solid #333333;
@@ -99,10 +91,6 @@
       color: #000000;
     }
 
-    /* =========================
-       MAIN
-    ========================= */
-
     .container {
       max-width: 1400px;
       margin: auto;
@@ -122,10 +110,6 @@
       margin-bottom: 25px;
       font-size: 16px;
     }
-
-    /* =========================
-       FILTER PANEL
-    ========================= */
 
     .filter-panel {
       background: #000000;
@@ -204,10 +188,6 @@
       background: #ffffff;
     }
 
-    /* =========================
-       RESULTS
-    ========================= */
-
     .result-bar {
       display: flex;
       justify-content: space-between;
@@ -228,10 +208,6 @@
       text-align: right;
     }
 
-    /* =========================
-       TABLE
-    ========================= */
-
     .table-wrapper {
       width: 100%;
       overflow-x: auto;
@@ -246,21 +222,9 @@
       min-width: 1200px;
     }
 
-    /*
-      FROZEN TABLE HEADER
-
-      This is the ONLY visual change.
-      The page itself still scrolls normally.
-    */
-
     th {
       background: #F14D07;
       color: #000000;
-
-      position: sticky;
-      top: 0;
-      z-index: 10;
-
       padding: 14px 10px;
       text-align: center;
       font-size: 12px;
@@ -305,10 +269,6 @@
       color: #F14D07;
     }
 
-    /* =========================
-       TOP 3
-    ========================= */
-
     .top-one {
       box-shadow:
         inset 4px 0 0 #FFD700;
@@ -336,10 +296,6 @@
       color: #ff5555;
     }
 
-    /* =========================
-       FOOTER
-    ========================= */
-
     footer {
       background: #000000;
       border-top: 4px solid #F14D07;
@@ -352,9 +308,31 @@
       color: #F14D07;
     }
 
-    /* =========================
-       MOBILE
-    ========================= */
+    /*
+      ========================================
+      FROZEN HEADER
+      ========================================
+    */
+
+    #floatingHeader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: none;
+      z-index: 9999;
+      overflow: hidden;
+      background: #F14D07;
+    }
+
+    #floatingHeader table {
+      margin: 0;
+    }
+
+    #floatingHeader th {
+      background: #F14D07;
+      color: #000000;
+      border: none;
+    }
 
     @media (max-width: 950px) {
 
@@ -438,8 +416,6 @@
 <body>
 
 
-<!-- HEADER -->
-
 <header>
 
   <div class="header-content">
@@ -466,9 +442,6 @@
 
 </header>
 
-
-
-<!-- NAVIGATION -->
 
 <nav>
 
@@ -506,9 +479,6 @@
 </nav>
 
 
-
-<!-- MAIN -->
-
 <main class="container">
 
   <h2 class="page-title">
@@ -524,13 +494,12 @@
   </p>
 
 
-  <!-- FILTERS -->
-
   <div class="filter-panel">
 
     <div class="filter-title">
       Filter & Sort
     </div>
+
 
     <div class="filter-grid">
 
@@ -714,8 +683,6 @@
   </div>
 
 
-  <!-- RESULTS -->
-
   <div class="result-bar">
 
     <div
@@ -733,11 +700,12 @@
   </div>
 
 
-  <!-- TABLE -->
+  <div
+    class="table-wrapper"
+    id="mainTableWrapper"
+  >
 
-  <div class="table-wrapper">
-
-    <table>
+    <table id="mainTable">
 
       <thead>
 
@@ -763,6 +731,7 @@
 
       </thead>
 
+
       <tbody id="seasonRows">
 
         <tr>
@@ -771,7 +740,9 @@
             colspan="15"
             class="loading"
           >
+
             Loading Greatest Seasons...
+
           </td>
 
         </tr>
@@ -785,8 +756,44 @@
 </main>
 
 
+<!--
+  Floating header.
+  JavaScript copies the actual header here
+  when the user scrolls down.
+-->
 
-<!-- FOOTER -->
+<div id="floatingHeader">
+
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <th>Rank</th>
+        <th>Team</th>
+        <th>Year</th>
+        <th>Record</th>
+        <th>Win %</th>
+        <th>Games</th>
+        <th>Points For</th>
+        <th>Points Against</th>
+        <th>PPG</th>
+        <th>PAPG</th>
+        <th>Avg Margin</th>
+        <th>Opponent Win %</th>
+        <th>Opp. Opp. Win %</th>
+        <th>SOS</th>
+        <th>Rating</th>
+
+      </tr>
+
+    </thead>
+
+  </table>
+
+</div>
+
 
 <footer>
 
@@ -805,7 +812,6 @@
 </footer>
 
 
-
 <script>
 
 /* ==========================================
@@ -817,9 +823,8 @@ let allSeasons = [];
 let teamColors = {};
 
 
-
 /* ==========================================
-   NORMALIZE TEAM NAME
+   TEAM NAME NORMALIZATION
 ========================================== */
 
 function normalizeTeamName(
@@ -836,7 +841,6 @@ function normalizeTeamName(
     );
 
 }
-
 
 
 /* ==========================================
@@ -866,7 +870,6 @@ async function loadData() {
 
     allSeasons =
       await seasonsResponse.json();
-
 
 
     const colorsResponse =
@@ -947,7 +950,6 @@ async function loadData() {
 
   }
 
-
   catch (error) {
 
     console.error(
@@ -991,7 +993,6 @@ async function loadData() {
   }
 
 }
-
 
 
 /* ==========================================
@@ -1104,7 +1105,6 @@ function buildFilters() {
   );
 
 }
-
 
 
 /* ==========================================
@@ -1280,8 +1280,18 @@ function applyFilters() {
     direction
   );
 
-}
 
+  /*
+    Recalculate floating header
+    after table changes.
+  */
+
+  setTimeout(
+    updateFloatingHeader,
+    50
+  );
+
+}
 
 
 /* ==========================================
@@ -1477,7 +1487,6 @@ function displaySeasons(
           ${season["Rank"] ?? ""}
         </td>
 
-
         <td class="team">
 
           <span
@@ -1493,16 +1502,13 @@ function displaySeasons(
 
         </td>
 
-
         <td>
           ${season["Year"] ?? ""}
         </td>
 
-
         <td>
           ${record}
         </td>
-
 
         <td>
           ${formatNumber(
@@ -1511,11 +1517,9 @@ function displaySeasons(
           )}
         </td>
 
-
         <td>
           ${season["Games"] ?? ""}
         </td>
-
 
         <td>
           ${formatWhole(
@@ -1523,13 +1527,11 @@ function displaySeasons(
           )}
         </td>
 
-
         <td>
           ${formatWhole(
             season["Points Against"]
           )}
         </td>
-
 
         <td>
           ${formatNumber(
@@ -1538,14 +1540,12 @@ function displaySeasons(
           )}
         </td>
 
-
         <td>
           ${formatNumber(
             season["PAPG"],
             2
           )}
         </td>
-
 
         <td>
           ${formatNumber(
@@ -1554,14 +1554,12 @@ function displaySeasons(
           )}
         </td>
 
-
         <td>
           ${formatNumber(
             season["Opponent Win %"],
             3
           )}
         </td>
-
 
         <td>
           ${formatNumber(
@@ -1572,14 +1570,12 @@ function displaySeasons(
           )}
         </td>
 
-
         <td>
           ${formatNumber(
             season["SOS"],
             2
           )}
         </td>
-
 
         <td class="rating">
           ${formatNumber(
@@ -1612,7 +1608,6 @@ function displaySeasons(
     " seasons";
 
 }
-
 
 
 /* ==========================================
@@ -1648,7 +1643,6 @@ function escapeHTML(
     );
 
 }
-
 
 
 /* ==========================================
@@ -1728,7 +1722,6 @@ function updateFilterText(
 }
 
 
-
 /* ==========================================
    CLEAR FILTERS
 ========================================== */
@@ -1770,7 +1763,6 @@ function clearFilters() {
 }
 
 
-
 /* ==========================================
    FORMATTING
 ========================================== */
@@ -1803,7 +1795,6 @@ function formatWhole(
 }
 
 
-
 function formatNumber(
   value,
   decimals
@@ -1832,6 +1823,183 @@ function formatNumber(
 
 }
 
+
+/* ==========================================
+   FLOATING HEADER
+========================================== */
+
+function updateFloatingHeader() {
+
+  const mainTable =
+    document.getElementById(
+      "mainTable"
+    );
+
+
+  const mainHeader =
+    mainTable.querySelector(
+      "thead"
+    );
+
+
+  const floatingHeader =
+    document.getElementById(
+      "floatingHeader"
+    );
+
+
+  const floatingTable =
+    floatingHeader.querySelector(
+      "table"
+    );
+
+
+  if (
+    !mainHeader
+  ) {
+
+    return;
+
+  }
+
+
+  const tableRect =
+    mainTable.getBoundingClientRect();
+
+
+  const headerRect =
+    mainHeader.getBoundingClientRect();
+
+
+  /*
+    If the table header has reached
+    the top of the browser window,
+    show the floating header.
+  */
+
+  if (
+    headerRect.top <= 0 &&
+    tableRect.bottom > 0
+  ) {
+
+
+    floatingHeader.style.display =
+      "block";
+
+
+    /*
+      Match the exact table width.
+    */
+
+    floatingHeader.style.width =
+      tableRect.width + "px";
+
+
+    /*
+      Match the exact horizontal
+      position of the table.
+    */
+
+    floatingHeader.style.left =
+      tableRect.left + "px";
+
+
+    /*
+      Match every column width.
+    */
+
+    const originalCells =
+      mainHeader.querySelectorAll(
+        "th"
+      );
+
+
+    const floatingCells =
+      floatingHeader.querySelectorAll(
+        "th"
+      );
+
+
+    originalCells.forEach(
+      (cell, index) => {
+
+        if (
+          floatingCells[index]
+        ) {
+
+          floatingCells[index].style.width =
+            cell.getBoundingClientRect().width +
+            "px";
+
+        }
+
+      }
+    );
+
+
+  }
+
+  else {
+
+    floatingHeader.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* ==========================================
+   KEEP FLOATING HEADER ALIGNED
+========================================== */
+
+window.addEventListener(
+  "scroll",
+  updateFloatingHeader,
+  {
+    passive: true
+  }
+);
+
+
+window.addEventListener(
+  "resize",
+  updateFloatingHeader
+);
+
+
+/*
+  This also lets the horizontal
+  table scroll normally.
+*/
+
+document
+  .getElementById(
+    "mainTableWrapper"
+  )
+  .addEventListener(
+    "scroll",
+    function() {
+
+      const floatingHeader =
+        document.getElementById(
+          "floatingHeader"
+        );
+
+
+      /*
+        Move the floating header
+        opposite the horizontal
+        table scroll.
+      */
+
+      floatingHeader.style.transform =
+        "translateX(" +
+        (-this.scrollLeft) +
+        "px";
+
+    }
+  );
 
 
 /* ==========================================
