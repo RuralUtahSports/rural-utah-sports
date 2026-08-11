@@ -19,10 +19,6 @@
       color: #ffffff;
     }
 
-    /* =========================
-       HEADER
-    ========================= */
-
     header {
       background: #000000;
       border-bottom: 4px solid #F14D07;
@@ -56,10 +52,6 @@
       margin-top: 5px;
     }
 
-    /* =========================
-       NAVIGATION
-    ========================= */
-
     nav {
       background: #000000;
       border-bottom: 1px solid #333333;
@@ -87,10 +79,6 @@
       color: #000000;
     }
 
-    /* =========================
-       MAIN
-    ========================= */
-
     .container {
       max-width: 1400px;
       margin: auto;
@@ -110,10 +98,6 @@
       margin-bottom: 25px;
       font-size: 16px;
     }
-
-    /* =========================
-       FILTER PANEL
-    ========================= */
 
     .filter-panel {
       background: #000000;
@@ -192,10 +176,6 @@
       background: #ffffff;
     }
 
-    /* =========================
-       RESULTS
-    ========================= */
-
     .result-bar {
       display: flex;
       justify-content: space-between;
@@ -215,10 +195,6 @@
       font-weight: bold;
       text-align: right;
     }
-
-    /* =========================
-       TABLE
-    ========================= */
 
     .table-wrapper {
       width: 100%;
@@ -272,6 +248,18 @@
       color: #F14D07;
     }
 
+    .top-one {
+      background: rgba(255, 215, 0, 0.08);
+    }
+
+    .top-two {
+      background: rgba(192, 192, 192, 0.08);
+    }
+
+    .top-three {
+      background: rgba(205, 127, 50, 0.08);
+    }
+
     .loading {
       padding: 40px;
       text-align: center;
@@ -284,10 +272,6 @@
       color: #ff5555;
     }
 
-    /* =========================
-       FOOTER
-    ========================= */
-
     footer {
       background: #000000;
       border-top: 4px solid #F14D07;
@@ -299,10 +283,6 @@
     footer strong {
       color: #F14D07;
     }
-
-    /* =========================
-       MOBILE
-    ========================= */
 
     @media (max-width: 950px) {
 
@@ -448,10 +428,6 @@
   </p>
 
 
-  <!-- =========================
-       FILTER PANEL
-  ========================= -->
-
   <div class="filter-panel">
 
     <div class="filter-title">
@@ -459,8 +435,6 @@
     </div>
 
     <div class="filter-grid">
-
-      <!-- SEARCH -->
 
       <div class="filter-group search-group">
 
@@ -477,8 +451,6 @@
 
       </div>
 
-
-      <!-- YEAR -->
 
       <div class="filter-group">
 
@@ -500,8 +472,6 @@
       </div>
 
 
-      <!-- TEAM -->
-
       <div class="filter-group">
 
         <label for="teamFilter">
@@ -522,8 +492,6 @@
       </div>
 
 
-      <!-- SORT BY -->
-
       <div class="filter-group">
 
         <label for="sortBy">
@@ -535,72 +503,28 @@
           class="filter-select"
         >
 
-          <option value="Rank">
-            Rank
-          </option>
-
-          <option value="Rating">
-            Rating
-          </option>
-
-          <option value="Wins">
-            Wins
-          </option>
-
-          <option value="Losses">
-            Losses
-          </option>
-
-          <option value="Win %">
-            Win %
-          </option>
-
-          <option value="Games">
-            Games
-          </option>
-
-          <option value="Points For">
-            Points For
-          </option>
-
-          <option value="Points Against">
-            Points Against
-          </option>
-
-          <option value="PPG">
-            PPG
-          </option>
-
-          <option value="PAPG">
-            PAPG
-          </option>
-
-          <option value="Avg Margin">
-            Avg Margin
-          </option>
-
-          <option value="Opponent Win %">
-            Opponent Win %
-          </option>
-
+          <option value="Rank">Rank</option>
+          <option value="Rating">Rating</option>
+          <option value="Wins">Wins</option>
+          <option value="Losses">Losses</option>
+          <option value="Win %">Win %</option>
+          <option value="Games">Games</option>
+          <option value="Points For">Points For</option>
+          <option value="Points Against">Points Against</option>
+          <option value="PPG">PPG</option>
+          <option value="PAPG">PAPG</option>
+          <option value="Avg Margin">Avg Margin</option>
+          <option value="Opponent Win %">Opponent Win %</option>
           <option value="Opponents' Opponent Win %">
             Opp. Opp. Win %
           </option>
-
-          <option value="SOS">
-            SOS
-          </option>
-
-          <option value="Year">
-            Year
-          </option>
+          <option value="SOS">SOS</option>
+          <option value="Year">Year</option>
 
         </select>
 
       </div>
 
-
-      <!-- DIRECTION -->
 
       <div class="filter-group">
 
@@ -626,8 +550,6 @@
       </div>
 
 
-      <!-- CLEAR -->
-
       <div class="filter-group clear-group">
 
         <label>
@@ -648,8 +570,6 @@
   </div>
 
 
-  <!-- RESULTS -->
-
   <div class="result-bar">
 
     <div
@@ -666,8 +586,6 @@
 
   </div>
 
-
-  <!-- TABLE -->
 
   <div class="table-wrapper">
 
@@ -735,29 +653,105 @@
 <script>
 
 let allSeasons = [];
+let teamColors = {};
 
 
 /* ==========================================
-   LOAD DATA
+   LOAD BOTH DATA FILES
 ========================================== */
 
-async function loadSeasons() {
+async function loadData() {
 
   try {
 
-    const response =
-      await fetch("greatest-seasons-data-v2.json");
+    const seasonsResponse =
+      await fetch(
+        "greatest-seasons-data-v2.json"
+      );
 
-    if (!response.ok) {
+    if (!seasonsResponse.ok) {
 
       throw new Error(
-        "Could not load data file."
+        "Could not load Greatest Seasons data."
       );
 
     }
 
     allSeasons =
-      await response.json();
+      await seasonsResponse.json();
+
+
+    const colorsResponse =
+      await fetch(
+        "team-colors-data.json"
+      );
+
+    if (colorsResponse.ok) {
+
+      const colors =
+        await colorsResponse.json();
+
+
+      colors.forEach(item => {
+
+        const team =
+          String(
+            item.team ?? ""
+          )
+          .trim()
+          .toUpperCase();
+
+
+        if (!team) {
+          return;
+        }
+
+
+        /*
+          Look for the first usable font color.
+        */
+
+        let color = null;
+
+
+        if (
+          Array.isArray(item.fonts)
+        ) {
+
+          for (
+            const possibleColor
+            of item.fonts
+          ) {
+
+            if (
+              possibleColor &&
+              /^#[0-9A-F]{6}$/i.test(
+                possibleColor
+              )
+            ) {
+
+              color =
+                possibleColor;
+
+              break;
+
+            }
+
+          }
+
+        }
+
+
+        if (color) {
+
+          teamColors[team] =
+            color;
+
+        }
+
+      });
+
+    }
 
 
     buildFilters();
@@ -785,11 +779,15 @@ async function loadSeasons() {
 
           <br><br>
 
-          Make sure
+          Check that both
           <strong>
             greatest-seasons-data-v2.json
           </strong>
-          is in the same GitHub repository.
+          and
+          <strong>
+            team-colors-data.json
+          </strong>
+          are uploaded.
 
         </td>
 
@@ -797,18 +795,13 @@ async function loadSeasons() {
 
     `;
 
-    document.getElementById(
-      "resultCount"
-    ).textContent =
-      "Error loading data.";
-
   }
 
 }
 
 
 /* ==========================================
-   BUILD FILTER DROPDOWNS
+   BUILD FILTERS
 ========================================== */
 
 function buildFilters() {
@@ -824,57 +817,62 @@ function buildFilters() {
     );
 
 
-  /* YEARS */
-
   const years =
     [...new Set(
       allSeasons
-        .map(season =>
-          season["Year"]
+        .map(
+          season =>
+            season["Year"]
         )
-        .filter(year =>
-          year !== null &&
-          year !== ""
+        .filter(
+          year =>
+            year !== null &&
+            year !== ""
         )
     )];
 
 
   years.sort(
     (a, b) =>
-      Number(b) - Number(a)
+      Number(b) -
+      Number(a)
   );
 
 
-  years.forEach(year => {
+  years.forEach(
+    year => {
 
-    const option =
-      document.createElement(
-        "option"
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        year;
+
+      option.textContent =
+        year;
+
+      yearFilter.appendChild(
+        option
       );
 
-    option.value = year;
+    }
+  );
 
-    option.textContent = year;
-
-    yearFilter.appendChild(
-      option
-    );
-
-  });
-
-
-  /* TEAMS */
 
   const teams =
     [...new Set(
       allSeasons
-        .map(season =>
-          String(
-            season["Team"] ?? ""
-          ).trim()
+        .map(
+          season =>
+            String(
+              season["Team"] ?? ""
+            ).trim()
         )
-        .filter(team =>
-          team !== ""
+        .filter(
+          team =>
+            team !== ""
         )
     )];
 
@@ -885,22 +883,26 @@ function buildFilters() {
   );
 
 
-  teams.forEach(team => {
+  teams.forEach(
+    team => {
 
-    const option =
-      document.createElement(
-        "option"
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        team;
+
+      option.textContent =
+        team;
+
+      teamFilter.appendChild(
+        option
       );
 
-    option.value = team;
-
-    option.textContent = team;
-
-    teamFilter.appendChild(
-      option
-    );
-
-  });
+    }
+  );
 
 }
 
@@ -913,7 +915,9 @@ function applyFilters() {
 
   const search =
     document
-      .getElementById("searchBox")
+      .getElementById(
+        "searchBox"
+      )
       .value
       .trim()
       .toLowerCase();
@@ -921,25 +925,33 @@ function applyFilters() {
 
   const selectedYear =
     document
-      .getElementById("yearFilter")
+      .getElementById(
+        "yearFilter"
+      )
       .value;
 
 
   const selectedTeam =
     document
-      .getElementById("teamFilter")
+      .getElementById(
+        "teamFilter"
+      )
       .value;
 
 
   const sortBy =
     document
-      .getElementById("sortBy")
+      .getElementById(
+        "sortBy"
+      )
       .value;
 
 
   const direction =
     document
-      .getElementById("sortDirection")
+      .getElementById(
+        "sortDirection"
+      )
       .value;
 
 
@@ -959,104 +971,85 @@ function applyFilters() {
           );
 
 
-        const matchesSearch =
-          !search ||
-          team.includes(search) ||
-          year.includes(search);
-
-
-        const matchesYear =
-          selectedYear === "all" ||
-          year === selectedYear;
-
-
-        const matchesTeam =
-          selectedTeam === "all" ||
-          String(
-            season["Team"] ?? ""
-          ) === selectedTeam;
-
-
         return (
-          matchesSearch &&
-          matchesYear &&
-          matchesTeam
+
+          (
+            !search ||
+            team.includes(search) ||
+            year.includes(search)
+          )
+
+          &&
+
+          (
+            selectedYear === "all" ||
+            year === selectedYear
+          )
+
+          &&
+
+          (
+            selectedTeam === "all" ||
+            String(
+              season["Team"] ?? ""
+            ) === selectedTeam
+          )
+
         );
 
       }
     );
 
 
-  /* ========================================
-     SORT
-  ======================================== */
-
   filtered.sort(
     (a, b) => {
 
       let valueA =
-        a[sortBy];
+        Number(
+          a[sortBy]
+        );
 
       let valueB =
-        b[sortBy];
-
-
-      const numberA =
-        Number(valueA);
-
-      const numberB =
-        Number(valueB);
+        Number(
+          b[sortBy]
+        );
 
 
       if (
-        Number.isFinite(numberA) &&
-        Number.isFinite(numberB)
+        Number.isFinite(valueA) &&
+        Number.isFinite(valueB)
       ) {
 
         return direction === "asc"
-          ? numberA - numberB
-          : numberB - numberA;
+          ? valueA - valueB
+          : valueB - valueA;
 
       }
 
 
       valueA =
         String(
-          valueA ?? ""
+          a[sortBy] ?? ""
         ).toLowerCase();
 
 
       valueB =
         String(
-          valueB ?? ""
+          b[sortBy] ?? ""
         ).toLowerCase();
 
 
-      if (valueA < valueB) {
-
-        return direction === "asc"
-          ? -1
-          : 1;
-
-      }
-
-
-      if (valueA > valueB) {
-
-        return direction === "asc"
-          ? 1
-          : -1;
-
-      }
-
-
-      return 0;
+      return direction === "asc"
+        ? valueA.localeCompare(valueB)
+        : valueB.localeCompare(valueA);
 
     }
   );
 
 
-  displaySeasons(filtered);
+  displaySeasons(
+    filtered
+  );
 
 
   updateFilterText(
@@ -1074,7 +1067,9 @@ function applyFilters() {
    DISPLAY TABLE
 ========================================== */
 
-function displaySeasons(seasons) {
+function displaySeasons(
+  seasons
+) {
 
   const tbody =
     document.getElementById(
@@ -1153,7 +1148,9 @@ function displaySeasons(seasons) {
         losses;
 
 
-      if (ties > 0) {
+      if (
+        ties > 0
+      ) {
 
         record +=
           "-" +
@@ -1162,14 +1159,83 @@ function displaySeasons(seasons) {
       }
 
 
+      /*
+        TEAM COLOR
+      */
+
+      const teamName =
+        String(
+          season["Team"] ?? ""
+        ).trim();
+
+
+      const teamColor =
+        teamColors[
+          teamName.toUpperCase()
+        ];
+
+
+      const teamStyle =
+        teamColor
+          ? `color: ${teamColor};`
+          : "";
+
+
+      /*
+        TOP 3
+      */
+
+      const rank =
+        Number(
+          season["Rank"]
+        );
+
+
+      let topClass =
+        "";
+
+
+      if (rank === 1) {
+
+        topClass =
+          "top-one";
+
+      }
+
+      else if (
+        rank === 2
+      ) {
+
+        topClass =
+          "top-two";
+
+      }
+
+      else if (
+        rank === 3
+      ) {
+
+        topClass =
+          "top-three";
+
+      }
+
+
+      row.className =
+        topClass;
+
+
       row.innerHTML = `
 
         <td class="rank">
           ${season["Rank"] ?? ""}
         </td>
 
-        <td class="team">
-          ${season["Team"] ?? ""}
+        <td
+          class="team"
+          style="${teamStyle}"
+        >
+          ${teamName}
         </td>
 
         <td>
@@ -1306,7 +1372,9 @@ function updateFilterText(
   }
 
 
-  if (year !== "all") {
+  if (
+    year !== "all"
+  ) {
 
     parts.push(
       "Year: " +
@@ -1316,7 +1384,9 @@ function updateFilterText(
   }
 
 
-  if (team !== "all") {
+  if (
+    team !== "all"
+  ) {
 
     parts.push(
       "Team: " +
@@ -1350,7 +1420,7 @@ function updateFilterText(
 
 
 /* ==========================================
-   CLEAR FILTERS
+   CLEAR
 ========================================== */
 
 function clearFilters() {
@@ -1389,7 +1459,9 @@ function clearFilters() {
    FORMATTING
 ========================================== */
 
-function formatWhole(value) {
+function formatWhole(
+  value
+) {
 
   const number =
     Number(value);
@@ -1437,7 +1509,7 @@ function formatNumber(
 
 
 /* ==========================================
-   EVENT LISTENERS
+   EVENTS
 ========================================== */
 
 document
@@ -1494,7 +1566,7 @@ document
    START
 ========================================== */
 
-loadSeasons();
+loadData();
 
 </script>
 
