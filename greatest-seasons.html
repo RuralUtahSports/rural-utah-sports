@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Greatest Seasons | Rural Utah Sports</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111111;
+      color: #ffffff;
+    }
+
+    /* HEADER */
+
+    header {
+      background: #000000;
+      border-bottom: 4px solid #F14D07;
+      padding: 15px 25px;
+    }
+
+    .header-content {
+      max-width: 1300px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+
+    .site-title h1 {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .site-title p {
+      color: #F14D07;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    /* NAVIGATION */
+
+    nav {
+      background: #000000;
+      border-bottom: 1px solid #333333;
+    }
+
+    .nav-content {
+      max-width: 1300px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 15px 18px;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: #F14D07;
+      color: #000000;
+    }
+
+    /* MAIN */
+
+    .container {
+      max-width: 1300px;
+      margin: auto;
+      padding: 35px 20px 60px;
+    }
+
+    .page-title {
+      border-left: 6px solid #F14D07;
+      padding-left: 15px;
+      margin-bottom: 10px;
+      font-size: 34px;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      color: #aaaaaa;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    /* SEARCH */
+
+    .controls {
+      background: #000000;
+      border: 1px solid #333333;
+      border-top: 4px solid #F14D07;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 7px;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 13px 15px;
+      background: #222222;
+      border: 1px solid #444444;
+      color: #ffffff;
+      font-size: 16px;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .search-box:focus {
+      border-color: #F14D07;
+    }
+
+    /* TABLE */
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      background: #000000;
+      border: 1px solid #333333;
+      border-radius: 7px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th {
+      background: #F14D07;
+      color: #000000;
+      padding: 14px 10px;
+      text-align: center;
+      font-size: 13px;
+      text-transform: uppercase;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 13px 10px;
+      text-align: center;
+      border-bottom: 1px solid #333333;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    tbody tr:hover {
+      background: #222222;
+    }
+
+    .rank {
+      font-weight: 900;
+      color: #F14D07;
+    }
+
+    .team {
+      text-align: left;
+      font-weight: 900;
+    }
+
+    .rating {
+      font-weight: 900;
+      color: #F14D07;
+    }
+
+    /* PLACEHOLDER */
+
+    .loading {
+      padding: 40px;
+      text-align: center;
+      color: #999999;
+    }
+
+    /* FOOTER */
+
+    footer {
+      background: #000000;
+      border-top: 4px solid #F14D07;
+      text-align: center;
+      padding: 30px 20px;
+      color: #888888;
+    }
+
+    footer strong {
+      color: #F14D07;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 700px) {
+
+      header {
+        padding: 15px;
+      }
+
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .site-title h1 {
+        font-size: 24px;
+      }
+
+      .logo {
+        width: 70px;
+        height: 70px;
+      }
+
+      nav a {
+        flex: 1 1 50%;
+        text-align: center;
+        padding: 13px 8px;
+      }
+
+      .container {
+        padding: 25px 12px 45px;
+      }
+
+      .page-title {
+        font-size: 27px;
+      }
+
+      .subtitle {
+        line-height: 1.5;
+      }
+
+      .controls {
+        padding: 15px;
+      }
+
+      th,
+      td {
+        padding: 11px 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header>
+
+    <div class="header-content">
+
+      <img
+        src="RUSlogoNew.png"
+        alt="Rural Utah Sports"
+        class="logo"
+      >
+
+      <div class="site-title">
+
+        <h1>Rural Utah Sports</h1>
+
+        <p>Utah High School Sports History & Data</p>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- NAVIGATION -->
+
+  <nav>
+
+    <div class="nav-content">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="#" class="active">
+        Greatest Seasons
+      </a>
+
+      <a href="#">
+        Teams
+      </a>
+
+      <a href="#">
+        Games
+      </a>
+
+      <a href="#">
+        Rankings
+      </a>
+
+      <a href="#">
+        Simulators
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <!-- MAIN -->
+
+  <main class="container">
+
+    <h2 class="page-title">
+      Greatest Seasons
+    </h2>
+
+    <p class="subtitle">
+      The greatest Utah high school football seasons,
+      ranked using the Rural Utah Sports rating system.
+    </p>
+
+
+    <!-- SEARCH -->
+
+    <div class="controls">
+
+      <input
+        type="text"
+        id="searchBox"
+        class="search-box"
+        placeholder="Search for a team or year..."
+        onkeyup="filterTable()"
+      >
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-wrapper">
+
+      <table id="seasonsTable">
+
+        <thead>
+
+          <tr>
+
+            <th>Rank</th>
+
+            <th>Team</th>
+
+            <th>Year</th>
+
+            <th>Record</th>
+
+            <th>Win %</th>
+
+            <th>Avg Margin</th>
+
+            <th>SOS</th>
+
+            <th>Rating</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <!--
+            Temporary sample rows.
+
+            We will replace these with your
+            actual Google Sheets data next.
+          -->
+
+          <tr>
+
+            <td class="rank">1</td>
+
+            <td class="team">
+              Example Team
+            </td>
+
+            <td>2025</td>
+
+            <td>12-1</td>
+
+            <td>.923</td>
+
+            <td>18.4</td>
+
+            <td>16.8</td>
+
+            <td class="rating">94.52</td>
+
+          </tr>
+
+
+          <tr>
+
+            <td class="rank">2</td>
+
+            <td class="team">
+              Example Team
+            </td>
+
+            <td>2007</td>
+
+            <td>13-0</td>
+
+            <td>1.000</td>
+
+            <td>21.2</td>
+
+            <td>14.5</td>
+
+            <td class="rating">93.87</td>
+
+          </tr>
+
+
+          <tr>
+
+            <td class="rank">3</td>
+
+            <td class="team">
+              Example Team
+            </td>
+
+            <td>1995</td>
+
+            <td>11-1</td>
+
+            <td>.917</td>
+
+            <td>19.7</td>
+
+            <td>15.2</td>
+
+            <td class="rating">92.64</td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <p>
+      <strong>RURAL UTAH SPORTS</strong>
+    </p>
+
+    <p>
+      Utah High School Sports History & Data
+    </p>
+
+  </footer>
+
+
+  <!-- SEARCH SCRIPT -->
+
+  <script>
+
+    function filterTable() {
+
+      const input =
+        document
+          .getElementById("searchBox")
+          .value
+          .toLowerCase();
+
+      const rows =
+        document
+          .querySelectorAll("#seasonsTable tbody tr");
+
+      rows.forEach(row => {
+
+        const text =
+          row.textContent.toLowerCase();
+
+        if (text.includes(input)) {
+
+          row.style.display = "";
+
+        } else {
+
+          row.style.display = "none";
+
+        }
+
+      });
+
+    }
+
+  </script>
+
+</body>
+</html>
