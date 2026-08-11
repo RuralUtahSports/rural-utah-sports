@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -211,7 +212,6 @@ nav a.active {
 .team-record {
   font-size: 18px;
   font-weight: 900;
-  letter-spacing: 0;
 }
 
 .team-record-label {
@@ -377,6 +377,13 @@ nav a.active {
 .rating {
   color: #F14D07;
   font-weight: 900;
+}
+
+.loading,
+.error {
+  padding: 40px;
+  text-align: center;
+  color: #999999;
 }
 
 footer {
@@ -676,7 +683,7 @@ let allTeams = [];
 
 
 /* =========================
-   BASIC HELPERS
+   HELPERS
 ========================= */
 
 function clean(value) {
@@ -688,57 +695,43 @@ function clean(value) {
 }
 
 
-function normalize(value) {
-
-  return clean(value)
-    .toUpperCase()
-    .replace(
-      /[^A-Z0-9]/g,
-      ""
-    );
-
-}
-
-
 function escapeHTML(value) {
 
   return clean(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
 
 
-function safeColor(
-  value,
-  fallback
-) {
+function safeColor(value, fallback) {
 
-  const color =
-    clean(value);
+  const color = clean(value);
 
-  return /^#[0-9A-F]{6}$/i.test(color)
-    ? color
-    : fallback;
+  if (
+    /^#[0-9A-F]{6}$/i.test(color)
+  ) {
+
+    return color;
+
+  }
+
+  return fallback;
 
 }
 
 
 /* =========================
-   TEAM INFORMATION
+   DIRECT DATA FIELDS
 ========================= */
 
 function getClassification(team) {
 
   return clean(
-    team.classification ??
-    team.Classification ??
-    team.class ??
-    team.Class ??
-    ""
+    team.classification
   );
 
 }
@@ -747,9 +740,7 @@ function getClassification(team) {
 function getRegion(team) {
 
   return clean(
-    team.region ??
-    team.Region ??
-    ""
+    team.region
   );
 
 }
@@ -758,9 +749,7 @@ function getRegion(team) {
 function getMascot(team) {
 
   return clean(
-    team.mascot ??
-    team.Mascot ??
-    ""
+    team.mascot
   );
 
 }
@@ -769,10 +758,7 @@ function getMascot(team) {
 function getSchoolColors(team) {
 
   return clean(
-    team.schoolColors ??
-    team.colors ??
-    team.Colors ??
-    ""
+    team.schoolColors
   );
 
 }
@@ -801,8 +787,7 @@ function formatRecord(
 
 function formatPct(value) {
 
-  const number =
-    Number(value);
+  const number = Number(value);
 
   if (
     !Number.isFinite(number)
@@ -822,8 +807,7 @@ function formatNumber(
   decimals
 ) {
 
-  const number =
-    Number(value);
+  const number = Number(value);
 
   if (
     !Number.isFinite(number)
@@ -833,63 +817,7 @@ function formatNumber(
 
   }
 
-  return number.toFixed(
-    decimals
-  );
-
-}
-
-
-/* =========================
-   CLASSIFICATION / REGION
-========================= */
-
-function buildTeamMeta(team) {
-
-  const classification =
-    getClassification(team);
-
-  const region =
-    getRegion(team);
-
-
-  if (
-    classification &&
-    region
-  ) {
-
-    return `
-      ${escapeHTML(classification)}
-      •
-      ${escapeHTML(region)}
-    `;
-
-  }
-
-
-  if (
-    classification
-  ) {
-
-    return escapeHTML(
-      classification
-    );
-
-  }
-
-
-  if (
-    region
-  ) {
-
-    return escapeHTML(
-      region
-    );
-
-  }
-
-
-  return "Classification not listed";
+  return number.toFixed(decimals);
 
 }
 
@@ -906,26 +834,25 @@ function buildClassificationFilter() {
     );
 
 
-  const classifications =
-    [
-      ...new Set(
-        allTeams
-          .map(
-            team =>
-              getClassification(team)
-          )
-          .filter(Boolean)
-      )
-    ];
+  const classifications = [
+    ...new Set(
+      allTeams
+        .map(
+          team =>
+            getClassification(team)
+        )
+        .filter(Boolean)
+    )
+  ];
 
 
   classifications.sort(
-    (a,b) =>
+    (a, b) =>
       a.localeCompare(
         b,
         undefined,
         {
-          numeric:true
+          numeric: true
         }
       )
   );
@@ -956,7 +883,7 @@ function buildClassificationFilter() {
 
 
 /* =========================
-   LOAD DATA
+   LOAD JSON
 ========================= */
 
 async function loadTeams() {
@@ -966,10 +893,7 @@ async function loadTeams() {
     const response =
       await fetch(
         "teams-data.json?v=" +
-        Date.now(),
-        {
-          cache: "no-store"
-        }
+        Date.now()
       );
 
 
@@ -978,7 +902,7 @@ async function loadTeams() {
     ) {
 
       throw new Error(
-        "Could not load teams-data.json"
+        "Unable to load teams-data.json"
       );
 
     }
@@ -1009,13 +933,60 @@ async function loadTeams() {
 
       <div class="error">
 
-        Could not load the team data.
+        Unable to load team data.
 
       </div>
 
     `;
 
   }
+
+}
+
+
+/* =========================
+   TEAM META
+========================= */
+
+function teamMeta(team) {
+
+  const classification =
+    getClassification(team);
+
+  const region =
+    getRegion(team);
+
+
+  if (
+    classification &&
+    region
+  ) {
+
+    return (
+      escapeHTML(
+        classification
+      ) +
+      " • " +
+      escapeHTML(
+        region
+      )
+    );
+
+  }
+
+
+  if (
+    classification
+  ) {
+
+    return escapeHTML(
+      classification
+    );
+
+  }
+
+
+  return "Classification not listed";
 
 }
 
@@ -1073,16 +1044,8 @@ function displayTeams(
         );
 
 
-      /*
-       If the spreadsheet says
-       black lettering, use white
-       lettering on this page.
-      */
-
       if (
-        textColor
-          .toUpperCase()
-          .replace(/\s/g,"") ===
+        textColor.toUpperCase() ===
         "#000000"
       ) {
 
@@ -1122,9 +1085,7 @@ function displayTeams(
 
           <div class="team-meta">
 
-            ${buildTeamMeta(
-              team
-            )}
+            ${teamMeta(team)}
 
           </div>
 
@@ -1141,9 +1102,7 @@ function displayTeams(
 
 
           <div class="team-record-label">
-
             All-Time Record
-
           </div>
 
 
@@ -1202,7 +1161,6 @@ function displayTeams(
 
 
           </div>
-
 
         </div>
 
@@ -1266,9 +1224,7 @@ function showTeamProfile(
 
 
   if (
-    textColor
-      .toUpperCase()
-      .replace(/\s/g,"") ===
+    textColor.toUpperCase() ===
     "#000000"
   ) {
 
@@ -1279,27 +1235,16 @@ function showTeamProfile(
 
 
   const classification =
-    getClassification(
-      team
-    );
-
+    getClassification(team);
 
   const region =
-    getRegion(
-      team
-    );
-
+    getRegion(team);
 
   const mascot =
-    getMascot(
-      team
-    );
-
+    getMascot(team);
 
   const schoolColors =
-    getSchoolColors(
-      team
-    );
+    getSchoolColors(team);
 
 
   let subtitle = "";
@@ -1343,23 +1288,19 @@ function showTeamProfile(
   }
 
 
-  let seasonsHTML =
-    "";
+  let seasonsHTML = "";
 
 
   if (
     Array.isArray(
       team.bestSeasons
-    ) &&
-    team.bestSeasons.length
+    )
   ) {
 
     seasonsHTML = `
 
       <h2 class="section-title">
-
         Greatest Seasons
-
       </h2>
 
 
@@ -1372,15 +1313,10 @@ function showTeamProfile(
             <tr>
 
               <th>Year</th>
-
               <th>Record</th>
-
               <th>Win %</th>
-
               <th>Avg Margin</th>
-
               <th>SOS</th>
-
               <th>Rating</th>
 
             </tr>
@@ -1390,57 +1326,54 @@ function showTeamProfile(
 
           <tbody>
 
-            ${team.bestSeasons
-              .map(
-                season => `
+            ${team.bestSeasons.map(
+              season => `
 
-                  <tr>
+                <tr>
 
-                    <td>
-                      ${season.year}
-                    </td>
+                  <td>
+                    ${season.year}
+                  </td>
 
-                    <td>
-                      ${formatRecord(
-                        season.wins,
-                        season.losses,
-                        season.ties
-                      )}
-                    </td>
+                  <td>
+                    ${formatRecord(
+                      season.wins,
+                      season.losses,
+                      season.ties
+                    )}
+                  </td>
 
-                    <td>
-                      ${formatPct(
-                        season.winPct
-                      )}
-                    </td>
+                  <td>
+                    ${formatPct(
+                      season.winPct
+                    )}
+                  </td>
 
-                    <td>
-                      ${formatNumber(
-                        season.avgMargin,
-                        2
-                      )}
-                    </td>
+                  <td>
+                    ${formatNumber(
+                      season.avgMargin,
+                      2
+                    )}
+                  </td>
 
-                    <td>
-                      ${formatNumber(
-                        season.sos,
-                        2
-                      )}
-                    </td>
+                  <td>
+                    ${formatNumber(
+                      season.sos,
+                      2
+                    )}
+                  </td>
 
-                    <td class="rating">
-                      ${formatNumber(
-                        season.rating,
-                        2
-                      )}
-                    </td>
+                  <td class="rating">
+                    ${formatNumber(
+                      season.rating,
+                      2
+                    )}
+                  </td>
 
-                  </tr>
+                </tr>
 
-                `
-              )
-              .join("")
-            }
+              `
+            ).join("")}
 
           </tbody>
 
@@ -1592,9 +1525,7 @@ function showTeamProfile(
 
 
     <h2 class="section-title">
-
       School Information
-
     </h2>
 
 
@@ -1687,7 +1618,7 @@ function showTeamProfile(
 
 
 /* =========================
-   FILTERS
+   FILTERING
 ========================= */
 
 function filterTeams() {
@@ -1881,10 +1812,6 @@ document.getElementById(
   filterTeams
 );
 
-
-/* =========================
-   START
-========================= */
 
 loadTeams();
 
