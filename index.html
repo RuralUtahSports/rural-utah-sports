@@ -1,1 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Rural Utah Sports</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #111111;
+      color: #ffffff;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      background: #000000;
+      border-bottom: 4px solid #F14D07;
+      padding: 15px 30px;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .logo {
+      width: 95px;
+      height: 95px;
+      object-fit: contain;
+    }
+
+    .site-title {
+      flex: 1;
+    }
+
+    .site-title h1 {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .site-title p {
+      color: #F14D07;
+      font-weight: bold;
+      margin-top: 5px;
+      letter-spacing: 1px;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    nav {
+      background: #000000;
+      border-bottom: 1px solid #333333;
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 16px 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      background: #F14D07;
+      color: #000000;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 55px 30px;
+      text-align: center;
+
+      background:
+        linear-gradient(
+          rgba(0, 0, 0, 0.78),
+          rgba(0, 0, 0, 0.78)
+        ),
+        url("RUSlogoNew.png");
+
+      background-size: cover;
+      background-position: center;
+
+      border: 2px solid #F14D07;
+      border-radius: 12px;
+    }
+
+    .hero h2 {
+      font-size: 46px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .hero h2 span {
+      color: #F14D07;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: 18px auto 0;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #dddddd;
+    }
+
+    /* =========================
+       MAIN CONTENT
+    ========================= */
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px 50px;
+    }
+
+    .section-title {
+      border-left: 6px solid #F14D07;
+      padding-left: 14px;
+      margin: 40px 0 20px;
+      font-size: 28px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    /* =========================
+       FEATURE CARDS
+    ========================= */
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: #1c1c1c;
+      border: 1px solid #333333;
+      border-top: 4px solid #F14D07;
+      padding: 25px;
+      border-radius: 8px;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #F14D07;
+    }
+
+    .card h3 {
+      color: #F14D07;
+      font-size: 21px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .card p {
+      color: #bbbbbb;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .button {
+      display: inline-block;
+      background: #F14D07;
+      color: #000000;
+      padding: 10px 18px;
+      text-decoration: none;
+      font-weight: 900;
+      text-transform: uppercase;
+      border-radius: 4px;
+    }
+
+    .button:hover {
+      background: #ffffff;
+    }
+
+    /* =========================
+       ABOUT SECTION
+    ========================= */
+
+    .about {
+      background: #000000;
+      border: 1px solid #333333;
+      padding: 30px;
+      margin-top: 35px;
+      border-radius: 8px;
+    }
+
+    .about p {
+      color: #cccccc;
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    .orange {
+      color: #F14D07;
+      font-weight: bold;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      background: #000000;
+      border-top: 4px solid #F14D07;
+      text-align: center;
+      padding: 30px 20px;
+      color: #888888;
+    }
+
+    footer strong {
+      color: #F14D07;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 800px) {
+
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .site-title h1 {
+        font-size: 26px;
+      }
+
+      .hero h2 {
+        font-size: 32px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      nav a {
+        flex: 1 1 50%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header>
+    <div class="header-content">
+
+      <img
+        src="RUSlogoNew.png"
+        alt="Rural Utah Sports Logo"
+        class="logo"
+      >
+
+      <div class="site-title">
+        <h1>Rural Utah Sports</h1>
+        <p>Utah High School Sports History & Data</p>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- =========================
+       NAVIGATION
+  ========================= -->
+
+  <nav>
+    <div class="nav-content">
+
+      <a href="index.html">Home</a>
+
+      <a href="#">Teams</a>
+
+      <a href="#">Greatest Seasons</a>
+
+      <a href="#">Games</a>
+
+      <a href="#">Rankings</a>
+
+      <a href="#">Simulators</a>
+
+    </div>
+  </nav>
+
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <section class="hero">
+
+    <h2>
+      Utah Sports.
+      <span>History.</span>
+      Data.
+    </h2>
+
+    <p>
+      Exploring the history, records, games and greatest seasons
+      of Utah high school sports.
+    </p>
+
+  </section>
+
+
+  <!-- =========================
+       MAIN
+  ========================= -->
+
+  <main class="container">
+
+    <h2 class="section-title">
+      Explore Rural Utah Sports
+    </h2>
+
+
+    <div class="cards">
+
+      <!-- Greatest Seasons -->
+
+      <div class="card">
+
+        <h3>Greatest Seasons</h3>
+
+        <p>
+          Explore the greatest Utah high school football seasons
+          using historical performance, winning percentage,
+          scoring margin and strength of schedule.
+        </p>
+
+        <a href="#" class="button">
+          Explore
+        </a>
+
+      </div>
+
+
+      <!-- Teams -->
+
+      <div class="card">
+
+        <h3>Teams</h3>
+
+        <p>
+          Browse Utah high school teams and explore their
+          historical schedules, records and accomplishments.
+        </p>
+
+        <a href="#" class="button">
+          Teams
+        </a>
+
+      </div>
+
+
+      <!-- Games -->
+
+      <div class="card">
+
+        <h3>Historical Games</h3>
+
+        <p>
+          Search through thousands of Utah high school games
+          and explore results from throughout the state's history.
+        </p>
+
+        <a href="#" class="button">
+          Games
+        </a>
+
+      </div>
+
+
+      <!-- Rankings -->
+
+      <div class="card">
+
+        <h3>Rankings</h3>
+
+        <p>
+          Explore historical rankings, ELO ratings and other
+          Rural Utah Sports rating systems.
+        </p>
+
+        <a href="#" class="button">
+          Rankings
+        </a>
+
+      </div>
+
+
+      <!-- Simulators -->
+
+      <div class="card">
+
+        <h3>Simulators</h3>
+
+        <p>
+          Compare teams and historic seasons with custom
+          matchup and series simulations.
+        </p>
+
+        <a href="#" class="button">
+          Simulators
+        </a>
+
+      </div>
+
+
+      <!-- Records -->
+
+      <div class="card">
+
+        <h3>Record Book</h3>
+
+        <p>
+          Explore Utah high school sports records, scoring
+          records, winning streaks and other historical marks.
+        </p>
+
+        <a href="#" class="button">
+          Records
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         ABOUT
+    ========================= -->
+
+    <div class="about">
+
+      <h2 class="section-title">
+        About Rural Utah Sports
+      </h2>
+
+      <p>
+        Rural Utah Sports is dedicated to documenting and
+        celebrating Utah high school sports. From historic
+        games and legendary teams to modern rankings and
+        statistical analysis, the goal is to preserve the
+        history of Utah high school athletics in one place.
+      </p>
+
+      <br>
+
+      <p>
+        <span class="orange">Since 2019.</span>
+        Built around Utah sports history, statistics and the
+        communities that make high school sports special.
+      </p>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================
+       FOOTER
+    ========================= -->
+
+  <footer>
+
+    <p>
+      <strong>RURAL UTAH SPORTS</strong>
+    </p>
+
+    <p>
+      Utah High School Sports History & Data
+    </p>
+
+    <p style="margin-top: 10px;">
+      © 2019 Rural Utah Sports
+    </p>
+
+  </footer>
+
+</body>
+</html>
