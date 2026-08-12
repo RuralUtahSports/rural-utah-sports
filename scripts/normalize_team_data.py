@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import json
+from datetime import datetime
 from pathlib import Path
 
 ALIASES={
     'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY',
-    'CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY'
+    'CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY',
+    'HINKLEY':'HINCKLEY','BY HIGH':'BYH','BRIGHAM YOUNG':'BYH'
 }
 def canonical(v):
     n=' '.join(str(v or '').strip().upper().split()).rstrip('.').strip()
@@ -16,6 +18,10 @@ def slug(v):
     import re
     return re.sub(r'^-+|-+$','',re.sub(r'[^a-z0-9]+','-',canonical(v).lower()))
 
+def parse_date(v):
+    try: return datetime.strptime(str(v).strip(),'%m/%d/%Y')
+    except: return None
+
 def empty(): return {'wins':0,'losses':0,'ties':0,'games':0}
 def add(r,result):
     r['games']+=1
@@ -24,26 +30,50 @@ def add(r,result):
     else: r['ties']+=1
 
 def date_year(date):
-    try: return int(str(date).strip().split('/')[-1])
-    except: return 0
+    d=parse_date(date)
+    return d.year if d else 0
 
 def normalize_schedules(raw):
-    out={}; removed=0; conflicts=0
+    grouped={}
     for team,years in (raw or {}).items():
-        t=canonical(team); out.setdefault(t,{})
+        t=canonical(team); grouped.setdefault(t,{})
         for year,games in (years or {}).items():
-            seen={}; cleaned=[]
+            bucket=grouped[t].setdefault(str(year),[])
             for g in games or []:
-                x=dict(g); x['opponent']=canonical(x.get('opponent'))
+                x=dict(g); x['opponent']=canonical(x.get('opponent')); bucket.append(x)
+
+    out={}; exact_removed=0; near_removed=0; conflicts=0
+    for team,years in grouped.items():
+        out[team]={}
+        for year,games in years.items():
+            # First remove same-date/same-opponent duplicates.
+            exact_seen={}; first_pass=[]
+            for x in games:
                 key=(str(x.get('date','')).strip(),x['opponent'])
                 score=(x.get('teamScore'),x.get('opponentScore'),x.get('result'))
-                if key in seen:
-                    removed+=1
-                    if seen[key]!=score: conflicts+=1
+                if key in exact_seen:
+                    exact_removed+=1
+                    if exact_seen[key]!=score: conflicts+=1
                     continue
-                seen[key]=score; cleaned.append(x)
-            out[t][str(year)]=cleaned
-    return out,removed,conflicts
+                exact_seen[key]=score; first_pass.append(x)
+
+            # Then remove the same matchup and exact score repeated within three days.
+            # This catches systematic date-shift copies (Thursday/Friday, Friday/Saturday, etc.)
+            # while retaining games with different scores.
+            chronological=sorted(enumerate(first_pass),key=lambda z:(parse_date(z[1].get('date')) or datetime.max,z[0]))
+            drop=set(); last_by_sig={}
+            for idx,x in chronological:
+                d=parse_date(x.get('date'))
+                if not d: continue
+                sig=(x['opponent'],x.get('teamScore'),x.get('opponentScore'),x.get('result'))
+                prior=last_by_sig.get(sig)
+                if prior:
+                    days=(d-prior[0]).days
+                    if 0<days<=3:
+                        drop.add(idx); near_removed+=1; continue
+                last_by_sig[sig]=(d,idx)
+            out[team][year]=[x for i,x in enumerate(first_pass) if i not in drop]
+    return out,exact_removed,near_removed,conflicts
 
 def build_breakdowns(schedules):
     out={}
@@ -75,20 +105,17 @@ def normalize_elo(raw):
 
 schedules_path=Path('team-schedules.json'); elo_path=Path('team-elo-history.json')
 if not schedules_path.exists() or not elo_path.exists(): raise SystemExit('Required team data missing')
-schedules,game_removed,game_conflicts=normalize_schedules(json.loads(schedules_path.read_text()))
+schedules,game_exact_removed,game_near_removed,game_conflicts=normalize_schedules(json.loads(schedules_path.read_text()))
 breakdowns=build_breakdowns(schedules)
 elo,elo_removed,elo_conflicts=normalize_elo(json.loads(elo_path.read_text()))
 schedules_path.write_text(json.dumps(schedules,separators=(',',':')))
 Path('team-record-breakdowns.json').write_text(json.dumps(breakdowns,separators=(',',':')))
 elo_path.write_text(json.dumps(elo,separators=(',',':')))
 
-# Rewrite the corresponding pieces inside each per-team page payload.
 page_dir=Path('team-page-data')
 for team in set(schedules)|set(elo):
     p=page_dir/f'{slug(team)}.json'
-    if not p.exists():
-        # Some historical naming uses a non-canonical filename; locate by schedule content only when unambiguous.
-        continue
+    if not p.exists(): continue
     data=json.loads(p.read_text())
     data['schedules']=schedules.get(team,{})
     data['breakdown']=breakdowns.get(team,{'decades':{},'opponents':{}})
@@ -96,9 +123,12 @@ for team in set(schedules)|set(elo):
     p.write_text(json.dumps(data,separators=(',',':')))
 
 Path('duplicate-cleanup-report.json').write_text(json.dumps({
-    'scheduleDuplicatesRemoved':game_removed,'scheduleConflictingDuplicates':game_conflicts,
+    'scheduleDuplicatesRemoved':game_exact_removed+game_near_removed,
+    'scheduleExactDuplicatesRemoved':game_exact_removed,
+    'scheduleNearDateDuplicatesRemoved':game_near_removed,
+    'scheduleConflictingDuplicates':game_conflicts,
     'eloDuplicatesRemoved':elo_removed,'eloConflictingDuplicates':elo_conflicts,
-    'wasatchAcademyCanonicalName':'WASATCH ACADEMY'
+    'canonicalAliases':{'WASATCH ACAD':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH'}
 },indent=2)+'\n')
-print(f'Schedule duplicates removed: {game_removed}; conflicts: {game_conflicts}')
-print(f'ELO duplicates removed: {elo_removed}; conflicts: {elo_conflicts}')
+print(f'Schedule duplicates removed: {game_exact_removed+game_near_removed} ({game_exact_removed} exact, {game_near_removed} near-date); conflicts: {game_conflicts}')
+print(f'ELO duplicate rows removed before clean rebuild: {elo_removed}; conflicts: {elo_conflicts}')
