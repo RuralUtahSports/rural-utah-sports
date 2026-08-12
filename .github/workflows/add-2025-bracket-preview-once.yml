@@ -1,0 +1,51 @@
+name: Add 2025 Bracket Preview Once
+on:
+  push:
+    paths:
+      - '.github/workflows/add-2025-bracket-preview-once.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add bracket preview
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('championships.html')
+          s=p.read_text()
+          assert 'playoffBracketPreview' not in s
+          s=s.replace('</head>','<link rel="stylesheet" href="playoff-brackets-2025.css">\n</head>')
+          marker='  <div id="summary" class="summary-grid">'
+          block='''  <section class="playoff-preview" id="playoffBracketPreview">
+    <div class="playoff-preview-head">
+      <div><div class="playoff-preview-title">2025 Playoff Brackets</div><div class="playoff-preview-sub">Bracket preview using the 2025 UHSAA All Time Playoffs sheet. Choose a classification to view its semifinal and championship path.</div></div>
+      <div class="bracket-tabs" aria-label="2025 playoff classification">
+        <button class="bracket-tab" data-cls="6A">6A</button><button class="bracket-tab" data-cls="5A">5A</button><button class="bracket-tab" data-cls="4A">4A</button><button class="bracket-tab" data-cls="3A">3A</button><button class="bracket-tab" data-cls="2A">2A</button><button class="bracket-tab" data-cls="1A">1A</button><button class="bracket-tab" data-cls="8-Player">8-Player</button>
+      </div>
+    </div>
+    <div class="bracket-scroll" aria-live="polite"></div>
+    <p class="bracket-source-note">2025 prototype • Source: UHSAA All Time Playoffs. On phones, swipe the bracket sideways if needed.</p>
+  </section>
+
+'''
+          assert marker in s
+          s=s.replace(marker,block+marker,1)
+          s=s.replace('<script src="back-to-top.js" defer></script>','<script src="playoff-brackets-2025.js" defer></script>\n<script src="back-to-top.js" defer></script>')
+          p.write_text(s)
+          PY
+      - name: Verify
+        run: |
+          grep -q 'playoffBracketPreview' championships.html
+          grep -q 'playoff-brackets-2025.css' championships.html
+          grep -q 'playoff-brackets-2025.js' championships.html
+      - name: Commit
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add championships.html
+          git commit -m "Add 2025 playoff bracket preview"
+          git pull --rebase origin main
+          git push
