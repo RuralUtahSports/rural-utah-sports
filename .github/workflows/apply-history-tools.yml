@@ -1,0 +1,38 @@
+name: Apply History Tools
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/apply-history-tools.yml'
+      - 'scripts/patch_history_tools.py'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply site patch
+        run: python scripts/patch_history_tools.py
+      - name: Verify files
+        run: |
+          node --check team-enhancements.js
+          grep -q 'Longest Winning Streak' records.html
+          grep -q 'Longest Losing Streak' records.html
+          grep -q 'team-enhancements.js' team.html
+          grep -q 'Compare Any Two Teams' teams.html
+          grep -q 'Team Comparison' index.html
+          grep -q 'rankingSnapshot' rankings.html
+          grep -q "params.get('search')" games.html
+      - name: Commit changes
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add records.html team.html games.html teams.html index.html rankings.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Add streak rivalry comparison and rankings archive tools"
+          git pull --rebase origin main
+          git push
