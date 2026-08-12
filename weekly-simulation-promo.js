@@ -1,0 +1,40 @@
+(()=>{
+  const STYLE_ID='rus-weekly-promo-style';
+  const BANNER_ID='rus-weekly-promo';
+  if(!document.getElementById(STYLE_ID)){
+    const style=document.createElement('style');
+    style.id=STYLE_ID;
+    style.textContent=`
+      #${BANNER_ID}{background:#F14D07;color:#000;border-bottom:1px solid #ff7a42;overflow:hidden;position:relative;z-index:20}
+      #${BANNER_ID} a{display:flex;align-items:center;gap:26px;width:max-content;min-width:200%;padding:9px 0;color:#000;text-decoration:none;font-weight:900;text-transform:uppercase;letter-spacing:.35px;white-space:nowrap;animation:rusPromoMarquee 22s linear infinite;will-change:transform}
+      #${BANNER_ID}:hover a,#${BANNER_ID}:focus-within a{animation-play-state:paused}
+      #${BANNER_ID} .rus-promo-item{display:inline-flex;align-items:center;gap:9px;padding-left:18px}
+      #${BANNER_ID} .rus-promo-cta{background:#000;color:#fff;border-radius:999px;padding:4px 9px;font-size:10px;letter-spacing:.5px}
+      @keyframes rusPromoMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+      @media(max-width:700px){#${BANNER_ID} a{font-size:12px;animation-duration:18s;padding:8px 0}}
+      @media(prefers-reduced-motion:reduce){#${BANNER_ID} a{animation:none;width:100%;min-width:0;justify-content:center;white-space:normal;text-align:center;padding:9px 12px}#${BANNER_ID} .rus-promo-copy:nth-of-type(2){display:none}}
+    `;
+    document.head.appendChild(style);
+  }
+  if(!document.getElementById(BANNER_ID)){
+    const nav=document.querySelector('nav');
+    if(nav){
+      const banner=document.createElement('div');
+      banner.id=BANNER_ID;
+      banner.innerHTML=`<a href="simulators.html#weekly" aria-label="Go to Weekly Simulation picks">
+        <span class="rus-promo-copy rus-promo-item">🏈 Weekly Simulation <span>Make your picks • Compare with Rural Utah Sports • Weekly leaderboard</span> <span class="rus-promo-cta">Play Now →</span></span>
+        <span class="rus-promo-copy rus-promo-item" aria-hidden="true">🏈 Weekly Simulation <span>Make your picks • Compare with Rural Utah Sports • Weekly leaderboard</span> <span class="rus-promo-cta">Play Now →</span></span>
+      </a>`;
+      nav.insertAdjacentElement('afterend',banner);
+    }
+  }
+  const openWeekly=()=>{
+    if(!/simulators\.html$/i.test(location.pathname.split('/').pop()||''))return;
+    if(location.hash.toLowerCase()!=='#weekly')return;
+    const button=document.querySelector('.tab[data-tab="weekly"]');
+    if(button) button.click();
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(openWeekly,0));
+  else setTimeout(openWeekly,0);
+  window.addEventListener('hashchange',openWeekly);
+})();
