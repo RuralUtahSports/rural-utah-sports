@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '17 * * * *'
+  push:
+    paths:
+      - '.github/workflows/rebuild-teams-data.yml'
 
 permissions:
   contents: write
@@ -62,8 +65,18 @@ jobs:
           const num = v => {
             const s = clean(v);
             if (!s) return null;
-            const n = Number(s.replace(/,/g, ''));
+            const n = Number(s.replace(/,/g, '').replace(/%$/, ''));
             return Number.isFinite(n) ? n : null;
+          };
+
+          const canonicalTeam = name => {
+            const aliases = {
+              'GUNNISON': 'GUNNISON VALLEY',
+              'MAPLE MTN': 'MAPLE MOUNTAIN',
+              'MONUMENT VAL': 'MONUMENT VALLEY'
+            };
+            const key = clean(name).toUpperCase();
+            return aliases[key] || key;
           };
 
           (async () => {
@@ -72,7 +85,7 @@ jobs:
             const locRows = await getCSV('830334138', 'A1:G1000');
             const locations = {};
             for (const r of locRows.slice(1)) {
-              const name = clean(r[0]);
+              const name = clean(r[0]).toUpperCase();
               if (!name) continue;
               locations[name] = {
                 classification: clean(r[2]).toUpperCase(),
@@ -81,13 +94,13 @@ jobs:
               };
             }
 
-            // Record Book master table begins in column R. Needed fields:
+            // Record Book master table begins in column R.
             // School=S, Region Titles=AN, Playoff Wins=AO, State Championships=AP.
             const recordRows = await getCSV('1907276361', 'R1:AP241');
             const records = {};
             for (const r of recordRows.slice(1)) {
-              const school = clean(r[1]);
-              if (!school || school === 'School') continue;
+              const school = canonicalTeam(r[1]);
+              if (!school || school === 'SCHOOL') continue;
               const regionTitles = num(r[22]);
               const playoffWins = num(r[23]);
               const stateChampionships = num(r[24]);
@@ -95,23 +108,49 @@ jobs:
               records[school] = { regionTitles, playoffWins, stateChampionships };
             }
 
-            // Match Record Book abbreviations to the names used by the website.
-            const aliases = {
-              'GUNNISON': 'GUNNISON VALLEY',
-              'MAPLE MTN': 'MAPLE MOUNTAIN',
-              'MONUMENT VAL': 'MONUMENT VALLEY'
-            };
-            for (const [from, to] of Object.entries(aliases)) {
-              if (records[from] && !records[to]) records[to] = records[from];
+            // Greatest Seasons contains one row for every team-season.
+            // A:Q = Team, Year, Games, Wins, Losses, Ties, Win%, PF, PA, Avg Margin,
+            // Opp Win%, OppOpp Win%, SOS, Win Rating, Stats, Adjusted, Rank.
+            const seasonRows = await getCSV('149428399', 'A1:Q6791');
+            const seasonHistory = {};
+            for (const r of seasonRows.slice(1)) {
+              const team = canonicalTeam(r[0]);
+              const year = num(r[1]);
+              if (!team || team === 'TEAM' || year === null) continue;
+
+              const season = {
+                year,
+                games: num(r[2]),
+                wins: num(r[3]),
+                losses: num(r[4]),
+                ties: num(r[5]),
+                winPct: num(r[6]),
+                pointsFor: num(r[7]),
+                pointsAgainst: num(r[8]),
+                avgMargin: num(r[9]),
+                opponentWinPct: num(r[10]),
+                opponentsOpponentWinPct: num(r[11]),
+                sos: num(r[12]),
+                rating: num(r[13]),
+                rank: num(r[16])
+              };
+
+              if (!seasonHistory[team]) seasonHistory[team] = [];
+              seasonHistory[team].push(season);
+            }
+
+            for (const seasons of Object.values(seasonHistory)) {
+              seasons.sort((a, b) => b.year - a.year);
             }
 
             fs.writeFileSync('team-locations.json', JSON.stringify(locations));
             fs.writeFileSync('team-records.json', JSON.stringify(records));
+            fs.writeFileSync('season-history.json', JSON.stringify(seasonHistory));
 
             const teams = JSON.parse(fs.readFileSync('teams-data.json', 'utf8'));
             let matched = 0;
             for (const team of teams) {
-              const info = locations[clean(team.team).toUpperCase()] || locations[clean(team.team)];
+              const info = locations[clean(team.team).toUpperCase()];
               if (!info) continue;
               matched++;
               team.classification = info.classification;
@@ -124,8 +163,11 @@ jobs:
 
             console.log(`School Locations: ${Object.keys(locations).length}`);
             console.log(`Record Book programs: ${Object.keys(records).length}`);
+            console.log(`Season-history teams: ${Object.keys(seasonHistory).length}`);
+            console.log(`Season-history rows: ${Object.values(seasonHistory).reduce((n, rows) => n + rows.length, 0)}`);
             console.log(`Matched website teams: ${matched}/${teams.length}`);
-            if (!Object.keys(locations).length || !Object.keys(records).length || !matched) {
+
+            if (!Object.keys(locations).length || !Object.keys(records).length || !Object.keys(seasonHistory).length || !matched) {
               throw new Error('Sheet sync produced empty data; refusing to commit.');
             }
           })().catch(err => { console.error(err); process.exit(1); });
@@ -135,7 +177,7 @@ jobs:
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add team-locations.json team-records.json teams-data.json
+          git add team-locations.json team-records.json season-history.json teams-data.json
           if git diff --cached --quiet; then
             echo "Website data is already current."
           else
