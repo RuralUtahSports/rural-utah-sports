@@ -43,11 +43,12 @@ th{background:#F14D07;color:#000;padding:12px 10px;text-transform:uppercase;font
 td{padding:11px 10px;text-align:center;border-bottom:1px solid #333;white-space:nowrap}
 tbody tr:hover{background:#191919}
 .rating{color:#F14D07;font-weight:900}
-.history-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px}
-.history-controls label{font-size:12px;font-weight:900;text-transform:uppercase;color:#aaa}
-.history-controls select{background:#1c1c1c;color:#fff;border:1px solid #444;border-radius:5px;padding:10px 38px 10px 12px;font-weight:700;cursor:pointer}
+.history-controls{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.control-group{display:flex;flex-direction:column;gap:6px}
+.history-controls label{font-size:11px;font-weight:900;text-transform:uppercase;color:#aaa}
+.history-controls select{background:#1c1c1c;color:#fff;border:1px solid #444;border-radius:5px;padding:10px 38px 10px 12px;font-weight:700;cursor:pointer;min-width:165px}
 .history-controls select:focus{outline:2px solid #F14D07;outline-offset:1px}
-.history-count{color:#888;font-size:12px}
+.history-count{color:#888;font-size:12px;padding-bottom:11px}
 .history-wrap{max-height:68vh;overflow:auto;background:#000;border:1px solid #333;border-radius:7px}
 .history-wrap thead th{position:sticky;top:0;z-index:5;box-shadow:0 1px 0 #333}
 .history-empty{display:none;padding:24px;text-align:center;color:#999;background:#000;border:1px solid #333;border-top:0}
@@ -56,7 +57,7 @@ tbody tr:hover{background:#191919}
 footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}
 footer strong{color:#F14D07}
 @media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.info-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.team-title{font-size:32px}.stats{grid-template-columns:repeat(2,1fr)}.achievement-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.history-controls{align-items:stretch;flex-direction:column}.history-controls select{width:100%}.history-wrap{max-height:72vh}}
+@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.team-title{font-size:32px}.stats{grid-template-columns:repeat(2,1fr)}.achievement-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.history-controls{align-items:stretch;flex-direction:column}.history-controls select{width:100%}.history-count{padding:0}.history-wrap{max-height:72vh}}
 </style>
 </head>
 <body>
@@ -88,6 +89,7 @@ function num(v,d=2){const n=Number(v);return Number.isFinite(n)?n.toFixed(d):'�
 function integer(v){const n=Number(v);return Number.isFinite(n)?n.toLocaleString():'—'}
 function paramsTeam(){return new URLSearchParams(location.search).get('team')||''}
 function normalize(v){return clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'')}
+let currentHistory=[];
 
 async function load(){
 try{
@@ -116,21 +118,38 @@ document.getElementById('page').innerHTML='<div class="error">Team information c
 }
 }
 
-function filterHistory(){
-const select=document.getElementById('historyYearFilter');
-if(!select)return;
-const value=select.value;
-const rows=[...document.querySelectorAll('#historyBody tr[data-year]')];
-let shown=0;
-for(const row of rows){
-const visible=!value||row.dataset.year===value;
-row.style.display=visible?'':'none';
-if(visible)shown++;
+function sortHistoryList(list,mode){
+const rows=[...list];
+const n=(obj,key)=>{const value=Number(obj?.[key]);return Number.isFinite(value)?value:-Infinity};
+const sorts={
+'year-desc':(a,b)=>n(b,'year')-n(a,'year'),
+'year-asc':(a,b)=>n(a,'year')-n(b,'year'),
+'wins-desc':(a,b)=>n(b,'wins')-n(a,'wins')||n(b,'rating')-n(a,'rating'),
+'wins-asc':(a,b)=>n(a,'wins')-n(b,'wins')||n(a,'rating')-n(b,'rating'),
+'winpct-desc':(a,b)=>n(b,'winPct')-n(a,'winPct')||n(b,'wins')-n(a,'wins'),
+'pf-desc':(a,b)=>n(b,'pointsFor')-n(a,'pointsFor'),
+'ppg-desc':(a,b)=>n(b,'ppg')-n(a,'ppg'),
+'margin-desc':(a,b)=>n(b,'avgMargin')-n(a,'avgMargin'),
+'sos-desc':(a,b)=>n(b,'sos')-n(a,'sos'),
+'rating-desc':(a,b)=>n(b,'rating')-n(a,'rating'),
+'rating-asc':(a,b)=>n(a,'rating')-n(b,'rating')
+};
+return rows.sort(sorts[mode]||sorts['year-desc']);
 }
+
+function updateHistoryTable(){
+const yearSelect=document.getElementById('historyYearFilter');
+const sortSelect=document.getElementById('historySort');
+const body=document.getElementById('historyBody');
+if(!yearSelect||!sortSelect||!body)return;
+const year=yearSelect.value;
+let rows=currentHistory.filter(s=>!year||String(s.year)===year);
+rows=sortHistoryList(rows,sortSelect.value);
+body.innerHTML=rows.map(s=>`<tr data-year="${escapeHTML(s.year)}"><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${integer(s.pointsFor)}</td><td>${integer(s.pointsAgainst)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('')||'<tr><td colspan="10">No season history available.</td></tr>';
 const count=document.getElementById('historyCount');
-if(count)count.textContent=value?`${shown} season shown`:`${shown} seasons shown`;
+if(count)count.textContent=year?`${rows.length} season shown`:`${rows.length} seasons shown`;
 const empty=document.getElementById('historyEmpty');
-if(empty)empty.style.display=shown?'none':'block';
+if(empty)empty.style.display=rows.length?'none':'block';
 }
 
 function render(team,achievement,history){
@@ -142,11 +161,10 @@ const region=clean(team.region)||'—';
 const mascot=clean(team.mascot)||'—';
 const greatest=Array.isArray(team.bestSeasons)?team.bestSeasons:[];
 const historyList=Array.isArray(history)?history:[];
+currentHistory=historyList;
 
 const greatestRows=greatest.map(s=>`<tr><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('');
-
-const historyRows=historyList.map(s=>`<tr data-year="${escapeHTML(s.year)}"><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${integer(s.pointsFor)}</td><td>${integer(s.pointsAgainst)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('');
-
+const initialHistoryRows=sortHistoryList(historyList,'year-desc').map(s=>`<tr data-year="${escapeHTML(s.year)}"><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${integer(s.pointsFor)}</td><td>${integer(s.pointsAgainst)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('');
 const yearOptions=historyList.map(s=>Number(s.year)).filter(Number.isFinite).sort((a,b)=>b-a).map(y=>`<option value="${y}">${y}</option>`).join('');
 
 const regionTitles=achievement?.regionTitles??0;
@@ -190,11 +208,29 @@ document.getElementById('page').innerHTML=`
 
 <h2 class="section-title">Season-by-Season History</h2>
 <div class="history-controls">
+<div class="control-group">
 <label for="historyYearFilter">Filter by season</label>
-<select id="historyYearFilter" onchange="filterHistory()"><option value="">All Seasons</option>${yearOptions}</select>
+<select id="historyYearFilter" onchange="updateHistoryTable()"><option value="">All Seasons</option>${yearOptions}</select>
+</div>
+<div class="control-group">
+<label for="historySort">Sort by</label>
+<select id="historySort" onchange="updateHistoryTable()">
+<option value="year-desc">Newest Season</option>
+<option value="year-asc">Oldest Season</option>
+<option value="wins-desc">Most Wins</option>
+<option value="wins-asc">Fewest Wins</option>
+<option value="winpct-desc">Best Win %</option>
+<option value="rating-desc">Highest Rating</option>
+<option value="rating-asc">Lowest Rating</option>
+<option value="pf-desc">Most Points For</option>
+<option value="ppg-desc">Highest PPG</option>
+<option value="margin-desc">Best Avg Margin</option>
+<option value="sos-desc">Highest SOS</option>
+</select>
+</div>
 <span class="history-count" id="historyCount">${historyList.length} seasons shown</span>
 </div>
-<div class="history-wrap"><table><thead><tr><th>Year</th><th>Record</th><th>Win %</th><th>PF</th><th>PA</th><th>PPG</th><th>PAPG</th><th>Margin</th><th>SOS</th><th>Rating</th></tr></thead><tbody id="historyBody">${historyRows||'<tr><td colspan="10">No season history available.</td></tr>'}</tbody></table></div>
+<div class="history-wrap"><table><thead><tr><th>Year</th><th>Record</th><th>Win %</th><th>PF</th><th>PA</th><th>PPG</th><th>PAPG</th><th>Margin</th><th>SOS</th><th>Rating</th></tr></thead><tbody id="historyBody">${initialHistoryRows||'<tr><td colspan="10">No season history available.</td></tr>'}</tbody></table></div>
 <div class="history-empty" id="historyEmpty">No seasons match that filter.</div>
 <p class="note">Season history is synced from the Greatest Seasons tab in the Rural Utah Sports master spreadsheet.</p>
 `;
