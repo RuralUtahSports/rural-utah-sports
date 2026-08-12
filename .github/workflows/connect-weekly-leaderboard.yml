@@ -13,49 +13,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Connect leaderboard and improve week selection
+      - name: Link shared leaderboard
         run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          p=Path('simulators.html')
-          s=p.read_text(encoding='utf-8')
-          if 'weekly-picks-backend.js' not in s:
-              marker='<script src="weekly-picks-enhanced.js"></script>'
-              if marker not in s: raise RuntimeError('enhanced weekly picks marker missing')
-              s=s.replace(marker, marker+'\n<script src="weekly-picks-backend.js"></script>', 1)
-              p.write_text(s,encoding='utf-8')
-
-          p=Path('weekly-picks.js')
-          s=p.read_text(encoding='utf-8')
-          old="if(!wpWeekKey&&wpWeeks.length)wpWeekKey=wpWeeks[0].key;"
-          new="""if(!wpWeekKey&&wpWeeks.length){
-    const parts=new Intl.DateTimeFormat('en-US',{timeZone:WP_TZ,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),o={};
-    for(const part of parts)o[part.type]=part.value;
-    const today=Date.UTC(Number(o.year),Number(o.month)-1,Number(o.day));
-    const current=wpWeeks.find(w=>{const [y,m,d]=w.key.split('-').map(Number),start=Date.UTC(y,m-1,d);return today>=start&&today<=start+6*86400000});
-    if(current)wpWeekKey=current.key;
-    else{
-      const future=wpWeeks.filter(w=>Date.UTC(w.firstDate.y,w.firstDate.m-1,w.firstDate.d)>=today).sort((a,b)=>wpYmdKey(a.firstDate)-wpYmdKey(b.firstDate));
-      wpWeekKey=(future[0]||wpWeeks[0]).key;
-    }
-  }"""
-          if old in s:
-              s=s.replace(old,new,1)
-              p.write_text(s,encoding='utf-8')
-          elif 'const current=wpWeeks.find' not in s:
-              raise RuntimeError('week selection marker missing')
-          PY
+          if ! grep -q 'weekly-picks-backend.js' simulators.html; then
+            sed -i 's#<script src="weekly-picks-enhanced.js"></script>#<script src="weekly-picks-enhanced.js"></script>\n<script src="weekly-picks-backend.js"></script>#' simulators.html
+          fi
       - name: Validate JavaScript
         run: |
           node --check weekly-picks.js
-          node --check weekly-picks-backend.js
           node --check weekly-picks-enhanced.js
+          node --check weekly-picks-backend.js
       - name: Commit
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add simulators.html weekly-picks.js
+          git add simulators.html
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Connect shared weekly picks leaderboard"
           git push
