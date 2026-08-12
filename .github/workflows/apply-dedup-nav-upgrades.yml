@@ -1,0 +1,140 @@
+name: Apply Dedup and Navigation Upgrades
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-dedup-nav-upgrades.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch data sync and navigation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          # Deduplicate Clean Games and normalize Wasatch Academy in team/schedule sync.
+          p=Path('.github/workflows/rebuild-teams-data.yml')
+          s=p.read_text(encoding='utf-8')
+          old="""          const canonicalTeam = name => {
+            const aliases = {
+              'GUNNISON': 'GUNNISON VALLEY',
+              'MAPLE MTN': 'MAPLE MOUNTAIN',
+              'MONUMENT VAL': 'MONUMENT VALLEY',
+              'CEDAR': 'CEDAR CITY',
+              'SUMMIT': 'SUMMIT ACADEMY',
+              'BRIGHAM YOUNG': 'BYH',
+              'WASATCH ACADEMY': 'WASATCH ACAD'
+            };
+            const key = clean(name).replace(/\\s+/g, ' ').toUpperCase();
+            return aliases[key] || key;
+          };"""
+          new="""          const canonicalTeam = name => {
+            const aliases = {
+              'GUNNISON': 'GUNNISON VALLEY',
+              'MAPLE MTN': 'MAPLE MOUNTAIN',
+              'MONUMENT VAL': 'MONUMENT VALLEY',
+              'CEDAR': 'CEDAR CITY',
+              'SUMMIT': 'SUMMIT ACADEMY',
+              'BRIGHAM YOUNG': 'BYH',
+              'WASATCH ACAD': 'WASATCH ACADEMY',
+              'WASATCH ACAD.': 'WASATCH ACADEMY'
+            };
+            const key = clean(name).replace(/\\s+/g, ' ').toUpperCase().replace(/\\.+$/, '').trim();
+            if (key.startsWith('WASATCH ACAD')) return 'WASATCH ACADEMY';
+            return aliases[key] || key;
+          };"""
+          if old not in s: raise SystemExit('canonicalTeam marker not found')
+          s=s.replace(old,new,1)
+          old="""            let validGames = 0;
+            for (const r of gameRows.slice(1)) {"""
+          new="""            let validGames = 0;
+            let duplicateGamesRemoved = 0;
+            const seenGames = new Set();
+            for (const r of gameRows.slice(1)) {"""
+          if old not in s: raise SystemExit('validGames marker not found')
+          s=s.replace(old,new,1)
+          old="""              if (!parts || !team1 || !team2 || team1 === team2 || score1 === null || score2 === null) continue;
+              const year = parts.year;"""
+          new="""              if (!parts || !team1 || !team2 || team1 === team2 || score1 === null || score2 === null) continue;
+              const gameKey = `${date}|${[team1, team2].sort().join('|')}`;
+              if (seenGames.has(gameKey)) { duplicateGamesRemoved++; continue; }
+              seenGames.add(gameKey);
+              const year = parts.year;"""
+          if old not in s: raise SystemExit('game dedup insertion marker not found')
+          s=s.replace(old,new,1)
+          old="""            const eloHistory = {};
+            let eloPoints = 0;
+            for (const r of eloRows.slice(1)) {"""
+          new="""            const eloHistory = {};
+            let eloPoints = 0;
+            let duplicateEloRowsRemoved = 0;
+            const seenEloGames = new Set();
+            for (const r of eloRows.slice(1)) {"""
+          if old not in s: raise SystemExit('elo loop marker not found')
+          s=s.replace(old,new,1)
+          old="""              if (!parts || !team || !websiteTeams.has(team) || eloBefore === null || eloAfter === null) continue;
+              if (!eloHistory[team]) eloHistory[team] = [];"""
+          new="""              if (!parts || !team || !websiteTeams.has(team) || eloBefore === null || eloAfter === null) continue;
+              const eloGameKey = `${date}|${team}|${opponent}`;
+              if (seenEloGames.has(eloGameKey)) { duplicateEloRowsRemoved++; continue; }
+              seenEloGames.add(eloGameKey);
+              if (!eloHistory[team]) eloHistory[team] = [];"""
+          if old not in s: raise SystemExit('elo dedup insertion marker not found')
+          s=s.replace(old,new,1)
+          s=s.replace("            console.log(`Clean games processed: ${validGames}`);","            console.log(`Clean games processed: ${validGames}; duplicate rows removed: ${duplicateGamesRemoved}`);",1)
+          s=s.replace("            console.log(`ELO history rows stored: ${eloPoints}`);","            console.log(`ELO history rows stored: ${eloPoints}; duplicate ELO rows removed: ${duplicateEloRowsRemoved}`);",1)
+          p.write_text(s,encoding='utf-8')
+
+          # Keep every primary tab visible from every HTML page.
+          links=[
+            ('index.html','Home'),('teams.html','Teams'),('greatest-seasons.html','Greatest Seasons'),('championships.html','Championships'),
+            ('records.html','Records'),('scorigami.html','Scorigami'),('games.html','Games'),('out-of-state.html','Out of State'),
+            ('elo.html','ELO'),('rankings.html','Rankings'),('simulators.html','Simulators')
+          ]
+          active_map={'team.html':'teams.html','compare.html':'teams.html'}
+          for p in Path('.').glob('*.html'):
+            text=p.read_text(encoding='utf-8')
+            if '<nav>' not in text or 'nav-content' not in text: continue
+            active=active_map.get(p.name,p.name)
+            nav='<nav><div class="nav-content">'+''.join(f'<a href="{href}"'+(' class="active"' if href==active else '')+f'>{label}</a>' for href,label in links)+'</div></nav>'
+            text2,n=re.subn(r'<nav><div class="nav-content">.*?</div></nav>',nav,text,count=1,flags=re.S)
+            if n!=1: raise SystemExit(f'nav replacement failed: {p}')
+            p.write_text(text2,encoding='utf-8')
+
+          # Home page cards for the new sections.
+          p=Path('index.html');s=p.read_text(encoding='utf-8')
+          if '<h3>Out of State</h3>' not in s:
+            marker='<div class="card"><h3>Team Comparison</h3>'
+            cards='<div class="card"><h3>Out of State</h3><p>See Utah football records against every state, browse every out-of-state game, and filter results by Utah team, state, and year.</p><a href="out-of-state.html">View Out of State</a></div><div class="card"><h3>ELO History</h3><p>Compare historical ELO graphs for up to three Utah high school football programs at once.</p><a href="elo.html">Compare ELO</a></div>'
+            if marker not in s: raise SystemExit('home card marker not found')
+            s=s.replace(marker,cards+marker,1)
+            p.write_text(s,encoding='utf-8')
+          print('Patched sync dedup, nav, and home cards')
+          PY
+      - name: Verify
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          sync=Path('.github/workflows/rebuild-teams-data.yml').read_text()
+          for x in ['seenGames','duplicateGamesRemoved','seenEloGames','WASATCH ACADEMY']:
+            assert x in sync,x
+          for p in Path('.').glob('*.html'):
+            s=p.read_text()
+            if '<nav>' in s:
+              for x in ['out-of-state.html','elo.html']:
+                assert x in s,(p,x)
+          assert '<h3>Out of State</h3>' in Path('index.html').read_text()
+          print('verified')
+          PY
+      - name: Commit
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add .github/workflows/rebuild-teams-data.yml *.html
+          git commit -m "Deduplicate team data and add Out of State and ELO navigation"
+          git pull --rebase origin main
+          git push
