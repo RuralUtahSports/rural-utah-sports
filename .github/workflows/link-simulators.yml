@@ -18,13 +18,13 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
           changed=[]
-          old='<a href="#">Simulators</a>'
-          new='<a href="simulators.html">Simulators</a>'
           for p in Path('.').glob('*.html'):
               text=p.read_text(encoding='utf-8')
-              if old in text:
-                  p.write_text(text.replace(old,new),encoding='utf-8')
+              new,count=re.subn(r'<a href="#">\s*Simulators\s*</a>', '<a href="simulators.html">Simulators</a>', text)
+              if count:
+                  p.write_text(new,encoding='utf-8')
                   changed.append(p.name)
           print('Updated:', ', '.join(changed) if changed else 'none')
           PY
@@ -36,6 +36,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Navigation already current."
           else
-            git commit -m "Link Simulators across site navigation"
+            git commit -m "Finish simulator navigation links"
             git push
           fi
