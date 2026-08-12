@@ -35,7 +35,7 @@ jobs:
 
           const clean = v => String(v ?? '').trim();
           const norm = v => clean(v).toUpperCase().replace(/[^A-Z0-9]/g, '');
-          const n = v => { const x = Number(v); return Number.isFinite(x) ? x : null; };
+          const n = v => { const s = clean(v); if (!s) return null; const x = Number(s); return Number.isFinite(x) ? x : null; };
           const validResult = v => ['W','L','T'].includes(clean(v).toUpperCase());
           const yearOf = v => { const m = clean(v).match(/(18|19|20)\d{2}/); return m ? Number(m[0]) : null; };
           const dateStamp = v => { const d = new Date(clean(v)); return Number.isFinite(d.getTime()) ? d.getTime() : 0; };
