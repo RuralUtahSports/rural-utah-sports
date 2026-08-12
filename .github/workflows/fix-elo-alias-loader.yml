@@ -1,0 +1,39 @@
+name: Fix ELO Alias Loader
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-elo-alias-loader.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch ELO page canonical slugs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('elo.html');s=p.read_text()
+          old="slug=v=>String(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');"
+          new="canonicalName=v=>{const n=String(v??'').trim().toUpperCase(),a={'MONUMENT VAL':'MONUMENT VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','GUNNISON':'GUNNISON VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH'};return n.startsWith('WASATCH ACAD')?'WASATCH ACADEMY':(a[n]||String(v??'').trim())},slug=v=>canonicalName(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');"
+          if old not in s: raise SystemExit('slug marker not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+      - name: Verify JavaScript
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('elo.html').read_text();Path('/tmp/elo.js').write_text('\n'.join(re.findall(r'<script>(.*?)</script>',s,re.S)))
+          assert "'MONUMENT VAL':'MONUMENT VALLEY'" in s
+          PY
+          node --check /tmp/elo.js
+      - name: Commit
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add elo.html
+          git commit -m "Handle historical team aliases on ELO page"
+          git pull --rebase origin main
+          git push
