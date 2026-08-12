@@ -1,0 +1,35 @@
+(()=>{
+const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+const safeHex=(v,f)=>/^#[0-9A-F]{6}$/i.test(String(v||''))?v:f;
+const norm=v=>String(v??'').trim().toUpperCase();
+const rec=r=>`${Number(r?.wins||0)}-${Number(r?.losses||0)}-${Number(r?.ties||0)}`;
+const pct=r=>{const g=Number(r?.games||0);return g?(((Number(r.wins||0)+Number(r.ties||0)*.5)/g)*100).toFixed(1)+'%':'—'};
+function allGames(schedules){const out=[];for(const [year,games] of Object.entries(schedules||{})){for(const g of (Array.isArray(games)?games:[]))out.push({...g,year:Number(year)||0})}return out.sort((a,b)=>{const da=Date.parse(a.date||'')||Date.UTC(a.year,0,1),db=Date.parse(b.date||'')||Date.UTC(b.year,0,1);return da-db})}
+function latestVs(games,opponent){return [...games].reverse().find(g=>norm(g.opponent)===norm(opponent))||null}
+function streakVs(games,opponent){const rows=games.filter(g=>norm(g.opponent)===norm(opponent)).reverse();if(!rows.length)return '—';const result=rows[0].result;if(!['W','L','T'].includes(result))return '—';let n=0;for(const g of rows){if(g.result!==result)break;n++}return `${result}${n}`}
+function resultText(g){if(!g)return 'No game detail';return `${g.date||g.year||'—'} • ${g.result||'—'} ${Number(g.teamScore||0)}–${Number(g.opponentScore||0)}`}
+function install(){
+ if(typeof window.render!=='function'){setTimeout(install,0);return}
+ const base=window.render;
+ window.render=function(team,achievement,pageData){
+   base(team,achievement,pageData);
+   try{
+     const back=document.querySelector('#page > .back');
+     if(back&&!document.querySelector('.team-actions')){
+       const actions=document.createElement('div');actions.className='team-actions';
+       actions.innerHTML=`<a class="team-action" href="compare.html?team1=${encodeURIComponent(team.team)}">Compare ${esc(team.team)}</a><a class="team-action" href="games.html?search=${encodeURIComponent(team.team)}">Search All Games</a>`;
+       back.insertAdjacentElement('afterend',actions);
+     }
+     const breakdown=pageData?.breakdown?.opponents||{},games=allGames(pageData?.schedules||{});
+     const rivalries=Object.entries(breakdown).filter(([,r])=>Number(r?.games||0)>0).sort((a,b)=>Number(b[1]?.games||0)-Number(a[1]?.games||0)||a[0].localeCompare(b[0])).slice(0,8);
+     if(!rivalries.length)return;
+     const target=[...document.querySelectorAll('#page .section-title')].find(h=>h.textContent.trim()==='Greatest Seasons');
+     if(!target||document.getElementById('rivalryHub'))return;
+     const section=document.createElement('div');section.id='rivalryHub';
+     section.innerHTML=`<h2 class="section-title">Rivalry Hub</h2><section class="rivalry-hub"><p class="rivalry-intro">Most-played opponents in ${esc(team.team)} history. Series records are shown from ${esc(team.team)}'s perspective.</p><div class="rivalry-grid">${rivalries.map(([opp,r])=>{const latest=latestVs(games,opp),edge=Number(r.wins||0)>Number(r.losses||0)?'Series Lead':Number(r.wins||0)<Number(r.losses||0)?'Series Trail':'Series Tied';return `<article class="rivalry-card"><div class="rivalry-bar" style="background:${safeHex(team.backgroundColor,'#F14D07')}"></div><div class="rivalry-body"><div class="rivalry-opponent">${esc(opp)}</div><div class="rivalry-stats"><div class="rivalry-stat"><strong>${Number(r.games||0)}</strong><span>Meetings</span></div><div class="rivalry-stat"><strong>${rec(r)}</strong><span>Series Record</span></div><div class="rivalry-stat"><strong>${pct(r)}</strong><span>Win Rate</span></div><div class="rivalry-stat"><strong>${streakVs(games,opp)}</strong><span>Current Streak</span></div></div><div class="rivalry-latest"><strong>${edge}</strong><br>${esc(resultText(latest))}</div><div class="rivalry-links"><a href="games.html?search=${encodeURIComponent(team.team+' vs '+opp)}">Series Games</a><a href="compare.html?team1=${encodeURIComponent(team.team)}&team2=${encodeURIComponent(opp)}">Compare</a></div></div></article>`}).join('')}</div></section>`;
+     target.insertAdjacentElement('beforebegin',section);
+   }catch(e){console.error('Rivalry Hub:',e)}
+ };
+}
+install();
+})();
