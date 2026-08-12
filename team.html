@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team | Rural Utah Sports</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#111;color:#fff}
+header{background:#000;border-bottom:4px solid #F14D07;padding:15px 25px}
+.header-content{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px}
+.logo{width:80px;height:80px;object-fit:contain}
+.site-title h1{font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+.site-title p{color:#F14D07;font-weight:bold;margin-top:5px}
+nav{background:#000;border-bottom:1px solid #333}
+.nav-content{max-width:1400px;margin:auto;display:flex;flex-wrap:wrap}
+nav a{color:#fff;text-decoration:none;padding:15px 18px;font-size:14px;font-weight:bold;text-transform:uppercase}
+nav a:hover{background:#F14D07;color:#000}
+.container{max-width:1400px;margin:auto;padding:35px 20px 60px}
+.back{display:inline-block;background:#F14D07;color:#000;text-decoration:none;padding:10px 16px;border-radius:4px;font-weight:900;text-transform:uppercase;margin-bottom:20px}
+.hero{background:#000;border:1px solid #333;border-radius:8px;overflow:hidden;margin-bottom:28px}
+.color-bar{height:14px}
+.hero-content{padding:30px}
+.team-title{font-size:46px;font-weight:900;text-transform:uppercase;margin-bottom:8px}
+.team-subtitle{font-size:18px;color:#aaa}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:28px}
+.stat{background:#1c1c1c;border:1px solid #333;border-radius:6px;padding:18px;text-align:center}
+.stat-number{font-size:25px;font-weight:900}
+.stat-label{font-size:11px;color:#999;text-transform:uppercase;margin-top:5px}
+.section-title{border-left:6px solid #F14D07;padding-left:14px;margin:35px 0 15px;font-size:27px;text-transform:uppercase}
+.info-box{background:#000;border:1px solid #333;border-radius:7px;padding:20px}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.info-item{background:#1c1c1c;border-radius:4px;padding:14px}
+.info-label{color:#888;font-size:10px;text-transform:uppercase;margin-bottom:5px}
+.info-value{font-size:16px;font-weight:bold}
+.table-wrap{overflow-x:auto;background:#000;border:1px solid #333;border-radius:7px}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th{background:#F14D07;color:#000;padding:12px 10px;text-transform:uppercase;font-size:11px}
+td{padding:11px 10px;text-align:center;border-bottom:1px solid #333}
+tbody tr:hover{background:#191919}
+.rating{color:#F14D07;font-weight:900}
+.note{color:#888;font-size:13px;margin-top:10px}
+.loading,.error{text-align:center;padding:60px;color:#999}
+footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}
+footer strong{color:#F14D07}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.team-title{font-size:32px}.stats{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<div class="header-content">
+<img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo">
+<div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div>
+</div>
+</header>
+<nav><div class="nav-content">
+<a href="index.html">Home</a>
+<a href="teams.html">Teams</a>
+<a href="greatest-seasons.html">Greatest Seasons</a>
+<a href="#">Games</a>
+<a href="#">Rankings</a>
+<a href="#">Simulators</a>
+</div></nav>
+<main class="container">
+<div id="page"><div class="loading">Loading team...</div></div>
+</main>
+<footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
+<script>
+function clean(v){return String(v ?? '').trim()}
+function escapeHTML(v){return clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
+function color(v,f){return /^#[0-9A-F]{6}$/i.test(clean(v))?clean(v):f}
+function record(w,l,t){return `${Number(w||0)}-${Number(l||0)}-${Number(t||0)}`}
+function pct(v){const n=Number(v);return Number.isFinite(n)?(n*100).toFixed(1)+'%':'—'}
+function num(v,d=2){const n=Number(v);return Number.isFinite(n)?n.toFixed(d):'—'}
+function paramsTeam(){return new URLSearchParams(location.search).get('team')||''}
+function normalize(v){return clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'')}
+async function load(){
+try{
+const response=await fetch('teams-data.json?v='+Date.now(),{cache:'no-store'});
+if(!response.ok)throw new Error('Unable to load team data');
+const teams=await response.json();
+const wanted=normalize(paramsTeam());
+const team=teams.find(t=>normalize(t.team)===wanted);
+if(!team)throw new Error('Team not found');
+render(team);
+}catch(e){console.error(e);document.getElementById('page').innerHTML='<div class="error">Team not found.<br><br><a class="back" href="teams.html">← Back to Teams</a></div>'}
+}
+function render(team){
+const bg=color(team.backgroundColor,'#222');
+let text=color(team.textColor,'#fff');
+if(text.toUpperCase()==='#000000')text='#fff';
+const classification=clean(team.classification)||'—';
+const region=clean(team.region)||'—';
+const mascot=clean(team.mascot)||'—';
+const seasons=Array.isArray(team.bestSeasons)?team.bestSeasons:[];
+const seasonRows=seasons.map(s=>`<tr><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('');
+document.title=`${team.team} | Rural Utah Sports`;
+document.getElementById('page').innerHTML=`
+<a class="back" href="teams.html">← All Teams</a>
+<section class="hero">
+<div class="color-bar" style="background:${bg}"></div>
+<div class="hero-content">
+<h2 class="team-title" style="color:${text}">${escapeHTML(team.team)}</h2>
+<div class="team-subtitle">${escapeHTML(classification)} • ${escapeHTML(region)} • ${escapeHTML(mascot)}</div>
+<div class="stats">
+<div class="stat"><div class="stat-number">${record(team.wins,team.losses,team.ties)}</div><div class="stat-label">All-Time Record</div></div>
+<div class="stat"><div class="stat-number">${pct(team.winPct)}</div><div class="stat-label">Win Percentage</div></div>
+<div class="stat"><div class="stat-number">${Number(team.games||0).toLocaleString()}</div><div class="stat-label">Games</div></div>
+<div class="stat"><div class="stat-number">${Number(team.seasons||0).toLocaleString()}</div><div class="stat-label">Seasons</div></div>
+<div class="stat"><div class="stat-number">${num(team.avgMargin,1)}</div><div class="stat-label">Avg. Margin</div></div>
+</div>
+</div>
+</section>
+<h2 class="section-title">Team Information</h2>
+<div class="info-box"><div class="info-grid">
+<div class="info-item"><div class="info-label">Classification</div><div class="info-value">${escapeHTML(classification)}</div></div>
+<div class="info-item"><div class="info-label">Region</div><div class="info-value">${escapeHTML(region)}</div></div>
+<div class="info-item"><div class="info-label">Mascot</div><div class="info-value">${escapeHTML(mascot)}</div></div>
+<div class="info-item"><div class="info-label">Coach</div><div class="info-value">${escapeHTML(team.coach||'—')}</div></div>
+<div class="info-item"><div class="info-label">Points For</div><div class="info-value">${Number(team.pointsFor||0).toLocaleString()}</div></div>
+<div class="info-item"><div class="info-label">Points Against</div><div class="info-value">${Number(team.pointsAgainst||0).toLocaleString()}</div></div>
+</div></div>
+<h2 class="section-title">Greatest Seasons</h2>
+<div class="table-wrap"><table><thead><tr><th>Year</th><th>Record</th><th>Win %</th><th>PPG</th><th>PAPG</th><th>Margin</th><th>SOS</th><th>Rating</th></tr></thead><tbody>${seasonRows||'<tr><td colspan="8">No season data available.</td></tr>'}</tbody></table></div>
+<p class="note">Season ratings and statistics shown here are from the Rural Utah Sports historical team data.</p>
+`;
+}
+load();
+</script>
+</body>
+</html>
