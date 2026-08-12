@@ -1,0 +1,89 @@
+name: Build Rivalry Dominance
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scorigami.json'
+      - '.github/workflows/build-rivalry-dominance.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Calculate rivalry series dominance
+        run: |
+          python - <<'PY'
+          import json
+          from collections import defaultdict
+          from pathlib import Path
+
+          data=json.loads(Path('scorigami.json').read_text(encoding='utf-8'))
+          series={}
+
+          def clean(v): return str(v or '').strip()
+          def key(a,b): return tuple(sorted((clean(a),clean(b)), key=lambda x:x.upper()))
+
+          for score in data.get('scores',[]):
+              for g in score.get('games',[]) or []:
+                  if g.get('tie'):
+                      a,b=clean(g.get('team1')),clean(g.get('team2'))
+                      if not a or not b: continue
+                      k=key(a,b)
+                      r=series.setdefault(k,{'teamA':k[0],'teamB':k[1],'winsA':0,'winsB':0,'ties':0,'meetings':0})
+                      r['ties']+=1;r['meetings']+=1
+                  else:
+                      w,l=clean(g.get('winner')),clean(g.get('loser'))
+                      if not w or not l: continue
+                      k=key(w,l)
+                      r=series.setdefault(k,{'teamA':k[0],'teamB':k[1],'winsA':0,'winsB':0,'ties':0,'meetings':0})
+                      if w==r['teamA']: r['winsA']+=1
+                      else: r['winsB']+=1
+                      r['meetings']+=1
+
+          rows=[]
+          for r in series.values():
+              if r['meetings']<10: continue
+              if r['winsA']>=r['winsB']:
+                  leader,trailer=r['teamA'],r['teamB']; lw,tw=r['winsA'],r['winsB']
+              else:
+                  leader,trailer=r['teamB'],r['teamA']; lw,tw=r['winsB'],r['winsA']
+              decided=lw+tw
+              rows.append({
+                  **r,
+                  'leader':leader,
+                  'trailer':trailer,
+                  'leaderWins':lw,
+                  'trailerWins':tw,
+                  'seriesGap':lw-tw,
+                  'leaderWinPctDecided': round(lw/decided,4) if decided else None,
+                  'leaderWinPctAllMeetings': round((lw+r['ties']*.5)/r['meetings'],4) if r['meetings'] else None,
+                  'recordForLeader': f"{lw}-{tw}-{r['ties']}"
+              })
+
+          by_gap=sorted(rows,key=lambda r:(r['seriesGap'],r['meetings'],r['leaderWinPctDecided'] or 0),reverse=True)
+          by_pct=sorted(rows,key=lambda r:(r['leaderWinPctDecided'] or 0,r['meetings'],r['seriesGap']),reverse=True)
+          out={
+              'minimumMeetings':10,
+              'definition':'Series dominance among matchups with at least 10 meetings. Primary ranking uses largest difference in wins; ties do not count as wins for either team.',
+              'mostLopsidedBySeriesGap':by_gap[:50],
+              'mostDominantByWinPercentage':by_pct[:50]
+          }
+          Path('rivalry-dominance.json').write_text(json.dumps(out,indent=2,sort_keys=False)+'\n',encoding='utf-8')
+          if by_gap:
+              r=by_gap[0]
+              print(f"Most lopsided: {r['leader']} leads {r['trailer']} {r['recordForLeader']} in {r['meetings']} meetings (gap {r['seriesGap']})")
+          PY
+      - name: Commit updated data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add rivalry-dominance.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Update rivalry dominance records"
+          git pull --rebase origin main
+          git push
