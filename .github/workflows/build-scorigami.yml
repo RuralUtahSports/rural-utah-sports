@@ -85,10 +85,8 @@ jobs:
             if (cleanGameRows.length < 2) throw new Error('Clean Games is empty.');
 
             const scoreMap = new Map();
-            const seenGames = new Set();
             let skippedRows = 0;
-            let duplicateRows = 0;
-            let uniqueGames = 0;
+            let gamesIncluded = 0;
             let maxWinningScore = 0;
             let maxLosingScore = 0;
 
@@ -104,18 +102,7 @@ jobs:
                 continue;
               }
 
-              const gameSides = [
-                `${team1}\u0000${score1}`,
-                `${team2}\u0000${score2}`
-              ].sort((a,b) => a.localeCompare(b));
-              const dedupeKey = `${date}|${gameSides[0]}|${gameSides[1]}`;
-              if (seenGames.has(dedupeKey)) {
-                duplicateRows++;
-                continue;
-              }
-              seenGames.add(dedupeKey);
-              uniqueGames++;
-
+              gamesIncluded++;
               const high = Math.max(score1, score2);
               const low = Math.min(score1, score2);
               const k = scoreKey(high, low);
@@ -168,19 +155,17 @@ jobs:
 
             const scores = [...scoreMap.values()].sort((a,b) => a.winner - b.winner || a.loser - b.loser);
             const summary = {
-              uniqueGames,
+              uniqueGames: gamesIncluded,
               uniqueFinalScores: scores.length,
-              skippedRows,
-              duplicateRows
+              skippedRows
             };
             const payload = { summary, maxWinningScore, maxLosingScore, scores };
 
-            if (!scores.length || !uniqueGames) throw new Error('Scorigami build produced no score data.');
+            if (!scores.length || !gamesIncluded) throw new Error('Scorigami build produced no score data.');
             fs.writeFileSync('scorigami.json', JSON.stringify(payload));
-            console.log(`Unique Clean Games: ${uniqueGames}`);
+            console.log(`Clean Games included: ${gamesIncluded}`);
             console.log(`Unique final scores: ${scores.length}`);
             console.log(`Skipped rows: ${skippedRows}`);
-            console.log(`Duplicate rows removed: ${duplicateRows}`);
             console.log(`Score range: 0-${maxWinningScore} winners, 0-${maxLosingScore} losers`);
             const sample = scoreMap.get('16-3');
             if (sample) console.log(`16-3 games: ${sample.games.length}`);
