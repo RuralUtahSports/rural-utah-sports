@@ -21,165 +21,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Build Scorigami JSON
         env:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
           CLEAN_GAMES_GID: 627882418
         run: |
           node <<'NODE'
-          const fs = require('fs');
-
-          const sheetId = process.env.SHEET_ID;
-          const cleanGamesGid = process.env.CLEAN_GAMES_GID;
-
-          function csvUrl(gid, range) {
-            return `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}&range=${encodeURIComponent(range)}`;
-          }
-
-          function parseCSV(text) {
-            const rows = [];
-            let row = [], field = '', quoted = false;
-            for (let i = 0; i < text.length; i++) {
-              const c = text[i];
-              if (quoted) {
-                if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
-                else if (c === '"') quoted = false;
-                else field += c;
-              } else {
-                if (c === '"') quoted = true;
-                else if (c === ',') { row.push(field); field = ''; }
-                else if (c === '\n') { row.push(field.replace(/\r$/, '')); rows.push(row); row = []; field = ''; }
-                else field += c;
-              }
-            }
-            if (field.length || row.length) { row.push(field.replace(/\r$/, '')); rows.push(row); }
-            return rows;
-          }
-
-          async function getCSV(gid, range) {
-            const res = await fetch(csvUrl(gid, range));
-            if (!res.ok) throw new Error(`Sheet download failed: ${res.status} ${res.statusText}`);
-            return parseCSV(await res.text());
-          }
-
-          const clean = v => String(v ?? '').trim();
-          const num = v => {
-            const s = clean(v).replace(/,/g, '');
-            if (!s) return null;
-            const n = Number(s);
-            return Number.isFinite(n) ? n : null;
-          };
-          const scoreKey = (winner, loser) => `${winner}-${loser}`;
-          const dateYear = v => {
-            const m = clean(v).match(/(18|19|20)\d{2}/);
-            return m ? Number(m[0]) : null;
-          };
-          const dateStamp = v => {
-            const d = new Date(clean(v));
-            return Number.isFinite(d.getTime()) ? d.getTime() : 0;
-          };
-
-          (async () => {
-            const cleanGameRows = await getCSV(cleanGamesGid, 'A1:F50000');
-            if (cleanGameRows.length < 2) throw new Error('Clean Games is empty.');
-
-            const scoreMap = new Map();
-            let skippedRows = 0;
-            let gamesIncluded = 0;
-            let maxWinningScore = 0;
-            let maxLosingScore = 0;
-
-            for (const row of cleanGameRows.slice(1)) {
-              const date = clean(row[0]);
-              const team1 = clean(row[1]);
-              const team2 = clean(row[2]);
-              const score1 = num(row[3]);
-              const score2 = num(row[4]);
-
-              if (!date || !team1 || !team2 || score1 === null || score2 === null || score1 < 0 || score2 < 0) {
-                if (row.some(v => clean(v))) skippedRows++;
-                continue;
-              }
-
-              gamesIncluded++;
-              const high = Math.max(score1, score2);
-              const low = Math.min(score1, score2);
-              const k = scoreKey(high, low);
-              const year = dateYear(date);
-
-              let entry = scoreMap.get(k);
-              if (!entry) {
-                entry = {
-                  winner: high,
-                  loser: low,
-                  count: 0,
-                  firstYear: null,
-                  recentYear: null,
-                  games: []
-                };
-                scoreMap.set(k, entry);
-              }
-
-              entry.count++;
-              if (year !== null) {
-                entry.firstYear = entry.firstYear === null ? year : Math.min(entry.firstYear, year);
-                entry.recentYear = entry.recentYear === null ? year : Math.max(entry.recentYear, year);
-              }
-
-              const tie = score1 === score2;
-              const winningTeam = tie ? team1 : (score1 > score2 ? team1 : team2);
-              const losingTeam = tie ? team2 : (score1 > score2 ? team2 : team1);
-
-              entry.games.push({
-                date,
-                year,
-                winner: winningTeam,
-                loser: losingTeam,
-                winnerScore: high,
-                loserScore: low,
-                tie,
-                team1,
-                team2,
-                score1,
-                score2
-              });
-
-              maxWinningScore = Math.max(maxWinningScore, high);
-              maxLosingScore = Math.max(maxLosingScore, low);
-            }
-
-            for (const entry of scoreMap.values()) {
-              entry.games.sort((a,b) => dateStamp(b.date) - dateStamp(a.date));
-            }
-
-            const scores = [...scoreMap.values()].sort((a,b) => a.winner - b.winner || a.loser - b.loser);
-            const summary = {
-              uniqueGames: gamesIncluded,
-              uniqueFinalScores: scores.length,
-              skippedRows
-            };
-            const payload = { summary, maxWinningScore, maxLosingScore, scores };
-
-            if (!scores.length || !gamesIncluded) throw new Error('Scorigami build produced no score data.');
-            fs.writeFileSync('scorigami.json', JSON.stringify(payload));
-            console.log(`Clean Games included: ${gamesIncluded}`);
-            console.log(`Unique final scores: ${scores.length}`);
-            console.log(`Skipped rows: ${skippedRows}`);
-            console.log(`Score range: 0-${maxWinningScore} winners, 0-${maxLosingScore} losers`);
-            const sample = scoreMap.get('16-3');
-            if (sample) console.log(`16-3 games: ${sample.games.length}`);
-          })().catch(err => { console.error(err); process.exit(1); });
+          const fs=require('fs');const sheetId=process.env.SHEET_ID,gid=process.env.CLEAN_GAMES_GID;
+          const url=`https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}&range=${encodeURIComponent('A1:F50000')}`;
+          function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}else{if(c==='"')quoted=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
+          const clean=v=>String(v??'').trim(),norm=v=>clean(v).replace(/\s+/g,' ').toUpperCase(),num=v=>{const n=Number(clean(v).replace(/,/g,''));return Number.isFinite(n)?n:null};
+          const aliases={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY'};
+          function team(v){const n=norm(v).replace(/\.+$/,'').trim();if(n.startsWith('WASATCH ACAD'))return'WASATCH ACADEMY';return aliases[n]||n}
+          const year=v=>{const m=clean(v).match(/(18|19|20)\d{2}/);return m?Number(m[0]):null},stamp=v=>{const d=new Date(clean(v));return Number.isFinite(d.getTime())?d.getTime():0};
+          function gameKey(date,a,b){return `${clean(date)}|${[team(a),team(b)].sort().join('|')}`}
+          (async()=>{const res=await fetch(url);if(!res.ok)throw new Error(`Sheet download failed ${res.status}`);const rows=parseCSV(await res.text()),scoreMap=new Map(),seen=new Set();let skippedRows=0,sourceRows=0,duplicatesRemoved=0,conflictingDuplicates=0,maxWinningScore=0,maxLosingScore=0;
+            for(const r of rows.slice(1)){const date=clean(r[0]),team1=team(r[1]),team2=team(r[2]),score1=num(r[3]),score2=num(r[4]);if(!date||!team1||!team2||team1===team2||score1===null||score2===null||score1<0||score2<0){if(r.some(v=>clean(v)))skippedRows++;continue}sourceRows++;const gk=gameKey(date,team1,team2);if(seen.has(gk)){duplicatesRemoved++;continue}seen.add(gk);const high=Math.max(score1,score2),low=Math.min(score1,score2),k=`${high}-${low}`,yr=year(date);let e=scoreMap.get(k);if(!e){e={winner:high,loser:low,count:0,firstYear:null,recentYear:null,games:[]};scoreMap.set(k,e)}e.count++;if(yr!==null){e.firstYear=e.firstYear===null?yr:Math.min(e.firstYear,yr);e.recentYear=e.recentYear===null?yr:Math.max(e.recentYear,yr)}const tie=score1===score2,winningTeam=tie?team1:(score1>score2?team1:team2),losingTeam=tie?team2:(score1>score2?team2:team1);e.games.push({date,year:yr,winner:winningTeam,loser:losingTeam,winnerScore:high,loserScore:low,tie,team1,team2,score1,score2});maxWinningScore=Math.max(maxWinningScore,high);maxLosingScore=Math.max(maxLosingScore,low)}
+            for(const e of scoreMap.values())e.games.sort((a,b)=>stamp(b.date)-stamp(a.date));const scores=[...scoreMap.values()].sort((a,b)=>a.winner-b.winner||a.loser-b.loser);const payload={summary:{sourceRows,uniqueGames:seen.size,duplicatesRemoved,conflictingDuplicates,uniqueFinalScores:scores.length,skippedRows},maxWinningScore,maxLosingScore,scores};if(!scores.length||!seen.size)throw new Error('No score data');fs.writeFileSync('scorigami.json',JSON.stringify(payload));console.log(`Source rows: ${sourceRows}; unique games: ${seen.size}; duplicates removed: ${duplicatesRemoved}`)})().catch(e=>{console.error(e);process.exit(1)});
           NODE
-
       - name: Commit Scorigami data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           git add scorigami.json
-          if git diff --cached --quiet; then
-            echo "Scorigami data is already current."
-          else
-            git commit -m "Auto-sync Scorigami data"
-            git push
-          fi
+          if git diff --cached --quiet; then echo "Scorigami data is already current."; else git commit -m "Auto-sync deduplicated Scorigami data"; git pull --rebase origin main; git push; fi
