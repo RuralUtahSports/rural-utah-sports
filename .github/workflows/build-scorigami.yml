@@ -118,8 +118,7 @@ jobs:
               const m = clean(row[0]).match(/^(\d+)-(\d+)$/);
               if (!m) continue;
               const winner = Number(m[1]), loser = Number(m[2]);
-              const key = scoreKey(winner, loser);
-              const entry = scoreMap.get(key);
+              const entry = scoreMap.get(scoreKey(winner, loser));
               if (!entry) continue;
               entry.firstYear = num(row[2]);
               entry.recentYear = num(row[3]);
@@ -130,20 +129,24 @@ jobs:
               const m = clean(row[0]).match(/^(\d+)-(\d+)$/);
               if (!m || m[1] !== m[2]) continue;
               const winner = Number(m[1]), loser = Number(m[2]);
+              const count = num(row[1]);
+              if (count === null || count <= 0) continue;
               const key = scoreKey(winner, loser);
-              const entry = scoreMap.get(key);
-              if (!entry) continue;
+              let entry = scoreMap.get(key);
+              if (!entry) {
+                entry = { winner, loser, count, firstYear: null, recentYear: null };
+                scoreMap.set(key, entry);
+              } else {
+                entry.count = count;
+              }
               entry.firstYear = num(row[2]);
               entry.recentYear = num(row[3]);
+              maxWinningScore = Math.max(maxWinningScore, winner);
+              maxLosingScore = Math.max(maxLosingScore, loser);
             }
 
             const scores = [...scoreMap.values()].sort((a, b) => a.winner - b.winner || a.loser - b.loser);
-            const payload = {
-              summary,
-              maxWinningScore,
-              maxLosingScore,
-              scores
-            };
+            const payload = { summary, maxWinningScore, maxLosingScore, scores };
 
             if (!scores.length || !summary.uniqueFinalScores) throw new Error('Scorigami build produced no score data.');
             fs.writeFileSync('scorigami.json', JSON.stringify(payload));
