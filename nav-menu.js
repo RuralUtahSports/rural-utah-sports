@@ -1,0 +1,103 @@
+(()=>{
+  const groups={
+    history:[
+      ['Championships','championships.html'],
+      ['Greatest Seasons','greatest-seasons.html'],
+      ['Records','records.html']
+    ],
+    analytics:[
+      ['ELO','elo.html'],
+      ['Scorigami','scorigami.html'],
+      ['Out of State','out-of-state.html'],
+      ['Team Comparison','compare.html']
+    ],
+    simulators:[
+      ['Simulators Hub','simulators.html']
+    ]
+  };
+
+  const path=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+  const active=(href)=>path===href.toLowerCase();
+  const groupActive=(items)=>items.some(([,href])=>active(href));
+
+  function injectStyles(){
+    if(document.getElementById('rus-nav-v2')) return;
+    const style=document.createElement('style');
+    style.id='rus-nav-v2';
+    style.textContent=`
+      nav{position:relative;z-index:50}
+      .nav-content.rus-nav{display:flex;align-items:stretch;flex-wrap:wrap;gap:0}
+      .rus-nav>a,.rus-nav details>summary{color:#fff;text-decoration:none;padding:15px 16px;font-size:13px;font-weight:900;text-transform:uppercase;cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;min-height:48px}
+      .rus-nav details>summary::-webkit-details-marker{display:none}
+      .rus-nav>a:hover,.rus-nav>a.active,.rus-nav details.active>summary,.rus-nav details[open]>summary{background:#F14D07;color:#000}
+      .rus-nav .home-link{padding-inline:13px}
+      .rus-nav details{position:relative}
+      .rus-nav .drop{position:absolute;left:0;top:100%;min-width:210px;background:#0b0b0b;border:1px solid #333;border-top:3px solid #F14D07;box-shadow:0 10px 24px rgba(0,0,0,.35);display:none}
+      .rus-nav details[open]>.drop{display:block}
+      .rus-nav .drop a{display:block;color:#fff;text-decoration:none;padding:12px 14px;font-size:12px;font-weight:800;text-transform:uppercase;border-bottom:1px solid #242424;white-space:nowrap}
+      .rus-nav .drop a:last-child{border-bottom:0}
+      .rus-nav .drop a:hover,.rus-nav .drop a.active{background:#F14D07;color:#000}
+      .rus-nav .caret{font-size:10px;transform:translateY(-1px)}
+      .header-home{cursor:pointer}
+      @media(min-width:701px){
+        .rus-nav details:hover>.drop{display:block}
+      }
+      @media(max-width:700px){
+        .nav-content.rus-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+        .rus-nav>a,.rus-nav details>summary{justify-content:center;text-align:center;padding:12px 7px;font-size:12px}
+        .rus-nav details{position:static}
+        .rus-nav .drop{position:static;grid-column:1/-1;min-width:0;width:100%;box-shadow:none;border-left:0;border-right:0}
+        .rus-nav .drop a{text-align:center;white-space:normal;padding:11px 8px}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function link(label,href,extra=''){
+    return `<a href="${href}" class="${active(href)?'active ':''}${extra}"${active(href)?' aria-current="page"':''}>${label}</a>`;
+  }
+
+  function dropdown(label,key){
+    const items=groups[key];
+    const cls=groupActive(items)?'active':'';
+    return `<details class="${cls}"><summary>${label}<span class="caret">▼</span></summary><div class="drop">${items.map(([name,href])=>link(name,href)).join('')}</div></details>`;
+  }
+
+  function setup(){
+    injectStyles();
+    const host=document.querySelector('nav .nav-content');
+    if(!host) return;
+    host.classList.add('rus-nav');
+    host.innerHTML=[
+      link('Home','index.html','home-link'),
+      link('Teams','teams.html'),
+      link('Games','games.html'),
+      link('Rankings','rankings.html'),
+      link('Standings','standings.html'),
+      dropdown('History','history'),
+      dropdown('Analytics','analytics'),
+      dropdown('Simulators','simulators')
+    ].join('');
+
+    document.querySelectorAll('.rus-nav details').forEach(d=>{
+      d.addEventListener('toggle',()=>{
+        if(!d.open) return;
+        document.querySelectorAll('.rus-nav details').forEach(other=>{if(other!==d) other.open=false;});
+      });
+    });
+
+    const logo=document.querySelector('header .logo');
+    if(logo && !logo.closest('a')){
+      logo.classList.add('header-home');
+      logo.setAttribute('title','Home');
+      logo.setAttribute('role','link');
+      logo.setAttribute('tabindex','0');
+      const go=()=>{location.href='index.html'};
+      logo.addEventListener('click',go);
+      logo.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+    }
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup);
+  else setup();
+})();
