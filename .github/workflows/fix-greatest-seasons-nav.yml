@@ -1,0 +1,53 @@
+name: Fix Greatest Seasons Navigation
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-greatest-seasons-nav.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace Greatest Seasons navigation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('greatest-seasons.html')
+          text = p.read_text(encoding='utf-8')
+          new_nav = '''<nav>
+  <div class="nav-content">
+    <a href="index.html">Home</a>
+    <a href="teams.html">Teams</a>
+    <a href="greatest-seasons.html" class="active">Greatest Seasons</a>
+    <a href="championships.html">Championships</a>
+    <a href="records.html">Records</a>
+    <a href="scorigami.html">Scorigami</a>
+    <a href="#">Games</a>
+    <a href="#">Rankings</a>
+    <a href="simulators.html">Simulators</a>
+  </div>
+</nav>'''
+          updated, count = re.subn(r'<nav>.*?</nav>', new_nav, text, count=1, flags=re.S)
+          if count != 1:
+              raise SystemExit(f'Expected one nav block, replaced {count}')
+          p.write_text(updated, encoding='utf-8')
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add greatest-seasons.html
+          if git diff --cached --quiet; then
+            echo "Greatest Seasons navigation already current."
+          else
+            git commit -m "Fix Greatest Seasons navigation"
+            git push
+          fi
