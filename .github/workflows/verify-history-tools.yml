@@ -1,0 +1,36 @@
+name: Verify History Tools
+
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-history-tools.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JavaScript and data
+        run: |
+          node --check team-enhancements.js
+          python - <<'PY'
+          import json,re,subprocess,tempfile,pathlib
+          for html in ['compare.html','rankings.html','records.html','games.html']:
+              text=pathlib.Path(html).read_text(encoding='utf-8')
+              scripts=re.findall(r'<script>(.*?)</script>',text,re.S)
+              for i,code in enumerate(scripts):
+                  path=pathlib.Path(tempfile.gettempdir())/f'{html}-{i}.js'
+                  path.write_text(code,encoding='utf-8')
+                  subprocess.run(['node','--check',str(path)],check=True)
+          streaks=json.load(open('streak-records.json'))
+          assert streaks and any(v['longestWinStreak']['length']>0 for v in streaks.values())
+          assert any(v['longestLossStreak']['length']>0 for v in streaks.values())
+          history=json.load(open('rankings-history-2026.json'))
+          assert history['snapshots'][0]['key']=='2026-preseason'
+          assert len(history['snapshots'][0]['classifications'])==7
+          compare=pathlib.Path('compare.html').read_text()
+          team=pathlib.Path('team.html').read_text()
+          assert 'team-enhancements.js' in team and 'Rivalry Hub' in pathlib.Path('team-enhancements.js').read_text()
+          assert 'simulators.html?team1=' in compare and 'games.html?search=' in compare
+          print('History tools validation passed')
+          PY
