@@ -1,0 +1,37 @@
+name: Fix Weekly Current Week
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-weekly-current-week.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prefer the current Mountain Time week
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const path='weekly-picks.js';
+          let s=fs.readFileSync(path,'utf8');
+          const old="if(!wpWeekKey&&wpWeeks.length)wpWeekKey=wpWeeks[0].key;";
+          const replacement="if(!wpWeekKey&&wpWeeks.length){const today=wpParseDate(new Intl.DateTimeFormat('en-US',{timeZone:WP_TZ}).format(new Date())),key=wpMondayKey(today),current=wpWeeks.find(w=>w.key===key);wpWeekKey=(current||wpWeeks[0]).key;}";
+          if(s.includes(old))s=s.replace(old,replacement);
+          else if(!s.includes('current=wpWeeks.find'))throw new Error('week selection marker missing');
+          fs.writeFileSync(path,s);
+          NODE
+      - name: Validate JavaScript
+        run: node --check weekly-picks.js
+      - name: Commit
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add weekly-picks.js
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Prefer current week in weekly picks"
+          git push
