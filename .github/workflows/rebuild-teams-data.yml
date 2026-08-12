@@ -1,49 +1,144 @@
-name: Rebuild Team Data
+name: Sync Website Data From Google Sheet
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'team-locations.json'
-      - '.github/workflows/rebuild-teams-data.yml'
+  schedule:
+    - cron: '17 * * * *'
 
 permissions:
   contents: write
 
+concurrency:
+  group: sheet-data-sync
+  cancel-in-progress: false
+
 jobs:
-  rebuild:
+  sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Rebuild teams-data.json
+      - name: Download sheet data and rebuild website JSON
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
         run: |
           node <<'NODE'
           const fs = require('fs');
-          const teams = JSON.parse(fs.readFileSync('teams-data.json', 'utf8'));
-          const locations = JSON.parse(fs.readFileSync('team-locations.json', 'utf8'));
 
-          for (const team of teams) {
-            const info = locations[team.team];
-            if (!info) continue;
-            team.classification = info.classification;
-            team.region = info.region;
-            team.mascot = info.mascot;
-            delete team.address;
+          const SHEET_ID = process.env.SHEET_ID;
+
+          function csvUrl(gid, range) {
+            return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}&range=${encodeURIComponent(range)}`;
           }
 
-          fs.writeFileSync('teams-data.json', JSON.stringify(teams));
+          function parseCSV(text) {
+            const rows = [];
+            let row = [], field = '', quoted = false;
+            for (let i = 0; i < text.length; i++) {
+              const c = text[i];
+              if (quoted) {
+                if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+                else if (c === '"') quoted = false;
+                else field += c;
+              } else {
+                if (c === '"') quoted = true;
+                else if (c === ',') { row.push(field); field = ''; }
+                else if (c === '\n') { row.push(field.replace(/\r$/, '')); rows.push(row); row = []; field = ''; }
+                else field += c;
+              }
+            }
+            if (field.length || row.length) { row.push(field.replace(/\r$/, '')); rows.push(row); }
+            return rows;
+          }
+
+          async function getCSV(gid, range) {
+            const res = await fetch(csvUrl(gid, range));
+            if (!res.ok) throw new Error(`Sheet download failed: ${res.status} ${res.statusText}`);
+            return parseCSV(await res.text());
+          }
+
+          const clean = v => String(v ?? '').trim();
+          const num = v => {
+            const s = clean(v);
+            if (!s) return null;
+            const n = Number(s.replace(/,/g, ''));
+            return Number.isFinite(n) ? n : null;
+          };
+
+          (async () => {
+            // School Locations: Name, Address, Classification, Region, Mascot, Colors, Football Coach.
+            // We intentionally use only Name/Classification/Region/Mascot. Address, coach and these colors stay off the site.
+            const locRows = await getCSV('830334138', 'A1:G1000');
+            const locations = {};
+            for (const r of locRows.slice(1)) {
+              const name = clean(r[0]);
+              if (!name) continue;
+              locations[name] = {
+                classification: clean(r[2]).toUpperCase(),
+                region: clean(r[3]),
+                mascot: clean(r[4])
+              };
+            }
+
+            // Record Book master table begins in column R. Needed fields:
+            // School=S, Region Titles=AN, Playoff Wins=AO, State Championships=AP.
+            const recordRows = await getCSV('1907276361', 'R1:AP241');
+            const records = {};
+            for (const r of recordRows.slice(1)) {
+              const school = clean(r[1]);
+              if (!school || school === 'School') continue;
+              const regionTitles = num(r[22]);
+              const playoffWins = num(r[23]);
+              const stateChampionships = num(r[24]);
+              if (regionTitles === null && playoffWins === null && stateChampionships === null) continue;
+              records[school] = { regionTitles, playoffWins, stateChampionships };
+            }
+
+            // Match Record Book abbreviations to the names used by the website.
+            const aliases = {
+              'GUNNISON': 'GUNNISON VALLEY',
+              'MAPLE MTN': 'MAPLE MOUNTAIN',
+              'MONUMENT VAL': 'MONUMENT VALLEY'
+            };
+            for (const [from, to] of Object.entries(aliases)) {
+              if (records[from] && !records[to]) records[to] = records[from];
+            }
+
+            fs.writeFileSync('team-locations.json', JSON.stringify(locations));
+            fs.writeFileSync('team-records.json', JSON.stringify(records));
+
+            const teams = JSON.parse(fs.readFileSync('teams-data.json', 'utf8'));
+            let matched = 0;
+            for (const team of teams) {
+              const info = locations[clean(team.team).toUpperCase()] || locations[clean(team.team)];
+              if (!info) continue;
+              matched++;
+              team.classification = info.classification;
+              team.region = info.region;
+              team.mascot = info.mascot;
+              delete team.address;
+              delete team.coach;
+            }
+            fs.writeFileSync('teams-data.json', JSON.stringify(teams));
+
+            console.log(`School Locations: ${Object.keys(locations).length}`);
+            console.log(`Record Book programs: ${Object.keys(records).length}`);
+            console.log(`Matched website teams: ${matched}/${teams.length}`);
+            if (!Object.keys(locations).length || !Object.keys(records).length || !matched) {
+              throw new Error('Sheet sync produced empty data; refusing to commit.');
+            }
+          })().catch(err => { console.error(err); process.exit(1); });
           NODE
 
       - name: Commit updated data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add teams-data.json
+          git add team-locations.json team-records.json teams-data.json
           if git diff --cached --quiet; then
-            echo "No changes needed."
+            echo "Website data is already current."
           else
-            git commit -m "Update team classifications and regions"
+            git commit -m "Auto-sync website data from Google Sheet"
             git push
           fi
