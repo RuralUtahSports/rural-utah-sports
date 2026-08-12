@@ -1,4 +1,23 @@
 (()=>{
+  const GA_ID='G-VB4Y6BRN9M';
+  function setupAnalytics(){
+    if(!document.querySelector(`script[data-rus-ga="${GA_ID}"]`)){
+      const s=document.createElement('script');
+      s.async=true;
+      s.src=`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_ID)}`;
+      s.dataset.rusGa=GA_ID;
+      document.head.appendChild(s);
+    }
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};
+    if(!window.__RUS_GA_CONFIGURED__){
+      window.__RUS_GA_CONFIGURED__=true;
+      window.gtag('js',new Date());
+      window.gtag('config',GA_ID);
+    }
+  }
+  setupAnalytics();
+
   const groups={
     history:[
       ['Championships','championships.html'],
