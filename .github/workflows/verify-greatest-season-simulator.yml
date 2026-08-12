@@ -1,0 +1,32 @@
+name: Verify Greatest Season Simulator
+
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-greatest-season-simulator.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: node --check greatest-season-simulator.js
+      - name: Validate historical model sample
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const rows=JSON.parse(fs.readFileSync('greatest-seasons-data-v2.json','utf8'));
+          const norm=v=>String(v??'').toUpperCase().trim().replace(/[’']/g,'').replace(/[.,]/g,'').replace(/\s+/g,' ');
+          const num=(r,k)=>Number(r[k])||0;
+          const find=(team,year)=>rows.find(r=>norm(r.Team)===norm(team)&&String(r.Year)===String(year));
+          const strength=r=>num(r,'Rating')*.50+num(r,'Avg Margin')*.18+num(r,'PPG')*.10+(50-num(r,'PAPG'))*.10+num(r,'SOS')*.07+num(r,'Opponent Win %')*10*.03;
+          const prob=(a,b)=>Math.max(.08,Math.min(.92,1/(1+Math.exp(-(a-b)/5))));
+          const a=find('MONUMENT VAL',2024),b=find('TOOELE',1928);
+          if(!a||!b) throw new Error('Sample historical seasons not found');
+          const p=prob(strength(a),strength(b));
+          console.log('Greatest Seasons rows:',rows.length);
+          console.log('MONUMENT VAL 2024 probability:',(p*100).toFixed(1)+'%');
+          console.log('TOOELE 1928 probability:',((1-p)*100).toFixed(1)+'%');
+          if(Math.abs(p-.08)>.0001) throw new Error('Model sample does not match sheet 8.0% baseline');
+          NODE
