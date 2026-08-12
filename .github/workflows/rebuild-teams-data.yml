@@ -90,11 +90,25 @@ jobs:
             else record.ties++;
           }
 
+          function dateParts(date) {
+            const m = clean(date).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+            if (!m) return null;
+            return { month: Number(m[1]), day: Number(m[2]), year: Number(m[3]) };
+          }
+
+          function dateKey(date) {
+            const p = dateParts(date);
+            return p ? (p.year * 10000 + p.month * 100 + p.day) : 0;
+          }
+
           (async () => {
+            const teams = JSON.parse(fs.readFileSync('teams-data.json', 'utf8'));
+            const websiteTeams = new Set(teams.map(t => canonicalTeam(t.team)));
+
             const locRows = await getCSV('830334138', 'A1:G1000');
             const locations = {};
             for (const r of locRows.slice(1)) {
-              const name = clean(r[0]).toUpperCase();
+              const name = canonicalTeam(r[0]);
               if (!name) continue;
               locations[name] = {
                 classification: clean(r[2]).toUpperCase(),
@@ -124,7 +138,7 @@ jobs:
             for (const r of seasonRows.slice(1)) {
               const team = canonicalTeam(r[1]);
               const year = num(r[2]);
-              if (!team || team === 'TEAM' || year === null) continue;
+              if (!team || team === 'TEAM' || year === null || !websiteTeams.has(team)) continue;
 
               const season = {
                 year,
@@ -155,27 +169,32 @@ jobs:
 
             // Clean Games is one row per game:
             // A Date, B Team 1, C Team 2, D Score 1, E Score 2, F Winner.
-            // From this single source we build each program's decade records and
-            // all-time record against every opponent.
+            // We build decade records, opponent records and complete year-by-year schedules.
             const gameRows = await getCSV('627882418', 'A1:F40906');
             const breakdowns = {};
+            const schedules = {};
             const getTeamBreakdown = team => {
               if (!breakdowns[team]) breakdowns[team] = { decades: {}, opponents: {} };
               return breakdowns[team];
+            };
+            const addScheduleGame = (team, year, game) => {
+              if (!websiteTeams.has(team)) return;
+              if (!schedules[team]) schedules[team] = {};
+              if (!schedules[team][year]) schedules[team][year] = [];
+              schedules[team][year].push(game);
             };
 
             let validGames = 0;
             for (const r of gameRows.slice(1)) {
               const date = clean(r[0]);
+              const parts = dateParts(date);
               const team1 = canonicalTeam(r[1]);
               const team2 = canonicalTeam(r[2]);
               const score1 = num(r[3]);
               const score2 = num(r[4]);
-              const yearMatch = date.match(/(\d{4})$/);
-              if (!yearMatch || !team1 || !team2 || team1 === team2 || score1 === null || score2 === null) continue;
+              if (!parts || !team1 || !team2 || team1 === team2 || score1 === null || score2 === null) continue;
 
-              const year = Number(yearMatch[1]);
-              if (!Number.isFinite(year)) continue;
+              const year = parts.year;
               const decade = String(Math.floor(year / 10) * 10);
               const result1 = score1 > score2 ? 'W' : score1 < score2 ? 'L' : 'T';
               const result2 = result1 === 'W' ? 'L' : result1 === 'L' ? 'W' : 'T';
@@ -191,18 +210,73 @@ jobs:
               addResult(b2.decades[decade], result2);
               addResult(b1.opponents[team2], result1);
               addResult(b2.opponents[team1], result2);
+
+              addScheduleGame(team1, year, {
+                date,
+                opponent: team2,
+                teamScore: score1,
+                opponentScore: score2,
+                result: result1
+              });
+              addScheduleGame(team2, year, {
+                date,
+                opponent: team1,
+                teamScore: score2,
+                opponentScore: score1,
+                result: result2
+              });
               validGames++;
+            }
+
+            for (const teamYears of Object.values(schedules)) {
+              for (const games of Object.values(teamYears)) {
+                games.sort((a, b) => dateKey(a.date) - dateKey(b.date));
+              }
+            }
+
+            // ELO History columns:
+            // A Date, B Team, C Opponent, D Result, E ELO Before,
+            // F Change, G ELO After, H Season.
+            const eloRows = await getCSV('1029710821', 'A1:H81811');
+            const eloHistory = {};
+            let eloPoints = 0;
+            for (const r of eloRows.slice(1)) {
+              const date = clean(r[0]);
+              const parts = dateParts(date);
+              const team = canonicalTeam(r[1]);
+              const opponent = canonicalTeam(r[2]);
+              const eloBefore = num(r[4]);
+              const change = num(r[5]);
+              const eloAfter = num(r[6]);
+              if (!parts || !team || !websiteTeams.has(team) || eloBefore === null || eloAfter === null) continue;
+
+              if (!eloHistory[team]) eloHistory[team] = [];
+              eloHistory[team].push({
+                date,
+                season: num(r[7]) ?? parts.year,
+                opponent,
+                result: clean(r[3]).toUpperCase(),
+                eloBefore,
+                change,
+                eloAfter
+              });
+              eloPoints++;
+            }
+
+            for (const rows of Object.values(eloHistory)) {
+              rows.sort((a, b) => dateKey(a.date) - dateKey(b.date));
             }
 
             fs.writeFileSync('team-locations.json', JSON.stringify(locations));
             fs.writeFileSync('team-records.json', JSON.stringify(records));
             fs.writeFileSync('season-history.json', JSON.stringify(seasonHistory));
             fs.writeFileSync('team-record-breakdowns.json', JSON.stringify(breakdowns));
+            fs.writeFileSync('team-schedules.json', JSON.stringify(schedules));
+            fs.writeFileSync('team-elo-history.json', JSON.stringify(eloHistory));
 
-            const teams = JSON.parse(fs.readFileSync('teams-data.json', 'utf8'));
             let matched = 0;
             for (const team of teams) {
-              const info = locations[clean(team.team).toUpperCase()];
+              const info = locations[canonicalTeam(team.team)];
               if (!info) continue;
               matched++;
               team.classification = info.classification;
@@ -219,9 +293,12 @@ jobs:
             console.log(`Season-history rows: ${Object.values(seasonHistory).reduce((n, rows) => n + rows.length, 0)}`);
             console.log(`Clean games processed: ${validGames}`);
             console.log(`Programs with decade/opponent records: ${Object.keys(breakdowns).length}`);
+            console.log(`Programs with schedules: ${Object.keys(schedules).length}`);
+            console.log(`Programs with ELO history: ${Object.keys(eloHistory).length}`);
+            console.log(`ELO history rows stored: ${eloPoints}`);
             console.log(`Matched website teams: ${matched}/${teams.length}`);
 
-            if (!Object.keys(locations).length || !Object.keys(records).length || !Object.keys(seasonHistory).length || !validGames || !matched) {
+            if (!Object.keys(locations).length || !Object.keys(records).length || !Object.keys(seasonHistory).length || !validGames || !Object.keys(schedules).length || !eloPoints || !matched) {
               throw new Error('Sheet sync produced empty data; refusing to commit.');
             }
           })().catch(err => { console.error(err); process.exit(1); });
@@ -231,7 +308,7 @@ jobs:
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add team-locations.json team-records.json season-history.json team-record-breakdowns.json teams-data.json
+          git add team-locations.json team-records.json season-history.json team-record-breakdowns.json team-schedules.json team-elo-history.json teams-data.json
           if git diff --cached --quiet; then
             echo "Website data is already current."
           else
