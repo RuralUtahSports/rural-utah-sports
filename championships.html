@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Championships | Rural Utah Sports</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#111;color:#fff}
+header{background:#000;border-bottom:4px solid #F14D07;padding:15px 25px}
+.header-content{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px}
+.logo{width:80px;height:80px;object-fit:contain}
+.site-title h1{font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+.site-title p{color:#F14D07;font-weight:bold;margin-top:5px}
+nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;margin:auto;display:flex;flex-wrap:wrap}
+nav a{color:#fff;text-decoration:none;padding:15px 18px;font-size:14px;font-weight:bold;text-transform:uppercase}
+nav a:hover,nav a.active{background:#F14D07;color:#000}
+.container{max-width:1400px;margin:auto;padding:35px 20px 60px}
+.page-title{border-left:6px solid #F14D07;padding-left:15px;margin-bottom:10px;font-size:34px;text-transform:uppercase}
+.subtitle{color:#aaa;margin-bottom:25px;line-height:1.55}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:25px}
+.summary-card{background:#000;border:1px solid #333;border-radius:7px;padding:20px;text-align:center}
+.summary-number{font-size:28px;font-weight:900;color:#F14D07}.summary-label{font-size:10px;color:#888;text-transform:uppercase;margin-top:5px}
+.filter-panel{background:#000;border:1px solid #333;border-top:4px solid #F14D07;padding:20px;margin-bottom:20px;border-radius:7px}
+.filter-title{color:#F14D07;font-size:18px;font-weight:900;text-transform:uppercase;margin-bottom:15px}
+.filter-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:12px;align-items:end}
+.filter-group{display:flex;flex-direction:column;gap:6px}.filter-group label{color:#aaa;font-size:12px;font-weight:bold;text-transform:uppercase}
+.filter-input,.filter-select{width:100%;height:42px;padding:0 12px;background:#222;border:1px solid #444;color:#fff;border-radius:4px;font-size:14px;outline:none}
+.filter-input:focus,.filter-select:focus{border-color:#F14D07}.clear-button{height:42px;padding:0 18px;background:#F14D07;color:#000;border:0;border-radius:4px;font-weight:900;cursor:pointer;text-transform:uppercase}
+.result-count{color:#999;margin-bottom:12px;font-size:14px}.table-wrap{overflow:auto;max-height:72vh;background:#000;border:1px solid #333;border-radius:7px}
+table{width:100%;border-collapse:collapse;min-width:850px}th{position:sticky;top:0;z-index:3;background:#F14D07;color:#000;padding:13px 10px;text-transform:uppercase;font-size:11px;white-space:nowrap}
+td{padding:12px 10px;text-align:center;border-bottom:1px solid #333}tbody tr:hover{background:#191919}.year{font-weight:900}.class-cell{font-weight:900;color:#F14D07}.team-cell{text-align:left;font-weight:800}
+.team-link{color:#fff;text-decoration:none;border-bottom:1px dotted #777}.team-link:hover{color:#F14D07;border-color:#F14D07}.score{font-weight:900;white-space:normal;min-width:170px}.co-badge,.note-badge{display:inline-block;border-radius:999px;padding:4px 8px;font-size:9px;font-weight:900;text-transform:uppercase;margin-left:6px}.co-badge{background:#F14D07;color:#000}.note-badge{background:#333;color:#bbb}.special-row{background:rgba(241,77,7,.06)}
+.note{margin-top:10px;color:#888;font-size:13px;line-height:1.45}.loading,.error{padding:45px;text-align:center;color:#999}
+footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}footer strong{color:#F14D07}
+@media(max-width:1000px){.summary-grid{grid-template-columns:repeat(2,1fr)}.filter-grid{grid-template-columns:1fr 1fr}.search-group{grid-column:1/-1}}
+@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.page-title{font-size:28px}.summary-grid,.filter-grid{grid-template-columns:1fr}.search-group{grid-column:auto}}
+</style>
+</head>
+<body>
+<header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
+<nav><div class="nav-content"><a href="index.html">Home</a><a href="teams.html">Teams</a><a href="greatest-seasons.html">Greatest Seasons</a><a href="championships.html" class="active">Championships</a><a href="#">Games</a><a href="#">Rankings</a><a href="#">Simulators</a></div></nav>
+<main class="container">
+<h2 class="page-title">Utah Football Championships</h2>
+<p class="subtitle">A season-by-season history of Utah high school football championship games from the Rural Utah Sports Championship Log, including co-champions and unusual historical formats.</p>
+<div id="summary" class="summary-grid"><div class="summary-card"><div class="summary-number">—</div><div class="summary-label">Loading</div></div></div>
+<div class="filter-panel"><div class="filter-title">Find a Championship</div><div class="filter-grid">
+<div class="filter-group search-group"><label for="teamSearch">Team</label><input id="teamSearch" class="filter-input" placeholder="Search champion or runner-up..."></div>
+<div class="filter-group"><label for="yearFilter">Year</label><select id="yearFilter" class="filter-select"><option value="all">All Years</option></select></div>
+<div class="filter-group"><label for="classFilter">Classification</label><select id="classFilter" class="filter-select"><option value="all">All Classes</option></select></div>
+<div class="filter-group"><label for="sortFilter">Sort</label><select id="sortFilter" class="filter-select"><option value="newest">Newest First</option><option value="oldest">Oldest First</option></select></div>
+<div class="filter-group"><label>&nbsp;</label><button class="clear-button" onclick="clearFilters()">Clear</button></div>
+</div></div>
+<div id="resultCount" class="result-count">Loading championships...</div>
+<div class="table-wrap"><table><thead><tr><th>Year</th><th>Class</th><th>Champion</th><th>Score / Note</th><th>Runner-Up</th></tr></thead><tbody id="champRows"><tr><td colspan="5" class="loading">Loading championship history...</td></tr></tbody></table></div>
+<p class="note">Historical championship formats changed over time. Entries marked co-champions preserve the wording and outcome recorded in the Championship Log.</p>
+</main>
+<footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
+<script>
+let allEntries=[];let knownTeams=new Map();
+function clean(v){return String(v??'').trim()}
+function escapeHTML(v){return clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
+function normalize(v){return clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'')}
+function teamLink(name,key){const display=clean(name||key);const match=knownTeams.get(normalize(key||display));if(!match)return escapeHTML(display);return `<a class="team-link" href="team.html?team=${encodeURIComponent(match)}">${escapeHTML(display)}</a>`}
+function classificationOrder(v){const s=clean(v).toUpperCase();if(s==='8-PLAYER')return 0;const m=s.match(/^(\d+)A$/);if(m)return Number(m[1]);if(s==='AA')return 20;if(s==='A')return 19;if(s==='B')return 18;return -1}
+function renderChampion(e){if(e.status==='co-champions'&&Array.isArray(e.coChampions)&&e.coChampions.length){return e.coChampions.map(c=>teamLink(c.name,c.key)).join(' <span style="color:#777">/</span> ')+` <span class="co-badge">Co-Champions</span>`}if(e.status==='no-class'||e.status==='no-playoffs')return '<span style="color:#777">—</span>';return teamLink(e.champion,e.championKey)}
+function renderRunner(e){if(e.status==='co-champions')return '<span style="color:#888">Co-Champions</span>';if(e.status==='no-class'||e.status==='no-playoffs')return '<span style="color:#777">—</span>';return teamLink(e.runnerUp,e.runnerUpKey)}
+function renderScore(e){const text=clean(e.note||e.score)||'—';return escapeHTML(text)}
+function buildFilters(){const years=[...new Set(allEntries.map(e=>Number(e.year)).filter(Number.isFinite))].sort((a,b)=>b-a);const classes=[...new Set(allEntries.map(e=>clean(e.classification)).filter(Boolean))].sort((a,b)=>classificationOrder(b)-classificationOrder(a)||a.localeCompare(b));const y=document.getElementById('yearFilter'),c=document.getElementById('classFilter');for(const v of years)y.insertAdjacentHTML('beforeend',`<option value="${v}">${v}</option>`);for(const v of classes)c.insertAdjacentHTML('beforeend',`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`)}
+function buildSummary(){const titleEvents=allEntries.filter(e=>e.status==='championship'||e.status==='co-champions');const years=[...new Set(titleEvents.map(e=>Number(e.year)).filter(Number.isFinite))];const winners=new Set();for(const e of titleEvents){if(e.status==='co-champions'){for(const c of e.coChampions||[])if(c.key)winners.add(c.key)}else if(e.championKey)winners.add(e.championKey)}const first=years.length?Math.min(...years):'—',latest=years.length?Math.max(...years):'—';document.getElementById('summary').innerHTML=`<div class="summary-card"><div class="summary-number">${titleEvents.length.toLocaleString()}</div><div class="summary-label">Title Events</div></div><div class="summary-card"><div class="summary-number">${winners.size.toLocaleString()}</div><div class="summary-label">Championship Programs</div></div><div class="summary-card"><div class="summary-number">${first}</div><div class="summary-label">First Season</div></div><div class="summary-card"><div class="summary-number">${latest}</div><div class="summary-label">Latest Season</div></div>`}
+function filterRows(){const q=clean(document.getElementById('teamSearch').value).toLowerCase(),year=document.getElementById('yearFilter').value,cls=document.getElementById('classFilter').value,sort=document.getElementById('sortFilter').value;let rows=allEntries.filter(e=>(year==='all'||String(e.year)===year)&&(cls==='all'||e.classification===cls));if(q)rows=rows.filter(e=>[e.champion,e.runnerUp,...(e.coChampions||[]).map(c=>c.name)].some(v=>clean(v).toLowerCase().includes(q)));rows.sort((a,b)=>(sort==='oldest'?Number(a.year)-Number(b.year):Number(b.year)-Number(a.year))||classificationOrder(b.classification)-classificationOrder(a.classification));displayRows(rows)}
+function displayRows(rows){document.getElementById('resultCount').textContent=`Showing ${rows.length.toLocaleString()} championship entries`;document.getElementById('champRows').innerHTML=rows.map(e=>`<tr class="${e.status==='championship'?'':'special-row'}"><td class="year">${escapeHTML(e.year)}</td><td class="class-cell">${escapeHTML(e.classification)}</td><td class="team-cell">${renderChampion(e)}</td><td class="score">${renderScore(e)}${e.status==='no-class'?'<span class="note-badge">No Class</span>':e.status==='no-playoffs'?'<span class="note-badge">No Playoffs</span>':''}</td><td class="team-cell">${renderRunner(e)}</td></tr>`).join('')||'<tr><td colspan="5" class="loading">No championship entries match those filters.</td></tr>'}
+function clearFilters(){document.getElementById('teamSearch').value='';document.getElementById('yearFilter').value='all';document.getElementById('classFilter').value='all';document.getElementById('sortFilter').value='newest';filterRows()}
+async function load(){try{const stamp=Date.now();const [c,t]=await Promise.all([fetch('championships.json?v='+stamp,{cache:'no-store'}),fetch('teams-data.json?v='+stamp,{cache:'no-store'})]);if(!c.ok)throw new Error('Unable to load championship data');allEntries=await c.json();if(t.ok){for(const team of await t.json())knownTeams.set(normalize(team.team),team.team)}buildFilters();buildSummary();filterRows()}catch(e){console.error(e);document.getElementById('champRows').innerHTML='<tr><td colspan="5" class="error">Championship history could not be loaded.</td></tr>';document.getElementById('resultCount').textContent='Unable to load championship data.'}}
+document.getElementById('teamSearch').addEventListener('input',filterRows);document.getElementById('yearFilter').addEventListener('change',filterRows);document.getElementById('classFilter').addEventListener('change',filterRows);document.getElementById('sortFilter').addEventListener('change',filterRows);load();
+</script>
+</body>
+</html>
