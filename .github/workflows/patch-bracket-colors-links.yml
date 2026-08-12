@@ -1,0 +1,40 @@
+name: Patch Bracket Colors Links
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-bracket-colors-links.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch championship brackets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('championship-brackets.js')
+          t=p.read_text()
+          old_css=".bracket-team{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 9px;font-size:12px;align-items:center;border-left:5px solid transparent}.bracket-team+ .bracket-team{border-top:1px solid #333}.bracket-team.win{font-weight:900}.bracket-team.has-color{background:linear-gradient(90deg,var(--team-bg) 0 7px,rgba(255,255,255,.025) 7px 100%);border-left-color:var(--team-bg)}.bracket-team-name{color:var(--team-fg,#fff)}.bracket-score{font-weight:900;color:#F14D07}"
+          new_css=".bracket-team{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 9px;font-size:12px;align-items:center;border-left:5px solid transparent}.bracket-team+ .bracket-team{border-top:1px solid rgba(255,255,255,.22)}.bracket-team.win{font-weight:900;box-shadow:inset 0 0 0 1px rgba(255,255,255,.20)}.bracket-team.has-color{background:var(--team-bg);border-left-color:var(--team-bg);color:var(--team-fg,#fff)}.bracket-team-name{color:inherit;text-decoration:none;font-weight:800;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bracket-team-name:hover{text-decoration:underline}.bracket-score{font-weight:900;color:inherit;background:rgba(0,0,0,.18);padding:2px 6px;border-radius:4px}"
+          if old_css not in t:
+              raise SystemExit('CSS target not found')
+          t=t.replace(old_css,new_css)
+          old_fn="function teamHTML(label,score,isWin){const t=lookup(label),bg=t?safeHex(t.backgroundColor,'#F14D07'):null,fg=t?safeHex(t.textColor,'#FFFFFF'):'#FFFFFF';const css=bg?` style=\"--team-bg:${bg};--team-fg:${fg}\"`:'';return `<div class=\"bracket-team ${isWin?'win ':''}${bg?'has-color':''}\"${css}><span class=\"bracket-team-name\">${clean(label)}</span><span class=\"bracket-score\">${score}</span></div>`}"
+          new_fn="function teamHTML(label,score,isWin){const t=lookup(label),bg=t?safeHex(t.backgroundColor,'#F14D07'):null,fg=t?safeHex(t.textColor,'#FFFFFF'):'#FFFFFF';const css=bg?` style=\"--team-bg:${bg};--team-fg:${fg}\"`:'';const name=clean(label);const linked=t?`<a class=\"bracket-team-name\" href=\"team.html?team=${encodeURIComponent(t.team)}\" title=\"View ${stripSeed(name)} team page\">${name}</a>`:`<span class=\"bracket-team-name\">${name}</span>`;return `<div class=\"bracket-team ${isWin?'win ':''}${bg?'has-color':''}\"${css}>${linked}<span class=\"bracket-score\">${score}</span></div>`}"
+          if old_fn not in t:
+              raise SystemExit('teamHTML target not found')
+          t=t.replace(old_fn,new_fn)
+          p.write_text(t)
+          assert 'href=\\"team.html?team=' in t
+          assert 'background:var(--team-bg)' in t
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add championship-brackets.js
+          git commit -m "Make playoff bracket teams use school colors and links"
+          git pull --rebase origin main
+          git push
