@@ -80,8 +80,6 @@ jobs:
           };
 
           (async () => {
-            // School Locations: Name, Address, Classification, Region, Mascot, Colors, Football Coach.
-            // We intentionally use only Name/Classification/Region/Mascot. Address, coach and these colors stay off the site.
             const locRows = await getCSV('830334138', 'A1:G1000');
             const locations = {};
             for (const r of locRows.slice(1)) {
@@ -94,8 +92,6 @@ jobs:
               };
             }
 
-            // Record Book master table begins in column R.
-            // School=S, Region Titles=AN, Playoff Wins=AO, State Championships=AP.
             const recordRows = await getCSV('1907276361', 'R1:AP241');
             const records = {};
             for (const r of recordRows.slice(1)) {
@@ -108,31 +104,34 @@ jobs:
               records[school] = { regionTitles, playoffWins, stateChampionships };
             }
 
-            // Greatest Seasons contains one row for every team-season.
-            // A:Q = Team, Year, Games, Wins, Losses, Ties, Win%, PF, PA, Avg Margin,
-            // Opp Win%, OppOpp Win%, SOS, Win Rating, Stats, Adjusted, Rank.
+            // Greatest Seasons columns:
+            // A Rank, B Team, C Year, D Rating, E Wins, F Losses, G Ties,
+            // H Win %, I Games, J Points For, K Points Against, L PPG,
+            // M PAPG, N Avg Margin, O Opponent Win %, P Opponents' Opponent Win %, Q SOS.
             const seasonRows = await getCSV('149428399', 'A1:Q6791');
             const seasonHistory = {};
             for (const r of seasonRows.slice(1)) {
-              const team = canonicalTeam(r[0]);
-              const year = num(r[1]);
+              const team = canonicalTeam(r[1]);
+              const year = num(r[2]);
               if (!team || team === 'TEAM' || year === null) continue;
 
               const season = {
                 year,
-                games: num(r[2]),
-                wins: num(r[3]),
-                losses: num(r[4]),
-                ties: num(r[5]),
-                winPct: num(r[6]),
-                pointsFor: num(r[7]),
-                pointsAgainst: num(r[8]),
-                avgMargin: num(r[9]),
-                opponentWinPct: num(r[10]),
-                opponentsOpponentWinPct: num(r[11]),
-                sos: num(r[12]),
-                rating: num(r[13]),
-                rank: num(r[16])
+                rating: num(r[3]),
+                wins: num(r[4]),
+                losses: num(r[5]),
+                ties: num(r[6]),
+                winPct: num(r[7]),
+                games: num(r[8]),
+                pointsFor: num(r[9]),
+                pointsAgainst: num(r[10]),
+                ppg: num(r[11]),
+                papg: num(r[12]),
+                avgMargin: num(r[13]),
+                opponentWinPct: num(r[14]),
+                opponentsOpponentWinPct: num(r[15]),
+                sos: num(r[16]),
+                rank: num(r[0])
               };
 
               if (!seasonHistory[team]) seasonHistory[team] = [];
