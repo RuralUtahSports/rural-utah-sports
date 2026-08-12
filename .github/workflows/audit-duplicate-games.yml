@@ -1,0 +1,36 @@
+name: Audit Duplicate Games
+on:
+  push:
+    paths:
+      - '.github/workflows/audit-duplicate-games.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit Clean Games and generated data
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
+          GID: 627882418
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const url=`https://docs.google.com/spreadsheets/d/${process.env.SHEET_ID}/export?format=csv&gid=${process.env.GID}&range=${encodeURIComponent('A1:F50000')}`;
+          function csv(t){const rows=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'&&t[i+1]==='"'){f+='"';i++}else if(c==='"')q=false;else f+=c}else if(c==='"')q=true;else if(c===','){r.push(f);f=''}else if(c==='\n'){r.push(f.replace(/\r$/,''));rows.push(r);r=[];f=''}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows}
+          const clean=v=>String(v??'').trim(),norm=v=>clean(v).replace(/\s+/g,' ').toUpperCase().replace(/\.+$/,'').trim();
+          const aliases={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY'};
+          function team(v){const n=norm(v);if(n.startsWith('WASATCH ACAD'))return'WASATCH ACADEMY';return aliases[n]||n}
+          function parseDate(v){const m=clean(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(!m)return null;const ms=Date.UTC(+m[3],+m[1]-1,+m[2]);return{ms,year:+m[3]}}
+          (async()=>{const res=await fetch(url),rows=csv(await res.text()).slice(1);const games=[];for(let i=0;i<rows.length;i++){const r=rows[i],d=parseDate(r[0]),a=team(r[1]),b=team(r[2]),sa=Number(r[3]),sb=Number(r[4]);if(!d||!a||!b||!Number.isFinite(sa)||!Number.isFinite(sb))continue;games.push({row:i+2,date:clean(r[0]),ms:d.ms,year:d.year,a,b,sa,sb,pair:[a,b].sort().join('|'),score:[`${a}:${sa}`,`${b}:${sb}`].sort().join('|')})}
+            const exact=new Map(),near=[];for(const g of games){const k=`${g.date}|${g.pair}`;(exact.get(k)||exact.set(k,[]).get(k)).push(g)}
+            const exactGroups=[...exact.values()].filter(x=>x.length>1);console.log('EXACT_DATE_PAIR_GROUPS',exactGroups.length,'EXTRA_ROWS',exactGroups.reduce((n,x)=>n+x.length-1,0));
+            const bySig=new Map();for(const g of games){const k=`${g.pair}|${g.score}`;(bySig.get(k)||bySig.set(k,[]).get(k)).push(g)}
+            for(const arr of bySig.values()){arr.sort((x,y)=>x.ms-y.ms);for(let i=1;i<arr.length;i++){const days=(arr[i].ms-arr[i-1].ms)/86400000;if(days>0&&days<=3)near.push({days,a:arr[i-1],b:arr[i]})}}
+            console.log('NEAR_SAME_PAIR_SCORE_WITHIN_3_DAYS',near.length);near.sort((x,y)=>y.a.year-x.a.year||x.days-y.days);for(const x of near.slice(0,120))console.log(`NEAR ${x.days}d rows ${x.a.row}/${x.b.row}: ${x.a.date} -> ${x.b.date} | ${x.a.a} ${x.a.sa}-${x.a.sb} ${x.a.b}`);
+            const ns=games.filter(g=>g.pair==='NORTH SANPETE|WASATCH ACADEMY');console.log('NORTH_SANPETE_WASATCH_ACADEMY_RAW',ns.length);const nsUnique=new Map();for(const g of ns)nsUnique.set(`${g.date}|${g.pair}`,g);console.log('NORTH_SANPETE_WASATCH_ACADEMY_UNIQUE_DATE_PAIR',nsUnique.size);console.log('NS_WA_1970_10_30_RAW',ns.filter(g=>g.date==='10/30/1970').length);
+            const names=new Set(games.flatMap(g=>[g.a,g.b]));for(const n of [...names].filter(x=>x.includes('WASATCH ACAD')).sort())console.log('WASATCH_NAME',n);
+            for(const n of ['HINKLEY','HINCKLEY','BYH','BY HIGH'])console.log('ALIAS_NAME_COUNT',n,games.filter(g=>g.a===n||g.b===n).length);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
