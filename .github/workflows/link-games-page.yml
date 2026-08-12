@@ -1,0 +1,64 @@
+name: Link Games Page
+
+on:
+  push:
+    paths:
+      - '.github/workflows/link-games-page.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Link Games navigation and homepage
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          for p in Path('.').glob('*.html'):
+              s=p.read_text(encoding='utf-8')
+              if p.name!='games.html':
+                  s=s.replace('<a href="#">Games</a>','<a href="games.html">Games</a>')
+                  s=s.replace('<a href="games.html" class="active">Games</a>','<a href="games.html">Games</a>')
+              p.write_text(s,encoding='utf-8')
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          if '<h3>Games</h3>' not in s:
+              marker='<div class="card"><h3>Scorigami</h3>'
+              card='<div class="card"><h3>Games</h3><p>Search the Utah high school football game database by team, matchup, season, score, margin, and more.</p><a href="games.html">Search Games</a></div>'
+              if marker not in s: raise RuntimeError('Scorigami card marker missing')
+              s=s.replace(marker,card+marker,1)
+              p.write_text(s,encoding='utf-8')
+          PY
+      - name: Verify
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          pages=['index.html','teams.html','team.html','greatest-seasons.html','championships.html','records.html','scorigami.html','games.html','rankings.html','simulators.html']
+          expected=['Home','Teams','Greatest Seasons','Championships','Records','Scorigami','Games','Rankings','Simulators']
+          for fn in pages:
+              s=Path(fn).read_text(encoding='utf-8')
+              m=re.search(r'<nav\b[^>]*>(.*?)</nav>',s,re.S|re.I)
+              if not m: raise SystemExit('Missing nav '+fn)
+              labels=[re.sub(r'<[^>]+>','',x).strip() for x in re.findall(r'<a\b[^>]*>(.*?)</a>',m.group(1),re.S|re.I)]
+              if labels!=expected: raise SystemExit(f'Bad nav {fn}: {labels}')
+              if 'href="games.html"' not in m.group(1): raise SystemExit('Games not linked '+fn)
+          gs=Path('games.html').read_text(encoding='utf-8')
+          for token in ['Utah Football Game Database','Kanab vs Beaver','Highest Scoring','Biggest Blowouts','scorigami.json']:
+              if token not in gs: raise SystemExit('Missing games feature '+token)
+          if '<a href="games.html">Search Games</a>' not in Path('index.html').read_text(encoding='utf-8'):
+              raise SystemExit('Homepage Games card missing')
+          print('Games page and navigation verified')
+          PY
+      - name: Commit
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add '*.html'
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Link searchable Games database across site"
+          git push
