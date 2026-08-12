@@ -79,6 +79,11 @@ jobs:
             return aliases[key] || key;
           };
 
+          const teamSlug = name => canonicalTeam(name)
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
           function emptyRecord() {
             return { wins: 0, losses: 0, ties: 0, games: 0 };
           }
@@ -274,6 +279,20 @@ jobs:
             fs.writeFileSync('team-schedules.json', JSON.stringify(schedules));
             fs.writeFileSync('team-elo-history.json', JSON.stringify(eloHistory));
 
+            // Team pages load one small file instead of downloading the full ELO/schedule databases.
+            const pageDataDir = 'team-page-data';
+            fs.rmSync(pageDataDir, { recursive: true, force: true });
+            fs.mkdirSync(pageDataDir, { recursive: true });
+            for (const team of websiteTeams) {
+              const payload = {
+                seasonHistory: seasonHistory[team] || [],
+                breakdown: breakdowns[team] || { decades: {}, opponents: {} },
+                schedules: schedules[team] || {},
+                eloHistory: eloHistory[team] || []
+              };
+              fs.writeFileSync(`${pageDataDir}/${teamSlug(team)}.json`, JSON.stringify(payload));
+            }
+
             let matched = 0;
             for (const team of teams) {
               const info = locations[canonicalTeam(team.team)];
@@ -296,6 +315,7 @@ jobs:
             console.log(`Programs with schedules: ${Object.keys(schedules).length}`);
             console.log(`Programs with ELO history: ${Object.keys(eloHistory).length}`);
             console.log(`ELO history rows stored: ${eloPoints}`);
+            console.log(`Team page files generated: ${websiteTeams.size}`);
             console.log(`Matched website teams: ${matched}/${teams.length}`);
 
             if (!Object.keys(locations).length || !Object.keys(records).length || !Object.keys(seasonHistory).length || !validGames || !Object.keys(schedules).length || !eloPoints || !matched) {
@@ -308,7 +328,7 @@ jobs:
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add team-locations.json team-records.json season-history.json team-record-breakdowns.json team-schedules.json team-elo-history.json teams-data.json
+          git add team-locations.json team-records.json season-history.json team-record-breakdowns.json team-schedules.json team-elo-history.json teams-data.json team-page-data
           if git diff --cached --quiet; then
             echo "Website data is already current."
           else
