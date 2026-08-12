@@ -52,12 +52,20 @@ tbody tr:hover{background:#191919}
 .history-wrap{max-height:68vh;overflow:auto;background:#000;border:1px solid #333;border-radius:7px}
 .history-wrap thead th{position:sticky;top:0;z-index:5;box-shadow:0 1px 0 #333}
 .history-empty{display:none;padding:24px;text-align:center;color:#999;background:#000;border:1px solid #333;border-top:0}
+.record-grid{display:grid;grid-template-columns:minmax(320px,.8fr) minmax(420px,1.2fr);gap:20px;align-items:start}
+.record-panel{min-width:0}
+.record-panel h3{font-size:16px;text-transform:uppercase;margin:0 0 10px;color:#aaa}
+.record-wrap{max-height:60vh;overflow:auto;background:#000;border:1px solid #333;border-radius:7px}
+.record-wrap table{min-width:500px}
+.record-wrap thead th{position:sticky;top:0;z-index:4;box-shadow:0 1px 0 #333}
+.opponent-name{text-align:left;font-weight:800}
 .note{color:#888;font-size:13px;margin-top:10px}
 .loading,.error{text-align:center;padding:60px;color:#999}
 footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}
 footer strong{color:#F14D07}
+@media(max-width:1000px){.record-grid{grid-template-columns:1fr}}
 @media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.info-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.team-title{font-size:32px}.stats{grid-template-columns:repeat(2,1fr)}.achievement-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.history-controls{align-items:stretch;flex-direction:column}.history-controls select{width:100%}.history-count{padding:0}.history-wrap{max-height:72vh}}
+@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.team-title{font-size:32px}.stats{grid-template-columns:repeat(2,1fr)}.achievement-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.history-controls{align-items:stretch;flex-direction:column}.history-controls select{width:100%}.history-count{padding:0}.history-wrap{max-height:72vh}.record-wrap{max-height:65vh}}
 </style>
 </head>
 <body>
@@ -85,6 +93,7 @@ function escapeHTML(v){return clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;'
 function color(v,f){return /^#[0-9A-F]{6}$/i.test(clean(v))?clean(v):f}
 function record(w,l,t){return `${Number(w||0)}-${Number(l||0)}-${Number(t||0)}`}
 function pct(v){const n=Number(v);return Number.isFinite(n)?(n*100).toFixed(1)+'%':'—'}
+function recordPct(r){const g=Number(r?.games||0);return g?((Number(r?.wins||0)+(Number(r?.ties||0)*.5))/g):null}
 function num(v,d=2){const n=Number(v);return Number.isFinite(n)?n.toFixed(d):'—'}
 function integer(v){const n=Number(v);return Number.isFinite(n)?n.toLocaleString():'—'}
 function paramsTeam(){return new URLSearchParams(location.search).get('team')||''}
@@ -94,24 +103,28 @@ let currentHistory=[];
 async function load(){
 try{
 const stamp=Date.now();
-const [teamResponse,recordResponse,historyResponse]=await Promise.all([
+const [teamResponse,recordResponse,historyResponse,breakdownResponse]=await Promise.all([
 fetch('teams-data.json?v='+stamp,{cache:'no-store'}),
 fetch('team-records.json?v='+stamp,{cache:'no-store'}),
-fetch('season-history.json?v='+stamp,{cache:'no-store'})
+fetch('season-history.json?v='+stamp,{cache:'no-store'}),
+fetch('team-record-breakdowns.json?v='+stamp,{cache:'no-store'})
 ]);
 if(!teamResponse.ok)throw new Error('Unable to load team data');
 if(!recordResponse.ok)throw new Error('Unable to load record book data');
 if(!historyResponse.ok)throw new Error('Unable to load season history data');
+if(!breakdownResponse.ok)throw new Error('Unable to load decade/opponent record data');
 const teams=await teamResponse.json();
 const records=await recordResponse.json();
 const histories=await historyResponse.json();
+const breakdowns=await breakdownResponse.json();
 const wanted=normalize(paramsTeam());
 const team=teams.find(t=>normalize(t.team)===wanted);
 if(!team)throw new Error('Team not found');
 const aliases={"GUNNISON VALLEY":"GUNNISON","MAPLE MOUNTAIN":"MAPLE MTN","MONUMENT VALLEY":"MONUMENT VAL"};
 const recordKey=team.team in records?team.team:(aliases[team.team]||team.team);
 const historyKey=team.team in histories?team.team:(aliases[team.team]||team.team);
-render(team,records[recordKey]||null,histories[historyKey]||[]);
+const breakdownKey=team.team in breakdowns?team.team:(aliases[team.team]||team.team);
+render(team,records[recordKey]||null,histories[historyKey]||[],breakdowns[breakdownKey]||null);
 }catch(e){
 console.error(e);
 document.getElementById('page').innerHTML='<div class="error">Team information could not be loaded.<br><br><a class="back" href="teams.html">← Back to Teams</a></div>'
@@ -152,7 +165,7 @@ const empty=document.getElementById('historyEmpty');
 if(empty)empty.style.display=rows.length?'none':'block';
 }
 
-function render(team,achievement,history){
+function render(team,achievement,history,breakdown){
 const bg=color(team.backgroundColor,'#222');
 let text=color(team.textColor,'#fff');
 if(text.toUpperCase()==='#000000')text='#fff';
@@ -166,6 +179,11 @@ currentHistory=historyList;
 const greatestRows=greatest.map(s=>`<tr><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('');
 const initialHistoryRows=sortHistoryList(historyList,'year-desc').map(s=>`<tr data-year="${escapeHTML(s.year)}"><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${integer(s.pointsFor)}</td><td>${integer(s.pointsAgainst)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('');
 const yearOptions=historyList.map(s=>Number(s.year)).filter(Number.isFinite).sort((a,b)=>b-a).map(y=>`<option value="${y}">${y}</option>`).join('');
+
+const decades=Object.entries(breakdown?.decades||{}).sort((a,b)=>Number(a[0])-Number(b[0]));
+const decadeRows=decades.map(([decade,r])=>`<tr><td>${escapeHTML(decade)}s</td><td>${record(r.wins,r.losses,r.ties)}</td><td>${integer(r.games)}</td><td>${pct(recordPct(r))}</td></tr>`).join('');
+const opponents=Object.entries(breakdown?.opponents||{}).sort((a,b)=>a[0].localeCompare(b[0],undefined,{sensitivity:'base'}));
+const opponentRows=opponents.map(([opponent,r])=>`<tr><td class="opponent-name">${escapeHTML(opponent)}</td><td>${record(r.wins,r.losses,r.ties)}</td><td>${integer(r.games)}</td><td>${pct(recordPct(r))}</td></tr>`).join('');
 
 const regionTitles=achievement?.regionTitles??0;
 const playoffWins=achievement?.playoffWins??0;
@@ -232,7 +250,19 @@ document.getElementById('page').innerHTML=`
 </div>
 <div class="history-wrap"><table><thead><tr><th>Year</th><th>Record</th><th>Win %</th><th>PF</th><th>PA</th><th>PPG</th><th>PAPG</th><th>Margin</th><th>SOS</th><th>Rating</th></tr></thead><tbody id="historyBody">${initialHistoryRows||'<tr><td colspan="10">No season history available.</td></tr>'}</tbody></table></div>
 <div class="history-empty" id="historyEmpty">No seasons match that filter.</div>
-<p class="note">Season history is synced from the Greatest Seasons tab in the Rural Utah Sports master spreadsheet.</p>
+
+<h2 class="section-title">Historical Records</h2>
+<div class="record-grid">
+<div class="record-panel">
+<h3>Record by Decade</h3>
+<div class="record-wrap"><table><thead><tr><th>Decade</th><th>Record</th><th>Games</th><th>Win %</th></tr></thead><tbody>${decadeRows||'<tr><td colspan="4">No decade data available.</td></tr>'}</tbody></table></div>
+</div>
+<div class="record-panel">
+<h3>Record vs. Every Opponent</h3>
+<div class="record-wrap"><table><thead><tr><th>Opponent</th><th>Record</th><th>Games</th><th>Win %</th></tr></thead><tbody>${opponentRows||'<tr><td colspan="4">No opponent data available.</td></tr>'}</tbody></table></div>
+</div>
+</div>
+<p class="note">Season history comes from Greatest Seasons. Decade and opponent records are calculated from the Clean Games database and update with the automatic Google Sheet sync.</p>
 `;
 }
 load();
