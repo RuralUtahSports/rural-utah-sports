@@ -56,5 +56,6 @@ async function init(){try{const stamp=Date.now(),[sr,cr]=await Promise.all([fetc
 $('search').addEventListener('input',filter);$('year').addEventListener('change',filter);$('type').addEventListener('change',filter);$('sort').addEventListener('change',filter);$('clear').addEventListener('click',()=>{$('search').value='';$('year').value='all';$('type').value='all';$('sort').value='newest';quick('recent')});$('loadMore').addEventListener('click',()=>{visible+=100;render()});document.querySelectorAll('.quick button').forEach(b=>b.addEventListener('click',()=>quick(b.dataset.mode)));init();
 </script>
 <script src="back-to-top.js" defer></script>
+<script src="nav-menu.js" defer></script>
 </body>
 </html>
