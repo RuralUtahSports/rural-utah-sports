@@ -1,0 +1,47 @@
+name: Add ELO Hover Details
+on:
+  push:
+    paths:
+      - '.github/workflows/add-elo-hover-details.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add interactive point details
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('elo.html')
+          s=p.read_text()
+          css_old='.line{fill:none;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}.baseline{stroke:#666;stroke-dasharray:6 6}'
+          css_new='.line{fill:none;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}.baseline{stroke:#666;stroke-dasharray:6 6}.elo-hit{fill:transparent;stroke:transparent;stroke-width:14;cursor:crosshair}.elo-dot{pointer-events:none;opacity:0;stroke:#fff;stroke-width:2}.elo-dot.active{opacity:1}.elo-tooltip{position:absolute;display:none;z-index:5;min-width:205px;max-width:280px;background:#111;border:1px solid #444;border-radius:7px;padding:11px 12px;box-shadow:0 8px 24px rgba(0,0,0,.45);pointer-events:none;font-size:11px;line-height:1.45}.elo-tooltip.show{display:block}.elo-tooltip .tt-team{font-size:13px;font-weight:900;text-transform:uppercase;margin-bottom:4px}.elo-tooltip .tt-date{color:#aaa;margin-bottom:7px}.elo-tooltip .tt-row{display:flex;justify-content:space-between;gap:14px;border-top:1px solid #292929;padding-top:5px;margin-top:5px}.elo-tooltip .tt-row span{color:#888}.elo-tooltip .tt-row strong{color:#fff;text-align:right}.elo-tooltip .tt-change.pos{color:#67df91}.elo-tooltip .tt-change.neg{color:#ff7777}'
+          if css_old not in s: raise SystemExit('CSS marker not found')
+          s=s.replace(css_old,css_new,1)
+          s=s.replace('The graph uses the ELO history stored in the RUS database. Similar team colors are automatically changed so each line stays easy to tell apart.','Hover or tap any point on a line to see the game, opponent, result, ELO before the game, rating change, and ELO after the game. Similar team colors are automatically changed so each line stays easy to tell apart.',1)
+          new_draw=r'''function drawChart(series){const root=$('chart'),w=1200,h=500,p={l:65,r:25,t:20,b:45};const all=series.flatMap(s=>s.rows);if(!all.length){root.innerHTML='<div class="error">No ELO history available for these selections.</div>';return}const xs=all.map(r=>dateVal(r.date)).filter(Boolean),ys=all.map(r=>Number(r.eloAfter));let xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.floor((Math.min(...ys)-50)/100)*100,ymax=Math.ceil((Math.max(...ys)+50)/100)*100;if(xmin===xmax)xmax=xmin+86400000;if(ymin===ymax)ymax=ymin+100;const X=x=>p.l+(x-xmin)/(xmax-xmin)*(w-p.l-p.r),Y=y=>p.t+(ymax-y)/(ymax-ymin)*(h-p.t-p.b);let svg=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="ELO comparison graph">`;for(let i=0;i<=5;i++){const y=ymin+(ymax-ymin)*i/5,py=Y(y);svg+=`<line class="gridline" x1="${p.l}" y1="${py}" x2="${w-p.r}" y2="${py}"/><text class="axis" x="${p.l-9}" y="${py+4}" text-anchor="end">${Math.round(y)}</text>`}for(let i=0;i<=6;i++){const x=xmin+(xmax-xmin)*i/6,px=X(x),d=new Date(x);svg+=`<line class="gridline" x1="${px}" y1="${p.t}" x2="${px}" y2="${h-p.b}"/><text class="axis" x="${px}" y="${h-18}" text-anchor="middle">${d.getFullYear()}</text>`}if(ymin<=1500&&ymax>=1500)svg+=`<line class="baseline" x1="${p.l}" y1="${Y(1500)}" x2="${w-p.r}" y2="${Y(1500)}"/>`;const hover=[];series.forEach((s,i)=>{const c=s.chartColor||baseColor(s.team,i),rows=s.rows.filter(r=>dateVal(r.date)),pts=rows.map(r=>`${X(dateVal(r.date)).toFixed(1)},${Y(Number(r.eloAfter)).toFixed(1)}`).join(' ');if(pts)svg+=`<polyline class="line" stroke="${c}" points="${pts}"/>`;rows.forEach((r,j)=>{const x=X(dateVal(r.date)),y=Y(Number(r.eloAfter)),id=`elo-p-${i}-${j}`;hover.push({id,team:s.team.team,color:c,row:r});svg+=`<circle class="elo-dot" id="${id}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="${c}"/><circle class="elo-hit" data-hover="${id}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8"/>`})});svg+='</svg><div class="elo-tooltip" id="eloTooltip"></div>';root.innerHTML=svg;const info=new Map(hover.map(x=>[x.id,x])),tip=$('eloTooltip'),hide=()=>{tip?.classList.remove('show');root.querySelectorAll('.elo-dot.active').forEach(x=>x.classList.remove('active'))};function show(hit,e){const d=info.get(hit.dataset.hover);if(!d||!tip)return;root.querySelectorAll('.elo-dot.active').forEach(x=>x.classList.remove('active'));document.getElementById(d.id)?.classList.add('active');const r=d.row,ch=Number(r.change)||0,sign=ch>0?'+':'',result=String(r.result||'—').toUpperCase();tip.innerHTML=`<div class="tt-team" style="color:${d.color}">${esc(d.team)}</div><div class="tt-date">${esc(r.date||'')}</div><div class="tt-row"><span>Opponent</span><strong>${esc(r.opponent||'—')}</strong></div><div class="tt-row"><span>Result</span><strong>${esc(result)}</strong></div><div class="tt-row"><span>ELO Before</span><strong>${Math.round(Number(r.eloBefore)||0)}</strong></div><div class="tt-row"><span>Change</span><strong class="tt-change ${ch>0?'pos':ch<0?'neg':''}">${sign}${Math.round(ch)}</strong></div><div class="tt-row"><span>ELO After</span><strong>${Math.round(Number(r.eloAfter)||0)}</strong></div>`;tip.classList.add('show');const box=root.getBoundingClientRect(),x=e.clientX-box.left+12,y=e.clientY-box.top+12,tw=tip.offsetWidth||220,th=tip.offsetHeight||150;tip.style.left=Math.max(6,Math.min(x,box.width-tw-6))+'px';tip.style.top=Math.max(6,Math.min(y,box.height-th-6))+'px'}root.querySelectorAll('.elo-hit').forEach(hit=>{hit.addEventListener('pointerenter',e=>show(hit,e));hit.addEventListener('pointermove',e=>show(hit,e));hit.addEventListener('pointerdown',e=>{e.preventDefault();show(hit,e)})});root.addEventListener('pointerleave',hide)}'''
+          s,n=re.subn(r'function drawChart\(series\)\{.*?\}\nasync function render\(\)',new_draw+'\nasync function render()',s,count=1,flags=re.S)
+          if n!=1: raise SystemExit(f'drawChart replacement count {n}')
+          p.write_text(s)
+          PY
+      - name: Verify JavaScript
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('elo.html').read_text()
+          Path('/tmp/elo.js').write_text('\n'.join(re.findall(r'<script>(.*?)</script>',s,re.S)))
+          assert 'elo-tooltip' in s and 'data-hover' in s and 'ELO Before' in s
+          PY
+          node --check /tmp/elo.js
+      - name: Commit
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add elo.html
+          git commit -m "Add hover details to ELO comparison chart"
+          git pull --rebase origin main
+          git push
