@@ -61,9 +61,10 @@ def is_playoff_note(note):
     if not text:
         return False
     # Covers the notation already used in the team tabs, including examples
-    # such as "4A-IR PO", "4A-QF", "4A-SF", "4A FINAL", and "3A 1ST".
+    # such as "4A-IR PO", "4A-QF", "4A-SF", "4A FINAL", "3A 1ST",
+    # and abbreviated round notes such as "5A SEC RD".
     return bool(re.search(
-        r"\b(?:PO|PLAYOFF|QF|QUARTERFINAL|QUARTERFINALS|SF|SEMIFINAL|SEMIFINALS|FINAL|FINALS|CHAMPIONSHIP|CHAMPIONSHIPS|RND|ROUND|1ST|2ND|3RD)\b",
+        r"\b(?:PO|PLAYOFF|QF|QUARTERFINAL|QUARTERFINALS|SF|SEMIFINAL|SEMIFINALS|FINAL|FINALS|CHAMPIONSHIP|CHAMPIONSHIPS|RND|ROUND|RD|1ST|2ND|3RD)\b",
         text,
     ))
 
