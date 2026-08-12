@@ -1,0 +1,42 @@
+name: Add Weekly Picks UI
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-weekly-picks-ui.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Link weekly picks assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('simulators.html')
+          s=p.read_text(encoding='utf-8')
+          if 'weekly-picks.css' not in s:
+              marker='<link rel="stylesheet" href="greatest-season-simulator.css">'
+              if marker not in s: raise RuntimeError('Greatest Season stylesheet marker missing')
+              s=s.replace(marker, marker+'\n<link rel="stylesheet" href="weekly-picks.css">', 1)
+          if 'weekly-picks.js' not in s:
+              marker='<script src="greatest-season-simulator.js"></script>'
+              if marker not in s: raise RuntimeError('Greatest Season script marker missing')
+              s=s.replace(marker, marker+'\n<script src="weekly-picks.js"></script>', 1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit UI link
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add simulators.html
+          if git diff --cached --quiet; then
+            echo "Weekly picks assets already linked."
+          else
+            git commit -m "Add public weekly picks mode"
+            git push
+          fi
