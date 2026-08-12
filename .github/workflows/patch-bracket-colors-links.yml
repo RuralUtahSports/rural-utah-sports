@@ -27,7 +27,7 @@ jobs:
               raise SystemExit('teamHTML target not found')
           t=t.replace(old_fn,new_fn)
           p.write_text(t)
-          assert 'href=\\"team.html?team=' in t
+          assert 'team.html?team=${encodeURIComponent(t.team)}' in t
           assert 'background:var(--team-bg)' in t
           PY
       - name: Commit changes
