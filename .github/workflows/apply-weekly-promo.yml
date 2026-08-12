@@ -1,0 +1,46 @@
+name: Apply Weekly Simulation Promo
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-weekly-promo.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add weekly promo script to root pages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          changed=[]
+          for p in sorted(Path('.').glob('*.html')):
+              text=p.read_text()
+              if 'weekly-simulation-promo.js' in text or '</body>' not in text:
+                  continue
+              text=text.replace('</body>','<script src="weekly-simulation-promo.js" defer></script>\n</body>')
+              p.write_text(text)
+              changed.append(p.name)
+          print('Updated:', ', '.join(changed))
+          PY
+      - name: Verify root pages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          missing=[]
+          for p in sorted(Path('.').glob('*.html')):
+              t=p.read_text()
+              if '</body>' in t and 'weekly-simulation-promo.js' not in t:
+                  missing.append(p.name)
+          print('Missing:', missing)
+          assert not missing
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add '*.html'
+          git commit -m "Promote weekly simulation across site" || exit 0
+          git pull --rebase origin main
+          git push
