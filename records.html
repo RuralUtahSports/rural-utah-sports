@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top 10 Records | Rural Utah Sports</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#111;color:#fff}
+header{background:#000;border-bottom:4px solid #F14D07;padding:15px 25px}.header-content{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px}.logo{width:80px;height:80px;object-fit:contain}.site-title h1{font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.site-title p{color:#F14D07;font-weight:bold;margin-top:5px}
+nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;margin:auto;display:flex;flex-wrap:wrap}nav a{color:#fff;text-decoration:none;padding:15px 18px;font-size:14px;font-weight:bold;text-transform:uppercase}nav a:hover,nav a.active{background:#F14D07;color:#000}
+.container{max-width:1200px;margin:auto;padding:35px 20px 60px}.page-title{border-left:6px solid #F14D07;padding-left:15px;margin-bottom:10px;font-size:34px;text-transform:uppercase}.subtitle{color:#aaa;margin-bottom:25px;line-height:1.5}
+.controls{background:#000;border:1px solid #333;border-top:4px solid #F14D07;border-radius:7px;padding:20px;margin-bottom:20px}.mode-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.mode-button{background:#222;color:#fff;border:1px solid #444;border-radius:5px;padding:11px 16px;font-weight:900;text-transform:uppercase;cursor:pointer}.mode-button.active,.mode-button:hover{background:#F14D07;color:#000;border-color:#F14D07}.control-grid{display:grid;grid-template-columns:2fr 1fr;gap:12px}.control-group{display:flex;flex-direction:column;gap:6px}.control-group label{color:#aaa;font-size:11px;font-weight:900;text-transform:uppercase}.control-select{height:44px;background:#222;border:1px solid #444;color:#fff;border-radius:5px;padding:0 12px;font-size:14px}.control-select:focus{outline:2px solid #F14D07;outline-offset:1px}.filter-note{font-size:11px;color:#777;margin-top:10px}
+.record-card{background:#000;border:1px solid #333;border-radius:8px;overflow:hidden}.record-header{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;padding:20px;border-bottom:1px solid #333}.record-header h3{font-size:25px;text-transform:uppercase}.record-header p{color:#999;font-size:12px;text-align:right;max-width:420px;line-height:1.4}.leaderboard{width:100%;border-collapse:collapse}.leaderboard th{background:#F14D07;color:#000;padding:12px 10px;text-transform:uppercase;font-size:11px}.leaderboard td{padding:11px 10px;border-bottom:1px solid #2b2b2b}.leaderboard tbody tr:hover{background:#181818}.rank{width:60px;text-align:center;font-size:20px;font-weight:900;color:#F14D07}.team-cell{text-align:left}.team-badge{display:inline-block;text-decoration:none;padding:7px 10px;border-radius:5px;font-weight:900;min-width:150px}.team-badge:hover{filter:brightness(1.15)}.detail{color:#888;font-size:11px;margin-top:5px}.value{text-align:right;font-size:21px;font-weight:900;color:#F14D07;white-space:nowrap}.top-1{box-shadow:inset 5px 0 0 #FFD700}.top-2{box-shadow:inset 5px 0 0 #C0C0C0}.top-3{box-shadow:inset 5px 0 0 #CD7F32}.loading,.error{padding:55px;text-align:center;color:#999}.error{color:#ff7777}
+.stat-directory{margin-top:25px}.directory-title{border-left:5px solid #F14D07;padding-left:12px;margin-bottom:12px;font-size:20px;text-transform:uppercase}.stat-chips{display:flex;gap:7px;flex-wrap:wrap}.stat-chip{background:#1c1c1c;border:1px solid #333;color:#bbb;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800;cursor:pointer}.stat-chip:hover,.stat-chip.active{background:#F14D07;color:#000;border-color:#F14D07}
+footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}footer strong{color:#F14D07}
+@media(max-width:700px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.page-title{font-size:28px}.control-grid{grid-template-columns:1fr}.record-header{align-items:flex-start;flex-direction:column}.record-header p{text-align:left}.team-badge{min-width:0}.value{font-size:17px}}
+</style>
+</head>
+<body>
+<header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
+<nav><div class="nav-content"><a href="index.html">Home</a><a href="teams.html">Teams</a><a href="greatest-seasons.html">Greatest Seasons</a><a href="championships.html">Championships</a><a href="records.html" class="active">Records</a><a href="#">Games</a><a href="#">Rankings</a><a href="#">Simulators</a></div></nav>
+<main class="container">
+<h2 class="page-title">Top 10 Records</h2>
+<p class="subtitle">Explore the top 10 programs and individual seasons across Rural Utah Sports' historical football database. Switch between all-time program records and single-season records below.</p>
+<section class="controls">
+<div class="mode-buttons"><button class="mode-button active" data-mode="alltime">All-Time Programs</button><button class="mode-button" data-mode="season">Single Seasons</button></div>
+<div class="control-grid"><div class="control-group"><label for="statSelect">Stat</label><select id="statSelect" class="control-select"></select></div><div class="control-group"><label for="classSelect">Current Classification</label><select id="classSelect" class="control-select"><option value="all">All Classes</option></select></div></div>
+<p class="filter-note">Classification filtering uses each program's current classification. Percentage leaderboards use minimum-game requirements to avoid tiny-sample records.</p>
+</section>
+<section class="record-card"><div class="record-header"><div><h3 id="recordTitle">Loading...</h3></div><p id="recordNote"></p></div><div id="leaderboardWrap" class="loading">Loading record data...</div></section>
+<section class="stat-directory"><h3 class="directory-title">All Available Stats</h3><div id="statChips" class="stat-chips"></div></section>
+</main>
+<footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
+<script>
+let teams=[];let seasons=[];let recordBook={};let mode='alltime';
+const normalize=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+const clean=v=>String(v??'').trim();
+const escapeHTML=v=>clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+const number=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
+const safeHex=(v,f)=>/^#[0-9A-F]{6}$/i.test(clean(v))?clean(v):f;
+const teamByName=new Map();
+const recordAliases={'GUNNISON VALLEY':'GUNNISON','MAPLE MOUNTAIN':'MAPLE MTN','MONUMENT VALLEY':'MONUMENT VAL'};
+
+const allTimeStats=[
+{key:'wins',label:'Most Wins',field:'wins',format:'int',note:'Most varsity wins in the all-time game database.'},
+{key:'winPct',label:'Best Win %',field:'winPct',format:'pct',minGames:50,note:'Best all-time winning percentage among programs with at least 50 recorded games.'},
+{key:'games',label:'Most Games Played',field:'games',format:'int',note:'Most recorded varsity games.'},
+{key:'pointsFor',label:'Most Points Scored',field:'pointsFor',format:'int',note:'Most total points scored in the historical game database.'},
+{key:'avgMargin',label:'Best Average Margin',field:'avgMargin',format:'decimal1',minGames:50,note:'Best all-time average scoring margin among programs with at least 50 recorded games.'},
+{key:'seasons',label:'Most Seasons',field:'seasons',format:'int',note:'Most seasons represented in the Rural Utah Sports database.'},
+{key:'regionTitles',label:'Most Region Titles',recordField:'regionTitles',format:'int',note:'Most region championships recorded in the Record Book.'},
+{key:'playoffWins',label:'Most Playoff Wins',recordField:'playoffWins',format:'int',note:'Most postseason wins recorded in the Record Book.'},
+{key:'stateChampionships',label:'Most State Championships',field:'stateChampionships',format:'int',note:'Most state titles, using Championship Log totals.'},
+{key:'championshipGames',label:'Most Championship Appearances',field:'championshipGames',format:'int',note:'Most state championship game appearances, using Championship Log totals.'}
+];
+
+const seasonStats=[
+{key:'Rating',label:'Highest Rating',field:'Rating',format:'decimal2',note:'Highest Rural Utah Sports single-season rating.'},
+{key:'Wins',label:'Most Wins',field:'Wins',format:'int',note:'Most wins in a single season.'},
+{key:'Win %',label:'Best Win %',field:'Win %',format:'pct',minGames:8,note:'Best single-season winning percentage among seasons with at least 8 games.'},
+{key:'Games',label:'Most Games Played',field:'Games',format:'int',note:'Most games played in one season.'},
+{key:'Points For',label:'Most Points Scored',field:'Points For',format:'int',note:'Most points scored in one season.'},
+{key:'PPG',label:'Highest PPG',field:'PPG',format:'decimal1',minGames:8,note:'Highest points per game among seasons with at least 8 games.'},
+{key:'PAPG',label:'Lowest PAPG',field:'PAPG',format:'decimal1',direction:'asc',minGames:8,note:'Fewest points allowed per game among seasons with at least 8 games.'},
+{key:'Avg Margin',label:'Best Average Margin',field:'Avg Margin',format:'decimal1',minGames:8,note:'Largest average scoring margin in a season with at least 8 games.'},
+{key:'Opponent Win %',label:'Highest Opponent Win %',field:'Opponent Win %',format:'pct',minGames:8,note:'Highest combined opponent winning percentage.'},
+{key:"Opponents' Opponent Win %",label:"Highest Opp. Opp. Win %",field:"Opponents' Opponent Win %",format:'pct',minGames:8,note:"Highest opponents' opponent winning percentage."},
+{key:'SOS',label:'Toughest Strength of Schedule',field:'SOS',format:'decimal2',minGames:8,note:'Highest single-season strength of schedule value.'}
+];
+
+function classOrder(v){const s=clean(v).toUpperCase();if(s==='8P'||s==='8-PLAYER')return 0;if(s==='3AA')return 3.5;const m=s.match(/^(\d+)A$/);return m?Number(m[1]):-1}
+function formatValue(v,type){const n=Number(v);if(!Number.isFinite(n))return '—';if(type==='pct')return (n*100).toFixed(1)+'%';if(type==='decimal1')return n.toFixed(1);if(type==='decimal2')return n.toFixed(2);return Math.round(n).toLocaleString()}
+function teamData(name){return teamByName.get(normalize(name))||null}
+function teamBadge(name){const t=teamData(name);const display=clean(name);if(!t)return `<a class="team-badge" style="background:#222;color:#fff" href="team.html?team=${encodeURIComponent(display)}">${escapeHTML(display)}</a>`;const bg=safeHex(t.backgroundColor,'#222222'),fg=safeHex(t.textColor,'#FFFFFF');return `<a class="team-badge" style="background:${bg};color:${fg}" href="team.html?team=${encodeURIComponent(t.team)}">${escapeHTML(display)}</a>`}
+function currentClass(name){return clean(teamData(name)?.classification)}
+function recordFor(name){const t=clean(name);return recordBook[t]||recordBook[recordAliases[t]]||null}
+function recordText(s){const w=number(s['Wins'])??0,l=number(s['Losses'])??0,t=number(s['Ties'])??0;return `${w}-${l}-${t}`}
+
+function buildClassFilter(){const select=document.getElementById('classSelect');const classes=[...new Set(teams.map(t=>clean(t.classification)).filter(Boolean))].sort((a,b)=>classOrder(b)-classOrder(a)||a.localeCompare(b));for(const c of classes){const o=document.createElement('option');o.value=c;o.textContent=c;select.appendChild(o)}}
+function availableStats(){return mode==='alltime'?allTimeStats:seasonStats}
+function buildStatSelect(selected){const select=document.getElementById('statSelect');select.innerHTML='';for(const stat of availableStats()){const o=document.createElement('option');o.value=stat.key;o.textContent=stat.label;select.appendChild(o)}select.value=availableStats().some(s=>s.key===selected)?selected:availableStats()[0].key;buildChips()}
+function buildChips(){const active=document.getElementById('statSelect').value;document.getElementById('statChips').innerHTML=availableStats().map(s=>`<button class="stat-chip ${s.key===active?'active':''}" data-stat="${escapeHTML(s.key)}">${escapeHTML(s.label)}</button>`).join('');document.querySelectorAll('.stat-chip').forEach(b=>b.addEventListener('click',()=>{document.getElementById('statSelect').value=b.dataset.stat;render()}))}
+
+function allTimeRows(stat,cls){return teams.map(t=>{const rec=recordFor(t.team);const value=stat.recordField?number(rec?.[stat.recordField]):number(t[stat.field]);return{team:t.team,value,detail:[clean(t.classification),clean(t.region)].filter(Boolean).join(' • '),games:number(t.games)||0}}).filter(r=>r.value!==null&&(!stat.minGames||r.games>=stat.minGames)&&(cls==='all'||currentClass(r.team)===cls))}
+function seasonRows(stat,cls){return seasons.map(s=>({team:clean(s['Team']),year:s['Year'],value:number(s[stat.field]),games:number(s['Games'])||0,record:recordText(s)})).filter(r=>r.team&&r.value!==null&&(!stat.minGames||r.games>=stat.minGames)&&(cls==='all'||currentClass(r.team)===cls)).map(r=>({...r,detail:`${r.year} • ${r.record}`}))}
+
+function render(){const stat=availableStats().find(s=>s.key===document.getElementById('statSelect').value)||availableStats()[0];const cls=document.getElementById('classSelect').value;let rows=mode==='alltime'?allTimeRows(stat,cls):seasonRows(stat,cls);rows.sort((a,b)=>stat.direction==='asc'?(a.value-b.value):(b.value-a.value));rows=rows.slice(0,10);document.getElementById('recordTitle').textContent=stat.label;document.getElementById('recordNote').textContent=stat.note+(cls!=='all'?` Filtered to programs currently in ${cls}.`:'');document.getElementById('leaderboardWrap').className='';document.getElementById('leaderboardWrap').innerHTML=`<table class="leaderboard"><thead><tr><th>Rank</th><th>Team</th><th style="text-align:right">${escapeHTML(stat.label)}</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${i<3?'top-'+(i+1):''}"><td class="rank">${i+1}</td><td class="team-cell">${teamBadge(r.team)}<div class="detail">${escapeHTML(r.detail)}</div></td><td class="value">${formatValue(r.value,stat.format)}</td></tr>`).join('')||'<tr><td colspan="3" class="loading">No records match this filter.</td></tr>'}</tbody></table>`;buildChips()}
+
+function setMode(next){mode=next;document.querySelectorAll('.mode-button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));buildStatSelect();render()}
+async function load(){try{const stamp=Date.now();const [tr,sr,rr]=await Promise.all([fetch('teams-data.json?v='+stamp,{cache:'no-store'}),fetch('greatest-seasons-data-v2.json?v='+stamp,{cache:'no-store'}),fetch('team-records.json?v='+stamp,{cache:'no-store'})]);if(!tr.ok||!sr.ok||!rr.ok)throw new Error('One or more record data files could not be loaded');teams=await tr.json();seasons=await sr.json();recordBook=await rr.json();for(const t of teams)teamByName.set(normalize(t.team),t);buildClassFilter();buildStatSelect();render()}catch(e){console.error(e);document.getElementById('leaderboardWrap').className='error';document.getElementById('leaderboardWrap').textContent='Top 10 record data could not be loaded.'}}
+document.querySelectorAll('.mode-button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));document.getElementById('statSelect').addEventListener('change',render);document.getElementById('classSelect').addEventListener('change',render);load();
+</script>
+</body>
+</html>
