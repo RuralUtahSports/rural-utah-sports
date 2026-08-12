@@ -64,4 +64,30 @@
     window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
   });
   update();
+
+  if(/(^|\/)championships\.html$/.test(location.pathname)||location.pathname.endsWith('/championships')){
+    const summary=document.getElementById('summary');
+    if(summary&&!document.getElementById('playoffBracketPreview')){
+      const css=document.createElement('link');
+      css.rel='stylesheet';
+      css.href='playoff-brackets-2025.css';
+      document.head.appendChild(css);
+      const section=document.createElement('section');
+      section.className='playoff-preview';
+      section.id='playoffBracketPreview';
+      section.innerHTML=`
+        <div class="playoff-preview-head">
+          <div><div class="playoff-preview-title">2025 Playoff Brackets</div><div class="playoff-preview-sub">Bracket preview using the 2025 UHSAA All Time Playoffs sheet. Choose a classification to see the path to the title.</div></div>
+          <div class="bracket-tabs" aria-label="2025 playoff classification">
+            <button class="bracket-tab" data-cls="6A">6A</button><button class="bracket-tab" data-cls="5A">5A</button><button class="bracket-tab" data-cls="4A">4A</button><button class="bracket-tab" data-cls="3A">3A</button><button class="bracket-tab" data-cls="2A">2A</button><button class="bracket-tab" data-cls="1A">1A</button><button class="bracket-tab" data-cls="8-Player">8-Player</button>
+          </div>
+        </div>
+        <div class="bracket-scroll" aria-live="polite"></div>
+        <p class="bracket-source-note">2025 prototype • Source: UHSAA All Time Playoffs. On phones, swipe the bracket sideways if needed.</p>`;
+      summary.parentNode.insertBefore(section,summary);
+      const js=document.createElement('script');
+      js.src='playoff-brackets-2025.js';
+      document.body.appendChild(js);
+    }
+  }
 })();
