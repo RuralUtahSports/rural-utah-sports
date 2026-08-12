@@ -7,6 +7,10 @@ on:
       - Sync Website Data From Google Sheet
     types:
       - completed
+  push:
+    paths:
+      - '.github/workflows/enrich-playoff-notes.yml'
+      - 'scripts/enrich_playoff_notes.py'
 
 permissions:
   contents: write
@@ -17,7 +21,7 @@ concurrency:
 
 jobs:
   enrich:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout latest main
