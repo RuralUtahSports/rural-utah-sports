@@ -79,6 +79,17 @@ jobs:
             return aliases[key] || key;
           };
 
+          function emptyRecord() {
+            return { wins: 0, losses: 0, ties: 0, games: 0 };
+          }
+
+          function addResult(record, result) {
+            record.games++;
+            if (result === 'W') record.wins++;
+            else if (result === 'L') record.losses++;
+            else record.ties++;
+          }
+
           (async () => {
             const locRows = await getCSV('830334138', 'A1:G1000');
             const locations = {};
@@ -142,9 +153,51 @@ jobs:
               seasons.sort((a, b) => b.year - a.year);
             }
 
+            // Clean Games is one row per game:
+            // A Date, B Team 1, C Team 2, D Score 1, E Score 2, F Winner.
+            // From this single source we build each program's decade records and
+            // all-time record against every opponent.
+            const gameRows = await getCSV('627882418', 'A1:F40906');
+            const breakdowns = {};
+            const getTeamBreakdown = team => {
+              if (!breakdowns[team]) breakdowns[team] = { decades: {}, opponents: {} };
+              return breakdowns[team];
+            };
+
+            let validGames = 0;
+            for (const r of gameRows.slice(1)) {
+              const date = clean(r[0]);
+              const team1 = canonicalTeam(r[1]);
+              const team2 = canonicalTeam(r[2]);
+              const score1 = num(r[3]);
+              const score2 = num(r[4]);
+              const yearMatch = date.match(/(\d{4})$/);
+              if (!yearMatch || !team1 || !team2 || team1 === team2 || score1 === null || score2 === null) continue;
+
+              const year = Number(yearMatch[1]);
+              if (!Number.isFinite(year)) continue;
+              const decade = String(Math.floor(year / 10) * 10);
+              const result1 = score1 > score2 ? 'W' : score1 < score2 ? 'L' : 'T';
+              const result2 = result1 === 'W' ? 'L' : result1 === 'L' ? 'W' : 'T';
+
+              const b1 = getTeamBreakdown(team1);
+              const b2 = getTeamBreakdown(team2);
+              if (!b1.decades[decade]) b1.decades[decade] = emptyRecord();
+              if (!b2.decades[decade]) b2.decades[decade] = emptyRecord();
+              if (!b1.opponents[team2]) b1.opponents[team2] = emptyRecord();
+              if (!b2.opponents[team1]) b2.opponents[team1] = emptyRecord();
+
+              addResult(b1.decades[decade], result1);
+              addResult(b2.decades[decade], result2);
+              addResult(b1.opponents[team2], result1);
+              addResult(b2.opponents[team1], result2);
+              validGames++;
+            }
+
             fs.writeFileSync('team-locations.json', JSON.stringify(locations));
             fs.writeFileSync('team-records.json', JSON.stringify(records));
             fs.writeFileSync('season-history.json', JSON.stringify(seasonHistory));
+            fs.writeFileSync('team-record-breakdowns.json', JSON.stringify(breakdowns));
 
             const teams = JSON.parse(fs.readFileSync('teams-data.json', 'utf8'));
             let matched = 0;
@@ -164,9 +217,11 @@ jobs:
             console.log(`Record Book programs: ${Object.keys(records).length}`);
             console.log(`Season-history teams: ${Object.keys(seasonHistory).length}`);
             console.log(`Season-history rows: ${Object.values(seasonHistory).reduce((n, rows) => n + rows.length, 0)}`);
+            console.log(`Clean games processed: ${validGames}`);
+            console.log(`Programs with decade/opponent records: ${Object.keys(breakdowns).length}`);
             console.log(`Matched website teams: ${matched}/${teams.length}`);
 
-            if (!Object.keys(locations).length || !Object.keys(records).length || !Object.keys(seasonHistory).length || !matched) {
+            if (!Object.keys(locations).length || !Object.keys(records).length || !Object.keys(seasonHistory).length || !validGames || !matched) {
               throw new Error('Sheet sync produced empty data; refusing to commit.');
             }
           })().catch(err => { console.error(err); process.exit(1); });
@@ -176,7 +231,7 @@ jobs:
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add team-locations.json team-records.json season-history.json teams-data.json
+          git add team-locations.json team-records.json season-history.json team-record-breakdowns.json teams-data.json
           if git diff --cached --quiet; then
             echo "Website data is already current."
           else
