@@ -12,12 +12,14 @@ nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;m
 .container{max-width:1450px;margin:auto;padding:35px 20px 60px}.page-title{border-left:6px solid #F14D07;padding-left:15px;margin-bottom:10px;font-size:34px;text-transform:uppercase}.subtitle{color:#aaa;line-height:1.55;margin-bottom:24px;max-width:900px}
 .summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}.summary-card{background:#000;border:1px solid #333;border-top:4px solid #F14D07;border-radius:7px;padding:18px}.summary-label{font-size:11px;color:#888;text-transform:uppercase;font-weight:900}.summary-value{font-size:29px;font-weight:900;color:#F14D07;margin-top:5px}
 .lookup{background:#000;border:1px solid #333;border-radius:8px;padding:20px;margin-bottom:22px}.lookup h3{text-transform:uppercase;margin-bottom:14px}.lookup-grid{display:grid;grid-template-columns:140px 140px auto;gap:10px;align-items:end}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:11px;color:#888;font-weight:900;text-transform:uppercase}.field input{height:44px;background:#222;border:1px solid #444;border-radius:5px;color:#fff;padding:0 12px;font-size:16px}.lookup button{height:44px;background:#F14D07;border:0;border-radius:5px;color:#000;font-weight:900;text-transform:uppercase;padding:0 18px;cursor:pointer}.lookup button:hover{background:#fff}.lookup-result{margin-top:16px;border-top:1px solid #333;padding-top:16px;display:none}.lookup-result.show{display:block}.score-big{font-size:34px;font-weight:900}.status{display:inline-block;margin-left:10px;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;vertical-align:middle}.status.yes{background:#F14D07;color:#000}.status.no{background:#333;color:#aaa}.lookup-meta{color:#aaa;margin-top:7px;line-height:1.5}
-.board-card{background:#000;border:1px solid #333;border-radius:8px;overflow:hidden}.board-head{display:flex;justify-content:space-between;gap:15px;align-items:center;padding:18px 20px;border-bottom:1px solid #333}.board-head h3{text-transform:uppercase}.legend{display:flex;gap:14px;flex-wrap:wrap;color:#999;font-size:11px}.legend-item{display:flex;gap:6px;align-items:center}.swatch{width:14px;height:14px;border-radius:3px;border:1px solid #555}.swatch.hit{background:#F14D07;border-color:#F14D07}.swatch.miss{background:#1a1a1a}.swatch.tie{background:#3a250f;border-color:#F14D07}
-.board-wrap{overflow:auto;max-height:72vh;position:relative}.score-table{border-collapse:separate;border-spacing:2px;min-width:max-content;padding:6px;background:#090909}.score-table th,.score-table td{width:42px;min-width:42px;height:38px;text-align:center;font-size:11px}.score-table th{background:#222;color:#bbb;font-weight:900;position:sticky;z-index:3}.score-table thead th{top:0}.score-table th.row-head{left:0;z-index:4}.score-table th.corner{left:0;top:0;z-index:5;background:#F14D07;color:#000;width:70px;min-width:70px}.score-table td{background:#161616;color:#555;border:1px solid #222;border-radius:3px;cursor:pointer}.score-table td.valid:hover{outline:2px solid #fff;outline-offset:-2px}.score-table td.hit{background:#F14D07;color:#000;border-color:#F14D07;font-weight:900}.score-table td.tie-hit{background:#3a250f;color:#fff;border-color:#F14D07;font-weight:900}.score-table td.invalid{background:#0d0d0d;border-color:#111;cursor:default;color:#222}.score-table td.selected{outline:3px solid #fff;outline-offset:-3px}.count-muted{opacity:.75}
+.selected-card{background:#000;border:1px solid #333;border-radius:8px;margin-bottom:22px;overflow:hidden}.selected-head{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:17px 20px;border-bottom:1px solid #333}.selected-title-wrap{display:flex;align-items:center;gap:10px}.selected-head h3{text-transform:uppercase}.selected-count{background:#F14D07;color:#000;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900}.clear-selected{background:#222;color:#bbb;border:1px solid #444;border-radius:5px;padding:8px 12px;font-size:11px;font-weight:900;text-transform:uppercase;cursor:pointer}.clear-selected:hover{background:#F14D07;color:#000;border-color:#F14D07}.selected-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px}.selected-empty{grid-column:1/-1;color:#777;padding:14px;text-align:center}.selected-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#171717;border:1px solid #333;border-radius:6px;padding:12px}.selected-item:hover{border-color:#F14D07}.selected-main{min-width:0;cursor:pointer;flex:1}.selected-score{font-size:21px;font-weight:900;color:#F14D07}.selected-detail{color:#888;font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.remove-selected{width:30px;height:30px;border-radius:50%;border:1px solid #444;background:#222;color:#bbb;font-size:16px;font-weight:900;cursor:pointer;flex:0 0 auto}.remove-selected:hover{background:#F14D07;color:#000;border-color:#F14D07}
+.board-card{background:#000;border:1px solid #333;border-radius:8px;overflow:hidden}.board-head{display:flex;justify-content:space-between;gap:15px;align-items:center;padding:18px 20px;border-bottom:1px solid #333}.board-head h3{text-transform:uppercase}.legend{display:flex;gap:14px;flex-wrap:wrap;color:#999;font-size:11px}.legend-item{display:flex;gap:6px;align-items:center}.swatch{width:14px;height:14px;border-radius:3px;border:1px solid #555}.swatch.hit{background:#F14D07;border-color:#F14D07}.swatch.miss{background:#1a1a1a}.swatch.tie{background:#3a250f;border-color:#F14D07}.swatch.picked{background:#161616;border:2px solid #fff}
+.board-wrap{overflow:auto;max-height:72vh;position:relative}.score-table{border-collapse:separate;border-spacing:2px;min-width:max-content;padding:6px;background:#090909}.score-table th,.score-table td{width:42px;min-width:42px;height:38px;text-align:center;font-size:11px}.score-table th{background:#222;color:#bbb;font-weight:900;position:sticky;z-index:3}.score-table thead th{top:0}.score-table th.row-head{left:0;z-index:4}.score-table th.corner{left:0;top:0;z-index:5;background:#F14D07;color:#000;width:70px;min-width:70px}.score-table td{background:#161616;color:#555;border:1px solid #222;border-radius:3px;cursor:pointer}.score-table td.valid:hover{outline:2px solid #fff;outline-offset:-2px}.score-table td.hit{background:#F14D07;color:#000;border-color:#F14D07;font-weight:900}.score-table td.tie-hit{background:#3a250f;color:#fff;border-color:#F14D07;font-weight:900}.score-table td.invalid{background:#0d0d0d;border-color:#111;cursor:default;color:#222}.score-table td.picked{box-shadow:inset 0 0 0 2px #fff}.score-table td.selected{outline:3px solid #fff;outline-offset:-3px}.count-muted{opacity:.75}
 .common-section{margin-top:24px}.section-title{border-left:5px solid #F14D07;padding-left:12px;margin-bottom:12px;font-size:21px;text-transform:uppercase}.common-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.common-item{background:#000;border:1px solid #333;border-radius:6px;padding:14px;cursor:pointer}.common-item:hover{border-color:#F14D07}.common-score{font-size:22px;font-weight:900;color:#F14D07}.common-count{color:#999;font-size:12px;margin-top:4px}
 .loading,.error{text-align:center;padding:55px;color:#999}.error{color:#ff7777}footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}footer strong{color:#F14D07}
+@media(max-width:1000px){.selected-list{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.summary-grid{grid-template-columns:repeat(2,1fr)}.common-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:650px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 10px 45px}.page-title{font-size:28px}.lookup-grid{grid-template-columns:1fr 1fr}.lookup button{grid-column:1/-1}.summary-grid{grid-template-columns:1fr 1fr}.summary-value{font-size:23px}.board-head{align-items:flex-start;flex-direction:column}.common-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 10px 45px}.page-title{font-size:28px}.lookup-grid{grid-template-columns:1fr 1fr}.lookup button{grid-column:1/-1}.summary-grid{grid-template-columns:1fr 1fr}.summary-value{font-size:23px}.selected-head{align-items:flex-start}.selected-list{grid-template-columns:1fr}.board-head{align-items:flex-start;flex-direction:column}.common-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -28,7 +30,8 @@ nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;m
 <p class="subtitle">Every final-score combination in the Rural Utah Sports historical football database. Orange cells have happened at least once. Click any score to see how often it has occurred and the first and most recent seasons in which it appeared.</p>
 <section class="summary-grid"><div class="summary-card"><div class="summary-label">Games Included</div><div class="summary-value" id="gamesCount">—</div></div><div class="summary-card"><div class="summary-label">Unique Final Scores</div><div class="summary-value" id="uniqueCount">—</div></div><div class="summary-card"><div class="summary-label">Most Common Score</div><div class="summary-value" id="commonScore">—</div></div><div class="summary-card"><div class="summary-label">One-Time Scorigamis</div><div class="summary-value" id="oneTimeCount">—</div></div></section>
 <section class="lookup"><h3>Find a Score</h3><div class="lookup-grid"><div class="field"><label for="winnerInput">Winning Score</label><input id="winnerInput" type="number" min="0" step="1" value="16"></div><div class="field"><label for="loserInput">Losing Score</label><input id="loserInput" type="number" min="0" step="1" value="6"></div><button id="findButton">Check Score</button></div><div class="lookup-result" id="lookupResult"><div><span class="score-big" id="lookupScore"></span><span class="status" id="lookupStatus"></span></div><div class="lookup-meta" id="lookupMeta"></div></div></section>
-<section class="board-card"><div class="board-head"><h3>Scorigami Board</h3><div class="legend"><span class="legend-item"><span class="swatch hit"></span>Has happened</span><span class="legend-item"><span class="swatch tie"></span>Tie score</span><span class="legend-item"><span class="swatch miss"></span>Never happened</span></div></div><div id="board" class="loading">Loading Scorigami data...</div></section>
+<section class="selected-card"><div class="selected-head"><div class="selected-title-wrap"><h3>Selected Scores</h3><span class="selected-count" id="selectedCount">0</span></div><button class="clear-selected" id="clearSelected">Clear All</button></div><div class="selected-list" id="selectedList"><div class="selected-empty">Click a score on the board or look one up to add it here.</div></div></section>
+<section class="board-card"><div class="board-head"><h3>Scorigami Board</h3><div class="legend"><span class="legend-item"><span class="swatch hit"></span>Has happened</span><span class="legend-item"><span class="swatch tie"></span>Tie score</span><span class="legend-item"><span class="swatch picked"></span>Selected</span><span class="legend-item"><span class="swatch miss"></span>Never happened</span></div></div><div id="board" class="loading">Loading Scorigami data...</div></section>
 <section class="common-section"><h3 class="section-title">Most Common Final Scores</h3><div id="commonGrid" class="common-grid"></div></section>
 </main>
 <footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
@@ -36,12 +39,69 @@ nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;m
 let data=null;
 let scoreMap=new Map();
 let selectedCell=null;
+let selectedScores=[];
+const storageKey='rus-scorigami-selected-scores';
 const key=(w,l)=>`${w}-${l}`;
 const numberText=n=>Number(n||0).toLocaleString();
 
 function entryFor(w,l){return scoreMap.get(key(w,l))||null}
 
-function showScore(w,l,scrollToCell=false){
+function loadSelected(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(storageKey)||'[]');
+    selectedScores=Array.isArray(saved)?saved.filter(s=>/^\d+-\d+$/.test(String(s))):[];
+    selectedScores=[...new Set(selectedScores)];
+  }catch{selectedScores=[]}
+}
+
+function saveSelected(){
+  try{localStorage.setItem(storageKey,JSON.stringify(selectedScores))}catch{}
+}
+
+function refreshPickedCells(){
+  document.querySelectorAll('.score-table td.picked').forEach(c=>c.classList.remove('picked'));
+  for(const score of selectedScores){
+    const cell=document.querySelector(`[data-score="${score}"]`);
+    if(cell)cell.classList.add('picked');
+  }
+}
+
+function renderSelected(){
+  const list=document.getElementById('selectedList');
+  document.getElementById('selectedCount').textContent=selectedScores.length;
+  if(!selectedScores.length){
+    list.innerHTML='<div class="selected-empty">Click a score on the board or look one up to add it here.</div>';
+    refreshPickedCells();
+    return;
+  }
+  list.innerHTML=selectedScores.map(score=>{
+    const [w,l]=score.split('-').map(Number);
+    const entry=entryFor(w,l);
+    let detail='Never happened — Scorigami';
+    if(entry){
+      const parts=[`${numberText(entry.count)} game${entry.count===1?'':'s'}`];
+      if(entry.firstYear)parts.push(`first ${entry.firstYear}`);
+      if(entry.recentYear)parts.push(`recent ${entry.recentYear}`);
+      detail=parts.join(' • ');
+    }
+    return `<div class="selected-item"><div class="selected-main" data-jump="${score}"><div class="selected-score">${w}–${l}</div><div class="selected-detail">${detail}</div></div><button class="remove-selected" data-remove="${score}" aria-label="Remove ${w}-${l}">×</button></div>`;
+  }).join('');
+  list.querySelectorAll('[data-jump]').forEach(item=>item.addEventListener('click',()=>{const [w,l]=item.dataset.jump.split('-').map(Number);showScore(w,l,true,false)}));
+  list.querySelectorAll('[data-remove]').forEach(button=>button.addEventListener('click',e=>{e.stopPropagation();selectedScores=selectedScores.filter(s=>s!==button.dataset.remove);saveSelected();renderSelected()}));
+  refreshPickedCells();
+}
+
+function addSelected(w,l){
+  if(w<l)return;
+  const score=key(w,l);
+  if(!selectedScores.includes(score)){
+    selectedScores.push(score);
+    saveSelected();
+    renderSelected();
+  }
+}
+
+function showScore(w,l,scrollToCell=false,addToList=true){
   w=Number(w);l=Number(l);
   if(!Number.isInteger(w)||!Number.isInteger(l)||w<0||l<0)return;
   document.getElementById('winnerInput').value=w;
@@ -62,6 +122,7 @@ function showScore(w,l,scrollToCell=false){
     status.textContent='SCORIGAMI';status.className='status no';
     document.getElementById('lookupMeta').textContent=w<l?'The winning score cannot be lower than the losing score.':'This final score has never appeared in the historical database.';
   }
+  if(addToList&&w>=l)addSelected(w,l);
   if(selectedCell)selectedCell.classList.remove('selected');
   const cell=document.querySelector(`[data-score="${w}-${l}"]`);
   if(cell){selectedCell=cell;cell.classList.add('selected');if(scrollToCell)cell.scrollIntoView({behavior:'smooth',block:'center',inline:'center'})}
@@ -86,28 +147,31 @@ function renderBoard(){
   }
   html+='</tbody></table></div>';
   const board=document.getElementById('board');board.className='';board.innerHTML=html;
-  board.querySelectorAll('td.valid').forEach(cell=>cell.addEventListener('click',()=>{const [w,l]=cell.dataset.score.split('-').map(Number);showScore(w,l,false)}));
+  board.querySelectorAll('td.valid').forEach(cell=>cell.addEventListener('click',()=>{const [w,l]=cell.dataset.score.split('-').map(Number);showScore(w,l,false,true)}));
+  refreshPickedCells();
 }
 
 function renderCommon(){
   const common=[...data.scores].sort((a,b)=>b.count-a.count||a.winner-b.winner||a.loser-b.loser).slice(0,10);
   document.getElementById('commonGrid').innerHTML=common.map(s=>`<div class="common-item" data-score="${s.winner}-${s.loser}"><div class="common-score">${s.winner}–${s.loser}</div><div class="common-count">${numberText(s.count)} games${s.firstYear?` • ${s.firstYear}–${s.recentYear||s.firstYear}`:''}</div></div>`).join('');
-  document.querySelectorAll('.common-item').forEach(item=>item.addEventListener('click',()=>{const [w,l]=item.dataset.score.split('-').map(Number);showScore(w,l,true)}));
+  document.querySelectorAll('.common-item').forEach(item=>item.addEventListener('click',()=>{const [w,l]=item.dataset.score.split('-').map(Number);showScore(w,l,true,true)}));
   if(common[0])document.getElementById('commonScore').textContent=`${common[0].winner}–${common[0].loser}`;
 }
 
 async function init(){
   try{
+    loadSelected();
     const res=await fetch('scorigami.json',{cache:'no-store'});if(!res.ok)throw new Error(`HTTP ${res.status}`);data=await res.json();
     scoreMap=new Map(data.scores.map(s=>[key(s.winner,s.loser),s]));
     document.getElementById('gamesCount').textContent=numberText(data.summary.uniqueGames);
     document.getElementById('uniqueCount').textContent=numberText(data.summary.uniqueFinalScores||data.scores.length);
     document.getElementById('oneTimeCount').textContent=numberText(data.scores.filter(s=>s.count===1).length);
-    renderBoard();renderCommon();showScore(16,6,true);
+    renderBoard();renderCommon();renderSelected();showScore(16,6,true,false);
   }catch(err){document.getElementById('board').className='error';document.getElementById('board').textContent='Unable to load Scorigami data.';console.error(err)}
 }
 
-document.getElementById('findButton').addEventListener('click',()=>showScore(document.getElementById('winnerInput').value,document.getElementById('loserInput').value,true));
+document.getElementById('findButton').addEventListener('click',()=>showScore(document.getElementById('winnerInput').value,document.getElementById('loserInput').value,true,true));
+document.getElementById('clearSelected').addEventListener('click',()=>{selectedScores=[];saveSelected();renderSelected()});
 for(const id of ['winnerInput','loserInput'])document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('findButton').click()});
 init();
 </script>
