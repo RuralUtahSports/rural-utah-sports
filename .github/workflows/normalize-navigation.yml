@@ -1,0 +1,86 @@
+name: Normalize Site Navigation
+
+on:
+  push:
+    paths:
+      - '.github/workflows/normalize-navigation.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Standardize navigation on every page
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          pages = {
+              'index.html': 'Home',
+              'teams.html': 'Teams',
+              'team.html': 'Teams',
+              'greatest-seasons.html': 'Greatest Seasons',
+              'championships.html': 'Championships',
+              'records.html': 'Records',
+              'scorigami.html': 'Scorigami',
+              'rankings.html': 'Rankings',
+              'simulators.html': 'Simulators',
+          }
+          links = [
+              ('Home', 'index.html'),
+              ('Teams', 'teams.html'),
+              ('Greatest Seasons', 'greatest-seasons.html'),
+              ('Championships', 'championships.html'),
+              ('Records', 'records.html'),
+              ('Scorigami', 'scorigami.html'),
+              ('Games', '#'),
+              ('Rankings', 'rankings.html'),
+              ('Simulators', 'simulators.html'),
+          ]
+
+          for filename, active in pages.items():
+              p = Path(filename)
+              s = p.read_text(encoding='utf-8')
+              items = []
+              for label, href in links:
+                  cls = ' class="active"' if label == active else ''
+                  items.append(f'<a href="{href}"{cls}>{label}</a>')
+              nav = '<nav><div class="nav-content">' + ''.join(items) + '</div></nav>'
+              new, count = re.subn(r'<nav\b[^>]*>.*?</nav>', nav, s, count=1, flags=re.S|re.I)
+              if count != 1:
+                  raise RuntimeError(f'Expected exactly one nav in {filename}, found {count}')
+              new = new.replace('nav a:hover{background:#F14D07;color:#000}', 'nav a:hover,nav a.active{background:#F14D07;color:#000}')
+              p.write_text(new, encoding='utf-8')
+          PY
+      - name: Verify every page has every navigation tab
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          pages=['index.html','teams.html','team.html','greatest-seasons.html','championships.html','records.html','scorigami.html','rankings.html','simulators.html']
+          expected=['Home','Teams','Greatest Seasons','Championships','Records','Scorigami','Games','Rankings','Simulators']
+          for filename in pages:
+              s=Path(filename).read_text(encoding='utf-8')
+              m=re.search(r'<nav\b[^>]*>(.*?)</nav>',s,re.S|re.I)
+              if not m: raise SystemExit(f'Missing nav: {filename}')
+              nav=m.group(1)
+              labels=re.findall(r'<a\b[^>]*>(.*?)</a>',nav,re.S|re.I)
+              labels=[re.sub(r'<[^>]+>','',x).strip() for x in labels]
+              if labels != expected:
+                  raise SystemExit(f'Bad nav in {filename}: {labels}')
+              if filename!='team.html' and nav.count('class="active"') != 1:
+                  raise SystemExit(f'Active tab issue: {filename}')
+          print('Navigation verified on all 9 pages')
+          PY
+      - name: Commit
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add '*.html'
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Standardize navigation across all site pages"
+          git push
