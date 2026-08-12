@@ -31,7 +31,7 @@ jobs:
           WEEKLY_GID: 1211467999
         run: |
           node <<'NODE'
-          const fs = require('fs');
+          import fs from 'node:fs';
 
           const clean = v => String(v ?? '').trim();
           const norm = v => clean(v).toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -142,7 +142,6 @@ jobs:
           const featureMap = {};
           for (const t of teams) {
             const season = seasonToUse(t.team);
-            const games = gamesByTeam.get(t.team) || [];
             featureMap[t.team] = {
               team:t.team,
               classification:clean(t.classification),
