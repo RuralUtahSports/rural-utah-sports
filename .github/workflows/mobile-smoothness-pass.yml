@@ -1,0 +1,77 @@
+name: Sitewide Mobile Performance Pass
+on:
+  push:
+    paths:
+      - '.github/workflows/mobile-smoothness-pass.yml'
+permissions:
+  contents: write
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Optimize shared logo
+        run: |
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          p=Path('RUSlogoNew.png')
+          im=Image.open(p).convert('RGBA')
+          im.thumbnail((320,320), Image.Resampling.LANCZOS)
+          im.save(p, format='PNG', optimize=True, compress_level=9)
+          print('optimized logo bytes', p.stat().st_size, 'dimensions', im.size)
+          PY
+      - name: Patch static pages for smoother mobile use
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          for p in Path('.').glob('*.html'):
+              s=p.read_text()
+              original=s
+
+              # Let browsers cache static JSON/page data instead of forcing a network download every visit.
+              s=re.sub(r"fetch\(`([^`]*?)\?v=\$\{Date\.now\(\)\}`\s*,\s*\{cache:'no-store'\}\)", r"fetch(`\1`)", s)
+              s=re.sub(r"fetch\('([^']*?)\?v='\+Date\.now\(\)\s*,\s*\{cache:'no-store'\}\)", r"fetch('\1')", s)
+              s=re.sub(r'fetch\("([^\"]*?)\?v="\+Date\.now\(\)\s*,\s*\{cache:"no-store"\}\)', r'fetch("\1")', s)
+              s=re.sub(r"fetch\(([^\n;]+?),\s*\{cache:'no-store'\}\)", r"fetch(\1)", s)
+
+              # The header logo is above the fold: decode asynchronously, but do not lazy-load it.
+              s=s.replace('src="RUSlogoNew.png" class="logo"', 'src="RUSlogoNew.png" class="logo" width="80" height="80" decoding="async"')
+              s=s.replace("src='RUSlogoNew.png' class='logo'", "src='RUSlogoNew.png' class='logo' width='80' height='80' decoding='async'")
+
+              # Small sitewide mobile rendering/interaction wins without changing layout.
+              perf='''\n<style id="rus-mobile-performance">\nhtml{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulation}.table-wrap,.games-wrap,.chart-wrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}@media(max-width:700px){body{-webkit-font-smoothing:antialiased}main img:not(.logo){max-width:100%;height:auto}table{contain:layout style}.table-wrap{contain:layout paint}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}\n</style>'''
+              if 'id="rus-mobile-performance"' not in s:
+                  s=s.replace('</head>', perf+'\n</head>', 1)
+
+              if s!=original:
+                  p.write_text(s)
+                  print('patched',p)
+          PY
+      - name: Verify pages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html=list(Path('.').glob('*.html'))
+          assert html
+          for p in html:
+              s=p.read_text()
+              assert '<html' in s.lower()
+              assert 'rus-mobile-performance' in s
+          logo=Path('RUSlogoNew.png')
+          print('html pages',len(html),'logo bytes',logo.stat().st_size)
+          assert logo.stat().st_size < 500000
+          PY
+      - name: Commit optimization
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add '*.html' RUSlogoNew.png
+          if git diff --cached --quiet; then echo 'Nothing to optimize'; exit 0; fi
+          git commit -m "Improve mobile performance across site"
+          git pull --rebase origin main
+          git push
