@@ -19,29 +19,55 @@ jobs:
         run: |
           python - <<'PY'
           import json
-          from collections import defaultdict
           from pathlib import Path
 
           data=json.loads(Path('scorigami.json').read_text(encoding='utf-8'))
           series={}
+          seen_games=set()
+          source_rows=0
+          duplicates_removed=0
+
+          aliases={
+              'WASATCH ACAD':'WASATCH ACADEMY',
+          }
 
           def clean(v): return str(v or '').strip()
-          def key(a,b): return tuple(sorted((clean(a),clean(b)), key=lambda x:x.upper()))
+          def canonical(v):
+              value=clean(v)
+              return aliases.get(value.upper(),value)
+          def series_key(a,b):
+              return tuple(sorted((canonical(a),canonical(b)),key=lambda x:x.upper()))
+          def game_key(date,a,sa,b,sb):
+              pairs=sorted(((canonical(a).upper(),int(sa)),(canonical(b).upper(),int(sb))))
+              return (clean(date),pairs[0],pairs[1])
 
           for score in data.get('scores',[]):
               for g in score.get('games',[]) or []:
+                  source_rows+=1
                   if g.get('tie'):
-                      a,b=clean(g.get('team1')),clean(g.get('team2'))
+                      a,b=canonical(g.get('team1')),canonical(g.get('team2'))
                       if not a or not b: continue
-                      k=key(a,b)
+                      sa,sb=int(g.get('score1') or 0),int(g.get('score2') or 0)
+                      unique=game_key(g.get('date'),a,sa,b,sb)
+                      if unique in seen_games:
+                          duplicates_removed+=1
+                          continue
+                      seen_games.add(unique)
+                      k=series_key(a,b)
                       r=series.setdefault(k,{'teamA':k[0],'teamB':k[1],'winsA':0,'winsB':0,'ties':0,'meetings':0})
                       r['ties']+=1;r['meetings']+=1
                   else:
-                      w,l=clean(g.get('winner')),clean(g.get('loser'))
+                      w,l=canonical(g.get('winner')),canonical(g.get('loser'))
                       if not w or not l: continue
-                      k=key(w,l)
+                      ws,ls=int(g.get('winnerScore') or 0),int(g.get('loserScore') or 0)
+                      unique=game_key(g.get('date'),w,ws,l,ls)
+                      if unique in seen_games:
+                          duplicates_removed+=1
+                          continue
+                      seen_games.add(unique)
+                      k=series_key(w,l)
                       r=series.setdefault(k,{'teamA':k[0],'teamB':k[1],'winsA':0,'winsB':0,'ties':0,'meetings':0})
-                      if w==r['teamA']: r['winsA']+=1
+                      if w.upper()==r['teamA'].upper(): r['winsA']+=1
                       else: r['winsB']+=1
                       r['meetings']+=1
 
@@ -60,16 +86,19 @@ jobs:
                   'leaderWins':lw,
                   'trailerWins':tw,
                   'seriesGap':lw-tw,
-                  'leaderWinPctDecided': round(lw/decided,4) if decided else None,
-                  'leaderWinPctAllMeetings': round((lw+r['ties']*.5)/r['meetings'],4) if r['meetings'] else None,
-                  'recordForLeader': f"{lw}-{tw}-{r['ties']}"
+                  'leaderWinPctDecided':round(lw/decided,4) if decided else None,
+                  'leaderWinPctAllMeetings':round((lw+r['ties']*.5)/r['meetings'],4) if r['meetings'] else None,
+                  'recordForLeader':f"{lw}-{tw}-{r['ties']}"
               })
 
           by_gap=sorted(rows,key=lambda r:(r['seriesGap'],r['meetings'],r['leaderWinPctDecided'] or 0),reverse=True)
           by_pct=sorted(rows,key=lambda r:(r['leaderWinPctDecided'] or 0,r['meetings'],r['seriesGap']),reverse=True)
           out={
               'minimumMeetings':10,
-              'definition':'Series dominance among matchups with at least 10 meetings. Primary ranking uses largest difference in wins; ties do not count as wins for either team.',
+              'definition':'Series dominance among matchups with at least 10 meetings, after exact duplicate games are removed and known school-name aliases are normalized. Primary ranking uses largest difference in wins.',
+              'sourceGameRows':source_rows,
+              'uniqueGameRows':len(seen_games),
+              'duplicatesRemoved':duplicates_removed,
               'mostLopsidedBySeriesGap':by_gap[:50],
               'mostDominantByWinPercentage':by_pct[:50]
           }
@@ -77,6 +106,7 @@ jobs:
           if by_gap:
               r=by_gap[0]
               print(f"Most lopsided: {r['leader']} leads {r['trailer']} {r['recordForLeader']} in {r['meetings']} meetings (gap {r['seriesGap']})")
+          print(f"Removed {duplicates_removed} duplicate game rows from {source_rows} source rows")
           PY
       - name: Commit updated data
         run: |
@@ -84,6 +114,6 @@ jobs:
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           git add rivalry-dominance.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Update rivalry dominance records"
+          git commit -m "Update deduplicated rivalry dominance records"
           git pull --rebase origin main
           git push
