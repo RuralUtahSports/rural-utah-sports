@@ -1,4 +1,5 @@
 const WPE_API='https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/weekly-picks';
+const WPE_COUNT_API='https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/weekly-pick-count';
 let wpeBackendTimer=null;
 function wpeTokenKey(k){return`rus-weekly-entry-token-${k}`}
 function wpeEntryToken(k){
@@ -18,6 +19,32 @@ async function wpeApi(payload){
   if(!r.ok){const e=new Error(data.error||`Leaderboard request failed (${r.status})`);e.status=r.status;throw e}
   return data;
 }
+async function wpeParticipantCount(weekKey){
+  const r=await fetch(WPE_COUNT_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({weekKey})});
+  let data={};try{data=await r.json()}catch{}
+  if(!r.ok)throw new Error(data.error||'Participant count unavailable');
+  return Number(data.count)||0;
+}
+function wpeEnsureCounter(){
+  let el=document.getElementById('wpeParticipantCounter');
+  if(el)return el;
+  const lock=document.getElementById('wpRelease');
+  if(!lock)return null;
+  el=document.createElement('div');
+  el.id='wpeParticipantCounter';
+  el.style.cssText='margin:10px 0 16px;padding:11px 14px;background:#151515;border:1px solid #333;border-left:4px solid #F14D07;border-radius:6px;color:#ddd;font-weight:800;font-size:13px';
+  el.innerHTML='👥 <strong>—</strong> players have made picks this week';
+  lock.insertAdjacentElement('afterend',el);
+  return el;
+}
+async function wpeRefreshParticipantCount(){
+  try{
+    const w=typeof wpCurrentWeek==='function'?wpCurrentWeek():null;if(!w)return;
+    const el=wpeEnsureCounter();if(!el)return;
+    const count=await wpeParticipantCount(w.key);
+    el.innerHTML=`👥 <strong>${count.toLocaleString()}</strong> ${count===1?'player has':'players have'} made picks this week`;
+  }catch(e){console.error(e)}
+}
 async function wpeSubmitCurrent(){
   const w=wpCurrentWeek();if(!w||wpReleased(w))return;
   const name=wpeUser(w.key);if(!name)return;
@@ -25,6 +52,7 @@ async function wpeSubmitCurrent(){
   try{
     await wpeApi({action:'submit',weekKey:w.key,username:name,token:wpeEntryToken(w.key),picks:entry.picks,scores:entry.scores});
     wpeBackendStatus('Saved to the weekly leaderboard');
+    wpeRefreshParticipantCount();
   }catch(e){
     console.error(e);wpeBackendStatus(e.message||'Could not save leaderboard entry',true);
   }
@@ -32,7 +60,9 @@ async function wpeSubmitCurrent(){
 function wpeBackendQueue(){clearTimeout(wpeBackendTimer);wpeBackendTimer=setTimeout(wpeSubmitCurrent,350)}
 window.RUS_WEEKLY_PICKS_SUBMIT=async function(weekKey,entry,w){
   if(!w||wpReleased(w)||!wpeUsername(entry?.username))return null;
-  return wpeApi({action:'submit',weekKey,username:wpeUsername(entry.username),token:wpeEntryToken(weekKey),picks:entry.picks||{},scores:entry.scores||{}});
+  const result=await wpeApi({action:'submit',weekKey,username:wpeUsername(entry.username),token:wpeEntryToken(weekKey),picks:entry.picks||{},scores:entry.scores||{}});
+  wpeRefreshParticipantCount();
+  return result;
 };
 window.RUS_WEEKLY_PICKS_FETCH=async function(weekKey){
   const data=await wpeApi({action:'leaderboard',weekKey});return Array.isArray(data.rows)?data.rows:[];
@@ -58,5 +88,5 @@ window.wpReset=function(){
   wpRenderBody();wpeBackendQueue();
 };
 (function wpeBackendInitialSync(){
-  let tries=0;const timer=setInterval(()=>{tries++;if(typeof wpCurrentWeek==='function'&&wpCurrentWeek()){clearInterval(timer);wpeBackendQueue()}else if(tries>100)clearInterval(timer)},150);
+  let tries=0;const timer=setInterval(()=>{tries++;if(typeof wpCurrentWeek==='function'&&wpCurrentWeek()){clearInterval(timer);wpeBackendQueue();wpeRefreshParticipantCount();setInterval(wpeRefreshParticipantCount,60000)}else if(tries>100)clearInterval(timer)},150);
 })();
