@@ -39,8 +39,8 @@ nav a:hover{background:#F14D07;color:#000}
 .info-value{font-size:16px;font-weight:bold}
 .table-wrap{overflow-x:auto;background:#000;border:1px solid #333;border-radius:7px}
 table{width:100%;border-collapse:collapse;min-width:750px}
-th{background:#F14D07;color:#000;padding:12px 10px;text-transform:uppercase;font-size:11px}
-td{padding:11px 10px;text-align:center;border-bottom:1px solid #333}
+th{background:#F14D07;color:#000;padding:12px 10px;text-transform:uppercase;font-size:11px;white-space:nowrap}
+td{padding:11px 10px;text-align:center;border-bottom:1px solid #333;white-space:nowrap}
 tbody tr:hover{background:#191919}
 .rating{color:#F14D07;font-weight:900}
 .note{color:#888;font-size:13px;margin-top:10px}
@@ -77,41 +77,54 @@ function color(v,f){return /^#[0-9A-F]{6}$/i.test(clean(v))?clean(v):f}
 function record(w,l,t){return `${Number(w||0)}-${Number(l||0)}-${Number(t||0)}`}
 function pct(v){const n=Number(v);return Number.isFinite(n)?(n*100).toFixed(1)+'%':'—'}
 function num(v,d=2){const n=Number(v);return Number.isFinite(n)?n.toFixed(d):'—'}
+function integer(v){const n=Number(v);return Number.isFinite(n)?n.toLocaleString():'—'}
 function paramsTeam(){return new URLSearchParams(location.search).get('team')||''}
 function normalize(v){return clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'')}
+
 async function load(){
 try{
-const [teamResponse,recordResponse]=await Promise.all([
-fetch('teams-data.json?v='+Date.now(),{cache:'no-store'}),
-fetch('team-records.json?v='+Date.now(),{cache:'no-store'})
+const stamp=Date.now();
+const [teamResponse,recordResponse,historyResponse]=await Promise.all([
+fetch('teams-data.json?v='+stamp,{cache:'no-store'}),
+fetch('team-records.json?v='+stamp,{cache:'no-store'}),
+fetch('season-history.json?v='+stamp,{cache:'no-store'})
 ]);
 if(!teamResponse.ok)throw new Error('Unable to load team data');
 if(!recordResponse.ok)throw new Error('Unable to load record book data');
+if(!historyResponse.ok)throw new Error('Unable to load season history data');
 const teams=await teamResponse.json();
 const records=await recordResponse.json();
+const histories=await historyResponse.json();
 const wanted=normalize(paramsTeam());
 const team=teams.find(t=>normalize(t.team)===wanted);
 if(!team)throw new Error('Team not found');
 const aliases={"GUNNISON VALLEY":"GUNNISON","MAPLE MOUNTAIN":"MAPLE MTN","MONUMENT VALLEY":"MONUMENT VAL"};
 const recordKey=team.team in records?team.team:(aliases[team.team]||team.team);
-render(team,records[recordKey]||null);
+const historyKey=team.team in histories?team.team:(aliases[team.team]||team.team);
+render(team,records[recordKey]||null,histories[historyKey]||[]);
 }catch(e){
 console.error(e);
 document.getElementById('page').innerHTML='<div class="error">Team information could not be loaded.<br><br><a class="back" href="teams.html">← Back to Teams</a></div>'
 }
 }
-function render(team,achievement){
+
+function render(team,achievement,history){
 const bg=color(team.backgroundColor,'#222');
 let text=color(team.textColor,'#fff');
 if(text.toUpperCase()==='#000000')text='#fff';
 const classification=clean(team.classification)||'—';
 const region=clean(team.region)||'—';
 const mascot=clean(team.mascot)||'—';
-const seasons=Array.isArray(team.bestSeasons)?team.bestSeasons:[];
-const seasonRows=seasons.map(s=>`<tr><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('');
+const greatest=Array.isArray(team.bestSeasons)?team.bestSeasons:[];
+
+const greatestRows=greatest.map(s=>`<tr><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('');
+
+const historyRows=(Array.isArray(history)?history:[]).map(s=>`<tr><td>${escapeHTML(s.year)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.winPct)}</td><td>${integer(s.pointsFor)}</td><td>${integer(s.pointsAgainst)}</td><td>${num(s.ppg,1)}</td><td>${num(s.papg,1)}</td><td>${num(s.avgMargin,1)}</td><td>${num(s.sos,2)}</td><td class="rating">${num(s.rating,2)}</td></tr>`).join('');
+
 const regionTitles=achievement?.regionTitles??0;
 const playoffWins=achievement?.playoffWins??0;
 const championships=achievement?.stateChampionships??0;
+
 document.title=`${team.team} | Rural Utah Sports`;
 document.getElementById('page').innerHTML=`
 <a class="back" href="teams.html">← All Teams</a>
@@ -129,21 +142,27 @@ document.getElementById('page').innerHTML=`
 </div>
 </div>
 </section>
+
 <h2 class="section-title">Achievements</h2>
 <div class="achievement-grid">
 <div class="achievement"><div class="achievement-number">${Number(regionTitles).toLocaleString()}</div><div class="achievement-label">Region Titles</div></div>
 <div class="achievement"><div class="achievement-number">${Number(playoffWins).toLocaleString()}</div><div class="achievement-label">Playoff Wins</div></div>
 <div class="achievement"><div class="achievement-number">${Number(championships).toLocaleString()}</div><div class="achievement-label">State Championships</div></div>
 </div>
+
 <h2 class="section-title">Team Information</h2>
 <div class="info-box"><div class="info-grid">
 <div class="info-item"><div class="info-label">Classification</div><div class="info-value">${escapeHTML(classification)}</div></div>
 <div class="info-item"><div class="info-label">Region</div><div class="info-value">${escapeHTML(region)}</div></div>
 <div class="info-item"><div class="info-label">Mascot</div><div class="info-value">${escapeHTML(mascot)}</div></div>
 </div></div>
+
 <h2 class="section-title">Greatest Seasons</h2>
-<div class="table-wrap"><table><thead><tr><th>Year</th><th>Record</th><th>Win %</th><th>PPG</th><th>PAPG</th><th>Margin</th><th>SOS</th><th>Rating</th></tr></thead><tbody>${seasonRows||'<tr><td colspan="8">No season data available.</td></tr>'}</tbody></table></div>
-<p class="note">Achievement totals are from the Rural Utah Sports Record Book.</p>
+<div class="table-wrap"><table><thead><tr><th>Year</th><th>Record</th><th>Win %</th><th>PPG</th><th>PAPG</th><th>Margin</th><th>SOS</th><th>Rating</th></tr></thead><tbody>${greatestRows||'<tr><td colspan="8">No season data available.</td></tr>'}</tbody></table></div>
+
+<h2 class="section-title">Season-by-Season History</h2>
+<div class="table-wrap"><table><thead><tr><th>Year</th><th>Record</th><th>Win %</th><th>PF</th><th>PA</th><th>PPG</th><th>PAPG</th><th>Margin</th><th>SOS</th><th>Rating</th></tr></thead><tbody>${historyRows||'<tr><td colspan="10">No season history available.</td></tr>'}</tbody></table></div>
+<p class="note">Season history is synced from the Greatest Seasons tab in the Rural Utah Sports master spreadsheet.</p>
 `;
 }
 load();
