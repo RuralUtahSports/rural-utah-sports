@@ -29,6 +29,8 @@ footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30
 <p class="filter-note">Classification filtering uses each program's current classification. Percentage leaderboards use minimum-game requirements to avoid tiny-sample records.</p>
 </section>
 <section class="record-card"><div class="record-header"><div><h3 id="recordTitle">Loading...</h3></div><p id="recordNote"></p></div><div id="leaderboardWrap" class="loading">Loading record data...</div></section>
+
+<section class="record-card" id="rivalryRecords" style="margin-top:20px"><div class="record-header"><div><h3>Most Lopsided Rivalries</h3></div><p>Series with at least 10 meetings, ranked by the largest difference in wins after exact duplicate game rows are removed.</p></div><div id="rivalryLeaderboard" class="loading">Loading rivalry records...</div></section>
 <section class="stat-directory"><h3 class="directory-title">All Available Stats</h3><div id="statChips" class="stat-chips"></div></section>
 </main>
 <footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
@@ -140,6 +142,20 @@ function allTimeRows(stat,cls){
   }).filter(r=>r.value!==null&&(!stat.minGames||r.games>=stat.minGames)&&(cls==='all'||currentClass(r.team)===cls));
 }
 
+
+function renderRivalryRecords(data){
+  const holder=document.getElementById('rivalryLeaderboard');
+  if(!holder)return;
+  const rows=(data?.mostLopsidedBySeriesGap||[]).slice(0,10);
+  holder.className='';
+  if(!rows.length){holder.innerHTML='<div class="loading">No rivalry records are available.</div>';return}
+  holder.innerHTML=`<table class="leaderboard"><thead><tr><th>Rank</th><th>Rivalry</th><th>Series</th><th>Meetings</th><th>Win Gap</th><th style="text-align:right">Dominance</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${i<3?'top-'+(i+1):''}"><td class="rank">${i+1}</td><td class="team-cell">${teamBadge(r.leader)} <span style="color:#777;font-weight:900">vs</span> ${teamBadge(r.trailer)}</td><td><strong>${escapeHTML(r.recordForLeader||'—')}</strong><div class="detail">${escapeHTML(r.leader)} leads</div></td><td>${Number(r.meetings||0).toLocaleString()}</td><td class="value" style="text-align:center">${Number(r.seriesGap||0)}</td><td class="value">${Number.isFinite(Number(r.leaderWinPctAllMeetings))?(Number(r.leaderWinPctAllMeetings)*100).toFixed(1)+'%':'—'}</td></tr>`).join('')}</tbody></table>`;
+}
+async function loadRivalries(){
+  const holder=document.getElementById('rivalryLeaderboard');
+  try{const r=await fetch('rivalry-dominance.json?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('Rivalry data unavailable');renderRivalryRecords(await r.json())}catch(e){console.error(e);if(holder){holder.className='error';holder.textContent='Unable to load rivalry records.'}}
+}
+
 function seasonRows(stat,cls){
   return seasons.map(s=>({team:clean(s['Team']),year:s['Year'],value:number(s[stat.field]),games:number(s['Games'])||0,record:recordText(s)}))
     .filter(r=>r.team&&r.value!==null&&(!stat.minGames||r.games>=stat.minGames)&&(cls==='all'||currentClass(r.team)===cls))
@@ -189,6 +205,7 @@ async function load(){
     buildClassFilter();
     buildStatSelect('currentElo');
     render();
+    await loadRivalries();
   }catch(e){
     console.error(e);
     document.getElementById('leaderboardWrap').className='error';
