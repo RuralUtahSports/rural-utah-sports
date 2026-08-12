@@ -51,6 +51,12 @@ if(typeof wpBindPickButtons==='function'){
     });
   };
 }
+window.wpReset=function(){
+  const w=wpCurrentWeek();if(!w||wpReleased(w))return;
+  if(!confirm('Clear all of your picks and score guesses for this week?'))return;
+  try{localStorage.removeItem(wpStorageKey(w.key));localStorage.removeItem(wpeScoreKey(w.key))}catch{}
+  wpRenderBody();wpeBackendQueue();
+};
 (function wpeBackendInitialSync(){
   let tries=0;const timer=setInterval(()=>{tries++;if(typeof wpCurrentWeek==='function'&&wpCurrentWeek()){clearInterval(timer);wpeBackendQueue()}else if(tries>100)clearInterval(timer)},150);
 })();
