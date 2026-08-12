@@ -1,0 +1,55 @@
+name: Normalize Team Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 * * * *'
+  push:
+    paths:
+      - 'team-schedules.json'
+      - 'team-elo-history.json'
+      - 'scripts/normalize_team_data.py'
+      - '.github/workflows/normalize-team-data.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: normalize-team-data
+  cancel-in-progress: false
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove duplicate generated games
+        run: python scripts/normalize_team_data.py
+      - name: Verify Wasatch Academy and duplicate cleanup
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('team-page-data/north-sanpete.json').read_text())
+          games=[g for ys in d.get('schedules',{}).values() for g in ys]
+          bad=[g for g in games if str(g.get('opponent','')).upper().startswith('WASATCH ACAD') and g.get('opponent')!='WASATCH ACADEMY']
+          if bad: raise SystemExit(f'Unnormalized Wasatch Academy rows remain: {len(bad)}')
+          seen=set()
+          for g in games:
+            k=(g.get('date'),g.get('opponent'))
+            if k in seen: raise SystemExit(f'Duplicate North Sanpete schedule game remains: {k}')
+            seen.add(k)
+          print('North Sanpete schedule aliases and duplicates verified')
+          PY
+      - name: Commit normalized data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add team-schedules.json team-record-breakdowns.json team-elo-history.json team-page-data duplicate-cleanup-report.json
+          if git diff --cached --quiet; then
+            echo "Generated team data is already normalized."
+          else
+            git commit -m "Normalize and deduplicate generated team data"
+            git pull --rebase origin main
+            git push
+          fi
