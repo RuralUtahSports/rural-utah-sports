@@ -37,6 +37,7 @@ let teams=[];
 let seasons=[];
 let recordBook={};
 let eloSummary={};
+let streakRecords={};
 let mode='alltime';
 
 const normalize=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -56,6 +57,8 @@ const allTimeStats=[
 {key:'pointsFor',label:'Most Points Scored',field:'pointsFor',format:'int',note:'Most total points scored in the historical game database.'},
 {key:'avgMargin',label:'Best Average Margin',field:'avgMargin',format:'decimal1',minGames:50,note:'Best all-time average scoring margin among programs with at least 50 recorded games.'},
 {key:'seasons',label:'Most Seasons',field:'seasons',format:'int',note:'Most seasons represented in the Rural Utah Sports database.'},
+{key:'winStreak',label:'Longest Winning Streak',streakField:'longestWinStreak',format:'int',note:'Longest run of consecutive wins in the historical schedule database. Ties break a winning streak.'},
+{key:'lossStreak',label:'Longest Losing Streak',streakField:'longestLossStreak',format:'int',note:'Longest run of consecutive losses in the historical schedule database. Ties break a losing streak.'},
 {key:'regionTitles',label:'Most Region Titles',recordField:'regionTitles',format:'int',note:'Most region championships recorded in the Record Book.'},
 {key:'playoffWins',label:'Most Playoff Wins',recordField:'playoffWins',format:'int',note:'Most postseason wins recorded in the Record Book.'},
 {key:'stateChampionships',label:'Most State Championships',field:'stateChampionships',format:'int',note:'Most state titles, using Championship Log totals.'},
@@ -121,6 +124,14 @@ function allTimeRows(stat,cls){
         const context=[elo.peakDate,elo.peakResult&&elo.peakOpponent?`${elo.peakResult} vs ${elo.peakOpponent}`:elo.peakOpponent].filter(Boolean).join(' • ');
         if(context)detail=context;
       }
+    }else if(stat.streakField){
+      const streak=streakRecords[clean(t.team)]?.[stat.streakField];
+      value=number(streak?.length);
+      if(streak&&value!==null){
+        const dates=[streak.startDate,streak.endDate].filter(Boolean).join(' → ');
+        const opponents=[streak.startOpponent,streak.endOpponent].filter(Boolean).join(' → ');
+        detail=[dates,opponents].filter(Boolean).join(' • ');
+      }
     }else{
       value=stat.recordField?number(rec?.[stat.recordField]):number(t[stat.field]);
     }
@@ -159,11 +170,12 @@ function render(){
 async function load(){
   try{
     const stamp=Date.now();
-    const [teamRes,seasonRes,recordRes,eloRes]=await Promise.all([
+    const [teamRes,seasonRes,recordRes,eloRes,streakRes]=await Promise.all([
       fetch('teams-data.json?v='+stamp,{cache:'no-store'}),
       fetch('greatest-seasons-data-v2.json?v='+stamp,{cache:'no-store'}),
       fetch('team-records.json?v='+stamp,{cache:'no-store'}),
-      fetch('elo-summary.json?v='+stamp,{cache:'no-store'})
+      fetch('elo-summary.json?v='+stamp,{cache:'no-store'}),
+      fetch('streak-records.json?v='+stamp,{cache:'no-store'})
     ]);
 
     if(!teamRes.ok||!seasonRes.ok||!recordRes.ok)throw new Error('Required record data could not be loaded.');
@@ -171,6 +183,7 @@ async function load(){
     seasons=await seasonRes.json();
     recordBook=await recordRes.json();
     if(eloRes.ok)eloSummary=await eloRes.json();
+    if(streakRes.ok)streakRecords=await streakRes.json();
 
     for(const t of teams)teamByName.set(normalize(t.team),t);
     buildClassFilter();
