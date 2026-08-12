@@ -76,5 +76,6 @@ function render(team,achievement,pageData){const bg=color(team.backgroundColor,'
 <h2 class="section-title">Historical Records</h2><div class="record-grid"><div class="record-panel"><h3>Record by Decade</h3><div class="record-wrap"><table><thead><tr><th>Decade</th><th>Record</th><th>Games</th><th>Win %</th></tr></thead><tbody>${decadeRows||'<tr><td colspan="4">No decade data available.</td></tr>'}</tbody></table></div></div><div class="record-panel"><h3>Record vs. Every Opponent</h3><div class="record-wrap"><table><thead><tr><th>Opponent</th><th>Record</th><th>Games</th><th>Win %</th></tr></thead><tbody>${opponentRows||'<tr><td colspan="4">No opponent data available.</td></tr>'}</tbody></table></div></div></div><p class="note">Historical records are calculated from the master game database.</p>`;if(scheduleYears.length){document.getElementById('scheduleYear').value=String(scheduleYears[0]);updateSchedule()}updateElo()}
 load();
 </script>
+<script src="back-to-top.js" defer></script>
 </body>
 </html>

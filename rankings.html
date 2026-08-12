@@ -42,5 +42,6 @@ function renderSnapshot(key){
 }
 (async()=>{const root=document.getElementById('rankings');try{const stamp=Date.now(),[r,c]=await Promise.all([fetch('rankings-history-2026.json?v='+stamp),fetch('team-colors-exact.json?v='+stamp)]);if(!r.ok||!c.ok)throw new Error('Ranking archive unavailable');rankingArchive=await r.json();const colorRows=await c.json();for(const x of colorRows)rankingColors[x.team]=x;const snaps=rankingArchive.snapshots||[],select=document.getElementById('rankingSnapshot');select.innerHTML=[...snaps].reverse().map(x=>`<option value="${esc(x.key)}">${esc(x.label)}${x.date?' — '+esc(x.date):''}</option>`).join('');const latest=snaps.at(-1);if(latest){select.value=latest.key;renderSnapshot(latest.key)}select.addEventListener('change',()=>renderSnapshot(select.value))}catch(e){console.error(e);root.className='error';root.textContent='Rankings archive could not be loaded.'}})();
 </script>
+<script src="back-to-top.js" defer></script>
 </body>
 </html>
