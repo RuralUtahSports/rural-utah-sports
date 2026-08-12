@@ -127,11 +127,13 @@ jobs:
             for (const r of recordRows.slice(1)) {
               const school = canonicalTeam(r[1]);
               if (!school || school === 'SCHOOL') continue;
-              const regionTitles = num(r[22]);
-              const playoffWins = num(r[23]);
-              const stateChampionships = num(r[24]);
-              if (regionTitles === null && playoffWins === null && stateChampionships === null) continue;
-              records[school] = { regionTitles, playoffWins, stateChampionships };
+              // R:AP starts at spreadsheet column 18, so AM/AP fields are indexes 21-24 here.
+              const regionTitles = num(r[21]);
+              const playoffWins = num(r[22]);
+              const stateChampionships = num(r[23]);
+              const championshipGames = num(r[24]);
+              if (regionTitles === null && playoffWins === null && stateChampionships === null && championshipGames === null) continue;
+              records[school] = { regionTitles, playoffWins, stateChampionships, championshipGames };
             }
 
             // Greatest Seasons columns:
