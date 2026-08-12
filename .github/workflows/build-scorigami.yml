@@ -1,0 +1,165 @@
+name: Build Scorigami Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '22 * * * *'
+  push:
+    paths:
+      - '.github/workflows/build-scorigami.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scorigami-data-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Scorigami JSON
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
+          SCORIGAMI_GID: 1465282096
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const sheetId = process.env.SHEET_ID;
+          const gid = process.env.SCORIGAMI_GID;
+
+          function csvUrl(range) {
+            return `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}&range=${encodeURIComponent(range)}`;
+          }
+
+          function parseCSV(text) {
+            const rows = [];
+            let row = [], field = '', quoted = false;
+            for (let i = 0; i < text.length; i++) {
+              const c = text[i];
+              if (quoted) {
+                if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+                else if (c === '"') quoted = false;
+                else field += c;
+              } else {
+                if (c === '"') quoted = true;
+                else if (c === ',') { row.push(field); field = ''; }
+                else if (c === '\n') { row.push(field.replace(/\r$/, '')); rows.push(row); row = []; field = ''; }
+                else field += c;
+              }
+            }
+            if (field.length || row.length) { row.push(field.replace(/\r$/, '')); rows.push(row); }
+            return rows;
+          }
+
+          async function getCSV(range) {
+            const res = await fetch(csvUrl(range));
+            if (!res.ok) throw new Error(`Scorigami sheet download failed: ${res.status} ${res.statusText}`);
+            return parseCSV(await res.text());
+          }
+
+          const clean = v => String(v ?? '').trim();
+          const num = v => {
+            const s = clean(v).replace(/,/g, '');
+            if (!s) return null;
+            const n = Number(s);
+            return Number.isFinite(n) ? n : null;
+          };
+          const scoreKey = (winner, loser) => `${winner}-${loser}`;
+
+          (async () => {
+            const summaryRows = await getCSV('A1:H3');
+            const summaryRow = summaryRows[1] || [];
+            const summary = {
+              uniqueGames: num(summaryRow[1]) || 0,
+              uniqueFinalScores: num(summaryRow[4]) || 0,
+              skippedRows: num(summaryRow[7]) || 0
+            };
+
+            const matrixRows = await getCSV('A5:CG180');
+            if (!matrixRows.length) throw new Error('Scorigami matrix is empty.');
+            const headers = matrixRows[0];
+            const losingScores = [];
+            for (let c = 1; c < headers.length; c++) {
+              const n = num(headers[c]);
+              if (n === null) break;
+              losingScores.push({ column: c, score: n });
+            }
+
+            const scoreMap = new Map();
+            let maxWinningScore = 0;
+            let maxLosingScore = 0;
+            for (const row of matrixRows.slice(1)) {
+              const winner = num(row[0]);
+              if (winner === null) continue;
+              maxWinningScore = Math.max(maxWinningScore, winner);
+              for (const h of losingScores) {
+                if (h.score > winner) continue;
+                const count = num(row[h.column]);
+                if (count === null || count <= 0) continue;
+                maxLosingScore = Math.max(maxLosingScore, h.score);
+                scoreMap.set(scoreKey(winner, h.score), {
+                  winner,
+                  loser: h.score,
+                  count,
+                  firstYear: null,
+                  recentYear: null
+                });
+              }
+            }
+
+            const historyRows = await getCSV('CO5:CR1726');
+            for (const row of historyRows) {
+              const m = clean(row[0]).match(/^(\d+)-(\d+)$/);
+              if (!m) continue;
+              const winner = Number(m[1]), loser = Number(m[2]);
+              const key = scoreKey(winner, loser);
+              const entry = scoreMap.get(key);
+              if (!entry) continue;
+              entry.firstYear = num(row[2]);
+              entry.recentYear = num(row[3]);
+            }
+
+            const tieRows = await getCSV('CJ15:CM180');
+            for (const row of tieRows) {
+              const m = clean(row[0]).match(/^(\d+)-(\d+)$/);
+              if (!m || m[1] !== m[2]) continue;
+              const winner = Number(m[1]), loser = Number(m[2]);
+              const key = scoreKey(winner, loser);
+              const entry = scoreMap.get(key);
+              if (!entry) continue;
+              entry.firstYear = num(row[2]);
+              entry.recentYear = num(row[3]);
+            }
+
+            const scores = [...scoreMap.values()].sort((a, b) => a.winner - b.winner || a.loser - b.loser);
+            const payload = {
+              summary,
+              maxWinningScore,
+              maxLosingScore,
+              scores
+            };
+
+            if (!scores.length || !summary.uniqueFinalScores) throw new Error('Scorigami build produced no score data.');
+            fs.writeFileSync('scorigami.json', JSON.stringify(payload));
+            console.log(`Scorigami scores: ${scores.length}`);
+            console.log(`Matrix range: 0-${maxWinningScore} winners, 0-${maxLosingScore} losers`);
+          })().catch(err => { console.error(err); process.exit(1); });
+          NODE
+
+      - name: Commit Scorigami data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add scorigami.json
+          if git diff --cached --quiet; then
+            echo "Scorigami data is already current."
+          else
+            git commit -m "Auto-sync Scorigami data"
+            git push
+          fi
