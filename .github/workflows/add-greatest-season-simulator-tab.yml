@@ -1,0 +1,43 @@
+name: Add Greatest Season Simulator Tab
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-greatest-season-simulator-tab.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch simulators page
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('simulators.html')
+          s=p.read_text(encoding='utf-8')
+          replacements=[
+            ('</head>','<link rel="stylesheet" href="greatest-season-simulator.css">\n</head>'),
+            ('<p class="subtitle">Run a detailed matchup through the Rural Utah Sports prediction model or browse the current weekly simulation slate from the master football database.</p>','<p class="subtitle">Run a detailed current matchup, browse the weekly simulation slate, or pit any two historical Greatest Seasons against each other.</p>'),
+            ('<div class="tabs"><button class="tab active" data-tab="h2h">Head-to-Head Predictor</button><button class="tab" data-tab="weekly">Weekly Simulation</button></div>','<div class="tabs"><button class="tab active" data-tab="h2h">Head-to-Head Predictor</button><button class="tab" data-tab="weekly">Weekly Simulation</button><button class="tab" data-tab="greatest">Greatest Season Matchup</button></div>'),
+            ('<section id="weekly" class="panel"><div id="weeklyContent" class="loading">Loading weekly simulation...</div></section>','<section id="weekly" class="panel"><div id="weeklyContent" class="loading">Loading weekly simulation...</div></section>\n<section id="greatest" class="panel"><div id="greatestContent" class="loading">Loading Greatest Seasons...</div></section>'),
+            ("history.replaceState(null,'',id==='weekly'?'?tab=weekly':location.pathname)","history.replaceState(null,'',id==='weekly'?'?tab=weekly':id==='greatest'?'?tab=greatest':location.pathname)"),
+            ("if(new URLSearchParams(location.search).get('tab')==='weekly')showTab('weekly')","const initialTab=new URLSearchParams(location.search).get('tab');if(initialTab==='weekly'||initialTab==='greatest')showTab(initialTab)"),
+            ('</body>','<script src="greatest-season-simulator.js"></script>\n</body>')
+          ]
+          for old,new in replacements:
+            if old not in s:
+              raise RuntimeError('Expected simulator page marker not found: '+old[:80])
+            s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit simulator tab
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add simulators.html
+          git commit -m "Add Greatest Season matchup simulator tab"
+          git push
