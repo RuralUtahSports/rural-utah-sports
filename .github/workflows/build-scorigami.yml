@@ -81,7 +81,7 @@ jobs:
               skippedRows: num(summaryRow[7]) || 0
             };
 
-            const matrixRows = await getCSV('A5:CG180');
+            const matrixRows = await getCSV('A5:CG181');
             if (!matrixRows.length) throw new Error('Scorigami matrix is empty.');
             const headers = matrixRows[0];
             const losingScores = [];
