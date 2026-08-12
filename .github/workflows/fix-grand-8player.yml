@@ -1,0 +1,46 @@
+name: Fix Grand 8-Player
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-grand-8player.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update Grand metadata
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('teams-data.json')
+          data=json.loads(p.read_text())
+          found=False
+          for t in data:
+              if t.get('team')=='GRAND':
+                  t['classification']='8P'
+                  t['region']='Independent'
+                  found=True
+                  break
+          if not found:
+              raise SystemExit('GRAND not found')
+          p.write_text(json.dumps(data,separators=(',',':')))
+          PY
+      - name: Verify and commit
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('teams-data.json'))
+          g=next(t for t in d if t.get('team')=='GRAND')
+          assert g['classification']=='8P'
+          assert g['region']=='Independent'
+          print(g['team'],g['classification'],g['region'])
+          PY
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add teams-data.json
+          git commit -m "Set Grand as 8-player independent"
+          git pull --rebase origin main
+          git push
