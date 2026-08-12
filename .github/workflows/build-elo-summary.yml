@@ -1,0 +1,69 @@
+name: Build ELO Summary
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'team-elo-history.json'
+      - '.github/workflows/build-elo-summary.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: elo-summary-sync
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build compact ELO summary
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const history = JSON.parse(fs.readFileSync('team-elo-history.json', 'utf8'));
+          const summary = {};
+
+          for (const [team, rowsRaw] of Object.entries(history)) {
+            const rows = Array.isArray(rowsRaw) ? rowsRaw.filter(r => Number.isFinite(Number(r?.eloAfter))) : [];
+            if (!rows.length) continue;
+
+            const latest = rows[rows.length - 1];
+            let peak = rows[0];
+            for (const row of rows) {
+              if (Number(row.eloAfter) > Number(peak.eloAfter)) peak = row;
+            }
+
+            summary[team] = {
+              currentElo: Number(latest.eloAfter),
+              currentDate: latest.date || '',
+              currentOpponent: latest.opponent || '',
+              currentResult: latest.result || '',
+              peakElo: Number(peak.eloAfter),
+              peakDate: peak.date || '',
+              peakSeason: Number(peak.season) || null,
+              peakOpponent: peak.opponent || '',
+              peakResult: peak.result || ''
+            };
+          }
+
+          fs.writeFileSync('elo-summary.json', JSON.stringify(summary));
+          console.log(`ELO summaries generated: ${Object.keys(summary).length}`);
+          if (!Object.keys(summary).length) throw new Error('No ELO summary rows generated.');
+          NODE
+
+      - name: Commit ELO summary
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add elo-summary.json
+          if git diff --cached --quiet; then
+            echo "ELO summary is already current."
+          else
+            git commit -m "Auto-sync ELO summary"
+            git push
+          fi
