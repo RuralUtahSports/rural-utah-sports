@@ -46,22 +46,9 @@ jobs:
           const eloSummary = JSON.parse(fs.readFileSync('elo-summary.json','utf8'));
 
           const teamByNorm = new Map();
-          const teamByName = new Map();
-          for (const t of teams) {
-            teamByNorm.set(norm(t.team), t.team);
-            teamByName.set(t.team, t);
-          }
-          const aliases = {
-            GUNNISON:'GUNNISON VALLEY',
-            MAPLEMTN:'MAPLE MOUNTAIN',
-            MONUMENTVAL:'MONUMENT VALLEY',
-            AMERFORK:'AMERICAN FORK',
-            CEDAR:'CEDAR CITY'
-          };
-          function resolveTeam(v) {
-            const k = norm(v);
-            return teamByNorm.get(k) || aliases[k] || '';
-          }
+          for (const t of teams) teamByNorm.set(norm(t.team), t.team);
+          const aliases = {GUNNISON:'GUNNISON VALLEY',MAPLEMTN:'MAPLE MOUNTAIN',MONUMENTVAL:'MONUMENT VALLEY',AMERFORK:'AMERICAN FORK',CEDAR:'CEDAR CITY'};
+          function resolveTeam(v) { const k = norm(v); return teamByNorm.get(k) || aliases[k] || ''; }
           function teamSchedule(team) {
             const raw = schedules[team] || schedules[resolveTeam(team)] || {};
             const out = [];
@@ -71,15 +58,7 @@ jobs:
                 const result = clean(g.result).toUpperCase();
                 const ts = n(g.teamScore), os = n(g.opponentScore);
                 if (!clean(g.date) || !clean(g.opponent) || !validResult(result) || ts === null || os === null) continue;
-                out.push({
-                  date: clean(g.date),
-                  opponent: clean(g.opponent),
-                  opponentTeam: resolveTeam(g.opponent),
-                  teamScore: ts,
-                  opponentScore: os,
-                  result,
-                  year: yearOf(g.date)
-                });
+                out.push({date:clean(g.date),opponent:clean(g.opponent),opponentTeam:resolveTeam(g.opponent),teamScore:ts,opponentScore:os,result,year:yearOf(g.date)});
               }
             }
             out.sort((a,b)=>dateStamp(a.date)-dateStamp(b.date));
@@ -102,7 +81,6 @@ jobs:
             }
             seasonRecords.set(t.team, byYear);
           }
-
           function seasonToUse(team) {
             const byYear = seasonRecords.get(team) || {};
             const years = Object.keys(byYear).map(Number).sort((a,b)=>b-a);
@@ -110,138 +88,53 @@ jobs:
             if ((byYear[years[0]]?.gp || 0) >= 4) return years[0];
             return years[1] || years[0];
           }
-          function seasonGames(team, year) {
-            return (gamesByTeam.get(team) || []).filter(g => g.year === year);
-          }
-          function sos(team, season) {
+          const seasonGames = (team,year)=>(gamesByTeam.get(team)||[]).filter(g=>g.year===year);
+          function sos(team,season) {
             if (!season) return 0;
-            const games = seasonGames(team, season);
-            let total = 0, count = 0;
-            for (const g of games) {
-              const opp = g.opponentTeam;
-              if (!opp) continue;
-              const r = seasonRecords.get(opp)?.[season];
-              if (!r || !r.gp) continue;
-              total += (r.wins + r.ties * 0.5) / r.gp;
-              count++;
+            let total=0,count=0;
+            for (const g of seasonGames(team,season)) {
+              const opp=g.opponentTeam;if(!opp)continue;
+              const r=seasonRecords.get(opp)?.[season];if(!r||!r.gp)continue;
+              total+=(r.wins+r.ties*.5)/r.gp;count++;
             }
-            return count ? total / count : 0;
+            return count?total/count:0;
           }
-          function recentForm(team) {
-            return [...(gamesByTeam.get(team)||[])].sort((a,b)=>dateStamp(b.date)-dateStamp(a.date)).slice(0,10).map(g=>g.result).join('-');
-          }
-          function recent10Diff(team) {
-            const recent = [...(gamesByTeam.get(team)||[])].sort((a,b)=>dateStamp(b.date)-dateStamp(a.date)).slice(0,10);
-            return recent.length ? recent.reduce((s,g)=>s+(g.teamScore-g.opponentScore),0)/recent.length : 0;
-          }
-          function eloFor(team) {
-            const e = eloSummary[team] || eloSummary[resolveTeam(team)] || null;
-            return e && Number.isFinite(Number(e.currentElo)) ? Number(e.currentElo) : null;
-          }
+          function recentForm(team){return [...(gamesByTeam.get(team)||[])].sort((a,b)=>dateStamp(b.date)-dateStamp(a.date)).slice(0,10).map(g=>g.result).join('-')}
+          function recent10Diff(team){const recent=[...(gamesByTeam.get(team)||[])].sort((a,b)=>dateStamp(b.date)-dateStamp(a.date)).slice(0,10);return recent.length?recent.reduce((s,g)=>s+(g.teamScore-g.opponentScore),0)/recent.length:0}
+          function eloFor(team){const e=eloSummary[team]||eloSummary[resolveTeam(team)]||null;return e&&Number.isFinite(Number(e.currentElo))?Number(e.currentElo):null}
 
-          const featureMap = {};
-          for (const t of teams) {
-            const season = seasonToUse(t.team);
-            featureMap[t.team] = {
-              team:t.team,
-              classification:clean(t.classification),
-              region:clean(t.region),
-              backgroundColor:clean(t.backgroundColor),
-              textColor:clean(t.textColor),
-              wins:Number(t.wins||0),
-              losses:Number(t.losses||0),
-              ties:Number(t.ties||0),
-              games:Number(t.games||0),
-              winPct:Number(t.winPct||0),
-              avgPF:t.games ? Number(t.pointsFor||0)/Number(t.games) : 0,
-              avgPA:t.games ? Number(t.pointsAgainst||0)/Number(t.games) : 0,
-              avgDiff:Number(t.avgMargin||0),
-              recentForm:recentForm(t.team),
-              recent10Diff:recent10Diff(t.team),
-              seasonUsed:season,
-              sos:sos(t.team, season),
-              elo:eloFor(t.team)
-            };
-          }
+          const featureMap={};
+          for(const t of teams){const season=seasonToUse(t.team);featureMap[t.team]={team:t.team,classification:clean(t.classification),region:clean(t.region),backgroundColor:clean(t.backgroundColor),textColor:clean(t.textColor),wins:Number(t.wins||0),losses:Number(t.losses||0),ties:Number(t.ties||0),games:Number(t.games||0),winPct:Number(t.winPct||0),avgPF:t.games?Number(t.pointsFor||0)/Number(t.games):0,avgPA:t.games?Number(t.pointsAgainst||0)/Number(t.games):0,avgDiff:Number(t.avgMargin||0),recentForm:recentForm(t.team),recent10Diff:recent10Diff(t.team),seasonUsed:season,sos:sos(t.team,season),elo:eloFor(t.team)}}
 
-          function pairKey(a,b) { return [a,b].sort((x,y)=>x.localeCompare(y)).join('|||'); }
-          function h2hFor(a,b) {
-            let aWins=0,bWins=0,ties=0,last=null;
-            for (const g of gamesByTeam.get(a) || []) {
-              if (g.opponentTeam !== b) continue;
-              if (g.result === 'W') aWins++;
-              else if (g.result === 'L') bWins++;
-              else ties++;
-              if (!last || dateStamp(g.date) > dateStamp(last.date)) last = g;
-            }
-            return {
-              aWins,bWins,ties,meetings:aWins+bWins+ties,
-              lastMeeting:last ? {date:last.date,aScore:last.teamScore,bScore:last.opponentScore,result:last.result} : null
-            };
-          }
-          function commonFor(a,b) {
-            const sa = featureMap[a]?.seasonUsed, sb = featureMap[b]?.seasonUsed;
-            if (!sa || !sb) return {season:null,difference:0,rows:[]};
-            const season = Math.min(sa,sb);
-            const mapA = new Map(), mapB = new Map();
-            for (const g of seasonGames(a,season)) if (g.opponentTeam) mapA.set(g.opponentTeam,g);
-            for (const g of seasonGames(b,season)) if (g.opponentTeam) mapB.set(g.opponentTeam,g);
-            const rows=[];
-            for (const [opp,g1] of mapA.entries()) {
-              const g2=mapB.get(opp); if(!g2) continue;
-              const diff=(g1.teamScore-g1.opponentScore)-(g2.teamScore-g2.opponentScore);
-              rows.push({opponent:opp,aResult:fmtGame(g1),bResult:fmtGame(g2),diff});
-            }
-            rows.sort((x,y)=>x.opponent.localeCompare(y.opponent));
-            return {season,difference:rows.reduce((s,r)=>s+r.diff,0),rows};
-          }
+          const pairKey=(a,b)=>[a,b].sort((x,y)=>x.localeCompare(y)).join('|||');
+          function h2hFor(a,b){let aWins=0,bWins=0,ties=0,last=null;for(const g of gamesByTeam.get(a)||[]){if(g.opponentTeam!==b)continue;if(g.result==='W')aWins++;else if(g.result==='L')bWins++;else ties++;if(!last||dateStamp(g.date)>dateStamp(last.date))last=g}return{aWins,bWins,ties,meetings:aWins+bWins+ties,lastMeeting:last?{date:last.date,aScore:last.teamScore,bScore:last.opponentScore,result:last.result}:null}}
+          function commonFor(a,b){const sa=featureMap[a]?.seasonUsed,sb=featureMap[b]?.seasonUsed;if(!sa||!sb)return{season:null,difference:0,rows:[]};const season=Math.min(sa,sb),mapA=new Map(),mapB=new Map();for(const g of seasonGames(a,season))if(g.opponentTeam)mapA.set(g.opponentTeam,g);for(const g of seasonGames(b,season))if(g.opponentTeam)mapB.set(g.opponentTeam,g);const rows=[];for(const[opp,g1]of mapA.entries()){const g2=mapB.get(opp);if(!g2)continue;const diff=(g1.teamScore-g1.opponentScore)-(g2.teamScore-g2.opponentScore);rows.push({opponent:opp,aResult:fmtGame(g1),bResult:fmtGame(g2),diff})}rows.sort((x,y)=>x.opponent.localeCompare(y.opponent));return{season,difference:rows.reduce((s,r)=>s+r.diff,0),rows}}
+          const names=teams.map(t=>t.team).sort((a,b)=>a.localeCompare(b)),pairs={};
+          for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++){const a=names[i],b=names[j],h=h2hFor(a,b),c=commonFor(a,b);if(h.meetings||c.rows.length)pairs[pairKey(a,b)]={a,b,h2h:h,common:c}}
+          fs.writeFileSync('simulator-data.json',JSON.stringify({teams:featureMap,pairs}));
+          console.log(`Simulator teams: ${names.length}`);console.log(`Pair context rows: ${Object.keys(pairs).length}`);
 
-          const names = teams.map(t=>t.team).sort((a,b)=>a.localeCompare(b));
-          const pairs = {};
-          for (let i=0;i<names.length;i++) {
-            for (let j=i+1;j<names.length;j++) {
-              const a=names[i], b=names[j];
-              const h=h2hFor(a,b), c=commonFor(a,b);
-              if (h.meetings || c.rows.length) pairs[pairKey(a,b)]={a,b,h2h:h,common:c};
-            }
-          }
-
-          fs.writeFileSync('simulator-data.json', JSON.stringify({generatedAt:new Date().toISOString(),teams:featureMap,pairs}));
-          console.log(`Simulator teams: ${names.length}`);
-          console.log(`Pair context rows: ${Object.keys(pairs).length}`);
-
-          function csvUrl(gid, range) {
-            return `https://docs.google.com/spreadsheets/d/${process.env.SHEET_ID}/export?format=csv&gid=${gid}&range=${encodeURIComponent(range)}`;
-          }
-          function parseCSV(text) {
-            const rows=[]; let row=[],field='',quoted=false;
-            for(let i=0;i<text.length;i++){
-              const c=text[i];
-              if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++;}else if(c==='"')quoted=false;else field+=c;}
-              else{if(c==='"')quoted=true;else if(c===','){row.push(field);field='';}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field='';}else field+=c;}
-            }
-            if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row);} return rows;
-          }
-          const res = await fetch(csvUrl(process.env.WEEKLY_GID,'A1:K1000'));
-          if(!res.ok) throw new Error(`Weekly Simulation download failed: ${res.status}`);
-          const rows=parseCSV(await res.text());
-          const weekly=[];
-          for(const r of rows.slice(1)){
-            if(!clean(r[1])||!clean(r[2])) continue;
-            weekly.push({date:clean(r[0]),awayTeam:clean(r[1]),homeTeam:clean(r[2]),awayScore:n(r[3]),homeScore:n(r[4]),winner:clean(r[5]),actualAway:n(r[7]),actualHome:n(r[8]),actualWinner:clean(r[9]),wl:clean(r[10])});
-          }
-          fs.writeFileSync('weekly-simulation.json',JSON.stringify({generatedAt:new Date().toISOString(),games:weekly}));
-          console.log(`Weekly simulation games: ${weekly.length}`);
+          function csvUrl(gid,range){return `https://docs.google.com/spreadsheets/d/${process.env.SHEET_ID}/export?format=csv&gid=${gid}&range=${encodeURIComponent(range)}`}
+          function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}else{if(c==='"')quoted=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
+          const res=await fetch(csvUrl(process.env.WEEKLY_GID,'A1:K1000'));if(!res.ok)throw new Error(`Weekly Simulation download failed: ${res.status}`);const rows=parseCSV(await res.text()),weekly=[];
+          for(const r of rows.slice(1)){if(!clean(r[1])||!clean(r[2]))continue;weekly.push({date:clean(r[0]),awayTeam:clean(r[1]),homeTeam:clean(r[2]),awayScore:n(r[3]),homeScore:n(r[4]),winner:clean(r[5]),actualAway:n(r[7]),actualHome:n(r[8]),actualWinner:clean(r[9]),wl:clean(r[10])})}
+          fs.writeFileSync('weekly-simulation.json',JSON.stringify({games:weekly}));console.log(`Weekly simulation games: ${weekly.length}`);
           NODE
 
       - name: Commit simulator data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- simulator-data.json weekly-simulation.json)" ]; then
+            echo "Simulator data is already current."
+            exit 0
+          fi
+          git stash push --include-untracked -m simulator-data-build
           git pull --rebase origin main
+          git stash pop
           git add simulator-data.json weekly-simulation.json
           if git diff --cached --quiet; then
-            echo "Simulator data is already current."
+            echo "Simulator data became current after syncing main."
           else
             git commit -m "Auto-sync simulator data"
             git push
