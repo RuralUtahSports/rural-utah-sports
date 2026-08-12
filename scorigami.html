@@ -22,6 +22,10 @@ nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;m
 @media(max-width:900px){.summary-grid{grid-template-columns:repeat(2,1fr)}.common-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:650px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 10px 45px}.page-title{font-size:28px}.lookup-grid{grid-template-columns:1fr 1fr}.lookup button{grid-column:1/-1}.summary-grid{grid-template-columns:1fr 1fr}.summary-value{font-size:23px}.selected-head{align-items:flex-start}.selected-list{grid-template-columns:1fr}.board-head{align-items:flex-start;flex-direction:column}.common-grid{grid-template-columns:1fr 1fr}}
 </style>
+
+<style id="rus-mobile-performance">
+html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulation}.table-wrap,.games-wrap,.chart-wrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}@media(max-width:700px){body{-webkit-font-smoothing:antialiased}main img:not(.logo){max-width:100%;height:auto}table{contain:layout style}.table-wrap{contain:layout paint}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
@@ -120,7 +124,7 @@ function renderCommon(){
 }
 
 async function init(){
-  try{loadSelected();const res=await fetch('scorigami.json',{cache:'no-store'});if(!res.ok)throw new Error(`HTTP ${res.status}`);data=await res.json();scoreMap=new Map(data.scores.map(s=>[key(s.winner,s.loser),s]));document.getElementById('gamesCount').textContent=numberText(data.summary.uniqueGames);document.getElementById('uniqueCount').textContent=numberText(data.summary.uniqueFinalScores||data.scores.length);document.getElementById('oneTimeCount').textContent=numberText(data.scores.filter(s=>s.count===1).length);renderBoard();renderCommon();renderSelected();showScore(16,6,false,false)}catch(err){document.getElementById('board').className='error';document.getElementById('board').textContent='Unable to load Scorigami data.';console.error(err)}
+  try{loadSelected();const res=await fetch('scorigami.json');if(!res.ok)throw new Error(`HTTP ${res.status}`);data=await res.json();scoreMap=new Map(data.scores.map(s=>[key(s.winner,s.loser),s]));document.getElementById('gamesCount').textContent=numberText(data.summary.uniqueGames);document.getElementById('uniqueCount').textContent=numberText(data.summary.uniqueFinalScores||data.scores.length);document.getElementById('oneTimeCount').textContent=numberText(data.scores.filter(s=>s.count===1).length);renderBoard();renderCommon();renderSelected();showScore(16,6,false,false)}catch(err){document.getElementById('board').className='error';document.getElementById('board').textContent='Unable to load Scorigami data.';console.error(err)}
 }
 
 document.getElementById('findButton').addEventListener('click',()=>{showScore(document.getElementById('winnerInput').value,document.getElementById('loserInput').value,false,true);document.getElementById('lookupResult').scrollIntoView({behavior:'smooth',block:'start'})});

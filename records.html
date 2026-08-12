@@ -16,6 +16,10 @@ nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;m
 footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}footer strong{color:#F14D07}
 @media(max-width:700px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.page-title{font-size:28px}.control-grid{grid-template-columns:1fr}.record-header{align-items:flex-start;flex-direction:column}.record-header p{text-align:left}.team-badge{min-width:0}.value{font-size:17px}}
 </style>
+
+<style id="rus-mobile-performance">
+html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulation}.table-wrap,.games-wrap,.chart-wrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}@media(max-width:700px){body{-webkit-font-smoothing:antialiased}main img:not(.logo){max-width:100%;height:auto}table{contain:layout style}.table-wrap{contain:layout paint}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
@@ -153,7 +157,7 @@ function renderRivalryRecords(data){
 }
 async function loadRivalries(){
   const holder=document.getElementById('rivalryLeaderboard');
-  try{const r=await fetch('rivalry-dominance.json?v='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('Rivalry data unavailable');renderRivalryRecords(await r.json())}catch(e){console.error(e);if(holder){holder.className='error';holder.textContent='Unable to load rivalry records.'}}
+  try{const r=await fetch('rivalry-dominance.json');if(!r.ok)throw new Error('Rivalry data unavailable');renderRivalryRecords(await r.json())}catch(e){console.error(e);if(holder){holder.className='error';holder.textContent='Unable to load rivalry records.'}}
 }
 
 function seasonRows(stat,cls){
@@ -187,11 +191,11 @@ async function load(){
   try{
     const stamp=Date.now();
     const [teamRes,seasonRes,recordRes,eloRes,streakRes]=await Promise.all([
-      fetch('teams-data.json?v='+stamp,{cache:'no-store'}),
-      fetch('greatest-seasons-data-v2.json?v='+stamp,{cache:'no-store'}),
-      fetch('team-records.json?v='+stamp,{cache:'no-store'}),
-      fetch('elo-summary.json?v='+stamp,{cache:'no-store'}),
-      fetch('streak-records.json?v='+stamp,{cache:'no-store'})
+      fetch('teams-data.json?v='+stamp),
+      fetch('greatest-seasons-data-v2.json?v='+stamp),
+      fetch('team-records.json?v='+stamp),
+      fetch('elo-summary.json?v='+stamp),
+      fetch('streak-records.json?v='+stamp)
     ]);
 
     if(!teamRes.ok||!seasonRes.ok||!recordRes.ok)throw new Error('Required record data could not be loaded.');

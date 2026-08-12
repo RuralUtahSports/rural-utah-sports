@@ -55,6 +55,10 @@ footer strong{color:#F14D07}
 @media(max-width:1000px){.summary-grid{grid-template-columns:repeat(2,1fr)}.filter-grid{grid-template-columns:1fr 1fr}.search-group{grid-column:1/-1}}
 @media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.page-title{font-size:28px}.summary-grid,.filter-grid{grid-template-columns:1fr}.search-group{grid-column:auto}}
 </style>
+
+<style id="rus-mobile-performance">
+html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulation}.table-wrap,.games-wrap,.chart-wrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}@media(max-width:700px){body{-webkit-font-smoothing:antialiased}main img:not(.logo){max-width:100%;height:auto}table{contain:layout style}.table-wrap{contain:layout paint}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
 <header>
@@ -237,8 +241,8 @@ async function load(){
   try{
     const stamp=Date.now();
     const [c,t]=await Promise.all([
-      fetch('championships.json?v='+stamp,{cache:'no-store'}),
-      fetch('teams-data.json?v='+stamp,{cache:'no-store'})
+      fetch('championships.json?v='+stamp),
+      fetch('teams-data.json?v='+stamp)
     ]);
     if(!c.ok)throw new Error('Unable to load championship data');
     const championshipData=await c.json();

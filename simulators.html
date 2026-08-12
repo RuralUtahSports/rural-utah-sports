@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="greatest-season-simulator.css">
 <link rel="stylesheet" href="weekly-picks.css">
 <link rel="stylesheet" href="weekly-picks-enhanced.css">
+
+<style id="rus-mobile-performance">
+html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulation}.table-wrap,.games-wrap,.chart-wrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}@media(max-width:700px){body{-webkit-font-smoothing:antialiased}main img:not(.logo){max-width:100%;height:auto}table{contain:layout style}.table-wrap{contain:layout paint}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
@@ -48,7 +52,7 @@ function renderWeeklyRows(){const sel=document.getElementById('weeklyDate'),body
 function renderWeekly(){const dates=[...new Set(weekly.map(g=>g.date).filter(Boolean))].sort((a,b)=>new Date(a)-new Date(b));document.getElementById('weeklyContent').className='';document.getElementById('weeklyContent').innerHTML=`<div class="weekly-controls"><div class="field"><label>Game Date</label><select id="weeklyDate"><option value="">All Games</option>${dates.map(d=>`<option>${esc(d)}</option>`).join('')}</select></div><div class="note">Synced from the Weekly Simulation tab in the master spreadsheet.</div></div><div class="weekly-summary" id="weeklySummary"></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Away Team</th><th>Projection</th><th>Home Team</th><th>Predicted Winner</th><th>Actual</th><th>W/L</th><th>H2H</th></tr></thead><tbody id="weeklyBody"></tbody></table></div>`;document.getElementById('weeklyDate').onchange=renderWeeklyRows;renderWeeklyRows()}
 function showTab(id){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));history.replaceState(null,'',id==='weekly'?'?tab=weekly':id==='greatest'?'?tab=greatest':location.pathname)}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
-(async()=>{try{const stamp=Date.now(),[s,w]=await Promise.all([fetch('simulator-data.json?v='+stamp,{cache:'no-store'}),fetch('weekly-simulation.json?v='+stamp,{cache:'no-store'})]);if(!s.ok||!w.ok)throw new Error('Simulator data unavailable');simulator=await s.json();weekly=(await w.json()).games||[];renderH2H();renderWeekly();const initialTab=new URLSearchParams(location.search).get('tab');if(initialTab==='weekly'||initialTab==='greatest')showTab(initialTab)}catch(e){console.error(e);document.getElementById('h2hContent').innerHTML='<div class="error">Simulator data could not be loaded.</div>';document.getElementById('weeklyContent').innerHTML='<div class="error">Weekly simulation data could not be loaded.</div>'}})();
+(async()=>{try{const stamp=Date.now(),[s,w]=await Promise.all([fetch('simulator-data.json?v='+stamp),fetch('weekly-simulation.json?v='+stamp)]);if(!s.ok||!w.ok)throw new Error('Simulator data unavailable');simulator=await s.json();weekly=(await w.json()).games||[];renderH2H();renderWeekly();const initialTab=new URLSearchParams(location.search).get('tab');if(initialTab==='weekly'||initialTab==='greatest')showTab(initialTab)}catch(e){console.error(e);document.getElementById('h2hContent').innerHTML='<div class="error">Simulator data could not be loaded.</div>';document.getElementById('weeklyContent').innerHTML='<div class="error">Weekly simulation data could not be loaded.</div>'}})();
 </script>
 <script src="greatest-season-simulator.js"></script>
 <script src="weekly-picks.js"></script>
