@@ -1,0 +1,157 @@
+name: Dedupe Team Page Rivalries
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Sync Website Data From Google Sheet
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dedupe-team-page-rivalries
+  cancel-in-progress: false
+
+jobs:
+  dedupe:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Dedupe team schedules and rebuild rivalry records
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+
+          const dir = 'team-page-data';
+          if (!fs.existsSync(dir)) {
+            throw new Error('team-page-data directory not found');
+          }
+
+          const emptyRecord = () => ({ wins: 0, losses: 0, ties: 0, games: 0 });
+          const addResult = (record, result) => {
+            record.games++;
+            if (result === 'W') record.wins++;
+            else if (result === 'L') record.losses++;
+            else record.ties++;
+          };
+
+          const dateYear = date => {
+            const match = String(date || '').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+            return match ? Number(match[3]) : null;
+          };
+
+          const resultFor = game => {
+            const a = Number(game.teamScore);
+            const b = Number(game.opponentScore);
+            if (Number.isFinite(a) && Number.isFinite(b)) {
+              return a > b ? 'W' : a < b ? 'L' : 'T';
+            }
+            const result = String(game.result || '').trim().toUpperCase();
+            return ['W', 'L', 'T'].includes(result) ? result : null;
+          };
+
+          let filesChanged = 0;
+          let duplicateRowsRemoved = 0;
+          let conflicts = 0;
+
+          for (const file of fs.readdirSync(dir).filter(name => name.endsWith('.json'))) {
+            const fullPath = path.join(dir, file);
+            const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+            const schedules = data.schedules;
+            if (!schedules || typeof schedules !== 'object') continue;
+
+            let changed = false;
+            const opponents = {};
+            const decades = {};
+
+            for (const [season, rawGames] of Object.entries(schedules)) {
+              if (!Array.isArray(rawGames)) continue;
+
+              const seen = new Map();
+              const cleanGames = [];
+
+              for (const game of rawGames) {
+                const date = String(game?.date || '').trim();
+                const opponent = String(game?.opponent || '').trim().toUpperCase();
+                if (!date || !opponent) {
+                  cleanGames.push(game);
+                  continue;
+                }
+
+                const key = `${date}|${opponent}`;
+                const scoreSig = `${game.teamScore ?? ''}|${game.opponentScore ?? ''}`;
+
+                if (seen.has(key)) {
+                  duplicateRowsRemoved++;
+                  changed = true;
+                  if (seen.get(key) !== scoreSig) conflicts++;
+                  continue;
+                }
+
+                seen.set(key, scoreSig);
+                cleanGames.push(game);
+              }
+
+              if (cleanGames.length !== rawGames.length) {
+                schedules[season] = cleanGames;
+              }
+
+              for (const game of cleanGames) {
+                const opponent = String(game?.opponent || '').trim().toUpperCase();
+                const result = resultFor(game);
+                if (!opponent || !result) continue;
+
+                if (!opponents[opponent]) opponents[opponent] = emptyRecord();
+                addResult(opponents[opponent], result);
+
+                const year = dateYear(game.date) ?? Number(season);
+                if (Number.isFinite(year)) {
+                  const decade = String(Math.floor(year / 10) * 10);
+                  if (!decades[decade]) decades[decade] = emptyRecord();
+                  addResult(decades[decade], result);
+                }
+              }
+            }
+
+            data.breakdown = data.breakdown || {};
+            const oldOpponents = JSON.stringify(data.breakdown.opponents || {});
+            const oldDecades = JSON.stringify(data.breakdown.decades || {});
+            const newOpponents = JSON.stringify(opponents);
+            const newDecades = JSON.stringify(decades);
+
+            if (oldOpponents !== newOpponents || oldDecades !== newDecades) changed = true;
+            data.breakdown.opponents = opponents;
+            data.breakdown.decades = decades;
+
+            if (changed) {
+              fs.writeFileSync(fullPath, JSON.stringify(data, null, 2) + '\n');
+              filesChanged++;
+            }
+          }
+
+          console.log(`Files changed: ${filesChanged}`);
+          console.log(`Duplicate schedule rows removed: ${duplicateRowsRemoved}`);
+          console.log(`Conflicting duplicate rows encountered: ${conflicts}`);
+          NODE
+
+      - name: Commit cleaned team page data
+        run: |
+          if git diff --quiet -- team-page-data; then
+            echo "No duplicate team-page rows found."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add team-page-data
+          git commit -m "Clean duplicate team page rivalry data"
+          git push
