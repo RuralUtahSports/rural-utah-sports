@@ -1,0 +1,48 @@
+name: Build 2025 Full Season Simulator Data
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-full-season-2025.yml'
+      - 'scripts/build-full-season-2025.js'
+      - 'full-season-alignment-2025.json'
+  workflow_run:
+    workflows: ['Build Scorigami Data']
+    types: [completed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: full-season-2025-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build compact regular-season file
+        run: node scripts/build-full-season-2025.js
+      - name: Commit generated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add full-season-2025.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "Rebuild 2025 full season simulator data"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
