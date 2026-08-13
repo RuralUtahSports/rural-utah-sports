@@ -1,0 +1,38 @@
+name: Inspect Scorigami Shape
+
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-scorigami-shape.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: school-name-audit-run-v2
+      - name: Inspect
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('scorigami.json','utf8'));
+          const lines=[];
+          lines.push('rootType='+typeof x);
+          lines.push('isArray='+Array.isArray(x));
+          lines.push('keys='+Object.keys(x).join(','));
+          for(const k of Object.keys(x)){
+            const v=x[k];
+            lines.push(`${k}: array=${Array.isArray(v)} length=${Array.isArray(v)?v.length:''} type=${typeof v}`);
+            if(Array.isArray(v)&&v.length) lines.push(`${k}[0] keys=${Object.keys(v[0]||{}).join(',')}`);
+          }
+          fs.writeFileSync('scorigami-shape.txt',lines.join('\n')+'\n');
+          NODE
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scorigami-shape.txt
+          git commit -m "Inspect scorigami data shape"
+          git push origin school-name-audit-run-v2
