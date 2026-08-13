@@ -1,0 +1,30 @@
+name: Run Clean ELO After Sheet Sync
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/run-clean-elo-after-sync.yml'
+  workflow_run:
+    workflows:
+      - 'Sync Website Data From Google Sheet'
+    types:
+      - completed
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch-clean-elo:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch Clean ELO rebuild
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST \
+            repos/${{ github.repository }}/actions/workflows/build-clean-elo.yml/dispatches \
+            -f ref=main
+          echo "Dispatched Build Clean ELO History on main."
