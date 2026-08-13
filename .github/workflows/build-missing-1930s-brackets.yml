@@ -1,0 +1,76 @@
+name: Build missing 1930s playoff brackets
+
+on:
+  push:
+    paths:
+      - '.github/workflows/build-missing-1930s-brackets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct missing 1930s brackets
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const SHEET_ID=process.env.SHEET_ID;
+          const finals={
+            1931:{State:['JORDAN',18,'LOGAN',0]},
+            1932:{State:['GRANITE',13,'LOGAN',0]},
+            1933:{State:['TOOELE',20,'BOX ELDER',6]},
+            1935:{State:['BOX ELDER',14,'CARBON',0]},
+            1936:{State:['JORDAN',13,'BOX ELDER',7]},
+            1937:{'Class A':['DAVIS',12,'BEAR RIVER',0],'Class B':['TOOELE',26,'AMERICAN FORK',0]},
+            1938:{'Class A':['CARBON',6,'JORDAN',0],'Class B':['DELTA',20,'SPRINGVILLE',0]},
+            1939:{'Class A':['JORDAN',13,'NORTH CACHE',0],'Class B':['BINGHAM',13,'AMERICAN FORK',0]},
+            1940:{'Class A':['JORDAN',7,'CARBON',6],'Class B':['MORGAN',20,'RICHFIELD',7]}
+          };
+          const aliases={'HINKLEY':'HINCKLEY','NORTH CACHE':'NORTH CACHE','BEAR RIVER':'BEAR RIVER','BOX ELDER':'BOX ELDER','AMERICAN FORK':'AMERICAN FORK'};
+          const clean=v=>String(v??'').trim();
+          const norm=v=>clean(v).toUpperCase().replace(/[.’']/g,'').replace(/\s+/g,' ').trim();
+          const display=s=>String(s).toLowerCase().replace(/(^|\s|[-'])\S/g,m=>m.toUpperCase()).replace(/\bLdsu\b/g,'LDSU');
+          function parseCSV(text){const rows=[];let row=[],field='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')q=false;else field+=c}else{if(c==='"')q=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
+          const cache=new Map();
+          async function rowsFor(team){team=aliases[norm(team)]||norm(team);if(cache.has(team))return cache.get(team);const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(team)}&range=${encodeURIComponent('A1:H2600')}`;const r=await fetch(url);if(!r.ok)throw new Error(`Could not load ${team}: ${r.status}`);const rows=parseCSV(await r.text());cache.set(team,rows);return rows}
+          function rowYear(r){const d=new Date(String(r[1]||''));return Number.isFinite(d.getTime())?d.getFullYear():null}
+          function code(note,cls){const n=norm(note);if(!n)return null;if(/FINAL/.test(n))return'FINAL';if(/(^|\s)(ST|A|B)?\s*SF\b|SEMI/.test(n))return'SF';if(/(^|\s)(ST|A|B)?\s*QF\b|QUART/.test(n))return'QF';if(/STATE PLAYOFF|ST PO|PLAYOFF/.test(n))return'PO';return null}
+          function classOK(note,cls){const n=norm(note);if(cls==='State')return !/\bA FINAL\b|\bB FINAL\b|\bA SF\b|\bB SF\b/.test(n);if(cls==='Class A')return /\bA\b/.test(n)||!/\bB\b/.test(n);if(cls==='Class B')return /\bB\b/.test(n);return true}
+          async function roundRow(team,year,cls,want){const rows=await rowsFor(team),out=[];for(const r of rows){if(rowYear(r)!==year)continue;const note=r[5]||'';if(!classOK(note,cls))continue;if(code(note,cls)!==want)continue;const pts=Number(r[2]),oppPts=Number(r[4]);if(!Number.isFinite(pts)||!Number.isFinite(oppPts)||!r[3])continue;out.push({date:new Date(r[1]),team:norm(team),pts,opp:norm(r[3]),oppPts,note})}out.sort((a,b)=>a.date-b.date);return out.at(-1)||null}
+          function key(g){return [norm(g[0]),norm(g[2])].sort().join('|')}
+          function winner(g){const a=Number(g[1]),b=Number(g[3]);return a>b?norm(g[0]):b>a?norm(g[2]):''}
+          function orderToFeed(games,next){const pool=games.slice(),out=[];for(const ng of next||[]){for(const t of [norm(ng[0]),norm(ng[2])]){const i=pool.findIndex(g=>winner(g)===t);if(i>=0)out.push(pool.splice(i,1)[0])}}return out.concat(pool)}
+          async function build(year,cls,fin){const [champ,cs,runner,rs]=fin;const rounds=[['Championship',[[display(champ),String(cs),display(runner),String(rs)]]]];let participants=[norm(champ),norm(runner)],next=rounds[0][1];for(const [want,label] of [['SF','Semifinals'],['QF','Quarterfinals'],['PO','State Playoff']]){const found=[],seen=new Set();for(const t of participants){const r=await roundRow(t,year,cls,want);if(!r)continue;const g=[display(r.team),String(r.pts),display(r.opp),String(r.oppPts)],k=key(g);if(!seen.has(k)){seen.add(k);found.push(g)}}if(!found.length)continue;const ordered=orderToFeed(found,next);rounds.unshift([label,ordered]);participants=[...new Set(ordered.flatMap(g=>[norm(g[0]),norm(g[2])]))];next=ordered}return rounds}
+          (async()=>{
+            for(const [ys,classes] of Object.entries(finals)){
+              const y=Number(ys),out={};
+              for(const [cls,fin] of Object.entries(classes))out[cls]=await build(y,cls,fin);
+              fs.writeFileSync(`brackets-${y}.json`,JSON.stringify(out,null,2)+'\n');
+              console.log(y,JSON.stringify(out));
+            }
+            const file='championship-brackets.js';let js=fs.readFileSync(file,'utf8');
+            const m=js.match(/const YEARS=(\[[^;]+\]);/);if(!m)throw new Error('YEARS not found');
+            const years=JSON.parse(m[1]);for(const y of ['1940','1939','1938','1937','1936','1935','1933','1932','1931'])if(!years.includes(y))years.push(y);
+            years.sort((a,b)=>Number(b)-Number(a));
+            js=js.replace(/const YEARS=\[[^;]+\];/,`const YEARS=${JSON.stringify(years)};`);fs.writeFileSync(file,js);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Validate
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');for(const y of [1931,1932,1933,1935,1936,1937,1938,1939,1940]){const d=JSON.parse(fs.readFileSync(`brackets-${y}.json`));if(!Object.keys(d).length)throw new Error(`${y} empty`);for(const rounds of Object.values(d)){const f=rounds.at(-1);if(f[0]!=='Championship'||f[1].length!==1)throw new Error(`${y} final invalid`)}}console.log('Validated missing 1930s brackets');
+          NODE
+      - name: Commit
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add brackets-1931.json brackets-1932.json brackets-1933.json brackets-1935.json brackets-1936.json brackets-1937.json brackets-1938.json brackets-1939.json brackets-1940.json championship-brackets.js
+          git commit -m "Add missing 1930s playoff brackets"
+          git pull --rebase origin main
+          git push
