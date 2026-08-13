@@ -1,6 +1,6 @@
 (()=>{
   const F=window.RUSFullSeason=window.RUSFullSeason||{};
-  F.h=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  F.h=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');
   F.norm=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
   const aliases={'FREMOND':'FREMONT','PINE':'PINE VIEW','MOUTNAIN CREST':'MOUNTAIN CREST','UMA-CW':'UMA-LEHI','HIGH':'HIGHLAND'};
   const fix=v=>aliases[String(v??'').trim().toUpperCase()]||String(v??'').trim().toUpperCase();
@@ -38,5 +38,5 @@
   };
   F.resolve=name=>{const S=window.RUSSeasonSim,map=S?.teamMap?.();return S?.resolve?.(fix(name),map)||fix(name)};
   F.initialElo=team=>{const historical=F.data?.startElos?.get(F.norm(fix(team)));return Number.isFinite(Number(historical))?Number(historical):1500};
-  F.info=team=>window.simulator?.teams?.[F.resolve(team)]||null;
+  F.info=team=>{const sim=typeof simulator!=='undefined'?simulator:window.simulator;return sim?.teams?.[F.resolve(team)]||null};
 })();
