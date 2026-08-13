@@ -1,0 +1,40 @@
+name: Run Half-Hour Data Refreshes
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '51 * * * *'
+    - cron: '52 * * * *'
+    - cron: '57 * * * *'
+    - cron: '2 * * * *'
+    - cron: '10 * * * *'
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch matching refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          case "$SCHEDULE" in
+            '51 * * * *') workflow='build-clean-elo.yml' ;;
+            '52 * * * *') workflow='build-scorigami.yml' ;;
+            '57 * * * *') workflow='build-out-of-state.yml' ;;
+            '2 * * * *') workflow='build-simulator-data.yml' ;;
+            '10 * * * *') workflow='build-standings-2026.yml' ;;
+            *)
+              echo "Manual run: dispatching all half-hour refresh targets."
+              for workflow in build-clean-elo.yml build-scorigami.yml build-out-of-state.yml build-simulator-data.yml build-standings-2026.yml; do
+                gh api --method POST repos/${{ github.repository }}/actions/workflows/$workflow/dispatches -f ref=main
+              done
+              exit 0
+              ;;
+          esac
+          gh api --method POST repos/${{ github.repository }}/actions/workflows/$workflow/dispatches -f ref=main
+          echo "Dispatched $workflow on main."
