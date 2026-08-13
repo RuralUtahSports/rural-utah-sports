@@ -2,6 +2,9 @@ name: Dedupe Team Page Rivalries
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/dedupe-team-page-rivalries.yml'
   workflow_run:
     workflows:
       - Sync Website Data From Google Sheet
@@ -17,7 +20,7 @@ concurrency:
 
 jobs:
   dedupe:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout latest main
