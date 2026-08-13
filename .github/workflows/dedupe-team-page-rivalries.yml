@@ -41,6 +41,12 @@ jobs:
             throw new Error('team-page-data directory not found');
           }
 
+          const knownBadRows = new Set([
+            'monument-valley.json|9/19/2025|PANGUITCH',
+            'panguitch.json|9/19/2025|MONUMENT VALLEY',
+            'panguitch.json|9/19/2025|MONUMENT VAL'
+          ]);
+
           const emptyRecord = () => ({ wins: 0, losses: 0, ties: 0, games: 0 });
           const addResult = (record, result) => {
             record.games++;
@@ -67,6 +73,7 @@ jobs:
           let filesChanged = 0;
           let duplicateRowsRemoved = 0;
           let conflicts = 0;
+          let knownCorrectionsRemoved = 0;
 
           for (const file of fs.readdirSync(dir).filter(name => name.endsWith('.json'))) {
             const fullPath = path.join(dir, file);
@@ -89,6 +96,12 @@ jobs:
                 const opponent = String(game?.opponent || '').trim().toUpperCase();
                 if (!date || !opponent) {
                   cleanGames.push(game);
+                  continue;
+                }
+
+                if (knownBadRows.has(`${file}|${date}|${opponent}`)) {
+                  knownCorrectionsRemoved++;
+                  changed = true;
                   continue;
                 }
 
@@ -145,6 +158,7 @@ jobs:
 
           console.log(`Files changed: ${filesChanged}`);
           console.log(`Duplicate schedule rows removed: ${duplicateRowsRemoved}`);
+          console.log(`Known bad rows removed: ${knownCorrectionsRemoved}`);
           console.log(`Conflicting duplicate rows encountered: ${conflicts}`);
           NODE
 
