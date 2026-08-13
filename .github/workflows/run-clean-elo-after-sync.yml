@@ -2,6 +2,8 @@ name: Run Clean ELO After Sheet Sync
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '47 * * * *'
   push:
     paths:
       - '.github/workflows/run-clean-elo-after-sync.yml'
@@ -16,8 +18,21 @@ permissions:
   contents: read
 
 jobs:
+  dispatch-sheet-sync:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch website sheet sync
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST \
+            repos/${{ github.repository }}/actions/workflows/rebuild-teams-data.yml/dispatches \
+            -f ref=main
+          echo "Dispatched website sheet sync on main."
+
   dispatch-clean-elo:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name != 'schedule' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch Clean ELO rebuild
