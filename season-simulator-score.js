@@ -1,0 +1,1 @@
+(()=>{const S=window.RUSSeasonSim;S.rng=n=>{const x=Math.sin(n)*10000;return x-Math.floor(x)};S.score=(m,seed)=>{const won=S.rng(seed)<m.prob;let a=Math.max(0,Math.round(m.p1+(S.rng(seed+1)-.5)*10)),b=Math.max(0,Math.round(m.p2+(S.rng(seed+2)-.5)*10));if(won&&a<=b)a=b+3;if(!won&&b<=a)b=a+3;return{...m,won,a,b}};})();
