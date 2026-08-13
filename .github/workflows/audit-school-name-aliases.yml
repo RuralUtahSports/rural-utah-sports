@@ -121,7 +121,7 @@ jobs:
             });
           }
 
-          candidates.sort((a,b)=>({high:0,likely:1,possible:2}[a.confidence]-({high:0,likely:1,possible:2}[b.confidence]) || b.score-a.score || (b.appearancesA+b.appearancesB)-(a.appearancesA+a.appearancesB));
+          const order={high:0,likely:1,possible:2}; candidates.sort((a,b)=>order[a.confidence]-order[b.confidence] || b.score-a.score || (b.appearancesA+b.appearancesB)-(a.appearancesA+a.appearancesB));
 
           fs.writeFileSync('school-name-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),uniqueNames:rows.length,candidates},null,2)+'\n');
 
