@@ -1,0 +1,68 @@
+name: Build 1981-1990 playoff brackets
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-brackets-1981-1990.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct 1981-1990 brackets
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const SHEET_ID=process.env.SHEET_ID;
+          const finals={
+            1981:{'4A':['ROY',17,'BOUNTIFUL',13],'3A':['JUDGE MEMORIAL',52,'JORDAN',13],'2A':['MILLARD',48,'RICHFIELD',7],'1A':['BEAVER',7,'KANAB',3]},
+            1982:{'4A':['BRIGHTON',41,'BONNEVILLE',0],'3A':['PROVO',21,'PLEASANT GROVE',10],'2A':['MILLARD',33,'HURRICANE',14],'1A':['KANAB',7,'BEAVER',3]},
+            1983:{'4A':['ALTA',19,'DAVIS',7],'3A':['JUDGE MEMORIAL',26,'JORDAN',21],'2A':['MORGAN',15,'HURRICANE',0],'1A':['BEAVER',31,'KANAB',20]},
+            1984:{'4A':['OLYMPUS',39,'ALTA',13],'3A':['WEST',19,'BEN LOMOND',6],'2A':['RICHFIELD',14,'GRAND',13],'1A':['SOUTH SUMMIT',13,'KANAB',9]},
+            1985:{'4A':['WEBER',17,'DAVIS',14],'3A':['SPRINGVILLE',30,'BEAR RIVER',23],'2A':['DELTA',34,'GRANTSVILLE',10],'1A':['KANAB',42,'BEAVER',0]},
+            1986:{'4A':['HIGHLAND',25,'BONNEVILLE',20],'3A':['TIMPVIEW',14,'BEAR RIVER',8],'2A':['DELTA',17,'RICHFIELD',14],'1A':['KANAB',14,'BEAVER',0]},
+            1987:{'4A':['OREM',28,'SKYLINE',21],'3A':['MOUNTAIN CREST',9,'SKY VIEW',7],'2A':['EMERY',23,'MILLARD',0],'1A':['KANAB',23,'BEAVER',0]},
+            1988:{'4A':['ALTA',40,'OREM',0],'3A':['LOGAN',44,'PLEASANT GROVE',14],'2A':['MILLARD',21,'RICHFIELD',7],'1A':['SOUTH SUMMIT',35,'KANAB',13]},
+            1989:{'4A':['KEARNS',26,'DAVIS',14],'3A':['LOGAN',28,'WOODS CROSS',14],'2A':['SAN JUAN',34,'HURRICANE',16],'1A':['NORTH SUMMIT',28,'PAROWAN',26]},
+            1990:{'4A':['SKYLINE',22,'HIGHLAND',14],'3A':['BOUNTIFUL',41,'BEAR RIVER',28],'2A':['BEAVER',12,'PARK CITY',7],'1A':['NORTH SUMMIT',26,'MONTICELLO',6]}
+          };
+          const display=s=>String(s).toLowerCase().replace(/(^|\s|[-'])\S/g,m=>m.toUpperCase()).replace('Timpview','Timpview');
+          const norm=s=>String(s||'').trim().toUpperCase().replace(/\s+/g,' ');
+          function parseCSV(text){const rows=[];let row=[],field='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')q=false;else field+=c}else{if(c==='"')q=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
+          const cache=new Map();
+          const aliases={'WASATCH ACADEMY':'WASATCH ACAD','MONUMENT VALLEY':'MONUMENT VAL','GUNNISON':'GUNNISON VALLEY','ST JOSEPH':'SAINT JOSEPH'};
+          async function rowsFor(team){team=aliases[norm(team)]||norm(team);if(cache.has(team))return cache.get(team);const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(team)}&range=${encodeURIComponent('A1:H2200')}`;const r=await fetch(url);if(!r.ok)throw new Error(`Could not load team sheet ${team}: ${r.status}`);const rows=parseCSV(await r.text());cache.set(team,rows);return rows}
+          function rowYear(r){const y=Number(String(r[7]||'').trim());if(Number.isFinite(y)&&y>1900)return y;const d=new Date(String(r[1]||''));return Number.isFinite(d.getTime())?d.getFullYear():null}
+          function code(note){const n=norm(note);if(!n)return null;if(/FINAL|CHAMP/.test(n))return'FINAL';if(/(^|[^A-Z])SF([^A-Z]|$)|SEMI/.test(n))return'SF';if(/(^|[^A-Z])QF([^A-Z]|$)|QUARTER/.test(n))return'QF';if(/(^|[^A-Z])IR([^A-Z]|$)|INTER.?REGION/.test(n))return'IR';return null}
+          async function playoffRow(team,year,cls,want){const rows=await rowsFor(team);const candidates=[];for(const r of rows){if(rowYear(r)!==year)continue;const note=norm(r[5]);if(!note.includes(cls))continue;if(code(note)!==want)continue;const pts=Number(r[2]),oppPts=Number(r[4]);if(!Number.isFinite(pts)||!Number.isFinite(oppPts)||!r[3])continue;candidates.push({date:r[1],team:norm(team),pts,opp:norm(r[3]),oppPts,note:r[5]||''})}if(!candidates.length)return null;candidates.sort((a,b)=>new Date(a.date)-new Date(b.date));return candidates[candidates.length-1]}
+          function gameKey(g){return [norm(g[0]),norm(g[2])].sort().join('|')}
+          function winner(g){const a=Number(g[1]),b=Number(g[3]);return a>b?norm(g[0]):b>a?norm(g[2]):''}
+          function align(games,next){if(!next||!next.length)return games;const pool=games.slice(),out=[];for(const ng of next){for(const t of [norm(ng[0]),norm(ng[2])]){const i=pool.findIndex(g=>winner(g)===t);if(i>=0)out.push(pool.splice(i,1)[0])}}return out.concat(pool)}
+          async function buildClass(year,cls,expected){const [champ,cs,runner,rs]=expected;const finalRow=await playoffRow(champ,year,cls,'FINAL')||await playoffRow(runner,year,cls,'FINAL');if(!finalRow)throw new Error(`${year} ${cls}: final row not found`);const finalOpp=norm(finalRow.opp);if(![norm(champ),norm(runner)].includes(finalOpp))throw new Error(`${year} ${cls}: final opponent mismatch: ${finalRow.team} vs ${finalRow.opp}`);const gotScores=new Set([`${finalRow.pts}-${finalRow.oppPts}`,`${finalRow.oppPts}-${finalRow.pts}`]);if(!gotScores.has(`${cs}-${rs}`)&&!gotScores.has(`${rs}-${cs}`))throw new Error(`${year} ${cls}: final score mismatch`);
+            const rounds=[['Championship',[[display(champ),String(cs),display(runner),String(rs)]]]];let participants=[norm(champ),norm(runner)];let nextGames=rounds[0][1];for(const [want,label] of [['SF','Semifinals'],['QF','Quarterfinals'],['IR','Inter-Region']]){const found=[];const seen=new Set();for(const t of participants){const r=await playoffRow(t,year,cls,want);if(!r)continue;const g=[display(t),String(r.pts),display(r.opp),String(r.oppPts)];const k=gameKey(g);if(!seen.has(k)){seen.add(k);found.push(g)}}if(!found.length)continue;const ordered=align(found,nextGames);rounds.unshift([label,ordered]);participants=[...new Set(ordered.flatMap(g=>[norm(g[0]),norm(g[2])]))];nextGames=ordered}
+            return rounds;
+          }
+          (async()=>{for(let year=1981;year<=1990;year++){const out={};for(const cls of ['4A','3A','2A','1A'])out[cls]=await buildClass(year,cls,finals[year][cls]);fs.writeFileSync(`brackets-${year}.json`,JSON.stringify(out,null,2)+'\n');console.log(year,Object.fromEntries(Object.entries(out).map(([c,r])=>[c,r.map(x=>`${x[0]}:${x[1].length}`).join(', ')])))}
+            const file='championship-brackets.js';let js=fs.readFileSync(file,'utf8');js=js.replace(/const YEARS=\[[^;]+\];/,`const YEARS=['2025','2024','2023','2022','2021','2020','2019','2018','2017','2016','2015','2014','2013','2012','2011','2010','1990','1989','1988','1987','1986','1985','1984','1983','1982','1981','1970','1969','1968','1967','1966','1965','1964','1963','1962','1961','1960','1959','1958','1957','1956','1955','1954','1953','1952','1951','1950','1949','1948','1947','1946','1945','1944','1943','1942','1941','1934','1930','1929','1928','1927','1926','1925','1924','1923','1922','1921','1920','1919'];`);fs.writeFileSync(file,js);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Validate bracket JSON
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');for(let y=1981;y<=1990;y++){const d=JSON.parse(fs.readFileSync(`brackets-${y}.json`));for(const c of ['4A','3A','2A','1A']){if(!Array.isArray(d[c])||!d[c].length)throw new Error(`${y} ${c} missing`);const f=d[c][d[c].length-1];if(f[0]!=='Championship'||f[1].length!==1)throw new Error(`${y} ${c} bad final`)}}console.log('Validated 1981-1990');
+          NODE
+      - name: Commit bracket data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add brackets-198{1,2,3,4,5,6,7,8,9}.json brackets-1990.json championship-brackets.js
+          git commit -m "Add 1981-1990 playoff brackets"
+          git pull --rebase origin main
+          git push
