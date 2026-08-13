@@ -1,0 +1,56 @@
+name: Apply recursive playoff bracket alignment
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-all-bracket-alignment-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch bracket renderer
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const file='championship-brackets.js';
+          let js=fs.readFileSync(file,'utf8');
+          js=js.replace("function winnerName(g){const [aw,bw]=winnerFlags(g);return aw?norm(g[0]):bw?norm(g[2]):''}","function feedKey(name){const n=norm(name);return aliases[n]||n}\nfunction winnerName(g){const [aw,bw]=winnerFlags(g);return aw?feedKey(g[0]):bw?feedKey(g[2]):''}");
+          js=js.replace("for(const slot of [norm(ng[0]),norm(ng[2])])","for(const slot of [feedKey(ng[0]),feedKey(ng[2])])");
+          js=js.replace("function alignedRounds(rounds){return rounds.map((r,i)=>[r[0],i<rounds.length-1?orderRoundToFeed(r[1],rounds[i+1][1]):r[1]])}","function alignedRounds(rounds){const out=rounds.map(r=>[r[0],Array.isArray(r[1])?r[1].slice():r[1]]);for(let i=out.length-2;i>=0;i--)out[i]=[out[i][0],orderRoundToFeed(out[i][1],out[i+1][1])];return out}");
+          if(!js.includes('function feedKey(name)')||!js.includes('for(let i=out.length-2;i>=0;i--)'))throw new Error('Alignment patch failed');
+          fs.writeFileSync(file,js);
+          NODE
+      - name: Audit all bracket files
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          let files=0,classes=0,rounds=0,games=0;
+          const weird=[];
+          for(const f of fs.readdirSync('.').filter(x=>/^brackets-\d{4}\.json$/.test(x))){
+            const d=JSON.parse(fs.readFileSync(f,'utf8'));files++;
+            for(const [cls,rs] of Object.entries(d)){
+              if(!Array.isArray(rs)||!rs.length||!Array.isArray(rs[0]))continue;
+              classes++;
+              for(const r of rs){
+                if(!Array.isArray(r)||!Array.isArray(r[1]))continue;
+                rounds++;games+=r[1].length;
+                for(const g of r[1])if(!Array.isArray(g)||g.length!==4)weird.push(`${f} ${cls} ${r[0]}`);
+              }
+            }
+          }
+          if(weird.length)throw new Error(`Malformed games: ${weird.slice(0,10).join(', ')}`);
+          console.log(`Audited ${files} season files, ${classes} class brackets, ${rounds} rounds, ${games} games.`);
+          NODE
+      - name: Commit renderer fix
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add championship-brackets.js
+          git commit -m "Keep advancing teams aligned across every bracket"
+          git pull --rebase origin main
+          git push
