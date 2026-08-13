@@ -4,8 +4,10 @@
   if(!document.getElementById(BANNER_ID)){const nav=document.querySelector('nav');if(nav){const banner=document.createElement('div');banner.id=BANNER_ID;banner.innerHTML=`<a href="simulators.html#weekly" aria-label="Go to Weekly Simulation picks"><span class="rus-promo-copy rus-promo-item">🏈 Weekly Simulation <span>Make your picks • Compare with Rural Utah Sports • Weekly leaderboard</span> <span class="rus-promo-cta">Play Now →</span></span><span class="rus-promo-copy rus-promo-item" aria-hidden="true">🏈 Weekly Simulation <span>Make your picks • Compare with Rural Utah Sports • Weekly leaderboard</span> <span class="rus-promo-cta">Play Now →</span></span></a>`;nav.insertAdjacentElement('afterend',banner)}}
   const onSim=()=>/simulators\.html$/i.test(location.pathname.split('/').pop()||'');
   const openWeekly=()=>{if(!onSim()||location.hash.toLowerCase()!=='#weekly')return;const button=document.querySelector('.tab[data-tab="weekly"]');if(button)button.click()};
-  const loadFullSeason=()=>{if(!onSim()||document.querySelector('script[data-rus-full-season-loader]'))return;const panel=document.createElement('script'),actions=document.createElement('script');panel.src='full-season-panel.js?v=20260813h';panel.async=false;panel.dataset.rusFullSeasonLoader='panel';actions.src='full-season-actions.js?v=20260813k';actions.async=false;actions.dataset.rusFullSeasonLoader='actions';document.body.append(panel,actions)};
-  const start=()=>{openWeekly();loadFullSeason()};
+  const addPair=(panelSrc,actionSrc,key)=>{if(!onSim()||document.querySelector(`script[data-rus-${key}-loader]`))return;const panel=document.createElement('script'),actions=document.createElement('script');panel.src=panelSrc;panel.async=false;panel.setAttribute(`data-rus-${key}-loader`,'panel');actions.src=actionSrc;actions.async=false;actions.setAttribute(`data-rus-${key}-loader`,'actions');document.body.append(panel,actions)};
+  const loadFullSeason=()=>addPair('full-season-panel.js?v=20260813h','full-season-actions.js?v=20260813k','full-season');
+  const loadDynasty=()=>addPair('dynasty-sim-panel.js?v=20260813a','dynasty-sim-actions.js?v=20260813a','dynasty');
+  const start=()=>{openWeekly();loadFullSeason();loadDynasty()};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(start,0));else setTimeout(start,0);
   window.addEventListener('hashchange',openWeekly);
 })();
