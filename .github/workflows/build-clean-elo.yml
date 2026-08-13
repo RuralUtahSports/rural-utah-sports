@@ -31,13 +31,18 @@ jobs:
           const url=`https://docs.google.com/spreadsheets/d/${process.env.SHEET_ID}/export?format=csv&gid=${process.env.CLEAN_GAMES_GID}&range=${encodeURIComponent('A1:F50000')}`;
           function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}else{if(c==='"')quoted=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
           const clean=v=>String(v??'').trim(),norm=v=>clean(v).replace(/\s+/g,' ').toUpperCase(),num=v=>{const n=Number(clean(v).replace(/,/g,''));return Number.isFinite(n)?n:null};
-          const aliases={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH','BRIGHAM YOUNG':'BYH'};
+          const aliases={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH','BRIGHAM YOUNG':'BYH','AMERICAN LEADERSHIP':'ALA','AMERICAN LEADERSHIP ACADEMY':'ALA'};
           function team(v){const n=norm(v).replace(/\.+$/,'').trim();if(n.startsWith('WASATCH ACAD'))return'WASATCH ACADEMY';return aliases[n]||n}
           function slug(v){return team(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')}
           function parseDate(v){const m=clean(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(!m)return null;return{month:+m[1],day:+m[2],year:+m[3],key:+m[3]*10000+(+m[1])*100+(+m[2]),ms:Date.UTC(+m[3],+m[1]-1,+m[2])}}
           function scoreSig(a,sa,b,sb){return [[a,sa],[b,sb]].sort((x,y)=>x[0].localeCompare(y[0])).map(x=>`${x[0]}:${x[1]}`).join('|')}
           function roundAway(x){return x>=0?Math.floor(x+0.5):Math.ceil(x-0.5)}
           function expected(a,b){return 1/(1+Math.pow(10,(b-a)/400))}
+          function movMultiplier(margin){
+            if(margin<=1)return 1;
+            const capped=Math.min(margin,40);
+            return 1+0.35*Math.pow(Math.log(capped)/Math.log(40),1.5);
+          }
           (async()=>{
             const teams=JSON.parse(fs.readFileSync('teams-data.json','utf8')),website=new Set(teams.map(t=>team(t.team)));
             const res=await fetch(url);if(!res.ok)throw new Error(`Clean Games download failed ${res.status}`);const rows=parseCSV(await res.text()),candidates=[];
@@ -49,12 +54,21 @@ jobs:
             games.sort((x,y)=>x.d.key-y.d.key||x.index-y.index);
             const ratings=new Map(),history={};for(const t of website)history[t]=[];
             const get=t=>ratings.has(t)?ratings.get(t):1500;
-            for(const g of games){const ra=get(g.a),rb=get(g.b),aa=g.sa>g.sb?1:g.sa<g.sb?0:.5,ab=1-aa,ca=roundAway(32*(aa-expected(ra,rb))),cb=-ca,na=ra+ca,nb=rb+cb;ratings.set(g.a,na);ratings.set(g.b,nb);const resa=aa===1?'W':aa===0?'L':'T',resb=ab===1?'W':ab===0?'L':'T';if(website.has(g.a))history[g.a].push({date:g.date,season:g.d.year,opponent:g.b,result:resa,eloBefore:ra,change:ca,eloAfter:na});if(website.has(g.b))history[g.b].push({date:g.date,season:g.d.year,opponent:g.a,result:resb,eloBefore:rb,change:cb,eloAfter:nb})}
+            for(const g of games){
+              const ra=get(g.a),rb=get(g.b),aa=g.sa>g.sb?1:g.sa<g.sb?0:.5,ab=1-aa,margin=Math.abs(g.sa-g.sb),mov=aa===.5?1:movMultiplier(margin),ca=roundAway(32*(aa-expected(ra,rb))*mov),cb=-ca,na=ra+ca,nb=rb+cb;
+              ratings.set(g.a,na);ratings.set(g.b,nb);
+              const resa=aa===1?'W':aa===0?'L':'T',resb=ab===1?'W':ab===0?'L':'T';
+              if(website.has(g.a))history[g.a].push({date:g.date,season:g.d.year,opponent:g.b,result:resa,eloBefore:ra,change:ca,eloAfter:na,margin,movMultiplier:+mov.toFixed(3)});
+              if(website.has(g.b))history[g.b].push({date:g.date,season:g.d.year,opponent:g.a,result:resb,eloBefore:rb,change:cb,eloAfter:nb,margin,movMultiplier:+mov.toFixed(3)});
+            }
             for(const k of Object.keys(history))if(!history[k].length)delete history[k];
             const summary={};for(const [t,rs] of Object.entries(history)){const latest=rs.at(-1);let peak=rs[0];for(const r of rs)if(r.eloAfter>peak.eloAfter)peak=r;summary[t]={currentElo:latest.eloAfter,currentDate:latest.date,currentOpponent:latest.opponent,currentResult:latest.result,peakElo:peak.eloAfter,peakDate:peak.date,peakSeason:peak.season,peakOpponent:peak.opponent,peakResult:peak.result}}
-            const duplicatesRemoved=exactDuplicatesRemoved+nearDuplicatesRemoved;fs.writeFileSync('team-elo-history.json',JSON.stringify(history));fs.writeFileSync('elo-summary.json',JSON.stringify(summary));fs.writeFileSync('elo-cleanup-report.json',JSON.stringify({sourceRows,uniqueGames:games.length,duplicatesRemoved,exactDuplicatesRemoved,nearDuplicatesRemoved,conflictingDuplicates,kFactor:32,startingElo:1500},null,2)+'\n');
+            const duplicatesRemoved=exactDuplicatesRemoved+nearDuplicatesRemoved;
+            fs.writeFileSync('team-elo-history.json',JSON.stringify(history));
+            fs.writeFileSync('elo-summary.json',JSON.stringify(summary));
+            fs.writeFileSync('elo-cleanup-report.json',JSON.stringify({sourceRows,uniqueGames:games.length,duplicatesRemoved,exactDuplicatesRemoved,nearDuplicatesRemoved,conflictingDuplicates,kFactor:32,startingElo:1500,marginBonus:{formula:'1 + 0.35 * (ln(min(margin,40)) / ln(40)) ^ 1.5',minimumMultiplier:1,maximumMultiplier:1.35,capMargin:40,tiesMultiplier:1}},null,2)+'\n');
             for(const t of website){const p=`team-page-data/${slug(t)}.json`;if(!fs.existsSync(p))continue;const d=JSON.parse(fs.readFileSync(p,'utf8'));d.eloHistory=history[t]||[];fs.writeFileSync(p,JSON.stringify(d))}
-            console.log(`ELO rebuilt from ${games.length} unique games; ${duplicatesRemoved} duplicates removed (${exactDuplicatesRemoved} exact, ${nearDuplicatesRemoved} near-date); ${conflictingDuplicates} conflicts`);
+            console.log(`ELO rebuilt from ${games.length} unique games with capped margin bonus; ${duplicatesRemoved} duplicates removed (${exactDuplicatesRemoved} exact, ${nearDuplicatesRemoved} near-date); ${conflictingDuplicates} conflicts`);
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
       - name: Verify
@@ -62,8 +76,9 @@ jobs:
           node - <<'NODE'
           const fs=require('fs'),h=JSON.parse(fs.readFileSync('team-elo-history.json','utf8')),r=JSON.parse(fs.readFileSync('elo-cleanup-report.json','utf8'));
           if(!Object.keys(h).length||!r.uniqueGames)throw new Error('Clean ELO output empty');
-          for(const [t,rows] of Object.entries(h)){const seen=new Set();for(const x of rows){const k=`${x.date}|${x.opponent}`;if(seen.has(k))throw new Error(`Duplicate ELO event ${t} ${k}`);seen.add(k)}}
-          console.log(`Verified ${Object.keys(h).length} team ELO histories`);
+          if(!r.marginBonus||r.marginBonus.maximumMultiplier!==1.35)throw new Error('Margin bonus settings missing');
+          for(const [t,rows] of Object.entries(h)){const seen=new Set();for(const x of rows){const k=`${x.date}|${x.opponent}`;if(seen.has(k))throw new Error(`Duplicate ELO event ${t} ${k}`);seen.add(k);if(Number(x.movMultiplier)<1||Number(x.movMultiplier)>1.35)throw new Error(`Invalid MOV multiplier ${t} ${k}`)}}
+          console.log(`Verified ${Object.keys(h).length} team ELO histories with capped margin bonus`);
           NODE
       - name: Commit clean ELO
         run: |
@@ -71,7 +86,7 @@ jobs:
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           git add team-elo-history.json elo-summary.json elo-cleanup-report.json team-page-data
           if git diff --cached --quiet; then echo "Clean ELO data current."; exit 0; fi
-          git commit -m "Rebuild ELO from deeply deduplicated games"
+          git commit -m "Rebuild ELO with capped margin bonus"
           ok=0
           for attempt in 1 2 3 4; do if git pull --rebase origin main && git push; then ok=1; break; fi; sleep 10; done
           if [ "$ok" -ne 1 ]; then exit 1; fi
