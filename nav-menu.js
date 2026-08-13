@@ -21,6 +21,8 @@
   const groups={
     history:[
       ['Championships','championships.html'],
+      ['Season Explorer','season.html'],
+      ['Program Leaderboard','programs.html'],
       ['Greatest Seasons','greatest-seasons.html'],
       ['Records','records.html']
     ],
@@ -51,16 +53,14 @@
       .rus-nav>a:hover,.rus-nav>a.active,.rus-nav details.active>summary,.rus-nav details[open]>summary{background:#F14D07;color:#000}
       .rus-nav .home-link{padding-inline:13px}
       .rus-nav details{position:relative}
-      .rus-nav .drop{position:absolute;left:0;top:100%;min-width:210px;background:#0b0b0b;border:1px solid #333;border-top:3px solid #F14D07;box-shadow:0 10px 24px rgba(0,0,0,.35);display:none}
+      .rus-nav .drop{position:absolute;left:0;top:100%;min-width:230px;background:#0b0b0b;border:1px solid #333;border-top:3px solid #F14D07;box-shadow:0 10px 24px rgba(0,0,0,.35);display:none}
       .rus-nav details[open]>.drop{display:block}
       .rus-nav .drop a{display:block;color:#fff;text-decoration:none;padding:12px 14px;font-size:12px;font-weight:800;text-transform:uppercase;border-bottom:1px solid #242424;white-space:nowrap}
       .rus-nav .drop a:last-child{border-bottom:0}
       .rus-nav .drop a:hover,.rus-nav .drop a.active{background:#F14D07;color:#000}
       .rus-nav .caret{font-size:10px;transform:translateY(-1px)}
       .header-home{cursor:pointer}
-      @media(min-width:701px){
-        .rus-nav details:hover>.drop{display:block}
-      }
+      @media(min-width:701px){.rus-nav details:hover>.drop{display:block}}
       @media(max-width:700px){
         .nav-content.rus-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
         .rus-nav>a,.rus-nav details>summary{justify-content:center;text-align:center;padding:12px 7px;font-size:12px}
@@ -82,10 +82,18 @@
     return `<details class="${cls}"><summary>${label}<span class="caret">▼</span></summary><div class="drop">${items.map(([name,href])=>link(name,href)).join('')}</div></details>`;
   }
 
+  function loadExtras(){
+    if(document.querySelector('script[data-rus-extras]')) return;
+    const extras=document.createElement('script');
+    extras.src='site-extras.js';
+    extras.dataset.rusExtras='1';
+    document.body.appendChild(extras);
+  }
+
   function setup(){
     injectStyles();
     const host=document.querySelector('nav .nav-content');
-    if(!host) return;
+    if(!host){loadExtras();return}
     host.classList.add('rus-nav');
     host.innerHTML=[
       link('Home','index.html','home-link'),
@@ -115,6 +123,7 @@
       logo.addEventListener('click',go);
       logo.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
     }
+    loadExtras();
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',setup);
