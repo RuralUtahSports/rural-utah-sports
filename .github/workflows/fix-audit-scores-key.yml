@@ -1,0 +1,25 @@
+name: Fix Alias Audit Scores Key
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-audit-scores-key.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: school-name-audit-run-v2
+      - name: Fix scores key
+        run: |
+          sed -i 's/root\.scorePairs/root.scores/' .github/workflows/audit-school-name-aliases.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/audit-school-name-aliases.yml
+          git commit -m "Use scorigami scores array in alias audit"
+          git push origin school-name-audit-run-v2
