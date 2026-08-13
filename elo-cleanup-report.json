@@ -6,5 +6,12 @@
   "nearDuplicatesRemoved": 240,
   "conflictingDuplicates": 11,
   "kFactor": 32,
-  "startingElo": 1500
+  "startingElo": 1500,
+  "marginBonus": {
+    "formula": "1 + 0.35 * (ln(min(margin,40)) / ln(40)) ^ 1.5",
+    "minimumMultiplier": 1,
+    "maximumMultiplier": 1.35,
+    "capMargin": 40,
+    "tiesMultiplier": 1
+  }
 }
