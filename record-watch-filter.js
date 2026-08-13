@@ -6,10 +6,7 @@
   const isJV=name=>/(^|\s)J\.?V\.?(\s|$)/i.test(String(name||''))||/JUNIOR\s+VARSITY/i.test(String(name||''));
   const isOutOfState=name=>/\(([A-Z]{2})\)\s*$/i.test(String(name||''))&&!/\(UT\)\s*$/i.test(String(name||''));
 
-  async function init(){
-    const host=document.getElementById('rusWatchBody');
-    if(!host)return;
-
+  async function setup(host){
     let allowed=new Set();
     try{
       const r=await fetch('teams-data.json?v='+Date.now());
@@ -45,6 +42,12 @@
     filter();
   }
 
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
+  function init(attempt=0){
+    const host=document.getElementById('rusWatchBody');
+    if(host){setup(host);return}
+    if(attempt<100)setTimeout(()=>init(attempt+1),100);
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init());
   else init();
 })();
