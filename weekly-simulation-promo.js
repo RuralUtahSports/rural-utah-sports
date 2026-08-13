@@ -6,7 +6,7 @@
   const openWeekly=()=>{if(!onSim()||location.hash.toLowerCase()!=='#weekly')return;const button=document.querySelector('.tab[data-tab="weekly"]');if(button)button.click()};
   const addPair=(panelSrc,actionSrc,key)=>{if(!onSim()||document.querySelector(`script[data-rus-${key}-loader]`))return;const panel=document.createElement('script'),actions=document.createElement('script');panel.src=panelSrc;panel.async=false;panel.setAttribute(`data-rus-${key}-loader`,'panel');actions.src=actionSrc;actions.async=false;actions.setAttribute(`data-rus-${key}-loader`,'actions');document.body.append(panel,actions)};
   const loadFullSeason=()=>addPair('full-season-panel.js?v=20260813h','full-season-actions.js?v=20260813k','full-season');
-  const loadDynasty=()=>addPair('dynasty-sim-panel.js?v=20260813a','dynasty-sim-actions.js?v=20260813b','dynasty');
+  const loadDynasty=()=>addPair('dynasty-sim-panel.js?v=20260813a','dynasty-sim-actions.js?v=20260813c','dynasty');
   const start=()=>{openWeekly();loadFullSeason();loadDynasty()};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(start,0));else setTimeout(start,0);
   window.addEventListener('hashchange',openWeekly);
