@@ -1,0 +1,28 @@
+name: Refresh Season Simulator Cache
+on:
+  push:
+    paths:
+      - '.github/workflows/bump-season-simulator-cache.yml'
+permissions:
+  contents: write
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Bump season simulator versions
+        run: |
+          sed -i "s/season-simulator-elo.js?v=20260813a/season-simulator-elo.js?v=20260813e/g" nav-menu.js
+          sed -i "s/season-simulator-run.js?v=20260813a/season-simulator-run.js?v=20260813e/g" nav-menu.js
+          sed -i "s/season-simulator-view.js?v=20260813a/season-simulator-view.js?v=20260813e/g" nav-menu.js
+          sed -i "s/season-simulator-ui.js?v=20260813a/season-simulator-ui.js?v=20260813e/g" nav-menu.js
+      - name: Commit
+        run: |
+          if git diff --quiet -- nav-menu.js; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nav-menu.js
+          git commit -m "Refresh dynamic season simulator scripts"
+          git push
