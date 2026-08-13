@@ -1,0 +1,1 @@
+(()=>{if(!/simulators\.html$/i.test(location.pathname.split('/').pop()||''))return;const wait=n=>{let ok=false;try{ok=!!(window.RUSSeasonSim?.setup&&simulator?.teams&&Object.keys(simulator.teams).length)}catch(e){}if(ok)return window.RUSSeasonSim.setup();if(n<120)setTimeout(()=>wait(n+1),100)};setTimeout(()=>wait(0),100);})();
