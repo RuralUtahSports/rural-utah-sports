@@ -14,6 +14,9 @@
     const apply=()=>{tries++;const year=document.getElementById('yearFilter'),team=document.getElementById('teamFilter');if(!year||year.options.length<2||!team||team.options.length<2){if(tries<70)setTimeout(apply,100);return}const values={searchBox:initial.get('search'),yearFilter:initial.get('year'),teamFilter:initial.get('team'),sortBy:initial.get('sort'),sortDirection:initial.get('dir')};for(const id of ids){const el=document.getElementById(id),v=values[id];if(!el||!v)continue;if(el.tagName==='SELECT'&&![...el.options].some(o=>o.value===v))continue;el.value=v;el.dispatchEvent(new Event(id==='searchBox'?'input':'change',{bubbles:true}))}sync()};
     for(const id of ids){const el=document.getElementById(id);el?.addEventListener(id==='searchBox'?'input':'change',()=>setTimeout(sync,0))}document.querySelector('.clear-button')?.addEventListener('click',()=>setTimeout(sync,0));setTimeout(apply,120);
   }
+  function gamesDeepLink(){
+    if(path!=='games.html')return;const q=new URLSearchParams(location.search),year=q.get('year'),type=q.get('type'),sort=q.get('sort');if(!year&&!type&&!sort)return;let tries=0;const apply=()=>{tries++;const y=document.getElementById('year'),t=document.getElementById('type'),s=document.getElementById('sort');if(!y||!t||!s||(year&&![...y.options].some(o=>o.value===year))){if(tries<100)setTimeout(apply,100);return}if(year)y.value=year;if(type&&[...t.options].some(o=>o.value===type))t.value=type;if(sort&&[...s.options].some(o=>o.value===sort))s.value=sort;y.dispatchEvent(new Event('change',{bubbles:true}))};setTimeout(apply,180);
+  }
   function addRelated(){
     const main=document.querySelector('main');if(!main||main.querySelector('.rus-related'))return;const links=[],add=(name,href,desc)=>links.push([name,href,desc]);
     if(path==='teams.html'){add('Program Leaderboard','programs.html','Rank every program');add('Season Explorer','season.html','Browse by year');add('Team Comparison','compare.html','Compare programs');add('Games','games.html','Game history')}
@@ -30,6 +33,6 @@
   function shareButton(){
     const main=document.querySelector('main');if(!main||document.getElementById('rusShareView'))return;const b=document.createElement('button');b.id='rusShareView';b.type='button';b.textContent='Copy Share Link';b.style.cssText='position:fixed;right:16px;bottom:76px;z-index:40;background:#1b1b1b;color:#fff;border:1px solid #444;border-radius:999px;padding:9px 13px;font:700 10px Arial;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35)';b.onclick=async()=>{try{await navigator.clipboard.writeText(location.href);const old=b.textContent;b.textContent='Link Copied';setTimeout(()=>b.textContent=old,1400)}catch(e){prompt('Copy this link:',location.href)}};document.body.appendChild(b);
   }
-  function init(){recordsState();greatestSeasonsState();setTimeout(addRelated,700);shareButton()}
+  function init(){recordsState();greatestSeasonsState();gamesDeepLink();setTimeout(addRelated,700);shareButton()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
