@@ -14,7 +14,7 @@
   }
   setupAnalytics();
   const groups={
-    history:[['Championships','championships.html'],['Season Explorer','season.html'],['Program Leaderboard','programs.html'],['Rivalry Hub','rivalry.html'],['Dynasty Explorer','dynasty.html'],['Greatest Seasons','greatest-seasons.html'],['Records','records.html']],
+    history:[['Championships','championships.html'],['Season Explorer','season.html'],['Program Leaderboard','programs.html'],['Rivalry Hub','rivalry.html'],['Dynasty Explorer','dynasty.html'],['History Lab','history-lab.html'],['Greatest Seasons','greatest-seasons.html'],['Records','records.html']],
     analytics:[['ELO','elo.html'],['Scorigami','scorigami.html'],['Out of State','out-of-state.html'],['Team Comparison','compare.html']],
     simulators:[['Simulators Hub','simulators.html']]
   };
@@ -27,7 +27,7 @@
   function link(label,href,extra=''){return `<a href="${href}" class="${active(href)?'active ':''}${extra}"${active(href)?' aria-current="page"':''}>${label}</a>`}
   function dropdown(label,key){const items=groups[key],cls=groupActive(items)?'active':'';return `<details class="${cls}"><summary>${label}<span class="caret">▼</span></summary><div class="drop">${items.map(([name,href])=>link(name,href)).join('')}</div></details>`}
   function loadExtras(){
-    [['site-extras.js','rusExtras'],['site-share.js','rusShare'],['record-watch-filter.js?v=20260812b','rusRecordWatchFilter'],['program-leaderboard-filter.js?v=20260812a','rusProgramLeaderboardFilter'],['history-tools-integration.js?v=20260812b','rusHistoryTools'],['school-colors.js?v=20260812a','rusSchoolColors']].forEach(([src,key])=>{if(document.querySelector(`script[data-${key.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}]`))return;const s=document.createElement('script');s.src=src;s.dataset[key]='1';document.body.appendChild(s)})
+    [['site-extras.js','rusExtras'],['site-share.js','rusShare'],['record-watch-filter.js?v=20260812b','rusRecordWatchFilter'],['program-leaderboard-filter.js?v=20260812a','rusProgramLeaderboardFilter'],['history-tools-integration.js?v=20260812c','rusHistoryTools'],['school-colors.js?v=20260812a','rusSchoolColors'],['program-timeline.js?v=20260812a','rusProgramTimeline'],['did-you-know.js?v=20260812a','rusDidYouKnow']].forEach(([src,key])=>{if(document.querySelector(`script[data-${key.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}]`))return;const s=document.createElement('script');s.src=src;s.dataset[key]='1';document.body.appendChild(s)})
   }
   function setup(){
     injectStyles();const host=document.querySelector('nav .nav-content');if(!host){loadExtras();return}host.classList.add('rus-nav');host.innerHTML=[link('Home','index.html','home-link'),link('Teams','teams.html'),link('Games','games.html'),link('Rankings','rankings.html'),link('Standings','standings.html'),dropdown('History','history'),dropdown('Analytics','analytics'),dropdown('Simulators','simulators')].join('');
