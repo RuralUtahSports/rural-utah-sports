@@ -1,0 +1,1 @@
+(()=>{const S=window.RUSSeasonSim;S.elo=(elo,m,g)=>{const ex=1/(1+Math.pow(10,(m.oe-elo)/400)),margin=Math.max(1,Math.min(40,Math.abs(g.a-g.b))),r=Math.log(margin)/Math.log(40),mult=Math.min(1.35,1+.35*Math.pow(r,1.5)),raw=32*mult*((g.won?1:0)-ex),chg=Math.sign(raw)*Math.round(Math.abs(raw));return{chg,eloAfter:elo+chg}};})();
