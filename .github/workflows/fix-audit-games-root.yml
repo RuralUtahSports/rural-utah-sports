@@ -1,0 +1,33 @@
+name: Fix Alias Audit Game Source
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-audit-games-root.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: school-name-audit-run
+      - name: Fix scorigami game flattening
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/audit-school-name-aliases.yml')
+          s=p.read_text()
+          old="const games = JSON.parse(fs.readFileSync('scorigami.json','utf8'));"
+          new="const root = JSON.parse(fs.readFileSync('scorigami.json','utf8'));\n          const games = (root.scorePairs || []).flatMap(pair => pair.games || []);"
+          if old not in s: raise SystemExit('target not found')
+          p.write_text(s.replace(old,new))
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/audit-school-name-aliases.yml
+          git commit -m "Fix alias audit game source"
+          git push origin school-name-audit-run
