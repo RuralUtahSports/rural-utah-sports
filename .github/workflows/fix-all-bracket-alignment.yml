@@ -1,0 +1,73 @@
+name: Fix all playoff bracket alignment
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-all-bracket-alignment.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make bracket alignment recursive and verify all seasons
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const file='championship-brackets.js';
+          let js=fs.readFileSync(file,'utf8');
+          const old=`function winnerName(g){const [aw,bw]=winnerFlags(g);return aw?norm(g[0]):bw?norm(g[2]):''}\nfunction orderRoundToFeed(roundGames,nextGames){if(!Array.isArray(roundGames)||!Array.isArray(nextGames)||roundGames.length<2||!nextGames.length)return roundGames;const unused=roundGames.map((g,i)=>({g,i,w:winnerName(g)}));const ordered=[];for(const ng of nextGames){for(const slot of [norm(ng[0]),norm(ng[2])]){const hit=unused.findIndex(x=>x.w&&x.w===slot);if(hit>=0)ordered.push(unused.splice(hit,1)[0].g)}}return ordered.concat(unused.map(x=>x.g))}\nfunction alignedRounds(rounds){return rounds.map((r,i)=>[r[0],i<rounds.length-1?orderRoundToFeed(r[1],rounds[i+1][1]):r[1]])}`;
+          const replacement=`function feedKey(name){const n=norm(name);return aliases[n]||n}\nfunction winnerName(g){const [aw,bw]=winnerFlags(g);return aw?feedKey(g[0]):bw?feedKey(g[2]):''}\nfunction orderRoundToFeed(roundGames,nextGames){if(!Array.isArray(roundGames)||!Array.isArray(nextGames)||roundGames.length<2||!nextGames.length)return roundGames;const unused=roundGames.map((g,i)=>({g,i,w:winnerName(g)}));const ordered=[];for(const ng of nextGames){for(const slot of [feedKey(ng[0]),feedKey(ng[2])]){const hit=unused.findIndex(x=>x.w&&x.w===slot);if(hit>=0)ordered.push(unused.splice(hit,1)[0].g)}}return ordered.concat(unused.map(x=>x.g))}\nfunction alignedRounds(rounds){const out=rounds.map(r=>[r[0],Array.isArray(r[1])?r[1].slice():r[1]]);for(let i=out.length-2;i>=0;i--)out[i]=[out[i][0],orderRoundToFeed(out[i][1],out[i+1][1])];return out}`;
+          if(!js.includes(old)) throw new Error('Expected alignment functions not found');
+          js=js.replace(old,replacement);
+          fs.writeFileSync(file,js);
+
+          const aliases={'ST JOSEPH':'SAINT JOSEPH','ST JOSEPH CATHOLIC':'SAINT JOSEPH','UMA CAMP WILLIAMS':'UMA-LEHI','UMA HILLFIELD':'UMA-HILLFIELD','AMERICAN LEADERSHIP':'ALA','CEDAR':'CEDAR CITY','MONUMENT VALLEY':'MONUMENT VAL','PANGUTICH':'PANGUITCH','GUNNISON':'GUNNISON VALLEY','WASATCH ACADEMY':'WASATCH ACAD'};
+          const clean=v=>String(v??'').trim();
+          const stripSeed=v=>clean(v).replace(/^#\d+\s*/,'');
+          const norm=v=>stripSeed(v).toUpperCase().replace(/[.'’]/g,'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();
+          const feedKey=name=>{const n=norm(name);return aliases[n]||n};
+          const nScore=v=>{const s=clean(v);if(!/^\d+(?:\.\d+)?$/.test(s))return null;const n=Number(s);return Number.isFinite(n)?n:null};
+          const winnerName=g=>{const a=nScore(g[1]),b=nScore(g[3]);if(a!==null&&b!==null&&a>b)return feedKey(g[0]);if(a!==null&&b!==null&&b>a)return feedKey(g[2]);return''};
+          function orderRoundToFeed(roundGames,nextGames){if(!Array.isArray(roundGames)||!Array.isArray(nextGames)||roundGames.length<2||!nextGames.length)return roundGames;const unused=roundGames.map(g=>({g,w:winnerName(g)})),ordered=[];for(const ng of nextGames){for(const slot of [feedKey(ng[0]),feedKey(ng[2])]){const hit=unused.findIndex(x=>x.w&&x.w===slot);if(hit>=0)ordered.push(unused.splice(hit,1)[0].g)}}return ordered.concat(unused.map(x=>x.g))}
+          function alignedRounds(rounds){const out=rounds.map(r=>[r[0],Array.isArray(r[1])?r[1].slice():r[1]]);for(let i=out.length-2;i>=0;i--)out[i]=[out[i][0],orderRoundToFeed(out[i][1],out[i+1][1])];return out}
+
+          let classes=0,links=0,files=0;
+          const problems=[];
+          for(const f of fs.readdirSync('.').filter(x=>/^brackets-\d{4}\.json$/.test(x)).sort()){
+            const data=JSON.parse(fs.readFileSync(f,'utf8')); files++;
+            for(const [cls,rounds] of Object.entries(data)){
+              if(!Array.isArray(rounds)||!rounds.length||!Array.isArray(rounds[0])) continue;
+              classes++;
+              const aligned=alignedRounds(rounds);
+              for(let i=0;i<aligned.length-1;i++){
+                const prev=aligned[i][1],next=aligned[i+1][1];
+                if(!Array.isArray(prev)||!Array.isArray(next)) continue;
+                const positions=new Map();
+                prev.forEach((g,idx)=>{const w=winnerName(g);if(w)positions.set(w,idx)});
+                let last=-1;
+                for(const ng of next){
+                  for(const t of [feedKey(ng[0]),feedKey(ng[2])]){
+                    if(!positions.has(t)) continue;
+                    const p=positions.get(t);links++;
+                    if(p<last) problems.push(`${f} ${cls}: ${t} crosses an earlier feeder`);
+                    last=p;
+                  }
+                }
+              }
+            }
+          }
+          if(problems.length) throw new Error(problems.slice(0,20).join('\n'));
+          console.log(`Verified recursive alignment across ${files} bracket files, ${classes} classifications, ${links} advancing-team links.`);
+          NODE
+      - name: Commit renderer fix
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add championship-brackets.js
+          git commit -m "Align playoff feeders across every season"
+          git pull --rebase origin main
+          git push
