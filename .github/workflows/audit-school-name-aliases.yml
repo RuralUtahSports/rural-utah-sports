@@ -21,7 +21,8 @@ jobs:
           node <<'NODE'
           const fs = require('fs');
 
-          const games = JSON.parse(fs.readFileSync('scorigami.json','utf8'));
+          const root = JSON.parse(fs.readFileSync('scorigami.json','utf8'));
+          const games = (root.scorePairs || []).flatMap(pair => pair.games || []);
           const stats = new Map();
 
           const add = (name, date, opponent) => {
