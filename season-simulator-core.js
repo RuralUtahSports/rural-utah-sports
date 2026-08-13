@@ -1,0 +1,1 @@
+(()=>{window.RUSSeasonSim=window.RUSSeasonSim||{};RUSSeasonSim.ready=true;})();
