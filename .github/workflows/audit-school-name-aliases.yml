@@ -1,0 +1,152 @@
+name: Audit School Name Aliases
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/audit-school-name-aliases.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build school name audit
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const games = JSON.parse(fs.readFileSync('scorigami.json','utf8'));
+          const stats = new Map();
+
+          const add = (name, date, opponent) => {
+            name = String(name || '').trim().replace(/\s+/g,' ');
+            if (!name) return;
+            if (!stats.has(name)) stats.set(name,{name,appearances:0,years:new Set(),opponents:new Set()});
+            const s = stats.get(name);
+            s.appearances++;
+            const m = String(date || '').match(/(19|20)\d{2}/);
+            if (m) s.years.add(Number(m[0]));
+            if (opponent) s.opponents.add(String(opponent).trim().replace(/\s+/g,' '));
+          };
+
+          for (const g of games) {
+            if (g.winner || g.loser) {
+              add(g.winner,g.date,g.loser); add(g.loser,g.date,g.winner);
+            } else {
+              add(g.team1,g.date,g.team2); add(g.team2,g.date,g.team1);
+            }
+          }
+
+          const rows = [...stats.values()].map(s => ({
+            name:s.name,
+            appearances:s.appearances,
+            firstYear:s.years.size ? Math.min(...s.years) : null,
+            lastYear:s.years.size ? Math.max(...s.years) : null,
+            opponents:[...s.opponents]
+          }));
+
+          const expand = s => s.toUpperCase()
+            .replace(/&/g,' AND ')
+            .replace(/\bMTN\b/g,'MOUNTAIN')
+            .replace(/\bMT\b/g,'MOUNT')
+            .replace(/\bVAL\b/g,'VALLEY')
+            .replace(/\bSCH\b/g,'SCHOOL')
+            .replace(/\bACAD\b/g,'ACADEMY')
+            .replace(/\bCTR\b/g,'CENTER')
+            .replace(/\bST\b/g,'SAINT')
+            .replace(/[^A-Z0-9 ]+/g,' ')
+            .replace(/\s+/g,' ')
+            .trim();
+
+          const compact = s => expand(s).replace(/\b(HIGH|SCHOOL|HS)\b/g,' ').replace(/\s+/g,' ').trim();
+
+          function lev(a,b){
+            const dp=Array.from({length:a.length+1},()=>Array(b.length+1).fill(0));
+            for(let i=0;i<=a.length;i++)dp[i][0]=i;
+            for(let j=0;j<=b.length;j++)dp[0][j]=j;
+            for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+            return dp[a.length][b.length];
+          }
+          const sim=(a,b)=>{
+            a=compact(a); b=compact(b);
+            if(!a||!b)return 0;
+            if(a===b)return 1;
+            const d=lev(a,b); return 1-d/Math.max(a.length,b.length);
+          };
+          const initials = s => compact(s).split(' ').filter(Boolean).map(x=>x[0]).join('');
+          const overlap = (a,b) => {
+            const A=new Set(a.opponents.map(compact)), B=new Set(b.opponents.map(compact));
+            let hit=0; for(const x of A) if(B.has(x)) hit++;
+            return hit/Math.max(1,Math.min(A.size,B.size));
+          };
+
+          const known = new Map([
+            ['GUNNISON','GUNNISON VALLEY'],['MAPLE MTN','MAPLE MOUNTAIN'],['MONUMENT VAL','MONUMENT VALLEY'],
+            ['CEDAR','CEDAR CITY'],['SUMMIT','SUMMIT ACADEMY'],['BRIGHAM YOUNG','BYH'],
+            ['WASATCH ACADEMY','WASATCH ACAD'],['UTAH SCH DEAF','USDB']
+          ].map(([a,b])=>[[a,b].sort().join('|'),true]));
+
+          const candidates=[];
+          for(let i=0;i<rows.length;i++) for(let j=i+1;j<rows.length;j++){
+            const a=rows[i], b=rows[j];
+            const key=[a.name,b.name].sort().join('|');
+            const s=sim(a.name,b.name);
+            const initMatch = initials(a.name) && (initials(a.name)===compact(b.name) || initials(b.name)===compact(a.name));
+            const contains = compact(a.name).length>=4 && compact(b.name).length>=4 && (compact(a.name).includes(compact(b.name)) || compact(b.name).includes(compact(a.name)));
+            const opp=overlap(a,b);
+            let score=s;
+            if(initMatch) score=Math.max(score,.94);
+            if(contains) score=Math.max(score,.88);
+            if(opp>.70) score+=.04;
+            if(known.has(key)) score=1.2;
+            if(score < .78) continue;
+
+            let confidence='possible';
+            if(known.has(key) || score>=.96) confidence='high';
+            else if(score>=.88) confidence='likely';
+
+            candidates.push({
+              confidence,
+              score:Number(score.toFixed(3)),
+              nameA:a.name, appearancesA:a.appearances, yearsA:[a.firstYear,a.lastYear],
+              nameB:b.name, appearancesB:b.appearances, yearsB:[b.firstYear,b.lastYear],
+              opponentOverlap:Number(opp.toFixed(3)),
+              knownAlias:known.has(key)
+            });
+          }
+
+          candidates.sort((a,b)=>({high:0,likely:1,possible:2}[a.confidence]-({high:0,likely:1,possible:2}[b.confidence]) || b.score-a.score || (b.appearancesA+b.appearancesB)-(a.appearancesA+a.appearancesB));
+
+          fs.writeFileSync('school-name-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),uniqueNames:rows.length,candidates},null,2)+'\n');
+
+          const md=[];
+          md.push('# School Name Alias Audit','',`Unique names scanned: ${rows.length}`,`Candidate pairs: ${candidates.length}`,'');
+          for(const level of ['high','likely','possible']){
+            md.push(`## ${level[0].toUpperCase()+level.slice(1)} confidence`,'');
+            const group=candidates.filter(x=>x.confidence===level).slice(0,100);
+            if(!group.length){md.push('_None_','');continue;}
+            md.push('| Name A | Name B | Score | A games | B games | A years | B years | Opp overlap |','|---|---|---:|---:|---:|---|---|---:|');
+            for(const c of group) md.push(`| ${c.nameA} | ${c.nameB} | ${c.score} | ${c.appearancesA} | ${c.appearancesB} | ${c.yearsA.join('-')} | ${c.yearsB.join('-')} | ${c.opponentOverlap} |`);
+            md.push('');
+          }
+          fs.writeFileSync('school-name-audit.md',md.join('\n')+'\n');
+          console.log(`Scanned ${rows.length} unique school names; found ${candidates.length} candidate pairs.`);
+          NODE
+
+      - name: Commit report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add school-name-audit.json school-name-audit.md
+          if git diff --cached --quiet; then
+            echo "No audit changes."
+            exit 0
+          fi
+          git commit -m "Update school name alias audit"
+          git push
