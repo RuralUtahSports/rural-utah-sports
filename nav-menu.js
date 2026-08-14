@@ -14,6 +14,7 @@
   }
   setupAnalytics();
   const groups={
+    stats:[['Stat Leaders','stat-leaders.html'],['MVP Race','mvp-race.html'],['All-State & Region Watch','all-state-watch.html']],
     history:[['Championships','championships.html'],['Season Explorer','season.html'],['Program Leaderboard','programs.html'],['Rivalry Hub','rivalry.html'],['Dynasty Explorer','dynasty.html'],['History Lab','history-lab.html'],['Greatest Seasons','greatest-seasons.html'],['Records','records.html']],
     analytics:[['ELO','elo.html'],['Scorigami','scorigami.html'],['Out of State','out-of-state.html'],['Team Comparison','compare.html'],['Football Map','map.html']],
     simulators:[['Simulators Hub','simulators.html']]
@@ -32,7 +33,7 @@
     if(path==='scoreboard.html'&&!document.querySelector('script[data-rus-scoreboard-rankings-ui]')){const s=document.createElement('script');s.src='scoreboard-rankings-ui.js?v=20260813a';s.dataset.rusScoreboardRankingsUi='1';document.body.appendChild(s)}
   }
   function setup(){
-    injectStyles();const host=document.querySelector('nav .nav-content');if(!host){loadExtras();return}host.classList.add('rus-nav');host.innerHTML=[link('Home','index.html','home-link'),link('Teams','teams.html'),link('Games','games.html'),link('Scoreboard','scoreboard.html'),link('Rankings','rankings.html'),link('Standings','standings.html'),link('Stats','stat-leaders.html'),link('Storylines','storylines.html'),dropdown('History','history'),dropdown('Analytics','analytics'),dropdown('Simulators','simulators')].join('');
+    injectStyles();const host=document.querySelector('nav .nav-content');if(!host){loadExtras();return}host.classList.add('rus-nav');host.innerHTML=[link('Home','index.html','home-link'),link('Teams','teams.html'),link('Games','games.html'),link('Scoreboard','scoreboard.html'),link('Rankings','rankings.html'),link('Standings','standings.html'),dropdown('Stats','stats'),link('Storylines','storylines.html'),dropdown('History','history'),dropdown('Analytics','analytics'),dropdown('Simulators','simulators')].join('');
     document.querySelectorAll('.rus-nav details').forEach(d=>d.addEventListener('toggle',()=>{if(!d.open)return;document.querySelectorAll('.rus-nav details').forEach(other=>{if(other!==d)other.open=false})}));
     const logo=document.querySelector('header .logo');if(logo&&!logo.closest('a')){logo.classList.add('header-home');logo.setAttribute('title','Home');logo.setAttribute('role','link');logo.setAttribute('tabindex','0');const go=()=>{location.href='index.html'};logo.addEventListener('click',go);logo.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})}loadExtras()
   }
