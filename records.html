@@ -16,7 +16,6 @@ nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;m
 footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}footer strong{color:#F14D07}
 @media(max-width:700px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.page-title{font-size:28px}.control-grid{grid-template-columns:1fr}.record-header{align-items:flex-start;flex-direction:column}.record-header p{text-align:left}.team-badge{min-width:0}.value{font-size:17px}}
 </style>
-
 <style id="rus-mobile-performance">
 html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulation}.table-wrap,.games-wrap,.chart-wrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}@media(max-width:700px){body{-webkit-font-smoothing:antialiased}main img:not(.logo){max-width:100%;height:auto}table{contain:layout style}.table-wrap{contain:layout paint}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
@@ -33,7 +32,6 @@ html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulati
 <p class="filter-note">Classification filtering uses each program's current classification. Percentage leaderboards use minimum-game requirements to avoid tiny-sample records.</p>
 </section>
 <section class="record-card"><div class="record-header"><div><h3 id="recordTitle">Loading...</h3></div><p id="recordNote"></p></div><div id="leaderboardWrap" class="loading">Loading record data...</div></section>
-
 <section class="record-card" id="rivalryRecords" style="margin-top:20px"><div class="record-header"><div><h3>Most Lopsided Rivalries</h3></div><p>Series with at least 10 meetings, ranked by the largest difference in wins after exact duplicate game rows are removed.</p></div><div id="rivalryLeaderboard" class="loading">Loading rivalry records...</div></section>
 <section class="stat-directory"><h3 class="directory-title">All Available Stats</h3><div id="statChips" class="stat-chips"></div></section>
 </main>
@@ -45,7 +43,6 @@ let recordBook={};
 let eloSummary={};
 let streakRecords={};
 let mode='alltime';
-
 const normalize=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
 const clean=v=>String(v??'').trim();
 const escapeHTML=v=>clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
@@ -53,38 +50,10 @@ const number=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
 const safeHex=(v,f)=>/^#[0-9A-F]{6}$/i.test(clean(v))?clean(v):f;
 const teamByName=new Map();
 const recordAliases={'GUNNISON VALLEY':'GUNNISON','MAPLE MOUNTAIN':'MAPLE MTN','MONUMENT VALLEY':'MONUMENT VAL'};
-
 const allTimeStats=[
-{key:'currentElo',label:'Highest Current ELO',eloField:'currentElo',format:'int',note:'Highest current ELO based on each program’s most recent game in the ELO history.'},
-{key:'peakElo',label:'All-Time High ELO',eloField:'peakElo',format:'int',note:'Highest game-by-game ELO ever reached by each program at any point in the historical ELO timeline.'},
-{key:'wins',label:'Most Wins',field:'wins',format:'int',note:'Most varsity wins in the all-time game database.'},
-{key:'winPct',label:'Best Win %',field:'winPct',format:'pct',minGames:50,note:'Best all-time winning percentage among programs with at least 50 recorded games.'},
-{key:'games',label:'Most Games Played',field:'games',format:'int',note:'Most recorded varsity games.'},
-{key:'pointsFor',label:'Most Points Scored',field:'pointsFor',format:'int',note:'Most total points scored in the historical game database.'},
-{key:'avgMargin',label:'Best Average Margin',field:'avgMargin',format:'decimal1',minGames:50,note:'Best all-time average scoring margin among programs with at least 50 recorded games.'},
-{key:'seasons',label:'Most Seasons',field:'seasons',format:'int',note:'Most seasons represented in the Rural Utah Sports database.'},
-{key:'winStreak',label:'Longest Winning Streak',streakField:'longestWinStreak',format:'int',note:'Longest run of consecutive wins in the historical schedule database. Ties break a winning streak.'},
-{key:'lossStreak',label:'Longest Losing Streak',streakField:'longestLossStreak',format:'int',note:'Longest run of consecutive losses in the historical schedule database. Ties break a losing streak.'},
-{key:'regionTitles',label:'Most Region Titles',recordField:'regionTitles',format:'int',note:'Most region championships recorded in the Record Book.'},
-{key:'playoffWins',label:'Most Playoff Wins',recordField:'playoffWins',format:'int',note:'Most postseason wins recorded in the Record Book.'},
-{key:'stateChampionships',label:'Most State Championships',field:'stateChampionships',format:'int',note:'Most state titles, using Championship Log totals.'},
-{key:'championshipGames',label:'Most Championship Appearances',field:'championshipGames',format:'int',note:'Most state championship game appearances, using Championship Log totals.'}
-];
-
+{key:'currentElo',label:'Highest Current ELO',eloField:'currentElo',format:'int',note:'Highest current ELO based on each program’s most recent game in the ELO history.'},{key:'peakElo',label:'All-Time High ELO',eloField:'peakElo',format:'int',note:'Highest game-by-game ELO ever reached by each program at any point in the historical ELO timeline.'},{key:'wins',label:'Most Wins',field:'wins',format:'int',note:'Most varsity wins in the all-time game database.'},{key:'winPct',label:'Best Win %',field:'winPct',format:'pct',minGames:50,note:'Best all-time winning percentage among programs with at least 50 recorded games.'},{key:'games',label:'Most Games Played',field:'games',format:'int',note:'Most recorded varsity games.'},{key:'pointsFor',label:'Most Points Scored',field:'pointsFor',format:'int',note:'Most total points scored in the historical game database.'},{key:'avgMargin',label:'Best Average Margin',field:'avgMargin',format:'decimal1',minGames:50,note:'Best all-time average scoring margin among programs with at least 50 recorded games.'},{key:'seasons',label:'Most Seasons',field:'seasons',format:'int',note:'Most seasons represented in the Rural Utah Sports database.'},{key:'winStreak',label:'Longest Winning Streak',streakField:'longestWinStreak',format:'int',note:'Longest run of consecutive wins in the historical schedule database. Ties break a winning streak.'},{key:'lossStreak',label:'Longest Losing Streak',streakField:'longestLossStreak',format:'int',note:'Longest run of consecutive losses in the historical schedule database. Ties break a losing streak.'},{key:'regionTitles',label:'Most Region Titles',recordField:'regionTitles',format:'int',note:'Most region championships recorded in the Record Book.'},{key:'playoffWins',label:'Most Playoff Wins',recordField:'playoffWins',format:'int',note:'Most postseason wins recorded in the Record Book.'},{key:'stateChampionships',label:'Most State Championships',field:'stateChampionships',format:'int',note:'Most state titles, using Championship Log totals.'},{key:'championshipGames',label:'Most Championship Appearances',field:'championshipGames',format:'int',note:'Most state championship game appearances, using Championship Log totals.'}];
 const seasonStats=[
-{key:'Rating',label:'Highest Rating',field:'Rating',format:'decimal2',note:'Highest Rural Utah Sports single-season rating.'},
-{key:'Wins',label:'Most Wins',field:'Wins',format:'int',note:'Most wins in a single season.'},
-{key:'Win %',label:'Best Win %',field:'Win %',format:'pct',minGames:8,note:'Best single-season winning percentage among seasons with at least 8 games.'},
-{key:'Games',label:'Most Games Played',field:'Games',format:'int',note:'Most games played in one season.'},
-{key:'Points For',label:'Most Points Scored',field:'Points For',format:'int',note:'Most points scored in one season.'},
-{key:'PPG',label:'Highest PPG',field:'PPG',format:'decimal1',minGames:8,note:'Highest points per game among seasons with at least 8 games.'},
-{key:'PAPG',label:'Lowest PAPG',field:'PAPG',format:'decimal1',direction:'asc',minGames:8,note:'Fewest points allowed per game among seasons with at least 8 games.'},
-{key:'Avg Margin',label:'Best Average Margin',field:'Avg Margin',format:'decimal1',minGames:8,note:'Largest average scoring margin in a season with at least 8 games.'},
-{key:'Opponent Win %',label:'Highest Opponent Win %',field:'Opponent Win %',format:'pct',minGames:8,note:'Highest combined opponent winning percentage.'},
-{key:"Opponents' Opponent Win %",label:"Highest Opp. Opp. Win %",field:"Opponents' Opponent Win %",format:'pct',minGames:8,note:"Highest opponents' opponent winning percentage."},
-{key:'SOS',label:'Toughest Strength of Schedule',field:'SOS',format:'decimal2',minGames:8,note:'Highest single-season strength of schedule value.'}
-];
-
+{key:'Rating',label:'Highest Rating',field:'Rating',format:'decimal2',note:'Highest Rural Utah Sports single-season rating.'},{key:'Wins',label:'Most Wins',field:'Wins',format:'int',note:'Most wins in a single season.'},{key:'Win %',label:'Best Win %',field:'Win %',format:'pct',minGames:8,note:'Best single-season winning percentage among seasons with at least 8 games.'},{key:'Games',label:'Most Games Played',field:'Games',format:'int',note:'Most games played in one season.'},{key:'Points For',label:'Most Points Scored',field:'Points For',format:'int',note:'Most points scored in one season.'},{key:'PPG',label:'Highest PPG',field:'PPG',format:'decimal1',minGames:8,note:'Highest points per game among seasons with at least 8 games.'},{key:'PAPG',label:'Lowest PAPG',field:'PAPG',format:'decimal1',direction:'asc',minGames:8,note:'Fewest points allowed per game among seasons with at least 8 games.'},{key:'Avg Margin',label:'Best Average Margin',field:'Avg Margin',format:'decimal1',minGames:8,note:'Largest average scoring margin in a season with at least 8 games.'},{key:'Opponent Win %',label:'Highest Opponent Win %',field:'Opponent Win %',format:'pct',minGames:8,note:'Highest combined opponent winning percentage.'},{key:"Opponents' Opponent Win %",label:"Highest Opp. Opp. Win %",field:"Opponents' Opponent Win %",format:'pct',minGames:8,note:"Highest opponents' opponent winning percentage."},{key:'SOS',label:'Toughest Strength of Schedule',field:'SOS',format:'decimal2',minGames:8,note:'Highest single-season strength of schedule value.'}];
 function classOrder(v){const s=clean(v).toUpperCase();if(s==='8P'||s==='8-PLAYER')return 0;if(s==='3AA')return 3.5;const m=s.match(/^(\d+)A$/);return m?Number(m[1]):-1}
 function formatValue(v,type){const n=Number(v);if(!Number.isFinite(n))return '—';if(type==='pct')return (n*100).toFixed(1)+'%';if(type==='decimal1')return n.toFixed(1);if(type==='decimal2')return n.toFixed(2);return Math.round(n).toLocaleString()}
 function teamData(name){return teamByName.get(normalize(name))||null}
@@ -93,143 +62,20 @@ function currentClass(name){return clean(teamData(name)?.classification)}
 function recordFor(name){const t=clean(name);return recordBook[t]||recordBook[recordAliases[t]]||null}
 function eloFor(name){return eloSummary[clean(name)]||eloSummary[normalize(name)]||null}
 function recordText(s){const w=number(s['Wins'])??0,l=number(s['Losses'])??0,t=number(s['Ties'])??0;return `${w}-${l}-${t}`}
-
-function buildClassFilter(){
-  const select=document.getElementById('classSelect');
-  const classes=[...new Set(teams.map(t=>clean(t.classification)).filter(Boolean))].sort((a,b)=>classOrder(b)-classOrder(a)||a.localeCompare(b));
-  for(const c of classes){const o=document.createElement('option');o.value=c;o.textContent=c;select.appendChild(o)}
-}
+function buildClassFilter(){const select=document.getElementById('classSelect');const classes=[...new Set(teams.map(t=>clean(t.classification)).filter(Boolean))].sort((a,b)=>classOrder(b)-classOrder(a)||a.localeCompare(b));for(const c of classes){const o=document.createElement('option');o.value=c;o.textContent=c;select.appendChild(o)}}
 function availableStats(){return mode==='alltime'?allTimeStats:seasonStats}
-function buildStatSelect(selected){
-  const select=document.getElementById('statSelect');
-  select.innerHTML='';
-  for(const stat of availableStats()){const o=document.createElement('option');o.value=stat.key;o.textContent=stat.label;select.appendChild(o)}
-  select.value=availableStats().some(s=>s.key===selected)?selected:availableStats()[0].key;
-  buildChips();
-}
-function buildChips(){
-  const active=document.getElementById('statSelect').value;
-  document.getElementById('statChips').innerHTML=availableStats().map(s=>`<button class="stat-chip ${s.key===active?'active':''}" data-stat="${escapeHTML(s.key)}">${escapeHTML(s.label)}</button>`).join('');
-  document.querySelectorAll('.stat-chip').forEach(b=>b.addEventListener('click',()=>{document.getElementById('statSelect').value=b.dataset.stat;render()}));
-}
-
-function allTimeRows(stat,cls){
-  return teams.map(t=>{
-    const rec=recordFor(t.team);
-    const elo=eloFor(t.team);
-    let value=null;
-    let detail=[clean(t.classification),clean(t.region)].filter(Boolean).join(' • ');
-
-    if(stat.eloField){
-      value=number(elo?.[stat.eloField]);
-      if(stat.eloField==='currentElo'&&elo){
-        const context=[elo.currentDate,elo.currentResult&&elo.currentOpponent?`${elo.currentResult} vs ${elo.currentOpponent}`:elo.currentOpponent].filter(Boolean).join(' • ');
-        if(context)detail=context;
-      }
-      if(stat.eloField==='peakElo'&&elo){
-        const context=[elo.peakDate,elo.peakResult&&elo.peakOpponent?`${elo.peakResult} vs ${elo.peakOpponent}`:elo.peakOpponent].filter(Boolean).join(' • ');
-        if(context)detail=context;
-      }
-    }else if(stat.streakField){
-      const streak=streakRecords[clean(t.team)]?.[stat.streakField];
-      value=number(streak?.length);
-      if(streak&&value!==null){
-        const dates=[streak.startDate,streak.endDate].filter(Boolean).join(' → ');
-        const opponents=[streak.startOpponent,streak.endOpponent].filter(Boolean).join(' → ');
-        detail=[dates,opponents].filter(Boolean).join(' • ');
-      }
-    }else{
-      value=stat.recordField?number(rec?.[stat.recordField]):number(t[stat.field]);
-    }
-
-    return{team:t.team,value,detail,games:number(t.games)||0};
-  }).filter(r=>r.value!==null&&(!stat.minGames||r.games>=stat.minGames)&&(cls==='all'||currentClass(r.team)===cls));
-}
-
-
-function renderRivalryRecords(data){
-  const holder=document.getElementById('rivalryLeaderboard');
-  if(!holder)return;
-  const rows=(data?.mostLopsidedBySeriesGap||[]).slice(0,10);
-  holder.className='';
-  if(!rows.length){holder.innerHTML='<div class="loading">No rivalry records are available.</div>';return}
-  holder.innerHTML=`<table class="leaderboard"><thead><tr><th>Rank</th><th>Rivalry</th><th>Series</th><th>Meetings</th><th>Win Gap</th><th style="text-align:right">Dominance</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${i<3?'top-'+(i+1):''}"><td class="rank">${i+1}</td><td class="team-cell">${teamBadge(r.leader)} <span style="color:#777;font-weight:900">vs</span> ${teamBadge(r.trailer)}</td><td><strong>${escapeHTML(r.recordForLeader||'—')}</strong><div class="detail">${escapeHTML(r.leader)} leads</div></td><td>${Number(r.meetings||0).toLocaleString()}</td><td class="value" style="text-align:center">${Number(r.seriesGap||0)}</td><td class="value">${Number.isFinite(Number(r.leaderWinPctAllMeetings))?(Number(r.leaderWinPctAllMeetings)*100).toFixed(1)+'%':'—'}</td></tr>`).join('')}</tbody></table>`;
-}
-async function loadRivalries(){
-  const holder=document.getElementById('rivalryLeaderboard');
-  try{const r=await fetch('rivalry-dominance.json');if(!r.ok)throw new Error('Rivalry data unavailable');renderRivalryRecords(await r.json())}catch(e){console.error(e);if(holder){holder.className='error';holder.textContent='Unable to load rivalry records.'}}
-}
-
-function seasonRows(stat,cls){
-  return seasons.map(s=>({team:clean(s['Team']),year:s['Year'],value:number(s[stat.field]),games:number(s['Games'])||0,record:recordText(s)}))
-    .filter(r=>r.team&&r.value!==null&&(!stat.minGames||r.games>=stat.minGames)&&(cls==='all'||currentClass(r.team)===cls))
-    .map(r=>({...r,detail:`${r.year} • ${r.record}`}));
-}
-
-function render(){
-  const stat=availableStats().find(s=>s.key===document.getElementById('statSelect').value)||availableStats()[0];
-  const cls=document.getElementById('classSelect').value;
-  let rows=mode==='alltime'?allTimeRows(stat,cls):seasonRows(stat,cls);
-  rows.sort((a,b)=>stat.direction==='asc'?(a.value-b.value):(b.value-a.value));
-  rows=rows.slice(0,10);
-
-  document.getElementById('recordTitle').textContent=stat.label;
-  document.getElementById('recordNote').textContent=stat.note+(cls!=='all'?` Filtered to programs currently in ${cls}.`:'');
-  document.getElementById('leaderboardWrap').className='';
-
-  if(!rows.length){
-    document.getElementById('leaderboardWrap').innerHTML='<div class="loading">No records are available for this filter.</div>';
-    buildChips();
-    return;
-  }
-
-  document.getElementById('leaderboardWrap').innerHTML=`<table class="leaderboard"><thead><tr><th>Rank</th><th>Team</th><th style="text-align:right">${escapeHTML(stat.label)}</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${i<3?'top-'+(i+1):''}"><td class="rank">${i+1}</td><td class="team-cell">${teamBadge(r.team)}<div class="detail">${escapeHTML(r.detail)}</div></td><td class="value">${formatValue(r.value,stat.format)}</td></tr>`).join('')}</tbody></table>`;
-  buildChips();
-}
-
-async function load(){
-  try{
-    const stamp=Date.now();
-    const [teamRes,seasonRes,recordRes,eloRes,streakRes]=await Promise.all([
-      fetch('teams-data.json?v='+stamp),
-      fetch('greatest-seasons-data-v2.json?v='+stamp),
-      fetch('team-records.json?v='+stamp),
-      fetch('elo-summary.json?v='+stamp),
-      fetch('streak-records.json?v='+stamp)
-    ]);
-
-    if(!teamRes.ok||!seasonRes.ok||!recordRes.ok)throw new Error('Required record data could not be loaded.');
-    teams=await teamRes.json();
-    seasons=await seasonRes.json();
-    recordBook=await recordRes.json();
-    if(eloRes.ok)eloSummary=await eloRes.json();
-    if(streakRes.ok)streakRecords=await streakRes.json();
-
-    for(const t of teams)teamByName.set(normalize(t.team),t);
-    buildClassFilter();
-    buildStatSelect('currentElo');
-    render();
-    await loadRivalries();
-  }catch(e){
-    console.error(e);
-    document.getElementById('leaderboardWrap').className='error';
-    document.getElementById('leaderboardWrap').textContent='Unable to load record data.';
-    document.getElementById('recordTitle').textContent='Records unavailable';
-  }
-}
-
-document.querySelectorAll('.mode-button').forEach(button=>button.addEventListener('click',()=>{
-  mode=button.dataset.mode;
-  document.querySelectorAll('.mode-button').forEach(b=>b.classList.toggle('active',b===button));
-  buildStatSelect();
-  render();
-}));
-document.getElementById('statSelect').addEventListener('change',render);
-document.getElementById('classSelect').addEventListener('change',render);
-load();
+function buildStatSelect(selected){const select=document.getElementById('statSelect');select.innerHTML='';for(const stat of availableStats()){const o=document.createElement('option');o.value=stat.key;o.textContent=stat.label;select.appendChild(o)}select.value=availableStats().some(s=>s.key===selected)?selected:availableStats()[0].key;buildChips()}
+function buildChips(){const active=document.getElementById('statSelect').value;document.getElementById('statChips').innerHTML=availableStats().map(s=>`<button class="stat-chip ${s.key===active?'active':''}" data-stat="${escapeHTML(s.key)}">${escapeHTML(s.label)}</button>`).join('');document.querySelectorAll('.stat-chip').forEach(b=>b.addEventListener('click',()=>{document.getElementById('statSelect').value=b.dataset.stat;render()}))}
+function allTimeRows(stat,cls){return teams.map(t=>{const rec=recordFor(t.team),elo=eloFor(t.team);let value=null;let detail=[clean(t.classification),clean(t.region)].filter(Boolean).join(' • ');if(stat.eloField){value=number(elo?.[stat.eloField]);if(stat.eloField==='currentElo'&&elo){const context=[elo.currentDate,elo.currentResult&&elo.currentOpponent?`${elo.currentResult} vs ${elo.currentOpponent}`:elo.currentOpponent].filter(Boolean).join(' • ');if(context)detail=context}if(stat.eloField==='peakElo'&&elo){const context=[elo.peakDate,elo.peakResult&&elo.peakOpponent?`${elo.peakResult} vs ${elo.peakOpponent}`:elo.peakOpponent].filter(Boolean).join(' • ');if(context)detail=context}}else if(stat.streakField){const streak=streakRecords[clean(t.team)]?.[stat.streakField];value=number(streak?.length);if(streak&&value!==null){const dates=[streak.startDate,streak.endDate].filter(Boolean).join(' → '),opponents=[streak.startOpponent,streak.endOpponent].filter(Boolean).join(' → ');detail=[dates,opponents].filter(Boolean).join(' • ')}}else value=stat.recordField?number(rec?.[stat.recordField]):number(t[stat.field]);return{team:t.team,value,detail,games:number(t.games)||0}}).filter(r=>r.value!==null&&(!stat.minGames||r.games>=stat.minGames)&&(cls==='all'||currentClass(r.team)===cls))}
+function renderRivalryRecords(data){const holder=document.getElementById('rivalryLeaderboard');if(!holder)return;const rows=(data?.mostLopsidedBySeriesGap||[]).slice(0,10);holder.className='';if(!rows.length){holder.innerHTML='<div class="loading">No rivalry records are available.</div>';return}holder.innerHTML=`<table class="leaderboard"><thead><tr><th>Rank</th><th>Rivalry</th><th>Series</th><th>Meetings</th><th>Win Gap</th><th style="text-align:right">Dominance</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${i<3?'top-'+(i+1):''}"><td class="rank">${i+1}</td><td class="team-cell">${teamBadge(r.leader)} <span style="color:#777;font-weight:900">vs</span> ${teamBadge(r.trailer)}</td><td><strong>${escapeHTML(r.recordForLeader||'—')}</strong><div class="detail">${escapeHTML(r.leader)} leads</div></td><td>${Number(r.meetings||0).toLocaleString()}</td><td class="value" style="text-align:center">${Number(r.seriesGap||0)}</td><td class="value">${Number.isFinite(Number(r.leaderWinPctAllMeetings))?(Number(r.leaderWinPctAllMeetings)*100).toFixed(1)+'%':'—'}</td></tr>`).join('')}</tbody></table>`}
+async function loadRivalries(){const holder=document.getElementById('rivalryLeaderboard');try{const r=await fetch('rivalry-dominance.json');if(!r.ok)throw new Error('Rivalry data unavailable');renderRivalryRecords(await r.json())}catch(e){console.error(e);if(holder){holder.className='error';holder.textContent='Unable to load rivalry records.'}}}
+function seasonRows(stat,cls){return seasons.map(s=>({team:clean(s['Team']),year:s['Year'],value:number(s[stat.field]),games:number(s['Games'])||0,record:recordText(s)})).filter(r=>r.team&&r.value!==null&&(!stat.minGames||r.games>=stat.minGames)&&(cls==='all'||currentClass(r.team)===cls)).map(r=>({...r,detail:`${r.year} • ${r.record}`}))}
+function render(){const stat=availableStats().find(s=>s.key===document.getElementById('statSelect').value)||availableStats()[0],cls=document.getElementById('classSelect').value;let rows=mode==='alltime'?allTimeRows(stat,cls):seasonRows(stat,cls);rows.sort((a,b)=>stat.direction==='asc'?(a.value-b.value):(b.value-a.value));rows=rows.slice(0,10);document.getElementById('recordTitle').textContent=stat.label;document.getElementById('recordNote').textContent=stat.note+(cls!=='all'?` Filtered to programs currently in ${cls}.`:'');document.getElementById('leaderboardWrap').className='';if(!rows.length){document.getElementById('leaderboardWrap').innerHTML='<div class="loading">No records are available for this filter.</div>';buildChips();return}document.getElementById('leaderboardWrap').innerHTML=`<table class="leaderboard"><thead><tr><th>Rank</th><th>Team</th><th style="text-align:right">${escapeHTML(stat.label)}</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${i<3?'top-'+(i+1):''}"><td class="rank">${i+1}</td><td class="team-cell">${teamBadge(r.team)}<div class="detail">${escapeHTML(r.detail)}</div></td><td class="value">${formatValue(r.value,stat.format)}</td></tr>`).join('')}</tbody></table>`;buildChips()}
+async function load(){try{const stamp=Date.now();const [teamRes,seasonRes,recordRes,eloRes,streakRes]=await Promise.all([fetch('teams-data.json?v='+stamp),fetch('greatest-seasons-data-v2.json?v='+stamp),fetch('team-records.json?v='+stamp),fetch('elo-summary.json?v='+stamp),fetch('streak-records.json?v='+stamp)]);if(!teamRes.ok||!seasonRes.ok||!recordRes.ok)throw new Error('Required record data could not be loaded.');teams=await teamRes.json();seasons=await seasonRes.json();recordBook=await recordRes.json();if(eloRes.ok)eloSummary=await eloRes.json();if(streakRes.ok)streakRecords=await streakRes.json();for(const t of teams)teamByName.set(normalize(t.team),t);buildClassFilter();buildStatSelect('currentElo');render();await loadRivalries()}catch(e){console.error(e);document.getElementById('leaderboardWrap').className='error';document.getElementById('leaderboardWrap').textContent='Unable to load record data.';document.getElementById('recordTitle').textContent='Records unavailable'}}
+document.querySelectorAll('.mode-button').forEach(button=>button.addEventListener('click',()=>{mode=button.dataset.mode;document.querySelectorAll('.mode-button').forEach(b=>b.classList.toggle('active',b===button));buildStatSelect();render()}));document.getElementById('statSelect').addEventListener('change',render);document.getElementById('classSelect').addEventListener('change',render);load();
 </script>
 <script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260814-recordsfix1" defer></script>
+<script src="nav-menu.js?v=20260814-recordwatch1" defer></script>
 <script src="weekly-simulation-promo.js" defer></script>
 </body>
 </html>
