@@ -1,0 +1,26 @@
+(()=>{
+'use strict';
+if((location.pathname.split('/').pop()||'').toLowerCase()!=='storylines.html')return;
+const norm=v=>String(v??'').trim().toUpperCase();
+const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+const aliases={'CEDAR':'CEDAR CITY','GUNNISON':'GUNNISON VALLEY','GRAND COUNTY':'GRAND','MONUMENT VAL':'MONUMENT VALLEY'};
+const canon=v=>aliases[norm(v)]||norm(v);
+const isScore=v=>v!==null&&v!==undefined&&String(v).trim()!==''&&Number.isFinite(Number(v));
+const dateMs=v=>{const n=Date.parse(v);return Number.isFinite(n)?n:0};
+function finalGames(rows){return rows.filter(g=>isScore(g.actualAway)&&isScore(g.actualHome)).map(g=>({date:g.date||'',away:canon(g.awayTeam),home:canon(g.homeTeam),as:Number(g.actualAway),hs:Number(g.actualHome)})).sort((a,b)=>dateMs(a.date)-dateMs(b.date))}
+function logo(team){const u=window.RUSSchoolAssets?.logoUrl?.(team)||'';return u?`<img class="story-logo" src="${esc(u)}" alt="${esc(team)} logo" onerror="this.style.display='none'">`:''}
+function colors(team,meta){const t=meta.get(canon(team))||{},bg=t.backgroundColor||'#222',fg=t.textColor||'#fff';return{bg,fg}}
+function link(team,meta){const c=colors(team,meta);return `<a class="story-team" style="--team-bg:${c.bg};--team-fg:${c.fg}" href="team.html?team=${encodeURIComponent(team)}">${esc(team)}</a>`}
+function row(team,sub,val,meta){return `<li class="story-row">${logo(team)}<div>${link(team,meta)}<div class="story-meta">${esc(sub||'')}</div></div><div class="story-value">${esc(val)}</div></li>`}
+function metaText(team,meta){const t=meta.get(canon(team));return t?`${t.classification||''}${t.region?' • '+t.region:''}`:''}
+function summaryValue(label,value){for(const box of document.querySelectorAll('.summary')){if(box.querySelector('.summary-label')?.textContent.trim()===label){const v=box.querySelector('.summary-value');if(v)v.textContent=value;break}}}
+function section(title){return [...document.querySelectorAll('.story')].find(s=>s.querySelector('.story-head h2')?.textContent.trim()===title)}
+function updatedStreak(team,base,finals,wantWin=true){const old=base?.[wantWin?'currentWinStreak':'currentLossStreak']||{},end=dateMs(old.endDate),newGames=finals.filter(g=>(g.away===team||g.home===team)&&dateMs(g.date)>end);let streak=Number(old.length)||0;if(!newGames.length)return streak;for(const g of newGames){const score=g.away===team?g.as:g.hs,opp=g.away===team?g.hs:g.as;const success=wantWin?score>opp:score<opp;if(success)streak+=1;else streak=0}return streak}
+async function run(){for(let i=0;i<100&&!document.querySelector('.summary-grid');i++)await new Promise(r=>setTimeout(r,75));const stamp=Date.now(),[wr,tr,sr]=await Promise.all([fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`streak-records.json?v=${stamp}`,{cache:'no-store'})]);if(!wr.ok||!tr.ok||!sr.ok)return;const weekly=await wr.json(),teams=await tr.json(),streaks=await sr.json(),games=finalGames(weekly.games||[]),meta=new Map(teams.map(t=>[canon(t.team),t])),current=teams.filter(t=>/^(6A|5A|4A|3A|2A|1A|8P|8-PLAYER)$/i.test(String(t.classification||''))&&!['ESCALANTE','USDB'].includes(norm(t.team))).map(t=>canon(t.team));const records=new Map(current.map(t=>[t,{w:0,l:0,t:0}]));for(const g of games){if(!records.has(g.away)&&!records.has(g.home))continue;if(g.as===g.hs){if(records.has(g.away))records.get(g.away).t++;if(records.has(g.home))records.get(g.home).t++}else{const winner=g.as>g.hs?g.away:g.home,loser=g.as>g.hs?g.home:g.away;if(records.has(winner))records.get(winner).w++;if(records.has(loser))records.get(loser).l++}}
+const undefeated=[...records].filter(([,r])=>r.l===0).sort((a,b)=>b[1].w-a[1].w||b[1].t-a[1].t||a[0].localeCompare(b[0]));const wins=current.map(t=>[t,updatedStreak(t,streaks[t]||streaks[norm(t)]||{},games,true)]).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,10);
+summaryValue('Games Recorded',String(games.length));summaryValue('Undefeated Teams',String(undefeated.length));summaryValue('Longest Active Win Streak',String(wins[0]?.[1]||0));const subtitle=document.getElementById('subtitle');if(subtitle)subtitle.textContent=`Live season trends from ${games.length} completed 2026 games, plus active streaks, region races and this week's RUS projections.`;
+const u=section('Undefeated Teams');if(u){const p=u.querySelector('.story-head p');if(p)p.textContent='Every current varsity program that has not lost a completed game this season — including teams still waiting to play.';let list=u.querySelector('.story-list');if(!list){list=document.createElement('ul');list.className='story-list';u.appendChild(list)}list.innerHTML=undefeated.slice(0,16).map(([t,r])=>row(t,metaText(t,meta),`${r.w}-${r.l}${r.t?'-'+r.t:''}`,meta)).join('')||'<li class="empty">No undefeated teams.</li>'}
+const w=section('Active Winning Streaks');if(w){const list=w.querySelector('.story-list');if(list)list.innerHTML=wins.map(([t,n])=>row(t,metaText(t,meta),`${n} W`,meta)).join('')||'<li class="empty">No active winning streaks.</li>'}
+}
+run().catch(console.warn);
+})();
