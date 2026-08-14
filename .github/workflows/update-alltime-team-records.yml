@@ -1,0 +1,44 @@
+name: Update All-Time Team Records
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+  push:
+    paths:
+      - 'team-elo-history.json'
+      - 'scripts/update-alltime-team-records.mjs'
+      - '.github/workflows/update-alltime-team-records.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: alltime-team-records
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Rebuild all-time records from Clean Games
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
+          CLEAN_GAMES_GID: 627882418
+        run: node scripts/update-alltime-team-records.mjs
+      - name: Commit team summaries
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add teams-data.json
+          if git diff --cached --quiet; then echo "All-time records already current."; exit 0; fi
+          git commit -m "Auto-update all-time team records"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
