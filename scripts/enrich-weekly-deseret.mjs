@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 const BASE = 'https://sports.deseret.com';
 const CURRENT = 'weekly-simulation.json';
-const PREVIOUS = process.argv[2] || '/tmp/weekly-simulation-prev.json';
+const CACHE = 'deseret-game-links.json';
 
 const clean = v => String(v ?? '').trim();
 const compact = v => clean(v).toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -144,21 +144,24 @@ if (!fs.existsSync(CURRENT)) {
 const current = JSON.parse(fs.readFileSync(CURRENT, 'utf8'));
 const games = Array.isArray(current.games) ? current.games : [];
 
-const oldLinks = new Map();
-if (fs.existsSync(PREVIOUS)) {
+const savedLinks = new Map();
+for (const g of games) {
+  if (clean(g.deseretUrl)) savedLinks.set(gameKey(g), clean(g.deseretUrl));
+}
+if (fs.existsSync(CACHE)) {
   try {
-    const old = JSON.parse(fs.readFileSync(PREVIOUS, 'utf8'));
-    for (const g of old.games || []) {
-      if (clean(g.deseretUrl)) oldLinks.set(gameKey(g), clean(g.deseretUrl));
+    const cache = JSON.parse(fs.readFileSync(CACHE, 'utf8'));
+    for (const [key, url] of Object.entries(cache.links || cache || {})) {
+      if (clean(url)) savedLinks.set(key, clean(url));
     }
   } catch (err) {
-    console.warn(`Could not read previous Deseret link cache: ${err.message}`);
+    console.warn(`Could not read ${CACHE}: ${err.message}`);
   }
 }
 
 let cached = 0;
 for (const g of games) {
-  const prior = oldLinks.get(gameKey(g));
+  const prior = savedLinks.get(gameKey(g));
   if (prior) {
     g.deseretUrl = prior;
     cached++;
@@ -182,6 +185,7 @@ for (const [date, rows] of byDate) {
     const hit = candidates.find(c => matches(g, c));
     if (hit) {
       g.deseretUrl = hit.url;
+      savedLinks.set(gameKey(g), hit.url);
       matched++;
     }
   }
@@ -200,10 +204,12 @@ for (const g of fallback) {
   }
   if (hit) {
     g.deseretUrl = hit.url;
+    savedLinks.set(gameKey(g), hit.url);
     matched++;
   }
 }
 
 fs.writeFileSync(CURRENT, JSON.stringify({ ...current, games }));
+fs.writeFileSync(CACHE, JSON.stringify({ updatedAt: new Date().toISOString(), links: Object.fromEntries([...savedLinks.entries()].sort()) }, null, 2) + '\n');
 const unresolved = games.filter(g => isoDate(g.date).startsWith('2026-') && !g.deseretUrl).length;
 console.log(`Deseret links: ${cached} reused, ${matched} matched, ${unresolved} unresolved.`);
