@@ -16,7 +16,7 @@
   const groups={
     history:[['Championships','championships.html'],['Season Explorer','season.html'],['Program Leaderboard','programs.html'],['Rivalry Hub','rivalry.html'],['Dynasty Explorer','dynasty.html'],['History Lab','history-lab.html'],['Greatest Seasons','greatest-seasons.html'],['Records','records.html']],
     analytics:[['ELO','elo.html'],['Scorigami','scorigami.html'],['Out of State','out-of-state.html'],['Team Comparison','compare.html'],['Football Map','map.html']],
-    stats:[['Stat Leaders','stat-leaders.html'],['MVP Race','mvp.html'],['All-State & Region Watch','all-state.html']],
+    stats:[['Stat Leaders','stat-leaders.html'],['MVP Race','mvp-race.html'],['All-State & Region Watch','all-state-watch.html']],
     simulators:[['Simulators Hub','simulators.html']]
   };
   const path=(location.pathname.split('/').pop()||'index.html').toLowerCase(),active=href=>path===href.toLowerCase(),groupActive=items=>items.some(([,href])=>active(href));
@@ -32,6 +32,7 @@
     if(path==='scoreboard.html'&&!document.querySelector('script[data-rus-scoreboard-live-clock]')){const s=document.createElement('script');s.src='scoreboard-live-clock.js?v=20260813a';s.dataset.rusScoreboardLiveClock='1';document.body.appendChild(s)}
     if(path==='scoreboard.html'&&!document.querySelector('script[data-rus-scoreboard-rankings-ui]')){const s=document.createElement('script');s.src='scoreboard-rankings-ui.js?v=20260813a';s.dataset.rusScoreboardRankingsUi='1';document.body.appendChild(s)}
     if(path==='team.html'&&!document.querySelector('script[data-rus-player-profile-links]')){const s=document.createElement('script');s.src='player-profile-links.js?v=20260814a';s.dataset.rusPlayerProfileLinks='1';document.body.appendChild(s)}
+    if(['player.html','mvp-race.html','all-state-watch.html'].includes(path)&&!document.querySelector('script[data-rus-player-awards]')){const s=document.createElement('script');s.src='player-awards-integration.js?v=20260814a';s.dataset.rusPlayerAwards='1';document.body.appendChild(s)}
   }
   function setup(){
     injectStyles();const host=document.querySelector('nav .nav-content');if(!host){loadExtras();return}host.classList.add('rus-nav');host.innerHTML=[link('Home','index.html','home-link'),link('Teams','teams.html'),link('Games','games.html'),link('Scoreboard','scoreboard.html'),link('Rankings','rankings.html'),link('Standings','standings.html'),dropdown('Stats','stats'),link('Storylines','storylines.html'),dropdown('History','history'),dropdown('Analytics','analytics'),dropdown('Simulators','simulators')].join('');
