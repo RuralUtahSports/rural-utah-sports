@@ -3,7 +3,7 @@ import json
 import re
 import time
 from pathlib import Path
-from urllib.parse import parse_qs, urljoin, urlparse
+from urllib.parse import parse_qs, quote, urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -43,6 +43,10 @@ def uhsaa_name(team):
     return ALIASES.get(key, title_name(team))
 
 
+def official_logo_url(school_name):
+    return f"https://www.uhsaa.org/Logos/portfolio150/{quote(school_name)}.png"
+
+
 def get_json(url, **params):
     response = requests.get(url, params=params, headers={"User-Agent": UA}, timeout=30)
     response.raise_for_status()
@@ -64,7 +68,6 @@ def geocode(address):
     except Exception as exc:
         print(f"Census geocoder failed for {address}: {exc}")
 
-    # Low-volume fallback. Respect Nominatim's public-service rate guidance.
     try:
         time.sleep(1.05)
         data = get_json(
@@ -99,15 +102,6 @@ def page_field(soup, label):
         match = pattern.match(text.strip())
         if match:
             return match.group(1).strip()
-    return ""
-
-
-def logo_url(soup, page_url):
-    for img in soup.find_all("img"):
-        alt = str(img.get("alt") or "")
-        src = str(img.get("src") or "")
-        if "logo" in alt.lower() and src:
-            return urljoin(page_url, src)
     return ""
 
 
@@ -164,7 +158,7 @@ def main():
         address = first_address_after_heading(soup)
         classification = page_field(soup, "Classification")
         region = page_field(soup, "Region")
-        logo = logo_url(soup, page_url)
+        logo = official_logo_url(school_name)
 
         cached = old.get(team, {}) if isinstance(old, dict) else {}
         lat = cached.get("lat") if cached.get("address") == address else None
