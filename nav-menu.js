@@ -34,6 +34,7 @@
       addScript('school-logo-integration.js?v=20260813b','rusSchoolLogoIntegration',true);
       addScript('school-colors.js?v=20260813c','rusSchoolColors',true);
     }
+    if(oneOf('team.html','player.html'))addScript('season-dropdown.js?v=20260814a','rusSeasonDropdown',true);
 
     if(path==='records.html')addScript('record-watch-filter.js?v=20260812b','rusRecordWatchFilter',true);
     if(path==='programs.html')addScript('program-leaderboard-filter.js?v=20260812a','rusProgramLeaderboardFilter',true);
