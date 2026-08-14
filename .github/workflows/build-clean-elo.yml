@@ -3,7 +3,7 @@ name: Build Clean ELO History
 on:
   workflow_dispatch:
   schedule:
-    - cron: '21 * * * *'
+    - cron: '*/15 * * * *'
   push:
     paths:
       - 'team-elo-history.json'
