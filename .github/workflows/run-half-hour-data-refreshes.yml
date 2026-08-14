@@ -3,7 +3,6 @@ name: Run Half-Hour Data Refreshes
 on:
   workflow_dispatch:
   schedule:
-    - cron: '51 * * * *'
     - cron: '52 * * * *'
     - cron: '57 * * * *'
     - cron: '2 * * * *'
@@ -23,7 +22,6 @@ jobs:
           SCHEDULE: ${{ github.event.schedule }}
         run: |
           case "$SCHEDULE" in
-            '51 * * * *') workflow='build-clean-elo.yml' ;;
             '52 * * * *') workflow='build-scorigami.yml' ;;
             '57 * * * *') workflow='build-out-of-state.yml' ;;
             '2 * * * *') workflow='build-simulator-data.yml' ;;
