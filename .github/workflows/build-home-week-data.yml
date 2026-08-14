@@ -1,0 +1,49 @@
+name: Build Home Week Data
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'weekly-simulation.json'
+      - 'rankings-current-2026.json'
+      - 'elo-summary.json'
+      - 'teams-data.json'
+      - '.github/workflows/build-home-week-data.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: home-week-data
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build compact homepage payload
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+          const norm=v=>String(v??'').trim().toUpperCase();
+          const weekly=read('weekly-simulation.json'),rankings=read('rankings-current-2026.json'),elo=read('elo-summary.json'),teams=read('teams-data.json');
+          const season=Number(rankings.season)||2026;
+          const games=(weekly.games||[]).filter(g=>String(g.date||'').includes(String(season))&&g.awayTeam&&g.homeTeam);
+          const wanted=new Set();for(const g of games){wanted.add(norm(g.awayTeam));wanted.add(norm(g.homeTeam));}
+          const teamData=teams.filter(t=>wanted.has(norm(t.team))).map(t=>({team:t.team,classification:t.classification||'',region:t.region||'',backgroundColor:t.backgroundColor||'',textColor:t.textColor||''}));
+          const eloLite={};for(const name of wanted){const key=Object.keys(elo).find(k=>norm(k)===name);if(key&&elo[key])eloLite[name]={currentElo:elo[key].currentElo};}
+          const payload={updatedAt:new Date().toISOString(),season,games,rankings:rankings.classifications||{},elo:eloLite,teams:teamData};
+          fs.writeFileSync('home-week-data.json',JSON.stringify(payload));
+          console.log(`Homepage payload: ${games.length} games, ${teamData.length} teams`);
+          NODE
+      - name: Commit compact payload
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add home-week-data.json
+          if git diff --cached --quiet; then echo "Homepage data current."; exit 0; fi
+          git commit -m "Update lightweight homepage week data"
+          git pull --rebase origin main
+          git push
