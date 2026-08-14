@@ -25,7 +25,21 @@ const KEY_ALIASES = {
   MONUMENTVAL: ['MONUMENTVALLEY'],
   MONUMENTVALLEY: ['MONUMENTVALLEY'],
   MAPLEMTN: ['MAPLEMOUNTAIN'],
-  MAPLEMOUNTAIN: ['MAPLEMOUNTAIN']
+  MAPLEMOUNTAIN: ['MAPLEMOUNTAIN'],
+  UMALEHI: ['UTAHMILITARYCAMPWILLIAMSFOOTBALL','UTAHMILITARYCAMPWILLIAMS'],
+  WATERCANYON: ['WATERCANYONFOOTBALL'],
+  SAINTJOSEPH: ['STJOSEPHFOOTBALL','STJOSEPH'],
+  DEERCREEK: ['DEERCREEKFOOTBALL'],
+  MOAPAVALLEYNV: ['MOAPAVALLEYNEV'],
+  DESERETPEAK: ['DESERETPEAKFOOTBALL'],
+  WESTFIELD: ['WESTFIELDFOOTBALL'],
+  VIRGINVALLEYNV: ['VIRGINVALLEYNEV'],
+  CIVICAACADEMYNV: ['CIVICAACADEMYNEVFOOTBALL','CIVICAACADEMYNEV'],
+  LINCOLNCOUNTYNV: ['LINCOLNCOUNTYNEV'],
+  KAMEHAMEHAHI: ['KAMEHAMEHAHAWAII'],
+  ARBORVIEWNV: ['ARBORVIEWNEV'],
+  TAFUNAAMERICANSAMOA: ['TAFUNAAMERICANSAMOAFOOTBALL'],
+  PAHRUMPNV: ['PAHRUMPNEV']
 };
 
 const SCHOOL_SLUG_OVERRIDES = {
@@ -193,7 +207,6 @@ for (const [date, rows] of byDate) {
   }
 }
 
-// If a date page did not expose a game link, try one of the teams' schedule pages.
 const fallback = games.filter(g => !g.deseretUrl && isoDate(g.date).startsWith('2026-'));
 const teamCache = new Map();
 for (const g of fallback) {
@@ -216,7 +229,6 @@ fs.writeFileSync(CACHE, JSON.stringify({ updatedAt: new Date().toISOString(), li
 const unresolved = games.filter(g => isoDate(g.date).startsWith('2026-') && !g.deseretUrl).length;
 console.log(`Deseret links: ${cached} reused, ${matched} matched, ${unresolved} unresolved.`);
 
-// Audit Deseret's listed games for the current opening weekend against the Weekly Simulation sheet.
 const auditDates = ['2026-08-13', '2026-08-14', '2026-08-15'];
 const deseretWeekend = [];
 for (const date of auditDates) {
