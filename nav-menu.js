@@ -11,7 +11,7 @@
   const groups={
     history:[['Championships','championships.html'],['Season Explorer','season.html'],['Program Leaderboard','programs.html'],['Rivalry Hub','rivalry.html'],['Dynasty Explorer','dynasty.html'],['History Lab','history-lab.html'],['Greatest Seasons','greatest-seasons.html'],['Records','records.html']],
     analytics:[['ELO','elo.html'],['Scorigami','scorigami.html'],['Out of State','out-of-state.html'],['Team Comparison','compare.html'],['Football Map','map.html']],
-    stats:[['Stat Leaders','stat-leaders.html'],['MVP Race','mvp-race.html'],['All-Utah Team','all-utah.html'],['All-State & Region Watch','all-state-watch.html']],
+    stats:[['Stat Leaders','stat-leaders.html'],['MVP Race','mvp-race.html'],['All-Utah Team','all-utah.html'],['All-State & Region Watch','all-state-watch.html'],['2025 Awards','awards-2025.html']],
     simulators:[['Simulators Hub','simulators.html']]
   };
   const path=(location.pathname.split('/').pop()||'index.html').toLowerCase(),active=href=>path===href.toLowerCase(),groupActive=items=>items.some(([,href])=>active(href));
