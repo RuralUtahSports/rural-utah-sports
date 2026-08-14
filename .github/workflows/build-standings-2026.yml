@@ -40,7 +40,7 @@ jobs:
           for(const n of ['MONTICELLO','MONUMENT VAL','PANGUITCH','GRAND']) if(!names.has(n)) throw new Error(`${n} missing from 8-player standings`);
           const all=Object.values(d.byClassification||{}).flat();
           const byName=Object.fromEntries(all.map(x=>[x.team,x]));
-          if(byName.BEAVER?.region!=='1A South') throw new Error('Beaver region incorrect');
+          if(byName.BEAVER?.region!=='1A North') throw new Error('Beaver region incorrect');
           if(byName.ENTERPRISE?.region!=='1A South') throw new Error('Enterprise region incorrect');
           if(byName.GRAND?.region!=='Independent') throw new Error('Grand region incorrect');
           console.log('8-player:',eight.map(x=>x.team).join(', '));
