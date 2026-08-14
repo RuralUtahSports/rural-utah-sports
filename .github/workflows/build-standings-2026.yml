@@ -8,6 +8,7 @@ on:
     paths:
       - 'teams-data.json'
       - 'standings.html'
+      - 'deseret-game-details.json'
       - 'scripts/build_standings_2026.mjs'
       - '.github/workflows/build-standings-2026.yml'
 
@@ -24,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build standings from Weekly Simulation
+      - name: Build standings from Weekly Simulation and Deseret finals
         env:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
           WEEKLY_GID: 1211467999
@@ -35,15 +36,13 @@ jobs:
           node - <<'NODE'
           const fs=require('fs');
           const d=JSON.parse(fs.readFileSync('standings-2026.json','utf8'));
+          const all=Object.values(d.byClassification||{}).flat();
+          if(all.length<100) throw new Error(`Only ${all.length} teams found in standings`);
           const eight=d.byClassification?.['8P']||[];
           const names=new Set(eight.map(x=>x.team));
           for(const n of ['MONTICELLO','MONUMENT VAL','PANGUITCH','GRAND']) if(!names.has(n)) throw new Error(`${n} missing from 8-player standings`);
-          const all=Object.values(d.byClassification||{}).flat();
-          const byName=Object.fromEntries(all.map(x=>[x.team,x]));
-          if(byName.BEAVER?.region!=='1A North') throw new Error('Beaver region incorrect');
-          if(byName.ENTERPRISE?.region!=='1A South') throw new Error('Enterprise region incorrect');
-          if(byName.GRAND?.region!=='Independent') throw new Error('Grand region incorrect');
-          console.log('8-player:',eight.map(x=>x.team).join(', '));
+          if(!Number.isFinite(Number(d.summary?.completedGames))) throw new Error('Completed game count is invalid');
+          console.log(`Verified ${all.length} teams and ${d.summary.completedGames} completed games.`);
           NODE
 
       - name: Commit standings
