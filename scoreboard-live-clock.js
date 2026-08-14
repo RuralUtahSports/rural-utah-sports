@@ -3,6 +3,7 @@
   if(path!=='scoreboard.html')return;
 
   const compact=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   const isoDate=value=>{
     const s=String(value??'').trim();
     let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
@@ -43,27 +44,48 @@
     return pts;
   }
 
-  function scoreFromPlays(g,d){
+  function syntheticBox(g,d){
     const plays=Array.isArray(d?.scoringPlays)?d.scoringPlays:[];
     if(!plays.length)return null;
-    let away=0,home=0,matched=0;
+    const aq=[0,0,0,0],hq=[0,0,0,0];
+    let matched=0;
     for(const play of plays){
-      const team=String(play||'').split('—')[0].trim();
-      const key=compact(team);
-      const pts=scoringPoints(play);
-      if(key&&key===compact(g.awayTeam)){away+=pts;matched++}
-      else if(key&&key===compact(g.homeTeam)){home+=pts;matched++}
+      const text=String(play||'');
+      const team=text.split('—')[0].trim();
+      const teamKey=compact(team);
+      const qm=text.match(/\b([1-4])Q\b/i)||text.match(/\bQ([1-4])\b/i);
+      if(!qm)continue;
+      const q=Number(qm[1])-1;
+      if(q<0||q>3)continue;
+      const pts=scoringPoints(text);
+      if(teamKey===compact(g.awayTeam)){aq[q]+=pts;matched++}
+      else if(teamKey===compact(g.homeTeam)){hq[q]+=pts;matched++}
     }
-    return matched?{away,home}:null;
+    if(!matched)return null;
+    return{periods:['Q1','Q2','Q3','Q4'],rows:[
+      {team:g.awayTeam,quarters:aq,total:aq.reduce((a,b)=>a+b,0)},
+      {team:g.homeTeam,quarters:hq,total:hq.reduce((a,b)=>a+b,0)}
+    ],synthetic:true};
+  }
+
+  function boxFor(g,d){
+    const b=d?.boxScore;
+    if(b?.rows?.length>=2)return b;
+    return syntheticBox(g,d);
   }
 
   function liveScores(g,d){
-    const box=d?.boxScore?.rows||[];
-    if(box.length>=2){
-      const away=Number(box[0]?.total),home=Number(box[1]?.total);
-      if(Number.isFinite(away)&&Number.isFinite(home))return{away,home};
-    }
-    return scoreFromPlays(g,d);
+    const b=boxFor(g,d);
+    if(!b?.rows?.length)return null;
+    const away=Number(b.rows[0]?.total),home=Number(b.rows[1]?.total);
+    return Number.isFinite(away)&&Number.isFinite(home)?{away,home}:null;
+  }
+
+  function inlineBoxHtml(g,d){
+    const b=boxFor(g,d);
+    if(!b?.rows?.length)return'';
+    const periods=b.periods?.length?b.periods:['Q1','Q2','Q3','Q4'];
+    return `<div class="rus-inline-box"><div class="rus-inline-box-head"><b>Box Score</b><span>${b.synthetic?'Built from scoring plays':'Quarter by quarter'}</span></div><div class="table-scroll"><table><thead><tr><th>Team</th>${periods.map(x=>`<th>${esc(x)}</th>`).join('')}<th>T</th></tr></thead><tbody>${b.rows.map(r=>`<tr><td>${esc(r.team||'Team')}</td>${(r.quarters||[]).map(v=>`<td>${v??'—'}</td>`).join('')}<td>${r.total??'—'}</td></tr>`).join('')}</tbody></table></div></div>`;
   }
 
   function apply(){
@@ -86,7 +108,6 @@
             status.classList.toggle('final',!!d.final);
             status.classList.toggle('live',!d.final&&(!!d.clock||/live|q[1-4]|half|ot/i.test(String(d.status||''))));
           }
-
           const detailStatus=card.querySelector('.detail-status');
           if(detailStatus){
             const detailLabel=d.final?'Final':d.clock?`${d.clock}${d.period?' '+d.period:''}`:(d.status||'');
@@ -99,6 +120,16 @@
           const scoreEls=[...card.querySelectorAll('.team-row .actual b')];
           if(scoreEls[0]&&scoreEls[0].textContent.trim()!==String(live.away))scoreEls[0].textContent=String(live.away);
           if(scoreEls[1]&&scoreEls[1].textContent.trim()!==String(live.home))scoreEls[1].textContent=String(live.home);
+        }
+
+        const boxHtml=inlineBoxHtml(g,d);
+        if(boxHtml){
+          const old=card.querySelector('.rus-inline-box');
+          if(old)old.outerHTML=boxHtml;
+          else{
+            const foot=card.querySelector('.game-foot');
+            if(foot)foot.insertAdjacentHTML('beforebegin',boxHtml);
+          }
         }
       });
     }finally{applying=false}
