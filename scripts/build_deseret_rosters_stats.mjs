@@ -4,7 +4,7 @@ const SOURCE='deseret-team-data-2026.json',OUT='deseret-rosters-stats-2026.json'
 const clean=v=>String(v??'').trim();
 const slug=v=>clean(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
-function decode(s){return String(s||'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&quot;/gi,'"').replace(/&#39;|&apos;/gi,"'").replace(/&lt;/gi,'<').replace(/&gt;/gi,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n)))}
+function decode(s){return String(s||'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&quot;/gi,'"').replace(/&#39;|&apos;/gi,"'").replace(/&lt;/gi,'<').replace(/&gt;/gi,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/&#x([0-9a-f]+);/gi,(_,n)=>String.fromCodePoint(parseInt(n,16)))}
 function htmlText(html){return decode(String(html||'')).replace(/<(script|style|noscript|svg)\b[^>]*>[\s\S]*?<\/\1>/gi,' ').replace(/<br\s*\/?\s*>/gi,'\n').replace(/<\/(?:p|div|li|tr|h[1-6]|section|article)>/gi,'\n').replace(/<[^>]+>/g,' ').replace(/[ \t]+/g,' ').replace(/\n\s+/g,'\n').replace(/\n{3,}/g,'\n\n').trim()}
 const cellText=html=>htmlText(html).replace(/\s+/g,' ').trim();
 function tables(html){const out=[];const re=/<table\b[^>]*>([\s\S]*?)<\/table>/gi;let m;while((m=re.exec(html))){const rows=[];const rr=/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi;let rm;while((rm=rr.exec(m[1]))){const cells=[];const cr=/<(?:th|td)\b[^>]*>([\s\S]*?)<\/(?:th|td)>/gi;let cm;while((cm=cr.exec(rm[1])))cells.push(cellText(cm[1]));if(cells.some(Boolean))rows.push(cells)}if(rows.length)out.push({rows,context:htmlText(html.slice(Math.max(0,m.index-1600),m.index))})}return out}
