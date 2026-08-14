@@ -4,6 +4,7 @@ const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const n=v=>{const s=clean(v);if(!s)return null;const x=Number(s);return Number.isFinite(x)?x:null};
 const dateStamp=v=>{const d=new Date(clean(v));return Number.isFinite(d.getTime())?d.getTime():0};
+const isoDate=v=>{const s=clean(v);let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;const d=new Date(s);return Number.isFinite(d.getTime())?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`:''};
 function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}else if(c==='"')quoted=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
 
 const teams=JSON.parse(fs.readFileSync('teams-data.json','utf8'));
@@ -13,7 +14,10 @@ const aliases={
   AMERFORK:'AMERICAN FORK',CEDAR:'CEDAR CITY',WASATCHACAD:'WASATCH ACADEMY'
 };
 const resolve=v=>teamByNorm.get(norm(v))||aliases[norm(v)]||'';
-const feature=Object.fromEntries(teams.map(t=>[t.team,t]));
+
+let deseretGames={};
+try{deseretGames=JSON.parse(fs.readFileSync('deseret-game-details.json','utf8')).games||{}}catch{}
+const gameKey=(date,away,home)=>`${isoDate(date)}|${norm(away)}|${norm(home)}`;
 
 const SHEET_ID=process.env.SHEET_ID||'1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo';
 const WEEKLY_GID=process.env.WEEKLY_GID||'1211467999';
@@ -29,8 +33,21 @@ for(const t of teams){
 }
 
 function apply(name,pf,pa,date,isRegion){const x=st[name];if(!x)return;x.pointsFor+=pf;x.pointsAgainst+=pa;let result='T';if(pf>pa){x.wins++;result='W';if(isRegion)x.regionWins++}else if(pf<pa){x.losses++;result='L';if(isRegion)x.regionLosses++}else{x.ties++;if(isRegion)x.regionTies++}x.results.push({date,result})}
-let completed=0;
-for(const r of rows){const aa=n(r[7]),ah=n(r[8]);if(aa===null||ah===null)continue;const a=resolve(r[1]),h=resolve(r[2]);if(!a&&!h)continue;completed++;const sameRegion=!!(a&&h&&st[a]&&st[h]&&st[a].classification===st[h].classification&&st[a].region&&st[a].region===st[h].region);if(a)apply(a,aa,ah,r[0],sameRegion);if(h)apply(h,ah,aa,r[0],sameRegion)}
+let completed=0,sheetFinals=0,deseretFinals=0;
+for(const r of rows){
+  let aa=n(r[7]),ah=n(r[8]),source='';
+  if(aa!==null&&ah!==null){source='sheet'}else{
+    const d=deseretGames[gameKey(r[0],r[1],r[2])];
+    const box=d?.boxScore?.rows||[];
+    const da=n(box[0]?.total),dh=n(box[1]?.total);
+    if((d?.final||/^final$/i.test(clean(d?.status)))&&da!==null&&dh!==null){aa=da;ah=dh;source='deseret'}
+  }
+  if(aa===null||ah===null)continue;
+  const a=resolve(r[1]),h=resolve(r[2]);if(!a&&!h)continue;
+  completed++;if(source==='sheet')sheetFinals++;else if(source==='deseret')deseretFinals++;
+  const sameRegion=!!(a&&h&&st[a]&&st[h]&&st[a].classification===st[h].classification&&st[a].region&&st[a].region===st[h].region);
+  if(a)apply(a,aa,ah,r[0],sameRegion);if(h)apply(h,ah,aa,r[0],sameRegion)
+}
 for(const x of Object.values(st)){x.results.sort((a,b)=>dateStamp(a.date)-dateStamp(b.date));let streak='—';if(x.results.length){const last=x.results.at(-1).result;let count=0;for(let i=x.results.length-1;i>=0&&x.results[i].result===last;i--)count++;streak=last+count}x.streak=streak;delete x.results}
 const wp=x=>{const g=x.wins+x.losses+x.ties;return g?(x.wins+x.ties*.5)/g:0};
 const rwp=x=>{const g=x.regionWins+x.regionLosses+x.regionTies;return g?(x.regionWins+x.regionTies*.5)/g:0};
@@ -41,8 +58,16 @@ const byClassification={},byRegion={};
 for(const x of Object.values(st)){(byClassification[x.classification]??=[]).push(x);byRegion[x.classification]??={};(byRegion[x.classification][x.region||'Independent']??=[]).push(x)}
 for(const a of Object.values(byClassification))a.sort(overallSort);
 for(const groups of Object.values(byRegion))for(const a of Object.values(groups))a.sort(regionSort);
-const out={season:2026,updatedAt:new Date().toISOString(),summary:{scheduledGames:rows.length,completedGames:completed,teams:Object.keys(st).length},byClassification,byRegion};
+
+const base={season:2026,summary:{scheduledGames:rows.length,completedGames:completed,sheetFinals,deseretFinals,teams:Object.keys(st).length},byClassification,byRegion};
+let updatedAt=new Date().toISOString();
+try{
+  const old=JSON.parse(fs.readFileSync('standings-2026.json','utf8'));
+  const oldBase={season:old.season,summary:old.summary,byClassification:old.byClassification,byRegion:old.byRegion};
+  if(JSON.stringify(oldBase)===JSON.stringify(base)&&old.updatedAt)updatedAt=old.updatedAt;
+}catch{}
+const out={season:2026,updatedAt,...base};
 fs.writeFileSync('standings-2026.json',JSON.stringify(out));
 for(const name of ['MONTICELLO','MONUMENT VAL','PANGUITCH','GRAND']){if(!st[name])throw new Error(`${name} missing from standings`)}
-console.log(`Standings: ${Object.keys(st).length} teams, ${completed}/${rows.length} games complete`);
+console.log(`Standings: ${Object.keys(st).length} teams, ${completed}/${rows.length} games complete (${sheetFinals} sheet, ${deseretFinals} Deseret)`);
 console.log('8-player teams:',(byClassification['8P']||[]).map(x=>x.team).join(', '));
