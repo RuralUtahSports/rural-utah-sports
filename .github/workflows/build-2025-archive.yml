@@ -5,7 +5,9 @@ on:
   push:
     paths:
       - 'scripts/build_2025_archive.mjs'
+      - 'scripts/repair_2025_schedules.mjs'
       - 'scripts/build_awards_2025.mjs'
+      - 'full-season-2025.json'
       - 'full-season-alignment-2025.json'
       - '.github/workflows/build-2025-archive.yml'
 
@@ -19,7 +21,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,8 +29,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Build archived 2025 schedules, rosters and stats
+      - name: Build archived 2025 rosters and season stats
         run: node scripts/build_2025_archive.mjs
+      - name: Rebuild 2025 schedules from completed RUS results and Deseret daily archives
+        run: node scripts/repair_2025_schedules.mjs
       - name: Build experimental 2025 RUS awards
         run: node scripts/build_awards_2025.mjs
       - name: Verify 2025 archive
@@ -40,7 +44,10 @@ jobs:
           const awards=JSON.parse(fs.readFileSync('awards-2025.json','utf8'));
           if(team.season!==2025||roster.season!==2025||awards.season!==2025) throw new Error('Wrong season in 2025 archive');
           if((team.summary?.teams||0)<90) throw new Error('Too few 2025 varsity teams');
-          if((roster.summary?.teamsWithRoster||0)<20) throw new Error('Too few archived rosters fetched');
+          if((team.summary?.teamsWithGames||0)<90) throw new Error('Too few teams have 2025 schedules');
+          if((team.summary?.deseretGamesMatched||0)<300) throw new Error('Too few 2025 Deseret game URLs matched');
+          if((roster.summary?.teamsWithRoster||0)<80) throw new Error('Too few archived rosters fetched');
+          if((roster.summary?.teamsWithStats||0)<80) throw new Error('Too few archived stat pages fetched');
           console.log(team.summary);
           console.log(roster.summary);
           console.log(awards.coverage);
