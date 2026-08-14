@@ -1,0 +1,25 @@
+import fs from 'node:fs';
+
+const WEEKLY='weekly-simulation.json',DETAILS='deseret-game-details.json',BASE='https://sports.deseret.com';
+const clean=v=>String(v??'').trim();
+const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
+const aliases={ALA:['AMERICANLEADERSHIP','AMERICANLEADERSHIPACADEMY'],CEDARCITY:['CEDAR'],GUNNISONVALLEY:['GUNNISON'],MONUMENTVALLEY:['MONUMENTVAL'],MAPLEMOUNTAIN:['MAPLEMTN']};
+function isoDate(v){let m=clean(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=clean(v).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:''}
+const gameKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
+function decode(s){return String(s||'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&quot;/gi,'"').replace(/&#39;|&apos;/gi,"'").replace(/&lt;/gi,'<').replace(/&gt;/gi,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n)))}
+function textOf(html){return decode(html).replace(/<(script|style|noscript|svg)\b[^>]*>[\s\S]*?<\/\1>/gi,' ').replace(/<br\s*\/?\s*>/gi,'\n').replace(/<\/(?:p|div|li|tr|h[1-6]|section|article)>/gi,'\n').replace(/<[^>]+>/g,' ').replace(/[ \t]+/g,' ').replace(/\n\s+/g,'\n').replace(/\n{3,}/g,'\n\n')}
+function namesFor(v){const base=compact(v),out=[clean(v)];for(const a of aliases[base]||[])out.push(a.replace(/([A-Z])(?=[A-Z][a-z]|$)/g,'$1 '));return out.filter(Boolean)}
+function indexOfAny(hay,names,start=0){let best=-1;for(const n of names){const i=hay.toUpperCase().indexOf(String(n).toUpperCase(),start);if(i>=0&&(best<0||i<best))best=i}return best}
+function statusForGame(text,g){let from=0;for(let tries=0;tries<8;tries++){
+  const a=indexOfAny(text,namesFor(g.awayTeam),from);if(a<0)break;
+  const h=indexOfAny(text,namesFor(g.homeTeam),a+1);if(h>=0&&h-a<650){const seg=text.slice(Math.max(0,a-180),Math.min(text.length,h+260));if(/\bFinal\b/i.test(seg))return'Final';const live=seg.match(/\b(Halftime|OT|Q\s*[1-4]|[1-4]Q)\b/i);if(live)return live[1].replace(/\s+/g,'').toUpperCase()}from=a+1;
+  }
+  return'';
+}
+async function fetchHtml(url){const r=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.github.io/)'},signal:AbortSignal.timeout(15000)});if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);return r.text()}
+if(!fs.existsSync(WEEKLY)||!fs.existsSync(DETAILS))process.exit(0);
+const weekly=JSON.parse(fs.readFileSync(WEEKLY,'utf8')),details=JSON.parse(fs.readFileSync(DETAILS,'utf8'));const games=(weekly.games||[]).filter(g=>clean(g.deseretUrl));
+const dates=[...new Set(games.map(g=>isoDate(g.date)).filter(Boolean))];let updated=0;
+for(const date of dates){const delta=(Date.parse(`${date}T12:00:00Z`)-Date.now())/86400000;if(delta>2.25||delta<-2.25)continue;let html;try{html=await fetchHtml(`${BASE}/high-school/football/scores-schedule/${date}?region=all`)}catch(e){console.warn(`Day status ${date}: ${e.message}`);continue}const text=textOf(html);for(const g of games.filter(x=>isoDate(x.date)===date)){const status=statusForGame(text,g);if(!status)continue;const key=gameKey(g),d=details.games?.[key];if(!d)continue;if(status==='Final'&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked Final from day scoreboard: ${key}`)}else if(status!=='Final'&&!d.final&&d.status!==status){d.status=status;updated++}}
+}
+details.updatedAt=new Date().toISOString();fs.writeFileSync(DETAILS,JSON.stringify(details,null,2)+'\n');console.log(`Deseret day-status reconciliation updated ${updated} games.`);
