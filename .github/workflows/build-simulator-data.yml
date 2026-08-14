@@ -3,7 +3,7 @@ name: Build Simulator Data
 on:
   workflow_dispatch:
   schedule:
-    - cron: '32 * * * *'
+    - cron: '*/15 * * * *'
   push:
     paths:
       - 'teams-data.json'
