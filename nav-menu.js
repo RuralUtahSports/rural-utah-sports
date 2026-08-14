@@ -2,14 +2,9 @@
   const GA_ID='G-VB4Y6BRN9M';
   function setupAnalytics(){
     if(!document.querySelector(`script[data-rus-ga="${GA_ID}"]`)){
-      const s=document.createElement('script');
-      s.async=true;
-      s.src=`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_ID)}`;
-      s.dataset.rusGa=GA_ID;
-      document.head.appendChild(s);
+      const s=document.createElement('script');s.async=true;s.src=`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_ID)}`;s.dataset.rusGa=GA_ID;document.head.appendChild(s)
     }
-    window.dataLayer=window.dataLayer||[];
-    window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};
+    window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};
     if(!window.__RUS_GA_CONFIGURED__){window.__RUS_GA_CONFIGURED__=true;window.gtag('js',new Date());window.gtag('config',GA_ID)}
   }
   setupAnalytics();
@@ -28,17 +23,40 @@
   function link(label,href,extra=''){return `<a href="${href}" class="${active(href)?'active ':''}${extra}"${active(href)?' aria-current="page"':''}>${label}</a>`}
   function dropdown(label,key){const items=groups[key],cls=groupActive(items)?'active':'';return `<details class="${cls}"><summary>${label}<span class="caret">▼</span></summary><div class="drop">${items.map(([name,href])=>link(name,href)).join('')}</div></details>`}
   function addScript(src,key,async=true){const attr=`data-${key.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}`;if(document.querySelector(`script[${attr}]`))return;const s=document.createElement('script');s.src=src;s.async=async;s.dataset[key]='1';document.body.appendChild(s)}
+  function oneOf(...names){return names.includes(path)}
   function loadExtras(){
-    [['school-assets.js?v=20260813a','rusSchoolAssets'],['school-logo-integration.js?v=20260813b','rusSchoolLogoIntegration'],['site-extras.js','rusExtras'],['site-share.js','rusShare'],['record-watch-filter.js?v=20260812b','rusRecordWatchFilter'],['program-leaderboard-filter.js?v=20260812a','rusProgramLeaderboardFilter'],['history-tools-integration.js?v=20260812c','rusHistoryTools'],['school-colors.js?v=20260813c','rusSchoolColors'],['program-timeline.js?v=20260812a','rusProgramTimeline'],['did-you-know.js?v=20260812a','rusDidYouKnow'],['rivalry-interactive.js?v=20260812a','rusRivalryInteractive'],['team-greatest-paths.js?v=20260812a','rusTeamGreatestPaths'],['elo-explainer.js?v=20260812b','rusEloExplainer'],['team-tabs.js?v=20260813b','rusTeamTabs'],['today-history-more.js?v=20260813a','rusTodayHistoryMore']].forEach(([src,key])=>addScript(src,key,true));
+    addScript('site-extras.js','rusExtras',true);
+    addScript('site-share.js','rusShare',true);
+    addScript('mobile-optimizations.js?v=20260814b','rusMobileOptimizations',true);
+
+    if(oneOf('teams.html','team.html','scoreboard.html','standings.html','rankings.html','storylines.html','stat-leaders.html','mvp-race.html','all-utah.html','all-state-watch.html','player.html','map.html','compare.html','rivalry.html')){
+      addScript('school-assets.js?v=20260813a','rusSchoolAssets',true);
+      addScript('school-logo-integration.js?v=20260813b','rusSchoolLogoIntegration',true);
+      addScript('school-colors.js?v=20260813c','rusSchoolColors',true);
+    }
+
+    if(path==='records.html')addScript('record-watch-filter.js?v=20260812b','rusRecordWatchFilter',true);
+    if(path==='programs.html')addScript('program-leaderboard-filter.js?v=20260812a','rusProgramLeaderboardFilter',true);
+    if(oneOf('history-lab.html','season.html','greatest-seasons.html','dynasty.html'))addScript('history-tools-integration.js?v=20260812c','rusHistoryTools',true);
+    if(path==='team.html'){
+      addScript('program-timeline.js?v=20260812a','rusProgramTimeline',true);
+      addScript('team-greatest-paths.js?v=20260812a','rusTeamGreatestPaths',true);
+      addScript('team-tabs.js?v=20260813b','rusTeamTabs',true);
+      addScript('player-profile-links.js?v=20260814a','rusPlayerProfileLinks',true);
+    }
+    if(path==='rivalry.html')addScript('rivalry-interactive.js?v=20260812a','rusRivalryInteractive',true);
+    if(path==='elo.html')addScript('elo-explainer.js?v=20260812b','rusEloExplainer',true);
+    if(path==='index.html'){
+      addScript('did-you-know.js?v=20260812a','rusDidYouKnow',true);
+      addScript('today-history-more.js?v=20260813a','rusTodayHistoryMore',true);
+    }
     if(path.includes('simulator'))[['season-simulator-core.js?v=20260813a','rusSeasonCore'],['season-simulator-odds.js?v=20260813a','rusSeasonOdds'],['season-simulator-score.js?v=20260813a','rusSeasonScore'],['season-simulator-elo.js?v=20260813e','rusSeasonElo'],['season-simulator-run.js?v=20260813e','rusSeasonRun'],['season-simulator-view.js?v=20260813h','rusSeasonView'],['season-simulator-ui.js?v=20260813f','rusSeasonUi']].forEach(([src,key])=>addScript(src,key,false));
-    addScript('mobile-optimizations.js?v=20260814a','rusMobileOptimizations',true);
     if(path==='scoreboard.html'){
       addScript('scoreboard-live-clock.js?v=20260813a','rusScoreboardLiveClock',true);
       addScript('scoreboard-rankings-ui.js?v=20260813a','rusScoreboardRankingsUi',true);
       addScript('scoreboard-card-enhancements.js?v=20260814a','rusScoreboardCardEnhancements',true);
       addScript('scoreboard-live-elo.js?v=20260814a','rusScoreboardLiveElo',true);
     }
-    if(path==='team.html')addScript('player-profile-links.js?v=20260814a','rusPlayerProfileLinks',true);
     if(['player.html','mvp-race.html','all-state-watch.html','all-utah.html'].includes(path))addScript('player-awards-integration.js?v=20260814a','rusPlayerAwards',true);
     if(['all-state-watch.html','all-utah.html'].includes(path))addScript('award-school-branding.js?v=20260814a','rusAwardSchoolBranding',true);
     if(path==='stat-leaders.html')addScript('stat-leaders-branding.js?v=20260814b','rusStatLeadersBranding',true);
