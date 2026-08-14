@@ -1,1 +1,1 @@
-(()=>{window.RUSSeasonClassSandbox=window.RUSSeasonClassSandbox||{enabled:false};})();
+(()=>{const X=window.RUSSeasonClassSandbox=window.RUSSeasonClassSandbox||{enabled:false};X.classes=['6A','5A','4A','3A','2A','1A','8P'];})();
