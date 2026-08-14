@@ -30,6 +30,15 @@ ALIASES = {
 }
 BLOCKED = {"ESCALANTE", "USDB", "UTAH SCH DEAF"}
 
+# A few UHSAA directory pages currently contain malformed/legacy address text.
+# Keep explicit corrections here so both the pin and popup use the actual campus.
+ADDRESS_OVERRIDES = {
+    "BONNEVILLE": "251 E 4800 S, Washington Terrace, UT 84405",
+    "COPPER HILLS": "5445 Copper Hills Parkway, West Jordan, UT 84081",
+    "CYPRUS": "8623 W 3000 S, Magna, UT 84044",
+    "MONUMENT VAL": "100 South Highway 163, Monument Valley, UT 84536",
+}
+
 
 def norm(value):
     return re.sub(r"[^A-Z0-9]", "", str(value or "").upper())
@@ -133,8 +142,6 @@ def geocode(address, school_name):
         if result:
             return result
 
-    # Last resort: keep the program on the statewide map in the correct town
-    # even when a new/rural campus is not yet indexed by either geocoder.
     if city:
         city_query = f"{city}, Utah{(' ' + zipcode) if zipcode else ''}"
         result = nominatim_geocode(city_query, "OpenStreetMap city fallback", "city")
@@ -214,7 +221,7 @@ def main():
         response = session.get(page_url, timeout=45)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
-        address = first_address_after_heading(soup)
+        address = ADDRESS_OVERRIDES.get(team) or first_address_after_heading(soup)
         classification = page_field(soup, "Classification")
         region = page_field(soup, "Region")
         logo = official_logo_url(school_name)
