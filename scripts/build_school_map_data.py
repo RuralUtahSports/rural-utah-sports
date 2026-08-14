@@ -18,6 +18,7 @@ ALIASES = {
     "CEDAR CITY": "Cedar",
     "GRAND": "Grand County",
     "GUNNISON VALLEY": "Gunnison Valley",
+    "MONUMENT VAL": "Monument Valley",
     "MONUMENT VALLEY": "Monument Valley",
     "SAINT JOSEPH": "Saint Joseph",
     "UMA-LEHI": "Utah Military Academy - Camp Williams",
@@ -53,47 +54,105 @@ def get_json(url, **params):
     return response.json()
 
 
-def geocode(address):
+def clean_address(address):
+    text = " ".join(str(address or "").split())
+    text = re.sub(r"\bP\.?\s*O\.?\s*Box\s+\d+\s*[-,]?\s*", "", text, flags=re.I)
+    text = re.sub(r"\bPO Box\s+\d+\s*[-,]?\s*", "", text, flags=re.I)
+    text = re.sub(r"\s+,", ",", text)
+    return text.strip(" ,")
+
+
+def address_city(address):
+    match = re.search(r",\s*([^,]+?)(?:,\s*|\s+)UT\s+\d{5}(?:-\d{4})?\b", str(address or ""), re.I)
+    return match.group(1).strip() if match else ""
+
+
+def address_zip(address):
+    match = re.search(r"\bUT\s+(\d{5})(?:-\d{4})?\b", str(address or ""), re.I)
+    return match.group(1) if match else ""
+
+
+def census_geocode(query):
     try:
         data = get_json(
             "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress",
-            address=address,
+            address=query,
             benchmark="Public_AR_Current",
             format="json",
         )
         matches = data.get("result", {}).get("addressMatches", [])
         if matches:
             coords = matches[0].get("coordinates", {})
-            return float(coords["y"]), float(coords["x"]), "US Census"
+            return float(coords["y"]), float(coords["x"]), "US Census", "address"
     except Exception as exc:
-        print(f"Census geocoder failed for {address}: {exc}")
+        print(f"Census geocoder failed for {query}: {exc}")
+    return None
 
+
+def nominatim_geocode(query, label, precision):
     try:
         time.sleep(1.05)
         data = get_json(
             "https://nominatim.openstreetmap.org/search",
-            q=address,
+            q=query,
             format="jsonv2",
             limit=1,
             countrycodes="us",
         )
         if data:
-            return float(data[0]["lat"]), float(data[0]["lon"]), "OpenStreetMap Nominatim"
+            return float(data[0]["lat"]), float(data[0]["lon"]), label, precision
     except Exception as exc:
-        print(f"Nominatim failed for {address}: {exc}")
+        print(f"Nominatim failed for {query}: {exc}")
+    return None
+
+
+def geocode(address, school_name):
+    cleaned = clean_address(address)
+    city = address_city(address)
+    zipcode = address_zip(address)
+
+    if cleaned:
+        result = census_geocode(cleaned)
+        if result:
+            return result
+        result = nominatim_geocode(cleaned, "OpenStreetMap Nominatim", "address")
+        if result:
+            return result
+
+    queries = []
+    if city:
+        queries.extend([
+            (f"{school_name} High School, {city}, Utah", "OpenStreetMap school-name fallback", "school"),
+            (f"{school_name}, {city}, Utah", "OpenStreetMap school-name fallback", "school"),
+        ])
+    else:
+        queries.append((f"{school_name} High School, Utah", "OpenStreetMap school-name fallback", "school"))
+
+    for query, label, precision in queries:
+        result = nominatim_geocode(query, label, precision)
+        if result:
+            return result
+
+    # Last resort: keep the program on the statewide map in the correct town
+    # even when a new/rural campus is not yet indexed by either geocoder.
+    if city:
+        city_query = f"{city}, Utah{(' ' + zipcode) if zipcode else ''}"
+        result = nominatim_geocode(city_query, "OpenStreetMap city fallback", "city")
+        if result:
+            return result
     return None
 
 
 def first_address_after_heading(soup):
     heading = soup.find("h1")
-    candidates = heading.find_all_next(["li", "p", "div"], limit=40) if heading else []
+    candidates = heading.find_all_next(["li", "p", "div"], limit=45) if heading else []
     for node in candidates:
         text = " ".join(node.stripped_strings)
-        if re.search(r",\s*UT\s+\d{5}(?:-\d{4})?\b", text, re.I):
+        if "About The UHSAA" in text:
+            continue
+        if len(text) <= 220 and re.search(r"\bUT\s+\d{5}(?:-\d{4})?\b", text, re.I):
             return text
-    text = soup.get_text("\n", strip=True)
-    match = re.search(r"([^\n]+,\s*[^\n]+,\s*UT\s+\d{5}(?:-\d{4})?)", text, re.I)
-    return match.group(1).strip() if match else ""
+    return ""
 
 
 def page_field(soup, label):
@@ -159,23 +218,24 @@ def main():
         classification = page_field(soup, "Classification")
         region = page_field(soup, "Region")
         logo = official_logo_url(school_name)
+        city = address_city(address)
 
         cached = old.get(team, {}) if isinstance(old, dict) else {}
-        lat = cached.get("lat") if cached.get("address") == address else None
-        lon = cached.get("lon") if cached.get("address") == address else None
+        lat = cached.get("lat") if cached.get("address") == address and cached.get("lat") is not None else None
+        lon = cached.get("lon") if cached.get("address") == address and cached.get("lon") is not None else None
         geocoder = cached.get("geocoder", "cached") if lat is not None and lon is not None else ""
+        precision = cached.get("precision", "address") if lat is not None and lon is not None else ""
         if address and (lat is None or lon is None):
-            geo = geocode(address)
+            geo = geocode(address, school_name)
             if geo:
-                lat, lon, geocoder = geo
+                lat, lon, geocoder, precision = geo
             else:
                 geocode_failures.append((team, address))
 
-        city_match = re.search(r",\s*([^,]+),\s*UT\s+\d{5}", address, re.I)
         result[team] = {
             "name": school_name,
             "address": address,
-            "city": city_match.group(1).strip() if city_match else "",
+            "city": city,
             "lat": lat,
             "lon": lon,
             "logoUrl": logo,
@@ -183,6 +243,7 @@ def main():
             "uhsaaRegion": region,
             "sourceUrl": page_url,
             "geocoder": geocoder,
+            "precision": precision,
         }
         print(f"[{index}/{len(football)}] {team}: {address or 'NO ADDRESS'}")
 
@@ -196,10 +257,10 @@ def main():
     if geocode_failures:
         print("Geocode failures:", "; ".join(f"{team}: {address}" for team, address in geocode_failures))
 
-    if len(result) < max(80, int(len(football) * 0.85)):
-        raise RuntimeError("Too many football programs failed UHSAA directory matching; refusing to publish map data.")
-    if located < max(75, int(len(football) * 0.78)):
-        raise RuntimeError("Too many football programs failed geocoding; refusing to publish map data.")
+    if len(result) < len(football):
+        raise RuntimeError("At least one football program failed UHSAA directory matching; refusing to publish an incomplete statewide map.")
+    if located < len(football):
+        raise RuntimeError("At least one football program could not be located; refusing to publish an incomplete statewide map.")
 
 
 if __name__ == "__main__":
