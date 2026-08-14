@@ -33,8 +33,13 @@ function install(){
 }
 function loadCurrentSeason(){
  if(document.querySelector('script[data-rus-current-season]'))return;
- const s=document.createElement('script');s.src='team-current-season.js?v=20260814a';s.defer=true;s.dataset.rusCurrentSeason='1';document.head.appendChild(s);
+ const s=document.createElement('script');s.src='team-current-season.js?v=20260814b';s.defer=true;s.dataset.rusCurrentSeason='1';document.head.appendChild(s);
+}
+function loadRosterStats(){
+ if(document.querySelector('script[data-rus-roster-stats]'))return;
+ const s=document.createElement('script');s.src='team-roster-stats.js?v=20260814a';s.defer=true;s.dataset.rusRosterStats='1';document.head.appendChild(s);
 }
 install();
 loadCurrentSeason();
+loadRosterStats();
 })();
