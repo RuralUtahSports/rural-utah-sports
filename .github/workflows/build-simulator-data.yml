@@ -22,8 +22,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout latest main
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Build compact simulator data
         env:
@@ -129,13 +131,15 @@ jobs:
             echo "Simulator data is already current."
             exit 0
           fi
-          git stash push --include-untracked -m simulator-data-build
-          git pull --rebase origin main
-          git stash pop
           git add simulator-data.json weekly-simulation.json
-          if git diff --cached --quiet; then
-            echo "Simulator data became current after syncing main."
-          else
-            git commit -m "Auto-sync simulator data"
-            git push
-          fi
+          git commit -m "Auto-sync simulator data"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git push; then
+              ok=1
+              break
+            fi
+            git pull --rebase -X theirs origin main || { git rebase --abort || true; exit 1; }
+            sleep 5
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
