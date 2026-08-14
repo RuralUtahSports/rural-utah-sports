@@ -11,7 +11,7 @@
   const groups={
     history:[['Championships','championships.html'],['Season Explorer','season.html'],['Program Leaderboard','programs.html'],['Rivalry Hub','rivalry.html'],['Dynasty Explorer','dynasty.html'],['History Lab','history-lab.html'],['Greatest Seasons','greatest-seasons.html'],['Records','records.html']],
     analytics:[['ELO','elo.html'],['Scorigami','scorigami.html'],['Out of State','out-of-state.html'],['Team Comparison','compare.html'],['Football Map','map.html']],
-    stats:[['Stat Leaders','stat-leaders.html'],['MVP Race','mvp-race.html'],['All-Utah Team','all-utah.html'],['All-State & Region Watch','all-state-watch.html'],['2025 Awards','awards-2025.html']],
+    stats:[['Stat Leaders','stat-leaders.html'],['MVP Race','mvp-race.html'],['All-Utah Team','all-utah.html'],['All-State & Region Watch','all-state-watch.html'],['Past Award Winners','awards-2025.html']],
     simulators:[['Simulators Hub','simulators.html']]
   };
   const path=(location.pathname.split('/').pop()||'index.html').toLowerCase(),active=href=>path===href.toLowerCase(),groupActive=items=>items.some(([,href])=>active(href));
@@ -29,7 +29,7 @@
     addScript('site-share.js','rusShare',true);
     addScript('mobile-optimizations.js?v=20260814b','rusMobileOptimizations',true);
 
-    if(oneOf('teams.html','team.html','scoreboard.html','standings.html','rankings.html','storylines.html','stat-leaders.html','mvp-race.html','all-utah.html','all-state-watch.html','player.html','map.html','compare.html','rivalry.html')){
+    if(oneOf('teams.html','team.html','scoreboard.html','standings.html','rankings.html','storylines.html','stat-leaders.html','mvp-race.html','all-utah.html','all-state-watch.html','awards-2025.html','player.html','map.html','compare.html','rivalry.html')){
       addScript('school-assets.js?v=20260813a','rusSchoolAssets',true);
       addScript('school-logo-integration.js?v=20260813b','rusSchoolLogoIntegration',true);
       addScript('school-colors.js?v=20260813c','rusSchoolColors',true);
@@ -60,7 +60,7 @@
       addScript('scoreboard-live-elo.js?v=20260814a','rusScoreboardLiveElo',true);
     }
     if(['player.html','mvp-race.html','all-state-watch.html','all-utah.html'].includes(path))addScript('player-awards-integration.js?v=20260814a','rusPlayerAwards',true);
-    if(['all-state-watch.html','all-utah.html'].includes(path))addScript('award-school-branding.js?v=20260814a','rusAwardSchoolBranding',true);
+    if(['mvp-race.html','all-state-watch.html','all-utah.html','awards-2025.html'].includes(path))addScript('award-school-branding.js?v=20260814b','rusAwardSchoolBranding',true);
     if(path==='stat-leaders.html')addScript('stat-leaders-branding.js?v=20260814b','rusStatLeadersBranding',true);
     if(path==='map.html')addScript('map-distance-tools.js?v=20260814b','rusMapDistanceTools',true);
     if(path==='storylines.html')addScript('storylines-live-fix.js?v=20260814a','rusStorylinesLiveFix',true);
