@@ -6,7 +6,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TEAM_DIR = ROOT / 'team-page-data'
 TEAMS_FILE = ROOT / 'teams-data.json'
-OUT_FILE = ROOT / 'streak-records.json'
+STREAK_OUT_FILE = ROOT / 'streak-records.json'
+SEASON_OUT_FILE = ROOT / 'season-records.json'
 
 
 def slug(value):
@@ -25,6 +26,18 @@ def date_key(value, fallback_year, index):
     return (int(fallback_year), 1, 1, index)
 
 
+def streak_summary(run):
+    if not run:
+        return {'length': 0, 'startDate': '', 'endDate': '', 'startOpponent': '', 'endOpponent': ''}
+    return {
+        'length': len(run),
+        'startDate': run[0]['date'],
+        'endDate': run[-1]['date'],
+        'startOpponent': run[0]['opponent'],
+        'endOpponent': run[-1]['opponent'],
+    }
+
+
 def longest(events, target):
     best = []
     current = []
@@ -35,20 +48,37 @@ def longest(events, target):
                 best = list(current)
         else:
             current = []
-    if not best:
-        return {'length': 0, 'startDate': '', 'endDate': '', 'startOpponent': '', 'endOpponent': ''}
-    return {
-        'length': len(best),
-        'startDate': best[0]['date'],
-        'endDate': best[-1]['date'],
-        'startOpponent': best[0]['opponent'],
-        'endOpponent': best[-1]['opponent'],
-    }
+    return streak_summary(best)
+
+
+def current(events, target):
+    run = []
+    for event in reversed(events):
+        if event['result'] != target:
+            break
+        run.append(event)
+    run.reverse()
+    return streak_summary(run)
+
+
+def number(value, default=0):
+    try:
+        if value is None or value == '':
+            return default
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def whole(value, default=0):
+    return int(round(number(value, default)))
 
 
 def main():
     teams = json.loads(TEAMS_FILE.read_text(encoding='utf-8'))
-    output = {}
+    streak_output = {}
+    seasons = {}
+
     for team in teams:
         name = str(team.get('team', '')).strip()
         if not name:
@@ -57,6 +87,7 @@ def main():
         if not path.exists():
             continue
         data = json.loads(path.read_text(encoding='utf-8'))
+
         schedules = data.get('schedules') or {}
         events = []
         index = 0
@@ -74,12 +105,44 @@ def main():
                     'result': result,
                 })
         events.sort(key=lambda x: x['sort'])
-        output[name] = {
+        streak_output[name] = {
             'longestWinStreak': longest(events, 'W'),
             'longestLossStreak': longest(events, 'L'),
+            'currentWinStreak': current(events, 'W'),
+            'currentLossStreak': current(events, 'L'),
         }
-    OUT_FILE.write_text(json.dumps(output, indent=2, sort_keys=True) + '\n', encoding='utf-8')
-    print(f'Wrote {len(output)} teams to {OUT_FILE.name}')
+
+        for row in data.get('seasonHistory') or []:
+            year = whole(row.get('year'), 0)
+            if not year:
+                continue
+            wins = whole(row.get('wins'))
+            losses = whole(row.get('losses'))
+            ties = whole(row.get('ties'))
+            games = whole(row.get('games'), wins + losses + ties)
+            pf = whole(row.get('pointsFor'))
+            pa = whole(row.get('pointsAgainst'))
+            win_pct = number(row.get('winPct'), ((wins + ties * 0.5) / games if games else 0))
+            avg_margin = number(row.get('avgMargin'), ((pf - pa) / games if games else 0))
+            seasons.setdefault(str(year), []).append({
+                'team': name,
+                'wins': wins,
+                'losses': losses,
+                'ties': ties,
+                'games': games,
+                'pointsFor': pf,
+                'pointsAgainst': pa,
+                'winPct': round(win_pct, 6),
+                'avgMargin': round(avg_margin, 3),
+            })
+
+    for rows in seasons.values():
+        rows.sort(key=lambda r: (-r['winPct'], -r['wins'], -r['avgMargin'], r['team']))
+
+    STREAK_OUT_FILE.write_text(json.dumps(streak_output, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+    SEASON_OUT_FILE.write_text(json.dumps({'seasons': seasons}, separators=(',', ':')) + '\n', encoding='utf-8')
+    print(f'Wrote {len(streak_output)} teams to {STREAK_OUT_FILE.name}')
+    print(f'Wrote {sum(len(v) for v in seasons.values())} team-seasons to {SEASON_OUT_FILE.name}')
 
 
 if __name__ == '__main__':
