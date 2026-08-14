@@ -31,5 +31,10 @@ function install(){
    }catch(e){console.error('Rivalry Hub:',e)}
  };
 }
+function loadCurrentSeason(){
+ if(document.querySelector('script[data-rus-current-season]'))return;
+ const s=document.createElement('script');s.src='team-current-season.js?v=20260814a';s.defer=true;s.dataset.rusCurrentSeason='1';document.head.appendChild(s);
+}
 install();
+loadCurrentSeason();
 })();
