@@ -90,7 +90,9 @@ function extractGameLinks(html) {
       url,
       date,
       awayKey: compact(mm[1]),
-      homeKey: compact(mm[2])
+      homeKey: compact(mm[2]),
+      awaySlug: mm[1],
+      homeSlug: mm[2]
     });
   }
   return [...found.values()];
@@ -213,3 +215,17 @@ fs.writeFileSync(CURRENT, JSON.stringify({ ...current, games }));
 fs.writeFileSync(CACHE, JSON.stringify({ updatedAt: new Date().toISOString(), links: Object.fromEntries([...savedLinks.entries()].sort()) }, null, 2) + '\n');
 const unresolved = games.filter(g => isoDate(g.date).startsWith('2026-') && !g.deseretUrl).length;
 console.log(`Deseret links: ${cached} reused, ${matched} matched, ${unresolved} unresolved.`);
+
+// Audit Deseret's listed games for the current opening weekend against the Weekly Simulation sheet.
+const auditDates = ['2026-08-13', '2026-08-14', '2026-08-15'];
+const deseretWeekend = [];
+for (const date of auditDates) {
+  const rows = await candidatesForDate(date);
+  console.log(`Deseret audit ${date}: ${rows.length} games`);
+  deseretWeekend.push(...rows);
+}
+const missingFromWeekly = deseretWeekend.filter(c => !games.some(g => matches(g, c)));
+console.log(`Deseret audit total: ${deseretWeekend.length} games; missing from Weekly Simulation: ${missingFromWeekly.length}`);
+for (const c of missingFromWeekly) {
+  console.log(`MISSING WEEKLY: ${c.date} | ${c.awaySlug} at ${c.homeSlug} | ${c.url}`);
+}
