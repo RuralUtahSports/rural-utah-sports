@@ -1,0 +1,49 @@
+name: Build Deseret Rosters and Stats
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23,53 * * * *'
+  push:
+    paths:
+      - 'deseret-team-data-2026.json'
+      - 'scripts/build_deseret_rosters_stats.mjs'
+      - '.github/workflows/build-deseret-rosters-stats.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deseret-rosters-stats
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Build rosters and season player stats
+        run: node scripts/build_deseret_rosters_stats.mjs
+      - name: Verify roster/stat data
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const d=JSON.parse(fs.readFileSync('deseret-rosters-stats-2026.json','utf8'));
+          if(!d.summary||d.summary.teams<100) throw new Error('Roster/stat output incomplete');
+          console.log(d.summary);
+          NODE
+      - name: Commit roster/stat data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add deseret-rosters-stats-2026.json
+          if git diff --cached --quiet; then echo "Roster/stat data already current."; exit 0; fi
+          git commit -m "Auto-sync Deseret rosters and stats"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
