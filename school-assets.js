@@ -6,6 +6,7 @@
     'CEDAR CITY':'Cedar',
     'GRAND':'Grand County',
     'GUNNISON VALLEY':'Gunnison Valley',
+    'MONUMENT VAL':'Monument Valley',
     'MONUMENT VALLEY':'Monument Valley',
     'SAINT JOSEPH':'Saint Joseph',
     'UMA-LEHI':'Utah Military Academy - Camp Williams',
