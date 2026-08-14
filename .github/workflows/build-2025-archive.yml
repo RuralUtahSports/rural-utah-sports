@@ -1,0 +1,60 @@
+name: Build 2025 Football Archive
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/build_2025_archive.mjs'
+      - 'scripts/build_awards_2025.mjs'
+      - 'full-season-alignment-2025.json'
+      - '.github/workflows/build-2025-archive.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-2025-football-archive
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build archived 2025 schedules, rosters and stats
+        run: node scripts/build_2025_archive.mjs
+      - name: Build experimental 2025 RUS awards
+        run: node scripts/build_awards_2025.mjs
+      - name: Verify 2025 archive
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const team=JSON.parse(fs.readFileSync('deseret-team-data-2025.json','utf8'));
+          const roster=JSON.parse(fs.readFileSync('deseret-rosters-stats-2025.json','utf8'));
+          const awards=JSON.parse(fs.readFileSync('awards-2025.json','utf8'));
+          if(team.season!==2025||roster.season!==2025||awards.season!==2025) throw new Error('Wrong season in 2025 archive');
+          if((team.summary?.teams||0)<90) throw new Error('Too few 2025 varsity teams');
+          if((roster.summary?.teamsWithRoster||0)<20) throw new Error('Too few archived rosters fetched');
+          console.log(team.summary);
+          console.log(roster.summary);
+          console.log(awards.coverage);
+          NODE
+      - name: Commit generated 2025 archive
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add deseret-team-data-2025.json deseret-rosters-stats-2025.json awards-2025.json
+          if git diff --cached --quiet; then echo "2025 archive already current."; exit 0; fi
+          git commit -m "Build 2025 football archive and awards"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
