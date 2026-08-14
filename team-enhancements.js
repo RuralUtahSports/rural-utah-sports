@@ -10,12 +10,12 @@ function streakVs(games,opponent){const rows=games.filter(g=>norm(g.opponent)===
 function resultText(g){if(!g)return 'No game detail';return `${g.date||g.year||'—'} • ${g.result||'—'} ${Number(g.teamScore||0)}–${Number(g.opponentScore||0)}`}
 function loadSeasonDropdown(){
  if(document.querySelector('script[data-rus-season-dropdown-direct]'))return;
- const s=document.createElement('script');s.src='season-dropdown.js?v=20260814b';s.defer=true;s.dataset.rusSeasonDropdownDirect='1';document.head.appendChild(s);
+ const s=document.createElement('script');s.src='season-dropdown.js?v=20260814c';s.defer=true;s.dataset.rusSeasonDropdownDirect='1';document.head.appendChild(s);
 }
 function load2025ArchiveIfNeeded(){
  if(new URLSearchParams(location.search).get('season')!=='2025')return;
  if(document.querySelector('script[data-rus-team-season-archive-direct]'))return;
- const s=document.createElement('script');s.src='team-season-archive.js?v=20260814b';s.defer=true;s.dataset.rusTeamSeasonArchiveDirect='1';document.head.appendChild(s);
+ const s=document.createElement('script');s.src='team-season-archive.js?v=20260814c';s.defer=true;s.dataset.rusTeamSeasonArchiveDirect='1';document.head.appendChild(s);
 }
 function install(){
  if(typeof window.render!=='function'){setTimeout(install,0);return}
