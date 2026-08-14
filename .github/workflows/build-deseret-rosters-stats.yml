@@ -3,7 +3,7 @@ name: Build Deseret Rosters and Stats
 on:
   workflow_dispatch:
   schedule:
-    - cron: '23,53 * * * *'
+    - cron: '*/15 * * * *'
   push:
     paths:
       - 'deseret-team-data-2026.json'
