@@ -1,0 +1,52 @@
+name: Build Deseret Team Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 9,21 * * *'
+  push:
+    paths:
+      - 'scripts/build_deseret_team_data.mjs'
+      - 'teams-data.json'
+      - '.github/workflows/build-deseret-team-data.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deseret-team-data-2026
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build current team schedules from Deseret
+        run: node scripts/build_deseret_team_data.mjs
+
+      - name: Verify generated data
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const d=JSON.parse(fs.readFileSync('deseret-team-data-2026.json','utf8'));
+          if(d.season!==2026) throw new Error('Wrong season');
+          if(!d.teams || Object.keys(d.teams).length<100) throw new Error('Too few team records');
+          const scheduled=Object.values(d.teams).filter(x=>Array.isArray(x.schedule)&&x.schedule.length);
+          if(scheduled.length<20) throw new Error(`Only ${scheduled.length} teams have schedules`);
+          console.log(`Verified ${Object.keys(d.teams).length} team records; ${scheduled.length} teams have 2026 games.`);
+          NODE
+
+      - name: Commit current team data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- deseret-team-data-2026.json)" ]; then
+            echo "Team data already current."
+            exit 0
+          fi
+          git add deseret-team-data-2026.json
+          git commit -m "Auto-sync 2026 Deseret team data"
+          git pull --rebase origin main
+          git push
