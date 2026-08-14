@@ -36,9 +36,11 @@
       addScript('scoreboard-live-clock.js?v=20260813a','rusScoreboardLiveClock',true);
       addScript('scoreboard-rankings-ui.js?v=20260813a','rusScoreboardRankingsUi',true);
       addScript('scoreboard-card-enhancements.js?v=20260814a','rusScoreboardCardEnhancements',true);
+      addScript('scoreboard-live-elo.js?v=20260814a','rusScoreboardLiveElo',true);
     }
     if(path==='team.html')addScript('player-profile-links.js?v=20260814a','rusPlayerProfileLinks',true);
     if(['player.html','mvp-race.html','all-state-watch.html','all-utah.html'].includes(path))addScript('player-awards-integration.js?v=20260814a','rusPlayerAwards',true);
+    if(['all-state-watch.html','all-utah.html'].includes(path))addScript('award-school-branding.js?v=20260814a','rusAwardSchoolBranding',true);
     if(path==='stat-leaders.html')addScript('stat-leaders-branding.js?v=20260814b','rusStatLeadersBranding',true);
     if(path==='map.html')addScript('map-distance-tools.js?v=20260814b','rusMapDistanceTools',true);
     if(path==='storylines.html')addScript('storylines-live-fix.js?v=20260814a','rusStorylinesLiveFix',true);
