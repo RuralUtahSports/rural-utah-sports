@@ -119,7 +119,7 @@ async function fetchHtml(url) {
 async function candidatesForDate(date) {
   const url = `${BASE}/high-school/football/scores-schedule/${date}?region=all`;
   try {
-    return extractGameLinks(await fetchHtml(url));
+    return extractGameLinks(await fetchHtml(url)).filter(c => c.date === date);
   } catch (err) {
     console.warn(`Deseret date page failed for ${date}: ${err.message}`);
     return [];
