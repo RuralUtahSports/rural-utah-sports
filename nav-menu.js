@@ -43,6 +43,7 @@
       addScript('team-greatest-paths.js?v=20260812a','rusTeamGreatestPaths',true);
       addScript('team-tabs.js?v=20260813b','rusTeamTabs',true);
       addScript('player-profile-links.js?v=20260814a','rusPlayerProfileLinks',true);
+      if(new URLSearchParams(location.search).get('season')==='2025')addScript('team-season-archive.js?v=20260814a','rusTeamSeasonArchive',false);
     }
     if(path==='rivalry.html')addScript('rivalry-interactive.js?v=20260812a','rusRivalryInteractive',true);
     if(path==='elo.html')addScript('elo-explainer.js?v=20260812b','rusEloExplainer',true);
