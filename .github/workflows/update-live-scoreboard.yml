@@ -9,6 +9,11 @@ on:
     - cron: '*/5 0-6 * 8-11 5,6,0'
     # Saturday daytime games in Utah.
     - cron: '*/5 16-21 * 8-11 6'
+  push:
+    paths:
+      - 'scripts/enrich-deseret-game-details.mjs'
+      - 'scripts/reconcile-deseret-day-status.mjs'
+      - '.github/workflows/update-live-scoreboard.yml'
 
 permissions:
   contents: write
@@ -28,6 +33,9 @@ jobs:
 
       - name: Refresh live box scores, game clock, scoring plays and stats
         run: node scripts/enrich-deseret-game-details.mjs
+
+      - name: Reconcile Final/Live status from Deseret daily scoreboard
+        run: node scripts/reconcile-deseret-day-status.mjs
 
       - name: Commit live scoreboard data
         run: |
