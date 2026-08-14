@@ -37,9 +37,9 @@ async function waitForAssets(){
 
 function moveControls(){
   const controls=document.querySelector('main .controls');
-  const uhsaa=document.getElementById('rusUhsaa');
-  if(!controls||!uhsaa)return false;
-  if(uhsaa.nextElementSibling!==controls)uhsaa.insertAdjacentElement('afterend',controls);
+  const anchor=document.getElementById('rusRecordWatch')||document.getElementById('rusUhsaa');
+  if(!controls||!anchor)return false;
+  if(anchor.nextElementSibling!==controls)anchor.insertAdjacentElement('afterend',controls);
   controls.classList.add('rus-record-controls-moved');
   return true;
 }
@@ -84,8 +84,9 @@ async function init(){
   addStyles();
   await waitForAssets();
   let attempts=0;
-  const place=()=>{if(moveControls())return;attempts++;if(attempts<100)setTimeout(place,50)};
+  const place=()=>{if(moveControls())return;attempts++;if(attempts<120)setTimeout(place,50)};
   place();
+  document.addEventListener('rus-record-watch-ready',moveControls);
   decorateBadges();
   colorOfficialSchoolNames();
   const main=document.querySelector('main');
