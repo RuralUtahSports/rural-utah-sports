@@ -39,7 +39,8 @@
     if(path==='records.html'){
       addScript('record-watch-filter.js?v=20260812b','rusRecordWatchFilter',true);
       addScript('uhsaa-record-book.js?v=20260814c','rusUhsaaRecordBook',true);
-      addScript('records-layout-enhancements.js?v=20260814b','rusRecordsLayoutEnhancements',true);
+      addScript('uhsaa-record-watch.js?v=20260814a','rusUhsaaRecordWatch',true);
+      addScript('records-layout-enhancements.js?v=20260814c','rusRecordsLayoutEnhancements',true);
     }
     if(path==='programs.html')addScript('program-leaderboard-filter.js?v=20260812a','rusProgramLeaderboardFilter',true);
     if(oneOf('history-lab.html','season.html','greatest-seasons.html','dynasty.html'))addScript('history-tools-integration.js?v=20260812c','rusHistoryTools',true);
