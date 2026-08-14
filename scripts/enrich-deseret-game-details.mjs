@@ -198,11 +198,29 @@ function extractScoringPlays(html) {
     .slice(0, 40);
 }
 
-function extractStatus(html, box, scoringPlays) {
+function extractClock(html) {
+  const all = htmlText(html.slice(0, Math.min(html.length, 140000)));
+  const beforeScoring = all.split(/Scoring Summary/i)[0];
+  const gameAt = beforeScoring.search(/Game Details/i);
+  const segment = gameAt >= 0
+    ? beforeScoring.slice(Math.max(0, gameAt - 1800), Math.min(beforeScoring.length, gameAt + 5000))
+    : beforeScoring.slice(0, 8000);
+
+  let m = segment.match(/\b(\d{1,2}:\d{2}(?:\.\d+)?)\s*(?:left|remaining)?\s*(?:in\s*(?:the\s*)?)?(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+quarter)?)/i);
+  if (m) return { clock: m[1], period: `Q${m[2] || m[3] || m[4]}` };
+
+  m = segment.match(/\b(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+quarter)?)\s*(?:[-–—|•:]?\s*)(\d{1,2}:\d{2}(?:\.\d+)?)/i);
+  if (m) return { clock: m[4], period: `Q${m[1] || m[2] || m[3]}` };
+
+  return { clock: '', period: '' };
+}
+
+function extractStatus(html, box, scoringPlays, clockInfo) {
   const text = htmlText(html.slice(0, Math.min(html.length, 120000)));
   const head = text.split(/Game Details/i)[0] || text.slice(0, 5000);
   if (/\bFinal\b/i.test(head)) return { status: 'Final', final: true };
   if (/\bHalftime\b/i.test(head)) return { status: 'Halftime', final: false };
+  if (clockInfo?.period) return { status: clockInfo.period, final: false };
   const q = head.match(/\b(?:Q([1-4])|([1-4])Q|([1-4])(?:st|nd|rd|th))\b/i);
   if (q) return { status: `Q${q[1] || q[2] || q[3]}`, final: false };
   if (/\bOT\b/i.test(head)) return { status: 'OT', final: false };
@@ -215,11 +233,14 @@ function parseGameDetails(html, game) {
   const boxScore = findBoxScore(tables);
   const scoringPlays = extractScoringPlays(html);
   const stats = extractStats(tables, game);
-  const state = extractStatus(html, boxScore, scoringPlays);
+  const clockInfo = extractClock(html);
+  const state = extractStatus(html, boxScore, scoringPlays, clockInfo);
   return {
     url: game.deseretUrl,
     status: state.status,
     final: state.final,
+    clock: state.final ? '' : clockInfo.clock,
+    period: state.final ? '' : clockInfo.period,
     boxScore,
     scoringPlays,
     stats,
@@ -268,7 +289,8 @@ for (const game of games) {
     details[key] = parseGameDetails(html, game);
     fetched++;
     const d = details[key];
-    console.log(`Deseret detail ${key}: ${d.status}; box=${d.boxScore ? 'yes' : 'no'}; plays=${d.scoringPlays.length}; statTables=${d.stats.length}`);
+    const liveClock = d.clock ? `; clock=${d.clock} ${d.period || ''}` : '';
+    console.log(`Deseret detail ${key}: ${d.status}${liveClock}; box=${d.boxScore ? 'yes' : 'no'}; plays=${d.scoringPlays.length}; statTables=${d.stats.length}`);
   } catch (err) {
     failures++;
     console.warn(`Deseret detail failed ${key}: ${err.message}`);
