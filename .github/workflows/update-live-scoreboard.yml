@@ -13,6 +13,7 @@ on:
     paths:
       - 'scripts/enrich-deseret-game-details.mjs'
       - 'scripts/reconcile-deseret-day-status.mjs'
+      - 'scripts/build_player_game_stats.mjs'
       - '.github/workflows/update-live-scoreboard.yml'
 
 permissions:
@@ -37,11 +38,20 @@ jobs:
       - name: Reconcile Final/Live status from Deseret daily scoreboard
         run: node scripts/reconcile-deseret-day-status.mjs
 
+      - name: Connect updated game stats to roster players
+        run: |
+          if [ -f deseret-rosters-stats-2026.json ]; then
+            node scripts/build_player_game_stats.mjs
+          else
+            echo "Roster data not built yet; skipping player-game join."
+          fi
+
       - name: Commit live scoreboard data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           git add deseret-game-details.json
+          if [ -f player-game-stats-2026.json ]; then git add player-game-stats-2026.json; fi
           if git diff --cached --quiet; then
             echo "Live scoreboard data is already current."
             exit 0
