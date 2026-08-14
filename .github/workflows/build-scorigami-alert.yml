@@ -2,6 +2,9 @@ name: Build Scorigami Alert Feed
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ['Build Scorigami Data']
+    types: [completed]
   push:
     paths:
       - 'scorigami.json'
@@ -17,9 +20,12 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Build lightweight alert feed
         run: |
           node <<'NODE'

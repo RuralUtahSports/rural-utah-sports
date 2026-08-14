@@ -33,13 +33,25 @@ jobs:
             if (!rows.length) continue;
 
             const latest = rows[rows.length - 1];
+            const previous = rows.length > 1 ? rows[rows.length - 2] : null;
+            const latestElo = Number(latest.eloAfter);
+            const before = Number.isFinite(Number(latest.eloBefore))
+              ? Number(latest.eloBefore)
+              : previous && Number.isFinite(Number(previous.eloAfter))
+                ? Number(previous.eloAfter)
+                : latestElo;
+            const change = Number.isFinite(Number(latest.change))
+              ? Number(latest.change)
+              : latestElo - before;
             let peak = rows[0];
             for (const row of rows) {
               if (Number(row.eloAfter) > Number(peak.eloAfter)) peak = row;
             }
 
             summary[team] = {
-              currentElo: Number(latest.eloAfter),
+              currentElo: latestElo,
+              currentChange: change,
+              currentEloBefore: before,
               currentDate: latest.date || '',
               currentOpponent: latest.opponent || '',
               currentResult: latest.result || '',
