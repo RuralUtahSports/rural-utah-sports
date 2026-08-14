@@ -3,10 +3,11 @@ name: Build Scorigami Data
 on:
   workflow_dispatch:
   schedule:
-    - cron: '22 * * * *'
+    - cron: '7,22,37,52 * * * *'
   push:
     paths:
       - '.github/workflows/build-scorigami.yml'
+      - 'weekly-simulation.json'
 
 permissions:
   contents: write
@@ -36,13 +37,35 @@ jobs:
           const year=v=>{const m=clean(v).match(/(18|19|20)\d{2}/);return m?Number(m[0]):null},stamp=v=>{const d=new Date(clean(v));return Number.isFinite(d.getTime())?d.getTime():0};
           function pairKey(a,b){return [a,b].sort().join('|')}
           function scoreSig(a,sa,b,sb){return [[a,sa],[b,sb]].sort((x,y)=>x[0].localeCompare(y[0])).map(x=>`${x[0]}:${x[1]}`).join('|')}
-          (async()=>{const res=await fetch(url);if(!res.ok)throw new Error(`Sheet download failed ${res.status}`);const rows=parseCSV(await res.text()),scoreMap=new Map(),candidates=[];let skippedRows=0,sourceRows=0,exactDuplicatesRemoved=0,nearDuplicatesRemoved=0,conflictingDuplicates=0,knownCorrectionsRemoved=0,maxWinningScore=0,maxLosingScore=0;
-            for(let i=1;i<rows.length;i++){const r=rows[i],date=clean(r[0]),team1=team(r[1]),team2=team(r[2]),score1=num(r[3]),score2=num(r[4]),ts=stamp(date);if(!date||!ts||!team1||!team2||team1===team2||score1===null||score2===null||score1<0||score2<0){if(r.some(v=>clean(v)))skippedRows++;continue}if(date==='9/19/2025'&&pairKey(team1,team2)==='MONUMENT VALLEY|PANGUITCH'){knownCorrectionsRemoved++;continue}sourceRows++;candidates.push({date,team1,team2,score1,score2,ts,index:i,pair:pairKey(team1,team2),sig:scoreSig(team1,score1,team2,score2)})}
+          function isKnownBadDuplicate(date,a,b,sa,sb){
+            const pair=pairKey(a,b),sig=scoreSig(a,sa,b,sb);
+            if(date==='9/19/2025'&&pair==='MONUMENT VALLEY|PANGUITCH')return true;
+            // The real 2024 Westlake-Copper Hills playoff game was 10/25/2024, 41-26.
+            // A second copy dated 10/18/2024 exists in the historical source and is not a real game.
+            if(date==='10/18/2024'&&pair==='COPPER HILLS|WESTLAKE'&&sig==='COPPER HILLS:26|WESTLAKE:41')return true;
+            return false;
+          }
+          (async()=>{const res=await fetch(url);if(!res.ok)throw new Error(`Sheet download failed ${res.status}`);const rows=parseCSV(await res.text()),scoreMap=new Map(),candidates=[];let skippedRows=0,sourceRows=0,weeklyFinalsAdded=0,exactDuplicatesRemoved=0,nearDuplicatesRemoved=0,conflictingDuplicates=0,knownCorrectionsRemoved=0,maxWinningScore=0,maxLosingScore=0;
+            for(let i=1;i<rows.length;i++){const r=rows[i],date=clean(r[0]),team1=team(r[1]),team2=team(r[2]),score1=num(r[3]),score2=num(r[4]),ts=stamp(date);if(!date||!ts||!team1||!team2||team1===team2||score1===null||score2===null||score1<0||score2<0){if(r.some(v=>clean(v)))skippedRows++;continue}if(isKnownBadDuplicate(date,team1,team2,score1,score2)){knownCorrectionsRemoved++;continue}sourceRows++;candidates.push({date,team1,team2,score1,score2,ts,index:i,pair:pairKey(team1,team2),sig:scoreSig(team1,score1,team2,score2),source:'clean'})}
+            // Merge finalized Weekly Simulation games so Scorigami updates as soon as a final reaches the site,
+            // even if the Google Sheet Clean Games rebuild has not finished yet. Normal dedupe below prevents double counting.
+            if(fs.existsSync('weekly-simulation.json')){
+              try{
+                const weekly=JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));
+                for(const [i,g] of (weekly.games||[]).entries()){
+                  const date=clean(g.date),team1=team(g.awayTeam),team2=team(g.homeTeam),score1=num(g.actualAway),score2=num(g.actualHome),ts=stamp(date);
+                  if(!date||!ts||!team1||!team2||team1===team2||score1===null||score2===null||score1<0||score2<0)continue;
+                  if(isKnownBadDuplicate(date,team1,team2,score1,score2)){knownCorrectionsRemoved++;continue}
+                  weeklyFinalsAdded++;
+                  candidates.push({date,team1,team2,score1,score2,ts,index:1000000+i,pair:pairKey(team1,team2),sig:scoreSig(team1,score1,team2,score2),source:'weekly'});
+                }
+              }catch(e){console.warn('Weekly Simulation merge skipped:',e.message)}
+            }
             candidates.sort((a,b)=>a.ts-b.ts||a.index-b.index);
             const exactSeen=new Map(),lastBySignature=new Map(),unique=[];
             for(const g of candidates){const exactKey=`${g.date}|${g.pair}`,priorSig=exactSeen.get(exactKey);if(priorSig!==undefined){exactDuplicatesRemoved++;if(priorSig!==g.sig)conflictingDuplicates++;continue}exactSeen.set(exactKey,g.sig);const signature=`${g.pair}|${g.sig}`,prior=lastBySignature.get(signature);if(prior){const days=(g.ts-prior.ts)/86400000;if(days>0&&days<=3){nearDuplicatesRemoved++;continue}}lastBySignature.set(signature,g);unique.push(g)}
             for(const g of unique){const {date,team1,team2,score1,score2}=g,high=Math.max(score1,score2),low=Math.min(score1,score2),k=`${high}-${low}`,yr=year(date);let e=scoreMap.get(k);if(!e){e={winner:high,loser:low,count:0,firstYear:null,recentYear:null,games:[]};scoreMap.set(k,e)}e.count++;if(yr!==null){e.firstYear=e.firstYear===null?yr:Math.min(e.firstYear,yr);e.recentYear=e.recentYear===null?yr:Math.max(e.recentYear,yr)}const tie=score1===score2,winningTeam=tie?team1:(score1>score2?team1:team2),losingTeam=tie?team2:(score1>score2?team2:team1);e.games.push({date,year:yr,winner:winningTeam,loser:losingTeam,winnerScore:high,loserScore:low,tie,team1,team2,score1,score2});maxWinningScore=Math.max(maxWinningScore,high);maxLosingScore=Math.max(maxLosingScore,low)}
-            for(const e of scoreMap.values())e.games.sort((a,b)=>stamp(b.date)-stamp(a.date));const scores=[...scoreMap.values()].sort((a,b)=>a.winner-b.winner||a.loser-b.loser),duplicatesRemoved=exactDuplicatesRemoved+nearDuplicatesRemoved+knownCorrectionsRemoved;const payload={summary:{sourceRows,uniqueGames:unique.length,duplicatesRemoved,exactDuplicatesRemoved,nearDuplicatesRemoved,knownCorrectionsRemoved,conflictingDuplicates,uniqueFinalScores:scores.length,skippedRows},maxWinningScore,maxLosingScore,scores};if(!scores.length||!unique.length)throw new Error('No score data');fs.writeFileSync('scorigami.json',JSON.stringify(payload));console.log(`Source rows: ${sourceRows}; unique games: ${unique.length}; duplicates removed: ${duplicatesRemoved} (${exactDuplicatesRemoved} exact, ${nearDuplicatesRemoved} near-date, ${knownCorrectionsRemoved} known correction); conflicts: ${conflictingDuplicates}`)})().catch(e=>{console.error(e);process.exit(1)});
+            for(const e of scoreMap.values())e.games.sort((a,b)=>stamp(b.date)-stamp(a.date));const scores=[...scoreMap.values()].sort((a,b)=>a.winner-b.winner||a.loser-b.loser),duplicatesRemoved=exactDuplicatesRemoved+nearDuplicatesRemoved+knownCorrectionsRemoved;const payload={summary:{sourceRows,weeklyFinalsAdded,uniqueGames:unique.length,duplicatesRemoved,exactDuplicatesRemoved,nearDuplicatesRemoved,knownCorrectionsRemoved,conflictingDuplicates,uniqueFinalScores:scores.length,skippedRows},maxWinningScore,maxLosingScore,scores};if(!scores.length||!unique.length)throw new Error('No score data');fs.writeFileSync('scorigami.json',JSON.stringify(payload));console.log(`Source rows: ${sourceRows}; weekly finals merged: ${weeklyFinalsAdded}; unique games: ${unique.length}; duplicates removed: ${duplicatesRemoved} (${exactDuplicatesRemoved} exact, ${nearDuplicatesRemoved} near-date, ${knownCorrectionsRemoved} known correction); conflicts: ${conflictingDuplicates}`)})().catch(e=>{console.error(e);process.exit(1)});
           NODE
       - name: Commit Scorigami data
         run: |
