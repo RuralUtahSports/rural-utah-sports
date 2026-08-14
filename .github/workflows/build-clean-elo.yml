@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - 'team-elo-history.json'
+      - 'weekly-simulation.json'
       - '.github/workflows/build-clean-elo.yml'
 
 permissions:
@@ -34,7 +35,7 @@ jobs:
           const aliases={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH','BRIGHAM YOUNG':'BYH','AMERICAN LEADERSHIP':'ALA','AMERICAN LEADERSHIP ACADEMY':'ALA','AMRICAN FORK':'AMERICAN FORK','DESERET HILLS':'DESERT HILLS','MOUNUMENT VALLEY':'MONUMENT VALLEY','MONTUMENT VALLEY':'MONUMENT VALLEY','MOAPA VALLEY(NV)':'MOAPA VALLEY (NV)','VIRGIN VAL (NV)':'VIRGIN VALLEY (NV)','VIRGIN VALLEY (NV))':'VIRGIN VALLEY (NV)','BOULDER CITY(NV)':'BOULDER CITY (NV)','HIGHLAND, ID':'HIGHLAND (ID)','MARSH VALLEY(ID)':'MARSH VALLEY (ID)','ONEIDA ACAD.(ID)':'ONEIDA ACADEMY (ID)','RAYMOND, ALBERTA':'RAYMOND (ALBERTA)','ST LOUIS (HI)':'ST. LOUIS (HI)','CROWNPOINT (NM)':'CROWN POINT (NM)','KIRKLAND (NM)':'KIRTLAND (NM)','MTN CREST JV':'MOUNTAIN CREST JV','EAST HIGH 2ND TEAM':'EAST 2ND TEAM','WEST HIGH 2ND TEAM':'WEST 2ND TEAM','MTN. VIEW CHRISTIAN (NV)':'MTN VIEW CHRISTIAN (NV)','MONUMENT VAL (AZ) JV':'MONUMENT VALLEY (AZ) JV','BLOOMFIELD(NM)JV':'BLOOMFIELD (NM) JV'};
           function team(v){const n=norm(v).replace(/\.+$/,'').trim();if(n.startsWith('WASATCH ACAD'))return'WASATCH ACADEMY';return aliases[n]||n}
           function slug(v){return team(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')}
-          function parseDate(v){const m=clean(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(!m)return null;return{month:+m[1],day:+m[2],year:+m[3],key:+m[3]*10000+(+m[1])*100+(+m[2]),ms:Date.UTC(+m[3],+m[1]-1,+m[2])}}
+          function parseDate(v){const s=clean(v);let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(!m){m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)m=[m[0],m[2],m[3],m[1]]}if(!m)return null;return{month:+m[1],day:+m[2],year:+m[3],key:+m[3]*10000+(+m[1])*100+(+m[2]),ms:Date.UTC(+m[3],+m[1]-1,+m[2])}}
           function scoreSig(a,sa,b,sb){return [[a,sa],[b,sb]].sort((x,y)=>x[0].localeCompare(y[0])).map(x=>`${x[0]}:${x[1]}`).join('|')}
           function roundAway(x){return x>=0?Math.floor(x+0.5):Math.ceil(x-0.5)}
           function expected(a,b){return 1/(1+Math.pow(10,(b-a)/400))}
@@ -42,20 +43,21 @@ jobs:
           (async()=>{
             const teams=JSON.parse(fs.readFileSync('teams-data.json','utf8')),website=new Set(teams.map(t=>team(t.team)));
             const res=await fetch(url);if(!res.ok)throw new Error(`Clean Games download failed ${res.status}`);const rows=parseCSV(await res.text()),candidates=[];
-            let sourceRows=0,exactDuplicatesRemoved=0,nearDuplicatesRemoved=0,conflictingDuplicates=0,knownCorrectionsRemoved=0;
-            for(let i=1;i<rows.length;i++){const r=rows[i],date=clean(r[0]),d=parseDate(date),a=team(r[1]),b=team(r[2]),sa=num(r[3]),sb=num(r[4]);if(!d||!a||!b||a===b||sa===null||sb===null)continue;if(date==='9/19/2025'&&[a,b].sort().join('|')==='MONUMENT VALLEY|PANGUITCH'){knownCorrectionsRemoved++;continue}sourceRows++;candidates.push({date,d,a,b,sa,sb,index:i,pair:[a,b].sort().join('|'),sig:scoreSig(a,sa,b,sb)})}
+            let sourceRows=0,weeklyFinalRows=0,exactDuplicatesRemoved=0,nearDuplicatesRemoved=0,conflictingDuplicates=0,knownCorrectionsRemoved=0;
+            for(let i=1;i<rows.length;i++){const r=rows[i],date=clean(r[0]),d=parseDate(date),a=team(r[1]),b=team(r[2]),sa=num(r[3]),sb=num(r[4]);if(!d||!a||!b||a===b||sa===null||sb===null)continue;if(date==='9/19/2025'&&[a,b].sort().join('|')==='MONUMENT VALLEY|PANGUITCH'){knownCorrectionsRemoved++;continue}sourceRows++;candidates.push({date,d,a,b,sa,sb,index:i,pair:[a,b].sort().join('|'),sig:scoreSig(a,sa,b,sb),source:'clean'})}
+            if(fs.existsSync('weekly-simulation.json')){const weekly=JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));for(let i=0;i<(weekly.games||[]).length;i++){const g=weekly.games[i],sa=num(g.actualAway),sb=num(g.actualHome),date=clean(g.date),d=parseDate(date),a=team(g.awayTeam),b=team(g.homeTeam);if(!d||!a||!b||a===b||sa===null||sb===null)continue;weeklyFinalRows++;candidates.push({date,d,a,b,sa,sb,index:1000000+i,pair:[a,b].sort().join('|'),sig:scoreSig(a,sa,b,sb),source:'weekly'})}}
             candidates.sort((x,y)=>x.d.ms-y.d.ms||x.index-y.index);
             const exactSeen=new Map(),lastBySignature=new Map(),games=[];
-            for(const g of candidates){const exactKey=`${g.date}|${g.pair}`,priorSig=exactSeen.get(exactKey);if(priorSig!==undefined){exactDuplicatesRemoved++;if(priorSig!==g.sig)conflictingDuplicates++;continue}exactSeen.set(exactKey,g.sig);const signature=`${g.pair}|${g.sig}`,prior=lastBySignature.get(signature);if(prior){const days=(g.d.ms-prior.d.ms)/86400000;if(days>0&&days<=3){nearDuplicatesRemoved++;continue}}lastBySignature.set(signature,g);games.push(g)}
+            for(const g of candidates){const exactKey=`${g.date}|${g.pair}`,prior=exactSeen.get(exactKey);if(prior){exactDuplicatesRemoved++;if(prior.sig!==g.sig){conflictingDuplicates++;if(g.source==='weekly'){const idx=games.findIndex(x=>x===prior.game);if(idx>=0)games.splice(idx,1);exactSeen.delete(exactKey)}else continue}else continue}const signature=`${g.pair}|${g.sig}`,near=lastBySignature.get(signature);if(near){const days=(g.d.ms-near.d.ms)/86400000;if(days>0&&days<=3){nearDuplicatesRemoved++;continue}}exactSeen.set(exactKey,{sig:g.sig,game:g});lastBySignature.set(signature,g);games.push(g)}
             games.sort((x,y)=>x.d.key-y.d.key||x.index-y.index);
             const ratings=new Map(),history={};for(const t of website)history[t]=[];const get=t=>ratings.has(t)?ratings.get(t):1500;
             for(const g of games){const ra=get(g.a),rb=get(g.b),aa=g.sa>g.sb?1:g.sa<g.sb?0:.5,ab=1-aa,margin=Math.abs(g.sa-g.sb),mov=aa===.5?1:movMultiplier(margin),ca=roundAway(32*(aa-expected(ra,rb))*mov),cb=-ca,na=ra+ca,nb=rb+cb;ratings.set(g.a,na);ratings.set(g.b,nb);const resa=aa===1?'W':aa===0?'L':'T',resb=ab===1?'W':ab===0?'L':'T';if(website.has(g.a))history[g.a].push({date:g.date,season:g.d.year,opponent:g.b,result:resa,eloBefore:ra,change:ca,eloAfter:na,margin,movMultiplier:+mov.toFixed(3)});if(website.has(g.b))history[g.b].push({date:g.date,season:g.d.year,opponent:g.a,result:resb,eloBefore:rb,change:cb,eloAfter:nb,margin,movMultiplier:+mov.toFixed(3)})}
             for(const k of Object.keys(history))if(!history[k].length)delete history[k];
             const summary={};for(const [t,rs] of Object.entries(history)){const latest=rs.at(-1);let peak=rs[0];for(const r of rs)if(r.eloAfter>peak.eloAfter)peak=r;summary[t]={currentElo:latest.eloAfter,currentDate:latest.date,currentOpponent:latest.opponent,currentResult:latest.result,peakElo:peak.eloAfter,peakDate:peak.date,peakSeason:peak.season,peakOpponent:peak.opponent,peakResult:peak.result}}
             const duplicatesRemoved=exactDuplicatesRemoved+nearDuplicatesRemoved+knownCorrectionsRemoved;
-            fs.writeFileSync('team-elo-history.json',JSON.stringify(history));fs.writeFileSync('elo-summary.json',JSON.stringify(summary));fs.writeFileSync('elo-cleanup-report.json',JSON.stringify({sourceRows,uniqueGames:games.length,duplicatesRemoved,exactDuplicatesRemoved,nearDuplicatesRemoved,knownCorrectionsRemoved,conflictingDuplicates,kFactor:32,startingElo:1500,marginBonus:{formula:'1 + 0.35 * (ln(min(margin,40)) / ln(40)) ^ 1.5',minimumMultiplier:1,maximumMultiplier:1.35,capMargin:40,tiesMultiplier:1}},null,2)+'\n');
+            fs.writeFileSync('team-elo-history.json',JSON.stringify(history));fs.writeFileSync('elo-summary.json',JSON.stringify(summary));fs.writeFileSync('elo-cleanup-report.json',JSON.stringify({sourceRows,weeklyFinalRows,uniqueGames:games.length,duplicatesRemoved,exactDuplicatesRemoved,nearDuplicatesRemoved,knownCorrectionsRemoved,conflictingDuplicates,kFactor:32,startingElo:1500,marginBonus:{formula:'1 + 0.35 * (ln(min(margin,40)) / ln(40)) ^ 1.5',minimumMultiplier:1,maximumMultiplier:1.35,capMargin:40,tiesMultiplier:1}},null,2)+'\n');
             for(const t of website){const p=`team-page-data/${slug(t)}.json`;if(!fs.existsSync(p))continue;const d=JSON.parse(fs.readFileSync(p,'utf8'));d.eloHistory=history[t]||[];fs.writeFileSync(p,JSON.stringify(d))}
-            console.log(`ELO rebuilt from ${games.length} unique games; ${duplicatesRemoved} duplicate/corrected rows removed`);
+            console.log(`ELO rebuilt from ${games.length} unique games including ${weeklyFinalRows} completed weekly-scoreboard rows; ${duplicatesRemoved} duplicate/corrected rows removed`);
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
       - name: Verify
@@ -69,7 +71,7 @@ jobs:
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           git add team-elo-history.json elo-summary.json elo-cleanup-report.json team-page-data
           if git diff --cached --quiet; then echo "Clean ELO data current."; exit 0; fi
-          git commit -m "Rebuild ELO with capped margin bonus"
+          git commit -m "Rebuild live ELO from completed games"
           ok=0
           for attempt in 1 2 3 4; do if git pull --rebase origin main && git push; then ok=1; break; fi; sleep 10; done
           if [ "$ok" -ne 1 ]; then exit 1; fi
