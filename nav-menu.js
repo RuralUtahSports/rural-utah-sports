@@ -61,6 +61,7 @@
     }
     if(['player.html','mvp-race.html','all-state-watch.html','all-utah.html'].includes(path))addScript('player-awards-integration.js?v=20260814a','rusPlayerAwards',true);
     if(['mvp-race.html','all-state-watch.html','all-utah.html','awards-2025.html'].includes(path))addScript('award-school-branding.js?v=20260814b','rusAwardSchoolBranding',true);
+    if(path==='awards-2025.html')addScript('past-awards-allstate-layout.js?v=20260814a','rusPastAwardsAllState',true);
     if(path==='stat-leaders.html')addScript('stat-leaders-branding.js?v=20260814b','rusStatLeadersBranding',true);
     if(path==='map.html')addScript('map-distance-tools.js?v=20260814b','rusMapDistanceTools',true);
     if(path==='storylines.html')addScript('storylines-live-fix.js?v=20260814a','rusStorylinesLiveFix',true);
