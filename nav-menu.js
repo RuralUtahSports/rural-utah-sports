@@ -59,7 +59,7 @@
     }
     if(path.includes('simulator'))[['season-simulator-core.js?v=20260813a','rusSeasonCore'],['season-simulator-odds.js?v=20260813a','rusSeasonOdds'],['season-simulator-score.js?v=20260813a','rusSeasonScore'],['season-simulator-elo.js?v=20260813e','rusSeasonElo'],['season-simulator-run.js?v=20260813e','rusSeasonRun'],['season-simulator-view.js?v=20260813h','rusSeasonView'],['season-simulator-ui.js?v=20260813f','rusSeasonUi']].forEach(([src,key])=>addScript(src,key,false));
     if(path==='scoreboard.html'){
-      addScript('scoreboard-live-clock.js?v=20260813a','rusScoreboardLiveClock',true);
+      addScript('scoreboard-live-clock.js?v=20260814-score-refresh','rusScoreboardLiveClock',true);
       addScript('scoreboard-rankings-ui.js?v=20260813a','rusScoreboardRankingsUi',true);
       addScript('scoreboard-card-enhancements.js?v=20260814a','rusScoreboardCardEnhancements',true);
       addScript('scoreboard-live-elo.js?v=20260814a','rusScoreboardLiveElo',true);
