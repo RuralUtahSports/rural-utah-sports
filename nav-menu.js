@@ -29,14 +29,17 @@
     addScript('site-share.js','rusShare',true);
     addScript('mobile-optimizations.js?v=20260814b','rusMobileOptimizations',true);
 
-    if(oneOf('teams.html','team.html','scoreboard.html','standings.html','rankings.html','storylines.html','stat-leaders.html','mvp-race.html','all-utah.html','all-state-watch.html','awards-2025.html','player.html','map.html','compare.html','rivalry.html')){
+    if(oneOf('teams.html','team.html','scoreboard.html','standings.html','rankings.html','storylines.html','records.html','stat-leaders.html','mvp-race.html','all-utah.html','all-state-watch.html','awards-2025.html','player.html','map.html','compare.html','rivalry.html')){
       addScript('school-assets.js?v=20260813a','rusSchoolAssets',true);
       addScript('school-logo-integration.js?v=20260813b','rusSchoolLogoIntegration',true);
       addScript('school-colors.js?v=20260813c','rusSchoolColors',true);
     }
     if(oneOf('team.html','player.html'))addScript('season-dropdown.js?v=20260814a','rusSeasonDropdown',true);
 
-    if(path==='records.html')addScript('record-watch-filter.js?v=20260812b','rusRecordWatchFilter',true);
+    if(path==='records.html'){
+      addScript('record-watch-filter.js?v=20260812b','rusRecordWatchFilter',true);
+      addScript('uhsaa-record-book.js?v=20260814a','rusUhsaaRecordBook',true);
+    }
     if(path==='programs.html')addScript('program-leaderboard-filter.js?v=20260812a','rusProgramLeaderboardFilter',true);
     if(oneOf('history-lab.html','season.html','greatest-seasons.html','dynasty.html'))addScript('history-tools-integration.js?v=20260812c','rusHistoryTools',true);
     if(path==='team.html'){
