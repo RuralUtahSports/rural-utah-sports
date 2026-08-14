@@ -2,6 +2,9 @@ name: Post New Scorigami to X
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ['Build Scorigami Alert Feed']
+    types: [completed]
   push:
     paths:
       - 'scorigami-latest.json'
@@ -16,6 +19,7 @@ concurrency:
 
 jobs:
   post:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     env:
       X_API_KEY: ${{ secrets.X_API_KEY }}
@@ -24,6 +28,8 @@ jobs:
       X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Post unseen Scorigamis
         run: |
           node <<'NODE'
@@ -46,8 +52,8 @@ jobs:
           })}
           (async()=>{
             for(const a of alerts.reverse()){
-              const result=a.tie?'TIE':`${a.winner} ${a.winnerScore}-${a.loserScore} ${a.loser}`;
-              const text=`🚨 SCORIGAMI! 🚨\n\n${result}\n\nThat final score had never happened before in the Rural Utah Sports historical Utah high school football database. #UtahHSFB #Scorigami`;
+              const result=a.tie?`${a.awayTeam} ${a.awayScore}-${a.homeScore} ${a.homeTeam}`:`${a.winner} ${a.winnerScore}-${a.loserScore} ${a.loser}`;
+              const text=`🚨 SCORIGAMI! 🚨\n\n${result}\n\nThat final score had never happened before in the Rural Utah Sports Utah high school football database.\n\nExplore Scorigami: https://ruralutahsports.github.io/rural-utah-sports/scorigami.html\n\n#UtahHSFB #Scorigami`;
               await post(text);posted.add(a.id);console.log(`Posted ${a.id}`);
             }
             fs.writeFileSync(statePath,JSON.stringify({updatedAt:new Date().toISOString(),posted:[...posted].slice(-250)},null,2)+'\n');
