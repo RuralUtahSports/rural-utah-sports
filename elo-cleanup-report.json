@@ -1,19 +1,11 @@
 {
-  "sourceRows": 39518,
-  "weeklyFinalRows": 61,
-  "uniqueGames": 37905,
-  "duplicatesRemoved": 1675,
-  "exactDuplicatesRemoved": 1430,
-  "nearDuplicatesRemoved": 244,
-  "knownCorrectionsRemoved": 1,
-  "conflictingDuplicates": 10,
+  "sourceRows": 39487,
+  "weeklyFinalRows": 3,
+  "uniqueGames": 37819,
+  "duplicatesRemoved": 1671,
+  "knownCorrectionsRemoved": 2,
+  "conflicts": 10,
   "kFactor": 32,
   "startingElo": 1500,
-  "marginBonus": {
-    "formula": "1 + 0.35 * (ln(min(margin,40)) / ln(40)) ^ 1.5",
-    "minimumMultiplier": 1,
-    "maximumMultiplier": 1.35,
-    "capMargin": 40,
-    "tiesMultiplier": 1
-  }
+  "finalsOnly": true
 }
