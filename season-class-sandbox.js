@@ -1,1 +1,0 @@
-(()=>{const X=window.RUSSeasonClassSandbox=window.RUSSeasonClassSandbox||{enabled:false};X.classes=['6A','5A','4A','3A','2A','1A','8P'];X.load=async()=>X.alignment||(X.alignment=await fetch('full-season-alignment-2025.json?v=20260813a').then(r=>r.json()));})();
