@@ -8,6 +8,7 @@ on:
   push:
     paths:
       - 'scripts/enrich-weekly-deseret.mjs'
+      - 'scripts/enrich-deseret-game-details.mjs'
       - '.github/workflows/enrich-weekly-deseret.yml'
 
 permissions:
@@ -30,16 +31,19 @@ jobs:
       - name: Match Deseret game pages
         run: node scripts/enrich-weekly-deseret.mjs
 
-      - name: Commit Deseret links
+      - name: Update Deseret box scores, scoring plays and stats
+        run: node scripts/enrich-deseret-game-details.mjs
+
+      - name: Commit Deseret data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add weekly-simulation.json deseret-game-links.json
+          git add weekly-simulation.json deseret-game-links.json deseret-game-details.json
           if git diff --cached --quiet; then
-            echo "Deseret game links are already current."
+            echo "Deseret game data is already current."
             exit 0
           fi
-          git commit -m "Auto-sync Deseret game links"
+          git commit -m "Auto-sync Deseret game data"
           ok=0
           for attempt in 1 2 3 4; do
             if git pull --rebase origin main && git push; then
