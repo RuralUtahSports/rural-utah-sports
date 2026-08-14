@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-14T23:39:11.906Z",
+  "updatedAt": "2026-08-14T23:51:15.072Z",
   "summary": {
-    "teams": 10,
-    "teamGames": 10,
-    "statRows": 38,
-    "rosterMatchedRows": 38
+    "teams": 12,
+    "teamGames": 12,
+    "statRows": 47,
+    "rosterMatchedRows": 47
   },
   "teams": {
     "CEDAR CITY": {
@@ -630,6 +630,115 @@
         }
       ]
     },
+    "MILFORD": {
+      "team": "MILFORD",
+      "games": [
+        {
+          "gameKey": "2026-08-14|MILFORD|WHITEHORSE",
+          "date": "2026-08-14",
+          "opponent": "WHITEHORSE",
+          "location": "Away",
+          "status": "Q1",
+          "final": false,
+          "teamScore": null,
+          "opponentScore": null,
+          "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/milford-football-vs-whitehorse-football/274427",
+          "players": [
+            {
+              "playerId": "milford-1-braxton-hansen",
+              "number": "1",
+              "name": "Braxton Hansen",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                },
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Milford — ( 10:51 1Q ) Braxton Hansen , 37-yard run ( kick failed )",
+                "Milford — ( 6:42 1Q ) Kamdon Spaulding , 41-yard pass from Braxton Hansen ( run failed )"
+              ]
+            },
+            {
+              "playerId": "milford-29-tayon-blackburn",
+              "number": "29",
+              "name": "Tayon Blackburn",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Milford — ( 8:56 1Q ) Tayon Blackburn , 5-yard run ( run failed )"
+              ]
+            },
+            {
+              "playerId": "milford-15-kamdon-spaulding",
+              "number": "15",
+              "name": "Kamdon Spaulding",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Milford — ( 6:42 1Q ) Kamdon Spaulding , 41-yard pass from Braxton Hansen ( run failed )"
+              ]
+            }
+          ],
+          "scoringPlays": [
+            "Milford — ( 10:51 1Q ) Braxton Hansen , 37-yard run ( kick failed )",
+            "Milford — ( 8:56 1Q ) Tayon Blackburn , 5-yard run ( run failed )",
+            "Milford — ( 6:42 1Q ) Kamdon Spaulding , 41-yard pass from Braxton Hansen ( run failed )"
+          ]
+        }
+      ]
+    },
+    "WHITEHORSE": {
+      "team": "WHITEHORSE",
+      "games": [
+        {
+          "gameKey": "2026-08-14|MILFORD|WHITEHORSE",
+          "date": "2026-08-14",
+          "opponent": "MILFORD",
+          "location": "Home",
+          "status": "Q1",
+          "final": false,
+          "teamScore": null,
+          "opponentScore": null,
+          "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/milford-football-vs-whitehorse-football/274427",
+          "players": [],
+          "scoringPlays": []
+        }
+      ]
+    },
     "HUNTER": {
       "team": "HUNTER",
       "games": [
@@ -873,13 +982,35 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "3",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Kanab — ( 8:58 1Q ) Brennan Orton , 9-yard pass from Grady Anderson ( kick from Ray Capson )"
+                "Kanab — ( 8:58 1Q ) Brennan Orton , 9-yard pass from Grady Anderson ( kick from Ray Capson )",
+                "Kanab — ( 7:01 1Q ) Latimer Glover , 10-yard pass from Grady Anderson ( kick failed )",
+                "Kanab — ( 0:04 1Q ) Brennan Orton , 69-yard pass from Grady Anderson ( run from Latimer Glover )"
+              ]
+            },
+            {
+              "playerId": "kanab-11-latimer-glover",
+              "number": "11",
+              "name": "Latimer Glover",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Kanab — ( 7:01 1Q ) Latimer Glover , 10-yard pass from Grady Anderson ( kick failed )",
+                "Kanab — ( 0:04 1Q ) Brennan Orton , 69-yard pass from Grady Anderson ( run from Latimer Glover )"
               ]
             },
             {
@@ -893,12 +1024,13 @@
                   "values": {
                     "Receptions": "",
                     "Yards": "",
-                    "TD": "1"
+                    "TD": "2"
                   }
                 }
               ],
               "scoringPlays": [
-                "Kanab — ( 8:58 1Q ) Brennan Orton , 9-yard pass from Grady Anderson ( kick from Ray Capson )"
+                "Kanab — ( 8:58 1Q ) Brennan Orton , 9-yard pass from Grady Anderson ( kick from Ray Capson )",
+                "Kanab — ( 0:04 1Q ) Brennan Orton , 69-yard pass from Grady Anderson ( run from Latimer Glover )"
               ]
             },
             {
@@ -922,7 +1054,9 @@
             }
           ],
           "scoringPlays": [
-            "Kanab — ( 8:58 1Q ) Brennan Orton , 9-yard pass from Grady Anderson ( kick from Ray Capson )"
+            "Kanab — ( 8:58 1Q ) Brennan Orton , 9-yard pass from Grady Anderson ( kick from Ray Capson )",
+            "Kanab — ( 7:01 1Q ) Latimer Glover , 10-yard pass from Grady Anderson ( kick failed )",
+            "Kanab — ( 0:04 1Q ) Brennan Orton , 69-yard pass from Grady Anderson ( run from Latimer Glover )"
           ]
         }
       ]
@@ -940,8 +1074,80 @@
           "teamScore": null,
           "opponentScore": null,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/kanab-football-vs-emery-football/273317",
-          "players": [],
-          "scoringPlays": []
+          "players": [
+            {
+              "playerId": "emery-13-ajay-thomas",
+              "number": "13",
+              "name": "Ajay Thomas",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                },
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Emery — ( 1:48 1Q ) Hunter Leffler , 6-yard pass from Ajay Thomas ( kick from Corbyn Ward )",
+                "Emery — ( 6:36 2Q ) Ajay Thomas , 2-yard run ( kick failed )"
+              ]
+            },
+            {
+              "playerId": "emery-3-hunter-leffler",
+              "number": "3",
+              "name": "Hunter Leffler",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Emery — ( 1:48 1Q ) Hunter Leffler , 6-yard pass from Ajay Thomas ( kick from Corbyn Ward )"
+              ]
+            },
+            {
+              "playerId": "emery-7-corbyn-ward",
+              "number": "7",
+              "name": "Corbyn Ward",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "1",
+                    "Return TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Emery — ( 1:48 1Q ) Hunter Leffler , 6-yard pass from Ajay Thomas ( kick from Corbyn Ward )"
+              ]
+            }
+          ],
+          "scoringPlays": [
+            "Emery — ( 1:48 1Q ) Hunter Leffler , 6-yard pass from Ajay Thomas ( kick from Corbyn Ward )",
+            "Emery — ( 6:36 2Q ) Ajay Thomas , 2-yard run ( kick failed )"
+          ]
         }
       ]
     }
