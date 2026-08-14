@@ -126,19 +126,32 @@ function sectionCategory(headers) {
   return '';
 }
 
-function inferTeam(context, game) {
-  const c = compact(context);
-  let best = { team: '', at: -1 };
+function bestTeamMatch(text, game) {
+  const c = compact(text);
+  let best = { team: '', score: -1 };
   for (const team of [game.awayTeam, game.homeTeam]) {
     for (const key of keysFor(team)) {
       const at = c.lastIndexOf(key);
-      if (at > best.at) best = { team, at };
+      if (at >= 0 && at + key.length > best.score) best = { team, score: at + key.length };
     }
   }
   return best.team;
 }
 
-function extractStats(tables, box, game) {
+function inferTeam(context, game, category) {
+  const lines = context.split(/\n+/).map(clean).filter(Boolean);
+  const cat = compact(category);
+  for (const line of [...lines].reverse()) {
+    const lc = compact(line);
+    if (!lc.includes(cat)) continue;
+    const team = bestTeamMatch(line, game);
+    if (team) return team;
+  }
+  const near = lines.slice(-5).join(' ');
+  return bestTeamMatch(near, game);
+}
+
+function extractStats(tables, game) {
   const stats = [];
   for (const t of tables) {
     const headerIndex = t.rows.findIndex(r => sectionCategory(r));
@@ -154,7 +167,7 @@ function extractStats(tables, box, game) {
     if (!rows.length) continue;
     stats.push({
       category,
-      team: inferTeam(t.context, game),
+      team: inferTeam(t.context, game, category),
       headers,
       rows
     });
@@ -185,24 +198,24 @@ function extractScoringPlays(html) {
     .slice(0, 40);
 }
 
-function extractStatus(html, box) {
-  const text = htmlText(html.slice(0, Math.min(html.length, 50000)));
-  const head = text.split(/Game Details/i)[0] || text.slice(0, 3000);
+function extractStatus(html, box, scoringPlays) {
+  const text = htmlText(html.slice(0, Math.min(html.length, 120000)));
+  const head = text.split(/Game Details/i)[0] || text.slice(0, 5000);
   if (/\bFinal\b/i.test(head)) return { status: 'Final', final: true };
   if (/\bHalftime\b/i.test(head)) return { status: 'Halftime', final: false };
   const q = head.match(/\b(?:Q([1-4])|([1-4])Q|([1-4])(?:st|nd|rd|th))\b/i);
   if (q) return { status: `Q${q[1] || q[2] || q[3]}`, final: false };
   if (/\bOT\b/i.test(head)) return { status: 'OT', final: false };
   const hasPoints = box?.rows?.some(r => Number(r.total) > 0);
-  return { status: hasPoints ? 'Live' : 'Scheduled', final: false };
+  return { status: (hasPoints || scoringPlays?.length) ? 'Live' : 'Scheduled', final: false };
 }
 
 function parseGameDetails(html, game) {
   const tables = extractTables(html);
   const boxScore = findBoxScore(tables);
   const scoringPlays = extractScoringPlays(html);
-  const stats = extractStats(tables, boxScore, game);
-  const state = extractStatus(html, boxScore);
+  const stats = extractStats(tables, game);
+  const state = extractStatus(html, boxScore, scoringPlays);
   return {
     url: game.deseretUrl,
     status: state.status,
