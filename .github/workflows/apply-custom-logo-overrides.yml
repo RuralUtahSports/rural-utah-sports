@@ -16,8 +16,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Wire uploaded logos into shared logo resolver
+        shell: bash
         run: |
-          python - <<'PY'
+          cat > /tmp/patch_logos.py <<'PY'
           from pathlib import Path
           p = Path('school-assets.js')
           s = p.read_text()
@@ -39,7 +40,7 @@ jobs:
             'SAN JUAN':'school-logos/san-juan.svg',
             'VIEWMONT':'school-logos/viewmont.svg'
           };
-"""
+          """
           if 'const CUSTOM_LOGOS=' not in s:
               if marker not in s:
                   raise SystemExit('Could not find BAD marker in school-assets.js')
@@ -52,7 +53,9 @@ jobs:
               raise SystemExit('Could not find logoUrl resolver in school-assets.js')
           p.write_text(s)
           PY
+          python /tmp/patch_logos.py
       - name: Commit resolver update
+        shell: bash
         run: |
           if git diff --quiet -- school-assets.js; then
             echo 'No change needed.'
