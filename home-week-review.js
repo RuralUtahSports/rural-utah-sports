@@ -1,6 +1,30 @@
 (()=>{
   const host=document.getElementById('weekReviewGrid');
   if(!host)return;
+
+  const style=document.createElement('style');
+  style.textContent=`
+    .week-review-grid{gap:14px!important}
+    .review-card{padding:0!important;overflow:hidden;min-height:190px;display:flex!important;flex-direction:column;background:linear-gradient(180deg,#181818 0%,#121212 100%)!important;border:1px solid #3a3a3a!important;box-shadow:0 8px 20px rgba(0,0,0,.22)}
+    .review-card:hover{border-color:#F14D07!important;transform:translateY(-2px)!important;box-shadow:0 12px 28px rgba(0,0,0,.32)}
+    .review-label{margin:0!important;padding:13px 16px 10px;color:#F14D07!important;font-size:12px!important;border-bottom:1px solid #292929;letter-spacing:.55px}
+    .review-scoreboard{padding:10px 14px 8px;display:flex;flex-direction:column;gap:5px}
+    .review-team-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:7px 8px;border-radius:6px;min-height:46px}
+    .review-team-row.winner{background:rgba(255,255,255,.055)}
+    .review-team-main{display:flex;align-items:center;gap:9px;min-width:0}
+    .review-team-main img{width:34px!important;height:34px!important;object-fit:contain;flex:0 0 34px}
+    .review-team-name{font-size:12px;font-weight:900;line-height:1.15;white-space:normal;overflow-wrap:anywhere;color:#f2f2f2}
+    .review-team-score{font-size:27px;font-weight:1000;line-height:1;color:#d6d6d6;min-width:34px;text-align:right;font-variant-numeric:tabular-nums}
+    .review-team-row.winner .review-team-score{color:#fff}
+    .review-team-row.winner .review-team-name{color:#fff}
+    .review-final{font-size:8px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#777;text-align:center;margin:0 14px;padding:5px 0;border-top:1px solid #242424;border-bottom:1px solid #242424}
+    .review-card p{margin:0!important;padding:10px 16px 14px;color:#999!important;font-size:11px!important;line-height:1.45;min-height:49px;margin-top:auto!important}
+    .empty-review{padding:16px!important}
+    .empty-review strong{font-size:15px}
+    @media(max-width:600px){.review-card{min-height:auto}.review-team-score{font-size:25px}.review-team-main img{width:32px!important;height:32px!important;flex-basis:32px}.review-team-name{font-size:12px}}
+  `;
+  document.head.appendChild(style);
+
   const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   const num=v=>v===null||v===undefined||v===''?null:Number(v);
   const valid=v=>Number.isFinite(v);
@@ -12,10 +36,11 @@
     const loser=a>h?g.homeTeam:h>a?g.awayTeam:'Tie';
     return {g,a,h,pa,ph,winner,loser,margin:Math.abs(a-h),total:a+h,predWinner:pa>ph?g.awayTeam:ph>pa?g.homeTeam:'Tie',predMargin:valid(pa)&&valid(ph)?Math.abs(pa-ph):0};
   };
+  const teamRow=(name,score,isWinner)=>`<div class="review-team-row ${isWinner?'winner':''}"><div class="review-team-main"><img src="${esc(logo(name))}" alt=""><span class="review-team-name">${esc(name)}</span></div><strong class="review-team-score">${score}</strong></div>`;
   const card=(label,r,blurb)=>{
     if(!r)return `<div class="review-card empty-review"><span>${esc(label)}</span><strong>Waiting on finals</strong><p>This will fill in automatically as games finish.</p></div>`;
     const g=r.g;
-    return `<a class="review-card" href="scoreboard.html"><div class="review-label">${esc(label)}</div><div class="review-matchup"><div><img src="${esc(logo(g.awayTeam))}" alt=""><b>${esc(g.awayTeam)}</b></div><strong>${r.a}–${r.h}</strong><div><img src="${esc(logo(g.homeTeam))}" alt=""><b>${esc(g.homeTeam)}</b></div></div><p>${esc(blurb)}</p></a>`;
+    return `<a class="review-card" href="scoreboard.html"><div class="review-label">${esc(label)}</div><div class="review-scoreboard">${teamRow(g.awayTeam,r.a,r.winner===g.awayTeam)}${teamRow(g.homeTeam,r.h,r.winner===g.homeTeam)}</div><div class="review-final">Final</div><p>${esc(blurb)}</p></a>`;
   };
   async function load(){
     try{
