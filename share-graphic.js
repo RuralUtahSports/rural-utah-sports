@@ -13,12 +13,14 @@
   .rus-share-sheet h3{margin:0 0 6px;font-size:22px}.rus-share-sheet p{margin:0 0 14px;color:#aaa;font-size:12px;line-height:1.45}
   .rus-share-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.rus-share-option{border:1px solid #444;border-radius:8px;background:#1d1d1d;color:#fff;padding:13px 10px;font-weight:900;cursor:pointer}.rus-share-option strong{display:block;color:#F14D07;font-size:12px}.rus-share-close{width:100%;margin-top:10px;border:0;background:#333;color:#fff;padding:12px;border-radius:8px;font-weight:900}
   .rus-exporting .rus-share-btn,.rus-exporting .rus-share-float{visibility:hidden!important}
-  .rus-export-board{position:fixed;left:-10000px;top:0;width:1400px;background:#0b0b0b;color:#fff;font-family:Arial,Helvetica,sans-serif;padding:22px;z-index:-1}
-  .rus-export-rank-grid{display:grid;gap:12px}.rus-export-rank-grid.cols-5{grid-template-columns:repeat(5,minmax(0,1fr))}.rus-export-rank-grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .rus-export-rank-item{position:relative;min-height:104px;background:#141414;border:1px solid #303030;border-left:7px solid var(--accent,#555);border-radius:9px;padding:12px 12px 10px 54px;overflow:hidden}
-  .rus-export-rank-num{position:absolute;left:10px;top:12px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#252525;border:1px solid #444;color:#fff;font-size:16px;font-weight:1000}
+  .rus-export-board{position:fixed;left:-10000px;top:0;background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif;z-index:-1;box-sizing:border-box}
+  .rus-export-rank-grid{display:grid;gap:10px;width:100%}
+  .rus-export-rank-grid.cols-5{grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(5,122px);grid-auto-flow:column}
+  .rus-export-rank-grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(5,122px);grid-auto-flow:column}
+  .rus-export-rank-item{position:relative;height:122px;background:#141414;border:1px solid #303030;border-left:7px solid var(--accent,#555);border-radius:9px;padding:13px 10px 10px 49px;overflow:hidden;box-sizing:border-box}
+  .rus-export-rank-num{position:absolute;left:9px;top:13px;width:31px;height:31px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#252525;border:1px solid #444;color:#fff;font-size:14px;font-weight:1000}
   .rus-export-rank-num.top1{background:#d5ad35;color:#000;border-color:#f0d169}.rus-export-rank-num.top2{background:#b9bcc1;color:#000;border-color:#e0e2e5}.rus-export-rank-num.top3{background:#ad6b3d;color:#000;border-color:#d6976a}
-  .rus-export-team-line{display:flex;align-items:center;gap:8px;min-width:0}.rus-export-logo{width:32px;height:32px;object-fit:contain;flex:0 0 32px}.rus-export-team{font-size:16px;font-weight:1000;line-height:1.08;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rus-export-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;color:#a8a8a8;font-size:10px;font-weight:900;text-transform:uppercase}.rus-export-move.up{color:#62df8c}.rus-export-move.down{color:#ff7070}.rus-export-move.new{color:#F14D07}
+  .rus-export-team-line{display:flex;align-items:center;gap:7px;min-width:0}.rus-export-logo{width:30px;height:30px;object-fit:contain;flex:0 0 30px}.rus-export-team{font-size:15px;font-weight:1000;line-height:1.08;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rus-export-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;color:#aaa;font-size:9px;font-weight:900;text-transform:uppercase}.rus-export-move.up{color:#62df8c}.rus-export-move.down{color:#ff7070}.rus-export-move.new{color:#F14D07}
   @media(min-width:700px){.rus-share-modal{align-items:center}}
   `;
   const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
@@ -51,16 +53,18 @@
     return 'Rural Utah Sports Awards';
   }
   function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-  function rankingSource(el){
+  function rankingSource(el,w){
     if(!PAGE.includes('rankings'))return null;
-    const stateRows=[...el.querySelectorAll?.('.state25-row')||[]];
-    const classRows=[...el.querySelectorAll?.('.rank-row')||[]];
+    const stateRoot=el.matches?.('.state25')?el:el.closest?.('.state25');
+    const stateRows=stateRoot?[...stateRoot.querySelectorAll('.state25-row')]:[];
+    const classRoot=el.matches?.('.rank-card')?el:el.closest?.('.rank-card');
+    const classRows=classRoot?[...classRoot.querySelectorAll('.rank-row')]:[];
     const rows=stateRows.length?stateRows:classRows;
     if(!rows.length)return null;
-    const board=document.createElement('div');board.className='rus-export-board';
+    const board=document.createElement('div');board.className='rus-export-board';board.style.width=`${Math.max(900,w-84)}px`;
     const grid=document.createElement('div');
     const cols=rows.length>10?5:2;grid.className=`rus-export-rank-grid cols-${cols}`;
-    rows.forEach((row,i)=>{
+    rows.slice(0,25).forEach((row,i)=>{
       const rank=(row.querySelector('.rank-num')?.textContent||String(i+1)).trim();
       const team=(row.querySelector('.team-pill')?.textContent||row.querySelector('.team-link')?.textContent||'').trim();
       const cls=(row.querySelector('.state25-class')?.textContent||row.querySelector('.team-class')?.textContent||'').trim();
@@ -80,7 +84,7 @@
     document.documentElement.classList.add('rus-exporting');
     let special=null;
     try{
-      special=rankingSource(el);
+      special=rankingSource(el,w);
       const target=special||el;
       const source=await html2canvas(target,{backgroundColor:'#111111',scale:2,useCORS:true,allowTaint:false,logging:false,windowWidth:Math.max(document.documentElement.clientWidth,target.scrollWidth)});
       const out=document.createElement('canvas');out.width=w;out.height=h;const c=out.getContext('2d');
