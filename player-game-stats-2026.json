@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-14T23:51:15.072Z",
+  "updatedAt": "2026-08-15T00:02:03.829Z",
   "summary": {
     "teams": 12,
     "teamGames": 12,
-    "statRows": 47,
-    "rosterMatchedRows": 47
+    "statRows": 49,
+    "rosterMatchedRows": 49
   },
   "teams": {
     "CEDAR CITY": {
@@ -664,14 +664,15 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "2",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Milford — ( 10:51 1Q ) Braxton Hansen , 37-yard run ( kick failed )",
-                "Milford — ( 6:42 1Q ) Kamdon Spaulding , 41-yard pass from Braxton Hansen ( run failed )"
+                "Milford — ( 6:42 1Q ) Kamdon Spaulding , 41-yard pass from Braxton Hansen ( run failed )",
+                "Milford — ( 5:24 1Q ) Haze Marshall , 46-yard pass from Braxton Hansen ( kick from Maddix Alger )"
               ]
             },
             {
@@ -694,6 +695,25 @@
               ]
             },
             {
+              "playerId": "milford-45-haze-marshall",
+              "number": "45",
+              "name": "Haze Marshall",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Milford — ( 5:24 1Q ) Haze Marshall , 46-yard pass from Braxton Hansen ( kick from Maddix Alger )"
+              ]
+            },
+            {
               "playerId": "milford-15-kamdon-spaulding",
               "number": "15",
               "name": "Kamdon Spaulding",
@@ -711,12 +731,32 @@
               "scoringPlays": [
                 "Milford — ( 6:42 1Q ) Kamdon Spaulding , 41-yard pass from Braxton Hansen ( run failed )"
               ]
+            },
+            {
+              "playerId": "milford-22-maddix-alger",
+              "number": "22",
+              "name": "Maddix Alger",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "1",
+                    "Return TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Milford — ( 5:24 1Q ) Haze Marshall , 46-yard pass from Braxton Hansen ( kick from Maddix Alger )"
+              ]
             }
           ],
           "scoringPlays": [
             "Milford — ( 10:51 1Q ) Braxton Hansen , 37-yard run ( kick failed )",
             "Milford — ( 8:56 1Q ) Tayon Blackburn , 5-yard run ( run failed )",
-            "Milford — ( 6:42 1Q ) Kamdon Spaulding , 41-yard pass from Braxton Hansen ( run failed )"
+            "Milford — ( 6:42 1Q ) Kamdon Spaulding , 41-yard pass from Braxton Hansen ( run failed )",
+            "Milford — ( 5:24 1Q ) Haze Marshall , 46-yard pass from Braxton Hansen ( kick from Maddix Alger )"
           ]
         }
       ]
@@ -735,7 +775,9 @@
           "opponentScore": null,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/milford-football-vs-whitehorse-football/274427",
           "players": [],
-          "scoringPlays": []
+          "scoringPlays": [
+            "Whitehorse — ( 5:43 1Q ) 79-yard pass ( kick successful )"
+          ]
         }
       ]
     },
@@ -747,7 +789,7 @@
           "date": "2026-08-14",
           "opponent": "LAYTON CHRISTIAN",
           "location": "Away",
-          "status": "HALFTIME",
+          "status": "Q3",
           "final": false,
           "teamScore": null,
           "opponentScore": null,
@@ -765,7 +807,7 @@
           "date": "2026-08-14",
           "opponent": "HUNTER",
           "location": "Home",
-          "status": "HALFTIME",
+          "status": "Q3",
           "final": false,
           "teamScore": null,
           "opponentScore": null,
@@ -964,7 +1006,7 @@
           "date": "2026-08-14",
           "opponent": "EMERY",
           "location": "Away",
-          "status": "HALFTIME",
+          "status": "Q2",
           "final": false,
           "teamScore": null,
           "opponentScore": null,
@@ -1069,7 +1111,7 @@
           "date": "2026-08-14",
           "opponent": "KANAB",
           "location": "Home",
-          "status": "HALFTIME",
+          "status": "Q2",
           "final": false,
           "teamScore": null,
           "opponentScore": null,
