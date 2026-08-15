@@ -1,0 +1,44 @@
+name: Wire School Logo Integration Sitewide
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'school-logo-integration.js'
+      - 'school-assets.js'
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add logo scripts to every HTML page
+        shell: python
+        run: |
+          from pathlib import Path
+          changed=[]
+          scripts='\n<script src="school-assets.js?v=20260815-logo2"></script>\n<script src="school-logo-integration.js?v=20260815-logo2"></script>\n'
+          for p in Path('.').glob('*.html'):
+              text=p.read_text(encoding='utf-8')
+              original=text
+              # Remove older copies so the cache-busted current scripts load once.
+              import re
+              text=re.sub(r'\s*<script[^>]+src=["\']school-assets\.js(?:\?[^"\']*)?["\'][^>]*></script>','',text,flags=re.I)
+              text=re.sub(r'\s*<script[^>]+src=["\']school-logo-integration\.js(?:\?[^"\']*)?["\'][^>]*></script>','',text,flags=re.I)
+              if '</body>' in text.lower():
+                  i=text.lower().rfind('</body>')
+                  text=text[:i]+scripts+text[i:]
+              else:
+                  text += scripts
+              if text!=original:
+                  p.write_text(text,encoding='utf-8')
+                  changed.append(str(p))
+          print('updated',len(changed),'pages')
+          print('\n'.join(changed))
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add '*.html'
+          git diff --cached --quiet || git commit -m "Load custom school logos on all site pages"
+          git push
