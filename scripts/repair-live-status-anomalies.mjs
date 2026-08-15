@@ -5,6 +5,8 @@ if(!fs.existsSync(FILE)) process.exit(0);
 
 const data=JSON.parse(fs.readFileSync(FILE,'utf8'));
 const utahDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const confirmedFinalGameIds=new Set(['273455']);
+const gameId=g=>{const m=String(g?.url||'').match(/\/(\d+)\/?$/);return m?m[1]:''};
 let fixed=0;
 
 for(const [key,g] of Object.entries(data.games||{})){
@@ -13,8 +15,9 @@ for(const [key,g] of Object.entries(data.games||{})){
   const hasBox=!!(g.boxScore?.rows?.length===2);
   const hasQ4=plays.some(p=>/\b4Q\b|\b4th\b/i.test(String(p)));
   const hasClock=!!String(g.clock||'').trim();
+  const isConfirmedFinal=confirmedFinalGameIds.has(gameId(g));
 
-  if(g.final===true && !hasBox && !hasQ4){
+  if(g.final===true && !isConfirmedFinal && !hasBox && !hasQ4){
     g.final=false;
     g.status=plays.length?'Live':'Scheduled';
     g.period=hasClock?String(g.period||''):'';
