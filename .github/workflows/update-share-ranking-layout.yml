@@ -1,0 +1,59 @@
+name: Update Ranking Share Graphic Layout
+
+on:
+  push:
+    paths:
+      - '.github/workflows/update-share-ranking-layout.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Make rankings read left to right with larger type
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('share-graphic.js')
+          s=p.read_text()
+          replacements={
+            "grid.style.gridAutoFlow='column'":"grid.style.gridAutoFlow='row'",
+            ".rus-export-rank-num{position:absolute;left:9px;top:12px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#252525;border:1px solid #555;color:#fff;font-size:14px;font-weight:1000}":
+            ".rus-export-rank-num{position:absolute;left:9px;top:12px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#252525;border:1px solid #555;color:#fff;font-size:16px;font-weight:1000}",
+            ".rus-export-team-line{display:flex;align-items:center;gap:8px;min-width:0}.rus-export-logo{width:40px;height:40px;object-fit:contain;flex:0 0 40px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}.rus-export-team-wrap{min-width:0;flex:1}.rus-export-team{display:inline-block;max-width:100%;padding:5px 7px;border-radius:5px;background:var(--accent,#333);color:var(--team-text,#fff);font-size:14px;font-weight:1000;line-height:1.05;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rus-export-record{font-size:10px;color:#ddd;margin-top:4px;font-weight:900}":
+            ".rus-export-team-line{display:flex;align-items:flex-start;gap:8px;min-width:0}.rus-export-logo{width:44px;height:44px;object-fit:contain;flex:0 0 44px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}.rus-export-team-wrap{min-width:0;flex:1}.rus-export-team{display:inline-block;max-width:100%;padding:5px 7px;border-radius:5px;background:var(--accent,#333);color:var(--team-text,#fff);font-size:16px;font-weight:1000;line-height:1.02;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:normal}.rus-export-record{font-size:11px;color:#eee;margin-top:5px;font-weight:900}",
+            ".rus-export-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;color:#b9b9b9;font-size:9px;font-weight:900;text-transform:uppercase}":
+            ".rus-export-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;color:#d0d0d0;font-size:11px;font-weight:900;text-transform:uppercase}"
+          }
+          for old,new in replacements.items():
+              if old not in s:
+                  print('Pattern not found:',old[:90])
+              s=s.replace(old,new)
+          p.write_text(s)
+
+          pages=['awards-2025.html','standings.html','scoreboard.html','rankings.html']
+          for name in pages:
+              q=Path(name)
+              if not q.exists(): continue
+              text=q.read_text()
+              text=re.sub(r'share-graphic\.js\?v=[^"\']+', 'share-graphic.js?v=20260815d', text)
+              q.write_text(text)
+          PY
+      - name: Commit layout update
+        run: |
+          if git diff --quiet -- share-graphic.js awards-2025.html standings.html scoreboard.html rankings.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add share-graphic.js awards-2025.html standings.html scoreboard.html rankings.html
+          git commit -m 'Make ranking share graphic read left to right with larger text'
+          git push
