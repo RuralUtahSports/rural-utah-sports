@@ -9,13 +9,13 @@
     .review-card:hover{border-color:#F14D07!important;transform:translateY(-2px)!important;box-shadow:0 12px 28px rgba(0,0,0,.32)}
     .review-label{margin:0!important;padding:13px 16px 10px;color:#F14D07!important;font-size:12px!important;border-bottom:1px solid #292929;letter-spacing:.55px}
     .review-scoreboard{padding:10px 14px 8px;display:flex;flex-direction:column;gap:5px}
-    .review-team-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:7px 8px;border-radius:6px;min-height:46px}
-    .review-team-row.winner{background:rgba(255,255,255,.055)}
+    .review-team-row{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:7px 10px;border-radius:7px;min-height:46px;overflow:hidden;border-left:4px solid var(--review-team-color,#444);background:linear-gradient(90deg,var(--review-team-wash,rgba(255,255,255,.025)) 0%,rgba(255,255,255,.018) 55%,rgba(255,255,255,.01) 100%)}
+    .review-team-row.winner{box-shadow:inset 0 0 0 1px var(--review-team-border,rgba(255,255,255,.08));background:linear-gradient(90deg,var(--review-team-wash-strong,rgba(255,255,255,.085)) 0%,rgba(255,255,255,.045) 62%,rgba(255,255,255,.02) 100%)}
     .review-team-main{display:flex;align-items:center;gap:9px;min-width:0}
     .review-team-main img{width:34px!important;height:34px!important;object-fit:contain;flex:0 0 34px}
     .review-team-name{font-size:12px;font-weight:900;line-height:1.15;white-space:normal;overflow-wrap:anywhere;color:#f2f2f2}
     .review-team-score{font-size:27px;font-weight:1000;line-height:1;color:#d6d6d6;min-width:34px;text-align:right;font-variant-numeric:tabular-nums}
-    .review-team-row.winner .review-team-score{color:#fff}
+    .review-team-row.winner .review-team-score{color:#fff;text-shadow:0 0 12px var(--review-team-glow,rgba(255,255,255,.15))}
     .review-team-row.winner .review-team-name{color:#fff}
     .review-final{font-size:8px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#777;text-align:center;margin:0 14px;padding:5px 0;border-top:1px solid #242424;border-bottom:1px solid #242424}
     .review-card p{margin:0!important;padding:10px 16px 14px;color:#999!important;font-size:11px!important;line-height:1.45;min-height:49px;margin-top:auto!important}
@@ -28,7 +28,13 @@
   const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   const num=v=>v===null||v===undefined||v===''?null:Number(v);
   const valid=v=>Number.isFinite(v);
+  const norm=v=>String(v??'').trim().toUpperCase().replace(/[.'’]/g,'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();
+  const aliases={'CEDAR':'CEDAR CITY','MONUMENT VALLEY':'MONUMENT VAL','UMA CAMP WILLIAMS':'UMA LEHI','UTAH MILITARY ACADEMY CAMP WILLIAMS':'UMA LEHI','ST JOSEPH':'SAINT JOSEPH','AMERICAN LEADERSHIP':'ALA','WASATCH ACADEMY':'WASATCH ACAD'};
+  const key=v=>aliases[norm(v)]||norm(v);
+  const safeHex=(v,f='#444444')=>/^#[0-9A-F]{3}(?:[0-9A-F]{3})?$/i.test(String(v||''))?String(v):f;
+  const hexRgb=hex=>{let h=String(hex||'').replace('#','');if(h.length===3)h=h.split('').map(x=>x+x).join('');const n=parseInt(h,16);return Number.isFinite(n)?`${(n>>16)&255},${(n>>8)&255},${n&255}`:'68,68,68'};
   const logo=name=>window.RUSSchoolAssets?.logoUrl?RUSSchoolAssets.logoUrl(name):'RUSlogoNew.png';
+  let teamColors=new Map();
   const finalGames=games=>games.filter(g=>valid(num(g.actualAway))&&valid(num(g.actualHome)));
   const result=g=>{
     const a=num(g.actualAway),h=num(g.actualHome),pa=num(g.awayScore),ph=num(g.homeScore);
@@ -36,7 +42,12 @@
     const loser=a>h?g.homeTeam:h>a?g.awayTeam:'Tie';
     return {g,a,h,pa,ph,winner,loser,margin:Math.abs(a-h),total:a+h,predWinner:pa>ph?g.awayTeam:ph>pa?g.homeTeam:'Tie',predMargin:valid(pa)&&valid(ph)?Math.abs(pa-ph):0};
   };
-  const teamRow=(name,score,isWinner)=>`<div class="review-team-row ${isWinner?'winner':''}"><div class="review-team-main"><img src="${esc(logo(name))}" alt=""><span class="review-team-name">${esc(name)}</span></div><strong class="review-team-score">${score}</strong></div>`;
+  const colorFor=name=>teamColors.get(key(name))||teamColors.get(norm(name))||null;
+  const teamRow=(name,score,isWinner)=>{
+    const t=colorFor(name),bg=safeHex(t?.backgroundColor),rgb=hexRgb(bg);
+    const vars=`--review-team-color:${bg};--review-team-wash:rgba(${rgb},.12);--review-team-wash-strong:rgba(${rgb},.23);--review-team-border:rgba(${rgb},.42);--review-team-glow:rgba(${rgb},.42)`;
+    return `<div class="review-team-row ${isWinner?'winner':''}" style="${vars}"><div class="review-team-main"><img src="${esc(logo(name))}" alt=""><span class="review-team-name">${esc(name)}</span></div><strong class="review-team-score">${score}</strong></div>`;
+  };
   const card=(label,r,blurb)=>{
     if(!r)return `<div class="review-card empty-review"><span>${esc(label)}</span><strong>Waiting on finals</strong><p>This will fill in automatically as games finish.</p></div>`;
     const g=r.g;
@@ -44,7 +55,16 @@
   };
   async function load(){
     try{
-      const r=await fetch(`weekly-simulation.json?v=${Date.now()}`,{cache:'no-store'}); if(!r.ok)throw new Error();
+      const stamp=Date.now();
+      const [r,tr]=await Promise.all([
+        fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}),
+        fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)
+      ]);
+      if(!r.ok)throw new Error();
+      if(tr?.ok){
+        teamColors=new Map();
+        for(const t of await tr.json())if(t?.team){teamColors.set(key(t.team),t);teamColors.set(norm(t.team),t)}
+      }
       const data=await r.json(), rows=finalGames(data.games||[]).map(result).filter(x=>x.winner!=='Tie');
       if(!rows.length){host.innerHTML=card('Top Win',null,'');return}
       const upsets=rows.filter(x=>x.predWinner!=='Tie'&&x.predWinner!==x.winner).sort((a,b)=>b.predMargin-a.predMargin||b.margin-a.margin);
