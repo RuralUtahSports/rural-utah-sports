@@ -11,8 +11,8 @@
     try{
       const stamp=Date.now();
       const [teamRes,streakRes]=await Promise.all([
-        fetch('teams-data.json?v='+stamp),
-        fetch('streak-records.json?v='+stamp)
+        fetch('teams-data.json?v='+stamp,{cache:'no-store'}),
+        fetch('streak-records.json?v='+stamp,{cache:'no-store'})
       ]);
       if(teamRes.ok){
         const data=await teamRes.json();
@@ -26,7 +26,8 @@
 
     const eligible=name=>{
       if(!name||isJV(name)||isOutOfState(name))return false;
-      return !allowed.size||allowed.has(norm(name));
+      // Fail closed: Record Watch is only for teams in the authoritative Utah varsity directory.
+      return allowed.size>0&&allowed.has(norm(name));
     };
 
     let filtering=false;
@@ -60,10 +61,7 @@
           card.dataset.best=String(Number.isFinite(best)?best:0);
           kept.push(card);
         }else{
-          const m=card.querySelector('strong')?.textContent.match(/—\s*(\d+)\s+straight wins/i);
-          card.dataset.current=String(m?Number(m[1]):0);
-          card.dataset.best='0';
-          kept.push(card);
+          card.remove();
         }
       }
       kept.sort((a,b)=>{
