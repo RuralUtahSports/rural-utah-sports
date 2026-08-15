@@ -1,67 +1,43 @@
 (()=>{
-  if(window.__RUSSchoolLogoIntegration)return;window.__RUSSchoolLogoIntegration=true;
-  const style=document.createElement('style');style.textContent=`
-    .rus-card-logo-wrap{height:82px;display:flex;align-items:center;justify-content:center;margin:-2px 0 10px}
-    .rus-card-logo{max-width:78px;max-height:78px;object-fit:contain;filter:drop-shadow(0 2px 5px rgba(0,0,0,.35))}
-    .hero-content{position:relative}.rus-hero-school-logo{position:absolute;right:28px;top:22px;width:118px;height:118px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}.hero-content.rus-has-school-logo{padding-right:175px}
-    .rus-ranking-school-logo{width:34px;height:34px;object-fit:contain;flex:0 0 34px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));margin-right:8px}
-    .rus-standings-school-logo{width:30px;height:30px;object-fit:contain;flex:0 0 30px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
-    @media(max-width:700px){.rus-hero-school-logo{position:static;display:block;width:96px;height:96px;margin:0 auto 14px}.hero-content.rus-has-school-logo{padding-right:30px;text-align:center}.rus-ranking-school-logo{width:30px;height:30px;flex-basis:30px;margin-right:6px}.rus-standings-school-logo{width:27px;height:27px;flex-basis:27px}}
-  `;document.head.appendChild(style);
-
-  const path=(location.pathname.split('/').pop()||'').toLowerCase();
-  const teamFromLink=link=>{
-    if(!link)return'';
-    try{
-      const team=new URL(link.href,location.href).searchParams.get('team');
-      if(team)return team.trim();
-    }catch{}
-    const pill=link.querySelector('.team-pill');
-    if(pill){
-      const clone=pill.cloneNode(true);
-      clone.querySelectorAll('.rus-live-record').forEach(x=>x.remove());
-      return clone.textContent.trim();
-    }
-    return (link.textContent||'').trim();
+  if(window.__RUSSchoolLogoIntegrationV2)return;window.__RUSSchoolLogoIntegrationV2=true;
+  const CUSTOM={
+    'GREEN CANYON':'school-logos/green-canyon.svg','HILLCREST':'school-logos/hillcrest.svg','KEARNS':'school-logos/kearns.svg',
+    'LAYTON CHRISTIAN':'school-logos/layton-christian.svg','LAYTON CHRISTIAN ACADEMY':'school-logos/layton-christian.svg',
+    'LONE PEAK':'school-logos/lone-peak.svg','MAPLE MOUNTAIN':'school-logos/maple-mountain.svg','MILFORD':'school-logos/milford.svg',
+    'MILLARD':'school-logos/millard.svg','MORGAN':'school-logos/morgan.svg','OREM':'school-logos/orem.svg',
+    'PROVIDENCE HALL':'school-logos/providence-hall.svg','RICH':'school-logos/rich.svg','SAN JUAN':'school-logos/san-juan.svg','VIEWMONT':'school-logos/viewmont.svg'
   };
-
-  const wait=async()=>{
-    const A=window.RUSSchoolAssets;if(!A)return setTimeout(wait,80);
-    await A.load();
-    const addImg=(team,cls)=>{const img=document.createElement('img');img.className=cls;img.alt=`${team} logo`;img.loading='lazy';img.decoding='async';img.src=A.logoUrl(team);img.addEventListener('error',()=>img.remove(),{once:true});return img};
-    const enhance=()=>{
-      document.querySelectorAll('.team-card:not([data-rus-school-logo])').forEach(card=>{
-        const name=card.querySelector('.team-name')?.textContent?.trim();if(!name||!A.isFootballTeam(name))return;card.dataset.rusSchoolLogo='1';const content=card.querySelector('.team-card-content');if(!content)return;const wrap=document.createElement('div');wrap.className='rus-card-logo-wrap';wrap.appendChild(addImg(name,'rus-card-logo'));content.insertBefore(wrap,content.firstChild);
-      });
-      document.querySelectorAll('.hero-content:not([data-rus-school-logo])').forEach(hero=>{
-        const name=hero.querySelector('.team-title')?.textContent?.trim();if(!name||!A.isFootballTeam(name))return;hero.dataset.rusSchoolLogo='1';hero.classList.add('rus-has-school-logo');hero.appendChild(addImg(name,'rus-hero-school-logo'));
-      });
-      if(path==='rankings.html')document.querySelectorAll('.rank-row .team-link:not([data-rus-school-logo]),.state25-row .team-link:not([data-rus-school-logo]),.small-school-row .team-link:not([data-rus-school-logo])').forEach(link=>{
-        const name=teamFromLink(link);if(!name||!A.isFootballTeam(name))return;link.dataset.rusSchoolLogo='1';link.insertBefore(addImg(name,'rus-ranking-school-logo'),link.firstChild);
-      });
-      if(path==='standings.html')document.querySelectorAll('.standings .team-link:not([data-rus-school-logo])').forEach(link=>{
-        const name=teamFromLink(link);if(!name||!A.isFootballTeam(name))return;link.dataset.rusSchoolLogo='1';const img=addImg(name,'rus-standings-school-logo'),swatch=link.querySelector('.swatch');if(swatch&&swatch.nextSibling)link.insertBefore(img,swatch.nextSibling);else if(swatch)link.appendChild(img);else link.insertBefore(img,link.firstChild);
-      });
-    };
-
-    const scheduleEnhance=()=>[0,150,500,1200].forEach(ms=>setTimeout(enhance,ms));
-    scheduleEnhance();
-
-    if(path==='rankings.html'){
-      document.addEventListener('change',e=>{if(['rankingSnapshot','state25Snapshot','smallSchoolSnapshot'].includes(e.target?.id))scheduleEnhance()});
-      document.addEventListener('click',e=>{if(e.target?.id==='smallSchoolToggle')scheduleEnhance()});
-      window.addEventListener('load',scheduleEnhance,{once:true});
+  const norm=v=>String(v||'').trim().toUpperCase().replace(/\s+/g,' ');
+  const customUrl=t=>CUSTOM[norm(t)]||'';
+  const teamFromLink=el=>{const a=el?.closest?.('a[href*="team.html"]');if(!a)return'';try{return new URL(a.href,location.href).searchParams.get('team')||''}catch{return''}};
+  const teamFromImage=img=>{
+    const explicit=img.dataset.team||img.getAttribute('data-school')||img.getAttribute('data-team-name');if(explicit)return explicit;
+    const alt=(img.alt||'').replace(/\s+(school\s+)?logo$/i,'').trim();if(customUrl(alt))return alt;
+    const linkTeam=teamFromLink(img);if(linkTeam)return linkTeam;
+    const parent=img.closest('.team-row,.team-card,.rank-row,.state25-row,.small-school-row,.standings-row,.standing-row,.award-card,.player-card,.game');
+    if(parent){
+      const n=parent.querySelector('.team-name,.team-link,.team-title,[data-team]');
+      if(n){const t=n.dataset?.team||n.textContent?.trim();if(customUrl(t))return t}
     }
-
-    let scheduled=false;
-    new MutationObserver(()=>{
-      if(scheduled)return;
-      scheduled=true;
-      requestAnimationFrame(()=>{scheduled=false;enhance()});
-    }).observe(document.body,{childList:true,subtree:true});
+    return'';
   };
-
-  if(path==='rankings.html'&&document.readyState==='loading')window.addEventListener('load',()=>setTimeout(wait,250),{once:true});
-  else if(path==='rankings.html')setTimeout(wait,250);
-  else wait();
+  const replaceExisting=()=>document.querySelectorAll('img').forEach(img=>{const team=teamFromImage(img),url=customUrl(team);if(url&&img.getAttribute('src')!==url){img.src=url;img.srcset='';img.dataset.rusCustomLogo='1'}});
+  const style=document.createElement('style');style.textContent='.rus-card-logo-wrap{height:82px;display:flex;align-items:center;justify-content:center;margin:-2px 0 10px}.rus-card-logo{max-width:78px;max-height:78px;object-fit:contain}.rus-ranking-school-logo{width:34px;height:34px;object-fit:contain;flex:0 0 34px;margin-right:8px}.rus-standings-school-logo{width:30px;height:30px;object-fit:contain;flex:0 0 30px;margin-right:7px}@media(max-width:700px){.rus-ranking-school-logo{width:30px;height:30px;flex-basis:30px}.rus-standings-school-logo{width:27px;height:27px;flex-basis:27px}}';document.head.appendChild(style);
+  const waitAssets=()=>{
+    const A=window.RUSSchoolAssets;
+    if(A){
+      const original=A.logoUrl?.bind(A);A.logoUrl=(team,entry)=>customUrl(team)||(original?original(team,entry):'');
+      Promise.resolve(A.load?.()).finally(enhance);
+    }else enhance();
+  };
+  const addImg=(team,cls)=>{const img=document.createElement('img');img.className=cls;img.alt=`${team} logo`;img.dataset.team=team;img.loading='lazy';img.src=customUrl(team)||(window.RUSSchoolAssets?.logoUrl?.(team)||'');return img};
+  const enhance=()=>{
+    replaceExisting();
+    document.querySelectorAll('.team-card:not([data-rus-school-logo])').forEach(card=>{const name=card.querySelector('.team-name')?.textContent?.trim();if(!name)return;const url=customUrl(name)||(window.RUSSchoolAssets?.logoUrl?.(name)||'');if(!url)return;card.dataset.rusSchoolLogo='1';const content=card.querySelector('.team-card-content');if(!content)return;const wrap=document.createElement('div');wrap.className='rus-card-logo-wrap';wrap.appendChild(addImg(name,'rus-card-logo'));content.insertBefore(wrap,content.firstChild)});
+    document.querySelectorAll('.rank-row .team-link:not([data-rus-school-logo]),.state25-row .team-link:not([data-rus-school-logo]),.small-school-row .team-link:not([data-rus-school-logo])').forEach(link=>{const name=teamFromLink(link)||link.textContent.trim();const url=customUrl(name)||(window.RUSSchoolAssets?.logoUrl?.(name)||'');if(!url)return;link.dataset.rusSchoolLogo='1';link.insertBefore(addImg(name,'rus-ranking-school-logo'),link.firstChild)});
+    document.querySelectorAll('.standings .team-link:not([data-rus-school-logo])').forEach(link=>{const name=teamFromLink(link)||link.textContent.trim();const url=customUrl(name)||(window.RUSSchoolAssets?.logoUrl?.(name)||'');if(!url)return;link.dataset.rusSchoolLogo='1';link.insertBefore(addImg(name,'rus-standings-school-logo'),link.firstChild)});
+    replaceExisting();
+  };
+  waitAssets();[100,400,1000,2200].forEach(ms=>setTimeout(enhance,ms));
+  let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;enhance()})}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['src']});
 })();
