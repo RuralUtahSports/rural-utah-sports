@@ -2,6 +2,14 @@
   const path=(location.pathname.split('/').pop()||'index.html').toLowerCase();
   if(path!=='index.html')return;
 
+  if(!document.querySelector('script[data-rus-home-school-colors]')){
+    const s=document.createElement('script');
+    s.src='school-colors.js?v=20260815a';
+    s.async=true;
+    s.dataset.rusHomeSchoolColors='1';
+    document.body.appendChild(s);
+  }
+
   const norm=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
   const isJV=name=>/(^|\s)J\.?V\.?(\s|$)/i.test(String(name||''))||/JUNIOR\s+VARSITY/i.test(String(name||''));
   const isOutOfState=name=>/\(([A-Z]{2})\)\s*$/i.test(String(name||''))&&!/\(UT\)\s*$/i.test(String(name||''));
