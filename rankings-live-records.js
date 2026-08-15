@@ -48,6 +48,17 @@
     [0,120,450,1000].forEach(ms=>setTimeout(decorate,ms));
   }
 
+  function addClassRankingsNote(){
+    if(document.getElementById('classRankingsUpdateNote'))return;
+    const controls=document.querySelector('.archive-controls');
+    if(!controls)return;
+    const note=document.createElement('div');
+    note.id='classRankingsUpdateNote';
+    note.className='class-rankings-update-note';
+    note.innerHTML='<strong>Class rankings update:</strong> The class-by-class rankings will be updated after all of today\'s games are finished.';
+    controls.insertAdjacentElement('afterend',note);
+  }
+
   function styles(){
     if(document.getElementById('rus-rankings-live-record-style'))return;
     const s=document.createElement('style');
@@ -55,7 +66,10 @@
     s.textContent=`
       .team-pill{gap:8px;flex-wrap:wrap}
       .rus-live-record{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.28);font-size:10px;line-height:1;font-weight:900;letter-spacing:.2px;white-space:nowrap;color:inherit}
+      .class-rankings-update-note{margin:-5px 0 20px;background:#151515;border:1px solid #333;border-left:5px solid #F14D07;border-radius:7px;padding:13px 15px;color:#aaa;font-size:12px;line-height:1.5}
+      .class-rankings-update-note strong{color:#fff}
       @media(max-width:650px){
+        .class-rankings-update-note{margin:-4px 0 18px;font-size:12px;padding:12px 13px}
         .state25-row{
           display:grid!important;
           grid-template-columns:minmax(0,1fr) auto!important;
@@ -94,6 +108,7 @@
       const latest=snaps.at(-1);
       if(select&&latest&&!select.value)select.value=latest.key;
       renderSnapshot(select?.value||latest?.key);
+      addClassRankingsNote();
       scheduleDecorate();
     }catch(e){console.warn('Rankings quick paint:',e.message)}
   }
@@ -137,10 +152,11 @@
   }
 
   styles();
+  addClassRankingsNote();
   primeRankings();
   refresh();
   document.addEventListener('change',e=>{
     if(e.target?.id==='rankingSnapshot')scheduleDecorate();
   });
-  window.addEventListener('load',scheduleDecorate,{once:true});
+  window.addEventListener('load',()=>{addClassRankingsNote();scheduleDecorate()},{once:true});
 })();
