@@ -1,0 +1,79 @@
+name: Redesign Ranking Share Cards
+
+on:
+  push:
+    paths:
+      - '.github/workflows/update-share-ranking-card.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Redesign Top 25 share cards
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('share-graphic.js')
+          s=p.read_text()
+
+          old_item=".rus-export-rank-item{position:relative;border:1px solid rgba(255,255,255,.14);border-left:8px solid var(--accent,#555);border-radius:10px;padding:12px 10px 10px 50px;overflow:hidden;box-sizing:border-box;background:linear-gradient(135deg,var(--tint,rgba(255,255,255,.12)),#141414 72%)}"
+          new_item=".rus-export-rank-item{position:relative;border:1px solid rgba(255,255,255,.14);border-left:8px solid var(--accent,#555);border-radius:10px;padding:10px 10px 9px;overflow:hidden;box-sizing:border-box;background:linear-gradient(135deg,var(--tint,rgba(255,255,255,.12)),#141414 72%);display:flex;flex-direction:column;align-items:center}"
+          if old_item not in s: print('rank item pattern not found')
+          s=s.replace(old_item,new_item)
+
+          old_team=".rus-export-team-line{display:flex;align-items:flex-start;gap:8px;min-width:0}.rus-export-logo{width:44px;height:44px;object-fit:contain;flex:0 0 44px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}.rus-export-team-wrap{min-width:0;flex:1}.rus-export-team{display:inline-block;max-width:100%;padding:5px 7px;border-radius:5px;background:var(--accent,#333);color:var(--team-text,#fff);font-size:16px;font-weight:1000;line-height:1.02;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:normal}.rus-export-record{font-size:11px;color:#eee;margin-top:5px;font-weight:900}"
+          new_team=".rus-export-team-line{width:100%;min-width:0;display:block;text-align:center;padding-left:40px;padding-right:2px}.rus-export-team-wrap{width:100%;min-width:0;text-align:center}.rus-export-team{display:inline-block;max-width:100%;padding:5px 8px;border-radius:5px;background:var(--accent,#333);color:var(--team-text,#fff);font-size:16px;font-weight:1000;line-height:1.02;white-space:normal;overflow:visible;text-overflow:clip;text-align:center}.rus-export-record{font-size:12px;color:#fff;margin-top:6px;font-weight:1000;text-align:center}.rus-export-logo-wrap{margin-top:auto;min-height:62px;width:100%;display:flex;align-items:flex-end;justify-content:center;padding-top:5px}.rus-export-logo-large{width:82px;height:64px;max-width:86%;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}"
+          if old_team not in s: print('team css pattern not found')
+          s=s.replace(old_team,new_team)
+
+          old_meta=".rus-export-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;color:#d0d0d0;font-size:11px;font-weight:900;text-transform:uppercase}"
+          new_meta=".rus-export-meta{display:flex;justify-content:center;gap:5px 8px;flex-wrap:wrap;margin-top:6px;color:#d8d8d8;font-size:10px;font-weight:1000;text-transform:uppercase;text-align:center;line-height:1.1}"
+          if old_meta not in s: print('meta css pattern not found')
+          s=s.replace(old_meta,new_meta)
+
+          # Load school directory too so ranking cards can display current UHSAA region.
+          marker="  const norm=v=>String(v??'').trim().toUpperCase().replace(/\\s+/g,' ');\n"
+          if 'function loadSchoolDirectory()' not in s:
+              helper="""  let schoolDirectoryPromise=null;\n  function loadSchoolDirectory(){\n    if(schoolDirectoryPromise)return schoolDirectoryPromise;\n    schoolDirectoryPromise=fetch(`school-directory.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}));\n    return schoolDirectoryPromise;\n  }\n"""
+              if marker not in s: print('norm marker not found')
+              s=s.replace(marker,helper+marker,1)
+
+          s=s.replace("    const logos=await loadLogoCache();", "    const [logos,directory]=await Promise.all([loadLogoCache(),loadSchoolDirectory()]);",1)
+
+          old_cls="      const cls=(row.querySelector('.state25-class')?.textContent||row.querySelector('.team-class')?.textContent||'').trim();\n"
+          new_cls=old_cls+"      const dirEntry=directory[norm(team)]||null;\n      const region=dirEntry?.uhsaaRegion?`Region ${dirEntry.uhsaaRegion}`:'';\n"
+          if old_cls not in s: print('class line pattern not found')
+          s=s.replace(old_cls,new_cls,1)
+
+          old_html='''      item.innerHTML=`<div class="rus-export-rank-num${topClass}">${esc(rank)}</div><div class="rus-export-team-line">${src?`<img class="rus-export-logo" src="${esc(src)}" alt="${esc(team)} logo">`:''}<div class="rus-export-team-wrap"><div class="rus-export-team">${esc(team)}</div>${record?`<div class="rus-export-record">${esc(record)}</div>`:''}</div></div><div class="rus-export-meta">${cls?`<span>${esc(cls)}</span>`:''}${elo?`<span>ELO ${esc(elo)}</span>`:''}${move?`<span class="rus-export-move ${moveClass}">${esc(move)}</span>`:''}</div>`;'''
+          new_html='''      item.innerHTML=`<div class="rus-export-rank-num${topClass}">${esc(rank)}</div><div class="rus-export-team-line"><div class="rus-export-team-wrap"><div class="rus-export-team">${esc(team)}</div></div></div>${record?`<div class="rus-export-record">${esc(record)}</div>`:''}<div class="rus-export-meta">${cls?`<span>${esc(cls)}</span>`:''}${region?`<span>${esc(region)}</span>`:''}${elo?`<span>ELO ${esc(elo)}</span>`:''}${move?`<span class="rus-export-move ${moveClass}">${esc(move)}</span>`:''}</div>${src?`<div class="rus-export-logo-wrap"><img class="rus-export-logo-large" src="${esc(src)}" alt="${esc(team)} logo"></div>`:''}`;'''
+          if old_html not in s: print('ranking html pattern not found')
+          s=s.replace(old_html,new_html,1)
+
+          p.write_text(s)
+
+          # Force the rankings page to load this new version on mobile immediately.
+          q=Path('rankings.html')
+          text=q.read_text()
+          text=re.sub(r'share-graphic\\.js\\?v=[^"\\']+', 'share-graphic.js?v=20260815-card2', text)
+          q.write_text(text)
+          PY
+      - name: Commit ranking share card redesign
+        run: |
+          if git diff --quiet -- share-graphic.js rankings.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add share-graphic.js rankings.html
+          git commit -m 'Redesign ranking share cards with large logos and region info'
+          git push
