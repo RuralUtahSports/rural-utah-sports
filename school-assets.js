@@ -52,12 +52,16 @@
         color:#F14D07;
         font-size:10px;
         font-weight:1000;
-        line-height:1.1;
-        white-space:nowrap;
+        line-height:1.2;
+        white-space:normal;
       }
       .rus-rank-line.rus-rank-1{color:#d5ad35}
       .rus-rank-line.rus-rank-2{color:#d7d9dc}
       .rus-rank-line.rus-rank-3{color:#cf8754}
+      .rus-state-rank{color:#d7d7d7}
+      .rus-rank-line.rus-state-top-1 .rus-state-rank{color:#d5ad35}
+      .rus-rank-line.rus-state-top-2 .rus-state-rank{color:#d7d9dc}
+      .rus-rank-line.rus-state-top-3 .rus-state-rank{color:#cf8754}
       .rus-box-record{
         display:inline-block;
         margin-left:7px;
@@ -95,6 +99,11 @@
       'UTAH MILITARY ACADEMY - CAMP WILLIAMS':'UMA-LEHI',
       'LAYTON CHRISTIAN ACADEMY':'LAYTON CHRISTIAN'
     };
+    const state25=[
+      'CORNER CANYON','SKYRIDGE','LONE PEAK','DAVIS','MOUNTAIN RIDGE','OREM','AMERICAN FORK','RIDGELINE','HERRIMAN','SPRINGVILLE',
+      'WEST','CRIMSON CLIFFS','TIMPVIEW','SYRACUSE','LEHI','BINGHAM','BOUNTIFUL','OLYMPUS','FARMINGTON','MORGAN',
+      'FREMONT','PROVO','WOODS CROSS','SKY VIEW','PARK CITY'
+    ];
     const rankKey=team=>rankingAliases[norm(team)]||norm(team);
     const compact=v=>norm(v).replace(/[^A-Z0-9]/g,'');
     const isoDate=d=>{
@@ -106,11 +115,11 @@
     };
     const detailKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
     let rankMap=new Map();
+    const stateRankMap=new Map(state25.map((team,i)=>[rankKey(team),i+1]));
     let recordMap=new Map();
     let mercyCount=null;
 
     function applyScoreboardRanks(){
-      if(!rankMap.size)return;
       document.querySelectorAll('.team-row').forEach(row=>{
         const link=row.querySelector('.team-name');
         const meta=row.querySelector('.team-meta');
@@ -119,12 +128,16 @@
         if(!holder||holder.querySelector('.rus-rank-line'))return;
         let team='';
         try{team=new URL(link.href,location.href).searchParams.get('team')||link.textContent||''}catch{team=link.textContent||''}
-        const info=rankMap.get(rankKey(team));
-        if(!info)return;
+        const key=rankKey(team),info=rankMap.get(key),stateRank=stateRankMap.get(key);
+        if(!info&&!stateRank)return;
         const rank=document.createElement('div');
-        rank.className=`rus-rank-line rus-rank-${info.rank}`;
-        rank.textContent=`RUS ${info.cls} Rank: #${info.rank}`;
-        rank.title=`${info.cls} rank: #${info.rank}`;
+        const classTop=info?.rank<=3?` rus-rank-${info.rank}`:'';
+        const stateTop=stateRank<=3?` rus-state-top-${stateRank}`:'';
+        rank.className=`rus-rank-line${classTop}${stateTop}`;
+        const classPart=info?`RUS ${info.cls} Rank: #${info.rank}`:'';
+        const statePart=stateRank?`<span class="rus-state-rank">State: #${stateRank}</span>`:'';
+        rank.innerHTML=[classPart,statePart].filter(Boolean).join(' &nbsp;•&nbsp; ');
+        rank.title=[info?`${info.cls} rank: #${info.rank}`:'',stateRank?`State rank: #${stateRank}`:''].filter(Boolean).join(' • ');
         holder.insertBefore(rank,meta);
       });
     }
