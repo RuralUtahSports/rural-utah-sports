@@ -33,4 +33,17 @@
     }
   `;
   document.head.appendChild(style);
+
+  const applyWeek2Status=()=>{
+    const subtitle=document.getElementById('rankingSubtitle');
+    if(subtitle)subtitle.textContent='The State Top 25 and class-by-class rankings are updated for Week 2. The 3A–1A Overall Rankings are available as a separate view.';
+    const meta=document.getElementById('rankingMeta');
+    if(meta)meta.innerHTML='<div class="badge"><strong>2026</strong> Week 2</div><div class="badge">State Top 25 Updated</div><div class="badge">Class Rankings: Week 2</div><div class="badge">RUS Rankings Archive</div>';
+    const help=document.querySelector('.archive-controls .archive-help');
+    if(help)help.textContent='Class-by-class rankings are archived separately. Week 2 is now published.';
+    const note=document.getElementById('classRankingsUpdateNote');
+    if(note)note.innerHTML='<strong>Class rankings update:</strong> Week 2 class rankings are published and aligned with the State Top 25 or 3A–1A Overall Rankings.';
+  };
+  [0,250,800,1600].forEach(ms=>setTimeout(applyWeek2Status,ms));
+  window.addEventListener('load',applyWeek2Status,{once:true});
 })();
