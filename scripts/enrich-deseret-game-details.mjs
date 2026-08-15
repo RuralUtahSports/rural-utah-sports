@@ -289,12 +289,15 @@ let fetched = 0, reusedFinal = 0, skippedFuture = 0, failures = 0;
 for (const game of games) {
   if (!clean(game.deseretUrl)) continue;
   const key = gameKey(game);
-  if (details[key]?.final) { reusedFinal++; continue; }
+  const prior = details[key] || null;
+  if (prior?.final && Number(prior.finalRefreshCount || 0) >= 2) { reusedFinal++; continue; }
   const delta = daysFromNow(isoDate(game.date));
   if (delta > 2.25 || delta < -2.25) { skippedFuture++; continue; }
   try {
     const html = await fetchHtml(game.deseretUrl);
-    details[key] = parseGameDetails(html, game);
+    const parsed = parseGameDetails(html, game);
+    if (parsed.final) parsed.finalRefreshCount = prior?.final ? Number(prior.finalRefreshCount || 0) + 1 : 1;
+    details[key] = parsed;
     fetched++;
     const d = details[key];
     const liveClock = d.clock ? `; clock=${d.clock} ${d.period || ''}` : '';
