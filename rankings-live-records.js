@@ -52,7 +52,33 @@
     if(document.getElementById('rus-rankings-live-record-style'))return;
     const s=document.createElement('style');
     s.id='rus-rankings-live-record-style';
-    s.textContent=`.team-pill{gap:8px;flex-wrap:wrap}.rus-live-record{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.28);font-size:10px;line-height:1;font-weight:900;letter-spacing:.2px;white-space:nowrap;color:inherit}`;
+    s.textContent=`
+      .team-pill{gap:8px;flex-wrap:wrap}
+      .rus-live-record{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.28);font-size:10px;line-height:1;font-weight:900;letter-spacing:.2px;white-space:nowrap;color:inherit}
+      @media(max-width:650px){
+        .state25-row{
+          display:grid!important;
+          grid-template-columns:minmax(0,1fr) auto!important;
+          grid-template-areas:
+            "rank move"
+            "team team"
+            "class elo"
+            "reason reason"!important;
+          gap:9px 12px!important;
+          align-items:center!important;
+          padding:14px 14px 16px 12px!important;
+          min-height:0!important;
+        }
+        .state25-row>.rank-num{grid-area:rank!important;justify-self:start!important;width:36px!important;height:36px!important;font-size:15px!important}
+        .state25-row>.movement{grid-area:move!important;justify-self:end!important;text-align:right!important;font-size:12px!important}
+        .state25-row>.team-link{grid-area:team!important;width:100%!important;min-width:0!important;justify-self:stretch!important;display:flex!important;align-items:center!important;gap:8px!important}
+        .state25-row>.team-link .team-pill{width:100%!important;max-width:none!important;min-width:0!important;justify-content:center!important;text-align:center!important;font-size:14px!important;line-height:1.15!important;padding:10px 12px!important;white-space:normal!important;overflow-wrap:anywhere!important}
+        .state25-row>.team-link img{flex:0 0 34px!important;width:34px!important;height:34px!important;object-fit:contain!important}
+        .state25-row>.state25-class{grid-area:class!important;display:block!important;text-align:left!important;justify-self:start!important;font-size:11px!important;color:#F14D07!important}
+        .state25-row>.state25-elo{grid-area:elo!important;display:block!important;text-align:right!important;justify-self:end!important;font-size:12px!important}
+        .state25-row>.state25-reason{grid-area:reason!important;grid-column:auto!important;width:100%!important;min-width:0!important;padding:0!important;margin:1px 0 0!important;font-size:13px!important;line-height:1.5!important;text-align:left!important}
+      }
+    `;
     document.head.appendChild(s);
   }
 
