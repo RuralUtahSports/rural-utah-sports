@@ -36,4 +36,19 @@
   A.get=(team)=>directory?.[norm(team)]||null;
   A.logoUrl=(team,entry)=>entry?.logoUrl||A.get(team)?.logoUrl||A.fallbackLogo(team);
   A.address=(team,entry)=>entry?.address||A.get(team)?.address||'';
+
+  if(/(?:^|\/)scoreboard\.html$/i.test(location.pathname)){
+    const style=document.createElement('style');
+    style.textContent=`
+      .winner .actual b{
+        color:#73d977 !important;
+        font-size:30px !important;
+        font-weight:1000 !important;
+        text-shadow:0 0 10px rgba(115,217,119,.45),0 0 20px rgba(115,217,119,.18) !important;
+      }
+      .winner .actual{color:#9ee7a1 !important}
+      @media(max-width:700px){.winner .actual b{font-size:27px !important}}
+    `;
+    document.head.appendChild(style);
+  }
 })();
