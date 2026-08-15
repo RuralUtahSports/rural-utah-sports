@@ -11,6 +11,7 @@
   .rus-share-sheet{width:min(520px,100%);background:#111;border:1px solid #444;border-top:5px solid #F14D07;border-radius:14px;padding:18px;color:#fff;font-family:Arial,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.6)}
   .rus-share-sheet h3{margin:0 0 6px;font-size:22px}.rus-share-sheet p{margin:0 0 14px;color:#aaa;font-size:12px;line-height:1.45}
   .rus-share-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.rus-share-option{border:1px solid #444;border-radius:8px;background:#1d1d1d;color:#fff;padding:13px 10px;font-weight:900;cursor:pointer}.rus-share-option strong{display:block;color:#F14D07;font-size:12px}.rus-share-close{width:100%;margin-top:10px;border:0;background:#333;color:#fff;padding:12px;border-radius:8px;font-weight:900}
+  .rus-share-region-label{display:block;margin:0 0 6px;color:#aaa;font-size:10px;font-weight:900;text-transform:uppercase}.rus-share-region{width:100%;height:44px;margin:0 0 13px;background:#1d1d1d;color:#fff;border:1px solid #444;border-radius:8px;padding:0 10px;font-weight:900}
   .rus-exporting .rus-share-btn,.rus-exporting .rus-share-float{visibility:hidden!important}
   .rus-export-board{position:fixed;left:-12000px;top:0;background:#0f0f0f;color:#fff;font-family:Arial,Helvetica,sans-serif;z-index:-1;box-sizing:border-box}
   .rus-export-rank-grid{display:grid;width:100%;height:100%;box-sizing:border-box}
@@ -37,7 +38,7 @@
   function candidates(){
     let sels=[];
     if(PAGE.includes('scoreboard')) sels=['.game','.date-section','#board'];
-    else if(PAGE.includes('standings')) sels=['.region-card','.standings-card','.standings-section','section'];
+    else if(PAGE.includes('standings')) sels=['.group','.region-card','.standings-card','.standings-section','section'];
     else if(PAGE.includes('rankings')) sels=['.state25','.rank-card','#rankings','section'];
     else sels=['.award-card','.award-section','.awards-section','.team-section','section'];
     return [...new Set(sels.flatMap(s=>[...document.querySelectorAll(s)]))].filter(el=>el.offsetWidth>250&&el.offsetHeight>80);
@@ -122,14 +123,37 @@
     if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:'Rural Utah Sports'});return}catch(e){if(e?.name==='AbortError')return}}
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
   }
-  async function make(format){
-    const el=currentSection(),label=titleFor(el),dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
+  function standingsRegions(){
+    return [...document.querySelectorAll('.group')].map((el,i)=>({el,title:(el.querySelector('.group-title')?.textContent||`Region ${i+1}`).trim()})).filter(x=>x.title);
+  }
+  async function ensureRegionView(){
+    if(!PAGE.includes('standings'))return;
+    const btn=document.getElementById('regionBtn');
+    if(btn&&!btn.classList.contains('active')){
+      btn.click();
+      await new Promise(r=>setTimeout(r,90));
+    }
+    const filter=document.getElementById('filter');
+    if(filter&&filter.value!=='all'){
+      filter.value='all';
+      filter.dispatchEvent(new Event('change',{bubbles:true}));
+      await new Promise(r=>setTimeout(r,70));
+    }
+  }
+  async function make(format,target=null){
+    const el=target||currentSection(),label=titleFor(el),dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
     const blob=await render(el,dims[0],dims[1],label);await deliver(blob,`rural-utah-sports-${format}-${Date.now()}.png`);
   }
-  function modal(){
-    const el=document.createElement('div');el.className='rus-share-modal';el.innerHTML=`<div class="rus-share-sheet"><h3>Share Graphic</h3><p>Creates a branded graphic from the section currently in view. Rankings use team colors, local logos and a layout that fills the canvas.</p><div class="rus-share-grid"><button class="rus-share-option" data-f="square"><strong>Instagram Post</strong>1080 × 1080</button><button class="rus-share-option" data-f="story"><strong>Instagram Story</strong>1080 × 1920</button><button class="rus-share-option" data-f="x"><strong>X Post</strong>1600 × 900</button><button class="rus-share-option" data-f="square"><strong>Square PNG</strong>Download / Share</button></div><button class="rus-share-close">Cancel</button></div>`;
+  async function modal(){
+    let regionOptions='';
+    if(PAGE.includes('standings')){
+      await ensureRegionView();
+      const regions=standingsRegions();
+      regionOptions=`<label class="rus-share-region-label">Region</label><select class="rus-share-region">${regions.map((r,i)=>`<option value="${i}">${esc(r.title)}</option>`).join('')}</select>`;
+    }
+    const el=document.createElement('div');el.className='rus-share-modal';el.innerHTML=`<div class="rus-share-sheet"><h3>Share Graphic</h3><p>${PAGE.includes('standings')?'Choose a region, then choose the format. Only that region will be included in the image.':'Creates a branded graphic from the section currently in view. Rankings use team colors, local logos and a layout that fills the canvas.'}</p>${regionOptions}<div class="rus-share-grid"><button class="rus-share-option" data-f="square"><strong>Instagram Post</strong>1080 × 1080</button><button class="rus-share-option" data-f="story"><strong>Instagram Story</strong>1080 × 1920</button><button class="rus-share-option" data-f="x"><strong>X Post</strong>1600 × 900</button><button class="rus-share-option" data-f="square"><strong>Square PNG</strong>Download / Share</button></div><button class="rus-share-close">Cancel</button></div>`;
     document.body.appendChild(el);el.querySelector('.rus-share-close').onclick=()=>el.remove();el.addEventListener('click',e=>{if(e.target===el)el.remove()});
-    el.querySelectorAll('[data-f]').forEach(b=>b.onclick=async()=>{const f=b.dataset.f;b.disabled=true;b.textContent='Creating…';try{await make(f);el.remove()}catch(err){console.error(err);b.disabled=false;b.textContent='Try Again';alert('Could not create the graphic. Please try again.')}});
+    el.querySelectorAll('[data-f]').forEach(b=>b.onclick=async()=>{const f=b.dataset.f;b.disabled=true;b.textContent='Creating…';try{let target=null;if(PAGE.includes('standings')){const regions=standingsRegions(),idx=Number(el.querySelector('.rus-share-region')?.value||0);target=regions[idx]?.el||null}await make(f,target);el.remove()}catch(err){console.error(err);b.disabled=false;b.textContent='Try Again';alert('Could not create the graphic. Please try again.')}});
   }
   function init(){const b=document.createElement('button');b.className='rus-share-btn rus-share-float';b.textContent='Share Graphic';b.onclick=modal;document.body.appendChild(b)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
