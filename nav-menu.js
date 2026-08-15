@@ -64,6 +64,7 @@
       addScript('scoreboard-rankings-ui.js?v=20260813a','rusScoreboardRankingsUi',true);
       addScript('scoreboard-card-enhancements.js?v=20260814a','rusScoreboardCardEnhancements',true);
       addScript('scoreboard-live-elo.js?v=20260814a','rusScoreboardLiveElo',true);
+      addScript('scoreboard-final-sync.js?v=20260814a','rusScoreboardFinalSync',true);
     }
     if(['player.html','mvp-race.html','all-state-watch.html','all-utah.html'].includes(path))addScript('player-awards-integration.js?v=20260814a','rusPlayerAwards',true);
     if(['mvp-race.html','all-state-watch.html','all-utah.html','awards-2025.html'].includes(path))addScript('award-school-branding.js?v=20260814b','rusAwardSchoolBranding',true);
