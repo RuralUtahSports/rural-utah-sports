@@ -70,7 +70,17 @@
       }
       .final-game .box-table tbody tr:first-child .rus-box-record,
       .final-game .box-table tbody tr:last-child .rus-box-record{color:#ddd}
-      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}}
+      .rus-live-mercy{
+        font-size:9px;
+        font-weight:1000;
+        text-transform:uppercase;
+        padding:5px 8px;
+        border-radius:999px;
+        background:#ffd54a;
+        color:#000;
+        white-space:nowrap;
+      }
+      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}.rus-live-mercy{font-size:8px}}
     `;
     document.head.appendChild(style);
 
@@ -83,8 +93,18 @@
       'LAYTON CHRISTIAN ACADEMY':'LAYTON CHRISTIAN'
     };
     const rankKey=team=>rankingAliases[norm(team)]||norm(team);
+    const compact=v=>norm(v).replace(/[^A-Z0-9]/g,'');
+    const isoDate=d=>{
+      const s=String(d||'').trim();
+      let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;
+      m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+      return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:'';
+    };
+    const detailKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
     let rankMap=new Map();
     let recordMap=new Map();
+    let mercyCount=null;
 
     function applyScoreboardRanks(){
       if(!rankMap.size)return;
@@ -125,9 +145,38 @@
       });
     }
 
+    function applyLiveMercyBadges(){
+      document.querySelectorAll('.game.live-game').forEach(card=>{
+        if(card.querySelector('.mercy-badge,.rus-live-mercy'))return;
+        const status=card.querySelector('.status')?.textContent||'';
+        if(!/\bQ4\b|4TH|FOURTH/i.test(status))return;
+        const scores=[...card.querySelectorAll('.actual b')].map(x=>Number(x.textContent.trim()));
+        if(scores.length<2||!scores.every(Number.isFinite)||Math.abs(scores[0]-scores[1])<44)return;
+        const foot=card.querySelector('.game-foot');
+        if(!foot)return;
+        const badge=document.createElement('span');
+        badge.className='rus-live-mercy';
+        badge.textContent='44+ Mercy Rule';
+        badge.title='A 44-point lead was reached in the fourth quarter.';
+        foot.insertBefore(badge,foot.querySelector('.deseret-link'));
+      });
+    }
+
+    function applyMercySummary(){
+      if(mercyCount===null)return;
+      document.querySelectorAll('#summary .summary').forEach(box=>{
+        const label=box.querySelector('span');
+        if(!label||!/44\+.*Mercy Rule/i.test(label.textContent))return;
+        const value=box.querySelector('strong');
+        if(value)value.textContent=String(mercyCount);
+      });
+    }
+
     function refreshScoreboardExtras(){
       applyScoreboardRanks();
       applyFinalBoxRecords();
+      applyLiveMercyBadges();
+      applyMercySummary();
     }
 
     fetch(`rankings-history-2026.json?v=${Date.now()}`,{cache:'no-store'})
@@ -156,6 +205,28 @@
       })
       .catch(()=>{});
 
+    Promise.all([
+      fetch(`weekly-simulation.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null),
+      fetch(`deseret-game-details.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null)
+    ]).then(([weekly,details])=>{
+      if(!weekly)return;
+      let count=0;
+      for(const g of weekly.games||[]){
+        const d=details?.games?.[detailKey(g)]||null;
+        const sheetDone=g.actualAway!==null&&g.actualAway!==undefined&&g.actualHome!==null&&g.actualHome!==undefined;
+        const box=d?.boxScore?.rows||[];
+        const away=sheetDone?Number(g.actualAway):Number(box[0]?.total);
+        const home=sheetDone?Number(g.actualHome):Number(box[1]?.total);
+        if(!Number.isFinite(away)||!Number.isFinite(home)||Math.abs(away-home)<44)continue;
+        const sourceFinal=sheetDone||!!d?.final;
+        const status=String(d?.status||'');
+        const q4=!sourceFinal&&(/\bQ4\b|4TH|FOURTH/i.test(status)||/\bQ4\b/i.test(String(d?.clock||''))||/\bQ4\b/i.test(String(d?.period||'')));
+        if(sourceFinal||q4)count++;
+      }
+      mercyCount=count;
+      refreshScoreboardExtras();
+    }).catch(()=>{});
+
     document.addEventListener('change',e=>{
       if(e.target?.id==='classFilter'||e.target?.id==='statusFilter')setTimeout(refreshScoreboardExtras,0);
     });
@@ -163,7 +234,8 @@
       if(e.target?.id==='search')setTimeout(refreshScoreboardExtras,0);
     });
     document.addEventListener('click',e=>{
-      if(e.target?.closest('.game-details>summary'))setTimeout(applyFinalBoxRecords,0);
+      if(e.target?.closest('.game-details>summary'))setTimeout(refreshScoreboardExtras,0);
     });
+    setInterval(refreshScoreboardExtras,5000);
   }
 })();
