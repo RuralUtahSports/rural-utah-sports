@@ -25,22 +25,39 @@
   `;
   document.head.appendChild(style);
 
-  const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#039;');
   const num=v=>v===null||v===undefined||v===''?null:Number(v);
   const valid=v=>Number.isFinite(v);
   const norm=v=>String(v??'').trim().toUpperCase().replace(/[.'’]/g,'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();
   const aliases={'CEDAR':'CEDAR CITY','MONUMENT VALLEY':'MONUMENT VAL','UMA CAMP WILLIAMS':'UMA LEHI','UTAH MILITARY ACADEMY CAMP WILLIAMS':'UMA LEHI','ST JOSEPH':'SAINT JOSEPH','AMERICAN LEADERSHIP':'ALA','WASATCH ACADEMY':'WASATCH ACAD'};
   const key=v=>aliases[norm(v)]||norm(v);
+  const compact=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const isoDate=d=>{
+    const s=String(d||'').trim();
+    let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;
+    m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:'';
+  };
+  const detailKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
   const safeHex=(v,f='#444444')=>/^#[0-9A-F]{3}(?:[0-9A-F]{3})?$/i.test(String(v||''))?String(v):f;
   const hexRgb=hex=>{let h=String(hex||'').replace('#','');if(h.length===3)h=h.split('').map(x=>x+x).join('');const n=parseInt(h,16);return Number.isFinite(n)?`${(n>>16)&255},${(n>>8)&255},${n&255}`:'68,68,68'};
   const logo=name=>window.RUSSchoolAssets?.logoUrl?RUSSchoolAssets.logoUrl(name):'RUSlogoNew.png';
-  let teamColors=new Map();
+  let teamColors=new Map(),detailGames={};
   const finalGames=games=>games.filter(g=>valid(num(g.actualAway))&&valid(num(g.actualHome)));
+  const finalLabel=g=>{
+    const d=detailGames?.[detailKey(g)]||null;
+    const text=[d?.status,d?.period,d?.clock].filter(Boolean).join(' ');
+    const multi=text.match(/\b(\d+)\s*OT\b/i);
+    if(multi)return`Final - ${multi[1]}OT`;
+    if(/\bOT\b/i.test(text))return'Final - OT';
+    return'Final';
+  };
   const result=g=>{
     const a=num(g.actualAway),h=num(g.actualHome),pa=num(g.awayScore),ph=num(g.homeScore);
     const winner=a>h?g.awayTeam:h>a?g.homeTeam:'Tie';
     const loser=a>h?g.homeTeam:h>a?g.awayTeam:'Tie';
-    return {g,a,h,pa,ph,winner,loser,margin:Math.abs(a-h),total:a+h,predWinner:pa>ph?g.awayTeam:ph>pa?g.homeTeam:'Tie',predMargin:valid(pa)&&valid(ph)?Math.abs(pa-ph):0};
+    return {g,a,h,pa,ph,winner,loser,margin:Math.abs(a-h),total:a+h,predWinner:pa>ph?g.awayTeam:ph>pa?g.homeTeam:'Tie',predMargin:valid(pa)&&valid(ph)?Math.abs(pa-ph):0,finalLabel:finalLabel(g)};
   };
   const colorFor=name=>teamColors.get(key(name))||teamColors.get(norm(name))||null;
   const teamRow=(name,score,isWinner)=>{
@@ -51,20 +68,25 @@
   const card=(label,r,blurb)=>{
     if(!r)return `<div class="review-card empty-review"><span>${esc(label)}</span><strong>Waiting on finals</strong><p>This will fill in automatically as games finish.</p></div>`;
     const g=r.g;
-    return `<a class="review-card" href="scoreboard.html"><div class="review-label">${esc(label)}</div><div class="review-scoreboard">${teamRow(g.awayTeam,r.a,r.winner===g.awayTeam)}${teamRow(g.homeTeam,r.h,r.winner===g.homeTeam)}</div><div class="review-final">Final</div><p>${esc(blurb)}</p></a>`;
+    return `<a class="review-card" href="scoreboard.html"><div class="review-label">${esc(label)}</div><div class="review-scoreboard">${teamRow(g.awayTeam,r.a,r.winner===g.awayTeam)}${teamRow(g.homeTeam,r.h,r.winner===g.homeTeam)}</div><div class="review-final">${esc(r.finalLabel||'Final')}</div><p>${esc(blurb)}</p></a>`;
   };
   async function load(){
     try{
       const stamp=Date.now();
-      const [r,tr]=await Promise.all([
+      const [r,tr,dr]=await Promise.all([
         fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}),
-        fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)
+        fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),
+        fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)
       ]);
       if(!r.ok)throw new Error();
       if(tr?.ok){
         teamColors=new Map();
         for(const t of await tr.json())if(t?.team){teamColors.set(key(t.team),t);teamColors.set(norm(t.team),t)}
       }
+      if(dr?.ok){
+        const details=await dr.json();
+        detailGames=details?.games||{};
+      }else detailGames={};
       const data=await r.json(), rows=finalGames(data.games||[]).map(result).filter(x=>x.winner!=='Tie');
       if(!rows.length){host.innerHTML=card('Top Win',null,'');return}
       const upsets=rows.filter(x=>x.predWinner!=='Tie'&&x.predWinner!==x.winner).sort((a,b)=>b.predMargin-a.predMargin||b.margin-a.margin);
