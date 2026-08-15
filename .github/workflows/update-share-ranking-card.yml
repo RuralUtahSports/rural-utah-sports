@@ -39,7 +39,6 @@ jobs:
           if old_meta not in s: print('meta css pattern not found')
           s=s.replace(old_meta,new_meta)
 
-          # Load school directory too so ranking cards can display current UHSAA region.
           marker="  const norm=v=>String(v??'').trim().toUpperCase().replace(/\\s+/g,' ');\n"
           if 'function loadSchoolDirectory()' not in s:
               helper="""  let schoolDirectoryPromise=null;\n  function loadSchoolDirectory(){\n    if(schoolDirectoryPromise)return schoolDirectoryPromise;\n    schoolDirectoryPromise=fetch(`school-directory.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}));\n    return schoolDirectoryPromise;\n  }\n"""
@@ -60,10 +59,9 @@ jobs:
 
           p.write_text(s)
 
-          # Force the rankings page to load this new version on mobile immediately.
           q=Path('rankings.html')
           text=q.read_text()
-          text=re.sub(r'share-graphic\\.js\\?v=[^"\\']+', 'share-graphic.js?v=20260815-card2', text)
+          text=re.sub(r"share-graphic\.js\?v=[^\"']+", 'share-graphic.js?v=20260815-card2', text)
           q.write_text(text)
           PY
       - name: Commit ranking share card redesign
