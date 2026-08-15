@@ -76,6 +76,7 @@
     for(const game of Object.values(eloGames||{})){
       const r=rowMap.get(detailKey(game));
       if(!r)continue;
+      if(!colorFor(game.awayTeam)||!colorFor(game.homeTeam))continue;
       const awayChange=Number(game?.away?.change),homeChange=Number(game?.home?.change);
       if(Number.isFinite(awayChange)&&(!gain||awayChange>gain.change))gain={change:awayChange,team:game.awayTeam,r};
       if(Number.isFinite(homeChange)&&(!gain||homeChange>gain.change))gain={change:homeChange,team:game.homeTeam,r};
