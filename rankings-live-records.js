@@ -98,7 +98,13 @@
 
   function paintAvailableRankings(){
     try{
-      if(typeof renderState25==='function')renderState25();
+      if(typeof renderState25==='function'){
+        const stateSnaps=state25Archive?.snapshots||[];
+        const stateSelect=document.getElementById('state25Snapshot');
+        const stateLatest=stateSnaps.at(-1);
+        const stateKey=stateSelect?.value||stateLatest?.key;
+        if(stateKey)renderState25(stateKey);
+      }
       const snaps=rankingArchive?.snapshots||[];
       if(!snaps.length||typeof renderSnapshot!=='function')return;
       const select=document.getElementById('rankingSnapshot');
@@ -156,7 +162,7 @@
   primeRankings();
   refresh();
   document.addEventListener('change',e=>{
-    if(e.target?.id==='rankingSnapshot')scheduleDecorate();
+    if(e.target?.id==='rankingSnapshot'||e.target?.id==='state25Snapshot')scheduleDecorate();
   });
   window.addEventListener('load',()=>{addClassRankingsNote();scheduleDecorate()},{once:true});
 })();
