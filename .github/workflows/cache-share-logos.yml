@@ -71,7 +71,7 @@ jobs:
           PY
       - name: Commit cached logos
         run: |
-          if git diff --quiet -- school-logo-cache school-logo-cache.json; then
+          if [ -z "$(git status --porcelain -- school-logo-cache school-logo-cache.json)" ]; then
             echo 'No logo cache changes.'
             exit 0
           fi
