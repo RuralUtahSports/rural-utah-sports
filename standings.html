@@ -27,8 +27,32 @@ function rec(r,prefix=''){return `${r[prefix+'wins']||0}-${r[prefix+'losses']||0
 function pct(w,l,t){const n=w+l+t;return n?((w+t*.5)/n*100).toFixed(1)+'%':'—'}
 function row(t,i,regionMode){const w=regionMode?t.regionWins:t.wins,l=regionMode?t.regionLosses:t.losses,ti=regionMode?t.regionTies:t.ties,pf=t.pointsFor||0,pa=t.pointsAgainst||0,d=pf-pa,st=String(t.streak||'—'),sc=t.backgroundColor||'#F14D07';return `<tr><td class="rank">${i+1}</td><td class="team-cell"><a class="team-link" href="team.html?team=${encodeURIComponent(t.team)}"><span class="swatch" style="background:${esc(sc)}"></span>${esc(displayTeam(t.team))}</a></td><td class="record">${w}-${l}-${ti}</td><td class="pct">${pct(w,l,ti)}</td>${regionMode?`<td>${rec(t)}</td>`:`<td>${esc(t.region||'—')}</td>`}<td>${pf}</td><td>${pa}</td><td class="diff ${d>0?'pos':d<0?'neg':''}">${d>0?'+':''}${d}</td><td class="streak ${st.startsWith('W')?'w':st.startsWith('L')?'l':''}">${esc(st)}</td></tr>`}
 function table(title,teams,regionMode){return `<section class="group"><h3 class="group-title">${esc(title)}</h3><div class="table-wrap"><table class="standings"><thead><tr><th>#</th><th>Team</th><th>${regionMode?'Region':'Overall'}</th><th>Win %</th><th>${regionMode?'Overall':'Region'}</th><th>PF</th><th>PA</th><th>Diff</th><th>Streak</th></tr></thead><tbody>${teams.map((t,i)=>row(t,i,regionMode)).join('')}</tbody></table></div></section>`}
+function fixKnownAlignments(){
+  if(!data)return;
+  const teamName='ENTERPRISE';
+  let enterprise=null;
+  for(const c of Object.keys(data.byClassification||{})){
+    const list=data.byClassification[c]||[];
+    const idx=list.findIndex(t=>String(t.team||'').toUpperCase()===teamName);
+    if(idx>=0){enterprise=list.splice(idx,1)[0];break}
+  }
+  if(enterprise){
+    enterprise.classification='1A';
+    enterprise.region='1A South';
+    (data.byClassification['1A']||(data.byClassification['1A']=[])).push(enterprise);
+  }
+  for(const c of Object.keys(data.byRegion||{})){
+    for(const r of Object.keys(data.byRegion[c]||{})){
+      data.byRegion[c][r]=(data.byRegion[c][r]||[]).filter(t=>String(t.team||'').toUpperCase()!==teamName);
+    }
+  }
+  if(enterprise){
+    data.byRegion['1A']||(data.byRegion['1A']={});
+    (data.byRegion['1A']['1A South']||(data.byRegion['1A']['1A South']=[])).push(enterprise);
+  }
+}
 function render(){if(!data)return;const f=$('filter').value;let html='';if(mode==='classification'){for(const c of classOrder){if(f!=='all'&&f!==c)continue;const teams=(data.byClassification?.[c]||[]);if(teams.length)html+=table(classLabel(c),teams,false)}}else{for(const c of classOrder){if(f!=='all'&&f!==c)continue;const groups=data.byRegion?.[c]||{};for(const region of Object.keys(groups).sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true})))html+=table(`${classLabel(c)} • ${region}`,groups[region],true)}}$('content').innerHTML=html||'<div class="empty">No standings available.</div>';}
-(async()=>{try{const r=await fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error('standings');data=await r.json();for(const c of classOrder)if(data.byClassification?.[c]?.length)$('filter').insertAdjacentHTML('beforeend',`<option value="${c}">${classLabel(c)}</option>`);const played=data.summary?.completedGames||0,total=data.summary?.scheduledGames||0,when=data.updatedAt?new Date(data.updatedAt).toLocaleString():'';$('meta').textContent=`${played.toLocaleString()} completed games • ${total.toLocaleString()} scheduled games${when?' • Updated '+when:''}`;$('classBtn').onclick=()=>{mode='classification';$('classBtn').classList.add('active');$('regionBtn').classList.remove('active');render()};$('regionBtn').onclick=()=>{mode='region';$('regionBtn').classList.add('active');$('classBtn').classList.remove('active');render()};$('filter').onchange=render;render()}catch(e){console.error(e);$('meta').textContent='';$('content').innerHTML='<div class="error">Unable to load the 2026 standings.</div>'}})();
+(async()=>{try{const r=await fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error('standings');data=await r.json();fixKnownAlignments();for(const c of classOrder)if(data.byClassification?.[c]?.length)$('filter').insertAdjacentHTML('beforeend',`<option value="${c}">${classLabel(c)}</option>`);const played=data.summary?.completedGames||0,total=data.summary?.scheduledGames||0,when=data.updatedAt?new Date(data.updatedAt).toLocaleString():'';$('meta').textContent=`${played.toLocaleString()} completed games • ${total.toLocaleString()} scheduled games${when?' • Updated '+when:''}`;$('classBtn').onclick=()=>{mode='classification';$('classBtn').classList.add('active');$('regionBtn').classList.remove('active');render()};$('regionBtn').onclick=()=>{mode='region';$('regionBtn').classList.add('active');$('classBtn').classList.remove('active');render()};$('filter').onchange=render;render()}catch(e){console.error(e);$('meta').textContent='';$('content').innerHTML='<div class="error">Unable to load the 2026 standings.</div>'}})();
 </script>
 <script src="back-to-top.js" defer></script>
 <script src="nav-menu.js" defer></script>
