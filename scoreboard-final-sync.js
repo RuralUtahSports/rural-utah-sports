@@ -1,0 +1,26 @@
+(()=>{
+'use strict';
+if((location.pathname.split('/').pop()||'').toLowerCase()!=='scoreboard.html')return;
+const norm=v=>String(v??'').trim().toUpperCase();
+const compact=v=>norm(v).replace(/[^A-Z0-9]/g,'');
+const aliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN'};
+const canon=v=>aliases[compact(v)]||compact(v);
+let elo={};
+let busy=false;
+function addStyles(){if(document.getElementById('rus-final-sync-style'))return;const s=document.createElement('style');s.id='rus-final-sync-style';s.textContent=`
+.team-row.rus-winner{position:relative;background:linear-gradient(90deg,color-mix(in srgb,var(--rus-win,#F14D07) 28%,#000) 0,color-mix(in srgb,var(--rus-win,#F14D07) 12%,#000) 52%,#000 100%);box-shadow:inset 6px 0 0 var(--rus-win,#F14D07)}
+.team-row.rus-winner .actual b{color:#7CFF82!important;font-size:23px;text-shadow:0 0 12px rgba(124,255,130,.15)}
+.rus-winner-badge{display:inline-block;margin-left:7px;padding:3px 6px;border-radius:999px;background:#73d977;color:#061507;font-size:7px;font-weight:1000;letter-spacing:.5px;vertical-align:middle;text-transform:uppercase}
+.rus-final-elo{margin-top:4px;font-size:8px;color:#777;font-weight:800;display:flex;align-items:center;gap:5px;flex-wrap:wrap}.rus-final-elo strong{color:#fff}.rus-final-change{display:inline-flex;align-items:center;border-radius:999px;padding:3px 6px;font-size:7px;font-weight:1000}.rus-final-change.up{background:#73d977;color:#061507}.rus-final-change.down{background:#ff8c8c;color:#2a0707}.rus-final-change.flat{background:#333;color:#ddd}
+@media(max-width:700px){.team-row.rus-winner .actual b{font-size:20px}.rus-winner-badge{font-size:6px;padding:2px 5px}.rus-final-elo{font-size:7px}.rus-final-change{font-size:6px}}
+`;document.head.appendChild(s)}
+function teamName(row){const a=row?.querySelector('.team-name');if(!a)return'';const c=a.cloneNode(true);c.querySelectorAll('.rus-winner-badge').forEach(x=>x.remove());return c.textContent.trim()}
+function score(row){const n=Number(row?.querySelector('.actual b')?.textContent?.trim());return Number.isFinite(n)?n:null}
+function isFinal(card){return /^final$/i.test(card.querySelector('.status')?.textContent?.trim()||'')}
+function gameDateForCard(card){try{if(typeof games==='undefined'||!Array.isArray(games))return'';const rows=[...card.querySelectorAll('.team-row')],a=teamName(rows[0]),h=teamName(rows[1]);const g=games.find(x=>norm(x.awayTeam)===norm(a)&&norm(x.homeTeam)===norm(h));return g?.date||''}catch{return''}}
+function iso(d){const s=String(d||'').trim();let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;const t=Date.parse(s);if(!Number.isFinite(t))return'';const x=new Date(t);return`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`}
+function eloFor(name,opp,date){const key=Object.keys(elo||{}).find(k=>canon(k)===canon(name));if(!key)return null;const x=elo[key];if(iso(x.currentDate)!==iso(date)||canon(x.currentOpponent)!==canon(opp))return null;const change=Number(x.currentChange),current=Number(x.currentElo);if(!Number.isFinite(current))return null;return{current,change:Number.isFinite(change)?change:null}}
+function decorate(){if(busy)return;busy=true;try{document.querySelectorAll('#board .game').forEach(card=>{const rows=[...card.querySelectorAll('.team-row')];if(rows.length<2)return;const final=isFinal(card),scores=rows.map(score),names=rows.map(teamName);let win=-1;if(final&&scores[0]!==null&&scores[1]!==null&&scores[0]!==scores[1])win=scores[0]>scores[1]?0:1;rows.forEach((row,i)=>{const a=row.querySelector('.team-name'),meta=row.querySelector('.team-meta');const winner=i===win;row.classList.toggle('rus-winner',winner);if(winner&&a){const bg=a.style.getPropertyValue('--team-bg')||'#F14D07';row.style.setProperty('--rus-win',bg);if(!a.querySelector('.rus-winner-badge'))a.insertAdjacentHTML('beforeend','<span class="rus-winner-badge">Winner</span>')}else a?.querySelector('.rus-winner-badge')?.remove();row.querySelector('.rus-final-elo')?.remove();if(final&&meta){const x=eloFor(names[i],names[1-i],gameDateForCard(card));if(x){const r=Math.round(x.change??0),cls=r>0?'up':r<0?'down':'flat',label=r>0?`▲ +${r}`:r<0?`▼ ${r}`:'• 0';meta.insertAdjacentHTML('afterend',`<div class="rus-final-elo"><span>ELO <strong>${Math.round(x.current)}</strong></span><span class="rus-final-change ${cls}">${label}</span></div>`)}}})})}finally{busy=false}}
+async function init(){addStyles();try{const r=await fetch(`elo-summary.json?v=${Date.now()}`,{cache:'no-store'});if(r.ok)elo=await r.json()}catch{}decorate();const b=document.getElementById('board');if(b){let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;decorate()})}).observe(b,{childList:true,subtree:true,characterData:true})}setInterval(decorate,5000)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
