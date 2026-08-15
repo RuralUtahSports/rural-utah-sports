@@ -15,11 +15,11 @@
   .rus-exporting .rus-share-btn,.rus-exporting .rus-share-float{visibility:hidden!important}
   .rus-export-board{position:fixed;left:-12000px;top:0;background:#0f0f0f;color:#fff;font-family:Arial,Helvetica,sans-serif;z-index:-1;box-sizing:border-box}
   .rus-export-rank-grid{display:grid;width:100%;height:100%;box-sizing:border-box}
-  .rus-export-rank-item{position:relative;border:1px solid rgba(255,255,255,.14);border-left:8px solid var(--accent,#555);border-radius:10px;padding:12px 10px 10px 50px;overflow:hidden;box-sizing:border-box;background:linear-gradient(135deg,var(--tint,rgba(255,255,255,.12)),#141414 72%)}
+  .rus-export-rank-item{position:relative;border:1px solid rgba(255,255,255,.14);border-left:8px solid var(--accent,#555);border-radius:10px;padding:10px 10px 9px;overflow:hidden;box-sizing:border-box;background:linear-gradient(135deg,var(--tint,rgba(255,255,255,.12)),#141414 72%);display:flex;flex-direction:column;align-items:center}
   .rus-export-rank-num{position:absolute;left:9px;top:12px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#252525;border:1px solid #555;color:#fff;font-size:16px;font-weight:1000}
   .rus-export-rank-num.top1{background:#d5ad35;color:#000;border-color:#f0d169}.rus-export-rank-num.top2{background:#b9bcc1;color:#000;border-color:#e0e2e5}.rus-export-rank-num.top3{background:#ad6b3d;color:#000;border-color:#d6976a}
-  .rus-export-team-line{display:flex;align-items:flex-start;gap:8px;min-width:0}.rus-export-logo{width:44px;height:44px;object-fit:contain;flex:0 0 44px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}.rus-export-team-wrap{min-width:0;flex:1}.rus-export-team{display:inline-block;max-width:100%;padding:5px 7px;border-radius:5px;background:var(--accent,#333);color:var(--team-text,#fff);font-size:16px;font-weight:1000;line-height:1.02;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:normal}.rus-export-record{font-size:11px;color:#eee;margin-top:5px;font-weight:900}
-  .rus-export-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;color:#d0d0d0;font-size:11px;font-weight:900;text-transform:uppercase}.rus-export-move.up{color:#62df8c}.rus-export-move.down{color:#ff7070}.rus-export-move.new{color:#F14D07}
+  .rus-export-team-line{width:100%;min-width:0;display:block;text-align:center;padding-left:40px;padding-right:2px}.rus-export-team-wrap{width:100%;min-width:0;text-align:center}.rus-export-team{display:inline-block;max-width:100%;padding:5px 8px;border-radius:5px;background:var(--accent,#333);color:var(--team-text,#fff);font-size:16px;font-weight:1000;line-height:1.02;white-space:normal;overflow:visible;text-overflow:clip;text-align:center}.rus-export-record{font-size:12px;color:#fff;margin-top:6px;font-weight:1000;text-align:center}.rus-export-logo-wrap{margin-top:auto;min-height:62px;width:100%;display:flex;align-items:flex-end;justify-content:center;padding-top:5px}.rus-export-logo-large{width:82px;height:64px;max-width:86%;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}
+  .rus-export-meta{display:flex;justify-content:center;gap:5px 8px;flex-wrap:wrap;margin-top:6px;color:#d8d8d8;font-size:10px;font-weight:1000;text-transform:uppercase;text-align:center;line-height:1.1}.rus-export-move.up{color:#62df8c}.rus-export-move.down{color:#ff7070}.rus-export-move.new{color:#F14D07}
   @media(min-width:700px){.rus-share-modal{align-items:center}}
   `;
   const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
@@ -33,6 +33,12 @@
     if(logoCachePromise)return logoCachePromise;
     logoCachePromise=fetch(`school-logo-cache.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}));
     return logoCachePromise;
+  }
+  let schoolDirectoryPromise=null;
+  function loadSchoolDirectory(){
+    if(schoolDirectoryPromise)return schoolDirectoryPromise;
+    schoolDirectoryPromise=fetch(`school-directory.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}));
+    return schoolDirectoryPromise;
   }
   const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
   function candidates(){
@@ -78,7 +84,7 @@
     const classRoot=el.matches?.('.rank-card')?el:el.closest?.('.rank-card');
     const classRows=classRoot?[...classRoot.querySelectorAll('.rank-row')]:[];
     const rows=(stateRows.length?stateRows:classRows).slice(0,25);if(!rows.length)return null;
-    const logos=await loadLogoCache();
+    const [logos,directory]=await Promise.all([loadLogoCache(),loadSchoolDirectory()]);
     const top=108,bottom=54,pad=30,gap=10,availableH=h-top-bottom;
     const cols=rows.length>20?(h>w*1.35?3:5):rows.length>10?(h>w*1.35?2:4):2;
     const rowsPerCol=Math.ceil(rows.length/cols);
@@ -89,6 +95,8 @@
       const rank=(row.querySelector('.rank-num')?.textContent||String(i+1)).trim();
       const team=teamFromRow(row);
       const cls=(row.querySelector('.state25-class')?.textContent||row.querySelector('.team-class')?.textContent||'').trim();
+      const dirEntry=directory[norm(team)]||null;
+      const region=dirEntry?.uhsaaRegion?`Region ${dirEntry.uhsaaRegion}`:'';
       const elo=(row.querySelector('.state25-elo')?.textContent||'').trim();
       const moveEl=row.querySelector('.movement'),move=(moveEl?.textContent||'').trim(),moveClass=moveEl?.classList.contains('up')?'up':moveEl?.classList.contains('down')?'down':moveEl?.classList.contains('new')?'new':'';
       const record=(row.querySelector('.rus-ranking-record,.rus-live-record,.team-record,.record')?.textContent||'').trim();
@@ -97,7 +105,7 @@
       const accent=getComputedStyle(row).getPropertyValue('--team-accent').trim()||'#555555';
       const item=document.createElement('div');item.className='rus-export-rank-item';item.style.setProperty('--accent',accent);item.style.setProperty('--tint',rgba(accent,.34));item.style.setProperty('--team-text',contrast(accent));
       const topClass=Number(rank)<=3?` top${Number(rank)}`:'';
-      item.innerHTML=`<div class="rus-export-rank-num${topClass}">${esc(rank)}</div><div class="rus-export-team-line">${src?`<img class="rus-export-logo" src="${esc(src)}" alt="${esc(team)} logo">`:''}<div class="rus-export-team-wrap"><div class="rus-export-team">${esc(team)}</div>${record?`<div class="rus-export-record">${esc(record)}</div>`:''}</div></div><div class="rus-export-meta">${cls?`<span>${esc(cls)}</span>`:''}${elo?`<span>ELO ${esc(elo)}</span>`:''}${move?`<span class="rus-export-move ${moveClass}">${esc(move)}</span>`:''}</div>`;
+      item.innerHTML=`<div class="rus-export-rank-num${topClass}">${esc(rank)}</div><div class="rus-export-team-line"><div class="rus-export-team-wrap"><div class="rus-export-team">${esc(team)}</div></div></div>${record?`<div class="rus-export-record">${esc(record)}</div>`:''}<div class="rus-export-meta">${cls?`<span>${esc(cls)}</span>`:''}${region?`<span>${esc(region)}</span>`:''}${elo?`<span>ELO ${esc(elo)}</span>`:''}${move?`<span class="rus-export-move ${moveClass}">${esc(move)}</span>`:''}</div>${src?`<div class="rus-export-logo-wrap"><img class="rus-export-logo-large" src="${esc(src)}" alt="${esc(team)} logo"></div>`:''}`;
       grid.appendChild(item);
     });
     board.appendChild(grid);document.body.appendChild(board);return {node:board,top,bottom,pad};
