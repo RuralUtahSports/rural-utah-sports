@@ -43,7 +43,7 @@ jobs:
               q=Path(name)
               if not q.exists(): continue
               text=q.read_text()
-              text=re.sub(r'share-graphic\.js\?v=[^"\']+', 'share-graphic.js?v=20260815d', text)
+              text=re.sub(r'share-graphic\.js\?v=[^"\']+', 'share-graphic.js?v=20260815-region1', text)
               q.write_text(text)
           PY
       - name: Commit layout update
@@ -55,5 +55,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add share-graphic.js awards-2025.html standings.html scoreboard.html rankings.html
-          git commit -m 'Make ranking share graphic read left to right with larger text'
+          git commit -m 'Refresh share graphic cache for region picker'
           git push
