@@ -21,6 +21,8 @@
   let details={};
   let timer=null;
   let applying=false;
+  let lastUpdatedAt='';
+  const mercyKeys=new Set();
 
   function liveLabel(d){
     if(!d)return'';
@@ -88,23 +90,78 @@
     return `<div class="rus-inline-box"><div class="rus-inline-box-head"><b>Box Score</b><span>${b.synthetic?'Built from scoring plays':'Quarter by quarter'}</span></div><div class="table-scroll"><table><thead><tr><th>Team</th>${periods.map(x=>`<th>${esc(x)}</th>`).join('')}<th>T</th></tr></thead><tbody>${b.rows.map(r=>`<tr><td>${esc(r.team||'Team')}</td>${(r.quarters||[]).map(v=>`<td>${v??'—'}</td>`).join('')}<td>${r.total??'—'}</td></tr>`).join('')}</tbody></table></div></div>`;
   }
 
+  function normalizeDetails(){
+    let mainNeedsRender=false;
+    const byKey=new Map(weeklyGames.map(g=>[gameKey(g),g]));
+    for(const [key,d] of Object.entries(details||{})){
+      const g=byKey.get(key);
+      if(!g||!d)continue;
+      if(!d.boxScore?.rows?.length){
+        const synth=syntheticBox(g,d);
+        if(synth)d.boxScore=synth;
+      }
+      const scores=liveScores(g,d);
+      if(scores&&Math.abs(scores.away-scores.home)>=44){
+        d.final=true;
+        d.status='Final';
+        d.clock='';
+        d.period='';
+        d.mercyRule=true;
+        mercyKeys.add(key);
+      }
+      try{
+        if(typeof detailMap!=='undefined'&&detailMap?.set){
+          const old=detailMap.get(key);
+          if(!!old?.final!==!!d.final||!!old?.mercyRule!==!!d.mercyRule)mainNeedsRender=true;
+          detailMap.set(key,d);
+        }
+      }catch{}
+    }
+    if(mainNeedsRender){
+      try{if(typeof render==='function')render()}catch{}
+    }
+  }
+
+  function updateSummary(){
+    const all=weeklyGames.map(g=>({g,d:details[gameKey(g)]}));
+    let mercy=0,finals=0;
+    for(const {g,d} of all){
+      const s=liveScores(g,d);
+      const isMercy=!!d?.mercyRule||(s&&Math.abs(s.away-s.home)>=44);
+      if(isMercy)mercy++;
+      if(d?.final||isMercy||((g.actualAway!==null&&g.actualAway!==undefined)&&(g.actualHome!==null&&g.actualHome!==undefined)))finals++;
+    }
+    document.querySelectorAll('#summary .summary').forEach(x=>{
+      const label=String(x.querySelector('span')?.textContent||'').toUpperCase();
+      const value=x.querySelector('strong');
+      if(!value)return;
+      if(label==='FINAL')value.textContent=String(finals);
+      else if(label==='REMAINING')value.textContent=String(Math.max(0,weeklyGames.length-finals));
+      else if(label.includes('44+ POINT MERCY RULE'))value.textContent=String(mercy);
+    });
+  }
+
   function apply(){
     if(applying)return;
     applying=true;
     try{
       const byPair=new Map(weeklyGames.map(g=>[pairKey(g.awayTeam,g.homeTeam),g]));
       document.querySelectorAll('#board .game').forEach(card=>{
-        const teams=[...card.querySelectorAll('.team-name')].map(el=>el.textContent.trim());
+        const teams=[...card.querySelectorAll('.team-name')].map(el=>el.textContent.replace(/Winner/gi,'').trim());
         if(teams.length<2)return;
         const g=byPair.get(pairKey(teams[0],teams[1]));
         if(!g)return;
-        const d=details[gameKey(g)];
+        const key=gameKey(g),d=details[key];
         if(!d)return;
+        const live=liveScores(g,d);
+        const mercy=!!d.mercyRule||(live&&Math.abs(live.away-live.home)>=44);
+        if(mercy&&!d.final){d.final=true;d.status='Final';d.clock='';d.period='';d.mercyRule=true;mercyKeys.add(key)}
+
         const label=liveLabel(d);
         if(label){
           const status=card.querySelector('.status');
-          if(status&&status.textContent.trim()!==label){
-            status.textContent=label;
+          if(status&&status.textContent.trim()!==label)status.textContent=label;
+          if(status){
             status.classList.toggle('final',!!d.final);
             status.classList.toggle('live',!d.final&&(!!d.clock||/live|q[1-4]|half|ot/i.test(String(d.status||''))));
           }
@@ -115,38 +172,56 @@
           }
         }
 
-        const live=liveScores(g,d);
         if(live){
           const scoreEls=[...card.querySelectorAll('.team-row .actual b')];
           if(scoreEls[0]&&scoreEls[0].textContent.trim()!==String(live.away))scoreEls[0].textContent=String(live.away);
           if(scoreEls[1]&&scoreEls[1].textContent.trim()!==String(live.home))scoreEls[1].textContent=String(live.home);
         }
 
+        if(mercy){
+          card.dataset.rusMercyFinal='1';
+          const foot=card.querySelector('.game-foot');
+          if(foot&&!foot.querySelector('.mercy-badge'))foot.insertAdjacentHTML('beforeend','<span class="mercy-badge">44+ Mercy Rule</span>');
+        }
+
         const boxHtml=inlineBoxHtml(g,d);
         if(boxHtml){
+          const sig=JSON.stringify(boxFor(g,d)?.rows?.map(r=>[r.total,...(r.quarters||[])])||[]);
           const old=card.querySelector('.rus-inline-box');
-          if(old)old.outerHTML=boxHtml;
-          else{
+          if(old){
+            if(old.dataset.rusSig!==sig){old.outerHTML=boxHtml;const fresh=card.querySelector('.rus-inline-box');if(fresh)fresh.dataset.rusSig=sig}
+          }else{
             const foot=card.querySelector('.game-foot');
-            if(foot)foot.insertAdjacentHTML('beforebegin',boxHtml);
+            if(foot){foot.insertAdjacentHTML('beforebegin',boxHtml);const fresh=card.querySelector('.rus-inline-box');if(fresh)fresh.dataset.rusSig=sig}
           }
         }
       });
+      updateSummary();
     }finally{applying=false}
   }
 
-  async function refresh(){
+  async function loadWeekly(){
+    if(weeklyGames.length)return true;
     try{
-      const stamp=Date.now();
-      const [wr,dr]=await Promise.all([
-        fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}),
-        fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'})
-      ]);
-      if(!wr.ok||!dr.ok)return;
-      const weekly=await wr.json();
-      const detailData=await dr.json();
+      const r=await fetch(`weekly-simulation.json?v=${Date.now()}`,{cache:'force-cache'});
+      if(!r.ok)return false;
+      const weekly=await r.json();
       weeklyGames=Array.isArray(weekly.games)?weekly.games:[];
+      return true;
+    }catch{return false}
+  }
+
+  async function refresh(force=false){
+    try{
+      if(!await loadWeekly())return;
+      const dr=await fetch(`deseret-game-details.json?v=${Date.now()}`,{cache:'no-store'});
+      if(!dr.ok)return;
+      const detailData=await dr.json();
+      const stamp=String(detailData.updatedAt||'');
+      if(!force&&stamp&&stamp===lastUpdatedAt)return;
+      lastUpdatedAt=stamp;
       details=detailData.games||{};
+      normalizeDetails();
       apply();
     }catch(err){console.warn('RUS live scoreboard refresh failed',err)}
   }
@@ -156,10 +231,10 @@
     if(!board)return;
     new MutationObserver(()=>{
       clearTimeout(timer);
-      timer=setTimeout(apply,50);
+      timer=setTimeout(apply,120);
     }).observe(board,{childList:true,subtree:true});
-    refresh();
-    setInterval(refresh,30000);
+    refresh(true);
+    setInterval(()=>refresh(false),30000);
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
