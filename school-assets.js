@@ -62,6 +62,18 @@
       .rus-rank-line.rus-state-top-1 .rus-state-rank{color:#d5ad35}
       .rus-rank-line.rus-state-top-2 .rus-state-rank{color:#d7d9dc}
       .rus-rank-line.rus-state-top-3 .rus-state-rank{color:#cf8754}
+      .rus-elo-line{
+        margin-top:5px;
+        font-size:9px;
+        font-weight:1000;
+        line-height:1.25;
+        color:#bbb;
+        white-space:normal;
+      }
+      .rus-elo-line .rus-elo-change{margin-left:4px}
+      .rus-elo-line .rus-elo-up{color:#73d977}
+      .rus-elo-line .rus-elo-down{color:#ff7b7b}
+      .rus-elo-line .rus-elo-even{color:#bbb}
       .rus-box-record{
         display:inline-block;
         margin-left:7px;
@@ -87,7 +99,7 @@
         color:#000;
         white-space:nowrap;
       }
-      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-rank-line{font-size:9px;margin-top:4px}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}.rus-live-mercy{font-size:8px}}
+      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-rank-line{font-size:9px;margin-top:4px}.rus-elo-line{font-size:8px;margin-top:4px}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}.rus-live-mercy{font-size:8px}}
     `;
     document.head.appendChild(style);
 
@@ -114,10 +126,18 @@
       return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:'';
     };
     const detailKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
+    const pairKey=(a,b)=>[rankKey(a),rankKey(b)].sort().join('|');
     let rankMap=new Map();
     const stateRankMap=new Map(state25.map((team,i)=>[rankKey(team),i+1]));
     let recordMap=new Map();
+    let eloPairMap=new Map();
     let mercyCount=null;
+
+    function teamFromLink(link){
+      let team='';
+      try{team=new URL(link.href,location.href).searchParams.get('team')||link.textContent||''}catch{team=link.textContent||''}
+      return team;
+    }
 
     function applyScoreboardRanks(){
       document.querySelectorAll('.team-row').forEach(row=>{
@@ -126,8 +146,7 @@
         if(!link||!meta)return;
         const holder=link.parentElement;
         if(!holder||holder.querySelector('.rus-rank-line'))return;
-        let team='';
-        try{team=new URL(link.href,location.href).searchParams.get('team')||link.textContent||''}catch{team=link.textContent||''}
+        const team=teamFromLink(link);
         const key=rankKey(team),info=rankMap.get(key),stateRank=stateRankMap.get(key);
         if(!info&&!stateRank)return;
         const rank=document.createElement('div');
@@ -139,6 +158,33 @@
         rank.innerHTML=[classPart,statePart].filter(Boolean).join(' &nbsp;•&nbsp; ');
         rank.title=[info?`${info.cls} rank: #${info.rank}`:'',stateRank?`State rank: #${stateRank}`:''].filter(Boolean).join(' • ');
         holder.insertBefore(rank,meta);
+      });
+    }
+
+    function applyFinalEloChanges(){
+      if(!eloPairMap.size)return;
+      document.querySelectorAll('.game.final-game').forEach(card=>{
+        const rows=[...card.querySelectorAll('.team-row')].slice(0,2);
+        if(rows.length!==2)return;
+        const links=rows.map(row=>row.querySelector('.team-name'));
+        if(links.some(x=>!x))return;
+        const names=links.map(teamFromLink);
+        const game=eloPairMap.get(pairKey(names[0],names[1]));
+        if(!game)return;
+        rows.forEach((row,i)=>{
+          const holder=links[i].parentElement;
+          const meta=row.querySelector('.team-meta');
+          if(!holder||!meta||holder.querySelector('.rus-elo-line'))return;
+          const key=rankKey(names[i]);
+          const info=key===rankKey(game.awayTeam)?game.away:key===rankKey(game.homeTeam)?game.home:null;
+          if(!info||!Number.isFinite(Number(info.eloBefore))||!Number.isFinite(Number(info.eloAfter))||!Number.isFinite(Number(info.change)))return;
+          const change=Number(info.change),cls=change>0?'rus-elo-up':change<0?'rus-elo-down':'rus-elo-even';
+          const line=document.createElement('div');
+          line.className='rus-elo-line';
+          line.innerHTML=`ELO ${Number(info.eloBefore)} → ${Number(info.eloAfter)} <span class="rus-elo-change ${cls}">(${change>0?'+':''}${change})</span>`;
+          line.title=`Postgame ELO change from this verified final`;
+          holder.insertBefore(line,meta.nextSibling);
+        });
       });
     }
 
@@ -192,6 +238,7 @@
 
     function refreshScoreboardExtras(){
       applyScoreboardRanks();
+      applyFinalEloChanges();
       applyFinalBoxRecords();
       applyLiveMercyBadges();
       applyMercySummary();
@@ -219,6 +266,20 @@
           for(const row of teams||[])if(row?.team)next.set(rankKey(row.team),recordText(row));
         }
         recordMap=next;
+        [0,100,400,1000].forEach(ms=>setTimeout(refreshScoreboardExtras,ms));
+      })
+      .catch(()=>{});
+
+    fetch(`elo-game-changes-2026.json?v=${Date.now()}`,{cache:'no-store'})
+      .then(r=>r.ok?r.json():null)
+      .then(data=>{
+        const next=new Map();
+        for(const game of Object.values(data?.games||{})){
+          if(!game?.awayTeam||!game?.homeTeam)continue;
+          const key=pairKey(game.awayTeam,game.homeTeam),prior=next.get(key);
+          if(!prior||String(game.date||'')>String(prior.date||''))next.set(key,game);
+        }
+        eloPairMap=next;
         [0,100,400,1000].forEach(ms=>setTimeout(refreshScoreboardExtras,ms));
       })
       .catch(()=>{});
