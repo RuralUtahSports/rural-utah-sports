@@ -47,14 +47,17 @@
         text-shadow:0 0 10px rgba(115,217,119,.45),0 0 20px rgba(115,217,119,.18) !important;
       }
       .winner .actual{color:#9ee7a1 !important}
-      .rus-rank-inline{
+      .rus-rank-line{
+        margin-top:5px;
         color:#F14D07;
+        font-size:10px;
         font-weight:1000;
+        line-height:1.1;
         white-space:nowrap;
       }
-      .rus-rank-inline.rus-rank-1{color:#d5ad35}
-      .rus-rank-inline.rus-rank-2{color:#d7d9dc}
-      .rus-rank-inline.rus-rank-3{color:#cf8754}
+      .rus-rank-line.rus-rank-1{color:#d5ad35}
+      .rus-rank-line.rus-rank-2{color:#d7d9dc}
+      .rus-rank-line.rus-rank-3{color:#cf8754}
       .rus-box-record{
         display:inline-block;
         margin-left:7px;
@@ -80,7 +83,7 @@
         color:#000;
         white-space:nowrap;
       }
-      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}.rus-live-mercy{font-size:8px}}
+      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-rank-line{font-size:9px;margin-top:4px}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}.rus-live-mercy{font-size:8px}}
     `;
     document.head.appendChild(style);
 
@@ -111,16 +114,18 @@
       document.querySelectorAll('.team-row').forEach(row=>{
         const link=row.querySelector('.team-name');
         const meta=row.querySelector('.team-meta');
-        if(!link||!meta||meta.querySelector('.rus-rank-inline'))return;
+        if(!link||!meta)return;
+        const holder=link.parentElement;
+        if(!holder||holder.querySelector('.rus-rank-line'))return;
         let team='';
         try{team=new URL(link.href,location.href).searchParams.get('team')||link.textContent||''}catch{team=link.textContent||''}
         const info=rankMap.get(rankKey(team));
         if(!info)return;
-        const rank=document.createElement('span');
-        rank.className=`rus-rank-inline rus-rank-${info.rank}`;
-        rank.textContent=` • #${info.rank}`;
+        const rank=document.createElement('div');
+        rank.className=`rus-rank-line rus-rank-${info.rank}`;
+        rank.textContent=`RUS ${info.cls} Rank: #${info.rank}`;
         rank.title=`${info.cls} rank: #${info.rank}`;
-        meta.appendChild(rank);
+        holder.insertBefore(rank,meta);
       });
     }
 
