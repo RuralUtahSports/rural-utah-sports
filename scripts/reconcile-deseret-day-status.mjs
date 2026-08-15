@@ -15,7 +15,11 @@ const aliases={
   LAYTONCHRISTIANACADEMY:['Layton Christian','LCA'],
   LCA:['Layton Christian','Layton Christian Academy'],
   MONUMENTVALLEY:['Monument Val'],MONUMENTVAL:['Monument Valley'],
-  MAPLEMOUNTAIN:['Maple Mtn'],MAPLEMTN:['Maple Mountain']
+  MAPLEMOUNTAIN:['Maple Mtn'],MAPLEMTN:['Maple Mountain'],
+  UMALEHI:['UMA Camp Williams','Utah Military Camp Williams','Utah Military Academy Camp Williams'],
+  UMACAMPWILLIAMS:['UMA-Lehi','Utah Military Camp Williams','Utah Military Academy Camp Williams'],
+  UTAHMILITARYCAMPWILLIAMS:['UMA-Lehi','UMA Camp Williams','Utah Military Academy Camp Williams'],
+  UTAHMILITARYACADEMYCAMPWILLIAMS:['UMA-Lehi','UMA Camp Williams','Utah Military Camp Williams']
 };
 function isoDate(v){let m=clean(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=clean(v).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:''}
 const gameKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
