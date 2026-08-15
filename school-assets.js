@@ -164,7 +164,7 @@
         if(!rec)return;
         const badge=document.createElement('div');
         badge.className='rus-team-record';
-        badge.textContent=`Record: ${rec}`;
+        badge.textContent=rec;
         badge.title=`Current 2026 record: ${rec}`;
         holder.insertBefore(badge,meta);
       });
