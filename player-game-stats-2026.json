@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-15T05:03:53.509Z",
+  "updatedAt": "2026-08-15T05:43:46.534Z",
   "summary": {
     "teams": 108,
     "teamGames": 108,
-    "statRows": 393,
-    "rosterMatchedRows": 387
+    "statRows": 395,
+    "rosterMatchedRows": 389
   },
   "teams": {
     "CEDAR CITY": {
@@ -640,8 +640,8 @@
           "location": "Away",
           "status": "Final",
           "final": true,
-          "teamScore": null,
-          "opponentScore": null,
+          "teamScore": 52,
+          "opponentScore": 7,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/milford-football-vs-whitehorse-football/274427",
           "players": [
             {
@@ -846,8 +846,8 @@
           "location": "Home",
           "status": "Final",
           "final": true,
-          "teamScore": null,
-          "opponentScore": null,
+          "teamScore": 7,
+          "opponentScore": 52,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/milford-football-vs-whitehorse-football/274427",
           "players": [],
           "scoringPlays": [
@@ -2175,8 +2175,8 @@
           "location": "Away",
           "status": "Final",
           "final": true,
-          "teamScore": null,
-          "opponentScore": null,
+          "teamScore": 0,
+          "opponentScore": 57,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/cottonwood-football-vs-north-sanpete-football/273328",
           "players": [],
           "scoringPlays": []
@@ -2193,8 +2193,8 @@
           "location": "Home",
           "status": "Final",
           "final": true,
-          "teamScore": null,
-          "opponentScore": null,
+          "teamScore": 57,
+          "opponentScore": 0,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/cottonwood-football-vs-north-sanpete-football/273328",
           "players": [
             {
@@ -8526,8 +8526,8 @@
           "location": "Away",
           "status": "Final",
           "final": true,
-          "teamScore": null,
-          "opponentScore": null,
+          "teamScore": 49,
+          "opponentScore": 0,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/mountain-crest-football-vs-deer-creek-football-football/273337",
           "players": [
             {
@@ -8707,8 +8707,8 @@
           "location": "Home",
           "status": "Final",
           "final": true,
-          "teamScore": null,
-          "opponentScore": null,
+          "teamScore": 0,
+          "opponentScore": 49,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/mountain-crest-football-vs-deer-creek-football-football/273337",
           "players": [],
           "scoringPlays": []
@@ -9818,12 +9818,52 @@
           "date": "2026-08-14",
           "opponent": "KAMEHAMEHA, HI",
           "location": "Away",
-          "status": "Live",
+          "status": "Q4",
           "final": false,
-          "teamScore": null,
+          "teamScore": 16,
           "opponentScore": null,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/orem-football-vs-kamehameha-hawaii-football/274363",
           "players": [
+            {
+              "playerId": "orem-7-rock-speredon",
+              "number": "7",
+              "name": "Rock Speredon",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Orem — ( 9:37 4Q ) Brooks Ross , 21-yard pass from Rock Speredon ( kick failed )"
+              ]
+            },
+            {
+              "playerId": "orem-2-brooks-ross",
+              "number": "2",
+              "name": "Brooks Ross",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Orem — ( 9:37 4Q ) Brooks Ross , 21-yard pass from Rock Speredon ( kick failed )"
+              ]
+            },
             {
               "playerId": "orem-25-adrian-sanchez",
               "number": "25",
@@ -9833,14 +9873,15 @@
                 {
                   "category": "Special Teams",
                   "values": {
-                    "FG": "",
+                    "FG": "1",
                     "PAT": "1",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Orem — ( 5:00 1Q ) JaVoni Halalilo , 60-yard int. return ( kick from Adrian Sanchez )"
+                "Orem — ( 5:00 1Q ) JaVoni Halalilo , 60-yard int. return ( kick from Adrian Sanchez )",
+                "Orem — ( 2:31 3Q ) Adrian Sanchez , 29-yard FG"
               ]
             },
             {
@@ -9865,7 +9906,9 @@
             }
           ],
           "scoringPlays": [
-            "Orem — ( 5:00 1Q ) JaVoni Halalilo , 60-yard int. return ( kick from Adrian Sanchez )"
+            "Orem — ( 5:00 1Q ) JaVoni Halalilo , 60-yard int. return ( kick from Adrian Sanchez )",
+            "Orem — ( 2:31 3Q ) Adrian Sanchez , 29-yard FG",
+            "Orem — ( 9:37 4Q ) Brooks Ross , 21-yard pass from Rock Speredon ( kick failed )"
           ]
         }
       ]
@@ -9878,10 +9921,10 @@
           "date": "2026-08-14",
           "opponent": "OREM",
           "location": "Home",
-          "status": "Live",
+          "status": "Q4",
           "final": false,
           "teamScore": null,
-          "opponentScore": null,
+          "opponentScore": 16,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/orem-football-vs-kamehameha-hawaii-football/274363",
           "players": [],
           "scoringPlays": []
