@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-15T04:44:05.653Z",
+  "updatedAt": "2026-08-15T04:54:36.863Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -631,8 +631,8 @@
     },
     "2026-08-14|MILFORD|WHITEHORSE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/milford-football-vs-whitehorse-football/274427",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": null,
@@ -775,7 +775,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T04:44:00.001Z"
+      "fetchedAt": "2026-08-15T04:54:33.931Z"
     },
     "2026-08-14|HUNTER|LAYTONCHRISTIAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/hunter-football-vs-layton-christian-football/273455",
@@ -1949,8 +1949,8 @@
     },
     "2026-08-14|COTTONWOOD|NORTHSANPETE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/cottonwood-football-vs-north-sanpete-football/273328",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": null,
@@ -2100,7 +2100,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T04:44:00.854Z"
+      "fetchedAt": "2026-08-15T04:54:34.647Z"
     },
     "2026-08-14|NORTHSUMMIT|ENTERPRISE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/north-summit-football-vs-enterprise-football/273359",
@@ -8107,7 +8107,7 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T04:44:02.110Z"
+      "fetchedAt": "2026-08-15T04:54:35.365Z"
     },
     "2026-08-15|MILLARD|SOUTHSEVIER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/millard-football-vs-south-sevier-football/273662",
@@ -8118,18 +8118,18 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T04:44:02.242Z"
+      "fetchedAt": "2026-08-15T04:54:36.125Z"
     },
     "2026-08-14|UMALEHI|PANGUITCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/utah-military-camp-williams-football-football-vs-panguitch-football/273633",
-      "status": "Scheduled",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T04:43:58.998Z"
+      "fetchedAt": "2026-08-15T04:54:32.792Z"
     },
     "2026-08-14|WATERCANYON|GRAND": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/water-canyon-football-football-vs-grand-football/273687",
@@ -8387,12 +8387,12 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T04:43:59.423Z"
+      "fetchedAt": "2026-08-15T04:54:33.218Z"
     },
     "2026-08-14|MOUNTAINCREST|DEERCREEK": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/mountain-crest-football-vs-deer-creek-football-football/273337",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": null,
@@ -8519,7 +8519,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T04:44:01.562Z"
+      "fetchedAt": "2026-08-15T04:54:34.772Z"
     },
     "2026-08-14|DESERETPEAK|BOXELDER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/deseret-peak-football-football-vs-box-elder-football/273507",
@@ -9076,7 +9076,7 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T04:44:03.232Z"
+      "fetchedAt": "2026-08-15T04:54:36.641Z"
     },
     "2026-08-14|PAROWAN|LINCOLNCOUNTYNV": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/parowan-football-vs-lincoln-county-nev-football/274325",
@@ -9659,13 +9659,33 @@
       "period": "",
       "boxScore": null,
       "scoringPlays": [
-        "Orem — ( 5:00 1Q ) JaVoni Halalilo , 60-yard int. return ( kick successful )",
+        "Orem — ( 5:00 1Q ) JaVoni Halalilo , 60-yard int. return ( kick from Adrian Sanchez )",
         "Kamehameha, Hawaii — ( 0:10 2Q ) 4-yard run ( kick successful )"
       ],
       "stats": [
         {
-          "category": "Defense",
+          "category": "Special Teams",
           "team": "OREM",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "25",
+              "A . Adrian Sanchez",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "",
           "headers": [
             "NO",
             "PLAYER",
@@ -9686,7 +9706,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T04:44:03.873Z"
+      "fetchedAt": "2026-08-15T04:54:36.762Z"
     },
     "2026-08-14|PROVIDENCEHALL|PAHRUMPNV": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/providence-hall-football-vs-pahrump-nev-football/276480",
