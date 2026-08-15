@@ -37,7 +37,7 @@ function render(){const cf=$('classFilter').value,sf=$('statusFilter').value,q=n
 (async()=>{try{const stamp=Date.now(),[wr,tr,dr]=await Promise.all([fetch('weekly-simulation.json?v='+stamp,{cache:'no-store'}),fetch('teams-data.json?v='+stamp,{cache:'no-store'}),fetch('deseret-game-details.json?v='+stamp,{cache:'no-store'}).catch(()=>null)]);if(!wr.ok||!tr.ok)throw new Error('data');const weekly=await wr.json(),teams=await tr.json(),details=dr&&dr.ok?await dr.json():{games:{}};for(const t of teams||[])if(t?.team){teamMap.set(norm(t.team),t);teamMap.set(canon(t.team),t)}for(const[k,v]of Object.entries(details.games||{}))detailMap.set(k,v);games=(weekly.games||[]).filter(g=>g.awayTeam&&g.homeTeam&&yearOf(g.date)===2026).sort((a,b)=>dateVal(a.date)-dateVal(b.date)||String(a.awayTeam).localeCompare(String(b.awayTeam)));render()}catch(e){console.error(e);$('board').innerHTML='<div class="empty">Weekly scoreboard data could not be loaded.</div>'}})();
 ['classFilter','statusFilter'].forEach(id=>$(id).addEventListener('change',render));$('search').addEventListener('input',render);
 </script>
-<script src="share-graphic.js?v=20260815a" defer></script>
+<script src="share-graphic.js?v=20260815b" defer></script>
 
 <script src="school-assets.js?v=20260815-logo2"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
