@@ -11,17 +11,34 @@ function addStyles(){
     .rus-scorigami-carousel{min-width:0}
     .rus-scorigami-slide{display:none;min-width:0}
     .rus-scorigami-slide.active{display:block}
-    .rus-scorigami-nav{display:flex;align-items:center;gap:8px;margin-top:9px}
-    .rus-scorigami-arrow{width:30px;height:30px;border:0;border-radius:999px;background:#000;color:#fff;font-size:18px;font-weight:900;line-height:1;cursor:pointer;display:grid;place-items:center}
+    .rus-scorigami-nav{display:flex;align-items:center;gap:10px;margin-top:10px}
+    .rus-scorigami-nav-center{display:flex;align-items:center;gap:8px}
+    .rus-scorigami-arrow{width:30px;height:30px;flex:0 0 30px;border:0;border-radius:999px;background:#000;color:#fff;font-size:18px;font-weight:900;line-height:1;cursor:pointer;display:grid;place-items:center}
     .rus-scorigami-arrow:hover{background:#fff;color:#000}
-    .rus-scorigami-position{font-size:10px;font-weight:1000;text-transform:uppercase;letter-spacing:.7px;min-width:48px;text-align:center}
-    .rus-scorigami-dots{display:flex;gap:6px;align-items:center}
-    .rus-scorigami-dot{width:8px;height:8px;border:0;border-radius:50%;padding:0;background:rgba(0,0,0,.35);cursor:pointer}
+    .rus-scorigami-position{font-size:10px;font-weight:1000;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap;text-align:center}
+    .rus-scorigami-dots{display:flex;gap:6px;align-items:center;justify-content:center}
+    .rus-scorigami-dot{width:8px;height:8px;flex:0 0 8px;border:0;border-radius:50%;padding:0;background:rgba(0,0,0,.35);cursor:pointer}
     .rus-scorigami-dot.active{background:#000;transform:scale(1.2)}
     @media(max-width:800px){
-      .rus-scorigami-nav{justify-content:flex-start;margin-top:10px}
-      .rus-scorigami-arrow{width:34px;height:34px;font-size:20px}
-      .rus-scorigami-position{font-size:11px}
+      .rus-scorigami-alert .rus-scorigami-wrap{display:block!important;padding:16px 14px 18px!important;text-align:left}
+      .rus-scorigami-alert .rus-scorigami-burst{display:none!important}
+      .rus-scorigami-carousel{width:100%;max-width:none}
+      .rus-scorigami-kicker{font-size:9px!important;letter-spacing:1px!important;padding:6px 10px!important;margin-bottom:8px}
+      .rus-scorigami-main{font-size:18px!important;line-height:1.12!important;margin-top:0!important;overflow-wrap:anywhere}
+      .rus-scorigami-main .rus-scorigami-score{font-size:25px!important;margin:0 3px!important;white-space:nowrap}
+      .rus-scorigami-sub{font-size:9px!important;line-height:1.35!important;margin-top:6px!important}
+      .rus-scorigami-nav{display:grid!important;grid-template-columns:40px minmax(0,1fr) 40px;align-items:center;gap:10px;margin-top:13px}
+      .rus-scorigami-nav-center{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px}
+      .rus-scorigami-arrow{width:40px;height:40px;flex-basis:40px;font-size:24px}
+      .rus-scorigami-position{font-size:10px;line-height:1}
+      .rus-scorigami-dots{gap:7px;min-height:10px}
+      .rus-scorigami-dot{width:8px;height:8px;flex-basis:8px}
+      .rus-scorigami-alert .rus-scorigami-link{display:block!important;width:100%;margin-top:14px!important;padding:13px 12px!important;text-align:center!important;font-size:10px!important}
+    }
+    @media(max-width:390px){
+      .rus-scorigami-main{font-size:16px!important}
+      .rus-scorigami-main .rus-scorigami-score{font-size:23px!important}
+      .rus-scorigami-kicker{font-size:8px!important;letter-spacing:.8px!important}
     }
   `;
   document.head.appendChild(s);
@@ -59,8 +76,10 @@ async function upgrade(alertEl){
         </div>`).join('')}
         <div class="rus-scorigami-nav" aria-label="Scorigami navigation">
           <button class="rus-scorigami-arrow rus-scorigami-prev" type="button" aria-label="Previous Scorigami">‹</button>
-          <span class="rus-scorigami-position">1 of ${alerts.length}</span>
-          <div class="rus-scorigami-dots">${alerts.map((_,i)=>`<button class="rus-scorigami-dot${i===0?' active':''}" type="button" aria-label="Show Scorigami ${i+1}" data-index="${i}"></button>`).join('')}</div>
+          <div class="rus-scorigami-nav-center">
+            <span class="rus-scorigami-position">1 of ${alerts.length}</span>
+            <div class="rus-scorigami-dots">${alerts.map((_,i)=>`<button class="rus-scorigami-dot${i===0?' active':''}" type="button" aria-label="Show Scorigami ${i+1}" data-index="${i}"></button>`).join('')}</div>
+          </div>
           <button class="rus-scorigami-arrow rus-scorigami-next" type="button" aria-label="Next Scorigami">›</button>
         </div>
       </div>
