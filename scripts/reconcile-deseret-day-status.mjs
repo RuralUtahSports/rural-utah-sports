@@ -3,6 +3,7 @@ import fs from 'node:fs';
 const WEEKLY='weekly-simulation.json',DETAILS='deseret-game-details.json',BASE='https://sports.deseret.com';
 const clean=v=>String(v??'').trim();
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
+const confirmedFinalGameIds=new Set(['273455']);
 const aliases={
   ALA:['American Leadership','American Leadership Academy'],
   AMERICANLEADERSHIP:['ALA','American Leadership Academy'],
@@ -18,6 +19,7 @@ const aliases={
 };
 function isoDate(v){let m=clean(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=clean(v).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:''}
 const gameKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
+const gameId=g=>{const m=clean(g.deseretUrl).match(/\/(\d+)\/?$/);return m?m[1]:''};
 function decode(s){return String(s||'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&quot;/gi,'"').replace(/&#39;|&apos;/gi,"'").replace(/&lt;/gi,'<').replace(/&gt;/gi,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n)))}
 function textOf(html){return decode(html).replace(/<(script|style|noscript|svg)\b[^>]*>[\s\S]*?<\/\1>/gi,' ').replace(/<br\s*\/?\s*>/gi,'\n').replace(/<\/(?:p|div|li|tr|h[1-6]|section|article)>/gi,'\n').replace(/<[^>]+>/g,' ').replace(/[ \t]+/g,' ').replace(/\n\s+/g,'\n').replace(/\n{3,}/g,'\n\n')}
 function namesFor(v){const base=compact(v);return[...new Set([clean(v),...(aliases[base]||[])].filter(Boolean))]}
@@ -36,7 +38,9 @@ function statusForGame(text,g){
 async function fetchHtml(url){const r=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.github.io/)'},signal:AbortSignal.timeout(15000)});if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);return r.text()}
 if(!fs.existsSync(WEEKLY)||!fs.existsSync(DETAILS))process.exit(0);
 const weekly=JSON.parse(fs.readFileSync(WEEKLY,'utf8')),details=JSON.parse(fs.readFileSync(DETAILS,'utf8'));const games=(weekly.games||[]).filter(g=>clean(g.deseretUrl));
-const dates=[...new Set(games.map(g=>isoDate(g.date)).filter(Boolean))];let updated=0;
+let updated=0;
+for(const g of games){if(!confirmedFinalGameIds.has(gameId(g)))continue;const key=gameKey(g),d=details.games?.[key];if(d&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked confirmed Final: ${key}`)}}
+const dates=[...new Set(games.map(g=>isoDate(g.date)).filter(Boolean))];
 for(const date of dates){const delta=(Date.parse(`${date}T12:00:00Z`)-Date.now())/86400000;if(delta>2.25||delta<-2.25)continue;let html;try{html=await fetchHtml(`${BASE}/high-school/football/scores-schedule/${date}?region=all`)}catch(e){console.warn(`Day status ${date}: ${e.message}`);continue}const text=textOf(html);for(const g of games.filter(x=>isoDate(x.date)===date)){const status=statusForGame(text,g);if(!status)continue;const key=gameKey(g),d=details.games?.[key];if(!d)continue;if(status==='Final'&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked Final from day scoreboard: ${key}`)}else if(status!=='Final'&&!d.final&&d.status!==status){d.status=status;updated++}}
 }
 details.updatedAt=new Date().toISOString();fs.writeFileSync(DETAILS,JSON.stringify(details,null,2)+'\n');console.log(`Deseret day-status reconciliation updated ${updated} games.`);
