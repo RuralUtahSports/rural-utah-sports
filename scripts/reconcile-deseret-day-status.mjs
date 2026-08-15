@@ -28,15 +28,17 @@ function decode(s){return String(s||'').replace(/&nbsp;/gi,' ').replace(/&amp;/g
 function textOf(html){return decode(html).replace(/<(script|style|noscript|svg)\b[^>]*>[\s\S]*?<\/\1>/gi,' ').replace(/<br\s*\/?\s*>/gi,'\n').replace(/<\/(?:p|div|li|tr|h[1-6]|section|article)>/gi,'\n').replace(/<[^>]+>/g,' ').replace(/[ \t]+/g,' ').replace(/\n\s+/g,'\n').replace(/\n{3,}/g,'\n\n')}
 function namesFor(v){const base=compact(v);return[...new Set([clean(v),...(aliases[base]||[])].filter(Boolean))]}
 function escRe(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-function positionsOfAny(hay,names){const out=[];for(const n of names){const re=new RegExp(`(^|[^A-Za-z0-9])${escRe(n).replace(/\\ /g,'\\s+')}(?=$|[^A-Za-z0-9])`,'ig');let m;while((m=re.exec(hay))){out.push(m.index+(m[1]?.length||0));if(m.index===re.lastIndex)re.lastIndex++}}return [...new Set(out)].sort((a,b)=>a-b)}
+function positionsOfAny(hay,names){const out=[];for(const n of names){const re=new RegExp(`(^|[^A-Za-z0-9])${escRe(n).replace(/\\ /g,'\\s+')}(?=$|[^A-Za-z0-9])`,'ig');let m;while((m=re.exec(hay))){out.push(m.index+(m[1]?.length||0));if(m.index===re.lastIndex)re.lastIndex++}}return[...new Set(out)].sort((a,b)=>a-b)}
 function statusForGame(text,g){
   const away=positionsOfAny(text,namesFor(g.awayTeam)),home=positionsOfAny(text,namesFor(g.homeTeam));
   let best=null;
-  for(const a of away)for(const h of home){const gap=Math.abs(a-h);if(gap>700)continue;if(!best||gap<best.gap)best={a,h,gap}}
+  for(const a of away)for(const h of home){const gap=Math.abs(a-h);if(gap>500)continue;if(!best||gap<best.gap)best={a,h,gap}}
   if(!best)return'';
-  const lo=Math.min(best.a,best.h),hi=Math.max(best.a,best.h),seg=text.slice(Math.max(0,lo-220),Math.min(text.length,hi+320));
+  const lo=Math.min(best.a,best.h),hi=Math.max(best.a,best.h);
+  const seg=text.slice(Math.max(0,lo-120),Math.min(text.length,hi+180));
+  const live=seg.match(/\b(Halftime|OT|Q\s*[1-4]|[1-4]Q)\b/i);
+  if(live)return live[1].replace(/\s+/g,'').toUpperCase();
   if(/\bFinal\b/i.test(seg))return'Final';
-  const live=seg.match(/\b(Halftime|OT|Q\s*[1-4]|[1-4]Q)\b/i);if(live)return live[1].replace(/\s+/g,'').toUpperCase();
   return'';
 }
 async function fetchHtml(url){const r=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.github.io/)'},signal:AbortSignal.timeout(15000)});if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);return r.text()}
@@ -45,6 +47,6 @@ const weekly=JSON.parse(fs.readFileSync(WEEKLY,'utf8')),details=JSON.parse(fs.re
 let updated=0;
 for(const g of games){if(!confirmedFinalGameIds.has(gameId(g)))continue;const key=gameKey(g),d=details.games?.[key];if(d&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked confirmed Final: ${key}`)}}
 const dates=[...new Set(games.map(g=>isoDate(g.date)).filter(Boolean))];
-for(const date of dates){const delta=(Date.parse(`${date}T12:00:00Z`)-Date.now())/86400000;if(delta>2.25||delta<-2.25)continue;let html;try{html=await fetchHtml(`${BASE}/high-school/football/scores-schedule/${date}?region=all`)}catch(e){console.warn(`Day status ${date}: ${e.message}`);continue}const text=textOf(html);for(const g of games.filter(x=>isoDate(x.date)===date)){const status=statusForGame(text,g);if(!status)continue;const key=gameKey(g),d=details.games?.[key];if(!d)continue;if(status==='Final'&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked Final from day scoreboard: ${key}`)}else if(status!=='Final'&&!d.final&&d.status!==status){d.status=status;updated++}}
+for(const date of dates){const delta=(Date.parse(`${date}T12:00:00Z`)-Date.now())/86400000;if(delta>2.25||delta<-2.25)continue;let html;try{html=await fetchHtml(`${BASE}/high-school/football/scores-schedule/${date}?region=all`)}catch(e){console.warn(`Day status ${date}: ${e.message}`);continue}const text=textOf(html);for(const g of games.filter(x=>isoDate(x.date)===date)){const status=statusForGame(text,g);if(!status)continue;const key=gameKey(g),d=details.games?.[key];if(!d)continue;const confirmed=confirmedFinalGameIds.has(gameId(g));if(status==='Final'&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked Final from day scoreboard: ${key}`)}else if(status!=='Final'&&!confirmed){if(d.final||d.status!==status){d.final=false;d.status=status;updated++;console.log(`Corrected live status from day scoreboard: ${key} -> ${status}`)}}}
 }
 details.updatedAt=new Date().toISOString();fs.writeFileSync(DETAILS,JSON.stringify(details,null,2)+'\n');console.log(`Deseret day-status reconciliation updated ${updated} games.`);
