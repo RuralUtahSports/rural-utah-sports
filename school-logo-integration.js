@@ -10,6 +10,20 @@
   `;document.head.appendChild(style);
 
   const path=(location.pathname.split('/').pop()||'').toLowerCase();
+  const teamFromLink=link=>{
+    if(!link)return'';
+    try{
+      const team=new URL(link.href,location.href).searchParams.get('team');
+      if(team)return team.trim();
+    }catch{}
+    const pill=link.querySelector('.team-pill');
+    if(pill){
+      const clone=pill.cloneNode(true);
+      clone.querySelectorAll('.rus-live-record').forEach(x=>x.remove());
+      return clone.textContent.trim();
+    }
+    return (link.textContent||'').trim();
+  };
 
   const wait=async()=>{
     const A=window.RUSSchoolAssets;if(!A)return setTimeout(wait,80);
@@ -23,10 +37,10 @@
         const name=hero.querySelector('.team-title')?.textContent?.trim();if(!name||!A.isFootballTeam(name))return;hero.dataset.rusSchoolLogo='1';hero.classList.add('rus-has-school-logo');hero.appendChild(addImg(name,'rus-hero-school-logo'));
       });
       if(path==='rankings.html')document.querySelectorAll('.rank-row .team-link:not([data-rus-school-logo]),.state25-row .team-link:not([data-rus-school-logo])').forEach(link=>{
-        const name=(link.querySelector('.team-pill')?.textContent||link.textContent||'').trim();if(!name||!A.isFootballTeam(name))return;link.dataset.rusSchoolLogo='1';link.insertBefore(addImg(name,'rus-ranking-school-logo'),link.firstChild);
+        const name=teamFromLink(link);if(!name||!A.isFootballTeam(name))return;link.dataset.rusSchoolLogo='1';link.insertBefore(addImg(name,'rus-ranking-school-logo'),link.firstChild);
       });
       if(path==='standings.html')document.querySelectorAll('.standings .team-link:not([data-rus-school-logo])').forEach(link=>{
-        const name=(link.textContent||'').trim();if(!name||!A.isFootballTeam(name))return;link.dataset.rusSchoolLogo='1';const img=addImg(name,'rus-standings-school-logo'),swatch=link.querySelector('.swatch');if(swatch&&swatch.nextSibling)link.insertBefore(img,swatch.nextSibling);else if(swatch)link.appendChild(img);else link.insertBefore(img,link.firstChild);
+        const name=teamFromLink(link);if(!name||!A.isFootballTeam(name))return;link.dataset.rusSchoolLogo='1';const img=addImg(name,'rus-standings-school-logo'),swatch=link.querySelector('.swatch');if(swatch&&swatch.nextSibling)link.insertBefore(img,swatch.nextSibling);else if(swatch)link.appendChild(img);else link.insertBefore(img,link.firstChild);
       });
     };
 
