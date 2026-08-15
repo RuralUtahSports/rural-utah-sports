@@ -1,0 +1,82 @@
+name: Cache Share Graphic Logos
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/cache-share-logos.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache school logos locally
+        run: |
+          python - <<'PY'
+          import json, re, urllib.request
+          from pathlib import Path
+
+          directory=json.loads(Path('school-directory.json').read_text())
+          out=Path('school-logo-cache'); out.mkdir(exist_ok=True)
+          custom={
+            'GREEN CANYON':'school-logos/green-canyon.svg','HILLCREST':'school-logos/hillcrest.svg','KEARNS':'school-logos/kearns.svg',
+            'LAYTON CHRISTIAN':'school-logos/layton-christian.svg','LAYTON CHRISTIAN ACADEMY':'school-logos/layton-christian.svg',
+            'LONE PEAK':'school-logos/lone-peak.svg','MAPLE MOUNTAIN':'school-logos/maple-mountain.svg','MILFORD':'school-logos/milford.svg',
+            'MILLARD':'school-logos/millard.svg','MORGAN':'school-logos/morgan.svg','OREM':'school-logos/orem.svg',
+            'PROVIDENCE HALL':'school-logos/providence-hall.svg','RICH':'school-logos/rich.svg','SAN JUAN':'school-logos/san-juan.svg','VIEWMONT':'school-logos/viewmont.svg'
+          }
+          mapping=dict(custom)
+          def slug(v):
+              return re.sub(r'-+','-',re.sub(r'[^a-z0-9]+','-',v.lower())).strip('-')
+          def ext_for(content_type,url):
+              ct=(content_type or '').lower()
+              if 'svg' in ct: return '.svg'
+              if 'jpeg' in ct or 'jpg' in ct: return '.jpg'
+              if 'webp' in ct: return '.webp'
+              if 'gif' in ct: return '.gif'
+              return '.png'
+
+          for key,entry in directory.items():
+              team=str(key).strip().upper()
+              if team in custom: continue
+              url=str((entry or {}).get('logoUrl') or '').strip()
+              if not url.startswith(('http://','https://')):
+                  if url: mapping[team]=url
+                  continue
+              try:
+                  req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 RuralUtahSports/1.0'})
+                  with urllib.request.urlopen(req,timeout=25) as r:
+                      data=r.read(); ct=r.headers.get('Content-Type','')
+                  if not data: continue
+                  ext=ext_for(ct,url)
+                  p=out/f'{slug(team)}{ext}'
+                  p.write_bytes(data)
+                  mapping[team]=p.as_posix()
+                  print('cached',team,p)
+              except Exception as e:
+                  print('FAILED',team,url,e)
+
+          aliases={
+            'CEDAR CITY':'CEDAR','GRAND':'GRAND COUNTY','MONUMENT VAL':'MONUMENT VALLEY',
+            'LAYTON CHRISTIAN':'LAYTON CHRISTIAN ACADEMY','WEST FIELD':'WEST FIELD'
+          }
+          for alias,target in aliases.items():
+              if target in mapping and alias not in mapping: mapping[alias]=mapping[target]
+          Path('school-logo-cache.json').write_text(json.dumps(dict(sorted(mapping.items())),indent=2)+'\n')
+          print('Mapped',len(mapping),'logos')
+          PY
+      - name: Commit cached logos
+        run: |
+          if git diff --quiet -- school-logo-cache school-logo-cache.json; then
+            echo 'No logo cache changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add school-logo-cache school-logo-cache.json
+          git commit -m 'Cache school logos for share graphics'
+          git push
