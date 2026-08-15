@@ -48,6 +48,51 @@
     [0,120,450,1000].forEach(ms=>setTimeout(decorate,ms));
   }
 
+  function classMovement(team,index,cls,snapIndex){
+    const snaps=rankingArchive?.snapshots||[];
+    if(snapIndex<=0)return{cls:'same',text:'—'};
+    const prev=snaps[snapIndex-1];
+    const old=(prev?.classifications?.[cls]||[]).findIndex(x=>x===team);
+    if(old<0)return{cls:'new',text:'NEW'};
+    const diff=old-index;
+    if(diff>0)return{cls:'up',text:`▲ +${diff}`};
+    if(diff<0)return{cls:'down',text:`▼ ${diff}`};
+    return{cls:'same',text:'—'};
+  }
+
+  function decorateClassMovement(){
+    const snaps=rankingArchive?.snapshots||[];
+    if(!snaps.length)return;
+    const selected=document.getElementById('rankingSnapshot')?.value;
+    let snapIndex=snaps.findIndex(x=>x.key===selected);
+    if(snapIndex<0)snapIndex=snaps.length-1;
+    const snap=snaps[snapIndex];
+    if(!snap)return;
+
+    document.querySelectorAll('.rank-card').forEach(card=>{
+      const cls=(card.querySelector('.rank-head h2')?.textContent||'').trim().toUpperCase();
+      const teams=snap.classifications?.[cls]||[];
+      card.querySelectorAll('.rank-row').forEach((row,index)=>{
+        const team=teams[index]||teamNameFromRow(row);
+        const move=classMovement(team,index,cls,snapIndex);
+        let el=row.querySelector('.class-movement');
+        if(!el){
+          el=document.createElement('div');
+          el.className='movement class-movement';
+          const rank=row.querySelector('.rank-num');
+          if(rank)rank.insertAdjacentElement('afterend',el);else row.prepend(el);
+        }
+        el.className=`movement class-movement ${move.cls}`;
+        el.textContent=move.text;
+        row.classList.add('has-class-movement');
+      });
+    });
+  }
+
+  function scheduleClassMovement(){
+    [0,80,220,500].forEach(ms=>setTimeout(decorateClassMovement,ms));
+  }
+
   function addClassRankingsNote(){
     if(document.getElementById('classRankingsUpdateNote'))return;
     const controls=document.querySelector('.archive-controls');
@@ -169,6 +214,12 @@
       .rus-live-record{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.28);font-size:10px;line-height:1;font-weight:900;letter-spacing:.2px;white-space:nowrap;color:inherit}
       .class-rankings-update-note{margin:-5px 0 20px;background:#151515;border:1px solid #333;border-left:5px solid #F14D07;border-radius:7px;padding:13px 15px;color:#aaa;font-size:12px;line-height:1.5}
       .class-rankings-update-note strong{color:#fff}
+      .rank-row.has-class-movement{grid-template-columns:50px 64px minmax(0,1fr) auto}
+      .class-movement{font-size:11px;font-weight:1000;text-align:center;white-space:nowrap}
+      .class-movement.up{color:#62df8c}
+      .class-movement.down{color:#ff7070}
+      .class-movement.same{color:#777}
+      .class-movement.new{color:#F14D07}
       .small-school-toggle{background:#1b1b1b;border:1px solid #3c3c3c;color:#ddd;padding:9px 13px;border-radius:5px;font-weight:900;font-size:12px;cursor:pointer;text-transform:none}
       .small-school-toggle:hover,.small-school-toggle.active{background:#F14D07;color:#000;border-color:#F14D07}
       .small-school-section{background:#000;border:1px solid #333;border-top:5px solid #F14D07;border-radius:9px;margin:0 0 28px;overflow:hidden;scroll-margin-top:18px}
@@ -191,6 +242,9 @@
       @media(max-width:900px){.small-school-list{grid-template-columns:1fr}.small-school-column:first-child{border-right:0}.small-school-column:first-child .small-school-row:last-child{border-bottom:1px solid #252525}}
       @media(max-width:650px){
         .class-rankings-update-note{margin:-4px 0 18px;font-size:12px;padding:12px 13px}
+        .rank-row.has-class-movement{grid-template-columns:40px 52px minmax(0,1fr)!important;gap:7px!important}
+        .rank-row.has-class-movement>.team-class{display:none!important}
+        .class-movement{font-size:10px}
         .small-school-toggle{flex:1 1 100%;padding:11px 13px}
         .small-school-head h2{font-size:22px}.small-school-head{padding:15px}
         .small-school-labels{display:none}
@@ -246,6 +300,7 @@
       if(select&&latest&&!select.value)select.value=latest.key;
       renderSnapshot(select?.value||latest?.key);
       addClassRankingsNote();
+      scheduleClassMovement();
       scheduleDecorate();
     }catch(e){console.warn('Rankings quick paint:',e.message)}
   }
@@ -296,7 +351,8 @@
   primeRankings();
   refresh();
   document.addEventListener('change',e=>{
+    if(e.target?.id==='rankingSnapshot')scheduleClassMovement();
     if(e.target?.id==='rankingSnapshot'||e.target?.id==='state25Snapshot')scheduleDecorate();
   });
-  window.addEventListener('load',()=>{addClassRankingsNote();addSmallSchoolView();scheduleDecorate()},{once:true});
+  window.addEventListener('load',()=>{addClassRankingsNote();addSmallSchoolView();scheduleClassMovement();scheduleDecorate()},{once:true});
 })();
