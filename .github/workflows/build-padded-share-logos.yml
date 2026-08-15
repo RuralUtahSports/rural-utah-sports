@@ -1,0 +1,112 @@
+name: Build Padded Share Logos
+
+on:
+  push:
+    paths:
+      - '.github/workflows/build-padded-share-logos.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build padded transparent PNGs for custom share logos
+        run: |
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import base64, io, json, re
+
+          src_dir = Path('school-logos')
+          out_dir = Path('school-logo-share')
+          out_dir.mkdir(exist_ok=True)
+
+          built = []
+          for svg in sorted(src_dir.glob('*.svg')):
+              text = svg.read_text(errors='ignore')
+              m = re.search(r'href=["\']data:image/[^;]+;base64,([^"\']+)', text, re.I | re.S)
+              if not m:
+                  print('Skipping non-embedded SVG:', svg)
+                  continue
+
+              raw = base64.b64decode(re.sub(r'\s+', '', m.group(1)))
+              im = Image.open(io.BytesIO(raw)).convert('RGBA')
+
+              alpha = im.getchannel('A')
+              bbox = alpha.getbbox()
+              if bbox:
+                  im = im.crop(bbox)
+
+              # Give every custom logo generous transparent padding so html2canvas
+              # can never crop artwork at a card edge.
+              canvas_w, canvas_h = 512, 384
+              inner_w, inner_h = 390, 250
+              scale = min(inner_w / max(1, im.width), inner_h / max(1, im.height))
+              new_size = (max(1, round(im.width * scale)), max(1, round(im.height * scale)))
+              im = im.resize(new_size, Image.Resampling.LANCZOS)
+
+              canvas = Image.new('RGBA', (canvas_w, canvas_h), (0,0,0,0))
+              x = (canvas_w - im.width) // 2
+              y = (canvas_h - im.height) // 2
+              canvas.alpha_composite(im, (x, y))
+
+              out = out_dir / f'{svg.stem}.png'
+              canvas.save(out, 'PNG', optimize=True)
+              built.append((svg.stem, str(out)))
+              print(svg.name, '->', out, im.size)
+
+          cache_path = Path('school-logo-cache.json')
+          cache = json.loads(cache_path.read_text())
+          changed = 0
+          for school, path in list(cache.items()):
+              if isinstance(path, str) and path.startswith('school-logos/') and path.endswith('.svg'):
+                  stem = Path(path).stem
+                  new_path = f'school-logo-share/{stem}.png'
+                  if (out_dir / f'{stem}.png').exists():
+                      cache[school] = new_path
+                      changed += 1
+          cache_path.write_text(json.dumps(cache, indent=2) + '\n')
+          print('Updated custom share logo mappings:', changed)
+
+          # Cache-bust the rankings share script on mobile.
+          rank = Path('rankings.html')
+          text = rank.read_text()
+          text = re.sub(r'share-graphic\.js\?v=[^"\']+', 'share-graphic.js?v=20260815-logo-fit4', text)
+          rank.write_text(text)
+
+          # Make the image itself strictly contain within the reserved logo area.
+          js = Path('share-graphic.js')
+          s = js.read_text()
+          s = re.sub(
+              r'\.rus-export-logo-large\{[^}]+\}',
+              '.rus-export-logo-large{display:block;width:auto;height:auto;max-width:92%;max-height:54px;object-fit:contain;object-position:center center;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}',
+              s,
+              count=1
+          )
+          s = re.sub(
+              r'\.rus-export-logo-wrap\{[^}]+\}',
+              '.rus-export-logo-wrap{margin-top:auto;height:60px;min-height:60px;max-height:60px;width:100%;display:flex;align-items:center;justify-content:center;padding:3px 8px;overflow:hidden;box-sizing:border-box}',
+              s,
+              count=1
+          )
+          js.write_text(s)
+          PY
+
+      - name: Commit padded share logos
+        run: |
+          if git diff --quiet -- school-logo-cache.json share-graphic.js rankings.html && [ -z "$(git status --porcelain school-logo-share)" ]; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add school-logo-share school-logo-cache.json share-graphic.js rankings.html
+          git commit -m 'Use padded PNGs for custom ranking share logos'
+          git push
