@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-15T03:32:59.843Z",
+  "updatedAt": "2026-08-15T03:54:00.142Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -631,8 +631,8 @@
     },
     "2026-08-14|MILFORD|WHITEHORSE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/milford-football-vs-whitehorse-football/274427",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": null,
@@ -775,7 +775,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:41.432Z"
+      "fetchedAt": "2026-08-15T03:53:53.349Z"
     },
     "2026-08-14|HUNTER|LAYTONCHRISTIAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/hunter-football-vs-layton-christian-football/273455",
@@ -1949,8 +1949,8 @@
     },
     "2026-08-14|COTTONWOOD|NORTHSANPETE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/cottonwood-football-vs-north-sanpete-football/273328",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": null,
@@ -2100,7 +2100,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:43.215Z"
+      "fetchedAt": "2026-08-15T03:53:54.097Z"
     },
     "2026-08-14|NORTHSUMMIT|ENTERPRISE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/north-summit-football-vs-enterprise-football/273359",
@@ -4465,11 +4465,40 @@
     },
     "2026-08-14|TIMPVIEW|LAYTON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/timpview-football-vs-layton-football/273577",
-      "status": "Live",
+      "status": "Q4",
       "final": false,
-      "clock": "",
-      "period": "",
-      "boxScore": null,
+      "clock": "3:33",
+      "period": "Q4",
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Timpview Thunderbirds (0-0)",
+            "quarters": [
+              7,
+              7,
+              19,
+              7
+            ],
+            "total": 40
+          },
+          {
+            "team": "Layton Lancers (0-0)",
+            "quarters": [
+              3,
+              0,
+              6,
+              12
+            ],
+            "total": 21
+          }
+        ]
+      },
       "scoringPlays": [
         "Layton — ( 6:46 1Q ) Miles Neuteboom , 41-yard FG",
         "Timpview — ( 0:37 1Q ) TJ Tuha , 4-yard run ( kick from Easton Baird )",
@@ -4477,12 +4506,15 @@
         "Timpview — ( 10:03 3Q ) TJ Tuha , 19-yard run ( kick failed )",
         "Layton — ( 8:37 3Q ) Harper Fullmer , 40-yard pass from Easton Thomas ( kick failed )",
         "Timpview — ( 3:37 3Q ) Rob Tuaone , 45-yard int. return ( kick from Easton Baird )",
-        "Timpview — ( 0:36 3Q ) TJ Tuha , 41-yard run ( run failed )"
+        "Timpview — ( 0:36 3Q ) TJ Tuha , 41-yard run ( run failed )",
+        "Timpview — ( 8:26 4Q ) Lolua Moungaloa , pass from Marley Fakatoumafi ( kick from Easton Baird )",
+        "Layton — ( 4:34 4Q ) Drew Godderidge , 23-yard pass from Easton Thomas ( run failed )",
+        "Layton — ( 3:33 4Q ) Drew Godderidge , 16-yard pass from Easton Thomas ( run failed )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "TIMPVIEW",
+          "team": "LAYTON",
           "headers": [
             "NO",
             "PLAYER",
@@ -4519,7 +4551,7 @@
               "",
               "",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -4537,6 +4569,15 @@
             "Int"
           ],
           "rows": [
+            [
+              "14",
+              "M . Marley Fakatoumafi",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ],
             [
               "10",
               "M . Matthew Manuma",
@@ -4560,6 +4601,13 @@
           ],
           "rows": [
             [
+              "21",
+              "D . Drew Godderidge",
+              "",
+              "",
+              "2"
+            ],
+            [
               "3",
               "H . Harper Fullmer",
               "",
@@ -4579,6 +4627,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "44",
+              "L . Lolua Moungaloa",
+              "",
+              "",
+              "1"
+            ],
             [
               "1",
               "S . Steel Richards",
@@ -4623,7 +4678,7 @@
               "27",
               "E . Easton Baird",
               "",
-              "3",
+              "4",
               ""
             ]
           ]
@@ -4651,7 +4706,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:46.960Z"
+      "fetchedAt": "2026-08-15T03:53:55.749Z"
     },
     "2026-08-14|OLYMPUS|CEDARVALLEY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/olympus-football-vs-cedar-valley-football/273588",
@@ -5777,7 +5832,36 @@
       "final": false,
       "clock": "",
       "period": "",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Carbon Dinos (0-0)",
+            "quarters": [
+              6,
+              8,
+              7,
+              0
+            ],
+            "total": 21
+          },
+          {
+            "team": "American Leadership Eagles (0-0)",
+            "quarters": [
+              7,
+              7,
+              7,
+              0
+            ],
+            "total": 21
+          }
+        ]
+      },
       "scoringPlays": [
         "American Leadership — ( 4:50 1Q ) Nick Ihli , 75-yard pass from Cooper DuPaix ( kick from Wesley Haston )",
         "Carbon — ( 0:08 1Q ) Tayger Timothy , 15-yard pass from Carter Branch ( kick failed )",
@@ -5974,15 +6058,44 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:47.897Z"
+      "fetchedAt": "2026-08-15T03:53:55.881Z"
     },
     "2026-08-14|MOUNTAINVIEW|PAYSON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/mountain-view-football-vs-payson-football/273699",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Mountain View Bruins (0-0)",
+            "quarters": [
+              6,
+              7,
+              6,
+              0
+            ],
+            "total": 19
+          },
+          {
+            "team": "Payson Lions (0-0)",
+            "quarters": [
+              7,
+              0,
+              13,
+              0
+            ],
+            "total": 20
+          }
+        ]
+      },
       "scoringPlays": [
         "Payson — ( 6:26 1Q ) Crusik Deichman , 14-yard pass from Justice Taylor ( kick from Bronx Newbury )",
         "Mountain View — ( 6:13 1Q ) Brigham Moses , 74-yard kick return ( kick failed )",
@@ -6175,14 +6288,14 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:48.033Z"
+      "fetchedAt": "2026-08-15T03:53:56.623Z"
     },
     "2026-08-14|PINEVIEW|MANTI": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/pine-view-football-vs-manti-football/273713",
-      "status": "Q4",
-      "final": false,
-      "clock": "5:22",
-      "period": "Q4",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
       "boxScore": {
         "periods": [
           "Q1",
@@ -6424,7 +6537,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:48.152Z"
+      "fetchedAt": "2026-08-15T03:53:56.754Z"
     },
     "2026-08-14|SPANISHFORK|SNOWCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/spanish-fork-football-vs-snow-canyon-football/273721",
@@ -7789,16 +7902,17 @@
     },
     "2026-08-14|GRANTSVILLE|SANJUAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/grantsville-football-vs-san-juan-football/273442",
-      "status": "HALFTIME",
+      "status": "Q3",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "1:46",
+      "period": "Q3",
       "boxScore": null,
       "scoringPlays": [
         "San Juan — ( 10:29 1Q ) Brigg Palmer , 1-yard run ( pass failed )",
         "San Juan — ( 1:08 1Q ) Brigg Palmer , 47-yard pass from Beau Yeomans ( pass failed )",
         "Grantsville — ( 11:06 2Q ) Carter Bell , 9-yard run ( kick from Cache Hammond )",
-        "Grantsville — ( 0:02 2Q ) Easton Allen , 24-yard pass from Ty Holm ( run failed )"
+        "Grantsville — ( 0:02 2Q ) Easton Allen , 24-yard pass from Ty Holm ( run failed )",
+        "Grantsville — ( 5:14 3Q ) Carter Bell , 1-yard run from Name Name ( pass from Cache Hammond )"
       ],
       "stats": [
         {
@@ -7837,7 +7951,7 @@
               "C . Carter Bell",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -7950,7 +8064,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:51.573Z"
+      "fetchedAt": "2026-08-15T03:53:57.412Z"
     },
     "2026-08-15|DUCHESNE|SOUTHSUMMIT": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/duchesne-football-vs-south-summit-football/273409",
@@ -7961,7 +8075,7 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T03:32:51.986Z"
+      "fetchedAt": "2026-08-15T03:53:58.116Z"
     },
     "2026-08-15|MILLARD|SOUTHSEVIER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/millard-football-vs-south-sevier-football/273662",
@@ -7972,26 +8086,55 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T03:32:52.483Z"
+      "fetchedAt": "2026-08-15T03:53:58.588Z"
     },
     "2026-08-14|UMALEHI|PANGUITCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/utah-military-camp-williams-football-football-vs-panguitch-football/273633",
-      "status": "Scheduled",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T03:32:39.465Z"
+      "fetchedAt": "2026-08-15T03:53:51.001Z"
     },
     "2026-08-14|WATERCANYON|GRAND": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/water-canyon-football-football-vs-grand-football/273687",
-      "status": "Live",
+      "status": "Q4",
       "final": false,
-      "clock": "",
-      "period": "",
-      "boxScore": null,
+      "clock": "3:33",
+      "period": "Q4",
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Water Canyon Wildcats (0-0)",
+            "quarters": [
+              22,
+              8,
+              8,
+              0
+            ],
+            "total": 38
+          },
+          {
+            "team": "Grand Red Devils (0-0)",
+            "quarters": [
+              8,
+              15,
+              14,
+              16
+            ],
+            "total": 53
+          }
+        ]
+      },
       "scoringPlays": [
         "Water Canyon — ( 10:39 1Q ) Deagan Williams , 45-yard run ( pass from Deagan Williams )",
         "Grand — ( 10:18 1Q ) Beto Carroll , 77-yard run ( run from Cooper Swasey )",
@@ -7999,10 +8142,13 @@
         "Water Canyon — ( 5:25 1Q ) Gabe Cooke , 88-yard pass from Deagan Williams ( run failed )",
         "Grand — ( 9:13 2Q ) Everett Hill , 13-yard pass from Justin Kimmerle ( run from Cooper Swasey )",
         "Water Canyon — ( 6:14 2Q ) Brody Stubbs , 55-yard fumble recovery ( pass from Gabe Cooke )",
-        "Grand — ( 1:08 2Q ) Jamari Connelly , 25-yard pass from Justin Kimmerle ( kick from Jareth Hernandez )",
+        "Grand — ( 1:08 2Q ) Jamari Connelly , 25-yard pass from Justin Kimmerle ( kick from Edgar Hernandez )",
         "Grand — ( 9:16 3Q ) Beto Carroll , 12-yard pass from Justin Kimmerle ( kick failed )",
         "Water Canyon — ( 7:52 3Q ) Gabe Cooke , 77-yard pass from Deagan Williams ( run from Sawyer Horsley )",
-        "Grand — ( 6:38 3Q ) Beto Carroll , 49-yard pass from Justin Kimmerle ( run from Justin Kimmerle )"
+        "Grand — ( 6:38 3Q ) Beto Carroll , 49-yard pass from Justin Kimmerle ( run from Justin Kimmerle )",
+        "Grand — ( 6:24 4Q ) Edgar Hernandez , 24-yard FG",
+        "Grand — ( 6:15 4Q ) Beto Carroll , 27-yard pass from Justin Kimmerle ( kick from Edgar Hernandez )",
+        "Grand — ( 3:33 4Q ) Jamari Connelly , 14-yard pass from Justin Kimmerle ( kick from Edgar Hernandez )"
       ],
       "stats": [
         {
@@ -8064,7 +8210,7 @@
               "",
               "",
               "",
-              "4",
+              "6",
               ""
             ]
           ]
@@ -8109,7 +8255,7 @@
               "J . Jamari Connelly",
               "",
               "",
-              "1"
+              "2"
             ],
             [
               "31",
@@ -8123,7 +8269,7 @@
               "B . Beto Carroll",
               "",
               "",
-              "2"
+              "3"
             ]
           ]
         },
@@ -8159,10 +8305,10 @@
           ],
           "rows": [
             [
-              "4",
-              "J . Jareth Hernandez",
-              "",
+              "3",
+              "E . Edgar Hernandez",
               "1",
+              "3",
               ""
             ]
           ]
@@ -8198,7 +8344,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:40.170Z"
+      "fetchedAt": "2026-08-15T03:53:51.652Z"
     },
     "2026-08-14|SAINTJOSEPH|ALTAMONT": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/st-joseph-football-football-vs-altamont-football/274400",
@@ -8209,12 +8355,12 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T03:32:40.832Z"
+      "fetchedAt": "2026-08-15T03:53:52.211Z"
     },
     "2026-08-14|MOUNTAINCREST|DEERCREEK": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/mountain-crest-football-vs-deer-creek-football-football/273337",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": null,
@@ -8341,12 +8487,12 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:43.993Z"
+      "fetchedAt": "2026-08-15T03:53:55.488Z"
     },
     "2026-08-14|DESERETPEAK|BOXELDER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/deseret-peak-football-football-vs-box-elder-football/273507",
-      "status": "HALFTIME",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": {
@@ -8512,7 +8658,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:44.818Z"
+      "fetchedAt": "2026-08-15T03:53:55.620Z"
     },
     "2026-08-14|BRIGHTON|WESTFIELD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/brighton-football-vs-west-field-football-football/273526",
@@ -8610,16 +8756,18 @@
     },
     "2026-08-14|BEAVER|MOAPAVALLEYNV": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/beaver-football-vs-moapa-valley-nev-football/273346",
-      "status": "Q3",
+      "status": "Q4",
       "final": false,
-      "clock": "6:59",
-      "period": "Q3",
+      "clock": "12:00",
+      "period": "Q4",
       "boxScore": null,
       "scoringPlays": [
         "Beaver — ( 8;25 2Q ) Davis Carter , 1-yard run ( kick from Emmet Lurth )",
         "Moapa Valley, Nev. — ( 4:20 2Q ) 7-yard run ( kick successful )",
         "Beaver — ( 1:12 2Q ) Davis Carter , 2-yard run ( run from Emmet Lurth )",
-        "Moapa Valley, Nev. — ( 6:59 3Q ) 27-yard run ( run successful )"
+        "Moapa Valley, Nev. — ( 6:59 3Q ) 27-yard run ( run successful )",
+        "Beaver — ( 0:15 3Q ) Emmet Lurth , 24-yard pass from Davis Carter ( kick failed )",
+        "Moapa Valley, Nev. — ( 0:01 3Q ) 90-yard kick return ( kick failed )"
       ],
       "stats": [
         {
@@ -8639,6 +8787,50 @@
               "",
               "",
               "2"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "16",
+              "D . Davis Carter",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "87",
+              "E . Emmet Lurth",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -8663,20 +8855,22 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:52.985Z"
+      "fetchedAt": "2026-08-15T03:53:59.109Z"
     },
     "2026-08-14|HURRICANE|VIRGINVALLEYNV": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/hurricane-football-vs-virgin-valley-nev-football/273716",
-      "status": "Live",
+      "status": "Q3",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "8:27",
+      "period": "Q3",
       "boxScore": null,
       "scoringPlays": [
         "Virgin Valley, Nev. — ( 11:39 1Q ) 70-yard pass ( kick failed )",
         "Hurricane — ( 10:30 2Q ) Drake Gines , 1-yard run ( kick from Cameron Lemmon )",
         "Hurricane — ( 7:08 2Q ) Titan Borchardt , 29-yard run ( kick from Cameron Lemmon )",
-        "Hurricane — ( 2:05 2Q ) Titan Borchardt , 48-yard pass from Kannon Cowan ( kick from Cameron Lemmon )"
+        "Hurricane — ( 2:05 2Q ) Titan Borchardt , 48-yard pass from Kannon Cowan ( kick from Cameron Lemmon )",
+        "Hurricane — ( 10:54 3Q ) RJ Allred , 1-yard run ( kick from Cameron Lemmon )",
+        "Hurricane — ( 8:27 3Q ) 35-yard pass from Kannon Cowan ( kick from Cameron Lemmon )"
       ],
       "stats": [
         {
@@ -8690,6 +8884,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "24",
+              "R . RJ Allred",
+              "",
+              "",
+              "1"
+            ],
             [
               "1",
               "T . Titan Borchardt",
@@ -8725,7 +8926,7 @@
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -8765,13 +8966,13 @@
               "7",
               "C . Cameron Lemmon",
               "",
-              "3",
+              "5",
               ""
             ]
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:53.487Z"
+      "fetchedAt": "2026-08-15T03:53:59.237Z"
     },
     "2026-08-14|JUDGEMEMORIAL|CIVICAACADEMYNV": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/judge-memorial-football-vs-civica-academy-nev-football-football/273903",
@@ -8782,7 +8983,7 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T03:32:53.886Z"
+      "fetchedAt": "2026-08-15T03:53:59.659Z"
     },
     "2026-08-14|PAROWAN|LINCOLNCOUNTYNV": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/parowan-football-vs-lincoln-county-nev-football/274325",
@@ -8884,19 +9085,50 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:54.439Z"
+      "fetchedAt": "2026-08-15T03:53:59.788Z"
     },
     "2026-08-14|ARBORVIEWNV|WEST": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/arbor-view-nev-football-vs-west-football/274379",
-      "status": "Live",
+      "status": "Q4",
       "final": false,
-      "clock": "",
-      "period": "",
-      "boxScore": null,
+      "clock": "1:14",
+      "period": "Q4",
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Arbor View, Nev. Aggies",
+            "quarters": [
+              0,
+              7,
+              0,
+              7
+            ],
+            "total": 14
+          },
+          {
+            "team": "West Panthers (0-0)",
+            "quarters": [
+              7,
+              7,
+              0,
+              6
+            ],
+            "total": 20
+          }
+        ]
+      },
       "scoringPlays": [
         "West — ( 1:17 1Q ) Monson Vaenuku , 31-yard pass from Kamden Lopati ( kick from Dominic Jones )",
         "Arbor View, Nev. — ( 4:40 2Q ) 53-yard pass ( kick successful )",
-        "West — ( 2:49 2Q ) Naeata Hamilton , 3-yard run ( kick from Dominic Jones )"
+        "West — ( 2:49 2Q ) Naeata Hamilton , 3-yard run ( kick from Dominic Jones )",
+        "Arbor View, Nev. — ( 5:43 4Q ) 14-yard pass ( kick successful )",
+        "West — ( 1:14 4Q ) Dovani Dixon , 4-yard run ( kick failed )"
       ],
       "stats": [
         {
@@ -8910,6 +9142,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "-",
+              "D . Dovani Dixon",
+              "",
+              "",
+              "1"
+            ],
             [
               "22",
               "N . Naeata Hamilton",
@@ -8984,7 +9223,7 @@
           ]
         }
       ],
-      "fetchedAt": "2026-08-15T03:32:54.919Z"
+      "fetchedAt": "2026-08-15T03:53:59.919Z"
     },
     "2026-08-14|TAFUNAAMERICANSAMOA|EAST": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/tafuna-american-samoa-football-football-vs-east-football/275597",
@@ -9297,7 +9536,7 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T03:32:55.365Z"
+      "fetchedAt": "2026-08-15T03:54:00.044Z"
     },
     "2026-08-14|PROVIDENCEHALL|PAHRUMPNV": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/providence-hall-football-vs-pahrump-nev-football/276480",
