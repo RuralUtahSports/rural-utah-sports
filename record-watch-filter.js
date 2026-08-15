@@ -15,12 +15,13 @@
   const isOutOfState=name=>/\(([A-Z]{2})\)\s*$/i.test(String(name||''))&&!/\(UT\)\s*$/i.test(String(name||''));
 
   async function setup(host){
-    let allowed=new Set(),streakByTeam=new Map();
+    let allowed=new Set(),streakByTeam=new Map(),seasonGames=[];
     try{
       const stamp=Date.now();
-      const [teamRes,streakRes]=await Promise.all([
+      const [teamRes,streakRes,eloRes]=await Promise.all([
         fetch('teams-data.json?v='+stamp,{cache:'no-store'}),
-        fetch('streak-records.json?v='+stamp,{cache:'no-store'})
+        fetch('streak-records.json?v='+stamp,{cache:'no-store'}),
+        fetch('elo-game-changes-2026.json?v='+stamp,{cache:'no-store'}).catch(()=>null)
       ]);
       if(teamRes.ok){
         const data=await teamRes.json();
@@ -30,13 +31,29 @@
         const data=await streakRes.json();
         streakByTeam=new Map(Object.entries(data||{}).map(([team,row])=>[norm(team),row]));
       }
+      if(eloRes?.ok){
+        const data=await eloRes.json();
+        seasonGames=Object.values(data?.games||{}).filter(g=>g?.date&&g?.awayTeam&&g?.homeTeam&&Number.isFinite(Number(g.awayScore))&&Number.isFinite(Number(g.homeScore)));
+      }
     }catch(e){console.error('Record Watch data:',e)}
 
     const eligible=name=>{
       if(!name||isJV(name)||isOutOfState(name))return false;
-      // Fail closed: Record Watch is only for teams in the authoritative Utah varsity directory.
       return allowed.size>0&&allowed.has(norm(name));
     };
+
+    function currentWinStreak(team,base){
+      const t=norm(team),games=seasonGames.filter(g=>norm(g.awayTeam)===t||norm(g.homeTeam)===t).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+      if(!games.length)return Number(base?.currentWinStreak?.length)||0;
+      let current=Number(base?.currentWinStreak?.length)||0;
+      for(const g of games){
+        const away=Number(g.awayScore),home=Number(g.homeScore),isAway=norm(g.awayTeam)===t;
+        const teamScore=isAway?away:home,oppScore=isAway?home:away;
+        if(teamScore>oppScore)current++;
+        else current=0;
+      }
+      return current;
+    }
 
     let filtering=false;
     const filter=()=>{
@@ -51,7 +68,7 @@
         if(!eligible(team)){card.remove();continue}
 
         const streak=streakByTeam.get(norm(team));
-        const current=Number(streak?.currentWinStreak?.length);
+        const current=currentWinStreak(team,streak);
         const best=Number(streak?.longestWinStreak?.length);
         if(Number.isFinite(current)){
           if(current<2){card.remove();continue}
@@ -68,9 +85,7 @@
           card.dataset.current=String(current);
           card.dataset.best=String(Number.isFinite(best)?best:0);
           kept.push(card);
-        }else{
-          card.remove();
-        }
+        }else card.remove();
       }
       kept.sort((a,b)=>{
         const ac=Number(a.dataset.current)||0,bc=Number(b.dataset.current)||0;
@@ -78,9 +93,7 @@
         const ad=ab?Math.max(ab-ac,0):9999,bd=bb?Math.max(bb-bc,0):9999;
         return ad-bd||bc-ac;
       }).forEach(card=>grid.appendChild(card));
-      if(!grid.querySelector('.rus-watch-card')){
-        host.innerHTML='<div class="rus-feature-loading">No Utah varsity multi-game active win streaks are available in the latest recorded results.</div>';
-      }
+      if(!grid.querySelector('.rus-watch-card'))host.innerHTML='<div class="rus-feature-loading">No Utah varsity multi-game active win streaks are available in the latest recorded results.</div>';
       filtering=false;
     };
 
