@@ -9,7 +9,7 @@
     STJOSEPH:'SAINTJOSEPH'
   };
   const canon=v=>aliases[norm(v)]||norm(v);
-  let records=new Map(), lastStamp='';
+  let records=new Map(),lastStamp='';
 
   function recordText(r){
     if(!r)return'';
@@ -22,8 +22,7 @@
     if(link){
       try{return new URL(link.href,location.href).searchParams.get('team')||link.textContent}catch{}
     }
-    const pill=row.querySelector('.team-pill');
-    return pill?.textContent||'';
+    return row.querySelector('.team-pill')?.textContent||'';
   }
 
   function addRecordToPill(pill,rec){
@@ -38,36 +37,43 @@
   }
 
   function decorate(){
+    if(!records.size)return;
     document.querySelectorAll('.rank-row,.state25-row').forEach(row=>{
-      const name=teamNameFromRow(row),rec=records.get(canon(name));
-      if(!rec)return;
-      const pill=row.querySelector('.team-pill');
-      addRecordToPill(pill,rec);
+      const rec=records.get(canon(teamNameFromRow(row)));
+      if(rec)addRecordToPill(row.querySelector('.team-pill'),rec);
     });
+  }
+
+  function scheduleDecorate(){
+    [0,120,450,1000].forEach(ms=>setTimeout(decorate,ms));
   }
 
   function styles(){
     if(document.getElementById('rus-rankings-live-record-style'))return;
-    const s=document.createElement('style');s.id='rus-rankings-live-record-style';s.textContent=`
-      .team-pill{gap:8px;flex-wrap:wrap}.rus-live-record{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.28);font-size:10px;line-height:1;font-weight:900;letter-spacing:.2px;white-space:nowrap;color:inherit}
-    `;document.head.appendChild(s);
+    const s=document.createElement('style');
+    s.id='rus-rankings-live-record-style';
+    s.textContent=`.team-pill{gap:8px;flex-wrap:wrap}.rus-live-record{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.28);font-size:10px;line-height:1;font-weight:900;letter-spacing:.2px;white-space:nowrap;color:inherit}`;
+    document.head.appendChild(s);
   }
 
   async function refresh(){
     try{
-      const res=await fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'});
+      const res=await fetch('standings-2026.json',{cache:'no-cache'});
       if(!res.ok)return;
       const data=await res.json();
-      if(data.updatedAt&&data.updatedAt===lastStamp){decorate();return}
+      if(data.updatedAt&&data.updatedAt===lastStamp){scheduleDecorate();return}
       lastStamp=data.updatedAt||'';
       const next=new Map();
       for(const list of Object.values(data.byClassification||{}))for(const r of list||[])next.set(canon(r.team),r);
-      records=next;decorate();
+      records=next;
+      scheduleDecorate();
     }catch(e){console.warn('Rankings live records:',e.message)}
   }
 
   styles();
   refresh();
-  const obs=new MutationObserver(decorate);obs.observe(document.documentElement,{subtree:true,childList:true});
-  setInterval(refresh,30000);
+  document.addEventListener('change',e=>{
+    if(e.target?.id==='rankingSnapshot')scheduleDecorate();
+  });
+  window.addEventListener('load',scheduleDecorate,{once:true});
 })();
