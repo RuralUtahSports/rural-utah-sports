@@ -30,6 +30,24 @@ ALIASES = {
 }
 BLOCKED = {"ESCALANTE", "USDB", "UTAH SCH DEAF"}
 
+CUSTOM_LOGOS = {
+    "GREEN CANYON": "school-logos/green-canyon.svg",
+    "HILLCREST": "school-logos/hillcrest.svg",
+    "KEARNS": "school-logos/kearns.svg",
+    "LAYTON CHRISTIAN": "school-logos/layton-christian.svg",
+    "LAYTON CHRISTIAN ACADEMY": "school-logos/layton-christian.svg",
+    "LONE PEAK": "school-logos/lone-peak.svg",
+    "MAPLE MOUNTAIN": "school-logos/maple-mountain.svg",
+    "MILFORD": "school-logos/milford.svg",
+    "MILLARD": "school-logos/millard.svg",
+    "MORGAN": "school-logos/morgan.svg",
+    "OREM": "school-logos/orem.svg",
+    "PROVIDENCE HALL": "school-logos/providence-hall.svg",
+    "RICH": "school-logos/rich.svg",
+    "SAN JUAN": "school-logos/san-juan.svg",
+    "VIEWMONT": "school-logos/viewmont.svg",
+}
+
 # A few UHSAA directory pages currently contain malformed/legacy address text.
 # Keep explicit corrections here so both the pin and popup use the actual campus.
 ADDRESS_OVERRIDES = {
@@ -224,7 +242,7 @@ def main():
         address = ADDRESS_OVERRIDES.get(team) or first_address_after_heading(soup)
         classification = page_field(soup, "Classification")
         region = page_field(soup, "Region")
-        logo = official_logo_url(school_name)
+        logo = CUSTOM_LOGOS.get(team, official_logo_url(school_name))
         city = address_city(address)
 
         cached = old.get(team, {}) if isinstance(old, dict) else {}
