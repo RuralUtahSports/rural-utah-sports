@@ -28,6 +28,7 @@
     addScript('site-extras.js','rusExtras',true);
     addScript('site-share.js','rusShare',true);
     addScript('mobile-optimizations.js?v=20260814b','rusMobileOptimizations',true);
+    addScript('desktop-optimizations.js?v=20260814a','rusDesktopOptimizations',true);
 
     if(oneOf('teams.html','team.html','scoreboard.html','standings.html','rankings.html','storylines.html','records.html','stat-leaders.html','mvp-race.html','all-utah.html','all-state-watch.html','awards-2025.html','player.html','map.html','compare.html','rivalry.html')){
       addScript('school-assets.js?v=20260813a','rusSchoolAssets',true);
