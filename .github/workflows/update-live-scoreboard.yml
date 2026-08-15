@@ -26,6 +26,7 @@ permissions:
 
 # Keep live scoreboard work separate from the heavier weekly Deseret sync.
 # If a newer live refresh starts before an older one finishes, prefer the newest data.
+# Manual refresh trigger: 2026-08-14 19:18 MT.
 concurrency:
   group: live-scoreboard
   cancel-in-progress: true
