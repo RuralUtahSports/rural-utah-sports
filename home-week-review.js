@@ -89,5 +89,5 @@
       ].join('');
     }catch{host.innerHTML='<div class="review-card empty-review"><span>Week in Review</span><strong>Updating…</strong><p>Final-game highlights will appear here automatically.</p></div>'}
   }
-  load(); setInterval(load,60000);
+  load(); setInterval(load,300000);
 })();
