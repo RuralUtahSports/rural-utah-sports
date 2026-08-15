@@ -47,6 +47,19 @@
         text-shadow:0 0 10px rgba(115,217,119,.45),0 0 20px rgba(115,217,119,.18) !important;
       }
       .winner .actual{color:#9ee7a1 !important}
+      .rus-team-record{
+        display:inline-block;
+        margin-top:5px;
+        padding:2px 6px;
+        border-radius:999px;
+        background:#202020;
+        border:1px solid #3a3a3a;
+        color:#ddd;
+        font-size:9px;
+        font-weight:1000;
+        line-height:1.15;
+        white-space:nowrap;
+      }
       .rus-rank-line{
         margin-top:5px;
         color:#F14D07;
@@ -99,7 +112,7 @@
         color:#000;
         white-space:nowrap;
       }
-      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-rank-line{font-size:9px;margin-top:4px}.rus-elo-line{font-size:8px;margin-top:4px}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}.rus-live-mercy{font-size:8px}}
+      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-team-record{font-size:8px;margin-top:4px}.rus-rank-line{font-size:9px;margin-top:4px}.rus-elo-line{font-size:8px;margin-top:4px}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}.rus-live-mercy{font-size:8px}}
     `;
     document.head.appendChild(style);
 
@@ -137,6 +150,24 @@
       let team='';
       try{team=new URL(link.href,location.href).searchParams.get('team')||link.textContent||''}catch{team=link.textContent||''}
       return team;
+    }
+
+    function applyTeamRecords(){
+      if(!recordMap.size)return;
+      document.querySelectorAll('.team-row').forEach(row=>{
+        const link=row.querySelector('.team-name');
+        const meta=row.querySelector('.team-meta');
+        if(!link||!meta)return;
+        const holder=link.parentElement;
+        if(!holder||holder.querySelector('.rus-team-record'))return;
+        const rec=recordMap.get(rankKey(teamFromLink(link)));
+        if(!rec)return;
+        const badge=document.createElement('div');
+        badge.className='rus-team-record';
+        badge.textContent=`Record: ${rec}`;
+        badge.title=`Current 2026 record: ${rec}`;
+        holder.insertBefore(badge,meta);
+      });
     }
 
     function applyScoreboardRanks(){
@@ -237,6 +268,7 @@
     }
 
     function refreshScoreboardExtras(){
+      applyTeamRecords();
       applyScoreboardRanks();
       applyFinalEloChanges();
       applyFinalBoxRecords();
