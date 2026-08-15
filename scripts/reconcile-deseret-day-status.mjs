@@ -9,7 +9,8 @@ const gameKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam
 function decode(s){return String(s||'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&quot;/gi,'"').replace(/&#39;|&apos;/gi,"'").replace(/&lt;/gi,'<').replace(/&gt;/gi,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n)))}
 function textOf(html){return decode(html).replace(/<(script|style|noscript|svg)\b[^>]*>[\s\S]*?<\/\1>/gi,' ').replace(/<br\s*\/?\s*>/gi,'\n').replace(/<\/(?:p|div|li|tr|h[1-6]|section|article)>/gi,'\n').replace(/<[^>]+>/g,' ').replace(/[ \t]+/g,' ').replace(/\n\s+/g,'\n').replace(/\n{3,}/g,'\n\n')}
 function namesFor(v){const base=compact(v),out=[clean(v)];for(const a of aliases[base]||[])out.push(a.replace(/([A-Z])(?=[A-Z][a-z]|$)/g,'$1 '));return out.filter(Boolean)}
-function indexOfAny(hay,names,start=0){let best=-1;for(const n of names){const i=hay.toUpperCase().indexOf(String(n).toUpperCase(),start);if(i>=0&&(best<0||i<best))best=i}return best}
+function escRe(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+function indexOfAny(hay,names,start=0){let best=-1;const slice=hay.slice(start);for(const n of names){const re=new RegExp(`(^|[^A-Za-z0-9])${escRe(n).replace(/\\ /g,'\\s+')}(?=$|[^A-Za-z0-9])`,'i'),m=re.exec(slice);if(m){const i=start+m.index+(m[1]?.length||0);if(best<0||i<best)best=i}}return best}
 function statusForGame(text,g){let from=0;for(let tries=0;tries<8;tries++){
   const a=indexOfAny(text,namesFor(g.awayTeam),from);if(a<0)break;
   const h=indexOfAny(text,namesFor(g.homeTeam),a+1);if(h>=0&&h-a<650){const seg=text.slice(Math.max(0,a-180),Math.min(text.length,h+260));if(/\bFinal\b/i.test(seg))return'Final';const live=seg.match(/\b(Halftime|OT|Q\s*[1-4]|[1-4]Q)\b/i);if(live)return live[1].replace(/\s+/g,'').toUpperCase()}from=a+1;
