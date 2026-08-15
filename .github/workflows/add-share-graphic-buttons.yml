@@ -21,7 +21,7 @@ jobs:
           from pathlib import Path
           import re
           files=['awards-2025.html','standings.html','scoreboard.html','rankings.html']
-          tag='<script src="share-graphic.js?v=20260815b" defer></script>'
+          tag='<script src="share-graphic.js?v=20260815c" defer></script>'
           changed=[]
           for name in files:
               p=Path(name)
@@ -51,5 +51,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add awards-2025.html standings.html scoreboard.html rankings.html
-          git commit -m 'Bump share graphic cache after layout fix'
+          git commit -m 'Refresh share graphic layout and logo cache'
           git push
