@@ -9,10 +9,7 @@
   const search=document.getElementById('search');
   filters.insertBefore(select,search||null);
 
-  let applying=false;
   function apply(){
-    if(applying)return;
-    applying=true;
     const onlyMercy=select.value==='MERCY';
     board.querySelectorAll('.date-section').forEach(section=>{
       const cards=[...section.querySelectorAll('.game')];
@@ -26,14 +23,16 @@
       const count=section.querySelector('.date-head span');
       if(count){
         if(!count.dataset.rusOriginalCount)count.dataset.rusOriginalCount=count.textContent||'';
-        count.textContent=onlyMercy?`${visible} mercy game${visible===1?'':'s'}`:count.dataset.rusOriginalCount;
+        const next=onlyMercy?`${visible} mercy game${visible===1?'':'s'}`:count.dataset.rusOriginalCount;
+        if(count.textContent!==next)count.textContent=next;
       }
     });
-    applying=false;
   }
 
   select.addEventListener('change',apply);
-  const observer=new MutationObserver(()=>queueMicrotask(apply));
-  observer.observe(board,{childList:true,subtree:true});
+  const observer=new MutationObserver(mutations=>{
+    if(mutations.some(m=>m.target===board))apply();
+  });
+  observer.observe(board,{childList:true});
   apply();
 })();
