@@ -43,7 +43,7 @@
   const safeHex=(v,f='#444444')=>/^#[0-9A-F]{3}(?:[0-9A-F]{3})?$/i.test(String(v||''))?String(v):f;
   const hexRgb=hex=>{let h=String(hex||'').replace('#','');if(h.length===3)h=h.split('').map(x=>x+x).join('');const n=parseInt(h,16);return Number.isFinite(n)?`${(n>>16)&255},${(n>>8)&255},${n&255}`:'68,68,68'};
   const logo=name=>window.RUSSchoolAssets?.logoUrl?RUSSchoolAssets.logoUrl(name):'RUSlogoNew.png';
-  let teamColors=new Map(),detailGames={};
+  let teamColors=new Map(),detailGames={},eloGames={};
   const finalGames=games=>games.filter(g=>valid(num(g.actualAway))&&valid(num(g.actualHome)));
   const finalLabel=g=>{
     const d=detailGames?.[detailKey(g)]||null;
@@ -70,23 +70,36 @@
     const g=r.g;
     return `<a class="review-card" href="scoreboard.html"><div class="review-label">${esc(label)}</div><div class="review-scoreboard">${teamRow(g.awayTeam,r.a,r.winner===g.awayTeam)}${teamRow(g.homeTeam,r.h,r.winner===g.homeTeam)}</div><div class="review-final">${esc(r.finalLabel||'Final')}</div><p>${esc(blurb)}</p></a>`;
   };
+  function weeklyEloExtremes(rows){
+    const rowMap=new Map(rows.map(r=>[detailKey(r.g),r]));
+    let gain=null,loss=null;
+    for(const game of Object.values(eloGames||{})){
+      const r=rowMap.get(detailKey(game));
+      if(!r)continue;
+      const awayChange=Number(game?.away?.change),homeChange=Number(game?.home?.change);
+      if(Number.isFinite(awayChange)&&(!gain||awayChange>gain.change))gain={change:awayChange,team:game.awayTeam,r};
+      if(Number.isFinite(homeChange)&&(!gain||homeChange>gain.change))gain={change:homeChange,team:game.homeTeam,r};
+      if(Number.isFinite(awayChange)&&(!loss||awayChange<loss.change))loss={change:awayChange,team:game.awayTeam,r};
+      if(Number.isFinite(homeChange)&&(!loss||homeChange<loss.change))loss={change:homeChange,team:game.homeTeam,r};
+    }
+    return{gain,loss};
+  }
   async function load(){
     try{
       const stamp=Date.now();
-      const [r,tr,dr]=await Promise.all([
+      const [r,tr,dr,er]=await Promise.all([
         fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}),
         fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),
-        fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)
+        fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),
+        fetch(`elo-game-changes-2026.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)
       ]);
       if(!r.ok)throw new Error();
       if(tr?.ok){
         teamColors=new Map();
         for(const t of await tr.json())if(t?.team){teamColors.set(key(t.team),t);teamColors.set(norm(t.team),t)}
       }
-      if(dr?.ok){
-        const details=await dr.json();
-        detailGames=details?.games||{};
-      }else detailGames={};
+      if(dr?.ok){const details=await dr.json();detailGames=details?.games||{}}else detailGames={};
+      if(er?.ok){const e=await er.json();eloGames=e?.games||{}}else eloGames={};
       const data=await r.json(), rows=finalGames(data.games||[]).map(result).filter(x=>x.winner!=='Tie');
       if(!rows.length){host.innerHTML=card('Top Win',null,'');return}
       const upsets=rows.filter(x=>x.predWinner!=='Tie'&&x.predWinner!==x.winner).sort((a,b)=>b.predMargin-a.predMargin||b.margin-a.margin);
@@ -101,13 +114,16 @@
       const correct=rows.filter(x=>x.predWinner===x.winner).sort((a,b)=>{
         const ae=Math.abs((a.pa-a.ph)-(a.a-a.h)),be=Math.abs((b.pa-b.ph)-(b.a-b.h)); return ae-be;
       })[0]||null;
+      const {gain,loss}=weeklyEloExtremes(rows);
       host.innerHTML=[
         card('Top Win',topWin,`${topWin.winner} picked up one of the strongest wins of the week.`),
         card('Biggest Upset',upset,upset?`${upset.winner} flipped a ${upset.predMargin}-point RUS prediction.`:''),
         card('Closest Game',close,`${close.margin}-point finish.`),
         card('Biggest Blowout',blow,`${blow.margin}-point winning margin.`),
         card('Highest Scoring',high,`${high.total} combined points.`),
-        card('RUS Pick of the Week',correct,correct?`RUS correctly picked ${correct.winner}.`:'')
+        card('RUS Pick of the Week',correct,correct?`RUS correctly picked ${correct.winner}.`:''),
+        card('Largest ELO Gain',gain?.r,gain?`${gain.team} gained +${gain.change} ELO from this game.`:''),
+        card('Largest ELO Loss',loss?.r,loss?`${loss.team} lost ${Math.abs(loss.change)} ELO from this game.`:'')
       ].join('');
     }catch{host.innerHTML='<div class="review-card empty-review"><span>Week in Review</span><strong>Updating…</strong><p>Final-game highlights will appear here automatically.</p></div>'}
   }
