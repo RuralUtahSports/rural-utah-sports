@@ -69,7 +69,22 @@
       .rus-rank-badge.rus-rank-1{background:#d5ad35}
       .rus-rank-badge.rus-rank-2{background:#b9bcc1}
       .rus-rank-badge.rus-rank-3{background:#ad6b3d;color:#fff}
-      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-rank-badge{height:20px;min-width:35px;font-size:8px}}
+      .rus-box-record{
+        display:inline-block;
+        margin-left:7px;
+        padding:2px 6px;
+        border-radius:999px;
+        background:#202020;
+        border:1px solid #3a3a3a;
+        color:#bbb;
+        font-size:8px;
+        font-weight:900;
+        white-space:nowrap;
+        vertical-align:middle;
+      }
+      .final-game .box-table tbody tr:first-child .rus-box-record,
+      .final-game .box-table tbody tr:last-child .rus-box-record{color:#ddd}
+      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-rank-badge{height:20px;min-width:35px;font-size:8px}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}}
     `;
     document.head.appendChild(style);
 
@@ -83,6 +98,7 @@
     };
     const rankKey=team=>rankingAliases[norm(team)]||norm(team);
     let rankMap=new Map();
+    let recordMap=new Map();
 
     function applyScoreboardRanks(){
       if(!rankMap.size)return;
@@ -103,6 +119,32 @@
       });
     }
 
+    function recordText(row){
+      const w=Number(row?.wins||0),l=Number(row?.losses||0),t=Number(row?.ties||0);
+      return t?`${w}-${l}-${t}`:`${w}-${l}`;
+    }
+
+    function applyFinalBoxRecords(){
+      if(!recordMap.size)return;
+      document.querySelectorAll('.game.final-game .box-table tbody tr').forEach(row=>{
+        const cell=row.querySelector('td:first-child');
+        if(!cell||cell.querySelector('.rus-box-record'))return;
+        const team=[...cell.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE).map(n=>n.textContent).join(' ').trim()||cell.textContent.trim();
+        const rec=recordMap.get(rankKey(team));
+        if(!rec)return;
+        const badge=document.createElement('span');
+        badge.className='rus-box-record';
+        badge.textContent=rec;
+        badge.title=`Current 2026 record: ${rec}`;
+        cell.appendChild(badge);
+      });
+    }
+
+    function refreshScoreboardExtras(){
+      applyScoreboardRanks();
+      applyFinalBoxRecords();
+    }
+
     fetch(`rankings-history-2026.json?v=${Date.now()}`,{cache:'no-store'})
       .then(r=>r.ok?r.json():null)
       .then(data=>{
@@ -113,15 +155,30 @@
           (teams||[]).forEach((team,i)=>next.set(rankKey(team),{rank:i+1,cls}));
         }
         rankMap=next;
-        [0,100,400,1000].forEach(ms=>setTimeout(applyScoreboardRanks,ms));
+        [0,100,400,1000].forEach(ms=>setTimeout(refreshScoreboardExtras,ms));
+      })
+      .catch(()=>{});
+
+    fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'})
+      .then(r=>r.ok?r.json():null)
+      .then(data=>{
+        const next=new Map();
+        for(const teams of Object.values(data?.byClassification||{})){
+          for(const row of teams||[])if(row?.team)next.set(rankKey(row.team),recordText(row));
+        }
+        recordMap=next;
+        [0,100,400,1000].forEach(ms=>setTimeout(refreshScoreboardExtras,ms));
       })
       .catch(()=>{});
 
     document.addEventListener('change',e=>{
-      if(e.target?.id==='classFilter'||e.target?.id==='statusFilter')setTimeout(applyScoreboardRanks,0);
+      if(e.target?.id==='classFilter'||e.target?.id==='statusFilter')setTimeout(refreshScoreboardExtras,0);
     });
     document.addEventListener('input',e=>{
-      if(e.target?.id==='search')setTimeout(applyScoreboardRanks,0);
+      if(e.target?.id==='search')setTimeout(refreshScoreboardExtras,0);
+    });
+    document.addEventListener('click',e=>{
+      if(e.target?.closest('.game-details>summary'))setTimeout(applyFinalBoxRecords,0);
     });
   }
 })();
