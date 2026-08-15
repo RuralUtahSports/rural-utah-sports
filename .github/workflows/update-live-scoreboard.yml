@@ -18,6 +18,7 @@ on:
     paths:
       - 'scripts/enrich-deseret-game-details.mjs'
       - 'scripts/reconcile-deseret-day-status.mjs'
+      - 'scripts/repair-live-status-anomalies.mjs'
       - '.github/workflows/update-live-scoreboard.yml'
 
 permissions:
@@ -43,6 +44,9 @@ jobs:
 
       - name: Reconcile Final/Live status from Deseret daily scoreboard
         run: node scripts/reconcile-deseret-day-status.mjs
+
+      - name: Repair suspicious same-day statuses
+        run: node scripts/repair-live-status-anomalies.mjs
 
       - name: Commit live scoreboard data
         run: |
