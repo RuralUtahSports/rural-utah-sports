@@ -16,6 +16,7 @@ on:
       - 'scripts/enrich-deseret-game-details.mjs'
       - 'scripts/reconcile-deseret-day-status.mjs'
       - 'scripts/repair-live-status-anomalies.mjs'
+      - 'scripts/build_standings_2026.mjs'
       - '.github/workflows/update-live-scoreboard.yml'
 
 permissions:
@@ -46,16 +47,22 @@ jobs:
       - name: Repair suspicious same-day statuses
         run: node scripts/repair-live-status-anomalies.mjs
 
-      - name: Commit live scoreboard data
+      - name: Refresh 2026 team records for rankings and standings
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
+          WEEKLY_GID: 1211467999
+        run: node scripts/build_standings_2026.mjs
+
+      - name: Commit live scoreboard and team records
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add deseret-game-details.json
+          git add deseret-game-details.json standings-2026.json
           if git diff --cached --quiet; then
-            echo "Live scoreboard data is already current."
+            echo "Live scoreboard and records are already current."
             exit 0
           fi
-          git commit -m "Auto-refresh live scoreboard"
+          git commit -m "Auto-refresh live scoreboard and records"
           ok=0
           for attempt in 1 2 3 4; do
             if git pull --rebase origin main && git push; then
