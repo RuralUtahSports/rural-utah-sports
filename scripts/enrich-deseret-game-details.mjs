@@ -90,6 +90,12 @@ function extractTables(html) {
 }
 
 function findBoxScore(tables) {
+  const parseQuarter = value => {
+    const s = clean(value);
+    if (/^\d+$/.test(s)) return Number(s);
+    if (/^[-–—]$/.test(s)) return null;
+    return undefined;
+  };
   for (const t of tables) {
     const hi = t.rows.findIndex(r => {
       const vals = r.map(v => clean(v).toUpperCase().replace(/\s+/g, ''));
@@ -102,11 +108,13 @@ function findBoxScore(tables) {
     for (const r of t.rows.slice(hi + 1)) {
       if (r.length < 6) continue;
       const scoreCells = r.slice(-5);
-      if (!scoreCells.every(v => /^\d+$/.test(clean(v)))) continue;
+      const quarters = scoreCells.slice(0, 4).map(parseQuarter);
+      const totalText = clean(scoreCells[4]);
+      if (quarters.some(v => v === undefined) || !/^\d+$/.test(totalText)) continue;
       rows.push({
         team: r.slice(0, -5).filter(Boolean).join(' ').replace(/^@\s*/, '').trim(),
-        quarters: scoreCells.slice(0, 4).map(Number),
-        total: Number(scoreCells[4])
+        quarters,
+        total: Number(totalText)
       });
       if (rows.length === 2) break;
     }
