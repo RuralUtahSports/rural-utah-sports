@@ -25,6 +25,7 @@ permissions:
 # Keep live scoreboard work separate from the heavier weekly Deseret sync.
 # Runs normally finish well inside five minutes, so do not cancel an in-progress
 # refresh if GitHub starts the next scheduled run a little early.
+# Manual refresh trigger: 2026-08-14 21:09 MT.
 concurrency:
   group: live-scoreboard
   cancel-in-progress: false
