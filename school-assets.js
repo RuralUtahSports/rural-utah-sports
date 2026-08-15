@@ -47,28 +47,14 @@
         text-shadow:0 0 10px rgba(115,217,119,.45),0 0 20px rgba(115,217,119,.18) !important;
       }
       .winner .actual{color:#9ee7a1 !important}
-      .rus-rank-badge{
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        min-width:38px;
-        height:22px;
-        margin:0 6px 4px 0;
-        padding:0 6px;
-        border-radius:999px;
-        background:#F14D07;
-        color:#000;
-        border:1px solid rgba(255,255,255,.2);
-        font-size:9px;
-        line-height:1;
+      .rus-rank-inline{
+        color:#F14D07;
         font-weight:1000;
-        letter-spacing:.2px;
-        vertical-align:middle;
-        box-shadow:0 2px 7px rgba(0,0,0,.28);
+        white-space:nowrap;
       }
-      .rus-rank-badge.rus-rank-1{background:#d5ad35}
-      .rus-rank-badge.rus-rank-2{background:#b9bcc1}
-      .rus-rank-badge.rus-rank-3{background:#ad6b3d;color:#fff}
+      .rus-rank-inline.rus-rank-1{color:#d5ad35}
+      .rus-rank-inline.rus-rank-2{color:#d7d9dc}
+      .rus-rank-inline.rus-rank-3{color:#cf8754}
       .rus-box-record{
         display:inline-block;
         margin-left:7px;
@@ -84,7 +70,7 @@
       }
       .final-game .box-table tbody tr:first-child .rus-box-record,
       .final-game .box-table tbody tr:last-child .rus-box-record{color:#ddd}
-      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-rank-badge{height:20px;min-width:35px;font-size:8px}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}}
+      @media(max-width:700px){.winner .actual b{font-size:27px !important}.rus-box-record{font-size:7px;margin-left:4px;padding:2px 5px}}
     `;
     document.head.appendChild(style);
 
@@ -104,18 +90,17 @@
       if(!rankMap.size)return;
       document.querySelectorAll('.team-row').forEach(row=>{
         const link=row.querySelector('.team-name');
-        if(!link)return;
-        const holder=link.parentElement;
-        if(!holder||holder.querySelector('.rus-rank-badge'))return;
+        const meta=row.querySelector('.team-meta');
+        if(!link||!meta||meta.querySelector('.rus-rank-inline'))return;
         let team='';
         try{team=new URL(link.href,location.href).searchParams.get('team')||link.textContent||''}catch{team=link.textContent||''}
         const info=rankMap.get(rankKey(team));
         if(!info)return;
-        const badge=document.createElement('span');
-        badge.className=`rus-rank-badge rus-rank-${info.rank}`;
-        badge.textContent=`#${info.rank} ${info.cls}`;
-        badge.title=`${info.cls} rank: #${info.rank}`;
-        holder.insertBefore(badge,link);
+        const rank=document.createElement('span');
+        rank.className=`rus-rank-inline rus-rank-${info.rank}`;
+        rank.textContent=` • #${info.rank}`;
+        rank.title=`${info.cls} rank: #${info.rank}`;
+        meta.appendChild(rank);
       });
     }
 
