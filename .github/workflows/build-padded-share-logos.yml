@@ -29,38 +29,44 @@ jobs:
           out_dir.mkdir(exist_ok=True)
 
           built = []
+          failed = []
           for svg in sorted(src_dir.glob('*.svg')):
-              text = svg.read_text(errors='ignore')
-              m = re.search(r'href=["\']data:image/[^;]+;base64,([^"\']+)', text, re.I | re.S)
-              if not m:
-                  print('Skipping non-embedded SVG:', svg)
-                  continue
+              try:
+                  text = svg.read_text(errors='ignore')
+                  m = re.search(r'href=["\']data:image/[^;]+;base64,([^"\']+)', text, re.I | re.S)
+                  if not m:
+                      print('Skipping non-embedded SVG:', svg)
+                      continue
 
-              raw = base64.b64decode(re.sub(r'\s+', '', m.group(1)))
-              im = Image.open(io.BytesIO(raw)).convert('RGBA')
+                  raw = base64.b64decode(re.sub(r'\s+', '', m.group(1)))
+                  im = Image.open(io.BytesIO(raw)).convert('RGBA')
 
-              alpha = im.getchannel('A')
-              bbox = alpha.getbbox()
-              if bbox:
-                  im = im.crop(bbox)
+                  alpha = im.getchannel('A')
+                  bbox = alpha.getbbox()
+                  if bbox:
+                      im = im.crop(bbox)
 
-              # Give every custom logo generous transparent padding so html2canvas
-              # can never crop artwork at a card edge.
-              canvas_w, canvas_h = 512, 384
-              inner_w, inner_h = 390, 250
-              scale = min(inner_w / max(1, im.width), inner_h / max(1, im.height))
-              new_size = (max(1, round(im.width * scale)), max(1, round(im.height * scale)))
-              im = im.resize(new_size, Image.Resampling.LANCZOS)
+                  # Normalize all custom logos onto the same transparent canvas
+                  # with generous padding. This prevents html2canvas from clipping
+                  # tall/wide custom marks at the edge of ranking cards.
+                  canvas_w, canvas_h = 512, 384
+                  inner_w, inner_h = 390, 250
+                  scale = min(inner_w / max(1, im.width), inner_h / max(1, im.height))
+                  new_size = (max(1, round(im.width * scale)), max(1, round(im.height * scale)))
+                  im = im.resize(new_size, Image.Resampling.LANCZOS)
 
-              canvas = Image.new('RGBA', (canvas_w, canvas_h), (0,0,0,0))
-              x = (canvas_w - im.width) // 2
-              y = (canvas_h - im.height) // 2
-              canvas.alpha_composite(im, (x, y))
+                  canvas = Image.new('RGBA', (canvas_w, canvas_h), (0,0,0,0))
+                  x = (canvas_w - im.width) // 2
+                  y = (canvas_h - im.height) // 2
+                  canvas.alpha_composite(im, (x, y))
 
-              out = out_dir / f'{svg.stem}.png'
-              canvas.save(out, 'PNG', optimize=True)
-              built.append((svg.stem, str(out)))
-              print(svg.name, '->', out, im.size)
+                  out = out_dir / f'{svg.stem}.png'
+                  canvas.save(out, 'PNG', optimize=True)
+                  built.append(svg.stem)
+                  print(svg.name, '->', out, im.size)
+              except Exception as exc:
+                  failed.append(svg.stem)
+                  print('Skipping malformed custom logo', svg.name, ':', exc)
 
           cache_path = Path('school-logo-cache.json')
           cache = json.loads(cache_path.read_text())
@@ -74,25 +80,26 @@ jobs:
                       changed += 1
           cache_path.write_text(json.dumps(cache, indent=2) + '\n')
           print('Updated custom share logo mappings:', changed)
+          print('Built:', ', '.join(built))
+          print('Skipped:', ', '.join(failed) if failed else 'none')
 
-          # Cache-bust the rankings share script on mobile.
           rank = Path('rankings.html')
           text = rank.read_text()
-          text = re.sub(r'share-graphic\.js\?v=[^"\']+', 'share-graphic.js?v=20260815-logo-fit4', text)
+          text = re.sub(r"share-graphic\.js\?v=[^\"']+", 'share-graphic.js?v=20260815-logo-fit5', text)
           rank.write_text(text)
 
-          # Make the image itself strictly contain within the reserved logo area.
+          # Keep every logo centered inside a fixed-height reserved area.
           js = Path('share-graphic.js')
           s = js.read_text()
           s = re.sub(
               r'\.rus-export-logo-large\{[^}]+\}',
-              '.rus-export-logo-large{display:block;width:auto;height:auto;max-width:92%;max-height:54px;object-fit:contain;object-position:center center;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}',
+              '.rus-export-logo-large{display:block;width:auto;height:auto;max-width:88%;max-height:50px;object-fit:contain;object-position:center center;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}',
               s,
               count=1
           )
           s = re.sub(
               r'\.rus-export-logo-wrap\{[^}]+\}',
-              '.rus-export-logo-wrap{margin-top:auto;height:60px;min-height:60px;max-height:60px;width:100%;display:flex;align-items:center;justify-content:center;padding:3px 8px;overflow:hidden;box-sizing:border-box}',
+              '.rus-export-logo-wrap{margin-top:auto;height:58px;min-height:58px;max-height:58px;width:100%;display:flex;align-items:center;justify-content:center;padding:4px 10px;overflow:hidden;box-sizing:border-box}',
               s,
               count=1
           )
