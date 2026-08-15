@@ -38,7 +38,7 @@
     if(oneOf('team.html','player.html'))addScript('season-dropdown.js?v=20260814a','rusSeasonDropdown',true);
 
     if(path==='records.html'){
-      addScript('record-watch-filter.js?v=20260812b','rusRecordWatchFilter',true);
+      addScript('record-watch-filter.js?v=20260815a','rusRecordWatchFilter',true);
       addScript('uhsaa-record-book.js?v=20260814c','rusUhsaaRecordBook',true);
       addScript('uhsaa-record-watch.js?v=20260814a','rusUhsaaRecordWatch',true);
       addScript('records-layout-enhancements.js?v=20260814c','rusRecordsLayoutEnhancements',true);
@@ -57,6 +57,7 @@
     if(path==='index.html'){
       addScript('did-you-know.js?v=20260812a','rusDidYouKnow',true);
       addScript('today-history-more.js?v=20260813a','rusTodayHistoryMore',true);
+      addScript('record-watch-filter.js?v=20260815a','rusRecordWatchFilter',true);
     }
     if(path.includes('simulator'))[['season-simulator-core.js?v=20260813a','rusSeasonCore'],['season-simulator-odds.js?v=20260813a','rusSeasonOdds'],['season-simulator-score.js?v=20260813a','rusSeasonScore'],['season-simulator-elo.js?v=20260813e','rusSeasonElo'],['season-simulator-run.js?v=20260813e','rusSeasonRun'],['season-simulator-view.js?v=20260813h','rusSeasonView'],['season-simulator-ui.js?v=20260813f','rusSeasonUi']].forEach(([src,key])=>addScript(src,key,false));
     if(path==='rankings.html')addScript('rankings-live-records.js?v=20260814a','rusRankingsLiveRecords',true);
