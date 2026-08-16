@@ -19,7 +19,6 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
 
           js=Path('standings-share-layout.js')
           s=js.read_text(encoding='utf-8')
@@ -47,7 +46,7 @@ jobs:
 
           p=Path('standings.html')
           h=p.read_text(encoding='utf-8')
-          h=re.sub(r'standings-share-layout\\.js\\?v=[^\"\\']+', 'standings-share-layout.js?v=20260816-v6', h)
+          h=h.replace('standings-share-layout.js?v=20260816-v5','standings-share-layout.js?v=20260816-v6')
           p.write_text(h,encoding='utf-8')
           PY
       - name: Commit standings share name and color update
