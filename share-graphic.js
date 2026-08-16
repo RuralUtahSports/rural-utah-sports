@@ -19,16 +19,6 @@
   .rus-export-rank-num{position:absolute;left:9px;top:12px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#252525;border:1px solid #555;color:#fff;font-size:16px;font-weight:1000}
   .rus-export-rank-num.top1{background:#d5ad35;color:#000;border-color:#f0d169}.rus-export-rank-num.top2{background:#b9bcc1;color:#000;border-color:#e0e2e5}.rus-export-rank-num.top3{background:#ad6b3d;color:#000;border-color:#d6976a}
   .rus-export-team-line{width:100%;min-width:0;display:block;text-align:center;padding-left:40px;padding-right:2px}.rus-export-team-wrap{width:100%;min-width:0;text-align:center}.rus-export-team{display:inline-block;max-width:100%;padding:5px 8px;border-radius:5px;background:var(--accent,#333);color:var(--team-text,#fff);font-size:16px;font-weight:1000;line-height:1.02;white-space:normal;overflow:visible;text-overflow:clip;text-align:center}.rus-export-record{font-size:12px;color:#fff;margin-top:4px;font-weight:1000;text-align:center}.rus-export-logo-wrap{margin-top:auto;height:94px;min-height:94px;max-height:94px;width:100%;display:flex;align-items:center;justify-content:center;padding:0 2px;overflow:hidden;box-sizing:border-box}.rus-export-logo-large{display:block;width:auto;height:auto;max-width:100%;max-height:90px;object-fit:contain;object-position:center center;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-rank-item{flex-direction:row;align-items:center;gap:12px;padding:7px 14px 7px 10px}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-rank-num{position:static;left:auto;top:auto;flex:0 0 34px}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-logo-wrap{order:2;margin:0;width:72px;min-width:72px;height:100%;min-height:0;max-height:none;padding:2px 4px;flex:0 0 72px}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-logo-large{max-width:68px;max-height:68px}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-team-line{order:3;flex:1 1 auto;padding:0;text-align:left}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-team-wrap{text-align:left}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-team{font-size:18px;line-height:1.05;text-align:left;padding:6px 10px}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-record{order:4;margin:0 4px 0 0;white-space:nowrap;font-size:13px}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-meta{order:5;margin:0;justify-content:flex-end;text-align:right;max-width:280px;gap:4px 8px;font-size:10px}
-  .rus-export-board.rus-export-vertical-ranking .rus-export-move{font-size:16px}
   .rus-export-board.rus-export-landscape .rus-export-rank-item{padding-top:7px;padding-bottom:5px}.rus-export-board.rus-export-landscape .rus-export-team{font-size:15px;padding:4px 7px}.rus-export-board.rus-export-landscape .rus-export-record{font-size:11px;margin-top:3px}.rus-export-board.rus-export-landscape .rus-export-meta{font-size:9px;margin-top:3px;gap:3px 6px}.rus-export-board.rus-export-landscape .rus-export-logo-wrap{height:58px;min-height:58px;max-height:58px;padding:0 4px;overflow:hidden}.rus-export-board.rus-export-landscape .rus-export-logo-large{max-width:92%;max-height:54px;object-fit:contain;object-position:center center}.rus-export-meta{display:flex;justify-content:center;gap:5px 8px;flex-wrap:wrap;margin-top:4px;color:#d8d8d8;font-size:10px;font-weight:1000;text-transform:uppercase;text-align:center;line-height:1.1}.rus-export-move{font-size:18px;font-weight:1000;line-height:1}.rus-export-move.up{color:#62df8c}.rus-export-move.down{color:#ff7070}.rus-export-move.new{color:#F14D07}.rus-export-board.rus-export-landscape .rus-export-move{font-size:16px}
   @media(min-width:700px){.rus-share-modal{align-items:center}}
   `;
@@ -105,11 +95,11 @@
     const [logos,directory]=await Promise.all([loadLogoCache(),loadSchoolDirectory()]);
     const top=108,bottom=54,pad=30,gap=10,availableH=h-top-bottom;
     const verticalClass=classRows.length>0&&!stateRows.length;
-    const cols=verticalClass?1:rows.length>20?(h>w*1.35?3:5):rows.length>10?(h>w*1.35?2:4):2;
+    const cols=verticalClass?2:rows.length>20?(h>w*1.35?3:5):rows.length>10?(h>w*1.35?2:4):2;
     const rowsPerCol=Math.ceil(rows.length/cols);
-    const rowH=verticalClass?Math.max(58,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol)):Math.max(72,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol));
-    const board=document.createElement('div');board.className='rus-export-board'+(w>h*1.25?' rus-export-landscape':'')+(verticalClass?' rus-export-vertical-ranking':'');board.style.width=`${w-pad*2}px`;board.style.height=`${availableH}px`;
-    const grid=document.createElement('div');grid.className='rus-export-rank-grid';grid.style.gridTemplateColumns=`repeat(${cols},minmax(0,1fr))`;grid.style.gridTemplateRows=`repeat(${rowsPerCol},${rowH}px)`;grid.style.gridAutoFlow='row';grid.style.gap=`${gap}px`;
+    const rowH=verticalClass?Math.max(100,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol)):Math.max(72,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol));
+    const board=document.createElement('div');board.className='rus-export-board'+(w>h*1.25?' rus-export-landscape':'');board.style.width=`${w-pad*2}px`;board.style.height=`${availableH}px`;
+    const grid=document.createElement('div');grid.className='rus-export-rank-grid';grid.style.gridTemplateColumns=`repeat(${cols},minmax(0,1fr))`;grid.style.gridTemplateRows=`repeat(${rowsPerCol},${rowH}px)`;grid.style.gridAutoFlow=verticalClass?'column':'row';grid.style.gap=`${gap}px`;
     rows.forEach((row,i)=>{
       const rank=(row.querySelector('.rank-num')?.textContent||String(i+1)).trim();
       const team=teamFromRow(row);
