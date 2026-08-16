@@ -15,25 +15,50 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Refresh standings share script version
+      - name: Add full names and school colors to standings share
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
+
+          js=Path('standings-share-layout.js')
+          s=js.read_text(encoding='utf-8')
+
+          anchor="  const loadCanvas=()=>window.html2canvas?Promise.resolve():new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s)});"
+          insert="""  let directoryPromise=null;\n  const loadDirectory=()=>directoryPromise||(directoryPromise=fetch(`school-directory.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})));\n  const displayTeamName=(team,directory)=>directory?.[norm(team)]?.name||({'MONUMENT VAL':'Monument Valley'}[norm(team)])||team;\n  function contrastColor(value){\n    const m=String(value||'').match(/rgba?\\((\\d+),\\s*(\\d+),\\s*(\\d+)/i);\n    if(!m)return '#fff';\n    const r=+m[1],g=+m[2],b=+m[3];\n    return (r*299+g*587+b*114)/1000>155?'#000':'#fff';\n  }\n"""
+          if 'const loadDirectory=' not in s:
+              if anchor not in s: raise SystemExit('loadCanvas anchor not found')
+              s=s.replace(anchor,insert+anchor,1)
+
+          s=s.replace(".rus-standings-share-table .c-rank{width:6%}.rus-standings-share-table .c-team{width:34%;text-align:left}.rus-standings-share-table .c-rec{width:10%}.rus-standings-share-table .c-pct{width:10%}.rus-standings-share-table .c-pf,.rus-standings-share-table .c-pa{width:8%}.rus-standings-share-table .c-diff{width:9%}.rus-standings-share-table .c-streak{width:9%}",".rus-standings-share-table .c-rank{width:5%}.rus-standings-share-table .c-team{width:36%;text-align:left}.rus-standings-share-table .c-rec{width:10%}.rus-standings-share-table .c-pct{width:9%}.rus-standings-share-table .c-pf,.rus-standings-share-table .c-pa{width:7%}.rus-standings-share-table .c-diff{width:8%}.rus-standings-share-table .c-streak{width:8%}")
+          s=s.replace(".rus-share-team-name{font-size:10px;font-weight:1000;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",".rus-share-team-name{display:inline-block;max-width:100%;font-size:10px;font-weight:1000;line-height:1.05;white-space:normal;overflow:visible;text-overflow:clip;padding:4px 6px;border-radius:5px;text-align:left}")
+          s=s.replace(".rus-standings-share-board.story .rus-share-team-name{font-size:11px}",".rus-standings-share-board.story .rus-share-team-name{font-size:11px;padding:5px 7px}")
+          s=s.replace(".rus-standings-share-board.x .rus-share-team-name{font-size:8px}",".rus-standings-share-board.x .rus-share-team-name{font-size:8px;padding:3px 5px}")
+
+          s=s.replace("  function regionCard(group,logos){","  function regionCard(group,logos,directory){",1)
+          old="""      return `<tr><td class=\"c-rank\">${esc(r.rank)}</td><td class=\"c-team\"><div class=\"rus-share-team-cell\"><span class=\"rus-share-team-logo\">${logo?`<img src=\"${esc(logo)}\" alt=\"\">`:''}</span><span class=\"rus-share-team-name\">${esc(r.team)}</span></div></td><td class=\"c-rec\">${esc(r.region)}</td><td class=\"c-pct\">${esc(r.pct)}</td><td class=\"c-rec\">${esc(r.overall)}</td><td class=\"c-pf\">${esc(r.pf)}</td><td class=\"c-pa\">${esc(r.pa)}</td><td class=\"c-diff ${dnum>0?'rus-share-diff-pos':dnum<0?'rus-share-diff-neg':''}\">${esc(r.diff)}</td><td class=\"c-streak ${streak.startsWith('W')?'rus-share-streak-w':streak.startsWith('L')?'rus-share-streak-l':''}\">${esc(r.streak)}</td></tr>`;"""
+          new="""      const fullName=displayTeamName(r.team,directory);\n      const teamColor=r.swatch||'#333';\n      const teamText=contrastColor(teamColor);\n      return `<tr style=\"box-shadow:inset 4px 0 0 ${esc(teamColor)}\"><td class=\"c-rank\">${esc(r.rank)}</td><td class=\"c-team\"><div class=\"rus-share-team-cell\"><span class=\"rus-share-team-logo\">${logo?`<img src=\"${esc(logo)}\" alt=\"\">`:''}</span><span class=\"rus-share-team-name\" style=\"background:${esc(teamColor)};color:${teamText}\">${esc(fullName)}</span></div></td><td class=\"c-rec\">${esc(r.region)}</td><td class=\"c-pct\">${esc(r.pct)}</td><td class=\"c-rec\">${esc(r.overall)}</td><td class=\"c-pf\">${esc(r.pf)}</td><td class=\"c-pa\">${esc(r.pa)}</td><td class=\"c-diff ${dnum>0?'rus-share-diff-pos':dnum<0?'rus-share-diff-neg':''}\">${esc(r.diff)}</td><td class=\"c-streak ${streak.startsWith('W')?'rus-share-streak-w':streak.startsWith('L')?'rus-share-streak-l':''}\">${esc(r.streak)}</td></tr>`;"""
+          if old not in s: raise SystemExit('region row template not found')
+          s=s.replace(old,new,1)
+
+          s=s.replace("    const logos=await loadLogos();","    const [logos,directory]=await Promise.all([loadLogos(),loadDirectory()]);",1)
+          s=s.replace("const card=regionCard(g,logos);","const card=regionCard(g,logos,directory);")
+          js.write_text(s,encoding='utf-8')
+
           p=Path('standings.html')
           h=p.read_text(encoding='utf-8')
-          h=re.sub(r'standings-share-layout\.js\?v=[^"\']+', 'standings-share-layout.js?v=20260816-v5', h)
+          h=re.sub(r'standings-share-layout\\.js\\?v=[^\"\\']+', 'standings-share-layout.js?v=20260816-v6', h)
           p.write_text(h,encoding='utf-8')
           PY
-      - name: Commit standings share cache refresh
+      - name: Commit standings share name and color update
         run: |
-          if git diff --quiet -- standings.html; then
+          if git diff --quiet -- standings-share-layout.js standings.html; then
             echo 'No changes needed.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add standings.html
-          git commit -m 'Refresh standings share layout cache'
+          git add standings-share-layout.js standings.html
+          git commit -m 'Show full school names and colors in standings share'
           git pull --rebase origin main
           git push
