@@ -16,9 +16,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Add game detail helper
+      - name: Load newest game detail helper
         run: |
-          python3 -c "from pathlib import Path; p=Path('game.html'); s=p.read_text(encoding='utf-8'); tag='<script src=\"game-detail-fixes.js?v=20260816-v1\" defer></script>'; s=s if 'game-detail-fixes.js' in s else s.replace('<script src=\"school-assets.js?v=20260815-logo2\"></script>',tag+'\\n<script src=\"school-assets.js?v=20260815-logo2\"></script>'); p.write_text(s,encoding='utf-8')"
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('game.html')
+          s = p.read_text(encoding='utf-8')
+          tag = '<script src="game-detail-fixes.js?v=20260816-v2" defer></script>'
+          if 'game-detail-fixes.js' in s:
+              s = re.sub(r'<script src="game-detail-fixes\.js\?v=[^"]+" defer></script>', tag, s)
+          else:
+              s = s.replace('<script src="school-assets.js?v=20260815-logo2"></script>', tag + '\n<script src="school-assets.js?v=20260815-logo2"></script>')
+          p.write_text(s, encoding='utf-8')
+          PY
 
       - name: Commit page update
         run: |
@@ -26,6 +37,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add game.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Load game detail readability fixes'
+          git commit -m 'Load updated game stat availability helper'
           git pull --rebase origin main
           git push
