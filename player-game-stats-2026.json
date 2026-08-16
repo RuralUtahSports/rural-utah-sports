@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-16T03:53:06.540Z",
+  "updatedAt": "2026-08-16T04:41:09.479Z",
   "summary": {
     "teams": 114,
     "teamGames": 114,
@@ -8884,8 +8884,8 @@
           "date": "2026-08-15",
           "opponent": "SOUTH SUMMIT",
           "location": "Away",
-          "status": "HALFTIME",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 13,
           "opponentScore": 18,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/duchesne-football-vs-south-summit-football/273409",
@@ -8945,8 +8945,8 @@
           "date": "2026-08-15",
           "opponent": "DUCHESNE",
           "location": "Home",
-          "status": "HALFTIME",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 18,
           "opponentScore": 13,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/duchesne-football-vs-south-summit-football/273409",
@@ -9047,37 +9047,16 @@
           "date": "2026-08-15",
           "opponent": "SOUTH SEVIER",
           "location": "Away",
-          "status": "HALFTIME",
+          "status": "Q4",
           "final": false,
-          "teamScore": 9,
-          "opponentScore": 0,
+          "teamScore": 16,
+          "opponentScore": 8,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/millard-football-vs-south-sevier-football/273662",
-          "players": [
-            {
-              "playerId": "millard-rec-db-mason-wardle",
-              "number": "REC./DB",
-              "name": "Mason Wardle",
-              "rosterMatched": false,
-              "statLines": [
-                {
-                  "category": "Passing",
-                  "values": {
-                    "Comp-Att": "",
-                    "Comp %": "",
-                    "Yards": "",
-                    "TD": "1",
-                    "Int": ""
-                  }
-                }
-              ],
-              "scoringPlays": [
-                "Millard — ( 2:26 1Q ) Jensen Davies , 64-yard pass from Mason Wardle ( pass failed )"
-              ]
-            }
-          ],
+          "players": [],
           "scoringPlays": [
             "Millard — ( 2:26 1Q ) Jensen Davies , 64-yard pass from Mason Wardle ( pass failed )",
-            "Millard — ( 6:57 2Q ) Sergio Arellano , 39-yard FG"
+            "Millard — ( 6:57 2Q ) Sergio Arellano , 39-yard FG",
+            "Millard — ( 10:16 4Q ) Stetson Stott , 13-yard run ( kick from Sergio Arellano )"
           ]
         }
       ]
@@ -9090,13 +9069,33 @@
           "date": "2026-08-15",
           "opponent": "MILLARD",
           "location": "Home",
-          "status": "HALFTIME",
+          "status": "Q4",
           "final": false,
-          "teamScore": 0,
-          "opponentScore": 9,
+          "teamScore": 8,
+          "opponentScore": 16,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/millard-football-vs-south-sevier-football/273662",
-          "players": [],
-          "scoringPlays": []
+          "players": [
+            {
+              "playerId": "south-sevier-qb-rb-lb-stetson-stott",
+              "number": "QB,RB/LB",
+              "name": "Stetson Stott",
+              "rosterMatched": false,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": []
+            }
+          ],
+          "scoringPlays": [
+            "South Sevier — ( 6:15 4Q ) 2-yard run from Masen Healey ( run from Rayce Freeman )"
+          ]
         }
       ]
     },
