@@ -44,7 +44,9 @@ jobs:
           const knownBadRows = new Set([
             'monument-valley.json|9/19/2025|PANGUITCH',
             'panguitch.json|9/19/2025|MONUMENT VALLEY',
-            'panguitch.json|9/19/2025|MONUMENT VAL'
+            'panguitch.json|9/19/2025|MONUMENT VAL',
+            'north-sanpete.json|10/17/2025|JUAB',
+            'juab.json|10/17/2025|NORTH SANPETE'
           ]);
 
           const emptyRecord = () => ({ wins: 0, losses: 0, ties: 0, games: 0 });
