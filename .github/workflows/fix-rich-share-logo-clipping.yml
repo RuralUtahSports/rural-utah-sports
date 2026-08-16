@@ -34,6 +34,8 @@ jobs:
           ext="$(cat /tmp/rich-ext.txt)"
           if [ "$ext" = "png" ]; then
             cp /tmp/rich-source.png /tmp/rich.png
+          elif command -v ffmpeg >/dev/null 2>&1; then
+            ffmpeg -y -loglevel error -i "/tmp/rich-source.$ext" -frames:v 1 /tmp/rich.png
           elif command -v magick >/dev/null 2>&1; then
             magick "/tmp/rich-source.$ext" -background none PNG32:/tmp/rich.png
           elif command -v convert >/dev/null 2>&1; then
@@ -80,7 +82,7 @@ jobs:
           q = Path('rankings.html')
           if q.exists():
               t = q.read_text(encoding='utf-8')
-              t = re.sub(r'share-graphic\.js\?v=[^\"\']+', 'share-graphic.js?v=20260816-rich-direct-png-v2', t)
+              t = re.sub(r'share-graphic\.js\?v=[^\"\']+', 'share-graphic.js?v=20260816-rich-direct-png-v3', t)
               q.write_text(t, encoding='utf-8')
           PY
 
