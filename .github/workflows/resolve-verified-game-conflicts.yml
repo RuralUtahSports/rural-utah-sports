@@ -1,0 +1,54 @@
+name: Resolve Verified Game Conflicts
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Dedupe Team Page Rivalries
+    types:
+      - completed
+  push:
+    paths:
+      - 'scripts/resolve-verified-game-conflicts.mjs'
+      - '.github/workflows/resolve-verified-game-conflicts.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: resolve-verified-game-conflicts
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Apply verified score corrections and rebuild records
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          ok=0
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            node scripts/resolve-verified-game-conflicts.mjs
+            git add team-schedules.json team-record-breakdowns.json season-history.json teams-data.json team-page-data
+            if git diff --cached --quiet; then
+              echo "Verified game conflicts are already clean."
+              ok=1
+              break
+            fi
+            git commit -m "Resolve verified duplicate score conflicts"
+            if git push; then
+              ok=1
+              break
+            fi
+            sleep 8
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
