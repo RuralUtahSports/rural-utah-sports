@@ -35,6 +35,49 @@ jobs:
       - name: Update Deseret box scores, scoring plays and stats
         run: node scripts/enrich-deseret-game-details.mjs
 
+      - name: Clean redundant player initials
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const file = 'deseret-game-details.json';
+          if (!fs.existsSync(file)) process.exit(0);
+          const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+
+          function cleanPlayerName(value) {
+            const original = String(value ?? '');
+            const normalized = original.replace(/\s+/g, ' ').trim();
+            const cleaned = normalized.replace(
+              /^([A-Za-z])(?:\s*\.\s*|\s+)([A-Za-z][A-Za-z'’\-]{1,})(\s+.+)$/,
+              (match, initial, first, rest) => initial.toLowerCase() === first[0].toLowerCase() ? `${first}${rest}` : match
+            );
+            return cleaned;
+          }
+
+          let changed = 0;
+          const examples = [];
+          for (const game of Object.values(data.games || {})) {
+            for (const table of game.stats || []) {
+              const headers = (table.headers || []).map(value => String(value || '').trim().toUpperCase());
+              const playerIndex = headers.findIndex(value => value === 'PLAYER' || value === 'NAME' || value.includes('PLAYER NAME'));
+              if (playerIndex < 0) continue;
+              for (const row of table.rows || []) {
+                if (!Array.isArray(row) || playerIndex >= row.length) continue;
+                const before = String(row[playerIndex] ?? '');
+                const after = cleanPlayerName(before);
+                if (after !== before) {
+                  row[playerIndex] = after;
+                  changed++;
+                  if (examples.length < 12) examples.push(`${before} -> ${after}`);
+                }
+              }
+            }
+          }
+
+          if (changed) fs.writeFileSync(file, JSON.stringify(data, null, 2) + '\n');
+          console.log(`Redundant player initials removed: ${changed}`);
+          for (const example of examples) console.log(`  ${example}`);
+          NODE
+
       - name: Commit Deseret data
         run: |
           git config user.name "RuralUtahSports"
