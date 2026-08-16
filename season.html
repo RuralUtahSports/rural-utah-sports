@@ -22,6 +22,7 @@ function render(year){currentYear=year;visible=100;$('yearSelect').value=String(
 async function init(){try{const stamp=Date.now(),[gr,cr]=await Promise.all([fetch('scorigami.json?v='+stamp),fetch('championships.json?v='+stamp)]);if(!gr.ok||!cr.ok)throw new Error('data');allGames=flatten(await gr.json());champData=await cr.json();years=[...new Set([...allGames.map(g=>g.year),...champData.map(c=>Number(c.year))].filter(Boolean))].sort((a,b)=>b-a);$('yearSelect').innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');const requested=Number(new URLSearchParams(location.search).get('year')),year=years.includes(requested)?requested:years[0];$('yearSelect').addEventListener('change',()=>render(Number($('yearSelect').value)));render(year)}catch(e){console.error(e);$('page').className='error';$('page').textContent='Season data could not be loaded.'}}
 init();
 </script><script src="back-to-top.js" defer></script><script src="nav-menu.js" defer></script><script src="weekly-simulation-promo.js" defer></script>
+
 <script src="school-assets.js?v=20260815-logo2"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
 </body></html>
