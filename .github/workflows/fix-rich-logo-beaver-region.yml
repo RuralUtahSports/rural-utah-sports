@@ -129,5 +129,6 @@ jobs:
             echo "Fixes already applied."
           else
             git commit -m "Harden Rich logo and Beaver 1A South fixes"
+            git pull --rebase origin main
             git push
           fi
