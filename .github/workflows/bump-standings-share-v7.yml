@@ -1,0 +1,38 @@
+name: Bump Standings Share V7
+
+on:
+  push:
+    paths:
+      - '.github/workflows/bump-standings-share-v7.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bump standings share script version
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('standings.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('standings-share-layout.js?v=20260816-v6', 'standings-share-layout.js?v=20260816-v7')
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit cache bump
+        run: |
+          if git diff --quiet -- standings.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add standings.html
+          git commit -m 'Bump standings share script to v7'
+          git pull --rebase origin main
+          git push
