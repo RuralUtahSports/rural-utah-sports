@@ -1,0 +1,38 @@
+name: Install Live Games First
+
+on:
+  push:
+    paths:
+      - '.github/workflows/install-live-games-first.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Put live games first on scoreboard
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scoreboard.html')
+          s=p.read_text()
+          old="<div class=\"games\">${rows.map(card).join('')}</div>"
+          new="<div class=\"games\">${[...rows].sort((a,b)=>Number(liveGame(b))-Number(liveGame(a))||Number(finalGame(a))-Number(finalGame(b))||String(a.awayTeam).localeCompare(String(b.awayTeam))).map(card).join('')}</div>"
+          if old not in s:
+              raise SystemExit('Target scoreboard rendering snippet not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+      - name: Commit change
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add scoreboard.html
+          git commit -m "Show live games first on scoreboard" || exit 0
+          git pull --rebase origin main
+          git push
