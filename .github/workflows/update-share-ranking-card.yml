@@ -1,4 +1,4 @@
-name: Fix Ranking Share Title Spacing
+name: Improve 3A-1A Overall Ranking Share Layout
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Fix class ranking title spacing
+      - name: Build compact multi-column overall ranking export
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -24,20 +24,43 @@ jobs:
           p=Path('share-graphic.js')
           s=p.read_text()
 
-          old="""  function titleFor(el){\n    const h=el.querySelector?.('h1,h2,h3,.team-name,.region-title,.rank-head')?.textContent?.trim();\n    if(h)return h.slice(0,70);\n    if(PAGE.includes('scoreboard'))return 'Rural Utah Sports Scoreboard';\n    if(PAGE.includes('standings'))return 'Rural Utah Sports Standings';\n    if(PAGE.includes('rankings'))return 'Rural Utah Sports Rankings';\n    return 'Rural Utah Sports Awards';\n  }\n"""
-          new="""  function titleFor(el){\n    if(PAGE.includes('rankings')){\n      const card=el.matches?.('.rank-card')?el:el.closest?.('.rank-card');\n      if(card){\n        const cls=card.querySelector('.rank-head h2')?.textContent?.trim();\n        const label=card.querySelector('.rank-head span')?.textContent?.trim();\n        if(cls&&label)return `${cls} ${label}`.slice(0,70);\n      }\n    }\n    const h=el.querySelector?.('h1,h2,h3,.team-name,.region-title,.rank-head')?.textContent?.trim();\n    if(h)return h.slice(0,70);\n    if(PAGE.includes('scoreboard'))return 'Rural Utah Sports Scoreboard';\n    if(PAGE.includes('standings'))return 'Rural Utah Sports Standings';\n    if(PAGE.includes('rankings'))return 'Rural Utah Sports Rankings';\n    return 'Rural Utah Sports Awards';\n  }\n"""
+          css_anchor=".rus-export-board.rus-export-landscape .rus-export-move{font-size:16px}"
+          compact_css=""".rus-export-board.rus-export-compact .rus-export-rank-item{padding:7px 6px 5px}.rus-export-board.rus-export-compact .rus-export-rank-num{left:7px;top:8px;width:30px;height:30px;font-size:14px}.rus-export-board.rus-export-compact .rus-export-team-line{padding-left:34px}.rus-export-board.rus-export-compact .rus-export-team{font-size:13px;padding:4px 6px}.rus-export-board.rus-export-compact .rus-export-record{font-size:10px;margin-top:2px}.rus-export-board.rus-export-compact .rus-export-meta{font-size:8px;margin-top:2px;gap:2px 4px}.rus-export-board.rus-export-compact .rus-export-move{font-size:13px}.rus-export-board.rus-export-compact .rus-export-logo-wrap{height:48px;min-height:48px;max-height:48px;padding:0 2px}.rus-export-board.rus-export-compact .rus-export-logo-large{max-height:44px;max-width:92%}"""
+          if 'rus-export-compact' not in s:
+            if css_anchor not in s:
+              raise SystemExit('compact css anchor not found')
+            s=s.replace(css_anchor,css_anchor+compact_css,1)
 
-          if old not in s:
-            raise SystemExit('titleFor pattern not found')
-          s=s.replace(old,new,1)
+          old_rows="""    const classRoot=el.matches?.('.rank-card')?el:el.closest?.('.rank-card');
+    const classRows=classRoot?[...classRoot.querySelectorAll('.rank-row')]:[];
+    const rows=(stateRows.length?stateRows:classRows).slice(0,25);if(!rows.length)return null;
+"""
+          new_rows="""    const classRoot=el.matches?.('.rank-card')?el:el.closest?.('.rank-card');
+    const classRows=classRoot?[...classRoot.querySelectorAll('.rank-row')]:[];
+    const genericRows=!classRows.length&&el.querySelectorAll?[...el.querySelectorAll('.rank-row')]:[];
+    const rows=(stateRows.length?stateRows:classRows.length?classRows:genericRows).slice(0,40);if(!rows.length)return null;
+"""
+          if old_rows not in s:
+            raise SystemExit('ranking row selection pattern not found')
+          s=s.replace(old_rows,new_rows,1)
+
+          old_board="""    const board=document.createElement('div');board.className='rus-export-board'+(w>h*1.25?' rus-export-landscape':'');board.style.width=`${w-pad*2}px`;board.style.height=`${availableH}px`;
+"""
+          new_board="""    const compact=rows.length>25;
+    const board=document.createElement('div');board.className='rus-export-board'+(w>h*1.25?' rus-export-landscape':'')+(compact?' rus-export-compact':'');board.style.width=`${w-pad*2}px`;board.style.height=`${availableH}px`;
+"""
+          if old_board not in s:
+            raise SystemExit('ranking board pattern not found')
+          s=s.replace(old_board,new_board,1)
+
           p.write_text(s)
 
           q=Path('rankings.html')
           text=q.read_text()
-          text=re.sub(r"share-graphic\.js\?v=[^\"']+", 'share-graphic.js?v=20260815-title-space', text)
+          text=re.sub(r"share-graphic\.js\?v=[^\"']+", 'share-graphic.js?v=20260815-overall-compact', text)
           q.write_text(text)
           PY
-      - name: Commit title spacing fix
+      - name: Commit overall ranking share redesign
         run: |
           if git diff --quiet -- share-graphic.js rankings.html; then
             echo 'No changes needed.'
@@ -46,5 +69,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add share-graphic.js rankings.html
-          git commit -m 'Fix spacing in ranking share graphic titles'
+          git commit -m 'Improve overall ranking share graphic layout'
           git push
