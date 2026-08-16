@@ -16,85 +16,63 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Rebuild Rich logo as PNG-backed SVG
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import base64, re
-          p = Path('school-logos/rich-user.svg')
-          s = p.read_text(encoding='utf-8')
-          m = re.search(r'href=["\']data:image/([a-zA-Z0-9.+-]+);base64,([^"\']+)', s)
-          if not m:
-              raise SystemExit('Could not find embedded Rich logo image')
-          ext = 'webp' if 'webp' in m.group(1).lower() else ('png' if 'png' in m.group(1).lower() else 'img')
-          Path(f'/tmp/rich-source.{ext}').write_bytes(base64.b64decode(m.group(2)))
-          Path('/tmp/rich-ext.txt').write_text(ext)
-          PY
-
-          ext="$(cat /tmp/rich-ext.txt)"
-          if [ "$ext" = "png" ]; then
-            cp /tmp/rich-source.png /tmp/rich.png
-          elif command -v ffmpeg >/dev/null 2>&1; then
-            ffmpeg -y -loglevel error -i "/tmp/rich-source.$ext" -frames:v 1 /tmp/rich.png
-          elif command -v magick >/dev/null 2>&1; then
-            magick "/tmp/rich-source.$ext" -background none PNG32:/tmp/rich.png
-          elif command -v convert >/dev/null 2>&1; then
-            convert "/tmp/rich-source.$ext" -background none PNG32:/tmp/rich.png
-          else
-            echo "No image converter is available on the runner."
-            exit 1
-          fi
-
-          python - <<'PY'
-          from pathlib import Path
-          import base64
-          raw = base64.b64encode(Path('/tmp/rich.png').read_bytes()).decode('ascii')
-          svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">' + '<image x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid meet" href="data:image/png;base64,' + raw + '"/></svg>'
-          Path('school-logos/rich-user.svg').write_text(svg, encoding='utf-8')
-          PY
-
-      - name: Use embedded PNG directly for Rich share exports
+      - name: Bypass Rich SVG wrapper in share graphics
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
+
           p = Path('share-graphic.js')
           s = p.read_text(encoding='utf-8')
+
           marker = "    let richExportSrc='';"
           if marker not in s:
               needle = "    rows.forEach((row,i)=>{"
               if needle not in s:
                   raise SystemExit('Could not find ranking export row loop')
-              block = "    let richExportSrc='';\n    if(rows.some(row=>norm(teamFromRow(row))==='RICH')){\n      try{\n        const richSvg=await fetch(`school-logos/rich-user.svg?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.text():'');\n        richExportSrc=(richSvg.match(/href=[\\\"'](data:image\\/png;base64,[^\\\"']+)[\\\"']/i)||[])[1]||'';\n      }catch{}\n    }\n"
+              block = "    let richExportSrc='';\n    if(rows.some(row=>norm(teamFromRow(row))==='RICH')){\n      try{\n        const richSvg=await fetch(`school-logos/rich-user.svg?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.text():'');\n        richExportSrc=(richSvg.match(/href=[\\\"'](data:image\\/(?:png|webp);base64,[^\\\"']+)[\\\"']/i)||[])[1]||'';\n      }catch{}\n    }\n"
               s = s.replace(needle, block + needle, 1)
+          else:
+              s = s.replace(
+                  "richExportSrc=(richSvg.match(/href=[\\\"'](data:image\\/png;base64,[^\\\"']+)[\\\"']/i)||[])[1]||'';",
+                  "richExportSrc=(richSvg.match(/href=[\\\"'](data:image\\/(?:png|webp);base64,[^\\\"']+)[\\\"']/i)||[])[1]||'';"
+              )
+
           old = "      const src=logos[norm(team)]||existing||window.RUSSchoolAssets?.logoUrl?.(team)||'';"
           new = "      const src=(norm(team)==='RICH'&&richExportSrc)||logos[norm(team)]||existing||window.RUSSchoolAssets?.logoUrl?.(team)||'';"
           if old in s:
               s = s.replace(old, new, 1)
           elif new not in s:
               raise SystemExit('Could not find ranking export logo source')
-          s = s.replace(
-              ".rus-export-board.rus-export-landscape .rus-export-logo-large.rus-export-logo-tall{max-width:76%;max-height:48px}",
-              ".rus-export-board.rus-export-landscape .rus-export-logo-large.rus-export-logo-tall{width:auto;height:46px;max-width:72%;max-height:46px;object-fit:contain;object-position:center center}",
-              1
-          )
+
+          # Give Rich a fixed contained size inside landscape classification cards.
+          old_css = ".rus-export-board.rus-export-landscape .rus-export-logo-large.rus-export-logo-tall{max-width:76%;max-height:48px}"
+          new_css = ".rus-export-board.rus-export-landscape .rus-export-logo-large.rus-export-logo-tall{display:block;width:auto;height:46px;max-width:72%;max-height:46px;object-fit:contain;object-position:center center}"
+          if old_css in s:
+              s = s.replace(old_css, new_css, 1)
+          elif new_css not in s:
+              anchor = ".rus-export-board.rus-export-state25 .rus-export-move{font-size:12px}"
+              if anchor in s:
+                  s = s.replace(anchor, new_css + "\n  " + anchor, 1)
+
           p.write_text(s, encoding='utf-8')
+
           q = Path('rankings.html')
           if q.exists():
               t = q.read_text(encoding='utf-8')
-              t = re.sub(r'share-graphic\.js\?v=[^\"\']+', 'share-graphic.js?v=20260816-rich-direct-png-v3', t)
+              t = re.sub(r'share-graphic\.js\?v=[^\"\']+', 'share-graphic.js?v=20260816-rich-direct-image-v4', t)
               q.write_text(t, encoding='utf-8')
           PY
 
       - name: Commit Rich share export fix
         run: |
-          if git diff --quiet -- school-logos/rich-user.svg share-graphic.js rankings.html; then
+          if git diff --quiet -- share-graphic.js rankings.html; then
             echo 'No changes needed.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add school-logos/rich-user.svg share-graphic.js rankings.html
-          git commit -m 'Render full Rich logo in ranking share graphics'
+          git add share-graphic.js rankings.html
+          git commit -m 'Bypass SVG wrapper for Rich ranking share logo'
           git pull --rebase origin main
           git push
