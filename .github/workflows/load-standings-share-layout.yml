@@ -1,0 +1,46 @@
+name: Load Enhanced Standings Share Layout
+
+on:
+  push:
+    paths:
+      - '.github/workflows/load-standings-share-layout.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load enhanced standings share script
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('standings.html')
+          s=p.read_text(encoding='utf-8')
+          tag='<script src="standings-share-layout.js?v=20260816-v2" defer></script>'
+          if 'standings-share-layout.js' not in s:
+              m=re.search(r'(<script src="share-graphic\.js\?v=[^\"]+" defer></script>)',s)
+              if not m:
+                  raise SystemExit('share-graphic script tag not found')
+              s=s[:m.end()]+"\n"+tag+s[m.end():]
+          else:
+              s=re.sub(r'<script src="standings-share-layout\.js\?v=[^\"]+" defer></script>',tag,s)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit standings share loader
+        run: |
+          if git diff --quiet -- standings.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add standings.html
+          git commit -m 'Enable compact standings share layout'
+          git pull --rebase origin main
+          git push
