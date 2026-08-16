@@ -1,0 +1,42 @@
+name: Revert Alta and Brighton Logos
+
+on:
+  push:
+    paths:
+      - '.github/workflows/revert-alta-brighton-original.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  revert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore original cached logos
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('school-logo-cache.json')
+          data = json.loads(p.read_text())
+          data['ALTA'] = 'school-logo-cache/alta.png'
+          data['BRIGHTON'] = 'school-logo-cache/brighton.png'
+          p.write_text(json.dumps(data, indent=2) + '\n')
+          PY
+
+      - name: Commit restored logos
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add school-logo-cache.json
+          if git diff --cached --quiet; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git commit -m 'Restore original Alta and Brighton logos'
+          git pull --rebase origin main
+          git push origin main
