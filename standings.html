@@ -29,6 +29,21 @@ function row(t,i,regionMode){const w=regionMode?t.regionWins:t.wins,l=regionMode
 function table(title,teams,regionMode){return `<section class="group"><h3 class="group-title">${esc(title)}</h3><div class="table-wrap"><table class="standings"><thead><tr><th>#</th><th>Team</th><th>${regionMode?'Region':'Overall'}</th><th>Win %</th><th>${regionMode?'Overall':'Region'}</th><th>PF</th><th>PA</th><th>Diff</th><th>Streak</th></tr></thead><tbody>${teams.map((t,i)=>row(t,i,regionMode)).join('')}</tbody></table></div></section>`}
 function fixKnownAlignments(){
   if(!data)return;
+  const beaverName='BEAVER';
+  let beaverDisplay=null;
+  for(const list of Object.values(data.byClassification||{})){
+    const found=(list||[]).find(t=>String(t.team||'').toUpperCase()===beaverName);
+    if(found){found.classification='1A';found.region='1A South';beaverDisplay=found;break}
+  }
+  for(const c of Object.keys(data.byRegion||{})){
+    for(const r of Object.keys(data.byRegion[c]||{})){
+      data.byRegion[c][r]=(data.byRegion[c][r]||[]).filter(t=>String(t.team||'').toUpperCase()!==beaverName);
+    }
+  }
+  if(beaverDisplay){
+    data.byRegion['1A']||(data.byRegion['1A']={});
+    (data.byRegion['1A']['1A South']||(data.byRegion['1A']['1A South']=[])).push(beaverDisplay);
+  }
   const teamName='ENTERPRISE';
   let enterprise=null;
   for(const c of Object.keys(data.byClassification||{})){
