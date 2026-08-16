@@ -130,6 +130,7 @@
     }catch(e){console.error(e);btn.disabled=false;btn.innerHTML=original;alert('Could not create the standings graphic. Please try again.')}});
   }
 
+  window.RUSStandingsShare={openModal};
   function init(){css();const replace=()=>{const b=document.querySelector('.rus-share-float');if(!b)return false;b.onclick=openModal;b.textContent='Share Graphic';return true};if(!replace()){let tries=0;const t=setInterval(()=>{if(replace()||++tries>40)clearInterval(t)},100)}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

@@ -231,6 +231,7 @@
     const blob=await render(el,dims[0],dims[1],label);await deliver(blob,`rural-utah-sports-${format}-${Date.now()}.png`);
   }
   async function modal(){
+    if(PAGE.includes('standings')&&window.RUSStandingsShare?.openModal)return window.RUSStandingsShare.openModal();
     let standingsControls='';
     if(PAGE.includes('standings')){
       await ensureRegionView();
