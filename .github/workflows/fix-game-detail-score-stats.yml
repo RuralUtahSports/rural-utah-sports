@@ -1,9 +1,9 @@
-name: Fix Game Detail Score and Stats
+name: Fix Game Detail Readability
 
 on:
   push:
     paths:
-      - .github/workflows/fix-game-detail-score-stats.yml
+      - '.github/workflows/fix-game-detail-score-stats.yml'
 
 permissions:
   contents: write
@@ -16,146 +16,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Load game detail readability helper
+      - name: Add game detail helper
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('game.html')
-          s = p.read_text(encoding='utf-8')
-          tag = '<script src="game-detail-fixes.js?v=20260816-v1" defer></script>'
-          if 'game-detail-fixes.js' not in s:
-              s = s.replace('<script src="school-assets.js?v=20260815-logo2"></script>', tag + '\n<script src="school-assets.js?v=20260815-logo2"></script>')
-          else:
-              import re
-              s = re.sub(r'<script src="game-detail-fixes\.js\?v=[^"]+" defer></script>', tag, s)
-          p.write_text(s, encoding='utf-8')
-          PY
+          python3 -c "from pathlib import Path; p=Path('game.html'); s=p.read_text(encoding='utf-8'); tag='<script src=\"game-detail-fixes.js?v=20260816-v1\" defer></script>'; s=s if 'game-detail-fixes.js' in s else s.replace('<script src=\"school-assets.js?v=20260815-logo2\"></script>',tag+'\\n<script src=\"school-assets.js?v=20260815-logo2\"></script>'); p.write_text(s,encoding='utf-8')"
 
-      - name: Improve future Deseret stat team inference
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('scripts/enrich-deseret-game-details.mjs')
-          s = p.read_text(encoding='utf-8')
-
-          old = 'function extractStats(tables, game) {'
-          new = '''function inferTeamFromScoring(rows, scoringPlays, game) {
-  const votes = new Map();
-  for (const row of rows) {
-    const player = clean(row?.[1]).replace(/^\\s*[A-Z]\\s*\\.\\s*/i, '').trim();
-    if (!player || player.split(/\\s+/).length < 2) continue;
-    for (const play of (scoringPlays || [])) {
-      if (!compact(play).includes(compact(player))) continue;
-      const team = bestTeamMatch(String(play).split(/—| - /)[0], game) || bestTeamMatch(play, game);
-      if (team) votes.set(team, (votes.get(team) || 0) + 1);
-    }
-  }
-  return [...votes.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || '';
-}
-
-function extractStats(tables, game, scoringPlays = []) {'''
-          if old in s and 'function inferTeamFromScoring' not in s:
-              s = s.replace(old, new, 1)
-
-          s = s.replace('team: inferTeam(t.context, game, category),', "team: inferTeam(t.context, game, category) || inferTeamFromScoring(rows, scoringPlays, game),")
-
-          old_end = '''  return stats;
-}
-
-function extractScoringPlays'''
-          new_end = '''  for (const category of [...new Set(stats.map(s => s.category))]) {
-    const group = stats.filter(s => s.category === category);
-    if (group.length !== 2) continue;
-    const known = group.find(s => clean(s.team));
-    const unknown = group.find(s => !clean(s.team));
-    if (!known || !unknown) continue;
-    unknown.team = compact(known.team) === compact(game.awayTeam) ? game.homeTeam : game.awayTeam;
-  }
-  return stats;
-}
-
-function extractScoringPlays'''
-          if old_end in s:
-              s = s.replace(old_end, new_end, 1)
-
-          s = s.replace('const stats = extractStats(tables, game);', 'const stats = extractStats(tables, game, scoringPlays);')
-          p.write_text(s, encoding='utf-8')
-          PY
-
-      - name: Repair blank stat team labels in current data
-        run: |
-          python - <<'PY'
-          import json, re
-          from pathlib import Path
-          p = Path('deseret-game-details.json')
-          data = json.loads(p.read_text(encoding='utf-8'))
-
-          def compact(v):
-              return re.sub(r'[^A-Z0-9]', '', str(v or '').upper())
-
-          repaired = 0
-          for key, game in data.get('games', {}).items():
-              parts = key.split('|')
-              if len(parts) < 3:
-                  continue
-              away, home = parts[-2], parts[-1]
-              # Use box-score names to recover nicer school names when possible.
-              display = []
-              for row in (game.get('boxScore') or {}).get('rows', []):
-                  name = re.sub(r'^vs\s+', '', str(row.get('team') or ''), flags=re.I)
-                  name = re.sub(r'\s+[^()]+\s*\(\d+[-–]\d+(?:[-–]\d+)?\)\s*$', '', name).strip()
-                  if name:
-                      display.append(name)
-              teams = display[:2] if len(display) >= 2 else [away, home]
-              plays = [str(x) for x in game.get('scoringPlays', [])]
-              stats = game.get('stats', [])
-
-              for stat in stats:
-                  if str(stat.get('team') or '').strip():
-                      continue
-                  votes = {}
-                  for row in stat.get('rows', []):
-                      player = str(row[1] if len(row) > 1 else '')
-                      player = re.sub(r'^\s*[A-Z]\s*\.\s*', '', player, flags=re.I).strip()
-                      if len(player.split()) < 2:
-                          continue
-                      cp = compact(player)
-                      for play in plays:
-                          if cp and cp in compact(play):
-                              prefix = re.split(r'—| - ', play, maxsplit=1)[0]
-                              for t in teams:
-                                  if compact(t) and compact(t) in compact(prefix):
-                                      votes[t] = votes.get(t, 0) + 1
-                  if votes:
-                      stat['team'] = max(votes, key=votes.get)
-                      repaired += 1
-
-              categories = sorted({str(s.get('category') or '') for s in stats})
-              for cat in categories:
-                  group = [s for s in stats if str(s.get('category') or '') == cat]
-                  if len(group) != 2:
-                      continue
-                  known = next((s for s in group if str(s.get('team') or '').strip()), None)
-                  unknown = next((s for s in group if not str(s.get('team') or '').strip()), None)
-                  if not known or not unknown:
-                      continue
-                  known_c = compact(known.get('team'))
-                  other = next((t for t in teams if compact(t) != known_c), '')
-                  if other:
-                      unknown['team'] = other
-                      repaired += 1
-
-          data['statTeamLabelsRepairedAt'] = '2026-08-16T18:38:00Z'
-          p.write_text(json.dumps(data, indent=2) + '\n', encoding='utf-8')
-          print(f'Repaired {repaired} blank stat team labels')
-          PY
-
-      - name: Commit fixes
+      - name: Commit page update
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add game.html scripts/enrich-deseret-game-details.mjs deseret-game-details.json
+          git add game.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Clarify game scores and repair stat team labels'
+          git commit -m 'Load game detail readability fixes'
           git pull --rebase origin main
           git push
