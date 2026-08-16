@@ -1,0 +1,128 @@
+name: Remove All Saved Rich Logos
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/remove-all-rich-logos.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove every saved Rich logo and prevent regeneration
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path('.')
+
+          # Delete every locally saved Rich logo, while leaving Richfield alone.
+          for folder in ('school-logos', 'school-logo-cache', 'school-logo-share'):
+              d = root / folder
+              if not d.exists():
+                  continue
+              for p in list(d.iterdir()):
+                  if not p.is_file():
+                      continue
+                  name = p.name.lower()
+                  if name.startswith('richfield'):
+                      continue
+                  if re.match(r'^rich(?:[-_.]|$)', name):
+                      print('deleting', p)
+                      p.unlink()
+
+          # Rich remains a team, but its directory logo is no longer a locally saved asset.
+          directory_path = root / 'school-directory.json'
+          if directory_path.exists():
+              directory = json.loads(directory_path.read_text(encoding='utf-8'))
+              if isinstance(directory, dict) and isinstance(directory.get('RICH'), dict):
+                  directory['RICH']['logoUrl'] = 'https://www.uhsaa.org/Logos/portfolio150/Rich.png'
+              directory_path.write_text(json.dumps(directory, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+          # Remove Rich from the local share-logo cache map.
+          cache_path = root / 'school-logo-cache.json'
+          if cache_path.exists():
+              cache = json.loads(cache_path.read_text(encoding='utf-8'))
+              if isinstance(cache, dict):
+                  cache.pop('RICH', None)
+              cache_path.write_text(json.dumps(cache, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+          # Remove the persistent Rich custom override from the school map builder.
+          map_script = root / 'scripts' / 'build_school_map_data.py'
+          if map_script.exists():
+              text = map_script.read_text(encoding='utf-8')
+              text = re.sub(r'^\s*["\']RICH["\']\s*:\s*["\']school-logos/rich[^"\']*["\']\s*,?\s*\n', '', text, flags=re.I | re.M)
+              map_script.write_text(text, encoding='utf-8')
+
+          # Remove browser-side custom Rich mappings.
+          for rel in ('school-assets.js', 'school-logo-integration.js'):
+              p = root / rel
+              if not p.exists():
+                  continue
+              text = p.read_text(encoding='utf-8')
+              text = re.sub(r"['\"]RICH['\"]\s*:\s*['\"]school-logos/rich[^'\"]*['\"]\s*,?", '', text, flags=re.I)
+              text = text.replace(',,', ',')
+              p.write_text(text, encoding='utf-8')
+
+          # Strip local Rich mappings from generic logo workflows so none can restore it.
+          workflow_dir = root / '.github' / 'workflows'
+          for p in workflow_dir.glob('*.yml'):
+              if p.name == 'remove-all-rich-logos.yml':
+                  continue
+              text = p.read_text(encoding='utf-8')
+              original = text
+              text = re.sub(r"['\"]RICH['\"]\s*:\s*['\"]school-logos/rich[^'\"]*['\"]\s*,?", '', text, flags=re.I)
+              text = text.replace(',,', ',')
+              if p.name == 'cache-share-logos.yml' and "if team == 'RICH': continue" not in text:
+                  needle = "              team=str(key).strip().upper()\n"
+                  text = text.replace(needle, needle + "              if team == 'RICH': continue\n")
+              if text != original:
+                  p.write_text(text, encoding='utf-8')
+
+          # Remove old one-off workflows whose only purpose was to install/restore Rich logos.
+          for name in (
+              'fix-rich-logo.yml',
+              'fix-rich-native-png.yml',
+              'revert-rich-original-logo.yml',
+              'fix-rich-logo-beaver-region.yml',
+          ):
+              p = workflow_dir / name
+              if p.exists():
+                  print('deleting obsolete workflow', p)
+                  p.unlink()
+
+          # This cleanup job is one-time; remove itself from the repository too.
+          self_path = workflow_dir / 'remove-all-rich-logos.yml'
+          if self_path.exists():
+              self_path.unlink()
+          PY
+
+      - name: Commit cleanup
+        run: |
+          git config user.name 'RuralUtahSports'
+          git config user.email '60403147+RuralUtahSports@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No Rich logo files or overrides remain.'
+            exit 0
+          fi
+          git commit -m 'Remove all saved Rich logos and overrides'
+          for try in 1 2 3 4; do
+            git pull --rebase origin main || { git rebase --abort || true; }
+            if git push origin main; then
+              exit 0
+            fi
+            sleep 3
+          done
+          exit 1
