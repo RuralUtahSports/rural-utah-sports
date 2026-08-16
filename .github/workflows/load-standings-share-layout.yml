@@ -20,27 +20,36 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
+
+          js=Path('standings-share-layout.js')
+          s=js.read_text(encoding='utf-8')
+          old="    groups.forEach(g=>grid.appendChild(regionCard(g,logos)));"
+          new="    groups.forEach((g,i)=>{const card=regionCard(g,logos);if(cols===2&&groups.length%2===1&&i===groups.length-1)card.style.gridColumn='1 / -1';grid.appendChild(card)});"
+          if old in s:
+              s=s.replace(old,new,1)
+          js.write_text(s,encoding='utf-8')
+
           p=Path('standings.html')
-          s=p.read_text(encoding='utf-8')
-          tag='<script src="standings-share-layout.js?v=20260816-v2" defer></script>'
-          if 'standings-share-layout.js' not in s:
-              m=re.search(r'(<script src="share-graphic\.js\?v=[^\"]+" defer></script>)',s)
+          h=p.read_text(encoding='utf-8')
+          tag='<script src="standings-share-layout.js?v=20260816-v3" defer></script>'
+          if 'standings-share-layout.js' not in h:
+              m=re.search(r'(<script src="share-graphic\.js\?v=[^\"]+" defer></script>)',h)
               if not m:
                   raise SystemExit('share-graphic script tag not found')
-              s=s[:m.end()]+"\n"+tag+s[m.end():]
+              h=h[:m.end()]+"\n"+tag+h[m.end():]
           else:
-              s=re.sub(r'<script src="standings-share-layout\.js\?v=[^\"]+" defer></script>',tag,s)
-          p.write_text(s,encoding='utf-8')
+              h=re.sub(r'<script src="standings-share-layout\.js\?v=[^\"]+" defer></script>',tag,h)
+          p.write_text(h,encoding='utf-8')
           PY
       - name: Commit standings share loader
         run: |
-          if git diff --quiet -- standings.html; then
+          if git diff --quiet -- standings-share-layout.js standings.html; then
             echo 'No changes needed.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add standings.html
-          git commit -m 'Enable compact standings share layout'
+          git add standings-share-layout.js standings.html
+          git commit -m 'Tighten whole-classification standings share layout'
           git pull --rebase origin main
           git push
