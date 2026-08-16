@@ -67,7 +67,7 @@
     const cols=format==='story'?1:format==='x'?Math.min(3,groups.length):Math.min(2,groups.length);
     grid.style.gridTemplateColumns=`repeat(${Math.max(1,cols)},minmax(0,1fr))`;
     const gridRows=Math.ceil(groups.length/Math.max(1,cols));grid.style.gridTemplateRows=`repeat(${Math.max(1,gridRows)},minmax(0,1fr))`;
-    groups.forEach(g=>grid.appendChild(regionCard(g,logos)));
+    groups.forEach((g,i)=>{const card=regionCard(g,logos);if(cols===2&&groups.length%2===1&&i===groups.length-1)card.style.gridColumn='1 / -1';grid.appendChild(card)});
     board.innerHTML=`<div class="rus-standings-share-topbar"></div><div class="rus-standings-share-head"><div class="rus-standings-share-title">${esc(label)}</div><div class="rus-standings-share-brand">RURAL UTAH SPORTS</div></div>`;
     board.appendChild(grid);board.insertAdjacentHTML('beforeend','<div class="rus-standings-share-footer">ruralutahsports.github.io</div>');document.body.appendChild(board);
     return {board,w,h};
