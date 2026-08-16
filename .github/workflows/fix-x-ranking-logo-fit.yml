@@ -1,0 +1,59 @@
+name: Fix X Ranking Logo Fit
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-x-ranking-logo-fit.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Give landscape X exports a compact contained logo area
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('share-graphic.js')
+          s = p.read_text()
+
+          # Add landscape-only sizing so wide X cards don't clip logos.
+          marker = '.rus-export-meta{display:flex;justify-content:center;gap:5px 8px;flex-wrap:wrap;margin-top:4px;color:#d8d8d8;font-size:10px;font-weight:1000;text-transform:uppercase;text-align:center;line-height:1.1}.rus-export-move.up{color:#62df8c}'
+          insert = '.rus-export-board.rus-export-landscape .rus-export-rank-item{padding-top:7px;padding-bottom:5px}.rus-export-board.rus-export-landscape .rus-export-team{font-size:15px;padding:4px 7px}.rus-export-board.rus-export-landscape .rus-export-record{font-size:11px;margin-top:3px}.rus-export-board.rus-export-landscape .rus-export-meta{font-size:9px;margin-top:3px;gap:3px 6px}.rus-export-board.rus-export-landscape .rus-export-logo-wrap{height:58px;min-height:58px;max-height:58px;padding:0 4px;overflow:hidden}.rus-export-board.rus-export-landscape .rus-export-logo-large{max-width:92%;max-height:54px;object-fit:contain;object-position:center center}'
+          if insert not in s:
+              s = s.replace(marker, insert + marker)
+
+          old = "const board=document.createElement('div');board.className='rus-export-board';board.style.width=`${w-pad*2}px`;board.style.height=`${availableH}px`;"
+          new = "const board=document.createElement('div');board.className='rus-export-board'+(w>h*1.25?' rus-export-landscape':'');board.style.width=`${w-pad*2}px`;board.style.height=`${availableH}px`;"
+          if old not in s:
+              raise SystemExit('Could not find ranking board creation line')
+          s = s.replace(old,new,1)
+          p.write_text(s)
+
+          # Bust the rankings page cache so phones pick up the fix.
+          r = Path('rankings.html')
+          t = r.read_text()
+          t = re.sub(r"share-graphic\.js\?v=[^\"']+", 'share-graphic.js?v=20260815-x-logo-fit', t)
+          r.write_text(t)
+          PY
+
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add share-graphic.js rankings.html
+          if git diff --cached --quiet; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git commit -m 'Fix logo clipping in X ranking share graphic'
+          git pull --rebase origin main
+          git push origin main
