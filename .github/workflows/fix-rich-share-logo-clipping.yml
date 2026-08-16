@@ -21,7 +21,6 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import base64, re
-
           p = Path('school-logos/rich-user.svg')
           s = p.read_text(encoding='utf-8')
           m = re.search(r'href=["\']data:image/([a-zA-Z0-9.+-]+);base64,([^"\']+)', s)
@@ -47,62 +46,37 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import base64
-
           raw = base64.b64encode(Path('/tmp/rich.png').read_bytes()).decode('ascii')
-          # A square viewport avoids the SVG/raster sizing mismatch that was causing
-          # html2canvas to draw only part of Rich's logo in shared ranking graphics.
-          svg = (
-              '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">'
-              '<image x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid meet" '
-              f'href="data:image/png;base64,{raw}"/>'
-              '</svg>'
-          )
+          svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">' + '<image x="0" y="0" width="400" height="400" preserveAspectRatio="xMidYMid meet" href="data:image/png;base64,' + raw + '"/></svg>'
           Path('school-logos/rich-user.svg').write_text(svg, encoding='utf-8')
           PY
 
-      - name: Use the embedded PNG directly for Rich share exports
+      - name: Use embedded PNG directly for Rich share exports
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-
           p = Path('share-graphic.js')
           s = p.read_text(encoding='utf-8')
-
-          # html2canvas on iOS can clip an SVG that itself contains a raster image.
-          # For the share graphic only, pull the PNG data URI out of Rich's SVG and
-          # give that PNG directly to html2canvas.
           marker = "    let richExportSrc='';"
           if marker not in s:
               needle = "    rows.forEach((row,i)=>{"
               if needle not in s:
                   raise SystemExit('Could not find ranking export row loop')
-              block = """    let richExportSrc='';
-    if(rows.some(row=>norm(teamFromRow(row))==='RICH')){
-      try{
-        const richSvg=await fetch(`school-logos/rich-user.svg?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.text():'');
-        richExportSrc=(richSvg.match(/href=[\"'](data:image\\/png;base64,[^\"']+)[\"']/i)||[])[1]||'';
-      }catch{}
-    }
-"""
+              block = "    let richExportSrc='';\n    if(rows.some(row=>norm(teamFromRow(row))==='RICH')){\n      try{\n        const richSvg=await fetch(`school-logos/rich-user.svg?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.text():'');\n        richExportSrc=(richSvg.match(/href=[\\\"'](data:image\\/png;base64,[^\\\"']+)[\\\"']/i)||[])[1]||'';\n      }catch{}\n    }\n"
               s = s.replace(needle, block + needle, 1)
-
           old = "      const src=logos[norm(team)]||existing||window.RUSSchoolAssets?.logoUrl?.(team)||'';"
           new = "      const src=(norm(team)==='RICH'&&richExportSrc)||logos[norm(team)]||existing||window.RUSSchoolAssets?.logoUrl?.(team)||'';"
           if old in s:
               s = s.replace(old, new, 1)
           elif new not in s:
               raise SystemExit('Could not find ranking export logo source')
-
-          # Keep the entire image centered inside the available logo area.
           s = s.replace(
               ".rus-export-board.rus-export-landscape .rus-export-logo-large.rus-export-logo-tall{max-width:76%;max-height:48px}",
               ".rus-export-board.rus-export-landscape .rus-export-logo-large.rus-export-logo-tall{width:auto;height:46px;max-width:72%;max-height:46px;object-fit:contain;object-position:center center}",
               1
           )
-
           p.write_text(s, encoding='utf-8')
-
           q = Path('rankings.html')
           if q.exists():
               t = q.read_text(encoding='utf-8')
