@@ -16,52 +16,60 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Keep game helper cache current
+      - name: Stop self-triggering game detail observer
         run: |
-          python3 -c "from pathlib import Path; import re; p=Path('game.html'); s=p.read_text(encoding='utf-8'); s=re.sub(r'game-detail-fixes\\.js\\?v=[^\" ]+','game-detail-fixes.js?v=20260816-v2',s); p.write_text(s,encoding='utf-8')"
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('game-detail-fixes.js')
+          s = p.read_text(encoding='utf-8')
+          old = """  apply();
+          const page = document.getElementById('page');
+          if (page) new MutationObserver(apply).observe(page, { childList: true, subtree: true });
+          })();
+          """
+          new = """  const page = document.getElementById('page');
+          let applied = false;
 
-      - name: Refine stat completeness detection
+          function applyWhenReady() {
+            if (applied || !page || page.classList.contains('loading') || page.classList.contains('error')) return;
+            applied = true;
+            apply();
+          }
+
+          applyWhenReady();
+
+          if (page && !applied) {
+            const observer = new MutationObserver(() => {
+              if (page.classList.contains('loading')) return;
+              observer.disconnect();
+              requestAnimationFrame(applyWhenReady);
+            });
+            observer.observe(page, { childList: true, attributes: true, attributeFilter: ['class'] });
+          }
+          })();
+          """
+          if old not in s:
+              raise SystemExit('old observer block not found')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Bump helper cache
         run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const path = 'scripts/enrich-deseret-game-details.mjs';
-          let s = fs.readFileSync(path, 'utf8');
-          const replacement = `function statsAvailability(stats) {
-            if (!Array.isArray(stats) || !stats.length) return { status: 'unavailable', blocks: 0, rows: 0, filledCoreCells: 0, emptyCoreBlocks: 0 };
-            let rows = 0, coreCells = 0, filledCoreCells = 0, emptyCoreBlocks = 0;
-            for (const block of stats) {
-              const headers = block.headers || [];
-              const coreIndexes = headers.map((h, i) => isCoreStatHeader(h) ? i : -1).filter(i => i >= 0);
-              let blockCoreCells = 0, blockFilledCoreCells = 0;
-              for (const row of block.rows || []) {
-                rows++;
-                for (const i of coreIndexes) {
-                  blockCoreCells++;
-                  coreCells++;
-                  if (clean(row?.[i]) && !/^[-–—]$/.test(clean(row?.[i]))) {
-                    blockFilledCoreCells++;
-                    filledCoreCells++;
-                  }
-                }
-              }
-              if (blockCoreCells > 0 && blockFilledCoreCells === 0) emptyCoreBlocks++;
-            }
-            let status = 'partial';
-            if (filledCoreCells > 0 && emptyCoreBlocks === 0 && (coreCells === 0 || filledCoreCells / coreCells >= 0.25)) status = 'full';
-            return { status, blocks: stats.length, rows, coreCells, filledCoreCells, emptyCoreBlocks };
-          }`;
-          const re = /function statsAvailability\(stats\) \{[\s\S]*?\n\}\n\nfunction qualityRank/;
-          if (!re.test(s)) throw new Error('statsAvailability function not found');
-          s = s.replace(re, replacement + '\n\nfunction qualityRank');
-          fs.writeFileSync(path, s);
-          NODE
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('game.html')
+          s = p.read_text(encoding='utf-8')
+          s = re.sub(r'game-detail-fixes\.js\?v=[^\" ]+', 'game-detail-fixes.js?v=20260816-v3', s)
+          p.write_text(s, encoding='utf-8')
+          PY
 
-      - name: Commit updates
+      - name: Commit fixes
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add game.html scripts/enrich-deseret-game-details.mjs
+          git add game-detail-fixes.js game.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Refine game stat completeness detection'
+          git commit -m 'Prevent game detail render loop'
           git pull --rebase origin main
           git push
