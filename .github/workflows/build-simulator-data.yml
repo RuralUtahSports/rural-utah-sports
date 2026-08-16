@@ -27,6 +27,7 @@ jobs:
         with:
           ref: main
 
+      # weekly-simulation.json is rebuilt from the sheet each run, so deleted sheet games are removed from the site feed too.
       - name: Build compact simulator data
         env:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
