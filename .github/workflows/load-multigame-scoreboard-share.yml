@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Add scoreboard share loader
-        run: python -c "from pathlib import Path; p=Path('scoreboard.html'); s=p.read_text(encoding='utf-8'); s=s.replace('share-graphic.js?v=20260815-region1','share-graphic.js?v=20260816-scoreboard-multi-v2'); s=s.replace('scoreboard-share-layout.js?v=20260816-v1','scoreboard-share-layout.js?v=20260816-v2'); s=s.replace('scoreboard-refresh.js?v=1','scoreboard-refresh.js?v=2'); tag='<script src=\"scoreboard-share-layout.js?v=20260816-v2\" defer></script>'; s=s if 'scoreboard-share-layout.js' in s else s.replace('<script src=\"share-graphic.js?v=20260816-scoreboard-multi-v2\" defer></script>','<script src=\"share-graphic.js?v=20260816-scoreboard-multi-v2\" defer></script>\\n'+tag); p.write_text(s,encoding='utf-8')"
+        run: python -c "from pathlib import Path; p=Path('scoreboard.html'); s=p.read_text(encoding='utf-8'); s=s.replace('share-graphic.js?v=20260815-region1','share-graphic.js?v=20260816-scoreboard-multi-v2'); s=s.replace('scoreboard-share-layout.js?v=20260816-v1','scoreboard-share-layout.js?v=20260816-v3'); s=s.replace('scoreboard-share-layout.js?v=20260816-v2','scoreboard-share-layout.js?v=20260816-v3'); s=s.replace('scoreboard-refresh.js?v=1','scoreboard-refresh.js?v=2'); tag='<script src=\"scoreboard-share-layout.js?v=20260816-v3\" defer></script>'; s=s if 'scoreboard-share-layout.js' in s else s.replace('<script src=\"share-graphic.js?v=20260816-scoreboard-multi-v2\" defer></script>','<script src=\"share-graphic.js?v=20260816-scoreboard-multi-v2\" defer></script>\\n'+tag); p.write_text(s,encoding='utf-8')"
       - name: Commit loader
         run: |
           git config user.name 'github-actions[bot]'
