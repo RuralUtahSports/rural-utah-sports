@@ -10,6 +10,8 @@
     .matchup.score-attached .score-center:after{content:'VS';display:block;color:#555;font-size:12px;font-weight:1000;letter-spacing:1px;margin-top:3px}
     .stat-label .stat-team-name{color:#F14D07}
     .stat-block[data-team]{border-left:4px solid #F14D07;padding-left:10px}
+    .stat-player-link{color:#fff;text-decoration:none;font-weight:900;border-bottom:1px solid rgba(241,77,7,.55);transition:color .15s ease,border-color .15s ease}
+    .stat-player-link:hover,.stat-player-link:focus{color:#F14D07;border-bottom-color:#F14D07}
     .game-stat-status{margin:0 0 13px;border:1px solid #3a3a3a;border-left:5px solid #777;background:#161616;border-radius:7px;padding:11px 13px;color:#aaa;font-size:11px;line-height:1.45;font-weight:700}
     .game-stat-status strong{display:block;color:#fff;text-transform:uppercase;font-size:10px;letter-spacing:.4px;margin-bottom:3px}
     .game-stat-status.partial{border-left-color:#F14D07;background:#1a130f}
@@ -128,6 +130,84 @@
     }
   }
 
+  function gameSeason() {
+    const q = new URLSearchParams(location.search);
+    const raw = q.get('date') || '';
+    const match = raw.match(/(?:^|\D)(20\d{2})(?:\D|$)/);
+    return match ? Number(match[1]) : null;
+  }
+
+  async function linkStatPlayers() {
+    const blocks = [...document.querySelectorAll('#page .stat-block')];
+    if (!blocks.length) return;
+    const season = gameSeason();
+    if (![2025, 2026].includes(season)) return;
+
+    try {
+      const response = await fetch(`player-game-stats-${season}.json?v=${Date.now()}`, { cache:'no-store' });
+      if (!response.ok) return;
+      const data = await response.json();
+      const byTeam = new Map();
+      const global = new Map();
+
+      const addPlayer = (team, player) => {
+        if (!player?.playerId) return;
+        const number = compact(player.number || '');
+        const name = compact(cleanPlayer(player.name || ''));
+        if (!name) return;
+        const key = `${number}|${name}`;
+        const teamKey = compact(team);
+        if (!byTeam.has(teamKey)) byTeam.set(teamKey, new Map());
+        byTeam.get(teamKey).set(key, player.playerId);
+        if (!global.has(key)) global.set(key, new Set());
+        global.get(key).add(player.playerId);
+      };
+
+      for (const [team, teamData] of Object.entries(data?.teams || {})) {
+        for (const game of teamData?.games || []) {
+          for (const player of game?.players || []) addPlayer(team, player);
+        }
+      }
+
+      for (const block of blocks) {
+        const headers = [...block.querySelectorAll('thead th')].map(th => compact(th.textContent));
+        const numberIndex = headers.findIndex(h => h === 'NO' || h === 'NUMBER' || h === '#');
+        const playerIndex = headers.findIndex(h => h === 'PLAYER' || h === 'NAME');
+        if (playerIndex < 0) continue;
+        const teamKey = compact(block.dataset.team || '');
+        const teamPlayers = byTeam.get(teamKey);
+
+        for (const row of block.querySelectorAll('tbody tr')) {
+          const cells = [...row.children];
+          const nameCell = cells[playerIndex];
+          if (!nameCell || nameCell.querySelector('a.stat-player-link')) continue;
+          const number = numberIndex >= 0 ? compact(cells[numberIndex]?.textContent || '') : '';
+          const cleanName = cleanPlayer(nameCell.textContent || '');
+          const name = compact(cleanName);
+          if (!name) continue;
+          const key = `${number}|${name}`;
+
+          let playerId = teamPlayers?.get(key) || '';
+          if (!playerId) {
+            const candidates = [...(global.get(key) || [])];
+            if (candidates.length === 1) playerId = candidates[0];
+          }
+          if (!playerId) continue;
+
+          const link = document.createElement('a');
+          link.className = 'stat-player-link';
+          link.href = `player.html?id=${encodeURIComponent(playerId)}&season=${season}`;
+          link.textContent = cleanName;
+          link.setAttribute('aria-label', `View ${cleanName} player page`);
+          nameCell.textContent = '';
+          nameCell.appendChild(link);
+        }
+      }
+    } catch (error) {
+      console.warn('Could not link game stat players', error);
+    }
+  }
+
   function isCoreHeader(text) {
     const h = compact(text);
     if (!h || ['NO','NUMBER','PLAYER','NAME','TD','TDS','PAT','FG','RETURNTD'].includes(h)) return false;
@@ -216,24 +296,26 @@
     attachScores();
     inferStatLabels();
     ensureStatStatus();
+    linkStatPlayers();
   }
+
   const page = document.getElementById('page');
-let applied = false;
+  let applied = false;
 
-function applyWhenReady() {
-  if (applied || !page || page.classList.contains('loading') || page.classList.contains('error')) return;
-  applied = true;
-  apply();
-}
+  function applyWhenReady() {
+    if (applied || !page || page.classList.contains('loading') || page.classList.contains('error')) return;
+    applied = true;
+    apply();
+  }
 
-applyWhenReady();
+  applyWhenReady();
 
-if (page && !applied) {
-  const observer = new MutationObserver(() => {
-    if (page.classList.contains('loading')) return;
-    observer.disconnect();
-    requestAnimationFrame(applyWhenReady);
-  });
-  observer.observe(page, { childList: true, attributes: true, attributeFilter: ['class'] });
-}
+  if (page && !applied) {
+    const observer = new MutationObserver(() => {
+      if (page.classList.contains('loading')) return;
+      observer.disconnect();
+      requestAnimationFrame(applyWhenReady);
+    });
+    observer.observe(page, { childList: true, attributes: true, attributeFilter: ['class'] });
+  }
 })();
