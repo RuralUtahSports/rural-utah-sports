@@ -30,23 +30,40 @@ jobs:
         with:
           ref: main
 
-      - name: Dedupe team schedules and rebuild rivalry records
+      - name: Audit and dedupe all team schedules
         run: |
           node <<'NODE'
           const fs = require('fs');
           const path = require('path');
 
-          const dir = 'team-page-data';
-          if (!fs.existsSync(dir)) {
-            throw new Error('team-page-data directory not found');
-          }
+          const pageDir = 'team-page-data';
+          if (!fs.existsSync(pageDir)) throw new Error('team-page-data directory not found');
+          if (!fs.existsSync('team-schedules.json')) throw new Error('team-schedules.json not found');
 
-          const knownBadRows = new Set([
-            'monument-valley.json|9/19/2025|PANGUITCH',
-            'panguitch.json|9/19/2025|MONUMENT VALLEY',
-            'panguitch.json|9/19/2025|MONUMENT VAL',
-            'north-sanpete.json|10/17/2025|JUAB',
-            'juab.json|10/17/2025|NORTH SANPETE'
+          const aliases = {
+            'GUNNISON': 'GUNNISON VALLEY',
+            'MAPLE MTN': 'MAPLE MOUNTAIN',
+            'MONUMENT VAL': 'MONUMENT VALLEY',
+            'CEDAR': 'CEDAR CITY',
+            'SUMMIT': 'SUMMIT ACADEMY',
+            'WASATCH ACAD': 'WASATCH ACADEMY',
+            'HINKLEY': 'HINCKLEY',
+            'BY HIGH': 'BYH',
+            'BRIGHAM YOUNG': 'BYH'
+          };
+          const clean = value => String(value ?? '').trim().replace(/\s+/g, ' ');
+          const canonical = value => {
+            const key = clean(value).toUpperCase().replace(/\.+$/, '').trim();
+            if (key.startsWith('WASATCH ACAD')) return 'WASATCH ACADEMY';
+            return aliases[key] || key;
+          };
+          const slug = value => canonical(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+          const knownBad = new Set([
+            'MONUMENT VALLEY|9/19/2025|PANGUITCH',
+            'PANGUITCH|9/19/2025|MONUMENT VALLEY',
+            'NORTH SANPETE|10/17/2025|JUAB',
+            'JUAB|10/17/2025|NORTH SANPETE'
           ]);
 
           const emptyRecord = () => ({ wins: 0, losses: 0, ties: 0, games: 0 });
@@ -54,86 +71,142 @@ jobs:
             record.games++;
             if (result === 'W') record.wins++;
             else if (result === 'L') record.losses++;
-            else record.ties++;
+            else if (result === 'T') record.ties++;
           };
-
-          const dateYear = date => {
-            const match = String(date || '').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-            return match ? Number(match[3]) : null;
-          };
-
           const resultFor = game => {
-            const a = Number(game.teamScore);
-            const b = Number(game.opponentScore);
-            if (Number.isFinite(a) && Number.isFinite(b)) {
-              return a > b ? 'W' : a < b ? 'L' : 'T';
+            const a = Number(game?.teamScore), b = Number(game?.opponentScore);
+            if (Number.isFinite(a) && Number.isFinite(b)) return a > b ? 'W' : a < b ? 'L' : 'T';
+            const result = clean(game?.result).toUpperCase();
+            return ['W','L','T'].includes(result) ? result : '';
+          };
+          const dateInfo = value => {
+            const s = clean(value);
+            let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+            if (m) return { year: Number(m[3]), ms: Date.UTC(Number(m[3]), Number(m[1]) - 1, Number(m[2])) };
+            m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+            if (m) return { year: Number(m[1]), ms: Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])) };
+            return null;
+          };
+          const mergeGame = (keep, dropped) => {
+            const keepNotes = clean(keep?.notes), dropNotes = clean(dropped?.notes);
+            if (dropNotes.length > keepNotes.length) keep.notes = dropped.notes;
+            if (keep.playoff || dropped.playoff) keep.playoff = true;
+            for (const [key, value] of Object.entries(dropped || {})) {
+              if ((keep[key] === undefined || keep[key] === null || keep[key] === '') && value !== undefined && value !== null && value !== '') keep[key] = value;
             }
-            const result = String(game.result || '').trim().toUpperCase();
-            return ['W', 'L', 'T'].includes(result) ? result : null;
           };
 
-          let filesChanged = 0;
-          let duplicateRowsRemoved = 0;
-          let conflicts = 0;
-          let knownCorrectionsRemoved = 0;
+          const teamsData = fs.existsSync('teams-data.json') ? JSON.parse(fs.readFileSync('teams-data.json', 'utf8')) : [];
+          const slugToTeam = new Map(teamsData.map(row => [slug(row.team), canonical(row.team)]));
+          const affected = new Set();
+          const removals = [];
+          const conflictRows = [];
+          const uniqueGlobalDuplicates = new Set();
+          let globalRemoved = 0, pageRemoved = 0, exactRemoved = 0, nearRemoved = 0, knownRemoved = 0;
 
-          for (const file of fs.readdirSync(dir).filter(name => name.endsWith('.json'))) {
-            const fullPath = path.join(dir, file);
-            const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-            const schedules = data.schedules;
-            if (!schedules || typeof schedules !== 'object') continue;
+          function globalDuplicateKey(team, game, keptDate, removedDate, kind) {
+            const a = canonical(team), b = canonical(game.opponent);
+            const pair = [a, b].sort();
+            const teamFirst = a === pair[0];
+            const s1 = teamFirst ? game.teamScore : game.opponentScore;
+            const s2 = teamFirst ? game.opponentScore : game.teamScore;
+            return `${pair.join('|')}|${s1 ?? ''}-${s2 ?? ''}|${[keptDate, removedDate].sort().join('|')}|${kind}`;
+          }
 
+          function cleanScheduleSet(teamName, schedules, scope) {
+            const team = canonical(teamName);
+            const output = {};
             let changed = false;
-            const opponents = {};
-            const decades = {};
 
-            for (const [season, rawGames] of Object.entries(schedules)) {
-              if (!Array.isArray(rawGames)) continue;
+            for (const [season, raw] of Object.entries(schedules || {})) {
+              if (!Array.isArray(raw)) { output[season] = raw; continue; }
 
-              const seen = new Map();
-              const cleanGames = [];
+              const firstPass = [];
+              const exact = new Map();
+              const sameDateOpponent = new Map();
 
-              for (const game of rawGames) {
-                const date = String(game?.date || '').trim();
-                const opponent = String(game?.opponent || '').trim().toUpperCase();
-                if (!date || !opponent) {
-                  cleanGames.push(game);
-                  continue;
-                }
-
-                if (knownBadRows.has(`${file}|${date}|${opponent}`)) {
-                  knownCorrectionsRemoved++;
-                  changed = true;
-                  continue;
-                }
-
-                const key = `${date}|${opponent}`;
-                const scoreSig = `${game.teamScore ?? ''}|${game.opponentScore ?? ''}`;
-
-                if (seen.has(key)) {
-                  duplicateRowsRemoved++;
-                  changed = true;
-                  if (seen.get(key) !== scoreSig) conflicts++;
-                  continue;
-                }
-
-                seen.set(key, scoreSig);
-                cleanGames.push(game);
-              }
-
-              if (cleanGames.length !== rawGames.length) {
-                schedules[season] = cleanGames;
-              }
-
-              for (const game of cleanGames) {
-                const opponent = String(game?.opponent || '').trim().toUpperCase();
+              for (const game of raw) {
+                const date = clean(game?.date), opponent = canonical(game?.opponent);
                 const result = resultFor(game);
-                if (!opponent || !result) continue;
+                if (!date || !opponent) { firstPass.push(game); continue; }
 
+                if (knownBad.has(`${team}|${date}|${opponent}`)) {
+                  changed = true; knownRemoved++;
+                  if (scope === 'global') globalRemoved++; else pageRemoved++;
+                  affected.add(team);
+                  if (removals.length < 1000) removals.push({scope, team, season, kind:'known-correction', keptDate:'', removedDate:date, opponent, teamScore:game.teamScore, opponentScore:game.opponentScore});
+                  if (scope === 'global') uniqueGlobalDuplicates.add(globalDuplicateKey(team, game, date, date, 'known-correction'));
+                  continue;
+                }
+
+                const scoreSig = `${game.teamScore ?? ''}|${game.opponentScore ?? ''}|${result}`;
+                const exactKey = `${date}|${opponent}|${scoreSig}`;
+                const sameKey = `${date}|${opponent}`;
+
+                if (exact.has(exactKey)) {
+                  const keepIndex = exact.get(exactKey);
+                  mergeGame(firstPass[keepIndex], game);
+                  changed = true; exactRemoved++;
+                  if (scope === 'global') globalRemoved++; else pageRemoved++;
+                  affected.add(team);
+                  if (removals.length < 1000) removals.push({scope, team, season, kind:'exact', keptDate:date, removedDate:date, opponent, teamScore:game.teamScore, opponentScore:game.opponentScore});
+                  if (scope === 'global') uniqueGlobalDuplicates.add(globalDuplicateKey(team, game, date, date, 'exact'));
+                  continue;
+                }
+
+                if (sameDateOpponent.has(sameKey) && sameDateOpponent.get(sameKey) !== scoreSig) {
+                  if (conflictRows.length < 500) conflictRows.push({scope, team, season, date, opponent, keptScore:sameDateOpponent.get(sameKey), conflictingScore:scoreSig});
+                } else if (!sameDateOpponent.has(sameKey)) {
+                  sameDateOpponent.set(sameKey, scoreSig);
+                }
+
+                exact.set(exactKey, firstPass.length);
+                firstPass.push(game);
+              }
+
+              const ordered = firstPass.map((game, index) => ({game, index, d:dateInfo(game?.date)}))
+                .filter(x => x.d)
+                .sort((a,b) => a.d.ms - b.d.ms || a.index - b.index);
+              const drop = new Set();
+              const lastBySignature = new Map();
+
+              for (const item of ordered) {
+                const game = item.game, opponent = canonical(game?.opponent), result = resultFor(game);
+                const sig = `${opponent}|${game.teamScore ?? ''}|${game.opponentScore ?? ''}|${result}`;
+                const prior = lastBySignature.get(sig);
+                if (prior && item.d.ms > prior.d.ms) {
+                  const days = (item.d.ms - prior.d.ms) / 86400000;
+                  if (days <= 3) {
+                    mergeGame(firstPass[prior.index], game);
+                    drop.add(item.index);
+                    changed = true; nearRemoved++;
+                    if (scope === 'global') globalRemoved++; else pageRemoved++;
+                    affected.add(team);
+                    const keptDate = clean(firstPass[prior.index]?.date), removedDate = clean(game?.date);
+                    if (removals.length < 1000) removals.push({scope, team, season, kind:'near-date', keptDate, removedDate, opponent, teamScore:game.teamScore, opponentScore:game.opponentScore, daysApart:days});
+                    if (scope === 'global') uniqueGlobalDuplicates.add(globalDuplicateKey(team, game, keptDate, removedDate, 'near-date'));
+                    continue;
+                  }
+                }
+                lastBySignature.set(sig, item);
+              }
+
+              output[season] = firstPass.filter((_, index) => !drop.has(index));
+              if (output[season].length !== raw.length) changed = true;
+            }
+            return {schedules:output, changed};
+          }
+
+          function breakdownFor(schedules) {
+            const opponents = {}, decades = {};
+            for (const [season, games] of Object.entries(schedules || {})) {
+              if (!Array.isArray(games)) continue;
+              for (const game of games) {
+                const opponent = canonical(game?.opponent), result = resultFor(game);
+                if (!opponent || !result) continue;
                 if (!opponents[opponent]) opponents[opponent] = emptyRecord();
                 addResult(opponents[opponent], result);
-
-                const year = dateYear(game.date) ?? Number(season);
+                const year = dateInfo(game?.date)?.year ?? Number(season);
                 if (Number.isFinite(year)) {
                   const decade = String(Math.floor(year / 10) * 10);
                   if (!decades[decade]) decades[decade] = emptyRecord();
@@ -141,40 +214,85 @@ jobs:
                 }
               }
             }
+            return {decades, opponents};
+          }
 
-            data.breakdown = data.breakdown || {};
-            const oldOpponents = JSON.stringify(data.breakdown.opponents || {});
-            const oldDecades = JSON.stringify(data.breakdown.decades || {});
-            const newOpponents = JSON.stringify(opponents);
-            const newDecades = JSON.stringify(decades);
+          const globalSchedules = JSON.parse(fs.readFileSync('team-schedules.json', 'utf8'));
+          const rebuiltBreakdowns = {};
+          let globalChanged = false;
+          for (const [team, schedules] of Object.entries(globalSchedules)) {
+            const cleaned = cleanScheduleSet(team, schedules, 'global');
+            if (cleaned.changed) globalChanged = true;
+            globalSchedules[team] = cleaned.schedules;
+            rebuiltBreakdowns[team] = breakdownFor(cleaned.schedules);
+          }
+          if (globalChanged) fs.writeFileSync('team-schedules.json', JSON.stringify(globalSchedules) + '\n');
 
-            if (oldOpponents !== newOpponents || oldDecades !== newDecades) changed = true;
-            data.breakdown.opponents = opponents;
-            data.breakdown.decades = decades;
+          const oldBreakdowns = fs.existsSync('team-record-breakdowns.json') ? JSON.parse(fs.readFileSync('team-record-breakdowns.json', 'utf8')) : {};
+          if (JSON.stringify(oldBreakdowns) !== JSON.stringify(rebuiltBreakdowns)) {
+            fs.writeFileSync('team-record-breakdowns.json', JSON.stringify(rebuiltBreakdowns) + '\n');
+          }
 
-            if (changed) {
+          let pageFilesChanged = 0;
+          for (const file of fs.readdirSync(pageDir).filter(name => name.endsWith('.json'))) {
+            const fullPath = path.join(pageDir, file);
+            const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+            if (!data.schedules || typeof data.schedules !== 'object') continue;
+            const pageSlug = file.replace(/\.json$/i, '');
+            const team = slugToTeam.get(pageSlug) || canonical(pageSlug.replace(/-/g, ' '));
+            const cleaned = cleanScheduleSet(team, data.schedules, 'page');
+            const newBreakdown = breakdownFor(cleaned.schedules);
+            const breakdownChanged = JSON.stringify(data.breakdown || {}) !== JSON.stringify(newBreakdown);
+            if (cleaned.changed || breakdownChanged) {
+              data.schedules = cleaned.schedules;
+              data.breakdown = newBreakdown;
               fs.writeFileSync(fullPath, JSON.stringify(data) + '\n');
-              filesChanged++;
+              pageFilesChanged++;
             }
           }
 
-          console.log(`Files changed: ${filesChanged}`);
-          console.log(`Duplicate schedule rows removed: ${duplicateRowsRemoved}`);
-          console.log(`Known bad rows removed: ${knownCorrectionsRemoved}`);
-          console.log(`Conflicting duplicate rows encountered: ${conflicts}`);
+          const totalRemoved = globalRemoved + pageRemoved;
+          if (totalRemoved > 0) {
+            const report = {
+              updatedAt:new Date().toISOString(),
+              teamsAudited:Object.keys(globalSchedules).length,
+              teamsAffected:[...affected].sort(),
+              uniqueDuplicateGames:uniqueGlobalDuplicates.size,
+              globalScheduleRowsRemoved:globalRemoved,
+              pageScheduleRowsRemoved:pageRemoved,
+              exactDuplicateRowsRemoved:exactRemoved,
+              nearDateDuplicateRowsRemoved:nearRemoved,
+              knownCorrectionRowsRemoved:knownRemoved,
+              conflictingSameDateRowsKept:conflictRows.length,
+              conflicts:conflictRows,
+              removals
+            };
+            fs.writeFileSync('game-duplicate-audit.json', JSON.stringify(report, null, 2) + '\n');
+          }
+
+          console.log(`Teams audited: ${Object.keys(globalSchedules).length}`);
+          console.log(`Teams affected: ${affected.size}`);
+          console.log(`Unique duplicate games found: ${uniqueGlobalDuplicates.size}`);
+          console.log(`Global schedule rows removed: ${globalRemoved}`);
+          console.log(`Team-page schedule rows removed: ${pageRemoved}`);
+          console.log(`Exact duplicate rows removed: ${exactRemoved}`);
+          console.log(`Near-date duplicate rows removed: ${nearRemoved}`);
+          console.log(`Known correction rows removed: ${knownRemoved}`);
+          console.log(`Conflicting same-date rows kept for review: ${conflictRows.length}`);
+          console.log(`Team page files changed: ${pageFilesChanged}`);
           NODE
 
-      - name: Commit cleaned team page data
+      - name: Commit cleaned schedule data
         run: |
-          if git diff --quiet -- team-page-data; then
-            echo "No duplicate team-page rows found."
-            exit 0
-          fi
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add team-page-data
-          git commit -m "Clean duplicate team page rivalry data"
+          git add team-schedules.json team-record-breakdowns.json team-page-data
+          if [ -f game-duplicate-audit.json ]; then git add game-duplicate-audit.json; fi
+          if git diff --cached --quiet; then
+            echo "All team schedules are already clean."
+            exit 0
+          fi
+          git commit -m "Clean duplicate games across team data"
           ok=0
           for attempt in 1 2 3 4; do
             if git pull --rebase origin main && git push; then ok=1; break; fi
