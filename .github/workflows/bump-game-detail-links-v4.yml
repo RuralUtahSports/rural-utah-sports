@@ -1,0 +1,45 @@
+name: Bump Game Detail Player Links
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/bump-game-detail-links-v4.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Bump game detail helper cache version
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('game.html')
+          text = p.read_text()
+          old = 'game-detail-fixes.js?v=20260816-v3'
+          new = 'game-detail-fixes.js?v=20260816-v4'
+          if old not in text:
+              raise SystemExit(f'Could not find {old}')
+          p.write_text(text.replace(old, new, 1))
+          PY
+
+      - name: Commit cache bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add game.html
+          if git diff --cached --quiet; then
+            echo "Already bumped."
+            exit 0
+          fi
+          git commit -m "Load player-linked game detail helper"
+          git pull --rebase origin main
+          git push
