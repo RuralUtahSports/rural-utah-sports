@@ -1,6 +1,7 @@
 name: Fix Rich Logo
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - '.github/workflows/fix-rich-logo.yml'
@@ -14,34 +15,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
-      - name: Build reliable Rich PNG logo
+      - name: Point Rich at the existing logo asset everywhere
         run: |
           python - <<'PY'
           from pathlib import Path
-          import base64, json
+          import json
 
-          src = Path('school-logo-share/rich.b64')
-          out = Path('school-logo-share/rich.png')
-          data = ''.join(src.read_text().split())
-          data += '=' * (-len(data) % 4)
-          out.write_bytes(base64.b64decode(data))
+          logo = 'school-logos/rich-user.svg'
+          if not Path(logo).exists():
+              raise SystemExit(f'Missing expected Rich logo: {logo}')
+
+          for name in ('school-assets.js', 'school-logo-integration.js'):
+              p = Path(name)
+              text = p.read_text(encoding='utf-8')
+              text = text.replace("'RICH':'school-logos/rich.png'", f"'RICH':'{logo}'")
+              text = text.replace("'RICH':'school-logos/rich.svg'", f"'RICH':'{logo}'")
+              p.write_text(text, encoding='utf-8')
 
           cache_path = Path('school-logo-cache.json')
-          cache = json.loads(cache_path.read_text())
-          cache['RICH'] = 'school-logo-share/rich.png'
-          cache_path.write_text(json.dumps(cache, indent=2) + '\n')
+          cache = json.loads(cache_path.read_text(encoding='utf-8'))
+          cache['RICH'] = logo
+          cache_path.write_text(json.dumps(cache, indent=2) + '\n', encoding='utf-8')
           PY
 
-      - name: Commit Rich PNG logo
+      - name: Commit Rich logo fix
         run: |
-          if git diff --quiet -- school-logo-share/rich.png school-logo-cache.json; then
-            echo 'No changes needed.'
-            exit 0
-          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add school-logo-share/rich.png school-logo-cache.json
-          git commit -m 'Fix Rich logo rendering with PNG asset'
-          git push
+          git add school-assets.js school-logo-integration.js school-logo-cache.json
+          if git diff --cached --quiet; then
+            echo 'Rich already points at the working asset.'
+            exit 0
+          fi
+          git commit -m 'Point Rich logo to existing SVG asset'
+          git pull --rebase origin main
+          git push origin main
