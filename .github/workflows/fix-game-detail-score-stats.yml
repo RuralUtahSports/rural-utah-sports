@@ -31,12 +31,64 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit page update
+      - name: Require complete stat detail across all published stat blocks
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('scripts/enrich-deseret-game-details.mjs')
+          s = p.read_text(encoding='utf-8')
+          old = '''function statsAvailability(stats) {
+  if (!Array.isArray(stats) || !stats.length) return { status: 'unavailable', blocks: 0, rows: 0, filledCoreCells: 0 };
+  let rows = 0, coreCells = 0, filledCoreCells = 0;
+  for (const block of stats) {
+    const headers = block.headers || [];
+    const coreIndexes = headers.map((h, i) => isCoreStatHeader(h) ? i : -1).filter(i => i >= 0);
+    for (const row of block.rows || []) {
+      rows++;
+      for (const i of coreIndexes) {
+        coreCells++;
+        if (clean(row?.[i]) && !/^[-–—]$/.test(clean(row?.[i]))) filledCoreCells++;
+      }
+    }
+  }
+  const status = filledCoreCells > 0 ? 'full' : 'partial';
+  return { status, blocks: stats.length, rows, coreCells, filledCoreCells };
+}'''
+          new = '''function statsAvailability(stats) {
+  if (!Array.isArray(stats) || !stats.length) return { status: 'unavailable', blocks: 0, rows: 0, filledCoreCells: 0, emptyCoreBlocks: 0 };
+  let rows = 0, coreCells = 0, filledCoreCells = 0, emptyCoreBlocks = 0;
+  for (const block of stats) {
+    const headers = block.headers || [];
+    const coreIndexes = headers.map((h, i) => isCoreStatHeader(h) ? i : -1).filter(i => i >= 0);
+    let blockCoreCells = 0, blockFilledCoreCells = 0;
+    for (const row of block.rows || []) {
+      rows++;
+      for (const i of coreIndexes) {
+        blockCoreCells++;
+        coreCells++;
+        if (clean(row?.[i]) && !/^[-–—]$/.test(clean(row?.[i]))) {
+          blockFilledCoreCells++;
+          filledCoreCells++;
+        }
+      }
+    }
+    if (blockCoreCells > 0 && blockFilledCoreCells === 0) emptyCoreBlocks++;
+  }
+  let status = 'partial';
+  if (filledCoreCells > 0 && emptyCoreBlocks === 0 && (!coreCells || filledCoreCells / coreCells >= 0.25)) status = 'full';
+  return { status, blocks: stats.length, rows, coreCells, filledCoreCells, emptyCoreBlocks };
+}'''
+          if old not in s:
+              raise SystemExit('statsAvailability block did not match current script')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Commit updates
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add game.html
+          git add game.html scripts/enrich-deseret-game-details.mjs
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Load updated game stat availability helper'
+          git commit -m 'Refine game stat completeness detection'
           git pull --rebase origin main
           git push
