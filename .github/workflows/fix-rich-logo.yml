@@ -16,30 +16,28 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Convert Rich embedded WebP logo to PNG
+      - name: Build reliable Rich PNG logo
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq webp
-          python - <<'PY'
-          from pathlib import Path
-          import base64, re
-
-          src = Path('school-logos/rich.svg')
-          text = src.read_text()
-          m = re.search(r'data:image/webp;base64,([^"\']+)', text)
-          if not m:
-              raise SystemExit('Could not find embedded Rich WebP in SVG')
-          Path('/tmp/rich.webp').write_bytes(base64.b64decode(m.group(1)))
-          PY
-          dwebp /tmp/rich.webp -o /tmp/rich.png
+          curl -L --fail --retry 3 'https://assets.scorebooklive.com/uploads/production/school/30123/image/15609b0836.jpeg' -o /tmp/rich-source.jpg
           python -m pip install --quiet pillow
           python - <<'PY'
           from pathlib import Path
           from PIL import Image
           import json
 
-          im = Image.open('/tmp/rich.png').convert('RGBA')
-          pad = max(8, round(max(im.size) * 0.08))
+          im = Image.open('/tmp/rich-source.jpg').convert('RGBA')
+          px = im.load()
+          # Make the near-white background transparent while preserving the logo.
+          for y in range(im.height):
+              for x in range(im.width):
+                  r,g,b,a = px[x,y]
+                  if r > 242 and g > 242 and b > 242:
+                      px[x,y] = (255,255,255,0)
+
+          bbox = im.getbbox()
+          if bbox:
+              im = im.crop(bbox)
+          pad = max(12, round(max(im.size) * 0.08))
           canvas = Image.new('RGBA', (im.width + pad*2, im.height + pad*2), (0,0,0,0))
           canvas.alpha_composite(im, (pad, pad))
 
