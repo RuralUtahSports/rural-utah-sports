@@ -224,21 +224,28 @@ function isCoreStatHeader(header) {
 }
 
 function statsAvailability(stats) {
-  if (!Array.isArray(stats) || !stats.length) return { status: 'unavailable', blocks: 0, rows: 0, filledCoreCells: 0 };
-  let rows = 0, coreCells = 0, filledCoreCells = 0;
+  if (!Array.isArray(stats) || !stats.length) return { status: 'unavailable', blocks: 0, rows: 0, filledCoreCells: 0, emptyCoreBlocks: 0 };
+  let rows = 0, coreCells = 0, filledCoreCells = 0, emptyCoreBlocks = 0;
   for (const block of stats) {
     const headers = block.headers || [];
     const coreIndexes = headers.map((h, i) => isCoreStatHeader(h) ? i : -1).filter(i => i >= 0);
+    let blockCoreCells = 0, blockFilledCoreCells = 0;
     for (const row of block.rows || []) {
       rows++;
       for (const i of coreIndexes) {
+        blockCoreCells++;
         coreCells++;
-        if (clean(row?.[i]) && !/^[-–—]$/.test(clean(row?.[i]))) filledCoreCells++;
+        if (clean(row?.[i]) && !/^[-–—]$/.test(clean(row?.[i]))) {
+          blockFilledCoreCells++;
+          filledCoreCells++;
+        }
       }
     }
+    if (blockCoreCells > 0 && blockFilledCoreCells === 0) emptyCoreBlocks++;
   }
-  const status = filledCoreCells > 0 ? 'full' : 'partial';
-  return { status, blocks: stats.length, rows, coreCells, filledCoreCells };
+  let status = 'partial';
+  if (filledCoreCells > 0 && emptyCoreBlocks === 0 && (coreCells === 0 || filledCoreCells / coreCells >= 0.25)) status = 'full';
+  return { status, blocks: stats.length, rows, coreCells, filledCoreCells, emptyCoreBlocks };
 }
 
 function qualityRank(value) {
