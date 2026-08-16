@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-15T23:56:04.982Z",
+  "updatedAt": "2026-08-16T00:43:51.535Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -8803,10 +8803,10 @@
     },
     "2026-08-15|DUCHESNE|SOUTHSUMMIT": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/duchesne-football-vs-south-summit-football/273409",
-      "status": "Q1",
+      "status": "HALFTIME",
       "final": false,
-      "clock": "3:50",
-      "period": "Q1",
+      "clock": "",
+      "period": "",
       "boxScore": {
         "periods": [
           "Q1",
@@ -8819,31 +8819,53 @@
             "team": "Duchesne Eagles (0-0)",
             "quarters": [
               0,
-              null,
+              7,
               null,
               null
             ],
-            "total": 0
+            "total": 7
           },
           {
             "team": "vs South Summit Wildcats (0-0)",
             "quarters": [
               6,
-              null,
+              6,
               null,
               null
             ],
-            "total": 6
+            "total": 12
           }
         ]
       },
       "scoringPlays": [
-        "South Summit — ( 3:50 1Q ) Cruz Woodard , 6-yard pass from Ian Mair ( kick failed )"
+        "South Summit — ( 3:50 1Q ) Cruz Woodard , 6-yard pass from Ian Mair ( kick failed )",
+        "Duchesne — ( 4:10 2Q ) Brex Robinson , 1-yard run ( kick from Alec Thomas )",
+        "South Summit — ( 3:34 2Q ) Jesse Clegg , 70-yard pass from Ian Mair ( kick failed )"
       ],
       "stats": [
         {
-          "category": "Passing",
+          "category": "Rushing",
           "team": "SOUTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "B . Brex Robinson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "",
           "headers": [
             "NO",
             "PLAYER",
@@ -8860,7 +8882,7 @@
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -8877,6 +8899,13 @@
           ],
           "rows": [
             [
+              "2",
+              "J . Jesse Clegg",
+              "",
+              "",
+              "1"
+            ],
+            [
               "75",
               "C . Cruz Woodard",
               "",
@@ -8884,9 +8913,29 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "17",
+              "A . Alec Thomas",
+              "",
+              "1",
+              ""
+            ]
+          ]
         }
       ],
-      "fetchedAt": "2026-08-15T23:56:03.934Z"
+      "fetchedAt": "2026-08-16T00:43:48.806Z"
     },
     "2026-08-15|MILLARD|SOUTHSEVIER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/millard-football-vs-south-sevier-football/273662",
@@ -8897,7 +8946,7 @@
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T23:56:04.348Z"
+      "fetchedAt": "2026-08-16T00:43:49.392Z"
     },
     "2026-08-14|UMALEHI|PANGUITCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/utah-military-camp-williams-football-football-vs-panguitch-football/273633",
@@ -9979,7 +10028,7 @@
       },
       "scoringPlays": [],
       "stats": [],
-      "fetchedAt": "2026-08-15T23:56:04.881Z"
+      "fetchedAt": "2026-08-16T00:43:49.791Z"
     },
     "2026-08-14|PAROWAN|LINCOLNCOUNTYNV": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-14/parowan-football-vs-lincoln-county-nev-football/274325",
