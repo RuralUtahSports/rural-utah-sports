@@ -56,6 +56,14 @@
     return best;
   }
   function titleFor(el){
+    if(PAGE.includes('rankings')){
+      const card=el.matches?.('.rank-card')?el:el.closest?.('.rank-card');
+      if(card){
+        const cls=card.querySelector('.rank-head h2')?.textContent?.trim();
+        const label=card.querySelector('.rank-head span')?.textContent?.trim();
+        if(cls&&label)return `${cls} ${label}`.slice(0,70);
+      }
+    }
     const h=el.querySelector?.('h1,h2,h3,.team-name,.region-title,.rank-head')?.textContent?.trim();
     if(h)return h.slice(0,70);
     if(PAGE.includes('scoreboard'))return 'Rural Utah Sports Scoreboard';
