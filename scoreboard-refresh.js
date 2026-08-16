@@ -6,7 +6,9 @@
     .scoreboard-refresh-btn:hover{filter:brightness(1.08)}
     .scoreboard-refresh-btn:disabled{opacity:.65;cursor:wait}
     .scoreboard-refresh-note{font-size:10px;color:#777;font-weight:700}
-    @media(max-width:700px){.scoreboard-refresh-row{margin-top:-5px}.scoreboard-refresh-btn{width:100%;padding:12px 14px;font-size:13px;text-align:center}.scoreboard-refresh-note{width:100%;text-align:center}}
+    .game-page-link{color:#000!important;text-decoration:none!important;font-weight:1000!important;background:#F14D07!important;border:1px solid #F14D07!important;border-radius:5px;padding:6px 9px;white-space:nowrap;text-transform:uppercase;letter-spacing:.15px}
+    .game-page-link:hover{filter:brightness(1.1)}
+    @media(max-width:700px){.scoreboard-refresh-row{margin-top:-5px}.scoreboard-refresh-btn{width:100%;padding:12px 14px;font-size:13px;text-align:center}.scoreboard-refresh-note{width:100%;text-align:center}.game-page-link{width:100%;text-align:center;padding:8px 10px}}
   `;
   document.head.appendChild(style);
 
@@ -35,6 +37,35 @@
   }
 
   const norm = value => String(value ?? '').trim().toUpperCase().replace(/\s+/g, ' ');
+
+  function dateFromHeading(text) {
+    const raw = String(text || '').trim();
+    const m = raw.match(/([A-Za-z]{3,9})\s+(\d{1,2})/);
+    if (!m) return '';
+    const d = new Date(`${m[1]} ${m[2]}, 2026`);
+    if (!Number.isFinite(d.getTime())) return '';
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
+  function addGamePageLinks() {
+    document.querySelectorAll('#board .game').forEach(game => {
+      if (game.querySelector('.game-page-link')) return;
+      const teams = [...game.querySelectorAll('.team-name')].map(x => x.textContent.trim()).filter(Boolean);
+      if (teams.length < 2) return;
+      const heading = game.closest('.date-section')?.querySelector('.date-head h2')?.textContent || '';
+      const date = dateFromHeading(heading);
+      if (!date) return;
+      const foot = game.querySelector('.game-foot');
+      if (!foot) return;
+      const link = document.createElement('a');
+      link.className = 'game-page-link';
+      link.href = `game.html?${new URLSearchParams({ date, away: teams[0], home: teams[1] })}`;
+      link.textContent = 'View Game →';
+      const source = foot.querySelector('.deseret-link');
+      if (source) foot.insertBefore(link, source);
+      else foot.appendChild(link);
+    });
+  }
 
   async function hydrateScoreboardLogos() {
     const logos = await fetch(`school-logo-cache.json?v=${Date.now()}`, { cache: 'no-store' })
@@ -70,6 +101,7 @@
           img.style.objectPosition = 'center';
         }
       });
+      addGamePageLinks();
     };
 
     apply();
