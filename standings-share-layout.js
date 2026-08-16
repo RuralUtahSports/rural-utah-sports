@@ -16,6 +16,15 @@
     }catch{}
     return logos;
   })());
+  let directoryPromise=null;
+  const loadDirectory=()=>directoryPromise||(directoryPromise=fetch(`school-directory.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({})));
+  const displayTeamName=(team,directory)=>directory?.[norm(team)]?.name||({'MONUMENT VAL':'Monument Valley'}[norm(team)])||team;
+  function contrastColor(value){
+    const m=String(value||'').match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+    if(!m)return '#fff';
+    const r=+m[1],g=+m[2],b=+m[3];
+    return (r*299+g*587+b*114)/1000>155?'#000':'#fff';
+  }
   const loadCanvas=()=>window.html2canvas?Promise.resolve():new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s)});
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
@@ -52,19 +61,22 @@
     if(document.getElementById('rus-standings-share-v2-css'))return;
     const s=document.createElement('style');s.id='rus-standings-share-v2-css';s.textContent=`
     .rus-standings-share-board{position:fixed;left:-12000px;top:0;background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif;box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden}
-    .rus-standings-share-topbar{height:12px;background:${ORANGE};flex:0 0 12px}.rus-standings-share-head{padding:16px 28px 10px;flex:0 0 auto}.rus-standings-share-title{font-size:38px;line-height:1;font-weight:1000}.rus-standings-share-brand{color:${ORANGE};font-size:19px;font-weight:1000;margin-top:9px}.rus-standings-share-grid{display:grid;gap:12px;padding:8px 28px 10px;flex:1;min-height:0;align-content:start;grid-auto-rows:max-content}.rus-standings-region-card{background:#080808;border:1px solid #333;border-radius:10px;overflow:hidden;align-self:start}.rus-standings-region-title{border-left:6px solid ${ORANGE};padding:8px 11px;background:#171717;font-size:17px;font-weight:1000;text-transform:uppercase;flex:0 0 auto}.rus-standings-share-table{width:100%;border-collapse:collapse;table-layout:fixed}.rus-standings-share-table th{background:${ORANGE};color:#000;padding:6px 3px;font-size:8px;font-weight:1000;text-transform:uppercase;white-space:nowrap}.rus-standings-share-table td{border-bottom:1px solid #252525;padding:4px 3px;font-size:10px;height:var(--rus-row-h,auto);font-weight:800;text-align:center;vertical-align:middle;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rus-standings-share-table tr:last-child td{border-bottom:0}.rus-standings-share-table .c-rank{width:6%}.rus-standings-share-table .c-team{width:34%;text-align:left}.rus-standings-share-table .c-rec{width:10%}.rus-standings-share-table .c-pct{width:10%}.rus-standings-share-table .c-pf,.rus-standings-share-table .c-pa{width:8%}.rus-standings-share-table .c-diff{width:9%}.rus-standings-share-table .c-streak{width:9%}.rus-share-team-cell{display:flex;align-items:center;gap:6px;min-width:0}.rus-share-team-logo{width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center}.rus-share-team-logo img{max-width:34px;max-height:34px;width:auto;height:auto;object-fit:contain}.rus-share-team-name{font-size:10px;font-weight:1000;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rus-share-diff-pos{color:#67df91}.rus-share-diff-neg{color:#ff7777}.rus-share-streak-w{color:#67df91}.rus-share-streak-l{color:#ff7777}.rus-standings-share-footer{padding:5px 28px 17px;color:#888;font-size:14px;font-weight:900;flex:0 0 auto}
-    .rus-standings-share-board.story .rus-standings-share-grid{grid-template-columns:1fr!important}.rus-standings-share-board.story .rus-standings-region-title{font-size:19px}.rus-standings-share-board.story .rus-standings-share-table td{font-size:10px;padding:6px 4px}.rus-standings-share-board.story .rus-standings-share-table th{font-size:8px;padding:6px 4px}.rus-standings-share-board.story .rus-share-team-name{font-size:11px}.rus-standings-share-board.story .rus-share-team-logo,.rus-standings-share-board.story .rus-share-team-logo img{width:34px;height:34px;max-width:34px;max-height:34px}
-    .rus-standings-share-board.x .rus-standings-region-title{font-size:15px;padding:6px 9px}.rus-standings-share-board.x .rus-standings-share-table td{font-size:7px;padding:3px 2px}.rus-standings-share-board.x .rus-standings-share-table th{font-size:6px;padding:4px 2px}.rus-standings-share-board.x .rus-share-team-name{font-size:8px}.rus-standings-share-board.x .rus-share-team-logo,.rus-standings-share-board.x .rus-share-team-logo img{width:24px;height:24px;max-width:24px;max-height:24px}
+    .rus-standings-share-topbar{height:12px;background:${ORANGE};flex:0 0 12px}.rus-standings-share-head{padding:16px 28px 10px;flex:0 0 auto}.rus-standings-share-title{font-size:38px;line-height:1;font-weight:1000}.rus-standings-share-brand{color:${ORANGE};font-size:19px;font-weight:1000;margin-top:9px}.rus-standings-share-grid{display:grid;gap:12px;padding:8px 28px 10px;flex:1;min-height:0;align-content:start;grid-auto-rows:max-content}.rus-standings-region-card{background:#080808;border:1px solid #333;border-radius:10px;overflow:hidden;align-self:start}.rus-standings-region-title{border-left:6px solid ${ORANGE};padding:8px 11px;background:#171717;font-size:17px;font-weight:1000;text-transform:uppercase;flex:0 0 auto}.rus-standings-share-table{width:100%;border-collapse:collapse;table-layout:fixed}.rus-standings-share-table th{background:${ORANGE};color:#000;padding:6px 3px;font-size:8px;font-weight:1000;text-transform:uppercase;white-space:nowrap}.rus-standings-share-table td{border-bottom:1px solid #252525;padding:4px 3px;font-size:10px;height:var(--rus-row-h,auto);font-weight:800;text-align:center;vertical-align:middle;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rus-standings-share-table tr:last-child td{border-bottom:0}.rus-standings-share-table .c-rank{width:5%}.rus-standings-share-table .c-team{width:36%;text-align:left}.rus-standings-share-table .c-rec{width:10%}.rus-standings-share-table .c-pct{width:9%}.rus-standings-share-table .c-pf,.rus-standings-share-table .c-pa{width:7%}.rus-standings-share-table .c-diff{width:8%}.rus-standings-share-table .c-streak{width:8%}.rus-share-team-cell{display:flex;align-items:center;gap:6px;min-width:0}.rus-share-team-logo{width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center}.rus-share-team-logo img{max-width:34px;max-height:34px;width:auto;height:auto;object-fit:contain}.rus-share-team-name{display:inline-block;max-width:100%;font-size:10px;font-weight:1000;line-height:1.05;white-space:normal;overflow:visible;text-overflow:clip;padding:4px 6px;border-radius:5px;text-align:left}.rus-share-diff-pos{color:#67df91}.rus-share-diff-neg{color:#ff7777}.rus-share-streak-w{color:#67df91}.rus-share-streak-l{color:#ff7777}.rus-standings-share-footer{padding:5px 28px 17px;color:#888;font-size:14px;font-weight:900;flex:0 0 auto}
+    .rus-standings-share-board.story .rus-standings-share-grid{grid-template-columns:1fr!important}.rus-standings-share-board.story .rus-standings-region-title{font-size:19px}.rus-standings-share-board.story .rus-standings-share-table td{font-size:10px;padding:6px 4px}.rus-standings-share-board.story .rus-standings-share-table th{font-size:8px;padding:6px 4px}.rus-standings-share-board.story .rus-share-team-name{font-size:11px;padding:5px 7px}.rus-standings-share-board.story .rus-share-team-logo,.rus-standings-share-board.story .rus-share-team-logo img{width:34px;height:34px;max-width:34px;max-height:34px}
+    .rus-standings-share-board.x .rus-standings-region-title{font-size:15px;padding:6px 9px}.rus-standings-share-board.x .rus-standings-share-table td{font-size:7px;padding:3px 2px}.rus-standings-share-board.x .rus-standings-share-table th{font-size:6px;padding:4px 2px}.rus-standings-share-board.x .rus-share-team-name{font-size:8px;padding:3px 5px}.rus-standings-share-board.x .rus-share-team-logo,.rus-standings-share-board.x .rus-share-team-logo img{width:24px;height:24px;max-width:24px;max-height:24px}
     `;document.head.appendChild(s);
   }
 
-  function regionCard(group,logos){
+  function regionCard(group,logos,directory){
     const card=document.createElement('section');card.className='rus-standings-region-card';
     const rows=group.rows.map(r=>{
       const logo=logoFor(r.team,logos);
       const dnum=parseInt(String(r.diff).replace(/[^-\d]/g,''),10)||0;
       const streak=String(r.streak||'');
-      return `<tr><td class="c-rank">${esc(r.rank)}</td><td class="c-team"><div class="rus-share-team-cell"><span class="rus-share-team-logo">${logo?`<img src="${esc(logo)}" alt="">`:''}</span><span class="rus-share-team-name">${esc(r.team)}</span></div></td><td class="c-rec">${esc(r.region)}</td><td class="c-pct">${esc(r.pct)}</td><td class="c-rec">${esc(r.overall)}</td><td class="c-pf">${esc(r.pf)}</td><td class="c-pa">${esc(r.pa)}</td><td class="c-diff ${dnum>0?'rus-share-diff-pos':dnum<0?'rus-share-diff-neg':''}">${esc(r.diff)}</td><td class="c-streak ${streak.startsWith('W')?'rus-share-streak-w':streak.startsWith('L')?'rus-share-streak-l':''}">${esc(r.streak)}</td></tr>`;
+      const fullName=displayTeamName(r.team,directory);
+      const teamColor=r.swatch||'#333';
+      const teamText=contrastColor(teamColor);
+      return `<tr style="box-shadow:inset 4px 0 0 ${esc(teamColor)}"><td class="c-rank">${esc(r.rank)}</td><td class="c-team"><div class="rus-share-team-cell"><span class="rus-share-team-logo">${logo?`<img src="${esc(logo)}" alt="">`:''}</span><span class="rus-share-team-name" style="background:${esc(teamColor)};color:${teamText}">${esc(fullName)}</span></div></td><td class="c-rec">${esc(r.region)}</td><td class="c-pct">${esc(r.pct)}</td><td class="c-rec">${esc(r.overall)}</td><td class="c-pf">${esc(r.pf)}</td><td class="c-pa">${esc(r.pa)}</td><td class="c-diff ${dnum>0?'rus-share-diff-pos':dnum<0?'rus-share-diff-neg':''}">${esc(r.diff)}</td><td class="c-streak ${streak.startsWith('W')?'rus-share-streak-w':streak.startsWith('L')?'rus-share-streak-l':''}">${esc(r.streak)}</td></tr>`;
     }).join('');
     card.innerHTML=`<div class="rus-standings-region-title">${esc(group.title)}</div><table class="rus-standings-share-table"><thead><tr><th>#</th><th>Team</th><th>Reg</th><th>Win%</th><th>Overall</th><th>PF</th><th>PA</th><th>Diff</th><th>Streak</th></tr></thead><tbody>${rows}</tbody></table>`;
     return card;
@@ -72,7 +84,7 @@
 
   async function buildBoard(format,label,groups){
     const dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080], [w,h]=dims;
-    const logos=await loadLogos();
+    const [logos,directory]=await Promise.all([loadLogos(),loadDirectory()]);
     const board=document.createElement('div');board.className=`rus-standings-share-board ${format}`;board.style.width=`${w}px`;board.style.height=`${h}px`;
     const grid=document.createElement('div');grid.className='rus-standings-share-grid';
     const cols=format==='story'?1:format==='x'?Math.min(3,groups.length):Math.min(2,groups.length);
@@ -80,7 +92,7 @@
     const maxRows=Math.max(1,...groups.map(g=>g.rows.length));
     const rowH=format==='square'?Math.max(48,Math.min(112,Math.floor(760/maxRows))):format==='x'?Math.max(34,Math.min(76,Math.floor(590/maxRows))):Math.max(46,Math.min(86,Math.floor(1450/maxRows)));
     board.style.setProperty('--rus-row-h',`${rowH}px`);
-    groups.forEach((g,i)=>{const card=regionCard(g,logos);if(cols===2&&groups.length%2===1&&i===groups.length-1)card.style.gridColumn='1 / -1';grid.appendChild(card)});
+    groups.forEach((g,i)=>{const card=regionCard(g,logos,directory);if(cols===2&&groups.length%2===1&&i===groups.length-1)card.style.gridColumn='1 / -1';grid.appendChild(card)});
     board.innerHTML=`<div class="rus-standings-share-topbar"></div><div class="rus-standings-share-head"><div class="rus-standings-share-title">${esc(label)}</div><div class="rus-standings-share-brand">RURAL UTAH SPORTS</div></div>`;
     board.appendChild(grid);board.insertAdjacentHTML('beforeend','<div class="rus-standings-share-footer">ruralutahsports.github.io</div>');document.body.appendChild(board);
     return {board,w,h};
