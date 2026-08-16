@@ -1,0 +1,87 @@
+name: Fix Rich Share Logo Clipping
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-rich-share-logo-clipping.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Keep tall share logos fully visible
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('share-graphic.js')
+          s = p.read_text(encoding='utf-8')
+
+          # Let logo images use contain/center without their own wrapper clipping them.
+          s = s.replace(
+              ".rus-export-logo-wrap{margin-top:auto;height:94px;min-height:94px;max-height:94px;width:100%;display:flex;align-items:center;justify-content:center;padding:0 2px;overflow:hidden;box-sizing:border-box}",
+              ".rus-export-logo-wrap{margin-top:auto;height:94px;min-height:94px;max-height:94px;width:100%;display:flex;align-items:center;justify-content:center;padding:0 2px;overflow:visible;box-sizing:border-box}",
+              1
+          )
+
+          s = s.replace(
+              ".rus-export-board.rus-export-landscape .rus-export-logo-wrap{height:58px;min-height:58px;max-height:58px;padding:0 4px;overflow:hidden}",
+              ".rus-export-board.rus-export-landscape .rus-export-logo-wrap{height:62px;min-height:62px;max-height:62px;padding:2px 4px;overflow:visible}",
+              1
+          )
+
+          s = s.replace(
+              ".rus-export-board.rus-export-landscape .rus-export-logo-large{max-width:92%;max-height:54px;object-fit:contain;object-position:center center}",
+              ".rus-export-board.rus-export-landscape .rus-export-logo-large{max-width:92%;max-height:56px;object-fit:contain;object-position:center center}",
+              1
+          )
+
+          # Rich has an unusually tall mark. Give it a smaller export cap so the
+          # entire Rebel stays inside the card instead of being chopped off.
+          special_css = (
+              ".rus-export-logo-large.rus-export-logo-tall{max-width:84%;max-height:78px}"
+              ".rus-export-board.rus-export-landscape .rus-export-logo-large.rus-export-logo-tall{max-width:76%;max-height:48px}"
+          )
+          if special_css not in s:
+              anchor = ".rus-export-board.rus-export-state25 .rus-export-move{font-size:12px}"
+              if anchor not in s:
+                  raise SystemExit('Could not find share-logo CSS anchor')
+              s = s.replace(anchor, special_css + "\n  " + anchor, 1)
+
+          old_img = "${src?`<div class=\"rus-export-logo-wrap\"><img class=\"rus-export-logo-large\" src=\"${esc(src)}\" alt=\"${esc(team)} logo\"></div>`:''}"
+          new_img = "${src?`<div class=\"rus-export-logo-wrap\"><img class=\"rus-export-logo-large${norm(team)==='RICH'?' rus-export-logo-tall':''}\" src=\"${esc(src)}\" alt=\"${esc(team)} logo\"></div>`:''}"
+          if old_img in s:
+              s = s.replace(old_img, new_img, 1)
+          elif "rus-export-logo-tall" not in s:
+              raise SystemExit('Could not find ranking export logo markup')
+
+          p.write_text(s, encoding='utf-8')
+
+          # Bust Safari/GitHub Pages cache for the changed share script.
+          q = Path('rankings.html')
+          if q.exists():
+              t = q.read_text(encoding='utf-8')
+              t = re.sub(r'share-graphic\\.js\\?v=[^\"\']+', 'share-graphic.js?v=20260816-rich-logo-fit-v1', t)
+              q.write_text(t, encoding='utf-8')
+          PY
+
+      - name: Commit share logo fit fix
+        run: |
+          if git diff --quiet -- share-graphic.js rankings.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add share-graphic.js rankings.html
+          git commit -m 'Keep Rich logo fully visible in ranking share graphics'
+          git pull --rebase origin main
+          git push
