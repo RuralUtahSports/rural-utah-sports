@@ -55,15 +55,33 @@ jobs:
           NODE
 
       - name: Commit verified live ELO
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
+          CLEAN_GAMES_GID: 627882418
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+
+          # Other data builders also update team-page-data. Refresh from the newest
+          # main first, then rebuild ELO on top of it so a concurrent site-data
+          # commit cannot strand the newest game off the team ELO charts.
+          git fetch origin main
+          git reset --hard origin/main
+          node scripts/build_verified_elo_2026.mjs
+
           git add team-elo-history.json elo-summary.json elo-live-summary.json elo-game-changes-2026.json elo-cleanup-report.json team-page-data
           if git diff --cached --quiet; then echo "ELO data current."; exit 0; fi
           git commit -m "Rebuild ELO from verified finals"
-          ok=0
-          for attempt in 1 2 3 4; do
-            if git pull --rebase origin main && git push; then ok=1; break; fi
-            sleep 10
-          done
-          if [ "$ok" -ne 1 ]; then exit 1; fi
+
+          # If main moves again while this short commit is being made, rebuild once
+          # more from the new tip rather than attempting to rebase 100+ generated
+          # team JSON files and creating merge conflicts.
+          if ! git push; then
+            git fetch origin main
+            git reset --hard origin/main
+            node scripts/build_verified_elo_2026.mjs
+            git add team-elo-history.json elo-summary.json elo-live-summary.json elo-game-changes-2026.json elo-cleanup-report.json team-page-data
+            if git diff --cached --quiet; then echo "ELO data current after refresh."; exit 0; fi
+            git commit -m "Rebuild ELO from verified finals"
+            git push
+          fi
