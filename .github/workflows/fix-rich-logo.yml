@@ -18,23 +18,27 @@ jobs:
 
       - name: Convert Rich embedded WebP logo to PNG
         run: |
-          python -m pip install --quiet pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq webp
           python - <<'PY'
           from pathlib import Path
-          from PIL import Image
-          from io import BytesIO
-          import base64, json, re
+          import base64, re
 
           src = Path('school-logos/rich.svg')
           text = src.read_text()
           m = re.search(r'data:image/webp;base64,([^"\']+)', text)
           if not m:
               raise SystemExit('Could not find embedded Rich WebP in SVG')
+          Path('/tmp/rich.webp').write_bytes(base64.b64decode(m.group(1)))
+          PY
+          dwebp /tmp/rich.webp -o /tmp/rich.png
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import json
 
-          raw = base64.b64decode(m.group(1))
-          im = Image.open(BytesIO(raw)).convert('RGBA')
-
-          # Add a little transparent breathing room for share-card rendering.
+          im = Image.open('/tmp/rich.png').convert('RGBA')
           pad = max(8, round(max(im.size) * 0.08))
           canvas = Image.new('RGBA', (im.width + pad*2, im.height + pad*2), (0,0,0,0))
           canvas.alpha_composite(im, (pad, pad))
