@@ -217,8 +217,23 @@
     inferStatLabels();
     ensureStatStatus();
   }
-
-  apply();
   const page = document.getElementById('page');
-  if (page) new MutationObserver(apply).observe(page, { childList: true, subtree: true });
+let applied = false;
+
+function applyWhenReady() {
+  if (applied || !page || page.classList.contains('loading') || page.classList.contains('error')) return;
+  applied = true;
+  apply();
+}
+
+applyWhenReady();
+
+if (page && !applied) {
+  const observer = new MutationObserver(() => {
+    if (page.classList.contains('loading')) return;
+    observer.disconnect();
+    requestAnimationFrame(applyWhenReady);
+  });
+  observer.observe(page, { childList: true, attributes: true, attributeFilter: ['class'] });
+}
 })();
