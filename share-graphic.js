@@ -20,7 +20,7 @@
   .rus-export-rank-num.top1{background:#d5ad35;color:#000;border-color:#f0d169}.rus-export-rank-num.top2{background:#b9bcc1;color:#000;border-color:#e0e2e5}.rus-export-rank-num.top3{background:#ad6b3d;color:#000;border-color:#d6976a}
   .rus-export-team-line{width:100%;min-width:0;display:block;text-align:center;padding-left:40px;padding-right:2px}.rus-export-team-wrap{width:100%;min-width:0;text-align:center}.rus-export-team{display:inline-block;max-width:100%;padding:5px 8px;border-radius:5px;background:var(--accent,#333);color:var(--team-text,#fff);font-size:16px;font-weight:1000;line-height:1.02;white-space:normal;overflow:visible;text-overflow:clip;text-align:center}.rus-export-record{font-size:12px;color:#fff;margin-top:4px;font-weight:1000;text-align:center}.rus-export-logo-wrap{margin-top:auto;height:94px;min-height:94px;max-height:94px;width:100%;display:flex;align-items:center;justify-content:center;padding:0 2px;overflow:visible;box-sizing:border-box}.rus-export-logo-large{display:block;width:auto;height:auto;max-width:100%;max-height:90px;object-fit:contain;object-position:center center;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}
   .rus-export-board.rus-export-landscape .rus-export-rank-item{padding-top:7px;padding-bottom:5px}.rus-export-board.rus-export-landscape .rus-export-team{font-size:15px;padding:4px 7px}.rus-export-board.rus-export-landscape .rus-export-record{font-size:11px;margin-top:3px}.rus-export-board.rus-export-landscape .rus-export-meta{font-size:9px;margin-top:3px;gap:3px 6px}.rus-export-board.rus-export-landscape .rus-export-logo-wrap{height:62px;min-height:62px;max-height:62px;padding:2px 4px;overflow:visible}.rus-export-board.rus-export-landscape .rus-export-logo-large{max-width:92%;max-height:56px;object-fit:contain;object-position:center center}.rus-export-meta{display:flex;justify-content:center;gap:5px 8px;flex-wrap:wrap;margin-top:4px;color:#d8d8d8;font-size:10px;font-weight:1000;text-transform:uppercase;text-align:center;line-height:1.1}.rus-export-move{font-size:18px;font-weight:1000;line-height:1}.rus-export-move.up{color:#62df8c}.rus-export-move.down{color:#ff7070}.rus-export-move.new{color:#F14D07}.rus-export-board.rus-export-landscape .rus-export-move{font-size:16px}
-  .rus-export-logo-large.rus-export-logo-tall{max-width:84%;max-height:78px}.rus-export-board.rus-export-landscape .rus-export-logo-large.rus-export-logo-tall{max-width:76%;max-height:48px}
+  .rus-export-logo-large.rus-export-logo-tall{max-width:84%;max-height:78px}.rus-export-board.rus-export-landscape .rus-export-logo-large.rus-export-logo-tall{display:block;width:auto;height:46px;max-width:72%;max-height:46px;object-fit:contain;object-position:center center}
   .rus-export-board.rus-export-state25 .rus-export-move{font-size:12px}
   @media(min-width:700px){.rus-share-modal{align-items:center}}
   `;
@@ -102,6 +102,13 @@
     const rowH=verticalClass?Math.max(100,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol)):Math.max(72,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol));
     const board=document.createElement('div');board.className='rus-export-board'+(w>h*1.25?' rus-export-landscape':'')+(stateRows.length?' rus-export-state25':'');board.style.width=`${w-pad*2}px`;board.style.height=`${availableH}px`;
     const grid=document.createElement('div');grid.className='rus-export-rank-grid';grid.style.gridTemplateColumns=`repeat(${cols},minmax(0,1fr))`;grid.style.gridTemplateRows=`repeat(${rowsPerCol},${rowH}px)`;grid.style.gridAutoFlow=verticalClass?'column':'row';grid.style.gap=`${gap}px`;
+    let richExportSrc='';
+    if(rows.some(row=>norm(teamFromRow(row))==='RICH')){
+      try{
+        const richSvg=await fetch(`school-logos/rich-user.svg?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.text():'');
+        richExportSrc=(richSvg.match(/href=[\"'](data:image\/(?:png|webp);base64,[^\"']+)[\"']/i)||[])[1]||'';
+      }catch{}
+    }
     rows.forEach((row,i)=>{
       const rank=(row.querySelector('.rank-num')?.textContent||String(i+1)).trim();
       const team=teamFromRow(row);
@@ -112,7 +119,7 @@
       const moveEl=row.querySelector('.movement'),move=(moveEl?.textContent||'').trim(),moveClass=moveEl?.classList.contains('up')?'up':moveEl?.classList.contains('down')?'down':moveEl?.classList.contains('new')?'new':'';
       const record=(row.querySelector('.rus-ranking-record,.rus-live-record,.team-record,.record')?.textContent||'').trim();
       const existing=row.querySelector('.rus-ranking-school-logo,img')?.getAttribute('src')||'';
-      const src=logos[norm(team)]||existing||window.RUSSchoolAssets?.logoUrl?.(team)||'';
+      const src=(norm(team)==='RICH'&&richExportSrc)||logos[norm(team)]||existing||window.RUSSchoolAssets?.logoUrl?.(team)||'';
       const accent=getComputedStyle(row).getPropertyValue('--team-accent').trim()||'#555555';
       const item=document.createElement('div');item.className='rus-export-rank-item';item.style.setProperty('--accent',accent);item.style.setProperty('--tint',rgba(accent,.34));item.style.setProperty('--team-text',contrast(accent));
       const topClass=Number(rank)<=3?` top${Number(rank)}`:'';
