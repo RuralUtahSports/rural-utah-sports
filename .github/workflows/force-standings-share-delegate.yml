@@ -1,0 +1,61 @@
+name: Force Standings Share Delegate
+
+on:
+  push:
+    paths:
+      - '.github/workflows/force-standings-share-delegate.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wire base share button to enhanced standings exporter
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          custom=Path('standings-share-layout.js')
+          s=custom.read_text(encoding='utf-8')
+          marker="  function init(){css();"
+          expose="  window.RUSStandingsShare={openModal};\n"
+          if 'window.RUSStandingsShare={openModal};' not in s:
+              if marker not in s:
+                  raise SystemExit('standings share init marker not found')
+              s=s.replace(marker,expose+marker,1)
+          custom.write_text(s,encoding='utf-8')
+
+          base=Path('share-graphic.js')
+          b=base.read_text(encoding='utf-8')
+          marker='  async function modal(){\n'
+          delegate="  async function modal(){\n    if(PAGE.includes('standings')&&window.RUSStandingsShare?.openModal)return window.RUSStandingsShare.openModal();\n"
+          if "window.RUSStandingsShare?.openModal" not in b:
+              if marker not in b:
+                  raise SystemExit('base share modal marker not found')
+              b=b.replace(marker,delegate,1)
+          base.write_text(b,encoding='utf-8')
+
+          page=Path('standings.html')
+          h=page.read_text(encoding='utf-8')
+          import re
+          h=re.sub(r'share-graphic\.js\?v=[^"\s<]+','share-graphic.js?v=20260816-standings-delegate-v2',h)
+          h=re.sub(r'standings-share-layout\.js\?v=[^"\s<]+','standings-share-layout.js?v=20260816-v7',h)
+          page.write_text(h,encoding='utf-8')
+          PY
+      - name: Commit explicit standings share delegation
+        run: |
+          if git diff --quiet -- standings-share-layout.js share-graphic.js standings.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add standings-share-layout.js share-graphic.js standings.html
+          git commit -m 'Route standings share button to enhanced exporter'
+          git pull --rebase origin main
+          git push
