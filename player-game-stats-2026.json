@@ -1,10 +1,10 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-16T04:41:09.479Z",
+  "updatedAt": "2026-08-16T05:13:08.049Z",
   "summary": {
     "teams": 114,
     "teamGames": 114,
-    "statRows": 430,
+    "statRows": 431,
     "rosterMatchedRows": 422
   },
   "teams": {
@@ -9047,36 +9047,14 @@
           "date": "2026-08-15",
           "opponent": "SOUTH SEVIER",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 16,
+          "status": "Final",
+          "final": true,
+          "teamScore": 22,
           "opponentScore": 8,
-          "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/millard-football-vs-south-sevier-football/273662",
-          "players": [],
-          "scoringPlays": [
-            "Millard — ( 2:26 1Q ) Jensen Davies , 64-yard pass from Mason Wardle ( pass failed )",
-            "Millard — ( 6:57 2Q ) Sergio Arellano , 39-yard FG",
-            "Millard — ( 10:16 4Q ) Stetson Stott , 13-yard run ( kick from Sergio Arellano )"
-          ]
-        }
-      ]
-    },
-    "SOUTH SEVIER": {
-      "team": "SOUTH SEVIER",
-      "games": [
-        {
-          "gameKey": "2026-08-15|MILLARD|SOUTHSEVIER",
-          "date": "2026-08-15",
-          "opponent": "MILLARD",
-          "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 8,
-          "opponentScore": 16,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/millard-football-vs-south-sevier-football/273662",
           "players": [
             {
-              "playerId": "south-sevier-qb-rb-lb-stetson-stott",
+              "playerId": "millard-qb-rb-lb-stetson-stott",
               "number": "QB,RB/LB",
               "name": "Stetson Stott",
               "rosterMatched": false,
@@ -9090,9 +9068,54 @@
                   }
                 }
               ],
-              "scoringPlays": []
+              "scoringPlays": [
+                "Millard — ( 10:16 4Q ) Stetson Stott , 13-yard run ( kick from Sergio Arellano )"
+              ]
+            },
+            {
+              "playerId": "millard-qb-lb-jensen-davies",
+              "number": "QB/LB",
+              "name": "Jensen Davies",
+              "rosterMatched": false,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Millard — ( 2:26 1Q ) Jensen Davies , 64-yard pass from Mason Wardle ( pass failed )",
+                "Millard — ( 0:00 4Q ) Jensen Davies , 2-yard run"
+              ]
             }
           ],
+          "scoringPlays": [
+            "Millard — ( 2:26 1Q ) Jensen Davies , 64-yard pass from Mason Wardle ( pass failed )",
+            "Millard — ( 6:57 2Q ) Sergio Arellano , 39-yard FG",
+            "Millard — ( 10:16 4Q ) Stetson Stott , 13-yard run ( kick from Sergio Arellano )",
+            "Millard — ( 0:00 4Q ) Jensen Davies , 2-yard run"
+          ]
+        }
+      ]
+    },
+    "SOUTH SEVIER": {
+      "team": "SOUTH SEVIER",
+      "games": [
+        {
+          "gameKey": "2026-08-15|MILLARD|SOUTHSEVIER",
+          "date": "2026-08-15",
+          "opponent": "MILLARD",
+          "location": "Home",
+          "status": "Final",
+          "final": true,
+          "teamScore": 8,
+          "opponentScore": 22,
+          "url": "https://sports.deseret.com/high-school/football/game/2026-08-15/millard-football-vs-south-sevier-football/273662",
+          "players": [],
           "scoringPlays": [
             "South Sevier — ( 6:15 4Q ) 2-yard run from Masen Healey ( run from Rayce Freeman )"
           ]
