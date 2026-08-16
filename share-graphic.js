@@ -226,20 +226,35 @@
       await new Promise(r=>setTimeout(r,70));
     }
   }
-  async function make(format,target=null){
-    const el=target||currentSection(),label=titleFor(el),dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
+  async function make(format,target=null,labelOverride=''){
+    const el=target||currentSection(),label=labelOverride||titleFor(el),dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
     const blob=await render(el,dims[0],dims[1],label);await deliver(blob,`rural-utah-sports-${format}-${Date.now()}.png`);
   }
   async function modal(){
-    let regionOptions='';
+    let standingsControls='';
     if(PAGE.includes('standings')){
       await ensureRegionView();
       const regions=standingsRegions();
-      regionOptions=`<label class="rus-share-region-label">Region</label><select class="rus-share-region">${regions.map((r,i)=>`<option value="${i}">${esc(r.title)}</option>`).join('')}</select>`;
+      const classSelect=document.getElementById('filter');
+      const classes=classSelect?[...classSelect.options].filter(o=>o.value&&o.value!=='all').map(o=>({value:o.value,label:o.textContent.trim()})):[];
+      standingsControls=`<label class="rus-share-region-label">Share View</label><select class="rus-share-region rus-share-standings-scope"><option value="region">Single Region</option><option value="classification">Whole Classification — Region by Region</option></select><div class="rus-share-region-picker"><label class="rus-share-region-label">Region</label><select class="rus-share-region rus-share-region-select">${regions.map((r,i)=>`<option value="${i}">${esc(r.title)}</option>`).join('')}</select></div><div class="rus-share-class-picker" style="display:none"><label class="rus-share-region-label">Classification</label><select class="rus-share-region rus-share-class-select">${classes.map(c=>`<option value="${esc(c.value)}">${esc(c.label)}</option>`).join('')}</select></div>`;
     }
-    const el=document.createElement('div');el.className='rus-share-modal';el.innerHTML=`<div class="rus-share-sheet"><h3>Share Graphic</h3><p>${PAGE.includes('standings')?'Choose a region, then choose the format. Only that region will be included in the image.':'Creates a branded graphic from the section currently in view. Rankings use team colors, local logos and a layout that fills the canvas.'}</p>${regionOptions}<div class="rus-share-grid"><button class="rus-share-option" data-f="square"><strong>Instagram Post</strong>1080 × 1080</button><button class="rus-share-option" data-f="story"><strong>Instagram Story</strong>1080 × 1920</button><button class="rus-share-option" data-f="x"><strong>X Post</strong>1600 × 900</button><button class="rus-share-option" data-f="square"><strong>Square PNG</strong>Download / Share</button></div><button class="rus-share-close">Cancel</button></div>`;
-    document.body.appendChild(el);el.querySelector('.rus-share-close').onclick=()=>el.remove();el.addEventListener('click',e=>{if(e.target===el)el.remove()});
-    el.querySelectorAll('[data-f]').forEach(b=>b.onclick=async()=>{const f=b.dataset.f;b.disabled=true;b.textContent='Creating…';try{let target=null;if(PAGE.includes('standings')){const regions=standingsRegions(),idx=Number(el.querySelector('.rus-share-region')?.value||0);target=regions[idx]?.el||null}await make(f,target);el.remove()}catch(err){console.error(err);b.disabled=false;b.textContent='Try Again';alert('Could not create the graphic. Please try again.')}});
+    const el=document.createElement('div');el.className='rus-share-modal';el.innerHTML=`<div class="rus-share-sheet"><h3>Share Graphic</h3><p>${PAGE.includes('standings')?'Share one region, or choose a whole classification to put every region in that class on one graphic using the same region-by-region standings look.':'Creates a branded graphic from the section currently in view. Rankings use team colors, local logos and a layout that fills the canvas.'}</p>${standingsControls}<div class="rus-share-grid"><button class="rus-share-option" data-f="square"><strong>Instagram Post</strong>1080 × 1080</button><button class="rus-share-option" data-f="story"><strong>Instagram Story</strong>1080 × 1920</button><button class="rus-share-option" data-f="x"><strong>X Post</strong>1600 × 900</button><button class="rus-share-option" data-f="square"><strong>Square PNG</strong>Download / Share</button></div><button class="rus-share-close">Cancel</button></div>`;
+    document.body.appendChild(el);
+    const scope=el.querySelector('.rus-share-standings-scope');
+    if(scope){
+      const sync=()=>{const whole=scope.value==='classification';el.querySelector('.rus-share-region-picker').style.display=whole?'none':'';el.querySelector('.rus-share-class-picker').style.display=whole?'':'none'};
+      scope.addEventListener('change',sync);sync();
+    }
+    el.querySelector('.rus-share-close').onclick=()=>el.remove();el.addEventListener('click',e=>{if(e.target===el)el.remove()});
+    el.querySelectorAll('[data-f]').forEach(b=>b.onclick=async()=>{const f=b.dataset.f;b.disabled=true;b.textContent='Creating…';try{let target=null,label='';if(PAGE.includes('standings')){const shareScope=el.querySelector('.rus-share-standings-scope')?.value||'region';if(shareScope==='classification'){
+          const filter=document.getElementById('filter'),classValue=el.querySelector('.rus-share-class-select')?.value||'',classLabelText=el.querySelector('.rus-share-class-select')?.selectedOptions?.[0]?.textContent?.trim()||classValue;
+          if(filter&&classValue){filter.value=classValue;filter.dispatchEvent(new Event('change',{bubbles:true}));await new Promise(r=>setTimeout(r,90));}
+          target=document.getElementById('content');label=`${classLabelText} Standings • Region by Region`;
+        }else{
+          if(document.getElementById('filter')?.value!=='all'){const filter=document.getElementById('filter');filter.value='all';filter.dispatchEvent(new Event('change',{bubbles:true}));await new Promise(r=>setTimeout(r,70));}
+          const regions=standingsRegions(),idx=Number(el.querySelector('.rus-share-region-select')?.value||0);target=regions[idx]?.el||null;
+        }}await make(f,target,label);el.remove()}catch(err){console.error(err);b.disabled=false;b.textContent='Try Again';alert('Could not create the graphic. Please try again.')}});
   }
   function init(){const b=document.createElement('button');b.className='rus-share-btn rus-share-float';b.textContent='Share Graphic';b.onclick=modal;document.body.appendChild(b)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
