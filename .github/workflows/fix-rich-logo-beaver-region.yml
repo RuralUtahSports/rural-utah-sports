@@ -1,0 +1,94 @@
+name: Fix Rich Logo and Beaver Region
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-rich-logo-beaver-region.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply Rich logo and Beaver region fixes
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          // Rich: use the uploaded native PNG everywhere the school directory is used.
+          const directory = JSON.parse(fs.readFileSync('school-directory.json','utf8'));
+          if (!directory.RICH) throw new Error('RICH missing from school-directory.json');
+          directory.RICH.logoUrl = 'school-logos/rich.png';
+          fs.writeFileSync('school-directory.json', JSON.stringify(directory, null, 2) + '\n');
+
+          // Preserve the Rich PNG on future school-directory rebuilds.
+          const mapScriptPath = 'scripts/build_school_map_data.py';
+          let mapScript = fs.readFileSync(mapScriptPath,'utf8');
+          mapScript = mapScript.replace('"RICH": "school-logos/rich.svg",','"RICH": "school-logos/rich.png",');
+          fs.writeFileSync(mapScriptPath, mapScript);
+
+          // Beaver: correct the source website team metadata immediately.
+          const teams = JSON.parse(fs.readFileSync('teams-data.json','utf8'));
+          const beaverTeam = teams.find(t => String(t.team||'').toUpperCase() === 'BEAVER');
+          if (!beaverTeam) throw new Error('BEAVER missing from teams-data.json');
+          beaverTeam.classification = '1A';
+          beaverTeam.region = '1A South';
+          fs.writeFileSync('teams-data.json', JSON.stringify(teams));
+
+          // Keep the generated location metadata aligned too.
+          if (fs.existsSync('team-locations.json')) {
+            const loc = JSON.parse(fs.readFileSync('team-locations.json','utf8'));
+            if (loc.BEAVER) {
+              loc.BEAVER.classification = '1A';
+              loc.BEAVER.region = '1A South';
+              fs.writeFileSync('team-locations.json', JSON.stringify(loc));
+            }
+          }
+
+          // Fix the currently published standings immediately instead of waiting for a rebuild.
+          const standings = JSON.parse(fs.readFileSync('standings-2026.json','utf8'));
+          let beaver = null;
+          for (const [cls, list] of Object.entries(standings.byClassification || {})) {
+            const found = (list || []).find(t => String(t.team||'').toUpperCase() === 'BEAVER');
+            if (found) {
+              beaver = found;
+              found.classification = '1A';
+              found.region = '1A South';
+            }
+          }
+          if (!beaver) throw new Error('BEAVER missing from standings-2026.json');
+
+          for (const groups of Object.values(standings.byRegion || {})) {
+            for (const region of Object.keys(groups || {})) {
+              groups[region] = (groups[region] || []).filter(t => String(t.team||'').toUpperCase() !== 'BEAVER');
+            }
+          }
+          standings.byRegion ||= {};
+          standings.byRegion['1A'] ||= {};
+          standings.byRegion['1A']['1A South'] ||= [];
+          if (!standings.byRegion['1A']['1A South'].some(t => String(t.team||'').toUpperCase() === 'BEAVER')) {
+            standings.byRegion['1A']['1A South'].push({...beaver});
+          }
+          fs.writeFileSync('standings-2026.json', JSON.stringify(standings));
+
+          console.log('Rich logo -> school-logos/rich.png');
+          console.log('Beaver -> 1A South');
+          NODE
+
+      - name: Commit fixes
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add school-directory.json scripts/build_school_map_data.py teams-data.json team-locations.json standings-2026.json
+          if git diff --cached --quiet; then
+            echo "Fixes already applied."
+          else
+            git commit -m "Fix Rich logo and move Beaver to 1A South"
+            git push
+          fi
