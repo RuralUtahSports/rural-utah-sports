@@ -20,14 +20,10 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p = Path('game-detail-fixes.js')
           s = p.read_text(encoding='utf-8')
-          old = """  apply();
-          const page = document.getElementById('page');
-          if (page) new MutationObserver(apply).observe(page, { childList: true, subtree: true });
-          })();
-          """
-          new = """  const page = document.getElementById('page');
+          replacement = """  const page = document.getElementById('page');
           let applied = false;
 
           function applyWhenReady() {
@@ -48,9 +44,11 @@ jobs:
           }
           })();
           """
-          if old not in s:
-              raise SystemExit('old observer block not found')
-          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          pattern = r"\s*apply\(\);\s*const page = document\.getElementById\('page'\);\s*if \(page\) new MutationObserver\(apply\)\.observe\(page, \{ childList: true, subtree: true \}\);\s*\}\)\(\);\s*$"
+          s2, n = re.subn(pattern, '\n' + replacement, s, count=1)
+          if n != 1:
+              raise SystemExit(f'observer block replacements: {n}')
+          p.write_text(s2, encoding='utf-8')
           PY
 
       - name: Bump helper cache
