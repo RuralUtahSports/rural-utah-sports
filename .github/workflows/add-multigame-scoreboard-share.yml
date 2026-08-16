@@ -1,0 +1,54 @@
+name: Add Multi-Game Scoreboard Share
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-multigame-scoreboard-share.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wire scoreboard multi-game exporter
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('share-graphic.js')
+          s=p.read_text(encoding='utf-8')
+          old="""  async function modal(){
+    if(PAGE.includes('standings')&&window.RUSStandingsShare?.openModal)return window.RUSStandingsShare.openModal();"""
+          new="""  async function modal(){
+    if(PAGE.includes('scoreboard')&&window.RUSScoreboardShare?.openModal)return window.RUSScoreboardShare.openModal();
+    if(PAGE.includes('standings')&&window.RUSStandingsShare?.openModal)return window.RUSStandingsShare.openModal();"""
+          if old not in s:
+              raise SystemExit('share modal anchor not found')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+
+          h=Path('scoreboard.html')
+          text=h.read_text(encoding='utf-8')
+          text=text.replace('<script src="share-graphic.js?v=20260815-region1" defer></script>','<script src="share-graphic.js?v=20260816-scoreboard-multi-v1" defer></script>')
+          tag='<script src="scoreboard-share-layout.js?v=20260816-v1" defer></script>'
+          if 'scoreboard-share-layout.js' not in text:
+              text=text.replace('<script src="share-graphic.js?v=20260816-scoreboard-multi-v1" defer></script>', '<script src="share-graphic.js?v=20260816-scoreboard-multi-v1" defer></script>\n'+tag)
+          h.write_text(text,encoding='utf-8')
+          PY
+      - name: Commit multi-game scoreboard share wiring
+        run: |
+          if git diff --quiet -- share-graphic.js scoreboard.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add share-graphic.js scoreboard.html
+          git commit -m 'Enable multi-game scoreboard share graphics'
+          git pull --rebase origin main
+          git push
