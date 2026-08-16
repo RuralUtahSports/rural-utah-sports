@@ -4,10 +4,16 @@ on:
   workflow_dispatch:
   schedule:
     # Utah football live-score windows. GitHub cron uses UTC.
-    # Run every 5 minutes on off-minutes to avoid the busiest :00 slots.
-    - cron: '1-56/5 22-23 * 8-11 4-6'
-    - cron: '1-56/5 0-6 * 8-11 5,6,0'
-    - cron: '1-56/5 16-21 * 8-11 6'
+    # Use simple */5 syntax; GitHub was not creating fresh runs reliably
+    # from the previous range/step expressions.
+    - cron: '*/5 22-23 * 8-11 4-6'
+    - cron: '*/5 0-6 * 8-11 5,6,0'
+    - cron: '*/5 16-21 * 8-11 6'
+  # Backup trigger: the standings scheduler is demonstrably firing every
+  # 15 minutes, so a successful standings run will also kick the live feed.
+  workflow_run:
+    workflows: ["Build 2026 Standings"]
+    types: [completed]
   push:
     paths:
       - 'scripts/enrich-deseret-game-details.mjs'
@@ -19,14 +25,13 @@ on:
 permissions:
   contents: write
 
-# Live data should always favor the newest refresh. A stalled older run must not
-# block all later 5-minute scheduled runs.
 concurrency:
   group: live-scoreboard
   cancel-in-progress: true
 
 jobs:
   refresh-live-details:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
