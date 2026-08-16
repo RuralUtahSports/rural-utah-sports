@@ -18,32 +18,13 @@ jobs:
 
       - name: Build reliable Rich PNG logo
         run: |
-          curl -L --fail --retry 3 'https://assets.scorebooklive.com/uploads/production/school/30123/image/15609b0836.jpeg' -o /tmp/rich-source.jpg
-          python -m pip install --quiet pillow
           python - <<'PY'
           from pathlib import Path
-          from PIL import Image
-          import json
+          import base64, json
 
-          im = Image.open('/tmp/rich-source.jpg').convert('RGBA')
-          px = im.load()
-          # Make the near-white background transparent while preserving the logo.
-          for y in range(im.height):
-              for x in range(im.width):
-                  r,g,b,a = px[x,y]
-                  if r > 242 and g > 242 and b > 242:
-                      px[x,y] = (255,255,255,0)
-
-          bbox = im.getbbox()
-          if bbox:
-              im = im.crop(bbox)
-          pad = max(12, round(max(im.size) * 0.08))
-          canvas = Image.new('RGBA', (im.width + pad*2, im.height + pad*2), (0,0,0,0))
-          canvas.alpha_composite(im, (pad, pad))
-
+          src = Path('school-logo-share/rich.b64')
           out = Path('school-logo-share/rich.png')
-          out.parent.mkdir(parents=True, exist_ok=True)
-          canvas.save(out, 'PNG', optimize=True)
+          out.write_bytes(base64.b64decode(src.read_text().strip()))
 
           cache_path = Path('school-logo-cache.json')
           cache = json.loads(cache_path.read_text())
