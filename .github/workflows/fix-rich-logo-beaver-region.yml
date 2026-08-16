@@ -21,19 +21,16 @@ jobs:
           node <<'NODE'
           const fs = require('fs');
 
-          // Rich: use the uploaded native PNG everywhere the school directory is used.
           const directory = JSON.parse(fs.readFileSync('school-directory.json','utf8'));
           if (!directory.RICH) throw new Error('RICH missing from school-directory.json');
           directory.RICH.logoUrl = 'school-logos/rich.png';
           fs.writeFileSync('school-directory.json', JSON.stringify(directory, null, 2) + '\n');
 
-          // Preserve the Rich PNG on future school-directory rebuilds.
           const mapScriptPath = 'scripts/build_school_map_data.py';
           let mapScript = fs.readFileSync(mapScriptPath,'utf8');
           mapScript = mapScript.replace('"RICH": "school-logos/rich.svg",','"RICH": "school-logos/rich.png",');
           fs.writeFileSync(mapScriptPath, mapScript);
 
-          // Force Rich's native PNG in both sitewide logo layers too.
           const assetsPath = 'school-assets.js';
           let assets = fs.readFileSync(assetsPath,'utf8');
           if (!assets.includes("'RICH':'school-logos/rich.png'")) {
@@ -54,7 +51,6 @@ jobs:
           }
           fs.writeFileSync(integrationPath, integration);
 
-          // Beaver: correct the source website team metadata immediately.
           const teams = JSON.parse(fs.readFileSync('teams-data.json','utf8'));
           const beaverTeam = teams.find(t => String(t.team||'').toUpperCase() === 'BEAVER');
           if (!beaverTeam) throw new Error('BEAVER missing from teams-data.json');
@@ -62,7 +58,6 @@ jobs:
           beaverTeam.region = '1A South';
           fs.writeFileSync('teams-data.json', JSON.stringify(teams));
 
-          // Keep the generated location metadata aligned too.
           if (fs.existsSync('team-locations.json')) {
             const loc = JSON.parse(fs.readFileSync('team-locations.json','utf8'));
             if (loc.BEAVER) {
@@ -72,10 +67,9 @@ jobs:
             }
           }
 
-          // Fix the currently published standings immediately instead of waiting for a rebuild.
           const standings = JSON.parse(fs.readFileSync('standings-2026.json','utf8'));
           let beaver = null;
-          for (const [cls, list] of Object.entries(standings.byClassification || {})) {
+          for (const list of Object.values(standings.byClassification || {})) {
             const found = (list || []).find(t => String(t.team||'').toUpperCase() === 'BEAVER');
             if (found) {
               beaver = found;
@@ -84,7 +78,6 @@ jobs:
             }
           }
           if (!beaver) throw new Error('BEAVER missing from standings-2026.json');
-
           for (const groups of Object.values(standings.byRegion || {})) {
             for (const region of Object.keys(groups || {})) {
               groups[region] = (groups[region] || []).filter(t => String(t.team||'').toUpperCase() !== 'BEAVER');
@@ -98,34 +91,33 @@ jobs:
           }
           fs.writeFileSync('standings-2026.json', JSON.stringify(standings));
 
-          // Defensive display correction so even a stale standings payload cannot show Beaver in 1A North.
           const standingsPagePath = 'standings.html';
           let standingsPage = fs.readFileSync(standingsPagePath,'utf8');
           if (!standingsPage.includes("const beaverName='BEAVER';")) {
-            standingsPage = standingsPage.replace(
-              "  const teamName='ENTERPRISE';",
-              `  const beaverName='BEAVER';
-  let beaverDisplay=null;
-  for(const list of Object.values(data.byClassification||{})){
-    const found=(list||[]).find(t=>String(t.team||'').toUpperCase()===beaverName);
-    if(found){found.classification='1A';found.region='1A South';beaverDisplay=found;break}
-  }
-  for(const c of Object.keys(data.byRegion||{})){
-    for(const r of Object.keys(data.byRegion[c]||{})){
-      data.byRegion[c][r]=(data.byRegion[c][r]||[]).filter(t=>String(t.team||'').toUpperCase()!==beaverName);
-    }
-  }
-  if(beaverDisplay){
-    data.byRegion['1A']||(data.byRegion['1A']={});
-    (data.byRegion['1A']['1A South']||(data.byRegion['1A']['1A South']=[])).push(beaverDisplay);
-  }
-  const teamName='ENTERPRISE';`
-            );
+            const guard = [
+              "  const beaverName='BEAVER';",
+              "  let beaverDisplay=null;",
+              "  for(const list of Object.values(data.byClassification||{})){",
+              "    const found=(list||[]).find(t=>String(t.team||'').toUpperCase()===beaverName);",
+              "    if(found){found.classification='1A';found.region='1A South';beaverDisplay=found;break}",
+              "  }",
+              "  for(const c of Object.keys(data.byRegion||{})){",
+              "    for(const r of Object.keys(data.byRegion[c]||{})){",
+              "      data.byRegion[c][r]=(data.byRegion[c][r]||[]).filter(t=>String(t.team||'').toUpperCase()!==beaverName);",
+              "    }",
+              "  }",
+              "  if(beaverDisplay){",
+              "    data.byRegion['1A']||(data.byRegion['1A']={});",
+              "    (data.byRegion['1A']['1A South']||(data.byRegion['1A']['1A South']=[])).push(beaverDisplay);",
+              "  }",
+              "  const teamName='ENTERPRISE';"
+            ].join('\n');
+            standingsPage = standingsPage.replace("  const teamName='ENTERPRISE';", guard);
           }
           fs.writeFileSync(standingsPagePath, standingsPage);
 
-          console.log('Rich logo -> school-logos/rich.png in all sitewide logo layers');
-          console.log('Beaver -> 1A South in source data, standings JSON, and display guard');
+          console.log('Rich logo forced to school-logos/rich.png');
+          console.log('Beaver forced to 1A South');
           NODE
 
       - name: Commit fixes
