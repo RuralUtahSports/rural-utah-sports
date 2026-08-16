@@ -33,6 +33,27 @@ jobs:
           mapScript = mapScript.replace('"RICH": "school-logos/rich.svg",','"RICH": "school-logos/rich.png",');
           fs.writeFileSync(mapScriptPath, mapScript);
 
+          // Force Rich's native PNG in both sitewide logo layers too.
+          const assetsPath = 'school-assets.js';
+          let assets = fs.readFileSync(assetsPath,'utf8');
+          if (!assets.includes("'RICH':'school-logos/rich.png'")) {
+            assets = assets.replace(
+              "  'PROVIDENCE HALL':'school-logos/providence-hall.svg',\n  'SAN JUAN'",
+              "  'PROVIDENCE HALL':'school-logos/providence-hall.svg',\n  'RICH':'school-logos/rich.png',\n  'SAN JUAN'"
+            );
+          }
+          fs.writeFileSync(assetsPath, assets);
+
+          const integrationPath = 'school-logo-integration.js';
+          let integration = fs.readFileSync(integrationPath,'utf8');
+          if (!integration.includes("'RICH':'school-logos/rich.png'")) {
+            integration = integration.replace(
+              "'PROVIDENCE HALL':'school-logos/providence-hall.svg','SAN JUAN'",
+              "'PROVIDENCE HALL':'school-logos/providence-hall.svg','RICH':'school-logos/rich.png','SAN JUAN'"
+            );
+          }
+          fs.writeFileSync(integrationPath, integration);
+
           // Beaver: correct the source website team metadata immediately.
           const teams = JSON.parse(fs.readFileSync('teams-data.json','utf8'));
           const beaverTeam = teams.find(t => String(t.team||'').toUpperCase() === 'BEAVER');
@@ -77,18 +98,44 @@ jobs:
           }
           fs.writeFileSync('standings-2026.json', JSON.stringify(standings));
 
-          console.log('Rich logo -> school-logos/rich.png');
-          console.log('Beaver -> 1A South');
+          // Defensive display correction so even a stale standings payload cannot show Beaver in 1A North.
+          const standingsPagePath = 'standings.html';
+          let standingsPage = fs.readFileSync(standingsPagePath,'utf8');
+          if (!standingsPage.includes("const beaverName='BEAVER';")) {
+            standingsPage = standingsPage.replace(
+              "  const teamName='ENTERPRISE';",
+              `  const beaverName='BEAVER';
+  let beaverDisplay=null;
+  for(const list of Object.values(data.byClassification||{})){
+    const found=(list||[]).find(t=>String(t.team||'').toUpperCase()===beaverName);
+    if(found){found.classification='1A';found.region='1A South';beaverDisplay=found;break}
+  }
+  for(const c of Object.keys(data.byRegion||{})){
+    for(const r of Object.keys(data.byRegion[c]||{})){
+      data.byRegion[c][r]=(data.byRegion[c][r]||[]).filter(t=>String(t.team||'').toUpperCase()!==beaverName);
+    }
+  }
+  if(beaverDisplay){
+    data.byRegion['1A']||(data.byRegion['1A']={});
+    (data.byRegion['1A']['1A South']||(data.byRegion['1A']['1A South']=[])).push(beaverDisplay);
+  }
+  const teamName='ENTERPRISE';`
+            );
+          }
+          fs.writeFileSync(standingsPagePath, standingsPage);
+
+          console.log('Rich logo -> school-logos/rich.png in all sitewide logo layers');
+          console.log('Beaver -> 1A South in source data, standings JSON, and display guard');
           NODE
 
       - name: Commit fixes
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add school-directory.json scripts/build_school_map_data.py teams-data.json team-locations.json standings-2026.json
+          git add school-directory.json scripts/build_school_map_data.py school-assets.js school-logo-integration.js teams-data.json team-locations.json standings-2026.json standings.html
           if git diff --cached --quiet; then
             echo "Fixes already applied."
           else
-            git commit -m "Fix Rich logo and move Beaver to 1A South"
+            git commit -m "Harden Rich logo and Beaver 1A South fixes"
             git push
           fi
