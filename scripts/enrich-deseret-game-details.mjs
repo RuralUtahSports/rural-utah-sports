@@ -82,7 +82,7 @@ function extractTables(html) {
       if (cells.some(Boolean)) rows.push(cells);
     }
     if (rows.length) {
-      const context = htmlText(html.slice(Math.max(0, m.index - 1800), m.index));
+      const context = htmlText(html.slice(Math.max(0, m.index - 2600), m.index));
       out.push({ rows, context });
     }
   }
@@ -126,10 +126,10 @@ function findBoxScore(tables) {
 function sectionCategory(headers) {
   const h = headers.map(v => clean(v).toUpperCase().replace(/\s+/g, ' '));
   const joined = h.join('|');
-  if ((joined.includes('COMP-ATT') || joined.includes('COMP - ATT')) && joined.includes('YARD')) return 'Passing';
-  if (joined.includes('CARRIES') && joined.includes('YARD')) return 'Rushing';
-  if (joined.includes('RECEPTIONS') && joined.includes('YARD')) return 'Receiving';
-  if (joined.includes('TACKLES') && (joined.includes('SACK') || joined.includes('INTERCEPTION'))) return 'Defense';
+  if ((/COMP\s*-?\s*ATT/.test(joined) || (joined.includes('COMP') && joined.includes('ATT'))) && /(YARD|YDS)/.test(joined)) return 'Passing';
+  if (/(CARRIES|RUSH ATT|ATTEMPTS)/.test(joined) && /(YARD|YDS)/.test(joined)) return 'Rushing';
+  if (/(RECEPTIONS|REC)/.test(joined) && /(YARD|YDS)/.test(joined)) return 'Receiving';
+  if (/(TACKLES|TOTAL TACKLES|SOLO)/.test(joined) && /(SACK|INTERCEPTION|INT|TFL|ASSIST)/.test(joined)) return 'Defense';
   if (joined.includes('FG') && joined.includes('PAT')) return 'Special Teams';
   return '';
 }
@@ -155,11 +155,35 @@ function inferTeam(context, game, category) {
     const team = bestTeamMatch(line, game);
     if (team) return team;
   }
-  const near = lines.slice(-5).join(' ');
+  const near = lines.slice(-8).join(' ');
   return bestTeamMatch(near, game);
 }
 
-function extractStats(tables, game) {
+function cleanPlayer(value) {
+  return clean(value)
+    .replace(/^\s*\d+\s+/, '')
+    .replace(/^\s*[A-Z]\s*\.\s*/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function inferTeamFromScoring(rows, scoringPlays, game) {
+  const votes = new Map();
+  for (const row of rows) {
+    const player = cleanPlayer(row?.[1]);
+    if (!player || player.split(/\s+/).length < 2) continue;
+    const cp = compact(player);
+    for (const play of scoringPlays || []) {
+      if (!cp || !compact(play).includes(cp)) continue;
+      const prefix = String(play).split(/—| - /)[0] || play;
+      const team = bestTeamMatch(prefix, game) || bestTeamMatch(play, game);
+      if (team) votes.set(team, (votes.get(team) || 0) + 1);
+    }
+  }
+  return [...votes.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || '';
+}
+
+function extractStats(tables, game, scoringPlays = []) {
   const stats = [];
   for (const t of tables) {
     const headerIndex = t.rows.findIndex(r => sectionCategory(r));
@@ -175,12 +199,51 @@ function extractStats(tables, game) {
     if (!rows.length) continue;
     stats.push({
       category,
-      team: inferTeam(t.context, game, category),
+      team: inferTeam(t.context, game, category) || inferTeamFromScoring(rows, scoringPlays, game),
       headers,
       rows
     });
   }
+
+  // If Deseret labels only one of the two matching category tables, the other belongs to the opponent.
+  for (const category of [...new Set(stats.map(s => s.category))]) {
+    const group = stats.filter(s => s.category === category);
+    if (group.length !== 2) continue;
+    const known = group.find(s => clean(s.team));
+    const unknown = group.find(s => !clean(s.team));
+    if (!known || !unknown) continue;
+    unknown.team = compact(known.team) === compact(game.awayTeam) ? game.homeTeam : game.awayTeam;
+  }
   return stats;
+}
+
+function isCoreStatHeader(header) {
+  const h = compact(header);
+  if (!h || ['NO', 'NUMBER', 'PLAYER', 'NAME', 'TD', 'TDS', 'PAT', 'FG', 'RETURNTD'].includes(h)) return false;
+  return /CARR|ATT|YARD|YDS|COMP|RECEP|REC$|TACK|SOLO|ASSIST|SACK|INTERCEPT|INT$|TFL|FUMBLE|FUM|AVG|LONG/.test(h);
+}
+
+function statsAvailability(stats) {
+  if (!Array.isArray(stats) || !stats.length) return { status: 'unavailable', blocks: 0, rows: 0, filledCoreCells: 0 };
+  let rows = 0, coreCells = 0, filledCoreCells = 0;
+  for (const block of stats) {
+    const headers = block.headers || [];
+    const coreIndexes = headers.map((h, i) => isCoreStatHeader(h) ? i : -1).filter(i => i >= 0);
+    for (const row of block.rows || []) {
+      rows++;
+      for (const i of coreIndexes) {
+        coreCells++;
+        if (clean(row?.[i]) && !/^[-–—]$/.test(clean(row?.[i]))) filledCoreCells++;
+      }
+    }
+  }
+  const status = filledCoreCells > 0 ? 'full' : 'partial';
+  return { status, blocks: stats.length, rows, coreCells, filledCoreCells };
+}
+
+function qualityRank(value) {
+  const status = typeof value === 'string' ? value : value?.status;
+  return status === 'full' ? 3 : status === 'partial' ? 2 : 1;
 }
 
 function extractScoringPlays(html) {
@@ -240,7 +303,8 @@ function parseGameDetails(html, game) {
   const tables = extractTables(html);
   const boxScore = findBoxScore(tables);
   const scoringPlays = extractScoringPlays(html);
-  const stats = extractStats(tables, game);
+  const stats = extractStats(tables, game, scoringPlays);
+  const statsInfo = statsAvailability(stats);
   const clockInfo = extractClock(html);
   const state = extractStatus(html, boxScore, scoringPlays, clockInfo);
   return {
@@ -252,6 +316,7 @@ function parseGameDetails(html, game) {
     boxScore,
     scoringPlays,
     stats,
+    statsAvailability: statsInfo,
     fetchedAt: new Date().toISOString()
   };
 }
@@ -272,6 +337,11 @@ function daysFromNow(date) {
   return (d - Date.now()) / 86400000;
 }
 
+function hoursSince(value) {
+  const t = Date.parse(String(value || ''));
+  return Number.isFinite(t) ? (Date.now() - t) / 3600000 : 999;
+}
+
 if (!fs.existsSync(SOURCE)) {
   console.log(`${SOURCE} not found; skipping Deseret game details.`);
   process.exit(0);
@@ -285,23 +355,52 @@ if (fs.existsSync(OUTPUT)) {
 }
 const details = { ...(previous.games || {}) };
 
-let fetched = 0, reusedFinal = 0, skippedFuture = 0, failures = 0;
+let fetched = 0, reusedFinal = 0, deferredStats = 0, skippedFuture = 0, failures = 0;
 for (const game of games) {
   if (!clean(game.deseretUrl)) continue;
   const key = gameKey(game);
   const prior = details[key] || null;
-  if (prior?.final && Number(prior.finalRefreshCount || 0) >= 2) { reusedFinal++; continue; }
+  const priorStats = prior?.statsAvailability || statsAvailability(prior?.stats || []);
   const delta = daysFromNow(isoDate(game.date));
-  if (delta > 2.25 || delta < -2.25) { skippedFuture++; continue; }
+
+  // Once full player stats are present, two final confirmations are enough.
+  if (prior?.final && priorStats.status === 'full' && Number(prior.finalRefreshCount || 0) >= 2) {
+    reusedFinal++;
+    continue;
+  }
+
+  // Missing/partial stats can arrive well after the final. Recheck them for four days,
+  // but not every workflow run: every 2 hours for the first two days, then every 6 hours.
+  if (delta > 2.25 || delta < -4.25) {
+    skippedFuture++;
+    continue;
+  }
+  if (prior?.final && priorStats.status !== 'full') {
+    const ageHours = Math.max(0, -delta * 24);
+    const retryHours = ageHours > 48 ? 6 : 2;
+    if (hoursSince(prior.fetchedAt) < retryHours) {
+      deferredStats++;
+      continue;
+    }
+  }
+
   try {
     const html = await fetchHtml(game.deseretUrl);
     const parsed = parseGameDetails(html, game);
     if (parsed.final) parsed.finalRefreshCount = prior?.final ? Number(prior.finalRefreshCount || 0) + 1 : 1;
+
+    // Never replace richer previously captured stats with a temporarily emptier response.
+    if (prior && qualityRank(priorStats) > qualityRank(parsed.statsAvailability)) {
+      parsed.stats = prior.stats || [];
+      parsed.statsAvailability = priorStats;
+      parsed.statsPreservedFrom = prior.fetchedAt || '';
+    }
+
     details[key] = parsed;
     fetched++;
     const d = details[key];
     const liveClock = d.clock ? `; clock=${d.clock} ${d.period || ''}` : '';
-    console.log(`Deseret detail ${key}: ${d.status}${liveClock}; box=${d.boxScore ? 'yes' : 'no'}; plays=${d.scoringPlays.length}; statTables=${d.stats.length}`);
+    console.log(`Deseret detail ${key}: ${d.status}${liveClock}; box=${d.boxScore ? 'yes' : 'no'}; plays=${d.scoringPlays.length}; statTables=${d.stats.length}; stats=${d.statsAvailability?.status || 'unknown'}`);
   } catch (err) {
     failures++;
     console.warn(`Deseret detail failed ${key}: ${err.message}`);
@@ -310,4 +409,4 @@ for (const game of games) {
 }
 
 fs.writeFileSync(OUTPUT, JSON.stringify({ updatedAt: new Date().toISOString(), games: details }, null, 2) + '\n');
-console.log(`Deseret game details: ${fetched} fetched, ${reusedFinal} final cached, ${skippedFuture} outside live window, ${failures} failures.`);
+console.log(`Deseret game details: ${fetched} fetched, ${reusedFinal} complete finals cached, ${deferredStats} partial/no-stat finals deferred, ${skippedFuture} outside refresh window, ${failures} failures.`);
