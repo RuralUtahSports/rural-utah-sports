@@ -16,7 +16,21 @@ const sig=(a,sa,b,sb)=>[[a,sa],[b,sb]].sort((x,y)=>x[0].localeCompare(y[0])).map
 const expected=(a,b)=>1/(1+Math.pow(10,(b-a)/400));
 const round=x=>x>=0?Math.floor(x+.5):Math.ceil(x-.5);
 const mov=m=>m<=1?1:1+.35*Math.pow(Math.log(Math.min(m,40))/Math.log(40),1.5);
-function knownBad(date,a,b,sa,sb){const p=pair(a,b),s=sig(a,sa,b,sb);if(date==='9/19/2025'&&p==='MONUMENT VALLEY|PANGUITCH')return true;if(date==='10/18/2024'&&p==='COPPER HILLS|WESTLAKE'&&s==='COPPER HILLS:26|WESTLAKE:41')return true;return false}
+
+const verifiedBadScores=new Set([
+  '2003-10-10|ALTAMONT|RICH|ALTAMONT:48|RICH:6',
+  '2001-09-21|GUNNISON VALLEY|JUAB|GUNNISON VALLEY:19|JUAB:14',
+  '1998-08-28|GUNNISON VALLEY|NORTH SEVIER|GUNNISON VALLEY:30|NORTH SEVIER:13',
+  '2001-09-07|GUNNISON VALLEY|KANAB|GUNNISON VALLEY:16|KANAB:20',
+  '2001-10-18|GUNNISON VALLEY|MANTI|GUNNISON VALLEY:39|MANTI:12',
+  '2005-09-02|GUNNISON VALLEY|RICHFIELD|GUNNISON VALLEY:27|RICHFIELD:7',
+  '2014-09-12|GUNNISON VALLEY|LAYTON CHRISTIAN|GUNNISON VALLEY:20|LAYTON CHRISTIAN:47',
+  '2024-10-18|GUNNISON VALLEY|MILLARD|GUNNISON VALLEY:41|MILLARD:6',
+  '2008-10-31|ENTERPRISE|RICH|ENTERPRISE:21|RICH:46',
+  '2022-09-30|MONTICELLO|MONUMENT VALLEY|MONTICELLO:41|MONUMENT VALLEY:20'
+]);
+function verifiedBadKey(date,a,b,sa,sb){const d=parseDate(date);return d?`${d.iso}|${pair(a,b)}|${sig(a,sa,b,sb)}`:''}
+function knownBad(date,a,b,sa,sb){const p=pair(a,b),s=sig(a,sa,b,sb);if(date==='9/19/2025'&&p==='MONUMENT VALLEY|PANGUITCH')return true;if(date==='10/18/2024'&&p==='COPPER HILLS|WESTLAKE'&&s==='COPPER HILLS:26|WESTLAKE:41')return true;if(verifiedBadScores.has(verifiedBadKey(date,a,b,sa,sb)))return true;return false}
 function gameKey(date,a,b){const d=parseDate(date);return d?`${d.iso}|${compact(a)}|${compact(b)}`:''}
 
 const teamRows=JSON.parse(fs.readFileSync('teams-data.json','utf8'));
