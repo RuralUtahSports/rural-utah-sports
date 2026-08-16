@@ -16,35 +16,44 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Point the site at the new Alta and Brighton logos
+      - name: Convert custom SVG wrappers to PNG with Sharp
         run: |
+          npm install --no-save sharp
+          node <<'NODE'
+          const fs = require('fs');
+          const sharp = require('sharp');
+          (async () => {
+            fs.mkdirSync('school-logo-share', { recursive: true });
+            for (const stem of ['alta', 'brighton']) {
+              await sharp(`school-logos/${stem}.svg`, { density: 300 })
+                .resize({ width: 452, height: 314, fit: 'inside', withoutEnlargement: false })
+                .extend({ top: 35, bottom: 35, left: 30, right: 30, background: { r: 0, g: 0, b: 0, alpha: 0 } })
+                .png()
+                .toFile(`school-logo-share/${stem}.png`);
+              console.log('Built', stem);
+            }
+          })().catch(err => { console.error(err); process.exit(1); });
+          NODE
+
           python - <<'PY'
           from pathlib import Path
-          import json, re
-
-          cache_path = Path('school-logo-cache.json')
-          cache = json.loads(cache_path.read_text())
-          cache['ALTA'] = 'school-logos/alta.svg'
-          cache['BRIGHTON'] = 'school-logos/brighton.svg'
-          cache_path.write_text(json.dumps(cache, indent=2) + '\n')
-
-          # Bump the share script cache version so phones immediately request the new logo map.
-          rank = Path('rankings.html')
-          if rank.exists():
-              text = rank.read_text()
-              text = re.sub(r"share-graphic\.js\?v=[^\"']+", 'share-graphic.js?v=20260815-alta-brighton', text)
-              rank.write_text(text)
+          import json
+          p = Path('school-logo-cache.json')
+          cache = json.loads(p.read_text())
+          cache['ALTA'] = 'school-logo-share/alta.png'
+          cache['BRIGHTON'] = 'school-logo-share/brighton.png'
+          p.write_text(json.dumps(cache, indent=2) + '\n')
           PY
 
       - name: Commit logo replacements
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add school-logo-cache.json rankings.html
+          git add school-logo-share/alta.png school-logo-share/brighton.png school-logo-cache.json
           if git diff --cached --quiet; then
             echo 'No changes needed.'
             exit 0
           fi
-          git commit -m 'Use updated Alta and Brighton logos sitewide'
+          git commit -m 'Fix Alta and Brighton share logos'
           git pull --rebase origin main
           git push origin main
