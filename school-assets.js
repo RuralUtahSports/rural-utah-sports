@@ -29,7 +29,7 @@
   'MORGAN':'school-logos/morgan.svg',
   'OREM':'school-logos/orem.svg',
   'PROVIDENCE HALL':'school-logos/providence-hall.svg',
-  'RICH':'school-logos/rich.png',
+  'RICH':'school-logos/rich-user.svg',
   'SAN JUAN':'school-logos/san-juan.svg',
   'VIEWMONT':'school-logos/viewmont.svg'
 };

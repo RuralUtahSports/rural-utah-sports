@@ -5,7 +5,7 @@
     'LAYTON CHRISTIAN':'school-logos/layton-christian.svg','LAYTON CHRISTIAN ACADEMY':'school-logos/layton-christian.svg',
     'LONE PEAK':'school-logos/lone-peak.svg','MAPLE MOUNTAIN':'school-logos/maple-mountain.svg','MILFORD':'school-logos/milford.svg',
     'MILLARD':'school-logos/millard.svg','MORGAN':'school-logos/morgan.svg','OREM':'school-logos/orem.svg',
-    'PROVIDENCE HALL':'school-logos/providence-hall.svg','RICH':'school-logos/rich.png','SAN JUAN':'school-logos/san-juan.svg','VIEWMONT':'school-logos/viewmont.svg'
+    'PROVIDENCE HALL':'school-logos/providence-hall.svg','RICH':'school-logos/rich-user.svg','SAN JUAN':'school-logos/san-juan.svg','VIEWMONT':'school-logos/viewmont.svg'
   };
   const norm=v=>String(v||'').trim().toUpperCase().replace(/\s+/g,' ');
   const customUrl=t=>CUSTOM[norm(t)]||'';
