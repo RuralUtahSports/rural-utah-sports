@@ -1,4 +1,4 @@
-name: Stack Classification Ranking Share Layout
+name: Fix Classification Ranking Share Order
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Make classification ranking exports vertical
+      - name: Flow classification rankings top-to-bottom
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -24,40 +24,45 @@ jobs:
           p = Path('share-graphic.js')
           s = p.read_text(encoding='utf-8')
 
-          old = "    const cols=rows.length>20?(h>w*1.35?3:5):rows.length>10?(h>w*1.35?2:4):2;"
-          new = "    const verticalClass=classRows.length>0&&!stateRows.length;\n    const cols=verticalClass?1:rows.length>20?(h>w*1.35?3:5):rows.length>10?(h>w*1.35?2:4):2;"
-          if old in s:
-              s = s.replace(old, new, 1)
-          elif 'const verticalClass=classRows.length>0&&!stateRows.length;' not in s:
-              raise SystemExit('classification column rule not found')
+          # Classification Top 10 should read vertically: 1,2,3,4,5 down
+          # the left side, then 6,7,8,9,10 down the right side.
+          s = s.replace(
+              "    const cols=verticalClass?1:rows.length>20?(h>w*1.35?3:5):rows.length>10?(h>w*1.35?2:4):2;",
+              "    const cols=verticalClass?2:rows.length>20?(h>w*1.35?3:5):rows.length>10?(h>w*1.35?2:4):2;",
+              1
+          )
 
-          old = "    const rowH=Math.max(72,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol));"
-          new = "    const rowH=verticalClass?Math.max(58,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol)):Math.max(72,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol));"
-          if old in s:
-              s = s.replace(old, new, 1)
+          s = s.replace(
+              "    const rowH=verticalClass?Math.max(58,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol)):Math.max(72,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol));",
+              "    const rowH=verticalClass?Math.max(100,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol)):Math.max(72,Math.floor((availableH-gap*(rowsPerCol-1))/rowsPerCol));",
+              1
+          )
 
-          old = "    const board=document.createElement('div');board.className='rus-export-board'+(w>h*1.25?' rus-export-landscape':'');board.style.width=`${w-pad*2}px`;board.style.height=`${availableH}px`;"
-          new = "    const board=document.createElement('div');board.className='rus-export-board'+(w>h*1.25?' rus-export-landscape':'')+(verticalClass?' rus-export-vertical-ranking':'');board.style.width=`${w-pad*2}px`;board.style.height=`${availableH}px`;"
-          if old in s:
-              s = s.replace(old, new, 1)
-          elif 'rus-export-vertical-ranking' not in s:
-              raise SystemExit('ranking board rule not found')
+          s = s.replace(
+              "grid.style.gridAutoFlow='row';grid.style.gap=`${gap}px`;",
+              "grid.style.gridAutoFlow=verticalClass?'column':'row';grid.style.gap=`${gap}px`;",
+              1
+          )
 
-          anchor = "  .rus-export-board.rus-export-landscape .rus-export-rank-item{padding-top:7px;padding-bottom:5px}"
-          css = "  .rus-export-board.rus-export-vertical-ranking .rus-export-rank-item{flex-direction:row;align-items:center;gap:12px;padding:7px 14px 7px 10px}\n  .rus-export-board.rus-export-vertical-ranking .rus-export-rank-num{position:static;left:auto;top:auto;flex:0 0 34px}\n  .rus-export-board.rus-export-vertical-ranking .rus-export-logo-wrap{order:2;margin:0;width:72px;min-width:72px;height:100%;min-height:0;max-height:none;padding:2px 4px;flex:0 0 72px}\n  .rus-export-board.rus-export-vertical-ranking .rus-export-logo-large{max-width:68px;max-height:68px}\n  .rus-export-board.rus-export-vertical-ranking .rus-export-team-line{order:3;flex:1 1 auto;padding:0;text-align:left}\n  .rus-export-board.rus-export-vertical-ranking .rus-export-team-wrap{text-align:left}\n  .rus-export-board.rus-export-vertical-ranking .rus-export-team{font-size:18px;line-height:1.05;text-align:left;padding:6px 10px}\n  .rus-export-board.rus-export-vertical-ranking .rus-export-record{order:4;margin:0 4px 0 0;white-space:nowrap;font-size:13px}\n  .rus-export-board.rus-export-vertical-ranking .rus-export-meta{order:5;margin:0;justify-content:flex-end;text-align:right;max-width:280px;gap:4px 8px;font-size:10px}\n  .rus-export-board.rus-export-vertical-ranking .rus-export-move{font-size:16px}\n"
-          if css.strip() not in s:
-              if anchor not in s:
-                  raise SystemExit('ranking CSS anchor not found')
-              s = s.replace(anchor, css + anchor, 1)
+          # Keep each team card stacked internally like the current graphic;
+          # only change the ranking ORDER across the two columns.
+          vertical_css = re.compile(r"\n  \.rus-export-board\.rus-export-vertical-ranking \.rus-export-rank-item\{.*?\n  \.rus-export-board\.rus-export-vertical-ranking \.rus-export-move\{font-size:16px\}\n", re.S)
+          s = vertical_css.sub("\n", s, count=1)
+
+          s = s.replace(
+              "+(verticalClass?' rus-export-vertical-ranking':'')",
+              "",
+              1
+          )
 
           p.write_text(s, encoding='utf-8')
 
           q = Path('rankings.html')
           t = q.read_text(encoding='utf-8')
-          t = re.sub(r'share-graphic\.js\?v=[^\"\']+', 'share-graphic.js?v=20260816-vertical-rankings', t)
+          t = re.sub(r'share-graphic\.js\?v=[^\"\']+', 'share-graphic.js?v=20260816-vertical-flow-v2', t)
           q.write_text(t, encoding='utf-8')
           PY
-      - name: Commit vertical ranking share layout
+      - name: Commit ranking share order fix
         run: |
           if git diff --quiet -- share-graphic.js rankings.html; then
             echo 'No changes needed.'
@@ -66,6 +71,6 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add share-graphic.js rankings.html
-          git commit -m 'Stack classification ranking share graphics vertically'
+          git commit -m 'Flow classification ranking share graphics vertically'
           git pull --rebase origin main
           git push
