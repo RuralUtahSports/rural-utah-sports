@@ -9,6 +9,7 @@ on:
       - completed
   push:
     paths:
+      - 'scripts/sanitize-team-schedules.mjs'
       - 'scripts/rebuild-team-summaries-from-schedules.mjs'
       - '.github/workflows/rebuild-team-summaries-after-dedupe.yml'
 
@@ -29,7 +30,7 @@ jobs:
         with:
           ref: main
 
-      - name: Rebuild and commit team summary records
+      - name: Sanitize schedules, rebuild summaries, and commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -37,14 +38,15 @@ jobs:
           for attempt in 1 2 3 4; do
             git fetch origin main
             git reset --hard origin/main
+            node scripts/sanitize-team-schedules.mjs
             node scripts/rebuild-team-summaries-from-schedules.mjs
-            git add teams-data.json
+            git add team-schedules.json team-record-breakdowns.json season-history.json team-page-data teams-data.json
             if git diff --cached --quiet; then
-              echo "Team summaries are already synced to cleaned schedules."
+              echo "Team schedules and summaries are already clean."
               ok=1
               break
             fi
-            git commit -m "Rebuild team summaries from cleaned schedules"
+            git commit -m "Sanitize team schedules and rebuild summaries"
             if git push; then
               ok=1
               break
