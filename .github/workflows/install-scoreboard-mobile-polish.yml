@@ -1,0 +1,44 @@
+name: Install Scoreboard Mobile Polish
+
+on:
+  push:
+    paths:
+      - '.github/workflows/install-scoreboard-mobile-polish.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load scoreboard mobile polish from shared shell
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('nav-menu.js')
+          s=p.read_text()
+          needle="if(path==='rankings.html'){addScript('rankings-live-records.js?v=20260814a','rusRankingsLiveRecords',true);"
+          add="if(path==='scoreboard.html')addScript('mobile-scoreboard-polish.js?v=20260817-final1','rusScoreboardMobilePolish',true);\n    "
+          if 'rusScoreboardMobilePolish' not in s:
+              if needle not in s:
+                  raise SystemExit('Insertion point not found')
+              s=s.replace(needle,add+needle,1)
+          p.write_text(s)
+          Path('.github/workflows/install-scoreboard-mobile-polish.yml').unlink(missing_ok=True)
+          PY
+      - name: Commit scoreboard mobile polish loader
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add nav-menu.js .github/workflows/install-scoreboard-mobile-polish.yml
+          if git diff --cached --quiet; then
+            echo "Already installed."
+          else
+            git commit -m "Load scoreboard mobile polish"
+            git pull --rebase origin main
+            git push
+          fi
