@@ -14,6 +14,7 @@ const replacement=`async function load(){
       const fast=await fetch('historical-rankings-data.json?v='+stamp,{cache:'no-store'});
       if(fast.ok){
         const built=await fast.json();
+        dataSource=String(built.source||'Clean Games');
         for(const [yearText,rows] of Object.entries(built.seasons||{})){
           const year=Number(yearText);
           if(!Number.isFinite(year)||year>=CURRENT_SEASON||!Array.isArray(rows)||!rows.length)continue;
@@ -25,6 +26,7 @@ const replacement=`async function load(){
       }
     }catch(e){console.warn('Prebuilt historical rankings unavailable; using compatibility loader.',e)}
     if(!usedPrebuilt){
+      dataSource='Team history fallback';
       const r=await fetch('teams-data.json?v='+stamp,{cache:'no-store'});
       if(!r.ok)throw new Error('Unable to load teams');
       const teams=await r.json();
@@ -42,25 +44,21 @@ const replacement=`async function load(){
         }
       });
     }else{
-      status.textContent='Historical rankings loaded.';
       try{await window.RUSSchoolAssets?.load?.()}catch{}
     }
-    const years=[...seasonIndex.keys()].sort((a,b)=>b-a);
+    years=[...seasonIndex.keys()].sort((a,b)=>b-a);
     if(!years.length)throw new Error('No historical seasons found');
     seasonSelect.innerHTML=years.map(y=>'<option value="'+y+'">'+y+'</option>').join('');
-    const requested=Number(new URLSearchParams(location.search).get('season'));
+    const params=new URLSearchParams(location.search),requested=Number(params.get('season'));
     activeYear=seasonIndex.has(requested)?requested:years[0];
     seasonSelect.value=String(activeYear);
-    seasonSelect.disabled=false;
-    search.disabled=false;
-    seasonSelect.addEventListener('change',()=>{
-      activeYear=Number(seasonSelect.value);
-      history.replaceState(null,'','historical-rankings.html?season='+activeYear);
-      search.value='';
-      render();
-    });
-    search.addEventListener('input',render);
-    render();
+    seasonSelect.disabled=false;search.disabled=false;
+    const initialQ=params.get('q');if(initialQ)search.value=initialQ;
+    seasonSelect.addEventListener('change',()=>setSeason(seasonSelect.value));
+    olderBtn.addEventListener('click',()=>olderBtn.dataset.year&&setSeason(olderBtn.dataset.year));
+    newerBtn.addEventListener('click',()=>newerBtn.dataset.year&&setSeason(newerBtn.dataset.year));
+    search.addEventListener('input',()=>{const p=new URLSearchParams(location.search);p.set('season',activeYear);if(search.value.trim())p.set('q',search.value.trim());else p.delete('q');history.replaceState(null,'','historical-rankings.html?'+p.toString());render()});
+    updateYearButtons();render();
   }catch(e){
     console.error(e);
     status.textContent='Historical rankings could not be loaded. Please refresh and try again.';
@@ -69,4 +67,4 @@ const replacement=`async function load(){
 
 html=html.slice(0,start)+replacement+html.slice(end);
 fs.writeFileSync(file,html);
-console.log('Historical rankings page now prefers historical-rankings-data.json with a legacy fallback.');
+console.log('Historical rankings page is synced to the polished Clean Games loader.');
