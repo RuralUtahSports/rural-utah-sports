@@ -8,7 +8,7 @@
   setupAnalytics();
   const groups={
     history:[['Championships','championships.html'],['Season Explorer','season.html'],['Program Leaderboard','programs.html'],['Active Streaks','streaks.html'],['Milestone Watch','milestones.html'],['Rivalry Hub','rivalry.html'],['Dynasty Explorer','dynasty.html'],['History Lab','history-lab.html'],['Greatest Seasons','greatest-seasons.html'],['Records','records.html']],
-    analytics:[['ELO','elo.html'],['Playoff Picture','playoff-picture.html'],['Upset Tracker','upsets.html'],['Scorigami','scorigami.html'],['Out of State','out-of-state.html'],['Team Comparison','compare.html'],['Player Comparison','player-compare.html'],['Football Map','map.html']],
+    analytics:[['ELO','elo.html'],['Playoff Picture','playoff-picture.html'],['Upset Tracker','upsets.html'],['Scorigami','scorigami.html'],['Fantasy Football','fantasy-football.html'],['Out of State','out-of-state.html'],['Team Comparison','compare.html'],['Player Comparison','player-compare.html'],['Football Map','map.html']],
     stats:[['Stat Leaders','stat-leaders.html'],['Team Stats','team-stats.html'],['MVP Race','mvp-race.html'],['All-Utah Team','all-utah.html'],['All-State & Region Watch','all-state-watch.html'],['Past Award Winners','awards-2025.html']],
     simulators:[['Simulators Hub','simulators.html'],['Promotion / Relegation','promotion-relegation.html']]
   };
