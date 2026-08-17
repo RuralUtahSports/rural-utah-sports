@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='2026-08-17-v1';
+  const VERSION='2026-08-17-v2';
   const clean=v=>String(v??'').trim();
   const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
   const n=v=>{const m=String(v??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0};
@@ -65,7 +65,9 @@
   }
 
   function kickingScore(values){
-    return Math.max(0,statValue(values,'FG','FIELD GOALS')*3+statValue(values,'PAT','PATS')+statValue(values,'RETURN TD','RETURN TDS')*6);
+    // K/P award scoring is intentionally pure kicking production. Return TDs,
+    // defensive production and offensive production belong to their own awards.
+    return Math.max(0,statValue(values,'FG','FIELD GOALS')*3+statValue(values,'PAT','PATS'));
   }
 
   function defenseScore(values){
@@ -79,6 +81,7 @@
   function isDefense(category){return /Defense/i.test(category||'')}
   function isOffenseLine(category){return isPassing(category)||isRushing(category)||isReceiving(category)}
   function isOffensePosition(position){return ['QB','RB','WR','TE','ATH'].includes(String(position||'').toUpperCase())}
+  function isKickingPosition(position){return compact(position)==='KP'}
 
   function categoryScore(category,values,position=''){
     const pos=String(position||'').toUpperCase();
@@ -91,7 +94,9 @@
   }
 
   function positionLineAllowed(position,category){
-    return isOffensePosition(position)?isOffenseLine(category):true;
+    if(isOffensePosition(position))return isOffenseLine(category);
+    if(isKickingPosition(position))return isKicking(category);
+    return true;
   }
 
   function positionScore(position,lines){
@@ -104,5 +109,5 @@
     return Math.max(0,total);
   }
 
-  return {VERSION,compact,n,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,categoryScore,positionLineAllowed,positionScore};
+  return {VERSION,compact,n,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore};
 });
