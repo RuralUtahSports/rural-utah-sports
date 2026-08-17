@@ -34,15 +34,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             node scripts/build_awards_2025.mjs
-            node - <<'NODE'
-            const fs=require('fs');
-            const awards=JSON.parse(fs.readFileSync('awards-2025.json','utf8'));
-            if(awards.season!==2025) throw new Error('Wrong awards season');
-            if(!awards.method?.scoringVersion) throw new Error('Shared scoring version missing');
-            const sample=Object.values(awards.allState||{}).flatMap(x=>Object.values(x.positions||{})).flat().find(Boolean);
-            if(sample && typeof sample.positionScore!=='number') throw new Error('Position score missing from generated players');
-            console.log('2025 award scoring version:',awards.method.scoringVersion);
-            NODE
+            node -e "const fs=require('fs');const awards=JSON.parse(fs.readFileSync('awards-2025.json','utf8'));if(awards.season!==2025)throw new Error('Wrong awards season');if(!awards.method?.scoringVersion)throw new Error('Shared scoring version missing');const sample=Object.values(awards.allState||{}).flatMap(x=>Object.values(x.positions||{})).flat().find(Boolean);if(sample&&typeof sample.positionScore!=='number')throw new Error('Position score missing from generated players');console.log('2025 award scoring version:',awards.method.scoringVersion);"
             git add awards-2025.json
             if git diff --cached --quiet; then echo "2025 awards already current."; exit 0; fi
             git commit -m "Recalculate 2025 awards with shared scoring"
