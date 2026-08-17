@@ -1,21 +1,25 @@
 (() => {
   const style = document.createElement('style');
   style.textContent = `
-    .scoreboard-refresh-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:-7px 0 18px}
-    .scoreboard-refresh-btn{appearance:none;border:1px solid #F14D07;background:#F14D07;color:#000;border-radius:7px;padding:10px 14px;font:900 12px Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;box-shadow:0 5px 16px rgba(0,0,0,.28)}
-    .scoreboard-refresh-btn:hover{filter:brightness(1.08)}
-    .scoreboard-refresh-btn:disabled{opacity:.65;cursor:wait}
+    .scoreboard-refresh-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:-7px 0 12px}
+    .scoreboard-refresh-btn,.scoreboard-week-btn{appearance:none;border:1px solid #F14D07;background:#F14D07;color:#000;border-radius:7px;padding:10px 14px;font:900 12px Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;box-shadow:0 5px 16px rgba(0,0,0,.28)}
+    .scoreboard-refresh-btn:hover,.scoreboard-week-btn:hover{filter:brightness(1.08)}
+    .scoreboard-refresh-btn:disabled,.scoreboard-week-btn:disabled{opacity:.42;cursor:not-allowed;filter:none}
     .scoreboard-refresh-note{font-size:10px;color:#777;font-weight:700}
+    .scoreboard-week-nav{display:grid;grid-template-columns:auto minmax(250px,1fr) auto;gap:9px;align-items:center;background:#000;border:1px solid #333;border-left:5px solid #F14D07;border-radius:8px;padding:10px 12px;margin:0 0 18px;box-shadow:0 7px 18px rgba(0,0,0,.22)}
+    .scoreboard-week-select{width:100%;min-width:0;background:#171717;color:#fff;border:1px solid #444;border-radius:6px;padding:10px 12px;font:900 13px Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.2px}
+    .scoreboard-week-btn{padding:10px 12px;white-space:nowrap}
     .game-page-link{color:#000!important;text-decoration:none!important;font-weight:1000!important;background:#F14D07!important;border:1px solid #F14D07!important;border-radius:5px;padding:6px 9px;white-space:nowrap;text-transform:uppercase;letter-spacing:.15px}
     .game-page-link:hover{filter:brightness(1.1)}
-    @media(max-width:700px){.scoreboard-refresh-row{margin-top:-5px}.scoreboard-refresh-btn{width:100%;padding:12px 14px;font-size:13px;text-align:center}.scoreboard-refresh-note{width:100%;text-align:center}.game-page-link{width:100%;text-align:center;padding:8px 10px}}
+    @media(max-width:700px){.scoreboard-refresh-row{margin-top:-5px}.scoreboard-refresh-btn{width:100%;padding:12px 14px;font-size:13px;text-align:center}.scoreboard-refresh-note{width:100%;text-align:center}.scoreboard-week-nav{grid-template-columns:1fr 1fr;padding:9px}.scoreboard-week-select{grid-column:1/-1;grid-row:1}.scoreboard-week-btn{width:100%;font-size:11px}.game-page-link{width:100%;text-align:center;padding:8px 10px}}
   `;
   document.head.appendChild(style);
 
   const subtitle = document.querySelector('.subtitle');
+  let refreshRow = null;
   if (subtitle && !document.getElementById('scoreboardRefreshButton')) {
-    const row = document.createElement('div');
-    row.className = 'scoreboard-refresh-row';
+    refreshRow = document.createElement('div');
+    refreshRow.className = 'scoreboard-refresh-row';
     const btn = document.createElement('button');
     btn.id = 'scoreboardRefreshButton';
     btn.className = 'scoreboard-refresh-btn';
@@ -24,8 +28,8 @@
     const note = document.createElement('span');
     note.className = 'scoreboard-refresh-note';
     note.textContent = 'Loads the newest published scoreboard and prediction data';
-    row.append(btn, note);
-    subtitle.insertAdjacentElement('afterend', row);
+    refreshRow.append(btn, note);
+    subtitle.insertAdjacentElement('afterend', refreshRow);
 
     btn.addEventListener('click', () => {
       btn.disabled = true;
@@ -34,35 +38,180 @@
       url.searchParams.set('_refresh', Date.now().toString());
       window.location.replace(url.toString());
     });
+  } else {
+    refreshRow = document.querySelector('.scoreboard-refresh-row');
   }
 
   const norm = value => String(value ?? '').trim().toUpperCase().replace(/\s+/g, ' ');
+  const DAY = 24 * 60 * 60 * 1000;
+  const WEEK = 7 * DAY;
 
-  // Keep the Weekly Scoreboard scoped to one football week instead of every
-  // season game in weekly-simulation.json. Between game weeks, show the next
-  // upcoming week; once no future games remain, show the latest loaded week.
   const originalRender = render;
-  let weekScoped = false;
-  render = function () {
-    if (!weekScoped && Array.isArray(games) && games.length) {
-      const valid = games.filter(g => dateVal(g.date));
-      if (valid.length) {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const target = valid.find(g => dateVal(g.date) >= today.getTime()) || valid[valid.length - 1];
-        const anchor = new Date(dateVal(target.date));
-        anchor.setHours(0, 0, 0, 0);
-        const daysSinceThursday = (anchor.getDay() + 3) % 7;
-        anchor.setDate(anchor.getDate() - daysSinceThursday);
-        const start = anchor.getTime();
-        const end = start + (7 * 24 * 60 * 60 * 1000);
-        games = games.filter(g => {
-          const t = dateVal(g.date);
-          return t >= start && t < end;
-        });
-      }
-      weekScoped = true;
+  let seasonGames = null;
+  let weekBuckets = [];
+  let selectedWeekNumber = null;
+  let weekNav = null;
+  let weekSelect = null;
+  let prevWeekBtn = null;
+  let nextWeekBtn = null;
+  let livePredictions = new Map();
+
+  function startOfLocalDay(value) {
+    const d = new Date(value);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  function thursdayStart(value) {
+    const d = startOfLocalDay(value);
+    const daysSinceThursday = (d.getDay() + 3) % 7;
+    d.setDate(d.getDate() - daysSinceThursday);
+    return d.getTime();
+  }
+
+  function shortDate(value) {
+    return new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  }
+
+  function buildWeekBuckets() {
+    const dated = (seasonGames || []).filter(g => dateVal(g.date));
+    if (!dated.length) {
+      weekBuckets = [];
+      return;
     }
+
+    const firstGameTime = Math.min(...dated.map(g => dateVal(g.date)));
+    const firstThursday = thursdayStart(firstGameTime);
+    const grouped = new Map();
+
+    for (const game of dated) {
+      const start = thursdayStart(dateVal(game.date));
+      if (!grouped.has(start)) grouped.set(start, []);
+      grouped.get(start).push(game);
+    }
+
+    weekBuckets = [...grouped.entries()]
+      .sort((a, b) => a[0] - b[0])
+      .map(([start, bucketGames]) => ({
+        number: Math.floor((start - firstThursday) / WEEK) + 1,
+        start,
+        end: start + WEEK,
+        games: bucketGames.sort((a, b) => dateVal(a.date) - dateVal(b.date) || String(a.awayTeam).localeCompare(String(b.awayTeam)))
+      }));
+  }
+
+  function chooseInitialWeek() {
+    if (!weekBuckets.length) return null;
+
+    const requested = Number(new URLSearchParams(window.location.search).get('week'));
+    if (Number.isInteger(requested) && weekBuckets.some(w => w.number === requested)) return requested;
+
+    const today = startOfLocalDay(Date.now()).getTime();
+    const current = weekBuckets.find(w => today >= w.start && today < w.end);
+    if (current) return current.number;
+
+    const next = weekBuckets.find(w => w.start > today);
+    return (next || weekBuckets[weekBuckets.length - 1]).number;
+  }
+
+  function ensureWeekNav() {
+    if (weekNav || !subtitle) return;
+
+    weekNav = document.createElement('div');
+    weekNav.className = 'scoreboard-week-nav';
+    weekNav.setAttribute('aria-label', 'Scoreboard week selector');
+
+    prevWeekBtn = document.createElement('button');
+    prevWeekBtn.className = 'scoreboard-week-btn';
+    prevWeekBtn.type = 'button';
+    prevWeekBtn.textContent = '← Previous';
+
+    weekSelect = document.createElement('select');
+    weekSelect.id = 'scoreboardWeekSelect';
+    weekSelect.className = 'scoreboard-week-select';
+    weekSelect.setAttribute('aria-label', 'Choose football week');
+
+    nextWeekBtn = document.createElement('button');
+    nextWeekBtn.className = 'scoreboard-week-btn';
+    nextWeekBtn.type = 'button';
+    nextWeekBtn.textContent = 'Next →';
+
+    weekNav.append(prevWeekBtn, weekSelect, nextWeekBtn);
+    (refreshRow || subtitle).insertAdjacentElement('afterend', weekNav);
+
+    weekSelect.addEventListener('change', () => selectWeek(Number(weekSelect.value)));
+    prevWeekBtn.addEventListener('click', () => moveWeek(-1));
+    nextWeekBtn.addEventListener('click', () => moveWeek(1));
+  }
+
+  function syncWeekNav() {
+    ensureWeekNav();
+    if (!weekNav || !weekSelect) return;
+
+    const options = weekBuckets.map(w => {
+      const endDay = w.end - DAY;
+      return `<option value="${w.number}">Week ${w.number} • ${shortDate(w.start)}–${shortDate(endDay)} • ${w.games.length} game${w.games.length === 1 ? '' : 's'}</option>`;
+    }).join('');
+
+    if (weekSelect.innerHTML !== options) weekSelect.innerHTML = options;
+    if (selectedWeekNumber != null) weekSelect.value = String(selectedWeekNumber);
+
+    const index = weekBuckets.findIndex(w => w.number === selectedWeekNumber);
+    prevWeekBtn.disabled = index <= 0;
+    nextWeekBtn.disabled = index < 0 || index >= weekBuckets.length - 1;
+  }
+
+  function selectWeek(number) {
+    if (!weekBuckets.some(w => w.number === number)) return;
+    selectedWeekNumber = number;
+    const url = new URL(window.location.href);
+    url.searchParams.set('week', String(number));
+    url.searchParams.delete('_refresh');
+    window.history.replaceState({}, '', url);
+    render();
+    document.querySelector('.page-title')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function moveWeek(delta) {
+    const index = weekBuckets.findIndex(w => w.number === selectedWeekNumber);
+    const target = weekBuckets[index + delta];
+    if (target) selectWeek(target.number);
+  }
+
+  function applyPredictions(list) {
+    let changed = false;
+    for (const game of list || []) {
+      const key = `${isoDate(game.date)}|||${norm(game.awayTeam)}|||${norm(game.homeTeam)}`;
+      const hit = livePredictions.get(key);
+      if (!hit) continue;
+      if (game.awayScore !== hit.awayScore || game.homeScore !== hit.homeScore || String(game.winner || '') !== hit.winner) {
+        game.awayScore = hit.awayScore;
+        game.homeScore = hit.homeScore;
+        game.winner = hit.winner;
+        changed = true;
+      }
+    }
+    return changed;
+  }
+
+  // Keep every loaded season game available, but render one Thursday–Wednesday
+  // football week at a time. This prevents the scoreboard from growing into one
+  // giant season-long list while still making older/future weeks easy to reach.
+  render = function () {
+    if (!seasonGames && Array.isArray(games) && games.length) {
+      seasonGames = games.slice();
+      applyPredictions(seasonGames);
+      buildWeekBuckets();
+      selectedWeekNumber = chooseInitialWeek();
+    }
+
+    if (seasonGames && weekBuckets.length) {
+      if (!weekBuckets.some(w => w.number === selectedWeekNumber)) selectedWeekNumber = chooseInitialWeek();
+      const bucket = weekBuckets.find(w => w.number === selectedWeekNumber) || weekBuckets[0];
+      games = bucket.games.slice();
+      syncWeekNav();
+    }
+
     return originalRender();
   };
 
@@ -91,19 +240,10 @@
         predictions.set(`${date}|||${away}|||${home}`, { awayScore, homeScore, winner });
       }
 
-      let changed = false;
-      for (const game of games) {
-        const key = `${isoDate(game.date)}|||${norm(game.awayTeam)}|||${norm(game.homeTeam)}`;
-        const hit = predictions.get(key);
-        if (!hit) continue;
-        if (game.awayScore !== hit.awayScore || game.homeScore !== hit.homeScore || String(game.winner || '') !== hit.winner) {
-          game.awayScore = hit.awayScore;
-          game.homeScore = hit.homeScore;
-          game.winner = hit.winner;
-          changed = true;
-        }
-      }
-      if (changed) originalRender();
+      livePredictions = predictions;
+      const changed = applyPredictions(seasonGames || games);
+      if (changed && seasonGames) buildWeekBuckets();
+      if (changed) render();
     } catch (error) {
       console.warn('Weekly Simulation live prediction overlay failed', error);
     }
@@ -155,7 +295,6 @@
     const board = document.getElementById('board');
     let observer = null;
     const apply = () => {
-      // Avoid an observer reacting to DOM nodes that this same pass inserts.
       observer?.disconnect();
       document.querySelectorAll('#board .game .team-row').forEach(teamRow => {
         const team = teamRow.querySelector('.team-name')?.textContent?.trim();
@@ -171,7 +310,7 @@
         }
 
         const src = logos[norm(team)] || window.RUSSchoolAssets?.logoUrl?.(team) || '';
-        if (src && img.src !== src) {
+        if (src && img.getAttribute('src') !== src) {
           img.src = src;
           img.style.display = 'block';
           img.style.objectFit = 'contain';
@@ -184,7 +323,6 @@
 
     if (board) observer = new MutationObserver(apply);
     apply();
-    if (observer && board) observer.observe(board, { childList: true, subtree: true });
   }
 
   hydrateScoreboardLogos();
