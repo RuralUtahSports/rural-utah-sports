@@ -63,8 +63,12 @@ const alignmentFile=path.join(ROOT,'full-season-alignment-2025.json');
 if(fs.existsSync(alignmentFile)){
   const alignment=JSON.parse(fs.readFileSync(alignmentFile,'utf8'));
   const expected=[...new Set((alignment.regions||[]).flatMap(r=>r.teams||[]).map(x=>String(x).trim()).filter(Boolean))];
-  const actual=new Set((ordered['2025']||[]).map(x=>String(x.team).trim()));
+  const expectedSet=new Set(expected);
+  const actualList=(ordered['2025']||[]).map(x=>String(x.team).trim());
+  const actual=new Set(actualList);
   const missing=expected.filter(team=>!actual.has(team));
-  console.log(`2025 coverage audit: ${actual.size}/${expected.length} alignment teams have ranking rows.`);
+  const extras=actualList.filter(team=>!expectedSet.has(team));
+  console.log(`2025 coverage audit: ${actual.size} ranking rows; ${expected.length} alignment teams; ${expected.length-missing.length} aligned teams represented.`);
   console.log(`2025 missing from rankings: ${missing.length?missing.join(' | '):'none'}`);
+  console.log(`2025 ranking teams outside alignment: ${extras.length?extras.join(' | '):'none'}`);
 }
