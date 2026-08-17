@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Fantasy Football Tracker | Rural Utah Sports</title>
+<meta name="description" content="Utah high school football fantasy point tracker and lineup simulator using reported player statistics and ESPN-style scoring.">
+<link rel="stylesheet" href="fantasy-football.css?v=20260817a">
+</head>
+<body>
+<header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
+<nav><div class="nav-content"></div></nav>
+<main class="container">
+<section class="hero"><h2><span>Fantasy Football</span> Tracker</h2><p>See how Utah high school players would score under ESPN-style fantasy rules, then build a lineup from the reported season stat totals.</p><div class="updated" id="updated">Loading reported player stats…</div></section>
+<div class="summary-grid" id="summary"></div>
+<section class="controls">
+<select id="season" aria-label="Season"><option value="2026">2026 — Current</option><option value="2025">2025 — Final</option></select>
+<select id="scoring" aria-label="Scoring format"><option value="ppr">PPR</option><option value="half">Half PPR</option><option value="standard">Non-PPR</option></select>
+<select id="position" aria-label="Position"><option value="ALL">All Positions</option><option value="QB">QB</option><option value="RB">RB</option><option value="WR">WR</option><option value="TE">TE</option><option value="ATH">ATH / Other</option><option value="K">K/P</option></select>
+<select id="classification" aria-label="Classification"><option value="ALL">All Classifications</option></select>
+<input id="search" type="search" placeholder="Search player or team…" aria-label="Search player or team">
+</section>
+<div class="scoring-note"><strong>Scoring:</strong> 0.04 per passing yard, 4 per passing TD, -2 per interception thrown, 0.1 per rushing/receiving yard, 6 per rushing/receiving TD, 3 per field goal and 1 per PAT. PPR adds 1 per reception; Half PPR adds 0.5. Only statewide stat categories actually reported in the source data are counted.</div>
+<div class="layout">
+<section class="board"><div class="board-head"><div><h3 id="boardTitle">Fantasy Leaders</h3><p id="boardSub">Reported season totals</p></div><p id="resultCount"></p></div><div class="table-wrap"><table class="leaders"><thead><tr><th>Rank</th><th>Player</th><th>Pos</th><th>Class</th><th>Fantasy Pts</th><th>Breakdown</th><th>Lineup</th></tr></thead><tbody id="rows"></tbody></table></div><div class="empty" id="empty" hidden>No players match those filters.</div></section>
+<aside class="lineup"><div class="lineup-head"><h3>Lineup Simulator</h3><p>QB • 2 RB • 2 WR • TE • FLEX • K/P</p></div><div class="lineup-body" id="lineupBody"></div></aside>
+</div>
+<section class="formula"><h3>ESPN-Style Formula</h3><div class="formula-grid"><div class="formula-item"><strong>Passing</strong><span>1 point / 25 yards • 4 / TD • -2 / INT</span></div><div class="formula-item"><strong>Rushing</strong><span>1 point / 10 yards • 6 / TD</span></div><div class="formula-item"><strong>Receiving</strong><span>1 point / 10 yards • 6 / TD • reception bonus by format</span></div><div class="formula-item"><strong>Kicking</strong><span>3 / FG • 1 / PAT</span></div></div><p class="source">Fantasy scoring is a recreational analytics calculation only. It uses Rural Utah Sports' reported player-stat archive and ESPN-style scoring values; it is not an official ESPN product. Missing or unreported stat categories are not estimated.</p></section>
+</main>
+<footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
+<script src="school-assets.js?v=20260817-emery" data-rus-school-assets="1"></script>
+<script src="fantasy-football.js?v=20260817a"></script>
+<script src="nav-menu.js?v=20260817-fantasy"></script>
+</body>
+</html>
