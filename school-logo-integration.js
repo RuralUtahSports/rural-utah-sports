@@ -5,7 +5,7 @@
     'LAYTON CHRISTIAN':'school-logos/layton-christian.svg','LAYTON CHRISTIAN ACADEMY':'school-logos/layton-christian.svg',
     'LONE PEAK':'school-logos/lone-peak.svg','MAPLE MOUNTAIN':'school-logos/maple-mountain.svg','MILFORD':'school-logos/milford.svg',
     'MILLARD':'school-logos/millard.svg','MORGAN':'school-logos/morgan.svg','OREM':'school-logos/orem.svg',
-    'GRAND':'school-logos/grand.webp?v=20260817-1','GRAND COUNTY':'school-logos/grand.webp?v=20260817-1','RIDGELINE':'school-logos/ridgeline.webp?v=20260817-1','SOUTH SUMMIT':'school-logos/south-summit.webp?v=20260817-1',
+    'EAST':'school-logos/east-user.svg?v=20260817-1','GRAND':'school-logos/grand.webp?v=20260817-1','GRAND COUNTY':'school-logos/grand.webp?v=20260817-1','RIDGELINE':'school-logos/ridgeline-padded.svg?v=20260817-2','SOUTH SUMMIT':'school-logos/south-summit.webp?v=20260817-1',
     'PROVIDENCE HALL':'school-logos/providence-hall.svg','RICH':'school-logos/rich-user.svg','SAN JUAN':'school-logos/san-juan.svg','VIEWMONT':'school-logos/viewmont.svg'
   };
   const norm=v=>String(v||'').trim().toUpperCase().replace(/\s+/g,' ');
@@ -19,4 +19,4 @@
   const A=window.RUSSchoolAssets;if(A){const original=A.logoUrl?.bind(A);A.logoUrl=(team,entry)=>customUrl(team)||(original?original(team,entry):'');Promise.resolve(A.load?.()).finally(enhance)}else enhance();
   [100,400,1000,2200].forEach(ms=>setTimeout(enhance,ms));let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;enhance()})}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['src']});
 })();
-// sitewide custom-logo wiring trigger 2026-08-17
+// sitewide custom-logo wiring trigger 2026-08-17b
