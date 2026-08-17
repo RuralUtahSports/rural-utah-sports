@@ -39,7 +39,7 @@
   const norm = value => String(value ?? '').trim().toUpperCase().replace(/\s+/g, ' ');
 
   // Keep the Weekly Scoreboard scoped to one football week instead of every
-  // 2026 game in weekly-simulation.json. Between game weeks, show the next
+  // season game in weekly-simulation.json. Between game weeks, show the next
   // upcoming week; once no future games remain, show the latest loaded week.
   const originalRender = render;
   let weekScoped = false;
@@ -67,31 +67,34 @@
   };
 
   // Pull A:F directly from Weekly Simulation as a live prediction overlay.
-  // This makes manually-entered out-of-state predictions appear immediately
-  // instead of waiting for the 15-minute GitHub JSON sync.
+  // Include the date in the key so a repeat matchup in another week/season
+  // can never inherit the wrong manual prediction.
   window.rusWeeklySheetCallback = payload => {
     try {
       const rows = payload?.table?.rows || [];
       const predictions = new Map();
-      const cell = c => c == null ? '' : (c.v ?? c.f ?? '');
+      const rawCell = c => c == null ? '' : (c.v ?? c.f ?? '');
+      const displayCell = c => c == null ? '' : (c.f ?? c.v ?? '');
 
       for (const row of rows) {
         const c = row?.c || [];
-        const away = norm(cell(c[1]));
-        const home = norm(cell(c[2]));
-        const awayRaw = cell(c[3]);
-        const homeRaw = cell(c[4]);
-        if (!away || !home || awayRaw === '' || homeRaw === '') continue;
+        const date = isoDate(displayCell(c[0]));
+        const away = norm(rawCell(c[1]));
+        const home = norm(rawCell(c[2]));
+        const awayRaw = rawCell(c[3]);
+        const homeRaw = rawCell(c[4]);
+        if (!date || !away || !home || awayRaw === '' || homeRaw === '') continue;
         const awayScore = Number(awayRaw);
         const homeScore = Number(homeRaw);
-        const winner = String(cell(c[5]) ?? '').trim();
+        const winner = String(rawCell(c[5]) ?? '').trim();
         if (!Number.isFinite(awayScore) || !Number.isFinite(homeScore)) continue;
-        predictions.set(`${away}|||${home}`, { awayScore, homeScore, winner });
+        predictions.set(`${date}|||${away}|||${home}`, { awayScore, homeScore, winner });
       }
 
       let changed = false;
       for (const game of games) {
-        const hit = predictions.get(`${norm(game.awayTeam)}|||${norm(game.homeTeam)}`);
+        const key = `${isoDate(game.date)}|||${norm(game.awayTeam)}|||${norm(game.homeTeam)}`;
+        const hit = predictions.get(key);
         if (!hit) continue;
         if (game.awayScore !== hit.awayScore || game.homeScore !== hit.homeScore || String(game.winner || '') !== hit.winner) {
           game.awayScore = hit.awayScore;
@@ -113,11 +116,8 @@
 
   function dateFromHeading(text) {
     const raw = String(text || '').trim();
-    const m = raw.match(/([A-Za-z]{3,9})\s+(\d{1,2})/);
-    if (!m) return '';
-    const d = new Date(`${m[1]} ${m[2]}, 2026`);
-    if (!Number.isFinite(d.getTime())) return '';
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const match = games.find(g => fmtDate(g.date) === raw);
+    return match ? isoDate(match.date) : '';
   }
 
   function addGamePageLinks() {
@@ -152,7 +152,11 @@
       if (embedded) logos.RICH = embedded;
     } catch {}
 
+    const board = document.getElementById('board');
+    let observer = null;
     const apply = () => {
+      // Avoid an observer reacting to DOM nodes that this same pass inserts.
+      observer?.disconnect();
       document.querySelectorAll('#board .game .team-row').forEach(teamRow => {
         const team = teamRow.querySelector('.team-name')?.textContent?.trim();
         const main = teamRow.querySelector('.team-main');
@@ -167,7 +171,7 @@
         }
 
         const src = logos[norm(team)] || window.RUSSchoolAssets?.logoUrl?.(team) || '';
-        if (src) {
+        if (src && img.src !== src) {
           img.src = src;
           img.style.display = 'block';
           img.style.objectFit = 'contain';
@@ -175,11 +179,12 @@
         }
       });
       addGamePageLinks();
+      if (observer && board) observer.observe(board, { childList: true, subtree: true });
     };
 
+    if (board) observer = new MutationObserver(apply);
     apply();
-    const board = document.getElementById('board');
-    if (board) new MutationObserver(apply).observe(board, { childList: true, subtree: true });
+    if (observer && board) observer.observe(board, { childList: true, subtree: true });
   }
 
   hydrateScoreboardLogos();
