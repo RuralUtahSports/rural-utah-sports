@@ -35,8 +35,13 @@
     #rus-back-to-top:hover{filter:brightness(1.06)}
     #rus-back-to-top:focus-visible{outline:3px solid #fff;outline-offset:3px}
     #rus-back-to-top .rus-top-arrow{font-size:20px;line-height:1;transform:translateY(-1px)}
+    .rus-champ-winners-title{font-size:22px;font-weight:900;text-transform:uppercase;border-left:5px solid #F14D07;padding-left:11px;margin:24px 0 8px}
+    .rus-champ-winners-scroll{max-height:480px!important;overflow-y:auto!important;overflow-x:auto!important;overscroll-behavior:contain;border:1px solid #444!important;box-shadow:inset 0 -18px 24px -22px rgba(255,255,255,.28)}
+    .rus-champ-winners-scroll thead th{position:sticky!important;top:0!important;z-index:8!important}
     @media(max-width:700px){
       #rus-back-to-top{right:max(12px,env(safe-area-inset-right));bottom:max(14px,calc(env(safe-area-inset-bottom) + 8px));height:46px;padding:0 13px;min-width:48px}
+      .rus-champ-winners-scroll{max-height:430px!important}
+      .rus-champ-winners-title{font-size:19px}
     }
     @media(prefers-reduced-motion:reduce){#rus-back-to-top{transition:none}}
   `;
@@ -66,6 +71,20 @@
   update();
 
   if(/(^|\/)championships\.html$/.test(location.pathname)||location.pathname.endsWith('/championships')){
+    const champRows=document.getElementById('champRows');
+    const winnersWrap=champRows?.closest('.table-wrap');
+    const resultCount=document.getElementById('resultCount');
+    if(winnersWrap){
+      winnersWrap.classList.add('rus-champ-winners-scroll');
+      if(resultCount&&!document.getElementById('rusChampWinnersTitle')){
+        const title=document.createElement('h3');
+        title.id='rusChampWinnersTitle';
+        title.className='rus-champ-winners-title';
+        title.textContent='Championship Winners';
+        resultCount.before(title);
+      }
+    }
+
     const summary=document.getElementById('summary');
     if(summary&&!document.getElementById('playoffBracketPreview')){
       const css=document.createElement('link');
