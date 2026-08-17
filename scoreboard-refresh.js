@@ -38,6 +38,34 @@
 
   const norm = value => String(value ?? '').trim().toUpperCase().replace(/\s+/g, ' ');
 
+  // Keep the Weekly Scoreboard scoped to one football week instead of every
+  // 2026 game in weekly-simulation.json. Between game weeks, show the next
+  // upcoming week; once no future games remain, show the latest loaded week.
+  const originalRender = render;
+  let weekScoped = false;
+  render = function () {
+    if (!weekScoped && Array.isArray(games) && games.length) {
+      const valid = games.filter(g => dateVal(g.date));
+      if (valid.length) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const target = valid.find(g => dateVal(g.date) >= today.getTime()) || valid[valid.length - 1];
+        const anchor = new Date(dateVal(target.date));
+        anchor.setHours(0, 0, 0, 0);
+        const daysSinceThursday = (anchor.getDay() + 3) % 7;
+        anchor.setDate(anchor.getDate() - daysSinceThursday);
+        const start = anchor.getTime();
+        const end = start + (7 * 24 * 60 * 60 * 1000);
+        games = games.filter(g => {
+          const t = dateVal(g.date);
+          return t >= start && t < end;
+        });
+      }
+      weekScoped = true;
+    }
+    return originalRender();
+  };
+
   function dateFromHeading(text) {
     const raw = String(text || '').trim();
     const m = raw.match(/([A-Za-z]{3,9})\s+(\d{1,2})/);
