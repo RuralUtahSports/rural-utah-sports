@@ -15,8 +15,18 @@ async function ensureAssets(){for(let i=0;i<60&&!window.RUSSchoolAssets;i++)awai
 async function loadMeta(){const r=await fetch(`teams-data.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)return;for(const t of await r.json())meta.set(canon(t.team),t)}
 function colorFor(team){const m=meta.get(canon(team))||{};return m.backgroundColor||m.primaryColor||'#444'}
 function logoFor(team){if(window.RUSSchoolAssets?.logoUrl)return window.RUSSchoolAssets.logoUrl(team);return ''}
-function relabelDefense(){document.querySelectorAll('[data-cat="Defense/Special Teams"]').forEach(b=>{b.textContent='Defense';b.title='Defensive stat leaders'});for(const pill of document.querySelectorAll('#summary .pill'))if(pill.textContent.trim()==='Defense/Special Teams')pill.textContent='Defense';const controls=document.querySelector('.controls');if(controls&&!document.getElementById('rusDefenseLeadersNote')){const note=document.createElement('div');note.id='rusDefenseLeadersNote';note.className='rus-defense-note';note.textContent='Defense leaders are tracked for tackles, sacks, interceptions and defensive/return touchdowns when those stats are reported.';controls.insertAdjacentElement('afterend',note)}}
+function relabelDefense(){
+  document.querySelectorAll('[data-cat="Defense/Special Teams"]').forEach(b=>{
+    if(b.textContent.trim()!=='Defense')b.textContent='Defense';
+    if(b.title!=='Defensive stat leaders')b.title='Defensive stat leaders';
+  });
+  for(const pill of document.querySelectorAll('#summary .pill'))if(pill.textContent.trim()==='Defense/Special Teams')pill.textContent='Defense';
+  const controls=document.querySelector('.controls');
+  if(controls&&!document.getElementById('rusDefenseLeadersNote')){
+    const note=document.createElement('div');note.id='rusDefenseLeadersNote';note.className='rus-defense-note';note.textContent='Defense leaders are tracked for tackles, sacks, interceptions and defensive/return touchdowns when those stats are reported.';controls.insertAdjacentElement('afterend',note)
+  }
+}
 function decorate(){relabelDefense();const rows=document.querySelectorAll('.leaders tbody tr');rows.forEach(tr=>{const teamCell=tr.querySelector('td.team');if(!teamCell||teamCell.dataset.rusBranded==='1')return;const a=teamCell.querySelector('a');if(!a)return;const team=(new URL(a.href,location.href).searchParams.get('team')||a.textContent||'').trim();if(!team)return;const color=colorFor(team);const logo=logoFor(team);tr.style.setProperty('--team-color',color);teamCell.dataset.rusBranded='1';teamCell.innerHTML=`<div class="rus-stat-team-wrap"><span class="rus-stat-logo-shell">${logo?`<img class="rus-stat-logo" src="${esc(logo)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}</span><span class="rus-stat-team-text"><a href="team.html?team=${encodeURIComponent(team)}">${esc(team)}</a><span class="rus-stat-team-color"></span></span></div>`;const rank=tr.querySelector('td.rank');if(rank&&!rank.querySelector('.rus-stat-rank-dot'))rank.innerHTML=`<span class="rus-stat-rank-dot">${esc(rank.textContent.trim())}</span>`})}
-async function init(){addStyles();await Promise.all([ensureAssets(),loadMeta().catch(()=>{})]);decorate();for(const id of ['results','categoryButtons','summary']){const host=document.getElementById(id);if(host)new MutationObserver(decorate).observe(host,{childList:true,subtree:true})}}
+async function init(){addStyles();await Promise.all([ensureAssets(),loadMeta().catch(()=>{})]);decorate();for(const id of ['results','categoryButtons','summary']){const host=document.getElementById(id);if(host)new MutationObserver(()=>requestAnimationFrame(decorate)).observe(host,{childList:true,subtree:true})}}
 init().catch(console.warn);
 })();
