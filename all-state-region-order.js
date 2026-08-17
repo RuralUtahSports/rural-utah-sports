@@ -1,79 +1,13 @@
 (()=>{
 'use strict';
 if((location.pathname.split('/').pop()||'').toLowerCase()!=='all-state-watch.html')return;
-
 const scoring=window.RUSAwardScoring;
-
-if(scoring&&typeof pts==='function'){
-  const basePts=pts;
-  pts=function(cat,v){
-    if(scoring.isPassing(cat)||scoring.isRushing(cat)||scoring.isReceiving(cat)||scoring.isKicking(cat)||scoring.isDefense(cat))return scoring.categoryScore(cat,v,'');
-    return basePts(cat,v);
-  };
-}
-
-if(scoring&&typeof build==='function'){
-  const baseBuild=build;
-  build=function(){
-    const rows=baseBuild();
-    for(const p of rows){
-      // Shared position scoring: QB/RB/WR/TE/ATH count passing + rushing + receiving only.
-      // That includes trick-play production while excluding defensive/special-teams stats.
-      // QB rushing uses the shared run-first QB formula.
-      p.score=scoring.positionScore(p.pos,p.lines||[]);
-      p.weightedScore=p.score*p.weight;
-    }
-    return rows;
-  };
-}
-
-if(scoring&&typeof topLine==='function'){
-  const baseTopLine=topLine;
-  const fmt=x=>x?`${x.cat}: ${Object.entries(x.values||{}).filter(([,v])=>String(v).trim()).slice(0,5).map(([k,v])=>`${k} ${v}`).join(', ')}`:'';
-  topLine=function(p){
-    if(scoring.isOffensePosition(p.pos)){
-      const offense=(p.lines||[]).filter(x=>scoring.isOffenseLine(x.cat));
-      if(offense.length){
-        const ordered=[...offense].sort((a,b)=>scoring.categoryScore(b.cat,b.values,p.pos)-scoring.categoryScore(a.cat,a.values,p.pos));
-        return ordered.slice(0,2).map(fmt).join(' • ');
-      }
-    }
-    return baseTopLine(p);
-  };
-}
-
-function addScoreNote(){
-  if(document.getElementById('rus-position-score-note'))return;
-  const controls=document.querySelector('.controls');
-  if(!controls)return;
-  const note=document.createElement('div');
-  note.id='rus-position-score-note';
-  note.style.cssText='margin-top:12px;color:#888;font-size:10px;line-height:1.45;font-weight:800;text-transform:uppercase';
-  note.textContent=`OFFENSIVE AWARDS: passing + rushing + receiving all count for QB, RB, WR, TE and ATH. Defensive stats are excluded. Run-first QBs receive enhanced rushing credit. Scoring rules ${scoring?.VERSION||''}.`;
-  controls.appendChild(note);
-}
-
+if(scoring&&typeof pts==='function'){const basePts=pts;pts=function(cat,v){if(scoring.isPassing(cat)||scoring.isRushing(cat)||scoring.isReceiving(cat)||scoring.isKicking(cat)||scoring.isDefense(cat))return scoring.categoryScore(cat,v,'');return basePts(cat,v)}}
+if(scoring&&typeof build==='function'){const baseBuild=build;build=function(){const rows=baseBuild();for(const p of rows){p.score=scoring.positionScore(p.pos,p.lines||[]);p.weightedScore=p.score*p.weight}return rows}}
+if(typeof groups==='function'){const baseGroups=groups;groups=function(){const rows=baseGroups();return typeof view!=='undefined'&&view==='All-Utah'?rows.map(([pos,list])=>[pos,(list||[]).slice(0,6)]):rows}}
+if(scoring&&typeof topLine==='function'){const baseTopLine=topLine,fmt=x=>x?`${x.cat}: ${Object.entries(x.values||{}).filter(([,v])=>String(v).trim()).slice(0,5).map(([k,v])=>`${k} ${v}`).join(', ')}`:'';topLine=function(p){if(scoring.isOffensePosition(p.pos)){const offense=(p.lines||[]).filter(x=>scoring.isOffenseLine(x.cat));if(offense.length){const ordered=[...offense].sort((a,b)=>scoring.categoryScore(b.cat,b.values,p.pos)-scoring.categoryScore(a.cat,a.values,p.pos));return ordered.slice(0,2).map(fmt).join(' • ')}}return baseTopLine(p)}}
+function addScoreNote(){if(document.getElementById('rus-position-score-note'))return;const controls=document.querySelector('.controls');if(!controls)return;const note=document.createElement('div');note.id='rus-position-score-note';note.style.cssText='margin-top:12px;color:#888;font-size:10px;line-height:1.45;font-weight:800;text-transform:uppercase';note.textContent=`OFFENSIVE AWARDS: passing + rushing + receiving all count for QB, RB, WR, TE and ATH. Defensive stats are excluded. Run-first QBs receive enhanced rushing credit. Scoring rules ${scoring?.VERSION||''}.`;controls.appendChild(note)}
 function regionNumber(text){const m=String(text||'').match(/(?:REGION\s*)?(\d+)/i);return m?Number(m[1]):999}
-function reorder(){
-  const label=document.getElementById('scopeLabel'),host=document.getElementById('scopeBtns');
-  if(!label||!host||!/region/i.test(label.textContent))return;
-  const current=[...host.querySelectorAll('[data-scope]')];
-  const sorted=[...current].sort((a,b)=>regionNumber(a.dataset.scope)-regionNumber(b.dataset.scope)||String(a.dataset.scope).localeCompare(String(b.dataset.scope),undefined,{numeric:true}));
-  if(sorted.every((button,index)=>button===current[index]))return;
-  const frag=document.createDocumentFragment();
-  sorted.forEach(button=>frag.appendChild(button));
-  host.appendChild(frag);
-}
-const obs=new MutationObserver(reorder);
-const start=()=>{
-  const h=document.getElementById('scopeBtns');
-  if(!h){setTimeout(start,100);return}
-  obs.observe(h,{childList:true});
-  const l=document.getElementById('scopeLabel');
-  if(l)obs.observe(l,{childList:true,characterData:true,subtree:true});
-  addScoreNote();
-  reorder();
-  try{if(typeof data!=='undefined'&&data&&typeof render==='function')render()}catch(e){}
-};
-start();
+function reorder(){const label=document.getElementById('scopeLabel'),host=document.getElementById('scopeBtns');if(!label||!host||!/region/i.test(label.textContent))return;const current=[...host.querySelectorAll('[data-scope]')],sorted=[...current].sort((a,b)=>regionNumber(a.dataset.scope)-regionNumber(b.dataset.scope)||String(a.dataset.scope).localeCompare(String(b.dataset.scope),undefined,{numeric:true}));if(sorted.every((button,index)=>button===current[index]))return;const frag=document.createDocumentFragment();sorted.forEach(button=>frag.appendChild(button));host.appendChild(frag)}
+const obs=new MutationObserver(reorder);const start=()=>{const h=document.getElementById('scopeBtns');if(!h){setTimeout(start,100);return}obs.observe(h,{childList:true});const l=document.getElementById('scopeLabel');if(l)obs.observe(l,{childList:true,characterData:true,subtree:true});addScoreNote();reorder();try{if(typeof data!=='undefined'&&data&&typeof render==='function')render()}catch(e){}};start();
 })();
