@@ -1,0 +1,46 @@
+name: Install Shared Mobile Shell
+
+on:
+  push:
+    paths:
+      - '.github/workflows/install-mobile-shell.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wire mobile shell into shared loader
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('nav-menu.js')
+          s = p.read_text()
+          old = "addScript('mobile-optimizations.js?v=20260814b','rusMobileOptimizations',true);"
+          replacement = "addScript('mobile-optimizations.js?v=20260817-mobile2','rusMobileOptimizations',true);addScript('mobile-shell.js?v=20260817-mobile2','rusMobileShell',true);"
+          if "rusMobileShell" not in s:
+              if old not in s:
+                  raise SystemExit('Expected mobile optimizer loader not found in nav-menu.js')
+              s = s.replace(old, replacement, 1)
+          else:
+              s = s.replace("mobile-optimizations.js?v=20260814b", "mobile-optimizations.js?v=20260817-mobile2")
+          p.write_text(s)
+          Path('.github/workflows/install-mobile-shell.yml').unlink(missing_ok=True)
+          PY
+      - name: Commit mobile shell wiring
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add nav-menu.js .github/workflows/install-mobile-shell.yml
+          if git diff --cached --quiet; then
+            echo "Mobile shell already installed."
+          else
+            git commit -m "Use app-like mobile navigation sitewide"
+            git pull --rebase origin main
+            git push
+          fi
