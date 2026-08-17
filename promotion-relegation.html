@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Promotion & Relegation Simulator | Rural Utah Sports</title>
+<meta name="description" content="Simulate Utah high school football as a promotion and relegation pyramid using the current classifications, 20-game seasons, championships and team movement history.">
+<link rel="stylesheet" href="promotion-relegation.css?v=20260816a">
+</head>
+<body>
+<header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
+<nav><div class="nav-content"></div></nav>
+<main class="container" id="proRelApp">
+<h2 class="page-title">Promotion &amp; Relegation Simulator</h2>
+<p class="subtitle">Turn Utah's current football classifications into a connected pyramid. Every team plays a 20-game regular season, division champions are crowned, and three teams can move between classifications each year.</p>
+<div class="hero-note"><strong>6A is the Premier Division.</strong> The top two teams in every lower division earn automatic promotion, No. 3 and No. 4 play for the third promotion spot, and the bottom three teams are relegated. 8-Player is the bottom of the pyramid.</div>
+
+<div class="controls">
+  <button class="action" id="simulateOne">Simulate Season</button>
+  <button class="action secondary" id="simulateTen">Simulate 10 Seasons</button>
+  <button class="action danger" id="resetSim">Reset Simulator</button>
+  <span class="status" id="simStatus">Your simulated universe is saved on this browser.</span>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card"><b id="seasonNow">2026</b><span>Next season</span></div>
+  <div class="summary-card"><b id="seasonCount">0</b><span>Seasons simulated</span></div>
+  <div class="summary-card"><b id="teamCount">0</b><span>Teams in pyramid</span></div>
+  <div class="summary-card"><b id="premierCount">0</b><span>Premier teams</span></div>
+</div>
+
+<h3 class="section-title">Current Pyramid</h3>
+<p class="section-subtitle">This is the setup for the next simulated season. Promotions and relegations are applied immediately after each completed year.</p>
+<div class="pyramid-grid" id="pyramidGrid"></div>
+
+<h3 class="section-title">Season Archive</h3>
+<div class="archive-toolbar"><div class="field"><label for="seasonSelect">View season</label><select id="seasonSelect"></select></div></div>
+<div id="archiveContent"></div>
+
+<h3 class="section-title">Team History &amp; Movement</h3>
+<p class="section-subtitle">Choose a team to see its all-time simulated record and how it has moved through the classification pyramid.</p>
+<div class="team-toolbar"><div class="field"><label for="teamSelect">Team</label><select id="teamSelect"></select></div></div>
+<div class="team-summary" id="teamSummary"></div>
+<div class="chart-card"><svg id="movementChart" role="img" aria-label="Team classification movement chart"></svg></div>
+<div class="table-wrap"><table><thead><tr><th>Season</th><th>Division</th><th>Finish</th><th>W-L</th><th>PF</th><th>PA</th><th>Result</th><th>Next Division</th></tr></thead><tbody id="teamHistoryBody"></tbody></table></div>
+
+<h3 class="section-title">All-Time Simulator Records</h3>
+<div class="records-grid" id="recordsGrid"></div>
+
+<h3 class="section-title">Simulator Rules</h3>
+<div class="rules"><div class="rules-grid">
+  <div class="rule-box"><b>Regular Season</b>Every team plays exactly 20 regular-season games against teams in its current classification. Standings are ordered by wins, point differential, points scored and then simulator rating.</div>
+  <div class="rule-box"><b>Championships</b>The top two teams after the 20-game season play a neutral-site championship game. The title game does not change the 20-game standings record.</div>
+  <div class="rule-box"><b>Promotion</b>In 5A through 8-Player, first and second place move up automatically. Third and fourth play one game for the final promotion spot.</div>
+  <div class="rule-box"><b>Relegation</b>The bottom three teams in 6A through 1A move down one level. No team can be promoted above 6A or relegated below 8-Player.</div>
+</div></div>
+</main>
+<footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
+<script src="nav-menu.js?v=20260816-prorel" defer></script>
+<script src="promotion-relegation.js?v=20260816a" defer></script>
+</body>
+</html>
