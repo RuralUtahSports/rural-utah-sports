@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - '.github/workflows/build-out-of-state.yml'
+      - 'scripts/build-out-of-state.js'
 
 permissions:
   contents: write
@@ -24,58 +25,17 @@ jobs:
         env:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
           OOS_GID: 1550121091
-        run: |
-          node <<'NODE'
-          const fs=require('fs');
-          const sheetId=process.env.SHEET_ID,gid=process.env.OOS_GID;
-          const url=`https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}&range=${encodeURIComponent('A1:I5000')}`;
-          function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}else{if(c==='"')quoted=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
-          const clean=v=>String(v??'').trim();
-          const norm=v=>clean(v).replace(/\s+/g,' ').toUpperCase();
-          const num=v=>{const n=Number(clean(v).replace(/,/g,''));return Number.isFinite(n)?n:null};
-          const aliases={
-            'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY',
-            'WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY'
-          };
-          function canonical(v){const n=norm(v).replace(/\.+$/,'').trim();if(n.startsWith('WASATCH ACAD'))return 'WASATCH ACADEMY';return aliases[n]||n}
-          const stateNames={AK:'Alaska',AL:'Alabama',AR:'Arkansas',AZ:'Arizona',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',FL:'Florida',GA:'Georgia',HI:'Hawaii',IA:'Iowa',ID:'Idaho',IL:'Illinois',IN:'Indiana',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',MA:'Massachusetts',MD:'Maryland',ME:'Maine',MI:'Michigan',MN:'Minnesota',MO:'Missouri',MS:'Mississippi',MT:'Montana',NC:'North Carolina',ND:'North Dakota',NE:'Nebraska',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NV:'Nevada',NY:'New York',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',VA:'Virginia',VT:'Vermont',WA:'Washington',WI:'Wisconsin',WV:'West Virginia',WY:'Wyoming',DC:'District of Columbia'};
-          function rec(){return{wins:0,losses:0,ties:0,games:0,pointsFor:0,pointsAgainst:0}}
-          function add(r,g){r.games++;r.pointsFor+=g.pf;r.pointsAgainst+=g.pa;if(g.result==='W')r.wins++;else if(g.result==='L')r.losses++;else r.ties++}
-          function finish(r){return{...r,winPct:r.games?(r.wins+r.ties*.5)/r.games:0,avgMargin:r.games?(r.pointsFor-r.pointsAgainst)/r.games:0}}
-          (async()=>{
-            const res=await fetch(url);if(!res.ok)throw new Error(`Sheet download failed ${res.status}`);
-            const rows=parseCSV(await res.text());
-            const games=[],seen=new Set();let sourceRows=0,duplicatesRemoved=0,conflicts=0;
-            for(const r of rows.slice(1)){
-              const team=canonical(r[0]),year=num(r[1]),date=clean(r[2]),opponent=clean(r[3]).replace(/\s+/g,' ').trim(),state=norm(r[4]),pf=num(r[5]),pa=num(r[6]);
-              if(!team||!year||!date||!opponent||!state||pf===null||pa===null)continue;
-              sourceRows++;
-              const key=`${date}|${team}|${canonical(opponent)}|${state}`;
-              if(seen.has(key)){duplicatesRemoved++;continue}seen.add(key);
-              const result=pf>pa?'W':pf<pa?'L':'T';
-              games.push({team,year,date,opponent,state,stateName:stateNames[state]||state,pf,pa,result,margin:pf-pa});
-            }
-            games.sort((a,b)=>b.year-a.year||Date.parse(b.date)-Date.parse(a.date)||a.team.localeCompare(b.team));
-            const byState={},byYear={},byTeamState={};
-            for(const g of games){
-              if(!byState[g.state])byState[g.state]=rec();add(byState[g.state],g);
-              if(!byYear[g.year])byYear[g.year]=rec();add(byYear[g.year],g);
-              const k=`${g.team}|${g.state}`;if(!byTeamState[k])byTeamState[k]=rec();add(byTeamState[k],g);
-            }
-            const stateRecords=Object.entries(byState).map(([state,r])=>({state,stateName:stateNames[state]||state,...finish(r)})).sort((a,b)=>b.games-a.games||b.winPct-a.winPct||a.state.localeCompare(b.state));
-            const yearlyRecords=Object.entries(byYear).map(([year,r])=>({year:Number(year),...finish(r)})).sort((a,b)=>b.year-a.year);
-            const teamStateRecords=Object.entries(byTeamState).map(([k,r])=>{const [team,state]=k.split('|');return{team,state,stateName:stateNames[state]||state,...finish(r)}}).sort((a,b)=>a.team.localeCompare(b.team)||a.state.localeCompare(b.state));
-            const teams=[...new Set(games.map(g=>g.team))].sort();const states=stateRecords.map(r=>({state:r.state,stateName:r.stateName})).sort((a,b)=>a.stateName.localeCompare(b.stateName));
-            const totals=finish(games.reduce((r,g)=>(add(r,g),r),rec()));
-            const payload={summary:{sourceRows,uniqueGames:games.length,duplicatesRemoved,conflicts,...totals},states,teams,stateRecords,yearlyRecords,teamStateRecords,games};
-            fs.writeFileSync('out-of-state.json',JSON.stringify(payload));
-            console.log(`Out-of-state rows: ${sourceRows}; unique: ${games.length}; duplicates removed: ${duplicatesRemoved}`);
-            if(!games.length)throw new Error('No out-of-state games generated');
-          })().catch(e=>{console.error(e);process.exit(1)});
-          NODE
+          SIM_FILE: weekly-simulation.json
+        run: node scripts/build-out-of-state.js
       - name: Commit out-of-state data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           git add out-of-state.json
-          if git diff --cached --quiet; then echo "Out-of-state data current."; else git commit -m "Auto-sync out-of-state data"; git pull --rebase origin main; git push; fi
+          if git diff --cached --quiet; then
+            echo "Out-of-state data current."
+          else
+            git commit -m "Auto-sync out-of-state data"
+            git pull --rebase origin main
+            git push
+          fi
