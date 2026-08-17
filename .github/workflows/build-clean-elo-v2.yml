@@ -10,6 +10,7 @@ on:
       - 'deseret-game-details.json'
       - 'teams-data.json'
       - 'scripts/build_verified_elo_2026.mjs'
+      - 'scripts/build_upsets_history.mjs'
       - '.github/workflows/build-clean-elo-v2.yml'
 
 permissions:
@@ -33,6 +34,9 @@ jobs:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
           CLEAN_GAMES_GID: 627882418
         run: node scripts/build_verified_elo_2026.mjs
+
+      - name: Build Utah-only upset history
+        run: node scripts/build_upsets_history.mjs
 
       - name: Verify scheduled games did not enter 2026 ELO
         run: |
@@ -68,9 +72,10 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
           node scripts/build_verified_elo_2026.mjs
+          node scripts/build_upsets_history.mjs
 
-          git add team-elo-history.json elo-summary.json elo-live-summary.json elo-game-changes-2026.json elo-cleanup-report.json team-page-data
-          if git diff --cached --quiet; then echo "ELO data current."; exit 0; fi
+          git add team-elo-history.json elo-summary.json elo-live-summary.json elo-game-changes-2026.json elo-cleanup-report.json upsets-history.json team-page-data
+          if git diff --cached --quiet; then echo "ELO and upset data current."; exit 0; fi
           git commit -m "Rebuild ELO from verified finals"
 
           # If main moves again while this short commit is being made, rebuild once
@@ -80,8 +85,9 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             node scripts/build_verified_elo_2026.mjs
-            git add team-elo-history.json elo-summary.json elo-live-summary.json elo-game-changes-2026.json elo-cleanup-report.json team-page-data
-            if git diff --cached --quiet; then echo "ELO data current after refresh."; exit 0; fi
+            node scripts/build_upsets_history.mjs
+            git add team-elo-history.json elo-summary.json elo-live-summary.json elo-game-changes-2026.json elo-cleanup-report.json upsets-history.json team-page-data
+            if git diff --cached --quiet; then echo "ELO and upset data current after refresh."; exit 0; fi
             git commit -m "Rebuild ELO from verified finals"
             git push
           fi
