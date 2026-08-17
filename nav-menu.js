@@ -7,7 +7,7 @@
   }
   setupAnalytics();
   const groups={
-    history:[['Championships','championships.html'],['Season Explorer','season.html'],['Program Leaderboard','programs.html'],['Active Streaks','streaks.html'],['Milestone Watch','milestones.html'],['Rivalry Hub','rivalry.html'],['Dynasty Explorer','dynasty.html'],['History Lab','history-lab.html'],['Greatest Seasons','greatest-seasons.html'],['Records','records.html']],
+    history:[['Championships','championships.html'],['Season Explorer','season.html'],['Past Season Rankings','historical-rankings.html'],['Program Leaderboard','programs.html'],['Active Streaks','streaks.html'],['Milestone Watch','milestones.html'],['Rivalry Hub','rivalry.html'],['Dynasty Explorer','dynasty.html'],['History Lab','history-lab.html'],['Greatest Seasons','greatest-seasons.html'],['Records','records.html']],
     analytics:[['ELO','elo.html'],['Playoff Picture','playoff-picture.html'],['Upset Tracker','upsets.html'],['Scorigami','scorigami.html'],['Fantasy Football','fantasy-football.html'],['Out of State','out-of-state.html'],['Team Comparison','compare.html'],['Player Comparison','player-compare.html'],['Football Map','map.html']],
     stats:[['Stat Leaders','stat-leaders.html'],['Team Stats','team-stats.html'],['MVP Race','mvp-race.html'],['All-Utah Team','all-utah.html'],['All-State & Region Watch','all-state-watch.html'],['Past Award Winners','awards-2025.html']],
     simulators:[['Simulators Hub','simulators.html'],['Promotion / Relegation','promotion-relegation.html']]
@@ -31,7 +31,7 @@
     if(path==='rivalry.html')addScript('rivalry-interactive.js?v=20260812a','rusRivalryInteractive',true);if(path==='elo.html')addScript('elo-explainer.js?v=20260812b','rusEloExplainer',true);
     if(path==='index.html'){addScript('did-you-know.js?v=20260812a','rusDidYouKnow',true);addScript('today-history-more.js?v=20260813a','rusTodayHistoryMore',true);addScript('record-watch-filter.js?v=20260815a','rusRecordWatchFilter',true)}
     if(path.includes('simulator'))[['season-simulator-core.js?v=20260813a','rusSeasonCore'],['season-simulator-odds.js?v=20260813a','rusSeasonOdds'],['season-simulator-score.js?v=20260813e','rusSeasonScore'],['season-simulator-elo.js?v=20260813e','rusSeasonElo'],['season-simulator-run.js?v=20260813e','rusSeasonRun'],['season-simulator-view.js?v=20260813h','rusSeasonView'],['season-simulator-ui.js?v=20260813f','rusSeasonUi']].forEach(([src,key])=>addScript(src,key,false));
-    if(path==='rankings.html'){addScript('rankings-live-records.js?v=20260814a','rusRankingsLiveRecords',true);addScript('rankings-mobile-fix.js?v=20260815a','rusRankingsMobileFix',true);addScript('computer-rankings.js?v=20260817a','rusComputerRankings',true)}
+    if(path==='rankings.html'){addScript('rankings-live-records.js?v=20260814a','rusRankingsLiveRecords',true);addScript('rankings-mobile-fix.js?v=20260815a','rusRankingsMobileFix',true);addScript('computer-rankings.js?v=20260817-past-only','rusComputerRankings',true)}
     if(['player.html','mvp-race.html','all-state-watch.html','all-utah.html'].includes(path))addScript('player-awards-integration.js?v=20260814a','rusPlayerAwards',true);
     if(['mvp-race.html','all-state-watch.html','all-utah.html','awards-2025.html'].includes(path))addScript('award-school-branding.js?v=20260817-rural-hm','rusAwardSchoolBranding',true);
     if(path==='awards-2025.html'){addScript('past-awards-allstate-layout.js?v=20260817-rural-hm','rusPastAwardsAllState',true);addScript('past-awards-shared-scoring.js?v=20260817a','rusPastAwardsScoring',true)}
