@@ -1,175 +1,27 @@
 (()=>{
-  'use strict';
-
-  const TEAM_KEY='rus-favorite-teams-v1';
-  const PAGE_KEY='rus-favorite-pages-v1';
-  const TEAM_LIMIT=5;
-  const PAGE_LIMIT=20;
-  const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
-  const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-
-  function fire(){window.dispatchEvent(new CustomEvent('rus-favorites-changed'))}
-
-  function loadTeams(){
-    try{const x=JSON.parse(localStorage.getItem(TEAM_KEY)||'[]');return Array.isArray(x)?x:[]}
-    catch{return[]}
-  }
-  function saveTeams(a){
-    try{localStorage.setItem(TEAM_KEY,JSON.stringify([...new Set(a.map(norm))].slice(0,TEAM_LIMIT)));fire()}
-    catch{}
-  }
-
-  function cleanPage(x){
-    if(!x||typeof x!=='object')return null;
-    const url=String(x.url||'').trim();
-    const title=String(x.title||'').trim();
-    if(!url||!title)return null;
-    return{url,title};
-  }
-  function loadPages(){
-    try{
-      const raw=JSON.parse(localStorage.getItem(PAGE_KEY)||'[]');
-      if(!Array.isArray(raw))return[];
-      const seen=new Set(),out=[];
-      raw.forEach(item=>{const p=cleanPage(item);if(!p||seen.has(p.url))return;seen.add(p.url);out.push(p)});
-      return out.slice(0,PAGE_LIMIT);
-    }catch{return[]}
-  }
-  function savePages(a){
-    try{
-      const seen=new Set(),out=[];
-      (Array.isArray(a)?a:[]).forEach(item=>{const p=cleanPage(item);if(!p||seen.has(p.url))return;seen.add(p.url);out.push(p)});
-      localStorage.setItem(PAGE_KEY,JSON.stringify(out.slice(0,PAGE_LIMIT)));
-      fire();
-    }catch{}
-  }
-
-  function currentPageUrl(){
-    const file=location.pathname.split('/').pop()||'index.html';
-    return file+(location.search||'');
-  }
-  function pageTitle(){
-    const preferred=document.querySelector('.page-title, main h1, main h2, #page h1, #page h2');
-    let t=(preferred?.textContent||document.title||currentPageUrl()).replace(/\s+/g,' ').trim();
-    t=t.replace(/\s*\|\s*Rural Utah Sports\s*$/i,'').trim();
-    return t||currentPageUrl();
-  }
-  function hasPage(url=currentPageUrl()){return loadPages().some(p=>p.url===url)}
-  function togglePage(url=currentPageUrl(),title=pageTitle()){
-    const pages=loadPages();
-    if(pages.some(p=>p.url===url)){savePages(pages.filter(p=>p.url!==url));return true}
-    if(pages.length>=PAGE_LIMIT)return false;
-    savePages([...pages,{url,title}]);
-    return true;
-  }
-  function removePage(url){savePages(loadPages().filter(p=>p.url!==url))}
-
-  window.RUSFavorites={
-    load:loadTeams,
-    save:saveTeams,
-    has:t=>loadTeams().includes(norm(t)),
-    toggle(t){
-      const n=norm(t),a=loadTeams();
-      if(a.includes(n))saveTeams(a.filter(x=>x!==n));
-      else if(a.length<TEAM_LIMIT)saveTeams([...a,n]);
-      else return false;
-      return true;
-    },
-    loadPages,
-    savePages,
-    hasPage,
-    togglePage,
-    removePage
-  };
-
-  function injectStyles(){
-    if(document.getElementById('rus-favorites-styles'))return;
-    const style=document.createElement('style');
-    style.id='rus-favorites-styles';
-    style.textContent=`
-      .rus-favorite-team,.rus-favorite-page{background:#171717;color:#fff;border:1px solid #555;border-radius:6px;padding:9px 12px;font-weight:900;text-transform:uppercase;cursor:pointer}
-      .rus-favorite-team{margin-top:14px}.rus-favorite-team.on,.rus-favorite-page.on{border-color:#F14D07;color:#F14D07}
-      .rus-favorite-page{display:inline-flex;align-items:center;gap:6px;margin:0 0 16px;font-size:11px}
-      .rus-favorite-page:hover{border-color:#F14D07}
-      .rus-favorites-nav .drop{min-width:270px}
-      .rus-favorites-nav .fav-empty{padding:13px 14px;color:#888;font-size:11px;font-weight:800;text-transform:none;line-height:1.4}
-      .rus-favorites-nav .fav-row{display:flex;align-items:stretch;border-bottom:1px solid #242424}
-      .rus-favorites-nav .fav-row:last-child{border-bottom:0}
-      .rus-favorites-nav .fav-row>a{flex:1;min-width:0;border-bottom:0!important;overflow:hidden;text-overflow:ellipsis}
-      .rus-favorites-nav .fav-remove{width:38px;border:0;border-left:1px solid #242424;background:#111;color:#888;font-size:18px;font-weight:900;cursor:pointer}
-      .rus-favorites-nav .fav-remove:hover{background:#F14D07;color:#000}
-      .rus-favorites-nav .fav-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#F14D07;color:#000;font-size:9px}
-      @media(max-width:700px){.rus-favorites-nav .drop{width:100%}.rus-favorite-page{margin-bottom:13px}}
-    `;
-    document.head.appendChild(style);
-  }
-
-  function addPageButton(){
-    const file=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-    if(file==='index.html'||document.getElementById('rusFavoritePage'))return;
-    const title=document.querySelector('.page-title, main h1, main h2, #page h1, #page h2');
-    if(!title)return;
-    const b=document.createElement('button');
-    b.id='rusFavoritePage';
-    b.type='button';
-    b.className='rus-favorite-page';
-    const paint=()=>{const on=hasPage();b.classList.toggle('on',on);b.textContent=on?'★ Favorited':'☆ Favorite Page';b.setAttribute('aria-pressed',String(on))};
-    b.addEventListener('click',()=>{
-      if(togglePage()===false){alert(`You can save up to ${PAGE_LIMIT} favorite pages. Remove one from Favorites first.`);return}
-      paint();
-    });
-    title.insertAdjacentElement('afterend',b);
-    paint();
-  }
-
-  function buildFavoritesNav(){
-    const nav=document.querySelector('.nav-content.rus-nav');
-    if(!nav)return;
-    let details=document.getElementById('rusFavoritePagesNav');
-    if(!details){
-      details=document.createElement('details');
-      details.id='rusFavoritePagesNav';
-      details.className='rus-favorites-nav';
-      const myTeams=nav.querySelector('a[href="my-teams.html"]');
-      if(myTeams)myTeams.insertAdjacentElement('afterend',details);else nav.appendChild(details);
-      details.addEventListener('toggle',()=>{if(!details.open)return;document.querySelectorAll('.rus-nav details').forEach(other=>{if(other!==details)other.open=false})});
-    }
-    const pages=loadPages();
-    const rows=pages.length?pages.map(p=>`<div class="fav-row"><a href="${esc(p.url)}"${p.url===currentPageUrl()?' class="active" aria-current="page"':''}>${esc(p.title)}</a><button class="fav-remove" type="button" data-url="${esc(p.url)}" aria-label="Remove ${esc(p.title)} from favorites" title="Remove">×</button></div>`).join(''):'<div class="fav-empty">No favorite pages yet. Use “☆ Favorite Page” on any page to save it here.</div>';
-    details.innerHTML=`<summary>Favorites${pages.length?` <span class="fav-count">${pages.length}</span>`:''}<span class="caret">▼</span></summary><div class="drop">${rows}</div>`;
-    details.querySelectorAll('.fav-remove').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();removePage(b.dataset.url||'');buildFavoritesNav();const pageButton=document.getElementById('rusFavoritePage');if(pageButton){const on=hasPage();pageButton.classList.toggle('on',on);pageButton.textContent=on?'★ Favorited':'☆ Favorite Page';pageButton.setAttribute('aria-pressed',String(on))}}));
-  }
-
-  function addTeamButton(){
-    if((location.pathname.split('/').pop()||'').toLowerCase()!=='team.html')return;
-    const team=new URLSearchParams(location.search).get('team');
-    if(!team)return;
-    function add(){
-      const hero=document.querySelector('#page .hero-content');
-      if(!hero||document.getElementById('rusFavoriteTeam'))return;
-      const b=document.createElement('button');
-      b.id='rusFavoriteTeam';
-      b.className='rus-favorite-team';
-      const paint=()=>{const on=window.RUSFavorites.has(team);b.classList.toggle('on',on);b.textContent=on?'★ Saved to My Teams':'☆ Add to My Teams'};
-      b.onclick=()=>{if(window.RUSFavorites.toggle(team)===false){alert('You can save up to 5 teams. Remove one from My Teams first.');return}paint()};
-      hero.appendChild(b);paint();
-    }
-    add();
-    const page=document.getElementById('page');
-    if(page&&!document.getElementById('rusFavoriteTeam')){const o=new MutationObserver(()=>{add();if(document.getElementById('rusFavoriteTeam'))o.disconnect()});o.observe(page,{childList:true,subtree:true})}
-  }
-
-  function setup(){
-    injectStyles();
-    addPageButton();
-    buildFavoritesNav();
-    addTeamButton();
-    window.addEventListener('rus-favorites-changed',()=>{buildFavoritesNav()});
-    if(!document.getElementById('rusFavoritePage')){
-      const main=document.querySelector('main,#page');
-      if(main){const o=new MutationObserver(()=>{addPageButton();if(document.getElementById('rusFavoritePage'))o.disconnect()});o.observe(main,{childList:true,subtree:true})}
-    }
-  }
-
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+'use strict';
+const TEAM_KEY='rus-favorite-teams-v1',PAGE_KEY='rus-favorite-pages-v1',TEAM_LIMIT=5,PAGE_LIMIT=20;
+const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
+const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+const fire=()=>window.dispatchEvent(new CustomEvent('rus-favorites-changed'));
+function loadTeams(){try{const x=JSON.parse(localStorage.getItem(TEAM_KEY)||'[]');return Array.isArray(x)?x:[]}catch{return[]}}
+function saveTeams(a){try{localStorage.setItem(TEAM_KEY,JSON.stringify([...new Set(a.map(norm))].slice(0,TEAM_LIMIT)));fire()}catch{}}
+function cleanPage(x){if(!x||typeof x!=='object')return null;const url=String(x.url||'').trim(),title=String(x.title||'').trim();return url&&title?{url,title}:null}
+function loadPages(){try{const raw=JSON.parse(localStorage.getItem(PAGE_KEY)||'[]');if(!Array.isArray(raw))return[];const seen=new Set(),out=[];for(const item of raw){const p=cleanPage(item);if(!p||seen.has(p.url))continue;seen.add(p.url);out.push(p)}return out.slice(0,PAGE_LIMIT)}catch{return[]}}
+function savePages(a){try{const seen=new Set(),out=[];for(const item of Array.isArray(a)?a:[]){const p=cleanPage(item);if(!p||seen.has(p.url))continue;seen.add(p.url);out.push(p)}localStorage.setItem(PAGE_KEY,JSON.stringify(out.slice(0,PAGE_LIMIT)));fire()}catch{}}
+function currentPageUrl(){const file=location.pathname.split('/').pop()||'index.html';return file+(location.search||'')}
+function pageTitle(){const preferred=document.querySelector('.page-title,main h1,main h2,#page h1,#page h2');let t=(preferred?.textContent||document.title||currentPageUrl()).replace(/\s+/g,' ').trim();t=t.replace(/\s*\|\s*Rural Utah Sports\s*$/i,'').trim();return t||currentPageUrl()}
+function hasPage(url=currentPageUrl()){return loadPages().some(p=>p.url===url)}
+function togglePage(url=currentPageUrl(),title=pageTitle()){const pages=loadPages();if(pages.some(p=>p.url===url)){savePages(pages.filter(p=>p.url!==url));return true}if(pages.length>=PAGE_LIMIT)return false;savePages([...pages,{url,title}]);return true}
+function removePage(url){savePages(loadPages().filter(p=>p.url!==url))}
+window.RUSFavorites={load:loadTeams,save:saveTeams,has:t=>loadTeams().includes(norm(t)),toggle(t){const n=norm(t),a=loadTeams();if(a.includes(n))saveTeams(a.filter(x=>x!==n));else if(a.length<TEAM_LIMIT)saveTeams([...a,n]);else return false;return true},loadPages,savePages,hasPage,togglePage,removePage};
+function injectStyles(){if(document.getElementById('rus-favorites-styles'))return;const s=document.createElement('style');s.id='rus-favorites-styles';s.textContent=`
+.rus-favorite-team{background:#171717;color:#fff;border:1px solid #555;border-radius:9px;padding:10px 13px;font-weight:900;text-transform:uppercase;cursor:pointer;margin-top:14px}.rus-favorite-team.on{border-color:#F14D07;color:#F14D07}
+header .header-content{position:relative}.rus-header-favorites{position:relative;margin-left:auto;flex:0 0 auto;z-index:85}.rus-header-favorites>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:9px 12px;border:1px solid #3a3a3a;border-radius:12px;background:#171717;color:#fff;font:900 11px/1 Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.45px;-webkit-tap-highlight-color:transparent}.rus-header-favorites>summary::-webkit-details-marker{display:none}.rus-header-favorites>summary:hover,.rus-header-favorites[open]>summary{border-color:#F14D07;background:#21130e;color:#F14D07}.rus-fav-star{font-size:20px;line-height:1;color:#F14D07}.rus-fav-count{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#F14D07;color:#000;font-size:9px}.rus-fav-panel{position:absolute;right:0;top:calc(100% + 9px);width:min(370px,92vw);max-height:min(70vh,620px);overflow:auto;background:#101010;border:1px solid #3a3a3a;border-top:4px solid #F14D07;border-radius:14px;box-shadow:0 18px 45px rgba(0,0,0,.55);padding:12px;-webkit-overflow-scrolling:touch}.rus-fav-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 2px 10px}.rus-fav-head strong{font-size:17px;text-transform:uppercase}.rus-fav-head span{color:#888;font-size:10px;text-transform:uppercase}.rus-fav-current{width:100%;min-height:46px;border:1px solid #3b3b3b;border-radius:10px;background:#1a1a1a;color:#fff;font-weight:900;text-align:left;padding:10px 12px;margin-bottom:10px;cursor:pointer}.rus-fav-current.on{border-color:#F14D07;color:#F14D07;background:#21130e}.rus-fav-list{display:grid;gap:7px}.rus-fav-row{display:grid;grid-template-columns:minmax(0,1fr) 42px;min-height:46px;border:1px solid #303030;border-radius:9px;overflow:hidden;background:#181818}.rus-fav-row>a{display:flex;align-items:center;min-width:0;padding:9px 11px;color:#fff;text-decoration:none;font-size:12px;font-weight:850;line-height:1.25;overflow:hidden;text-overflow:ellipsis}.rus-fav-row>a.active{color:#F14D07}.rus-fav-remove{border:0;border-left:1px solid #303030;background:#121212;color:#888;font-size:20px;font-weight:900;cursor:pointer}.rus-fav-remove:hover{background:#F14D07;color:#000}.rus-fav-empty{padding:18px 10px;color:#888;text-align:center;font-size:12px;line-height:1.5}.rus-fav-tip{padding:10px 3px 1px;color:#666;font-size:10px;line-height:1.4}
+@media(max-width:700px){.rus-header-favorites{margin-left:auto}.rus-header-favorites>summary{width:46px;height:46px;padding:0;border-radius:12px}.rus-header-favorites .rus-fav-label{display:none}.rus-header-favorites>summary .rus-fav-count{position:absolute;right:-4px;top:-4px;min-width:18px;height:18px;font-size:8px}.rus-fav-panel{position:fixed;top:70px;left:8px;right:8px;width:auto;max-height:calc(100dvh - 155px);border-radius:14px}.rus-fav-row>a{font-size:13px}}
+`;document.head.appendChild(s)}
+function renderHeaderFavorites(){const host=document.querySelector('header .header-content')||document.querySelector('header');if(!host)return;let d=document.getElementById('rusHeaderFavorites');if(!d){d=document.createElement('details');d.id='rusHeaderFavorites';d.className='rus-header-favorites';host.appendChild(d);document.addEventListener('click',e=>{if(d.open&&!d.contains(e.target))d.open=false});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&d.open){d.open=false;d.querySelector('summary')?.focus()}})}const pages=loadPages(),on=hasPage(),count=pages.length;const rows=pages.length?pages.map(p=>`<div class="rus-fav-row"><a href="${esc(p.url)}"${p.url===currentPageUrl()?' class="active" aria-current="page"':''}>${esc(p.title)}</a><button class="rus-fav-remove" type="button" data-url="${esc(p.url)}" aria-label="Remove ${esc(p.title)} from favorites">×</button></div>`).join(''):'<div class="rus-fav-empty">No favorite pages yet.<br>Save pages you use a lot and they’ll show up here.</div>';d.innerHTML=`<summary aria-label="Favorite pages"><span class="rus-fav-star">${on?'★':'☆'}</span><span class="rus-fav-label">Favorites</span>${count?`<span class="rus-fav-count">${count}</span>`:''}</summary><div class="rus-fav-panel"><div class="rus-fav-head"><strong>Favorite Pages</strong><span>${count}/${PAGE_LIMIT} saved</span></div><button type="button" class="rus-fav-current${on?' on':''}">${on?'★ Remove this page from Favorites':'☆ Add this page to Favorites'}</button><div class="rus-fav-list">${rows}</div><div class="rus-fav-tip">Favorites are saved on this device, so your quick links stay right where you put them.</div></div>`;d.querySelector('.rus-fav-current')?.addEventListener('click',()=>{if(togglePage()===false){alert(`You can save up to ${PAGE_LIMIT} favorite pages. Remove one first.`);return}renderHeaderFavorites()});d.querySelectorAll('.rus-fav-remove').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();removePage(b.dataset.url||'');renderHeaderFavorites()}))}
+function addTeamButton(){if((location.pathname.split('/').pop()||'').toLowerCase()!=='team.html')return;const team=new URLSearchParams(location.search).get('team');if(!team)return;function add(){const hero=document.querySelector('#page .hero-content');if(!hero||document.getElementById('rusFavoriteTeam'))return;const b=document.createElement('button');b.id='rusFavoriteTeam';b.className='rus-favorite-team';const paint=()=>{const on=window.RUSFavorites.has(team);b.classList.toggle('on',on);b.textContent=on?'★ Saved to My Teams':'☆ Add to My Teams'};b.onclick=()=>{if(window.RUSFavorites.toggle(team)===false){alert('You can save up to 5 teams. Remove one from My Teams first.');return}paint()};hero.appendChild(b);paint()}add();const page=document.getElementById('page');if(page&&!document.getElementById('rusFavoriteTeam')){const o=new MutationObserver(()=>{add();if(document.getElementById('rusFavoriteTeam'))o.disconnect()});o.observe(page,{childList:true,subtree:true})}}
+function setup(){injectStyles();renderHeaderFavorites();addTeamButton();window.addEventListener('rus-favorites-changed',renderHeaderFavorites);const header=document.querySelector('header');if(header&&!document.getElementById('rusHeaderFavorites')){const o=new MutationObserver(()=>{renderHeaderFavorites();if(document.getElementById('rusHeaderFavorites'))o.disconnect()});o.observe(header,{childList:true,subtree:true})}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
 })();
