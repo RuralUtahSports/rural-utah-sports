@@ -24,7 +24,7 @@ jobs:
             '57 * * * *') workflow='build-out-of-state.yml' ;;
             *)
               echo "Manual run: dispatching all refresh targets."
-              for workflow in build-clean-elo.yml build-scorigami.yml build-out-of-state.yml build-simulator-data.yml build-standings-2026.yml; do
+              for workflow in build-clean-elo-v2.yml build-scorigami.yml build-out-of-state.yml build-simulator-data.yml build-standings-2026.yml; do
                 gh api --method POST repos/${{ github.repository }}/actions/workflows/$workflow/dispatches -f ref=main
               done
               exit 0
