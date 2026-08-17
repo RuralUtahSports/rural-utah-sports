@@ -16,8 +16,14 @@ const style=document.createElement('style');style.id='rus-team-stats-style';styl
 `;document.head.appendChild(style);
 
 function mini(value,label,d=null){const shown=d===null?int(value):fmt(value,d);return `<div class="rus-ts-mini"><strong>${shown}</strong><span>${esc(label)}</span></div>`}
-function rankRow(x,key){const r=x.rankings?.[key];if(!r||(!r.state&&!r.class&&!r.region))return'';return `<div class="rus-ts-ranking"><b>${esc(r.label||key)}</b><span>State <strong>${rank(r.state)}</strong></span><span>${esc(x.classification||'Class')} <strong>${rank(r.class)}</strong></span><span>${esc(x.region||'Region')} <strong>${rank(r.region)}</strong></span></div>`}
+function rankRow(x,key){const r=x.rankings?.[key];if(!r||(!r.state&&!r.class&&!r.region))return'';const regionLabel=/^\d+$/.test(String(x.region||''))?`Region ${x.region}`:(x.region||'Region');return `<div class="rus-ts-ranking"><b>${esc(r.label||key)}</b><span>State <strong>${rank(r.state)}</strong></span><span>${esc(x.classification||'Class')} <strong>${rank(r.class)}</strong></span><span>${esc(regionLabel)} <strong>${rank(r.region)}</strong></span></div>`}
 function details(title,body,open){return `<details class="rus-ts-details" ${open?'open':''}><summary>${esc(title)}</summary><div class="rus-ts-body">${body}</div></details>`}
+function place(box){
+  const moveToOverview=()=>{const panel=document.getElementById('rus-panel-overview');if(!panel)return false;panel.querySelector('.rus-tab-empty')?.remove();if(box.parentElement!==panel)panel.prepend(box);return true};
+  if(moveToOverview())return;
+  const dash=document.getElementById('rusTeamDashboard'),hero=document.querySelector('#page .hero');if(dash)dash.insertAdjacentElement('afterend',box);else if(hero)hero.insertAdjacentElement('afterend',box);else document.getElementById('page')?.prepend(box);
+  let tries=0;const timer=setInterval(()=>{if(moveToOverview()||++tries>80)clearInterval(timer)},125);
+}
 function render(x,method){
   const hasOff=x.categories?.passing||x.categories?.rushing||x.categories?.receiving;
   const desktop=!matchMedia('(max-width:600px)').matches;
@@ -29,8 +35,7 @@ function render(x,method){
   const defense=x.categories?.defense?`<div class="rus-ts-grid">${mini(x.pointsAgainst,'Points Allowed')}${mini(x.pointsAllowedPerGame,'Allowed / Game',1)}${mini(x.defense.tackles,'Tackles')}${mini(x.defense.sacks,'Sacks',1)}${mini(x.defense.interceptions,'Interceptions')}${mini(x.defense.td,'Defensive TD')}${mini(x.defense.returnTd,'Return TD')}</div>`:`<div class="rus-ts-grid">${mini(x.pointsAgainst,'Points Allowed')}${mini(x.pointsAllowedPerGame,'Allowed / Game',1)}</div><div class="rus-ts-note">Detailed defensive player statistics have not been reported for this team.</div>`;
   const ranks=['ppg','pointsAllowedPerGame','scoringMargin','totalYardsPerGame','yardsPerPlay','rushingYardsPerGame','passingYardsPerGame','sacks','defensiveInterceptions'].map(k=>rankRow(x,k)).join('')||'<div class="rus-ts-empty">Not enough reported data to rank this team yet.</div>';
   const box=document.createElement('section');box.id='rusTeamStats';box.className='rus-team-stats';box.innerHTML=`<h2 class="rus-team-stats-title">${season} Team Stats</h2><div class="rus-team-stats-sub">${esc(x.record||'—')} • ${esc(x.classification||'—')}${x.region?' • '+esc(x.region):''} • Calculated from reported season player stats and completed game finals.</div><div class="rus-ts-hero"><div class="rus-ts-card"><strong>${fmt(x.ppg,1)}</strong><span>Points / Game</span></div><div class="rus-ts-card"><strong>${fmt(x.totalYardsPerGame,1)}</strong><span>Total Yards / Game</span></div><div class="rus-ts-card"><strong>${fmt(x.rushing.yardsPerGame,1)}</strong><span>Rush Yards / Game</span></div><div class="rus-ts-card"><strong>${fmt(x.passing.yardsPerGame,1)}</strong><span>Pass Yards / Game</span></div></div>${details('Overview',overview,desktop)}${details('Offense',offense,desktop)}${details('Defense',defense,desktop)}${details('Team Rankings',ranks,desktop)}<div class="rus-ts-note">${esc(method?.note||'Team statistics are based on reported data; missing statistics are not estimated.')}</div>`;
-  const dash=document.getElementById('rusTeamDashboard'),hero=document.querySelector('#page .hero');
-  if(dash)dash.insertAdjacentElement('afterend',box);else if(hero)hero.insertAdjacentElement('afterend',box);else document.getElementById('page')?.prepend(box);
+  place(box);
 }
 async function build(){
   if(document.getElementById('rusTeamStats'))return true;
