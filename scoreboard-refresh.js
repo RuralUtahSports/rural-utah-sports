@@ -23,7 +23,7 @@
     btn.textContent = '↻ Refresh Scores';
     const note = document.createElement('span');
     note.className = 'scoreboard-refresh-note';
-    note.textContent = 'Loads the newest published scoreboard data';
+    note.textContent = 'Loads the newest published scoreboard and prediction data';
     row.append(btn, note);
     subtitle.insertAdjacentElement('afterend', row);
 
@@ -65,6 +65,48 @@
     }
     return originalRender();
   };
+
+  // Pull A:F directly from Weekly Simulation as a live prediction overlay.
+  // This makes manually-entered out-of-state predictions appear immediately
+  // instead of waiting for the 15-minute GitHub JSON sync.
+  window.rusWeeklySheetCallback = payload => {
+    try {
+      const rows = payload?.table?.rows || [];
+      const predictions = new Map();
+      const cell = c => c == null ? '' : (c.v ?? c.f ?? '');
+
+      for (const row of rows) {
+        const c = row?.c || [];
+        const away = norm(cell(c[1]));
+        const home = norm(cell(c[2]));
+        const awayScore = Number(cell(c[3]));
+        const homeScore = Number(cell(c[4]));
+        const winner = String(cell(c[5]) ?? '').trim();
+        if (!away || !home || !Number.isFinite(awayScore) || !Number.isFinite(homeScore)) continue;
+        predictions.set(`${away}|||${home}`, { awayScore, homeScore, winner });
+      }
+
+      let changed = false;
+      for (const game of games) {
+        const hit = predictions.get(`${norm(game.awayTeam)}|||${norm(game.homeTeam)}`);
+        if (!hit) continue;
+        if (game.awayScore !== hit.awayScore || game.homeScore !== hit.homeScore || String(game.winner || '') !== hit.winner) {
+          game.awayScore = hit.awayScore;
+          game.homeScore = hit.homeScore;
+          game.winner = hit.winner;
+          changed = true;
+        }
+      }
+      if (changed) originalRender();
+    } catch (error) {
+      console.warn('Weekly Simulation live prediction overlay failed', error);
+    }
+  };
+
+  const predictionScript = document.createElement('script');
+  predictionScript.async = true;
+  predictionScript.src = `https://docs.google.com/spreadsheets/d/1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo/gviz/tq?gid=1211467999&range=A1:F1000&tqx=${encodeURIComponent('out:json;responseHandler:rusWeeklySheetCallback')}&_=${Date.now()}`;
+  document.head.appendChild(predictionScript);
 
   function dateFromHeading(text) {
     const raw = String(text || '').trim();
