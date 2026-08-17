@@ -38,7 +38,7 @@ function wpBuildWeeks(){
   for(const g of weekly||[]){const p=wpParseDate(g.date);if(!p)continue;const key=wpMondayKey(p);if(!map.has(key))map.set(key,{key,games:[],firstDate:p,lastDate:p});const w=map.get(key);w.games.push(g);if(wpYmdKey(p)<wpYmdKey(w.firstDate))w.firstDate=p;if(wpYmdKey(p)>wpYmdKey(w.lastDate))w.lastDate=p;}
   wpWeeks=[...map.values()].sort((a,b)=>wpYmdKey(b.firstDate)-wpYmdKey(a.firstDate));
   for(const w of wpWeeks)w.games.sort((a,b)=>wpYmdKey(wpParseDate(a.date))-wpYmdKey(wpParseDate(b.date))||String(a.awayTeam).localeCompare(String(b.awayTeam)));
-  if(!wpWeekKey&&wpWeeks.length){const today=wpParseDate(new Intl.DateTimeFormat('en-US',{timeZone:WP_TZ}).format(new Date())),key=wpMondayKey(today),current=wpWeeks.find(w=>w.key===key);wpWeekKey=(current||wpWeeks[0]).key;}
+  if(!wpWeekKey&&wpWeeks.length)wpWeekKey=wpWeeks[0].key;
 }
 function wpWeekLabel(w){const a=wpDateLabel(w.firstDate),b=wpDateLabel(w.lastDate);return a===b?a:`${a} – ${b}`}
 function wpCurrentWeek(){return wpWeeks.find(w=>w.key===wpWeekKey)||wpWeeks[0]||null}
