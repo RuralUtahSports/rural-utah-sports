@@ -87,6 +87,9 @@ window.wpReset=function(){
   try{localStorage.removeItem(wpStorageKey(w.key));localStorage.removeItem(wpeScoreKey(w.key))}catch{}
   wpRenderBody();wpeBackendQueue();
 };
+document.addEventListener('change',e=>{
+  if(e.target?.id==='wpWeek')setTimeout(wpeRefreshParticipantCount,0);
+});
 (function wpeBackendInitialSync(){
   let tries=0;const timer=setInterval(()=>{tries++;if(typeof wpCurrentWeek==='function'&&wpCurrentWeek()){clearInterval(timer);wpeBackendQueue();wpeRefreshParticipantCount();setInterval(wpeRefreshParticipantCount,60000)}else if(tries>100)clearInterval(timer)},150);
 })();
