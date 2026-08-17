@@ -19,6 +19,7 @@
   const replacements={
     'ALTA':asset('school-logos/alta.webp?v=20260817-1'),
     'BEAVER':asset('school-logos/beaver.webp?v=20260817-1'),
+    'EMERY':asset('school-logos/emery.webp?v=20260817-1'),
     'GRANTSVILLE':asset('school-logos/grantsville.webp?v=20260817-1')
   };
   A.logoUrl=(team,entry)=>replacements[norm(team)]||original(team,entry);
