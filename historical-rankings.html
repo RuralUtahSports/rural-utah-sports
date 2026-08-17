@@ -38,7 +38,66 @@ async function mapLimit(items,limit,fn){const out=new Array(items.length);let ne
 function sortRows(rows){return [...rows].sort((a,b)=>{const ar=Number(a.rating),br=Number(b.rating);if(Number.isFinite(br)||Number.isFinite(ar)){if(!Number.isFinite(ar))return 1;if(!Number.isFinite(br))return -1;if(br!==ar)return br-ar}const aw=Number(a.winPct||0),bw=Number(b.winPct||0);if(bw!==aw)return bw-aw;const as=Number(a.sos||0),bs=Number(b.sos||0);if(bs!==as)return bs-as;return Number(b.avgMargin||0)-Number(a.avgMargin||0)||a.team.localeCompare(b.team)})}
 function row(x,i){const brand=teamBrand.get(x.team)||{},accent=validHex(brand.backgroundColor,'#555555'),logo=window.RUSSchoolAssets?.logoUrl?.(x.team)||'';const vars=`--team-accent:${accent};--team-tint:${rgba(accent,.18)};--team-tint-strong:${rgba(accent,.30)}`;return `<li class="row" style="${vars}"><div class="rank">${i+1}</div><div class="team-cell">${logo?`<img class="team-logo" src="${esc(logo)}" alt="${esc(x.team)} logo" loading="lazy" onerror="this.remove()">`:''}<a class="team" href="team.html?team=${encodeURIComponent(x.team)}&season=${encodeURIComponent(x.year)}">${esc(x.team)}</a></div><div class="value">${esc(rec(x))}</div><div class="value rating">${num(x.rating,2)}</div><div class="value sos">${num(x.sos,2)}</div><div class="value margin">${Number(x.avgMargin)>=0?'+':''}${num(x.avgMargin,1)}</div></li>`}
 function render(){if(!activeYear)return;const q=search.value.trim().toLowerCase();const all=sortRows(seasonIndex.get(activeYear)||[]),shown=q?all.filter(x=>x.team.toLowerCase().includes(q)):all,top=shown.slice(0,25);content.hidden=false;status.hidden=true;content.innerHTML=`<div class="summary"><span class="pill"><strong>${activeYear}</strong> season</span><span class="pill"><strong>${all.length}</strong> teams with games</span>${q?`<span class="pill"><strong>${shown.length}</strong> matching teams</span>`:''}</div><section class="panel"><div class="panel-head"><h3>${q?'Matching Teams':`${activeYear} State Top 25`}</h3><p>Computer ranking based on the RUS season rating stored for each program's ${activeYear} season. Record, strength of schedule and scoring margin are shown for context.</p></div><div class="labels"><div>Rank</div><div>Team</div><div>Record</div><div>Rating</div><div>SOS</div><div>Margin</div></div>${shown.length?`<ol class="ranking-list">${top.map((x,i)=>row(x,q?all.indexOf(x):i)).join('')}</ol>${!q&&all.length>25?`<details class="full"><summary>View full statewide ranking (${all.length} teams)</summary><ol class="ranking-list">${all.map(row).join('')}</ol></details>`:''}`:`<div class="empty">No teams match that search.</div>`}<div class="note">Historical only: the current ${CURRENT_SEASON} season is intentionally excluded. Teams are eligible when the database contains at least one game for that season.</div></section>`}
-async function load(){try{const stamp=Date.now(),r=await fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'});if(!r.ok)throw new Error('Unable to load teams');const teams=await r.json();for(const team of teams)teamBrand.set(team.team,team);try{await window.RUSSchoolAssets?.load?.()}catch{}await mapLimit(teams,10,async team=>{const rr=await fetch(`team-page-data/${slug(team.team)}.json?v=${stamp}`,{cache:'no-store'});if(!rr.ok)return;const data=await rr.json();for(const s of Array.isArray(data.seasonHistory)?data.seasonHistory:[]){const year=Number(s.year),games=Number(s.games||0);if(!Number.isFinite(year)||year>=CURRENT_SEASON||games<1)continue;if(!seasonIndex.has(year))seasonIndex.set(year,[]);seasonIndex.get(year).push({...s,team:team.team,year})}});const years=[...seasonIndex.keys()].sort((a,b)=>b-a);if(!years.length)throw new Error('No historical seasons found');seasonSelect.innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');const requested=Number(new URLSearchParams(location.search).get('season'));activeYear=seasonIndex.has(requested)?requested:years[0];seasonSelect.value=String(activeYear);seasonSelect.disabled=false;search.disabled=false;seasonSelect.addEventListener('change',()=>{activeYear=Number(seasonSelect.value);history.replaceState(null,'',`historical-rankings.html?season=${activeYear}`);search.value='';render()});search.addEventListener('input',render);render()}catch(e){console.error(e);status.textContent='Historical rankings could not be loaded. Please refresh and try again.'}}
+async function load(){
+  try{
+    const stamp=Date.now();
+    let usedPrebuilt=false;
+    try{
+      const fast=await fetch('historical-rankings-data.json?v='+stamp,{cache:'no-store'});
+      if(fast.ok){
+        const built=await fast.json();
+        for(const [yearText,rows] of Object.entries(built.seasons||{})){
+          const year=Number(yearText);
+          if(!Number.isFinite(year)||year>=CURRENT_SEASON||!Array.isArray(rows)||!rows.length)continue;
+          const cleaned=rows.map(x=>({...x,year:Number(x.year||year)}));
+          seasonIndex.set(year,cleaned);
+          for(const x of cleaned)if(!teamBrand.has(x.team))teamBrand.set(x.team,{team:x.team,backgroundColor:x.backgroundColor||'',textColor:x.textColor||''});
+        }
+        usedPrebuilt=seasonIndex.size>0;
+      }
+    }catch(e){console.warn('Prebuilt historical rankings unavailable; using compatibility loader.',e)}
+    if(!usedPrebuilt){
+      const r=await fetch('teams-data.json?v='+stamp,{cache:'no-store'});
+      if(!r.ok)throw new Error('Unable to load teams');
+      const teams=await r.json();
+      for(const team of teams)teamBrand.set(team.team,team);
+      try{await window.RUSSchoolAssets?.load?.()}catch{}
+      await mapLimit(teams,10,async team=>{
+        const rr=await fetch('team-page-data/'+slug(team.team)+'.json?v='+stamp,{cache:'no-store'});
+        if(!rr.ok)return;
+        const data=await rr.json();
+        for(const s of Array.isArray(data.seasonHistory)?data.seasonHistory:[]){
+          const year=Number(s.year),games=Number(s.games||0);
+          if(!Number.isFinite(year)||year>=CURRENT_SEASON||games<1)continue;
+          if(!seasonIndex.has(year))seasonIndex.set(year,[]);
+          seasonIndex.get(year).push({...s,team:team.team,year});
+        }
+      });
+    }else{
+      status.textContent='Historical rankings loaded.';
+      try{await window.RUSSchoolAssets?.load?.()}catch{}
+    }
+    const years=[...seasonIndex.keys()].sort((a,b)=>b-a);
+    if(!years.length)throw new Error('No historical seasons found');
+    seasonSelect.innerHTML=years.map(y=>'<option value="'+y+'">'+y+'</option>').join('');
+    const requested=Number(new URLSearchParams(location.search).get('season'));
+    activeYear=seasonIndex.has(requested)?requested:years[0];
+    seasonSelect.value=String(activeYear);
+    seasonSelect.disabled=false;
+    search.disabled=false;
+    seasonSelect.addEventListener('change',()=>{
+      activeYear=Number(seasonSelect.value);
+      history.replaceState(null,'','historical-rankings.html?season='+activeYear);
+      search.value='';
+      render();
+    });
+    search.addEventListener('input',render);
+    render();
+  }catch(e){
+    console.error(e);
+    status.textContent='Historical rankings could not be loaded. Please refresh and try again.';
+  }
+}
 load();
 })();
 </script>
