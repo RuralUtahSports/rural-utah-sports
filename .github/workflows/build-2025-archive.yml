@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - 'award-scoring-core.js'
       - 'scripts/build_2025_archive.mjs'
       - 'scripts/repair_2025_schedules.mjs'
       - 'scripts/build_2025_game_details.mjs'
@@ -56,11 +57,13 @@ jobs:
           if((team.summary?.deseretGamesMatched||0)<300) throw new Error('Too few 2025 Deseret game URLs matched');
           if((roster.summary?.teamsWithRoster||0)<80) throw new Error('Too few archived rosters fetched');
           if((roster.summary?.teamsWithStats||0)<80) throw new Error('Too few archived stat pages fetched');
+          if(!awards.method?.scoringVersion) throw new Error('2025 awards are missing shared scoring version');
           console.log(team.summary);
           console.log(roster.summary);
           console.log(details.summary);
           console.log(playerGames.summary);
           console.log(awards.coverage);
+          console.log('Award scoring version:',awards.method.scoringVersion);
           NODE
       - name: Commit generated 2025 archive
         run: |
