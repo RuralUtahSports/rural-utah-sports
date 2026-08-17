@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 
 const SEASON=2026;
+const DESERET_SEASON=SEASON+1; // fall 2026 is the 2026-27 school year
 const MIN_GRAD_YEAR=SEASON+1;
 const SOURCE='deseret-team-data-2026.json',OUT='deseret-rosters-stats-2026.json',MANUAL='manual-rosters-2026.json';
 const BASE='https://sports.deseret.com';
@@ -26,9 +27,9 @@ if(!fs.existsSync(SOURCE))throw new Error(`${SOURCE} missing`);const source=JSON
 let manual={};if(fs.existsSync(MANUAL)){try{manual=JSON.parse(fs.readFileSync(MANUAL,'utf8'))||{}}catch(e){console.warn(`manual roster file: ${e.message}`)}}
 const manualFor=team=>{const key=Object.keys(manual).find(k=>compact(k)===compact(team));const rows=key&&Array.isArray(manual[key])?manual[key]:[];return rows.map(p=>({...p,playerId:playerId(team,p.number,p.name)})).filter(currentRosterPlayer)};
 const entryMap=new Map(Object.values(source.teams||{}).map(x=>[compact(x.team),x]));
-if(fs.existsSync('teams-data.json')){try{const siteTeams=JSON.parse(fs.readFileSync('teams-data.json','utf8'));for(const t of siteTeams||[]){const team=clean(t?.team);if(!team||entryMap.has(compact(team)))continue;const s=schoolSlug(team);entryMap.set(compact(team),{team,deseretSlug:s,rosterUrl:`${BASE}/high-school/school/${s}/football/roster/${SEASON}`,statsUrl:`${BASE}/high-school/school/${s}/football/stats/${SEASON}`})}}catch(e){console.warn(`teams-data fallback: ${e.message}`)}}
-const entries=[...entryMap.values()],result={season:SEASON,updatedAt:new Date().toISOString(),teams:{}};let next=0,rosterPages=0,statPages=0,rosterPlayers=0,statRows=0,failures=0,unversionedRosterFallbacks=0,unversionedStatsFallbacks=0,manualRosterTeams=0;
-async function one(x){const team=x.team,s=schoolSlug(team);let roster=[],stats=[],rosterOk=false,statsOk=false;const versionedRoster=`${BASE}/high-school/school/${s}/football/roster/${SEASON}`,versionedStats=`${BASE}/high-school/school/${s}/football/stats/${SEASON}`;let rosterUrlUsed=versionedRoster,statsUrlUsed=versionedStats;
+if(fs.existsSync('teams-data.json')){try{const siteTeams=JSON.parse(fs.readFileSync('teams-data.json','utf8'));for(const t of siteTeams||[]){const team=clean(t?.team);if(!team||entryMap.has(compact(team)))continue;const s=schoolSlug(team);entryMap.set(compact(team),{team,deseretSlug:s,rosterUrl:`${BASE}/high-school/school/${s}/football/roster/${DESERET_SEASON}`,statsUrl:`${BASE}/high-school/school/${s}/football/stats/${DESERET_SEASON}`})}}catch(e){console.warn(`teams-data fallback: ${e.message}`)}}
+const entries=[...entryMap.values()],result={season:SEASON,deseretSeason:DESERET_SEASON,updatedAt:new Date().toISOString(),teams:{}};let next=0,rosterPages=0,statPages=0,rosterPlayers=0,statRows=0,failures=0,unversionedRosterFallbacks=0,unversionedStatsFallbacks=0,manualRosterTeams=0;
+async function one(x){const team=x.team,s=schoolSlug(team);let roster=[],stats=[],rosterOk=false,statsOk=false;const versionedRoster=`${BASE}/high-school/school/${s}/football/roster/${DESERET_SEASON}`,versionedStats=`${BASE}/high-school/school/${s}/football/stats/${DESERET_SEASON}`;let rosterUrlUsed=versionedRoster,statsUrlUsed=versionedStats;
   try{let html=await fetchHtml(versionedRoster);roster=parseRoster(html,team);if(!roster.length){const fallback=`${BASE}/high-school/school/${s}/football/roster`;try{const fh=await fetchHtml(fallback),fr=parseRoster(fh,team);if(fr.length){roster=fr;rosterUrlUsed=fallback;unversionedRosterFallbacks++}}catch{}}rosterOk=true;rosterPages++;}catch(e){console.warn(`${team} roster: ${e.message}`)}
   const override=manualFor(team);if(override.length){roster=override;rosterOk=true;manualRosterTeams++}rosterPlayers+=roster.length;
   try{let html=await fetchHtml(versionedStats);stats=parseStats(html,team,roster);if(!stats.length){const fallback=`${BASE}/high-school/school/${s}/football/stats`;try{const fh=await fetchHtml(fallback),fs=parseStats(fh,team,roster);if(fs.length){stats=fs;statsUrlUsed=fallback;unversionedStatsFallbacks++}}catch{}}statsOk=true;statPages++;statRows+=stats.reduce((n,sec)=>n+sec.rows.length,0)}catch(e){console.warn(`${team} stats: ${e.message}`)}
