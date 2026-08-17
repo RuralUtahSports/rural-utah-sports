@@ -7,6 +7,7 @@ on:
       - 'team-page-data/**'
       - 'teams-data.json'
       - 'scripts/build_historical_rankings.mjs'
+      - 'scripts/patch_historical_rankings_page.mjs'
       - '.github/workflows/build-historical-rankings.yml'
 
 permissions:
@@ -35,8 +36,10 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             node scripts/build_historical_rankings.mjs
+            node scripts/patch_historical_rankings_page.mjs
             node -e "const d=require('./historical-rankings-data.json'); const years=Object.keys(d.seasons||{}); if(years.length<50) throw new Error('Too few historical seasons'); if((d.summary?.programs||0)<90) throw new Error('Too few programs'); if((d.seasons?.['1990']||[]).length<20) throw new Error('1990 ranking data missing'); console.log(d.summary)"
-            git add historical-rankings-data.json
+            grep -q "historical-rankings-data.json" historical-rankings.html
+            git add historical-rankings-data.json historical-rankings.html
             if git diff --cached --quiet; then echo "Historical rankings data already current."; exit 0; fi
             git commit -m "Rebuild historical rankings data"
             if git push origin HEAD:main; then exit 0; fi
