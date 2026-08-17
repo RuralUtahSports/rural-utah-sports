@@ -2,7 +2,7 @@
 'use strict';
 if(window.__rusTeamDashboardLoaded)return;window.__rusTeamDashboardLoaded=true;
 if((location.pathname.split('/').pop()||'').toLowerCase()!=='team.html')return;
-const team=new URLSearchParams(location.search).get('team');if(!team)return;
+const params=new URLSearchParams(location.search),team=params.get('team'),selectedSeason=params.get('season');if(!team)return;if(selectedSeason&&selectedSeason!=='2026')return;
 const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
 const n=v=>{const x=Number(v);return Number.isFinite(x)?x:null};
 const date=d=>{const x=Date.parse(String(d||''));return Number.isFinite(x)?x:0};
