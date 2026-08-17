@@ -22,8 +22,9 @@ async function run(){
   const all=[...states.values()];
   const wins=all.filter(x=>x.type==='W'&&x.len>=2).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)).slice(0,30);
   const losses=all.filter(x=>x.type==='L'&&x.len>=2).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)).slice(0,20);
-  const historic=Object.entries(history).map(([team,x])=>({team,len:Number(x?.longestWinStreak?.length||0),start:x?.longestWinStreak?.startDate||'',last:x?.longestWinStreak?.endDate||''})).filter(x=>x.len>0).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)).slice(0,30);
-  root.innerHTML=`<div class="feature-note"><strong>Active means active across seasons.</strong> A streak does not reset just because a new season starts. Completed 2026 games are added on top of the historical database, and the active lists below show streaks of at least two games.</div>${renderTable('Active Winning Streaks',wins,teamMap,'active')}${renderTable('Active Losing Streaks',losses,teamMap,'active')}${renderTable('Longest Winning Streaks in Database',historic,teamMap,'historic')}`;
+  const historicWins=Object.entries(history).map(([team,x])=>({team,len:Number(x?.longestWinStreak?.length||0),start:x?.longestWinStreak?.startDate||'',last:x?.longestWinStreak?.endDate||''})).filter(x=>x.len>0).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)).slice(0,30);
+  const historicLosses=Object.entries(history).map(([team,x])=>({team,len:Number(x?.longestLossStreak?.length||0),start:x?.longestLossStreak?.startDate||'',last:x?.longestLossStreak?.endDate||''})).filter(x=>x.len>0).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)).slice(0,30);
+  root.innerHTML=`<div class="feature-note"><strong>Active means active across seasons.</strong> A streak does not reset just because a new season starts. Completed 2026 games are added on top of the historical database, and the active lists below show streaks of at least two games.</div>${renderTable('Active Winning Streaks',wins,teamMap,'active')}${renderTable('Active Losing Streaks',losses,teamMap,'active')}${renderTable('Longest Winning Streaks in Database',historicWins,teamMap,'historic')}${renderTable('Longest Losing Streaks in Database',historicLosses,teamMap,'historic')}`;
 }
 run().catch(e=>{console.error(e);root.innerHTML='<div class="empty">Streak data could not be loaded.</div>'});
 })();
