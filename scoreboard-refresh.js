@@ -69,6 +69,16 @@
     return d.getTime();
   }
 
+  // Utah football Week 1 begins with the second Thursday in August.
+  // Using a season anchor keeps Week 2 labeled Week 2 even when the loaded
+  // scoreboard data happens to begin with the second week of games.
+  function seasonWeekOneStart(year) {
+    const d = new Date(Number(year), 7, 8);
+    d.setHours(0, 0, 0, 0);
+    while (d.getDay() !== 4) d.setDate(d.getDate() + 1);
+    return d.getTime();
+  }
+
   function shortDate(value) {
     return new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
@@ -81,7 +91,8 @@
     }
 
     const firstGameTime = Math.min(...dated.map(g => dateVal(g.date)));
-    const firstThursday = thursdayStart(firstGameTime);
+    const seasonYear = new Date(firstGameTime).getFullYear();
+    const firstThursday = seasonWeekOneStart(seasonYear);
     const grouped = new Map();
 
     for (const game of dated) {
@@ -107,10 +118,18 @@
     if (Number.isInteger(requested) && weekBuckets.some(w => w.number === requested)) return requested;
 
     const today = startOfLocalDay(Date.now()).getTime();
-    const current = weekBuckets.find(w => today >= w.start && today < w.end);
+
+    // For navigation purposes a football week begins Monday, even though the
+    // game bucket is anchored on Thursday. That means Monday Aug. 17, 2026
+    // opens Week 2 (Aug. 20-22 games), not the completed Week 1 slate.
+    const current = weekBuckets.find(w => {
+      const monday = w.start - (3 * DAY);
+      const nextMonday = monday + WEEK;
+      return today >= monday && today < nextMonday;
+    });
     if (current) return current.number;
 
-    const next = weekBuckets.find(w => w.start > today);
+    const next = weekBuckets.find(w => (w.start - (3 * DAY)) > today);
     return (next || weekBuckets[weekBuckets.length - 1]).number;
   }
 
