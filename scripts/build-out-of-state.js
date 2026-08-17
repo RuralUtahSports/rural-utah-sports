@@ -4,33 +4,7 @@ const SHEET_ID = process.env.SHEET_ID;
 const OOS_GID = process.env.OOS_GID;
 const SIM_FILE = process.env.SIM_FILE || 'weekly-simulation.json';
 const OUT_FILE = process.env.OUT_FILE || 'out-of-state.json';
-
-if (!SHEET_ID || !OOS_GID) {
-  console.error('SHEET_ID and OOS_GID are required.');
-  process.exit(1);
-}
-
-const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${OOS_GID}&range=${encodeURIComponent('A1:I5000')}`;
-
-function parseCSV(text) {
-  const rows = [];
-  let row = [], field = '', quoted = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (quoted) {
-      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
-      else if (c === '"') quoted = false;
-      else field += c;
-    } else {
-      if (c === '"') quoted = true;
-      else if (c === ',') { row.push(field); field = ''; }
-      else if (c === '\n') { row.push(field.replace(/\r$/, '')); rows.push(row); row = []; field = ''; }
-      else field += c;
-    }
-  }
-  if (field.length || row.length) { row.push(field.replace(/\r$/, '')); rows.push(row); }
-  return rows;
-}
+if (!SHEET_ID || !OOS_GID) throw new Error('SHEET_ID and OOS_GID are required');
 
 const clean = v => String(v ?? '').trim();
 const norm = v => clean(v).replace(/\s+/g, ' ').toUpperCase();
@@ -39,196 +13,135 @@ const num = v => {
   const n = Number(clean(v).replace(/,/g, ''));
   return Number.isFinite(n) ? n : null;
 };
-
 const aliases = {
-  'GUNNISON': 'GUNNISON VALLEY',
-  'MAPLE MTN': 'MAPLE MOUNTAIN',
-  'MONUMENT VAL': 'MONUMENT VALLEY',
-  'CEDAR': 'CEDAR CITY',
-  'SUMMIT': 'SUMMIT ACADEMY',
-  'WASATCH ACAD': 'WASATCH ACADEMY',
-  'WASATCH ACAD.': 'WASATCH ACADEMY'
+  GUNNISON:'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY',
+  CEDAR:'CEDAR CITY',SUMMIT:'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY'
 };
 function canonical(v) {
   const n = norm(v).replace(/\.+$/, '').trim();
-  if (n.startsWith('WASATCH ACAD')) return 'WASATCH ACADEMY';
-  return aliases[n] || n;
+  return n.startsWith('WASATCH ACAD') ? 'WASATCH ACADEMY' : (aliases[n] || n);
 }
 
 const stateNames = {
-  AK:'Alaska', AL:'Alabama', AR:'Arkansas', AZ:'Arizona', CA:'California', CO:'Colorado', CT:'Connecticut', DE:'Delaware', FL:'Florida', GA:'Georgia', HI:'Hawaii', IA:'Iowa', ID:'Idaho', IL:'Illinois', IN:'Indiana', KS:'Kansas', KY:'Kentucky', LA:'Louisiana', MA:'Massachusetts', MD:'Maryland', ME:'Maine', MI:'Michigan', MN:'Minnesota', MO:'Missouri', MS:'Mississippi', MT:'Montana', NC:'North Carolina', ND:'North Dakota', NE:'Nebraska', NH:'New Hampshire', NJ:'New Jersey', NM:'New Mexico', NV:'Nevada', NY:'New York', OH:'Ohio', OK:'Oklahoma', OR:'Oregon', PA:'Pennsylvania', RI:'Rhode Island', SC:'South Carolina', SD:'South Dakota', TN:'Tennessee', TX:'Texas', VA:'Virginia', VT:'Vermont', WA:'Washington', WI:'Wisconsin', WV:'West Virginia', WY:'Wyoming', DC:'District of Columbia', AS:'American Samoa'
+  AK:'Alaska',AL:'Alabama',AR:'Arkansas',AZ:'Arizona',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',FL:'Florida',GA:'Georgia',HI:'Hawaii',IA:'Iowa',ID:'Idaho',IL:'Illinois',IN:'Indiana',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',MA:'Massachusetts',MD:'Maryland',ME:'Maine',MI:'Michigan',MN:'Minnesota',MO:'Missouri',MS:'Mississippi',MT:'Montana',NC:'North Carolina',ND:'North Dakota',NE:'Nebraska',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NV:'Nevada',NY:'New York',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',VA:'Virginia',VT:'Vermont',WA:'Washington',WI:'Wisconsin',WV:'West Virginia',WY:'Wyoming',DC:'District of Columbia',AS:'American Samoa'
 };
 const stateCodes = new Set(Object.keys(stateNames));
 
-function outOfStateInfo(name) {
-  const raw = clean(name).replace(/\s+/g, ' ');
-  const upper = raw.toUpperCase();
-  if (/,[ ]*AMERICAN SAMOA$/.test(upper)) {
-    return { state: 'AS', opponent: raw.replace(/,[ ]*AMERICAN SAMOA$/i, '').trim() };
+function parseCSV(text) {
+  const rows = []; let row = [], field = '', quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') quoted = false;
+      else field += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ',') { row.push(field); field = ''; }
+    else if (c === '\n') { row.push(field.replace(/\r$/, '')); rows.push(row); row = []; field = ''; }
+    else field += c;
   }
-  const match = upper.match(/,[ ]*([A-Z]{2})$/);
-  if (!match || !stateCodes.has(match[1]) || match[1] === 'UT') return null;
-  return { state: match[1], opponent: raw.replace(/,[ ]*[A-Z]{2}$/i, '').trim() };
+  if (field.length || row.length) { row.push(field.replace(/\r$/, '')); rows.push(row); }
+  return rows;
 }
 
-function gameResult(pf, pa) { return pf > pa ? 'W' : pf < pa ? 'L' : 'T'; }
+function oosInfo(name) {
+  const raw = clean(name).replace(/\s+/g, ' '), upper = raw.toUpperCase();
+  if (/,[ ]*AMERICAN SAMOA$/.test(upper)) return {state:'AS', opponent:raw.replace(/,[ ]*AMERICAN SAMOA$/i, '').trim()};
+  const m = upper.match(/,[ ]*([A-Z]{2})$/);
+  if (!m || !stateCodes.has(m[1]) || m[1] === 'UT') return null;
+  return {state:m[1], opponent:raw.replace(/,[ ]*[A-Z]{2}$/i, '').trim()};
+}
 function makeGame(team, year, date, opponent, state, pf, pa) {
+  pf = Number(pf); pa = Number(pa);
   return {
-    team: canonical(team),
-    year: Number(year),
-    date: clean(date),
-    opponent: clean(opponent).replace(/\s+/g, ' ').trim(),
-    state,
-    stateName: stateNames[state] || state,
-    pf: Number(pf),
-    pa: Number(pa),
-    result: gameResult(Number(pf), Number(pa)),
-    margin: Number(pf) - Number(pa)
+    team:canonical(team), year:Number(year), date:clean(date), opponent:clean(opponent).replace(/\s+/g, ' ').trim(),
+    state, stateName:stateNames[state] || state, pf, pa, result:pf > pa ? 'W' : pf < pa ? 'L' : 'T', margin:pf - pa
   };
 }
-
-function rec() { return { wins:0, losses:0, ties:0, games:0, pointsFor:0, pointsAgainst:0 }; }
-function add(r, g) {
-  r.games++; r.pointsFor += g.pf; r.pointsAgainst += g.pa;
-  if (g.result === 'W') r.wins++;
-  else if (g.result === 'L') r.losses++;
-  else r.ties++;
+function readJson(path, fallback) {
+  try { return fs.existsSync(path) ? JSON.parse(fs.readFileSync(path, 'utf8')) : fallback; }
+  catch (e) { console.warn(`Could not read ${path}: ${e.message}`); return fallback; }
 }
-function finish(r) {
-  return {
-    ...r,
-    winPct: r.games ? (r.wins + r.ties * 0.5) / r.games : 0,
-    avgMargin: r.games ? (r.pointsFor - r.pointsAgainst) / r.games : 0
-  };
-}
-
-function readPreviousGames() {
-  try {
-    if (!fs.existsSync(OUT_FILE)) return [];
-    const parsed = JSON.parse(fs.readFileSync(OUT_FILE, 'utf8'));
-    return Array.isArray(parsed.games) ? parsed.games : [];
-  } catch (err) {
-    console.warn(`Could not read previous ${OUT_FILE}: ${err.message}`);
-    return [];
+function liveGames() {
+  const rows = readJson(SIM_FILE, {games:[]}).games || [], out = [];
+  for (const g of rows) {
+    const as = num(g.actualAway), hs = num(g.actualHome);
+    if (as === null || hs === null) continue;
+    const away = oosInfo(g.awayTeam), home = oosInfo(g.homeTeam);
+    if (!!away === !!home) continue;
+    const date = clean(g.date), ym = date.match(/(19|20)\d{2}$/);
+    if (!ym) continue;
+    if (away) out.push(makeGame(g.homeTeam, ym[0], date, away.opponent, away.state, hs, as));
+    else out.push(makeGame(g.awayTeam, ym[0], date, home.opponent, home.state, as, hs));
   }
+  return out;
 }
-
-function readLiveGames() {
-  try {
-    if (!fs.existsSync(SIM_FILE)) {
-      console.warn(`${SIM_FILE} not found; using Sheet plus previously generated newer seasons.`);
-      return [];
-    }
-    const parsed = JSON.parse(fs.readFileSync(SIM_FILE, 'utf8'));
-    const rows = Array.isArray(parsed.games) ? parsed.games : [];
-    const out = [];
-    for (const g of rows) {
-      const awayActual = num(g.actualAway), homeActual = num(g.actualHome);
-      if (awayActual === null || homeActual === null) continue;
-      const awayOos = outOfStateInfo(g.awayTeam), homeOos = outOfStateInfo(g.homeTeam);
-      if (!!awayOos === !!homeOos) continue;
-      const date = clean(g.date);
-      const yearMatch = date.match(/(19|20)\d{2}$/);
-      if (!yearMatch) continue;
-      const year = Number(yearMatch[0]);
-      if (awayOos) out.push(makeGame(g.homeTeam, year, date, awayOos.opponent, awayOos.state, homeActual, awayActual));
-      else out.push(makeGame(g.awayTeam, year, date, homeOos.opponent, homeOos.state, awayActual, homeActual));
-    }
-    return out;
-  } catch (err) {
-    console.warn(`Could not read live games from ${SIM_FILE}: ${err.message}`);
-    return [];
-  }
+function dayNumber(date) {
+  const m = clean(date).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) return Date.UTC(Number(m[3]), Number(m[1]) - 1, Number(m[2])) / 86400000;
+  const t = Date.parse(date); return Number.isFinite(t) ? Math.floor(t / 86400000) : null;
 }
+function nearbySameScore(a, b) {
+  if (a.year !== b.year || a.team !== b.team || canonical(a.opponent) !== canonical(b.opponent) || a.state !== b.state || a.pf !== b.pf || a.pa !== b.pa) return false;
+  const da = dayNumber(a.date), db = dayNumber(b.date);
+  return da !== null && db !== null && Math.abs(da - db) <= 7;
+}
+function rec() { return {wins:0,losses:0,ties:0,games:0,pointsFor:0,pointsAgainst:0}; }
+function add(r,g) { r.games++; r.pointsFor += g.pf; r.pointsAgainst += g.pa; if (g.result === 'W') r.wins++; else if (g.result === 'L') r.losses++; else r.ties++; }
+function finish(r) { return {...r,winPct:r.games?(r.wins+r.ties*.5)/r.games:0,avgMargin:r.games?(r.pointsFor-r.pointsAgainst)/r.games:0}; }
 
 (async () => {
-  const res = await fetch(sheetUrl);
-  if (!res.ok) throw new Error(`Sheet download failed ${res.status}`);
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${OOS_GID}&range=${encodeURIComponent('A1:I5000')}`;
+  const res = await fetch(url); if (!res.ok) throw new Error(`Sheet download failed ${res.status}`);
   const rows = parseCSV(await res.text());
-
-  const sheetGames = [];
-  let sheetSourceRows = 0;
+  const sheetGames = []; let sheetSourceRows = 0;
   for (const r of rows.slice(1)) {
-    const team = canonical(r[0]), year = num(r[1]), date = clean(r[2]);
-    const opponent = clean(r[3]).replace(/\s+/g, ' ').trim(), state = norm(r[4]);
-    const pf = num(r[5]), pa = num(r[6]);
+    const team = canonical(r[0]), year = num(r[1]), date = clean(r[2]), opponent = clean(r[3]).replace(/\s+/g,' ').trim();
+    const state = norm(r[4]), pf = num(r[5]), pa = num(r[6]);
     if (!team || !year || !date || !opponent || !state || pf === null || pa === null) continue;
-    sheetSourceRows++;
-    sheetGames.push(makeGame(team, year, date, opponent, state, pf, pa));
+    sheetSourceRows++; sheetGames.push(makeGame(team, year, date, opponent, state, pf, pa));
   }
 
-  const sheetMaxYear = sheetGames.reduce((m, g) => Math.max(m, g.year), 0);
-  const liveGames = readLiveGames();
-  const liveYears = new Set(liveGames.map(g => g.year));
-  const previousGames = readPreviousGames();
+  const sheetMaxYear = sheetGames.reduce((m,g)=>Math.max(m,g.year),0);
+  const current = liveGames(), liveYears = new Set(current.map(g=>g.year));
+  const prior = readJson(OUT_FILE, {games:[]}).games || [];
+  const carried = prior.filter(g=>Number(g.year)>sheetMaxYear && !liveYears.has(Number(g.year)));
 
-  // Preserve seasons newer than the helper Sheet so they cannot disappear when the
-  // Sheet lags behind. If the live feed contains that season, rebuild it from live
-  // completed results so score corrections replace stale generated data.
-  const carriedGames = previousGames.filter(g => Number(g.year) > sheetMaxYear && !liveYears.has(Number(g.year)));
-
-  const games = [];
-  const exactIndex = new Map();
-  const semanticSeen = new Set();
-  let duplicatesRemoved = 0, conflicts = 0;
-
-  function addGame(g, prefer = false) {
-    const exactKey = `${g.date}|${g.team}|${canonical(g.opponent)}|${g.state}`;
-    const semanticKey = `${g.year}|${g.team}|${canonical(g.opponent)}|${g.state}|${g.pf}|${g.pa}`;
-    if (semanticSeen.has(semanticKey)) { duplicatesRemoved++; return; }
-    if (exactIndex.has(exactKey)) {
-      const idx = exactIndex.get(exactKey), old = games[idx];
+  const games = [], exact = new Map(); let duplicatesRemoved = 0, conflicts = 0;
+  function push(g, source) {
+    const key = `${g.date}|${g.team}|${canonical(g.opponent)}|${g.state}`;
+    if (exact.has(key)) {
+      const i = exact.get(key), old = games[i];
       if (old.pf === g.pf && old.pa === g.pa) { duplicatesRemoved++; return; }
       conflicts++;
-      if (!prefer) return;
-      semanticSeen.delete(`${old.year}|${old.team}|${canonical(old.opponent)}|${old.state}|${old.pf}|${old.pa}`);
-      games[idx] = g;
-      semanticSeen.add(semanticKey);
-      return;
+      if (source !== 'live') return;
+      games[i] = g; return;
     }
-    exactIndex.set(exactKey, games.length);
-    semanticSeen.add(semanticKey);
-    games.push(g);
+    // Only use fuzzy date matching for live-vs-existing merges. Never collapse two
+    // historical Sheet rows just because the same teams happened to repeat a score.
+    if (source === 'live' && games.some(old=>nearbySameScore(old,g))) { duplicatesRemoved++; return; }
+    exact.set(key, games.length); games.push(g);
   }
+  sheetGames.forEach(g=>push(g,'sheet'));
+  carried.forEach(g=>push(makeGame(g.team,g.year,g.date,g.opponent,g.state,g.pf,g.pa),'carried'));
+  current.forEach(g=>push(g,'live'));
+  games.sort((a,b)=>b.year-a.year||Date.parse(b.date)-Date.parse(a.date)||a.team.localeCompare(b.team));
 
-  sheetGames.forEach(g => addGame(g));
-  carriedGames.forEach(g => addGame(makeGame(g.team, g.year, g.date, g.opponent, g.state, g.pf, g.pa)));
-  liveGames.forEach(g => addGame(g, true));
-
-  games.sort((a,b) => b.year - a.year || Date.parse(b.date) - Date.parse(a.date) || a.team.localeCompare(b.team));
-
-  const byState = {}, byYear = {}, byTeamState = {};
+  const byState={}, byYear={}, byTeamState={};
   for (const g of games) {
-    if (!byState[g.state]) byState[g.state] = rec(); add(byState[g.state], g);
-    if (!byYear[g.year]) byYear[g.year] = rec(); add(byYear[g.year], g);
-    const k = `${g.team}|${g.state}`; if (!byTeamState[k]) byTeamState[k] = rec(); add(byTeamState[k], g);
+    if (!byState[g.state]) byState[g.state]=rec(); add(byState[g.state],g);
+    if (!byYear[g.year]) byYear[g.year]=rec(); add(byYear[g.year],g);
+    const k=`${g.team}|${g.state}`; if (!byTeamState[k]) byTeamState[k]=rec(); add(byTeamState[k],g);
   }
-
-  const stateRecords = Object.entries(byState).map(([state,r]) => ({state,stateName:stateNames[state]||state,...finish(r)})).sort((a,b)=>b.games-a.games||b.winPct-a.winPct||a.state.localeCompare(b.state));
-  const yearlyRecords = Object.entries(byYear).map(([year,r]) => ({year:Number(year),...finish(r)})).sort((a,b)=>b.year-a.year);
-  const teamStateRecords = Object.entries(byTeamState).map(([k,r]) => { const [team,state] = k.split('|'); return {team,state,stateName:stateNames[state]||state,...finish(r)}; }).sort((a,b)=>a.team.localeCompare(b.team)||a.state.localeCompare(b.state));
-  const teams = [...new Set(games.map(g=>g.team))].sort();
-  const states = stateRecords.map(r=>({state:r.state,stateName:r.stateName})).sort((a,b)=>a.stateName.localeCompare(b.stateName));
-  const totals = finish(games.reduce((r,g)=>(add(r,g),r),rec()));
-  const sourceRows = sheetSourceRows + carriedGames.length + liveGames.length;
-
-  const payload = {
-    summary: {
-      sourceRows,
-      sheetSourceRows,
-      liveSourceRows: liveGames.length,
-      carriedForwardRows: carriedGames.length,
-      sheetMaxYear,
-      uniqueGames: games.length,
-      duplicatesRemoved,
-      conflicts,
-      ...totals
-    },
-    states, teams, stateRecords, yearlyRecords, teamStateRecords, games
-  };
-
-  fs.writeFileSync(OUT_FILE, JSON.stringify(payload));
-  const newestYear = yearlyRecords.length ? yearlyRecords[0].year : 'none';
-  console.log(`Out-of-state rows: ${sourceRows}; unique: ${games.length}; latest season: ${newestYear}; live rows: ${liveGames.length}; duplicates removed: ${duplicatesRemoved}`);
+  const stateRecords=Object.entries(byState).map(([state,r])=>({state,stateName:stateNames[state]||state,...finish(r)})).sort((a,b)=>b.games-a.games||b.winPct-a.winPct||a.state.localeCompare(b.state));
+  const yearlyRecords=Object.entries(byYear).map(([year,r])=>({year:Number(year),...finish(r)})).sort((a,b)=>b.year-a.year);
+  const teamStateRecords=Object.entries(byTeamState).map(([k,r])=>{const [team,state]=k.split('|');return{team,state,stateName:stateNames[state]||state,...finish(r)}}).sort((a,b)=>a.team.localeCompare(b.team)||a.state.localeCompare(b.state));
+  const teams=[...new Set(games.map(g=>g.team))].sort();
+  const states=stateRecords.map(r=>({state:r.state,stateName:r.stateName})).sort((a,b)=>a.stateName.localeCompare(b.stateName));
+  const totals=finish(games.reduce((r,g)=>(add(r,g),r),rec()));
+  const sourceRows=sheetSourceRows+carried.length+current.length;
+  const payload={summary:{sourceRows,sheetSourceRows,liveSourceRows:current.length,carriedForwardRows:carried.length,sheetMaxYear,uniqueGames:games.length,duplicatesRemoved,conflicts,...totals},states,teams,stateRecords,yearlyRecords,teamStateRecords,games};
+  fs.writeFileSync(OUT_FILE,JSON.stringify(payload));
+  console.log(`Out-of-state rows: ${sourceRows}; unique: ${games.length}; latest season: ${yearlyRecords[0]?.year ?? 'none'}; live rows: ${current.length}; duplicates removed: ${duplicatesRemoved}`);
   if (!games.length) throw new Error('No out-of-state games generated');
-})().catch(err => { console.error(err); process.exit(1); });
+})().catch(e=>{console.error(e);process.exit(1)});
