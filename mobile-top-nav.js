@@ -1,6 +1,5 @@
 (()=>{
 'use strict';
-const MOBILE='(max-width:700px)';
 const path=(location.pathname.split('/').pop()||'index.html').toLowerCase();
 const links=[
   ['Home','index.html','home'],
@@ -28,6 +27,7 @@ function addStyles(){
   const s=document.createElement('style');s.id='rus-mobile-core-nav-style';s.textContent=`
 .rus-mobile-core-nav{display:none}
 @media(max-width:700px){
+  html body.rus-mobile-shell-ready>nav{display:block!important}
   nav .nav-content.rus-nav{display:none!important}
   nav .rus-mobile-core-nav{display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;width:100%;max-width:100%;margin:0 auto;background:#050505;border-top:1px solid #222}
   .rus-mobile-core-nav a{display:flex;align-items:center;justify-content:center;min-height:46px;padding:10px 5px;color:#fff;text-decoration:none;text-align:center;font-size:11px;font-weight:900;line-height:1.08;text-transform:uppercase;border-right:1px solid #181818;border-bottom:1px solid #181818;-webkit-tap-highlight-color:transparent}
