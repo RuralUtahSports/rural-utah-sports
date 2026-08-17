@@ -79,10 +79,13 @@
         const c = row?.c || [];
         const away = norm(cell(c[1]));
         const home = norm(cell(c[2]));
-        const awayScore = Number(cell(c[3]));
-        const homeScore = Number(cell(c[4]));
+        const awayRaw = cell(c[3]);
+        const homeRaw = cell(c[4]);
+        if (!away || !home || awayRaw === '' || homeRaw === '') continue;
+        const awayScore = Number(awayRaw);
+        const homeScore = Number(homeRaw);
         const winner = String(cell(c[5]) ?? '').trim();
-        if (!away || !home || !Number.isFinite(awayScore) || !Number.isFinite(homeScore)) continue;
+        if (!Number.isFinite(awayScore) || !Number.isFinite(homeScore)) continue;
         predictions.set(`${away}|||${home}`, { awayScore, homeScore, winner });
       }
 
