@@ -22,6 +22,9 @@ jobs:
           from pathlib import Path
 
           logos = {
+            'ALTA':'school-logos/alta.webp',
+            'BEAVER':'school-logos/beaver.webp',
+            'GRANTSVILLE':'school-logos/grantsville.webp',
             'GREEN CANYON':'school-logos/green-canyon.svg',
             'HILLCREST':'school-logos/hillcrest.svg',
             'KEARNS':'school-logos/kearns.svg',
@@ -54,8 +57,12 @@ jobs:
           p.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
           print('Updated school-directory logos:', ', '.join(changed))
 
-          # Also replace any selected old UHSAA logo URLs hard-coded elsewhere.
+          # Also replace any selected old UHSAA/local logo URLs hard-coded elsewhere.
           old_urls = {
+            'https://www.uhsaa.org/Logos/portfolio150/Alta.png':'school-logos/alta.webp',
+            'https://www.uhsaa.org/Logos/portfolio150/Beaver.png':'school-logos/beaver.webp',
+            'https://www.uhsaa.org/Logos/portfolio150/Grantsville.png':'school-logos/grantsville.webp',
+            'school-logos/alta.svg':'school-logos/alta.webp',
             'https://www.uhsaa.org/Logos/portfolio150/Green%20Canyon.png':'school-logos/green-canyon.svg',
             'https://www.uhsaa.org/Logos/portfolio150/Hillcrest.png':'school-logos/hillcrest.svg',
             'https://www.uhsaa.org/Logos/portfolio150/Kearns.png':'school-logos/kearns.svg',
