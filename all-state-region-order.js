@@ -27,12 +27,12 @@ function passDetails(v){
   return {yards,td,interceptions,completions,attempts,compPct,ypa};
 }
 
-function qbPassingScore(v){
+function offensivePassingScore(v){
   const s=passDetails(v);
   let score=s.yards*.025+s.td*5-s.interceptions*2.5;
 
-  // Efficiency is a bonus, not a punishment. A run-first QB should not have his
-  // rushing value erased because he has a small or inefficient passing sample.
+  // Efficiency is a bonus, not a punishment. It only applies with a real passing sample,
+  // so one-off trick-play passes still get simple production credit without a fake boost.
   if(s.attempts>=10){
     if(s.compPct>60)score+=Math.min(5,(s.compPct-60)*.25);
     if(s.ypa>7)score+=Math.min(4,(s.ypa-7)*.8);
@@ -54,12 +54,15 @@ function qbRushingScore(v){
   return Math.max(0,score);
 }
 
-// Replace only the passing category score. The position-aware build below decides
-// which stat categories are actually allowed to count toward each award group.
+function isOffenseLine(cat){return /^Pass/i.test(cat||'')||/^Rush/i.test(cat||'')||/^Receiv/i.test(cat||'')}
+function isOffensePosition(pos){return ['QB','RB','WR','TE','ATH'].includes(pos)}
+
+// Use the same passing production formula no matter who throws the ball. That way a
+// RB/WR/TE trick-play completion or TD contributes to that player's offensive award score.
 if(typeof pts==='function'){
   const basePts=pts;
   pts=function(cat,v){
-    if(/^Pass/i.test(cat))return qbPassingScore(v);
+    if(/^Pass/i.test(cat))return offensivePassingScore(v);
     return basePts(cat,v);
   };
 }
@@ -69,26 +72,20 @@ if(typeof build==='function'){
   build=function(){
     const rows=baseBuild();
     for(const p of rows){
-      if(p.pos==='QB'){
-        // QB award score = passing + rushing only. Defensive stats never help a QB,
-        // and a negative passing component can no longer erase a run-first QB's value.
-        let score=0;
-        for(const line of p.lines||[]){
-          if(/^Pass/i.test(line.cat||''))score+=qbPassingScore(line.values);
-          else if(/^Rush/i.test(line.cat||''))score+=qbRushingScore(line.values);
-        }
-        p.score=score;
-        p.weightedScore=p.score*p.weight;
-      }else if(p.pos==='RB'){
-        // RB award score is offense only: rushing + receiving. Tackles, sacks,
-        // interceptions and other defensive production do not count toward RB rank.
-        let score=0;
-        for(const line of p.lines||[]){
-          if(/^Rush/i.test(line.cat||'')||/^Receiv/i.test(line.cat||''))score+=Math.max(0,line.score||0);
-        }
-        p.score=score;
-        p.weightedScore=p.score*p.weight;
+      if(!isOffensePosition(p.pos))continue;
+
+      // Every offensive award score uses ALL offensive production: passing + rushing +
+      // receiving. Defensive and special-teams stats never inflate an offensive ranking.
+      // QB rushing keeps its run-first weighting; everyone else uses the normal rush score.
+      let score=0;
+      for(const line of p.lines||[]){
+        const cat=line.cat||'';
+        if(/^Pass/i.test(cat))score+=offensivePassingScore(line.values);
+        else if(/^Rush/i.test(cat))score+=p.pos==='QB'?qbRushingScore(line.values):Math.max(0,line.score||0);
+        else if(/^Receiv/i.test(cat))score+=Math.max(0,line.score||0);
       }
+      p.score=score;
+      p.weightedScore=p.score*p.weight;
     }
     return rows;
   };
@@ -98,18 +95,16 @@ if(typeof topLine==='function'){
   const baseTopLine=topLine;
   const fmt=x=>x?`${x.cat}: ${Object.entries(x.values||{}).filter(([,v])=>String(v).trim()).slice(0,5).map(([k,v])=>`${k} ${v}`).join(', ')}`:'';
   topLine=function(p){
-    if(p.pos==='QB'){
-      const pass=(p.lines||[]).find(x=>/^Pass/i.test(x.cat||''));
-      const rush=(p.lines||[]).find(x=>/^Rush/i.test(x.cat||''));
-      if(pass&&rush)return `${fmt(pass)} • ${fmt(rush)}`;
-      if(pass)return fmt(pass);
-      if(rush)return fmt(rush);
-    }
-    if(p.pos==='RB'){
-      const offense=(p.lines||[]).filter(x=>/^Rush/i.test(x.cat||'')||/^Receiv/i.test(x.cat||''));
+    if(isOffensePosition(p.pos)){
+      const offense=(p.lines||[]).filter(x=>isOffenseLine(x.cat));
       if(offense.length){
-        const best=[...offense].sort((a,b)=>(b.score||0)-(a.score||0))[0];
-        return fmt(best);
+        // Show up to two offensive categories so trick-play production is visible without
+        // making mobile cards excessively tall.
+        const ordered=[...offense].sort((a,b)=>{
+          const score=x=>/^Pass/i.test(x.cat||'')?offensivePassingScore(x.values):(/^Rush/i.test(x.cat||'')&&p.pos==='QB'?qbRushingScore(x.values):Math.max(0,x.score||0));
+          return score(b)-score(a);
+        });
+        return ordered.slice(0,2).map(fmt).join(' • ');
       }
     }
     return baseTopLine(p);
@@ -123,7 +118,7 @@ function addScoreNote(){
   const note=document.createElement('div');
   note.id='rus-position-score-note';
   note.style.cssText='margin-top:12px;color:#888;font-size:10px;line-height:1.45;font-weight:800;text-transform:uppercase';
-  note.textContent='QB: passing + rushing only; run-first QBs receive rushing-efficiency credit and passing cannot subtract below zero. RB: rushing + receiving only; defensive stats are excluded.';
+  note.textContent='OFFENSIVE AWARDS: passing + rushing + receiving all count for QB, RB, WR, TE and ATH. Defensive stats are excluded. Run-first QBs receive enhanced rushing credit.';
   controls.appendChild(note);
 }
 
