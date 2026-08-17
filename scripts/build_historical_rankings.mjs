@@ -58,3 +58,13 @@ const output={
 };
 fs.writeFileSync(path.join(ROOT,'historical-rankings-data.json'),JSON.stringify(output));
 console.log(`Built historical-rankings-data.json: ${output.summary.seasons} seasons, ${programsWithHistory} programs, ${seasonRows} team-seasons`);
+
+const alignmentFile=path.join(ROOT,'full-season-alignment-2025.json');
+if(fs.existsSync(alignmentFile)){
+  const alignment=JSON.parse(fs.readFileSync(alignmentFile,'utf8'));
+  const expected=[...new Set((alignment.regions||[]).flatMap(r=>r.teams||[]).map(x=>String(x).trim()).filter(Boolean))];
+  const actual=new Set((ordered['2025']||[]).map(x=>String(x.team).trim()));
+  const missing=expected.filter(team=>!actual.has(team));
+  console.log(`2025 coverage audit: ${actual.size}/${expected.length} alignment teams have ranking rows.`);
+  console.log(`2025 missing from rankings: ${missing.length?missing.join(' | '):'none'}`);
+}
