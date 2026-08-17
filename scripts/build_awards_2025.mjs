@@ -21,6 +21,15 @@ function legacyStatPoints(cat,vals){const get=(...keys)=>{for(const [k,v] of Obj
 function side(cat){return /Defense/i.test(cat)?'Defense':(/Passing|Rushing|Receiving|Kicking/i.test(cat)?'Offense':'Other')}
 function yearOf(v){const m=String(v||'').match(/(18\d{2}|19\d{2}|20\d{2})/);return m?+m[1]:0}
 function flatten(data){const out=[];for(const e of data.scores||[])for(const g of e.games||[]){if(yearOf(g.date)!==SEASON)continue;if(g.tie)out.push({a:canon(g.team1),b:canon(g.team2),sa:+g.score1,sb:+g.score2,tie:true});else out.push({a:canon(g.winner),b:canon(g.loser),sa:+g.winnerScore,sb:+g.loserScore,tie:false})}return out}
+function offenseBreakdown(position,lines){
+  const out={passing:0,rushing:0,receiving:0};
+  for(const line of lines||[]){
+    if(scoring.isPassing(line.category))out.passing+=scoring.categoryScore(line.category,line.values||{},position);
+    else if(scoring.isRushing(line.category))out.rushing+=scoring.categoryScore(line.category,line.values||{},position);
+    else if(scoring.isReceiving(line.category))out.receiving+=scoring.categoryScore(line.category,line.values||{},position);
+  }
+  return out;
+}
 if(!fs.existsSync(ROSTERS))throw new Error(`${ROSTERS} missing; run the 2025 archive builder first`);
 const rosterData=JSON.parse(fs.readFileSync(ROSTERS,'utf8')),alignment=JSON.parse(fs.readFileSync(ALIGN,'utf8')),scorigami=JSON.parse(fs.readFileSync(GAMES,'utf8'));
 const meta=new Map();for(const r of alignment.regions||[])for(const team of r.teams||[])meta.set(canon(team),{team,classification:r.classification,region:r.region});
@@ -31,13 +40,19 @@ for(const p of players.values()){
   p.teamRecord={wins:r.w,losses:r.l,ties:r.t,games:r.g};p.teamWinPct=r.g?(r.w+r.t*.5)/r.g:0;p.teamBonus=Math.min(8,p.teamWinPct*8);
   p.rawScore=Math.max(p.offense,p.defense)+Math.min(p.offense,p.defense)*.35+p.teamBonus;
   p.weight=classWeight[p.classification]||1;p.allUtahScore=p.rawScore*p.weight;p.mvpScore=p.rawScore;p.ruralMvpScore=rural.has(p.classification)?p.rawScore:0;p.bigMvpScore=big.has(p.classification)?p.rawScore:0;
-  p.positionScore=scoring.positionScore(p.position,p.lines);
+  p.offenseBreakdown=offenseBreakdown(p.position,p.lines);
+  // For every tracked offensive award position, explicitly total ALL reported
+  // passing + rushing + receiving production. This keeps trick-play stats and
+  // multi-role production in the 2025 awards exactly like the live watch.
+  p.positionScore=scoring.isOffensePosition(p.position)
+    ? p.offenseBreakdown.passing+p.offenseBreakdown.rushing+p.offenseBreakdown.receiving
+    : scoring.positionScore(p.position,p.lines);
   p.allUtahPositionScore=p.positionScore*p.weight;
   p.lines.sort((a,b)=>b.points-a.points);
   p.positionLines=p.lines.filter(line=>scoring.positionLineAllowed(p.position,line.category)).sort((a,b)=>scoring.categoryScore(b.category,b.values,p.position)-scoring.categoryScore(a.category,a.values,p.position));
 }
 const all=[...players.values()].filter(p=>p.rawScore>0||p.positionScore>0);
-const publicPlayer=p=>({id:p.id,team:p.team,name:p.name,number:p.number,classYear:p.classYear,position:p.position,rawPosition:p.rawPosition,classification:p.classification,region:p.region,offense:+p.offense.toFixed(2),defense:+p.defense.toFixed(2),teamRecord:p.teamRecord,teamWinPct:+p.teamWinPct.toFixed(4),teamBonus:+p.teamBonus.toFixed(2),rawScore:+p.rawScore.toFixed(2),allUtahScore:+p.allUtahScore.toFixed(2),positionScore:+p.positionScore.toFixed(2),allUtahPositionScore:+p.allUtahPositionScore.toFixed(2),topLines:p.lines.slice(0,3),positionTopLines:p.positionLines.slice(0,3)});
+const publicPlayer=p=>({id:p.id,team:p.team,name:p.name,number:p.number,classYear:p.classYear,position:p.position,rawPosition:p.rawPosition,classification:p.classification,region:p.region,offense:+p.offense.toFixed(2),defense:+p.defense.toFixed(2),offenseBreakdown:{passing:+p.offenseBreakdown.passing.toFixed(2),rushing:+p.offenseBreakdown.rushing.toFixed(2),receiving:+p.offenseBreakdown.receiving.toFixed(2)},teamRecord:p.teamRecord,teamWinPct:+p.teamWinPct.toFixed(4),teamBonus:+p.teamBonus.toFixed(2),rawScore:+p.rawScore.toFixed(2),allUtahScore:+p.allUtahScore.toFixed(2),positionScore:+p.positionScore.toFixed(2),allUtahPositionScore:+p.allUtahPositionScore.toFixed(2),topLines:p.lines.slice(0,3),positionTopLines:p.positionLines.slice(0,3)});
 const rank=(rows,score,limit=30)=>rows.slice().sort((a,b)=>score(b)-score(a)||b.rawScore-a.rawScore||a.name.localeCompare(b.name)).slice(0,limit).map(publicPlayer);
 const positions=['QB','RB','WR','TE','OL','DL','LB','DB','K/P','ATH'];
 const byPosition=(rows,score,limit)=>Object.fromEntries(positions.map(pos=>[pos,rank(rows.filter(p=>p.position===pos&&p.positionScore>0),score,limit)]).filter(([,v])=>v.length));
@@ -48,5 +63,5 @@ const ruralRows=all.filter(p=>rural.has(p.classification));
 const allRuralOverall=rank(ruralRows,p=>p.rawScore,75);
 const allUtah={playerOfYear:allUtahOverall[0]||null,overall:allUtahOverall,positions:byPosition(all,p=>p.allUtahPositionScore,14)};
 const allRural={playerOfYear:allRuralOverall[0]||null,overall:allRuralOverall,positions:byPosition(ruralRows,p=>p.positionScore,14)};
-const out={season:SEASON,generatedAt:new Date().toISOString(),method:{note:`2025 RUS awards model built from the fall 2025 Deseret school-year archive, RUS 2025 team records and no estimated missing stats. All-State, All-Region, All-Utah and All-Rural position teams use the shared position formulas (${scoring.VERSION}). Offensive award positions count passing + rushing + receiving, defensive stats are excluded from offensive-position scoring, and run-first QBs receive enhanced rushing credit. Final team displays exclude a Player of the Year from that same First/Second Team and use the remaining ranked players for honorable mention.`,scoringVersion:scoring.VERSION,classWeight},coverage:{teamsInArchive:Object.keys(rosterData.teams||{}).length,teamsWithStats:Object.values(rosterData.teams||{}).filter(x=>x.stats?.some(s=>s.rows?.length)).length,rankedPlayers:all.length},mvp:{statewide:rank(all,p=>p.mvpScore,40),offense:rank(all.filter(p=>p.offense>0),p=>p.offense+p.teamBonus,40),defense:rank(all.filter(p=>p.defense>0),p=>p.defense+p.teamBonus,40),rural:rank(ruralRows,p=>p.ruralMvpScore,40),bigSchool:rank(all.filter(p=>big.has(p.classification)),p=>p.bigMvpScore,40)},allUtah,allRural,allState,allRegion};
+const out={season:SEASON,generatedAt:new Date().toISOString(),method:{note:`2025 RUS awards model built from the fall 2025 Deseret school-year archive, RUS 2025 team records and no estimated missing stats. All-State, All-Region, All-Utah and All-Rural position teams use the shared position formulas (${scoring.VERSION}). Every tracked offensive award player (QB/RB/WR/TE/ATH) receives credit for all reported passing + rushing + receiving production, including trick-play and multi-role stats; defensive stats are excluded from those offensive-position scores, and run-first QBs receive enhanced rushing credit. Final team displays exclude a Player of the Year from that same First/Second Team and use the remaining ranked players for honorable mention.`,scoringVersion:scoring.VERSION,classWeight},coverage:{teamsInArchive:Object.keys(rosterData.teams||{}).length,teamsWithStats:Object.values(rosterData.teams||{}).filter(x=>x.stats?.some(s=>s.rows?.length)).length,rankedPlayers:all.length},mvp:{statewide:rank(all,p=>p.mvpScore,40),offense:rank(all.filter(p=>p.offense>0),p=>p.offense+p.teamBonus,40),defense:rank(all.filter(p=>p.defense>0),p=>p.defense+p.teamBonus,40),rural:rank(ruralRows,p=>p.ruralMvpScore,40),bigSchool:rank(all.filter(p=>big.has(p.classification)),p=>p.bigMvpScore,40)},allUtah,allRural,allState,allRegion};
 fs.writeFileSync(OUT,JSON.stringify(out,null,2)+'\n');console.log(`2025 awards: ${out.coverage.rankedPlayers} ranked players from ${out.coverage.teamsWithStats} teams with stats using position scoring ${scoring.VERSION}.`);
