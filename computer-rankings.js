@@ -2,7 +2,9 @@
 'use strict';
 if(window.__rusComputerRankingsLoaded)return;window.__rusComputerRankingsLoaded=true;
 if((location.pathname.split('/').pop()||'').toLowerCase()!=='rankings.html')return;
-const norm=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+const rawNorm=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+const aliases={MONUMENTVAL:'MONUMENTVALLEY',GUNNISON:'GUNNISONVALLEY',MAPLEMTN:'MAPLEMOUNTAIN',GRANDCOUNTY:'GRAND',CEDAR:'CEDARCITY'};
+const norm=v=>aliases[rawNorm(v)]||rawNorm(v);
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const hex=(v,f='#333333')=>/^#[0-9A-F]{6}$/i.test(String(v||''))?v:f;
 const rgba=(h,a)=>{const n=parseInt(hex(h).slice(1),16);return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`};
