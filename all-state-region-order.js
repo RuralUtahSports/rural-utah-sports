@@ -2,6 +2,16 @@
 'use strict';
 if((location.pathname.split('/').pop()||'').toLowerCase()!=='all-state-watch.html')return;
 
+function statValue(values,...wanted){
+  const entries=Object.entries(values||{});
+  for(const key of wanted){
+    const target=compact(key);
+    const hit=entries.find(([k])=>compact(k)===target);
+    if(hit)return n(hit[1]);
+  }
+  return 0;
+}
+
 // Passing score used by the All-Utah / All-State / All-Region watch.
 // Keeps volume important while giving efficient QBs credit for accuracy and yards per attempt.
 if(typeof pts==='function'){
@@ -9,17 +19,9 @@ if(typeof pts==='function'){
   pts=function(cat,v){
     if(!/^Pass/i.test(cat))return basePts(cat,v);
     const entries=Object.entries(v||{});
-    const exact=(...keys)=>{
-      for(const wanted of keys){
-        const key=compact(wanted);
-        const hit=entries.find(([k])=>compact(k)===key);
-        if(hit)return n(hit[1]);
-      }
-      return 0;
-    };
-    const yards=exact('YARDS','PASS YARDS')||(()=>{const hit=entries.find(([k])=>/^yards$/i.test(String(k).trim()));return hit?n(hit[1]):0})();
-    const td=exact('TD','TDS','PASS TD','PASS TDS');
-    const interceptions=exact('INT','INTS','INTERCEPTIONS');
+    const yards=statValue(v,'YARDS','PASS YARDS')||(()=>{const hit=entries.find(([k])=>/^yards$/i.test(String(k).trim()));return hit?n(hit[1]):0})();
+    const td=statValue(v,'TD','TDS','PASS TD','PASS TDS');
+    const interceptions=statValue(v,'INT','INTS','INTERCEPTIONS');
     const compAtt=entries.find(([k])=>compact(k)==='COMPATT');
     const match=compAtt?String(compAtt[1]??'').match(/(\d+)\s*[-/]\s*(\d+)/):null;
     const completions=match?Number(match[1]):0;
@@ -28,7 +30,7 @@ if(typeof pts==='function'){
     const compPct=pctEntry?n(pctEntry[1]):(attempts?completions/attempts*100:0);
     const ypa=attempts?yards/attempts:0;
 
-    // Base: 1 point per 40 passing yards, 5 per TD, -2.5 per interception.
+    // Base passing: 1 point per 40 yards, 5 per TD, -2.5 per interception.
     let score=yards*.025+td*5-interceptions*2.5;
 
     // Efficiency only kicks in once a QB has a real sample (10+ attempts).
@@ -38,8 +40,55 @@ if(typeof pts==='function'){
     }
     return score;
   };
-  // If the page rendered before this deferred helper loaded, refresh with the new formula.
-  try{if(typeof data!=='undefined'&&data&&typeof render==='function')render()}catch(e){}
+}
+
+// The page already adds each player's rushing category to the total. Give QBs a little
+// extra value for rushing production so true dual-threat quarterbacks are not treated like
+// pure pocket passers. Generic rushing is .035/yard + 6/TD; QBs become .050/yard + 6/TD.
+if(typeof build==='function'){
+  const baseBuild=build;
+  build=function(){
+    const rows=baseBuild();
+    for(const p of rows){
+      if(p.pos!=='QB')continue;
+      let extraRush=0;
+      for(const line of p.lines||[]){
+        if(!/^Rush/i.test(line.cat||''))continue;
+        const yards=statValue(line.values,'YARDS','RUSH YARDS');
+        extraRush+=yards*.015;
+      }
+      if(extraRush){
+        p.score+=extraRush;
+        p.weightedScore=p.score*p.weight;
+      }
+    }
+    return rows;
+  };
+}
+
+// On QB cards, show both the passing and rushing lines when both are available so the
+// ranking is easier to understand at a glance.
+if(typeof topLine==='function'){
+  const baseTopLine=topLine;
+  topLine=function(p){
+    if(p.pos!=='QB')return baseTopLine(p);
+    const pass=(p.lines||[]).find(x=>/^Pass/i.test(x.cat||''));
+    const rush=(p.lines||[]).find(x=>/^Rush/i.test(x.cat||''));
+    const fmt=x=>x?`${x.cat}: ${Object.entries(x.values||{}).filter(([,v])=>String(v).trim()).slice(0,5).map(([k,v])=>`${k} ${v}`).join(', ')}`:'';
+    if(pass&&rush)return `${fmt(pass)} • ${fmt(rush)}`;
+    return baseTopLine(p);
+  };
+}
+
+function addQBNote(){
+  if(document.getElementById('rus-qb-score-note'))return;
+  const controls=document.querySelector('.controls');
+  if(!controls)return;
+  const note=document.createElement('div');
+  note.id='rus-qb-score-note';
+  note.style.cssText='margin-top:12px;color:#888;font-size:10px;line-height:1.45;font-weight:800;text-transform:uppercase';
+  note.textContent='QB score includes passing production + efficiency and rushing production (rush yards + rush TDs).';
+  controls.appendChild(note);
 }
 
 function regionNumber(text){const m=String(text||'').match(/(?:REGION\s*)?(\d+)/i);return m?Number(m[1]):999}
@@ -60,7 +109,9 @@ const start=()=>{
   obs.observe(h,{childList:true});
   const l=document.getElementById('scopeLabel');
   if(l)obs.observe(l,{childList:true,characterData:true,subtree:true});
+  addQBNote();
   reorder();
+  try{if(typeof data!=='undefined'&&data&&typeof render==='function')render()}catch(e){}
 };
 start();
 })();
