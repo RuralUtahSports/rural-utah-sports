@@ -130,6 +130,33 @@
     }
   }
 
+  function statCategoryOrder(value) {
+    const category = norm(value);
+    if (category.includes('PASS')) return 0;
+    if (category.includes('RUSH')) return 1;
+    if (category.includes('RECEIV')) return 2;
+    if (category.includes('DEF') || category.includes('TACK')) return 3;
+    return 4;
+  }
+
+  function orderStatBlocks() {
+    const blocks = [...document.querySelectorAll('#page .stat-block')];
+    if (!blocks.length) return;
+    const groups = new Map();
+    for (const block of blocks) {
+      const parent = block.parentElement;
+      if (!parent) continue;
+      if (!groups.has(parent)) groups.set(parent, []);
+      groups.get(parent).push(block);
+    }
+    for (const [parent, group] of groups) {
+      group
+        .map((block, index) => ({ block, index, order: statCategoryOrder(block.dataset.statCategory || block.querySelector('.stat-label')?.textContent || '') }))
+        .sort((a,b) => a.order - b.order || a.index - b.index)
+        .forEach(({block}) => parent.appendChild(block));
+    }
+  }
+
   function gameSeason() {
     const q = new URLSearchParams(location.search);
     const raw = q.get('date') || '';
@@ -295,6 +322,7 @@
   function apply() {
     attachScores();
     inferStatLabels();
+    orderStatBlocks();
     ensureStatStatus();
     linkStatPlayers();
   }
