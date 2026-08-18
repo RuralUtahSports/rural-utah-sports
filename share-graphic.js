@@ -207,6 +207,66 @@
     board.innerHTML=`<div class="rus-weekly-export-logo-wrap">${logo?`<img class="rus-weekly-export-logo" src="${esc(logo)}" alt="${esc(team)} logo">`:''}</div><div class="rus-weekly-export-copy"><div class="rus-weekly-export-week">${esc(weekLabel)}</div><div class="rus-weekly-export-award">${esc(award)}</div><div class="rus-weekly-export-name">${esc(name)}</div><div class="rus-weekly-export-meta">${esc(meta)}</div><div class="rus-weekly-export-team">${esc(team)}</div><div class="rus-weekly-export-stats">${esc(stats)}</div><div class="rus-weekly-export-result">${esc(result)}</div></div><div class="rus-weekly-export-score"><strong>${esc(score||'—')}</strong><span>${esc(scoreLabel)}</span></div>`;
     document.body.appendChild(board);return{node:board,top:112,bottom:62,pad:w>h*1.25?42:46};
   }
+  function canvasRoundRect(c,x,y,w,h,r){
+    const radius=Math.max(0,Math.min(r,w/2,h/2));c.beginPath();c.moveTo(x+radius,y);c.arcTo(x+w,y,x+w,y+h,radius);c.arcTo(x+w,y+h,x,y+h,radius);c.arcTo(x,y+h,x,y,radius);c.arcTo(x,y,x+w,y,radius);c.closePath();
+  }
+  function canvasFont(c,size,weight=800){c.font=`${weight} ${size}px Arial, Helvetica, sans-serif`}
+  function fitCanvasFont(c,text,maxWidth,maxSize,minSize=18,weight=900){
+    let size=maxSize;canvasFont(c,size,weight);while(size>minSize&&c.measureText(String(text||'')).width>maxWidth){size-=2;canvasFont(c,size,weight)}return size;
+  }
+  function canvasLines(c,text,maxWidth,maxLines=4){
+    const words=String(text||'').trim().split(/\s+/).filter(Boolean),lines=[];let line='';
+    words.forEach(word=>{const next=line?`${line} ${word}`:word;if(!line||c.measureText(next).width<=maxWidth)line=next;else{lines.push(line);line=word}});if(line)lines.push(line);
+    if(lines.length>maxLines){const kept=lines.slice(0,maxLines),rest=lines.slice(maxLines-1).join(' ');let last=rest;while(last.length>1&&c.measureText(`${last}…`).width>maxWidth)last=last.slice(0,-1);kept[maxLines-1]=`${last.trim()}…`;return kept}return lines;
+  }
+  function drawCanvasLines(c,text,x,y,maxWidth,lineHeight,maxLines=4,align='left'){
+    const lines=canvasLines(c,text,maxWidth,maxLines);c.textAlign=align;lines.forEach((line,i)=>c.fillText(line,x,y+i*lineHeight));return y+Math.max(0,lines.length-1)*lineHeight;
+  }
+  function loadCanvasImage(src){
+    if(!src)return Promise.resolve(null);
+    return new Promise(resolve=>{const img=new Image(),done=value=>{clearTimeout(timer);resolve(value)};img.decoding='async';img.onload=()=>done(img);img.onerror=()=>done(null);const timer=setTimeout(()=>done(null),3500);img.src=new URL(src,location.href).href});
+  }
+  function drawContainedImage(c,img,x,y,w,h){
+    if(!img?.naturalWidth||!img?.naturalHeight)return;const scale=Math.min(w/img.naturalWidth,h/img.naturalHeight),dw=img.naturalWidth*scale,dh=img.naturalHeight*scale;c.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);
+  }
+  function drawCanvasPill(c,text,x,y,maxWidth,fill,ink,fontSize=24,center=false){
+    const value=String(text||'').toUpperCase();fitCanvasFont(c,value,maxWidth-32,fontSize,15,900);const width=Math.min(maxWidth,c.measureText(value).width+34),left=center?x-width/2:x;c.fillStyle=fill;canvasRoundRect(c,left,y,width,fontSize+28,9);c.fill();c.fillStyle=ink;c.textAlign='center';c.textBaseline='middle';c.fillText(value,left+width/2,y+(fontSize+28)/2+1);c.textBaseline='alphabetic';return width;
+  }
+  async function renderWeeklyAward(el,w,h,label){
+    const text=selector=>(el.querySelector(selector)?.textContent||'').trim();
+    const computed=getComputedStyle(el),teamColor=computed.getPropertyValue('--team').trim()||'#555555',teamInk=computed.getPropertyValue('--ink').trim()||contrast(teamColor);
+    const award=text('.award-type,.class-label')||String(label||'Weekly Award').split('•')[0].trim(),name=text('.player-name,.class-name')||'Weekly Award Winner',meta=text('.player-meta'),team=text('.team-link'),stats=text('.stat-line');
+    let result=text('.result'),score=text('.award-score strong'),scoreLabel=text('.award-score span')||'RUS weekly score';
+    if(!score){const match=result.match(/^(.*?)\s*•\s*([\d.]+)\s+score$/i);if(match){result=match[1].trim();score=match[2]}}
+    const logos=await loadLogoCache(),domLogo=el.querySelector('.award-logo,.class-logo'),rawLogo=logos[norm(team)]||domLogo?.currentSrc||domLogo?.getAttribute('src')||window.RUSSchoolAssets?.logoUrl?.(team)||'',logo=await loadCanvasImage(rawLogo);
+    const weekLabel=(String(label||'').match(/2026\s+Week\s+\d+/i)||[])[0]||'2026 Weekly Honors',story=h>w*1.3,landscape=w>h*1.25;
+    const out=document.createElement('canvas');out.width=w;out.height=h;const c=out.getContext('2d');
+    const bg=c.createLinearGradient(0,0,w,h);bg.addColorStop(0,'#050505');bg.addColorStop(.68,'#111111');bg.addColorStop(1,'#080808');c.fillStyle=bg;c.fillRect(0,0,w,h);c.fillStyle='#F14D07';c.fillRect(0,0,w,12);
+    c.textBaseline='alphabetic';c.textAlign='left';c.fillStyle='#fff';canvasFont(c,landscape?34:38,900);c.fillText('RURAL UTAH SPORTS',50,landscape?55:61);c.fillStyle='#F14D07';canvasFont(c,landscape?17:19,900);c.fillText(weekLabel.toUpperCase(),50,landscape?84:92);
+    const card=landscape?{x:48,y:112,w:w-96,h:h-170}:story?{x:48,y:145,w:w-96,h:h-225}:{x:48,y:122,w:w-96,h:h-190};
+    c.fillStyle='#080808';c.strokeStyle='#393939';c.lineWidth=3;canvasRoundRect(c,card.x,card.y,card.w,card.h,20);c.fill();c.stroke();c.fillStyle=teamColor;canvasRoundRect(c,card.x,card.y,14,card.h,7);c.fill();
+    c.save();c.globalAlpha=.035;c.fillStyle='#fff';canvasFont(c,story?270:landscape?230:240,900);c.textAlign='right';c.fillText('RUS',card.x+card.w-30,card.y+card.h-22);c.restore();
+    if(landscape){
+      const logoBox={x:90,y:245,w:260,h:260};c.fillStyle='#111';c.strokeStyle=teamColor;c.lineWidth=4;canvasRoundRect(c,logoBox.x,logoBox.y,logoBox.w,logoBox.h,18);c.fill();c.stroke();drawContainedImage(c,logo,logoBox.x+24,logoBox.y+24,logoBox.w-48,logoBox.h-48);
+      const copyX=405,copyW=760;c.fillStyle='#F14D07';fitCanvasFont(c,award,copyW,30,19,900);c.textAlign='left';c.fillText(award.toUpperCase(),copyX,185);c.fillStyle='#fff';fitCanvasFont(c,name,copyW,70,39,900);c.fillText(name,copyX,265);c.fillStyle='#aaa';canvasFont(c,24,800);drawCanvasLines(c,meta,copyX,307,copyW,30,2);drawCanvasPill(c,team,copyX,335,copyW,teamColor,teamInk,24);
+      c.fillStyle='#101010';c.strokeStyle='#323232';c.lineWidth=2;canvasRoundRect(c,copyX,420,copyW,160,13);c.fill();c.stroke();c.fillStyle='#d8d8d8';canvasFont(c,24,700);drawCanvasLines(c,stats,copyX+24,462,copyW-48,34,4);
+      c.fillStyle='#fff';canvasFont(c,23,900);drawCanvasLines(c,result.toUpperCase(),copyX,635,copyW,30,2);
+      const scoreBox={x:1210,y:240,w:290,h:210};c.fillStyle='#111';c.strokeStyle=teamColor;c.lineWidth=4;canvasRoundRect(c,scoreBox.x,scoreBox.y,scoreBox.w,scoreBox.h,16);c.fill();c.stroke();c.fillStyle='#F14D07';fitCanvasFont(c,score||'—',scoreBox.w-40,78,45,900);c.textAlign='center';c.fillText(score||'—',scoreBox.x+scoreBox.w/2,scoreBox.y+103);c.fillStyle='#929292';canvasFont(c,16,900);drawCanvasLines(c,scoreLabel.toUpperCase(),scoreBox.x+scoreBox.w/2,scoreBox.y+145,scoreBox.w-38,21,3,'center');
+    }else if(story){
+      const cx=w/2,logoBox={x:cx-190,y:250,w:380,h:380};c.fillStyle='#111';c.strokeStyle=teamColor;c.lineWidth=5;canvasRoundRect(c,logoBox.x,logoBox.y,logoBox.w,logoBox.h,24);c.fill();c.stroke();drawContainedImage(c,logo,logoBox.x+35,logoBox.y+35,logoBox.w-70,logoBox.h-70);
+      c.fillStyle='#F14D07';fitCanvasFont(c,award,850,34,20,900);c.textAlign='center';c.fillText(award.toUpperCase(),cx,730);c.fillStyle='#fff';fitCanvasFont(c,name,850,78,46,900);const nameLines=canvasLines(c,name,850,2);nameLines.forEach((line,i)=>c.fillText(line,cx,825+i*82));const afterName=825+(nameLines.length-1)*82;
+      c.fillStyle='#aaa';canvasFont(c,27,800);drawCanvasLines(c,meta,cx,afterName+60,850,34,2,'center');drawCanvasPill(c,team,cx,afterName+95,620,teamColor,teamInk,29,true);
+      const scoreBox={x:270,y:afterName+205,w:540,h:215};c.fillStyle='#111';c.strokeStyle=teamColor;c.lineWidth=4;canvasRoundRect(c,scoreBox.x,scoreBox.y,scoreBox.w,scoreBox.h,18);c.fill();c.stroke();c.fillStyle='#F14D07';fitCanvasFont(c,score||'—',scoreBox.w-50,86,52,900);c.textAlign='center';c.fillText(score||'—',cx,scoreBox.y+105);c.fillStyle='#929292';canvasFont(c,18,900);drawCanvasLines(c,scoreLabel.toUpperCase(),cx,scoreBox.y+155,scoreBox.w-50,24,2,'center');
+      const statsY=Math.min(scoreBox.y+270,1450);c.fillStyle='#101010';c.strokeStyle='#323232';c.lineWidth=2;canvasRoundRect(c,90,statsY,900,245,15);c.fill();c.stroke();c.fillStyle='#d8d8d8';canvasFont(c,27,700);drawCanvasLines(c,stats,130,statsY+55,820,40,4);c.fillStyle='#fff';canvasFont(c,27,900);drawCanvasLines(c,result.toUpperCase(),cx,statsY+315,820,36,2,'center');
+    }else{
+      c.fillStyle='#F14D07';fitCanvasFont(c,award,860,31,19,900);c.textAlign='left';c.fillText(award.toUpperCase(),92,195);c.fillStyle='#fff';fitCanvasFont(c,name,860,72,40,900);c.fillText(name,92,275);c.fillStyle='#aaa';canvasFont(c,24,800);drawCanvasLines(c,meta,92,320,860,30,2);drawCanvasPill(c,team,92,346,600,teamColor,teamInk,23);
+      const logoBox={x:92,y:445,w:290,h:290};c.fillStyle='#111';c.strokeStyle=teamColor;c.lineWidth=4;canvasRoundRect(c,logoBox.x,logoBox.y,logoBox.w,logoBox.h,18);c.fill();c.stroke();drawContainedImage(c,logo,logoBox.x+28,logoBox.y+28,logoBox.w-56,logoBox.h-56);
+      const scoreBox={x:92,y:770,w:290,h:135};c.fillStyle='#111';c.strokeStyle=teamColor;c.lineWidth=3;canvasRoundRect(c,scoreBox.x,scoreBox.y,scoreBox.w,scoreBox.h,14);c.fill();c.stroke();c.fillStyle='#F14D07';fitCanvasFont(c,score||'—',scoreBox.w-35,59,38,900);c.textAlign='center';c.fillText(score||'—',scoreBox.x+scoreBox.w/2,scoreBox.y+66);c.fillStyle='#929292';canvasFont(c,13,900);drawCanvasLines(c,scoreLabel.toUpperCase(),scoreBox.x+scoreBox.w/2,scoreBox.y+97,scoreBox.w-34,17,2,'center');
+      c.fillStyle='#101010';c.strokeStyle='#323232';c.lineWidth=2;canvasRoundRect(c,425,445,560,285,15);c.fill();c.stroke();c.fillStyle='#d8d8d8';canvasFont(c,25,700);drawCanvasLines(c,stats,453,495,504,38,5);c.fillStyle='#fff';canvasFont(c,24,900);drawCanvasLines(c,result.toUpperCase(),453,790,504,32,3);
+    }
+    c.fillStyle='#777';canvasFont(c,15,800);c.textAlign='left';c.fillText('ruralutahsports.github.io',50,h-29);
+    const blob=await new Promise(resolve=>out.toBlob(resolve,'image/png',1));if(!blob)throw new Error('PNG export failed');return blob;
+  }
   async function waitForImages(root){
     const jobs=[...root.querySelectorAll('img')].map(img=>img.complete?(img.decode?img.decode().catch(()=>{}):Promise.resolve()):new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true})}));
     await Promise.race([Promise.all(jobs),new Promise(resolve=>setTimeout(resolve,5000))]);
@@ -251,7 +311,8 @@
   }
   async function make(format,target=null,labelOverride=''){
     const el=target||currentSection(),label=labelOverride||titleFor(el),dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
-    const blob=await render(el,dims[0],dims[1],label);await deliver(blob,`rural-utah-sports-${format}-${Date.now()}.png`);
+    const weeklyTarget=PAGE==='weekly-awards.html'&&el?.matches?.('.award-card,.class-card');
+    const blob=weeklyTarget?await renderWeeklyAward(el,dims[0],dims[1],label):await render(el,dims[0],dims[1],label);await deliver(blob,`rural-utah-sports-${format}-${Date.now()}.png`);
   }
   async function modal(initialTarget=null,initialLabel=''){
     if(PAGE.includes('standings')&&window.RUSStandingsShare?.openModal)return window.RUSStandingsShare.openModal();
