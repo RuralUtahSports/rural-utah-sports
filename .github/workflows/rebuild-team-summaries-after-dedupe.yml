@@ -11,6 +11,7 @@ on:
   push:
     paths:
       - 'scripts/schedule-known-corrections.mjs'
+      - 'scripts/schedule-2024-reciprocal-date-corrections.mjs'
       - 'scripts/sanitize-team-schedules.mjs'
       - 'scripts/rebuild-team-summaries-from-schedules.mjs'
       - '.github/workflows/rebuild-team-summaries-after-dedupe.yml'
@@ -41,6 +42,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             node scripts/schedule-known-corrections.mjs
+            node scripts/schedule-2024-reciprocal-date-corrections.mjs
             node scripts/sanitize-team-schedules.mjs
             node scripts/rebuild-team-summaries-from-schedules.mjs
             git add team-schedules.json team-record-breakdowns.json season-history.json team-page-data teams-data.json
