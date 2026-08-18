@@ -1,0 +1,58 @@
+name: App Shell Sanity
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'nav-menu.js'
+      - 'mobile-shell.js'
+      - 'site-search.js'
+      - 'pwa.js'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'RUSlogoNew.png'
+      - 'deseret-rosters-stats-2026.json'
+      - 'deseret-rosters-stats-2025.json'
+      - 'scripts/check-app-shell.mjs'
+      - '.github/workflows/app-shell-sanity.yml'
+  pull_request:
+    paths:
+      - 'nav-menu.js'
+      - 'mobile-shell.js'
+      - 'site-search.js'
+      - 'pwa.js'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'RUSlogoNew.png'
+      - 'deseret-rosters-stats-2026.json'
+      - 'deseret-rosters-stats-2025.json'
+      - 'scripts/check-app-shell.mjs'
+      - '.github/workflows/app-shell-sanity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check nav-menu.js
+          node --check mobile-shell.js
+          node --check site-search.js
+          node --check pwa.js
+          node --check sw.js
+          node --check scripts/check-app-shell.mjs
+
+      - name: Verify app shell wiring
+        run: node scripts/check-app-shell.mjs
