@@ -19,6 +19,9 @@
     .review-team-row.winner .review-team-name{color:#fff}
     .review-final{font-size:8px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#777;text-align:center;margin:0 14px;padding:5px 0;border-top:1px solid #242424;border-bottom:1px solid #242424}
     .review-card p{margin:0!important;padding:10px 16px 14px;color:#999!important;font-size:11px!important;line-height:1.45;min-height:49px;margin-top:auto!important}
+    .review-card-main{display:flex;flex:1;flex-direction:column;color:inherit;text-decoration:none;min-height:0}
+    .review-share-button{margin:0 14px 14px;min-height:36px;border:1px solid #F14D07;border-radius:7px;background:#1a1a1a;color:#fff;font-size:9px;font-weight:1000;text-transform:uppercase;cursor:pointer}
+    .review-share-button:hover{background:#F14D07;color:#000}
     .empty-review{padding:16px!important}
     .empty-review strong{font-size:15px}
     @media(max-width:600px){.review-card{min-height:auto}.review-team-score{font-size:25px}.review-team-main img{width:32px!important;height:32px!important;flex-basis:32px}.review-team-name{font-size:12px}}
@@ -68,7 +71,7 @@
   const card=(label,r,blurb)=>{
     if(!r)return `<div class="review-card empty-review"><span>${esc(label)}</span><strong>Waiting on finals</strong><p>This will fill in automatically as games finish.</p></div>`;
     const g=r.g;
-    return `<a class="review-card" href="scoreboard.html"><div class="review-label">${esc(label)}</div><div class="review-scoreboard">${teamRow(g.awayTeam,r.a,r.winner===g.awayTeam)}${teamRow(g.homeTeam,r.h,r.winner===g.homeTeam)}</div><div class="review-final">${esc(r.finalLabel||'Final')}</div><p>${esc(blurb)}</p></a>`;
+    return `<article class="review-card" data-review-card><a class="review-card-main" href="scoreboard.html"><div class="review-label">${esc(label)}</div><div class="review-scoreboard">${teamRow(g.awayTeam,r.a,r.winner===g.awayTeam)}${teamRow(g.homeTeam,r.h,r.winner===g.homeTeam)}</div><div class="review-final">${esc(r.finalLabel||'Final')}</div><p>${esc(blurb)}</p></a><button type="button" class="review-share-button">Share Graphic</button></article>`;
   };
   function weeklyEloExtremes(rows){
     const rowMap=new Map(rows.map(r=>[detailKey(r.g),r]));
