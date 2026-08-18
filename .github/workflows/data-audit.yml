@@ -1,0 +1,52 @@
+name: RUS Data Audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 12 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'teams-data.json'
+      - 'weekly-simulation.json'
+      - 'standings-2026.json'
+      - 'rankings-current-2026.json'
+      - 'elo-summary.json'
+      - 'deseret-rosters-stats-2026.json'
+      - 'team-page-data/**'
+      - 'scripts/audit-football-data.mjs'
+      - '.github/workflows/data-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check audit script syntax
+        run: node --check scripts/audit-football-data.mjs
+      - name: Audit football data
+        id: audit
+        continue-on-error: true
+        run: node scripts/audit-football-data.mjs
+      - name: Publish readable audit summary
+        if: always()
+        run: |
+          if [ -f data-audit-report.md ]; then cat data-audit-report.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rus-data-audit
+          path: |
+            data-audit-report.json
+            data-audit-report.md
+          if-no-files-found: warn
+      - name: Fail on critical data errors
+        if: steps.audit.outcome == 'failure'
+        run: exit 1
