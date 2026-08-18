@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T04:20:49.918Z",
+  "updatedAt": "2026-08-18T04:24:18.544Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,191 +8,56 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67822,
+    "scheduleRowsAudited": 67820,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 22,
-    "sameDayMultipleOpponents": 180,
-    "suspiciousRepeatGames": 7,
+    "sameDayMultipleOpponents": 166,
+    "suspiciousRepeatGames": 5,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
-    "reciprocalMismatches": 4,
+    "reciprocalMismatches": 2,
     "likelyOpponentTypos": 2,
-    "recent2025PlusIssues": 38
+    "recent2025PlusIssues": 20
   },
   "recent2025PlusIssues": [
     {
       "type": "same-day-multiple-opponents",
+      "team": "ALTAMONT",
+      "season": "2025",
+      "date": "9/12/2025",
+      "opponents": [
+        "MONTICELLO",
+        "MONUMENT VALLEY"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "BEN LOMOND",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "GRANTSVILLE",
-        "MORGAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUAB",
-      "season": "2025",
-      "date": "10/31/2025",
-      "opponents": [
-        "CEDAR CITY",
-        "GRANTSVILLE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUAN DIEGO",
       "season": "2025",
       "date": "10/3/2025",
       "opponents": [
-        "HIGHLAND",
-        "MURRAY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUAN DIEGO",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "RICHFIELD",
-        "SKY VIEW"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUDGE MEMORIAL",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "EMERY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "LAYTON CHRISTIAN",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "DIXIE",
-        "MOUNTAIN VIEW"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "LOGAN",
-      "season": "2025",
-      "date": "9/26/2025",
-      "opponents": [
-        "BEN LOMOND",
+        "LOGAN",
         "UNION"
       ]
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "MANTI",
+      "team": "MOUNTAIN VIEW",
       "season": "2025",
-      "date": "11/7/2025",
+      "date": "9/19/2025",
       "opponents": [
-        "CEDAR CITY",
-        "MORGAN"
+        "PARK CITY",
+        "UINTAH"
       ]
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "MILFORD",
+      "team": "PANGUITCH",
       "season": "2025",
-      "date": "9/26/2025",
+      "date": "10/3/2025",
       "opponents": [
-        "ALTAMONT",
+        "SAINT JOSEPH",
         "WATER CANYON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MONTICELLO",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "ALTAMONT",
-        "DOLORES (CO)"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MONUMENT VALLEY",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "NAVAJO PINE (NM)",
-        "PANGUITCH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MORGAN",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "UNION"
-      ]
-    },
-    {
-      "type": "suspicious-repeat",
-      "team": "MOUNTAIN RIDGE",
-      "season": "2025",
-      "index": 12,
-      "date": "10/31/2025",
-      "opponent": "RIVERTON",
-      "teamScore": 35,
-      "opponentScore": 21,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/17/2025",
-      "daysApart": 14
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MOUNTAIN RIDGE",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "RIVERTON",
-        "WESTLAKE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MOUNTAIN RIDGE",
-      "season": "2025",
-      "date": "10/31/2025",
-      "opponents": [
-        "HERRIMAN",
-        "RIVERTON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "OGDEN",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "MORGAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "OGDEN",
-      "season": "2025",
-      "date": "10/24/2025",
-      "opponents": [
-        "CANYON VIEW",
-        "CEDAR CITY"
       ]
     },
     {
@@ -207,47 +72,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "PARK CITY",
-      "season": "2025",
-      "date": "9/12/2025",
-      "opponents": [
-        "BOUNTIFUL",
-        "MOUNTAIN VIEW"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "PROVO",
       "season": "2025",
       "date": "10/10/2025",
       "opponents": [
         "MOUNTAIN VIEW",
         "UINTAH"
-      ]
-    },
-    {
-      "type": "suspicious-repeat",
-      "team": "RIVERTON",
-      "season": "2025",
-      "index": 10,
-      "date": "10/31/2025",
-      "opponent": "MOUNTAIN RIDGE",
-      "teamScore": 21,
-      "opponentScore": 35,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/17/2025",
-      "daysApart": 14
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "RIVERTON",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "COPPER HILLS",
-        "MOUNTAIN RIDGE"
       ]
     },
     {
@@ -258,16 +88,6 @@
       "opponents": [
         "MOUNTAIN VIEW",
         "UINTAH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SKY VIEW",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "JUAN DIEGO",
-        "TOOELE"
       ]
     },
     {
@@ -367,6 +187,16 @@
     },
     {
       "type": "same-day-multiple-opponents",
+      "team": "WATER CANYON",
+      "season": "2025",
+      "date": "10/3/2025",
+      "opponents": [
+        "MILFORD",
+        "PANGUITCH"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "WEST FIELD",
       "season": "2025",
       "date": "10/17/2025",
@@ -383,46 +213,6 @@
       "opponents": [
         "UMA-HILLFIELD",
         "WATER CANYON"
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "PANGUITCH",
-      "teamB": "SAINT JOSEPH",
-      "date": "9/26/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "PANGUITCH",
-          "opponent": "SAINT JOSEPH",
-          "date": "9/26/2025",
-          "teamScore": 34,
-          "opponentScore": 44,
-          "result": "L",
-          "season": "2025",
-          "index": 6
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "PANGUITCH",
-      "teamB": "SAINT JOSEPH",
-      "date": "10/3/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "SAINT JOSEPH",
-          "opponent": "PANGUITCH",
-          "date": "10/3/2025",
-          "teamScore": 44,
-          "opponentScore": 34,
-          "result": "W",
-          "season": "2025",
-          "index": 6
-        }
       ]
     },
     {
@@ -803,6 +593,16 @@
   "sameDayMultipleOpponents": [
     {
       "type": "same-day-multiple-opponents",
+      "team": "ALTAMONT",
+      "season": "2025",
+      "date": "9/12/2025",
+      "opponents": [
+        "MONTICELLO",
+        "MONUMENT VALLEY"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "AMERICAN FORK",
       "season": "2019",
       "date": "9/27/2019",
@@ -865,10 +665,10 @@
       "type": "same-day-multiple-opponents",
       "team": "BEN LOMOND",
       "season": "2025",
-      "date": "9/19/2025",
+      "date": "10/3/2025",
       "opponents": [
-        "GRANTSVILLE",
-        "MORGAN"
+        "LOGAN",
+        "UNION"
       ]
     },
     {
@@ -1443,42 +1243,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "JUAB",
-      "season": "2025",
-      "date": "10/31/2025",
-      "opponents": [
-        "CEDAR CITY",
-        "GRANTSVILLE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "JUAN DIEGO",
       "season": "2024",
       "date": "9/27/2024",
       "opponents": [
         "OGDEN",
         "UNION"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUAN DIEGO",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "HIGHLAND",
-        "MURRAY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUAN DIEGO",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "RICHFIELD",
-        "SKY VIEW"
       ]
     },
     {
@@ -1499,26 +1269,6 @@
       "opponents": [
         "LDS",
         "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUDGE MEMORIAL",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "EMERY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "LAYTON CHRISTIAN",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "DIXIE",
-        "MOUNTAIN VIEW"
       ]
     },
     {
@@ -1563,36 +1313,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "LOGAN",
-      "season": "2025",
-      "date": "9/26/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "UNION"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MANTI",
-      "season": "2025",
-      "date": "11/7/2025",
-      "opponents": [
-        "CEDAR CITY",
-        "MORGAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MILFORD",
-      "season": "2025",
-      "date": "9/26/2025",
-      "opponents": [
-        "ALTAMONT",
-        "WATER CANYON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "MILLARD",
       "season": "1926",
       "date": "11/5/1926",
@@ -1633,42 +1353,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "MONTICELLO",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "ALTAMONT",
-        "DOLORES (CO)"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MONUMENT VALLEY",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "NAVAJO PINE (NM)",
-        "PANGUITCH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "MORGAN",
       "season": "2024",
       "date": "10/4/2024",
       "opponents": [
         "GRANTSVILLE",
         "OGDEN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MORGAN",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "UNION"
       ]
     },
     {
@@ -1683,22 +1373,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "MOUNTAIN RIDGE",
+      "team": "MOUNTAIN VIEW",
       "season": "2025",
-      "date": "10/17/2025",
+      "date": "9/19/2025",
       "opponents": [
-        "RIVERTON",
-        "WESTLAKE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MOUNTAIN RIDGE",
-      "season": "2025",
-      "date": "10/31/2025",
-      "opponents": [
-        "HERRIMAN",
-        "RIVERTON"
+        "PARK CITY",
+        "UINTAH"
       ]
     },
     {
@@ -1843,22 +1523,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "OGDEN",
+      "team": "PANGUITCH",
       "season": "2025",
-      "date": "10/10/2025",
+      "date": "10/3/2025",
       "opponents": [
-        "BEN LOMOND",
-        "MORGAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "OGDEN",
-      "season": "2025",
-      "date": "10/24/2025",
-      "opponents": [
-        "CANYON VIEW",
-        "CEDAR CITY"
+        "SAINT JOSEPH",
+        "WATER CANYON"
       ]
     },
     {
@@ -1929,16 +1599,6 @@
       "opponents": [
         "USDB",
         "UTAH DEAF SCHOOL"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PARK CITY",
-      "season": "2025",
-      "date": "9/12/2025",
-      "opponents": [
-        "BOUNTIFUL",
-        "MOUNTAIN VIEW"
       ]
     },
     {
@@ -2063,16 +1723,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "RIVERTON",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "COPPER HILLS",
-        "MOUNTAIN RIDGE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SALEM HILLS",
       "season": "2025",
       "date": "10/3/2025",
@@ -2109,16 +1759,6 @@
       "opponents": [
         "MOUNTAIN CREST",
         "MOUTNAIN CREST"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SKY VIEW",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "JUAN DIEGO",
-        "TOOELE"
       ]
     },
     {
@@ -2403,6 +2043,16 @@
     },
     {
       "type": "same-day-multiple-opponents",
+      "team": "WATER CANYON",
+      "season": "2025",
+      "date": "10/3/2025",
+      "opponents": [
+        "MILFORD",
+        "PANGUITCH"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "WEBER",
       "season": "1927",
       "date": "10/7/1927",
@@ -2620,36 +2270,6 @@
     },
     {
       "type": "suspicious-repeat",
-      "team": "MOUNTAIN RIDGE",
-      "season": "2025",
-      "index": 12,
-      "date": "10/31/2025",
-      "opponent": "RIVERTON",
-      "teamScore": 35,
-      "opponentScore": 21,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/17/2025",
-      "daysApart": 14
-    },
-    {
-      "type": "suspicious-repeat",
-      "team": "RIVERTON",
-      "season": "2025",
-      "index": 10,
-      "date": "10/31/2025",
-      "opponent": "MOUNTAIN RIDGE",
-      "teamScore": 21,
-      "opponentScore": 35,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/17/2025",
-      "daysApart": 14
-    },
-    {
-      "type": "suspicious-repeat",
       "team": "SAN JUAN",
       "season": "2023",
       "index": 11,
@@ -2714,26 +2334,6 @@
   "reciprocalMismatches": [
     {
       "type": "reciprocal-mismatch",
-      "teamA": "PANGUITCH",
-      "teamB": "SAINT JOSEPH",
-      "date": "9/26/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "PANGUITCH",
-          "opponent": "SAINT JOSEPH",
-          "date": "9/26/2025",
-          "teamScore": 34,
-          "opponentScore": 44,
-          "result": "L",
-          "season": "2025",
-          "index": 6
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "SAINT JOSEPH",
       "teamB": "WHITEHORSE",
       "date": "8/23/2024",
@@ -2770,26 +2370,6 @@
           "result": "L",
           "season": "2024",
           "index": 1
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "PANGUITCH",
-      "teamB": "SAINT JOSEPH",
-      "date": "10/3/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "SAINT JOSEPH",
-          "opponent": "PANGUITCH",
-          "date": "10/3/2025",
-          "teamScore": 44,
-          "opponentScore": 34,
-          "result": "W",
-          "season": "2025",
-          "index": 6
         }
       ]
     },
@@ -3250,7 +2830,7 @@
       "team": "MOUNTAIN RIDGE",
       "file": "mountain-ridge.json",
       "seasons": 7,
-      "totalGames": 78
+      "totalGames": 77
     },
     {
       "team": "MOUNTAIN VIEW",
@@ -3376,7 +2956,7 @@
       "team": "RIVERTON",
       "file": "riverton.json",
       "seasons": 27,
-      "totalGames": 294
+      "totalGames": 293
     },
     {
       "team": "ROY",
