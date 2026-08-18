@@ -17,7 +17,8 @@ const aliases = {
   'FREMOND': 'FREMONT',
   'LAY': 'LAYTON',
   'ST JOSEPH': 'SAINT JOSEPH',
-  'DESERET HILLS': 'DESERT HILLS'
+  'DESERET HILLS': 'DESERT HILLS',
+  'PINE': 'PINE VIEW'
 };
 
 const canonical = value => {
@@ -119,7 +120,54 @@ const dateCorrections = new Map(Object.entries({
   'PARK CITY|MOUNTAIN VIEW|9/12/2025': '9/19/2025',
   'MOUNTAIN VIEW|PARK CITY|9/12/2025': '9/19/2025',
   'PANGUITCH|SAINT JOSEPH|9/26/2025': '10/3/2025',
-  'SAINT JOSEPH|PANGUITCH|9/26/2025': '10/3/2025'
+  'SAINT JOSEPH|PANGUITCH|9/26/2025': '10/3/2025',
+
+  // Final verified 2025 audit batch.
+  'ALTAMONT|MONUMENT VALLEY|9/12/2025': '9/13/2025',
+  'MONUMENT VALLEY|ALTAMONT|9/12/2025': '9/13/2025',
+  'BEN LOMOND|UNION|10/3/2025': '10/9/2025',
+  'UNION|BEN LOMOND|10/3/2025': '10/9/2025',
+  'MOUNTAIN VIEW|UINTAH|9/19/2025': '9/26/2025',
+  'UINTAH|MOUNTAIN VIEW|9/19/2025': '9/26/2025',
+  'PROVO|MOUNTAIN VIEW|10/10/2025': '10/15/2025',
+  'MOUNTAIN VIEW|PROVO|10/10/2025': '10/15/2025',
+  'SALEM HILLS|MOUNTAIN VIEW|10/3/2025': '10/9/2025',
+  'MOUNTAIN VIEW|SALEM HILLS|10/3/2025': '10/9/2025',
+  'SKYLINE|MURRAY|10/10/2025': '10/16/2025',
+  'MURRAY|SKYLINE|10/10/2025': '10/16/2025',
+  'SOUTH SUMMIT|BEN LOMOND|8/29/2025': '9/5/2025',
+  'BEN LOMOND|SOUTH SUMMIT|8/29/2025': '9/5/2025',
+  'TIMPANOGOS|MOUNTAIN VIEW|9/26/2025': '10/3/2025',
+  'MOUNTAIN VIEW|TIMPANOGOS|9/26/2025': '10/3/2025',
+  'WATER CANYON|ALTAMONT|8/29/2025': '9/5/2025',
+  'ALTAMONT|WATER CANYON|8/29/2025': '9/5/2025',
+  'WATER CANYON|PANGUITCH|10/3/2025': '10/8/2025',
+  'PANGUITCH|WATER CANYON|10/3/2025': '10/8/2025',
+  'WEST FIELD|VIEWMONT|10/17/2025': '10/24/2025',
+  'VIEWMONT|WEST FIELD|10/17/2025': '10/24/2025',
+  'WHITEHORSE|WATER CANYON|9/12/2025': '9/19/2025',
+  'WATER CANYON|WHITEHORSE|9/12/2025': '9/19/2025',
+  'PANGUITCH|ALTAMONT|10/10/2025': '10/17/2025',
+  'ALTAMONT|PANGUITCH|10/10/2025': '10/17/2025',
+
+  // UMA-LEHI is Utah Military Academy - Camp Williams. Its source rows had
+  // the Hillfield and playoff games on the wrong dates.
+  'UMA-LEHI|UMA-HILLFIELD|10/3/2025': '10/15/2025',
+  'UMA-HILLFIELD|UMA-LEHI|10/3/2025': '10/15/2025',
+  'UMA-LEHI|UMA-HILLFIELD|10/24/2025': '10/15/2025',
+  'UMA-HILLFIELD|UMA-LEHI|10/24/2025': '10/15/2025',
+  'UMA-LEHI|PANGUITCH|10/10/2025': '10/24/2025',
+  'PANGUITCH|UMA-LEHI|10/10/2025': '10/24/2025',
+  'UMA-LEHI|MILFORD|10/17/2025': '10/31/2025',
+  'MILFORD|UMA-LEHI|10/17/2025': '10/31/2025',
+  'UMA-HILLFIELD|WATER CANYON|9/19/2025': '9/26/2025',
+  'WATER CANYON|UMA-HILLFIELD|9/19/2025': '9/26/2025'
+}));
+
+const scoreCorrections = new Map(Object.entries({
+  // Verified final: Hillfield 36, St. Joseph 0 on Oct. 10, 2025.
+  'UMA-HILLFIELD|SAINT JOSEPH|10/10/2025': { teamScore: 36, opponentScore: 0, result: 'W' },
+  'SAINT JOSEPH|UMA-HILLFIELD|10/10/2025': { teamScore: 0, opponentScore: 36, result: 'L' }
 }));
 
 const dropGames = new Set([
@@ -139,6 +187,7 @@ const schedules = JSON.parse(fs.readFileSync(FILE, 'utf8'));
 
 let aliasesFixed = 0;
 let datesFixed = 0;
+let scoresFixed = 0;
 let dropped = 0;
 let forfeitsMarked = 0;
 let changed = false;
@@ -176,6 +225,20 @@ for (const [rawTeam, seasons] of Object.entries(schedules)) {
 
       const finalDate = clean(game.date);
       const finalKey = `${team}|${opponent}|${finalDate}`;
+      const scoreCorrection = scoreCorrections.get(finalKey);
+      if (scoreCorrection && (
+        Number(game.teamScore) !== scoreCorrection.teamScore ||
+        Number(game.opponentScore) !== scoreCorrection.opponentScore ||
+        clean(game.result).toUpperCase() !== scoreCorrection.result
+      )) {
+        game.teamScore = scoreCorrection.teamScore;
+        game.opponentScore = scoreCorrection.opponentScore;
+        game.result = scoreCorrection.result;
+        scoresFixed++;
+        changed = true;
+        affectedTeams.add(team);
+      }
+
       if (dropGames.has(finalKey)) {
         dropped++;
         changed = true;
@@ -205,6 +268,7 @@ if (changed) fs.writeFileSync(FILE, JSON.stringify(schedules) + '\n');
 console.log('Known schedule correction layer complete.');
 console.log(`Opponent aliases normalized: ${aliasesFixed}`);
 console.log(`Verified dates corrected: ${datesFixed}`);
+console.log(`Verified scores corrected: ${scoresFixed}`);
 console.log(`Known bad rows removed: ${dropped}`);
 console.log(`Forfeit notes applied: ${forfeitsMarked}`);
 console.log(`Teams affected: ${affectedTeams.size}`);
