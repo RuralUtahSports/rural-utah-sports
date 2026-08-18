@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T05:24:03.072Z",
+  "updatedAt": "2026-08-18T05:26:04.697Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67704,
+    "scheduleRowsAudited": 67697,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 55,
+    "sameDayMultipleOpponents": 48,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -215,32 +215,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "MONTICELLO",
-      "season": "2019",
-      "date": "8/16/2019",
-      "opponents": [
-        "MONUMENT VALLEY",
-        "MOUNUMENT VALLEY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "MOUNTAIN CREST",
       "season": "2014",
       "date": "10/28/2014",
       "opponents": [
         "BONNEVILLE",
         "BOX ELDER"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MURRAY",
-      "season": "1946",
-      "date": "9/26/1946",
-      "opponents": [
-        "AMERICAN FORK",
-        "AMRICAN FORK"
       ]
     },
     {
@@ -291,46 +271,6 @@
       "opponents": [
         "BEN LOMOND",
         "TOOELE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PARK CITY",
-      "season": "1969",
-      "date": "10/3/1969",
-      "opponents": [
-        "USDB",
-        "UTAH DEAF SCHOOL"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PARK CITY",
-      "season": "1969",
-      "date": "10/24/1969",
-      "opponents": [
-        "USDB",
-        "UTAH DEAF SCHOOL"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PARK CITY",
-      "season": "1970",
-      "date": "10/2/1970",
-      "opponents": [
-        "USDB",
-        "UTAH DEAF SCHOOL"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PARK CITY",
-      "season": "1970",
-      "date": "10/23/1970",
-      "opponents": [
-        "USDB",
-        "UTAH DEAF SCHOOL"
       ]
     },
     {
@@ -561,16 +501,6 @@
       "opponents": [
         "AMERICAN FORK",
         "TAYLORSVILLE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WHITEHORSE",
-      "season": "2019",
-      "date": "10/25/2019",
-      "opponents": [
-        "MONUMENT VALLEY",
-        "MOUNUMENT VALLEY"
       ]
     }
   ],
@@ -984,7 +914,7 @@
       "team": "MONTICELLO",
       "file": "monticello.json",
       "seasons": 73,
-      "totalGames": 724
+      "totalGames": 723
     },
     {
       "team": "MONUMENT VALLEY",
@@ -1020,7 +950,7 @@
       "team": "MURRAY",
       "file": "murray.json",
       "seasons": 108,
-      "totalGames": 956
+      "totalGames": 955
     },
     {
       "team": "NORTH SANPETE",
@@ -1074,7 +1004,7 @@
       "team": "PARK CITY",
       "file": "park-city.json",
       "seasons": 118,
-      "totalGames": 982
+      "totalGames": 978
     },
     {
       "team": "PAROWAN",
@@ -1326,7 +1256,7 @@
       "team": "WHITEHORSE",
       "file": "whitehorse.json",
       "seasons": 42,
-      "totalGames": 350
+      "totalGames": 349
     },
     {
       "team": "WOODS CROSS",
