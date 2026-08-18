@@ -269,6 +269,37 @@
     c.fillStyle='#777';canvasFont(c,15,800);c.textAlign='left';c.fillText('ruralutahsports.github.io',50,h-29);
     const blob=await new Promise(resolve=>out.toBlob(resolve,'image/png',1));if(!blob)throw new Error('PNG export failed');return blob;
   }
+  async function renderClassMvpCollection(el,w,h,label){
+    const cards=[...el.querySelectorAll('.class-card')].slice(0,7),logos=await loadLogoCache();if(!cards.length)throw new Error('No classification MVP cards found');
+    const items=await Promise.all(cards.map(async card=>{
+      const text=selector=>(card.querySelector(selector)?.textContent||'').trim(),computed=getComputedStyle(card),teamColor=computed.getPropertyValue('--team').trim()||'#555555',teamInk=computed.getPropertyValue('--ink').trim()||contrast(teamColor),classLabel=text('.class-label')||'Classification MVP',name=text('.class-name')||'Awaiting reported stats',team=text('.team-link'),stats=text('.stat-line');
+      let result=text('.result'),score='—';const match=result.match(/^(.*?)\s*•\s*([\d.]+)\s+score$/i);if(match){result=match[1].trim();score=match[2]}
+      const domLogo=card.querySelector('.class-logo'),rawLogo=logos[norm(team)]||domLogo?.currentSrc||domLogo?.getAttribute('src')||window.RUSSchoolAssets?.logoUrl?.(team)||'';
+      return{classLabel,name,team,stats,result,score,teamColor,teamInk,logo:await loadCanvasImage(rawLogo)};
+    }));
+    const weekLabel=(String(label||'').match(/2026\s+Week\s+\d+/i)||[])[0]||'2026 Weekly Honors',story=h>w*1.3,landscape=w>h*1.25,out=document.createElement('canvas');out.width=w;out.height=h;const c=out.getContext('2d');
+    const bg=c.createLinearGradient(0,0,w,h);bg.addColorStop(0,'#050505');bg.addColorStop(.7,'#111');bg.addColorStop(1,'#070707');c.fillStyle=bg;c.fillRect(0,0,w,h);c.fillStyle='#F14D07';c.fillRect(0,0,w,12);c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#fff';fitCanvasFont(c,'MVP BY CLASSIFICATION',w-100,landscape?43:42,28,900);c.fillText('MVP BY CLASSIFICATION',50,landscape?58:62);c.fillStyle='#F14D07';canvasFont(c,landscape?18:19,900);c.fillText(`${weekLabel.toUpperCase()} • ALL 7 WINNERS`,50,landscape?89:94);
+    const drawTile=(item,x,y,tileW,tileH)=>{
+      c.fillStyle='#090909';c.strokeStyle='#353535';c.lineWidth=2;canvasRoundRect(c,x,y,tileW,tileH,15);c.fill();c.stroke();c.fillStyle=item.teamColor;canvasRoundRect(c,x,y,9,tileH,5);c.fill();
+      const pad=18,logoSize=Math.max(62,Math.min(118,tileH-128,tileW*.25)),logoX=x+pad,logoY=y+52,scoreW=tileW<430?62:82,copyX=logoX+logoSize+17,copyW=x+tileW-pad-scoreW-copyX;
+      c.fillStyle='#F14D07';canvasFont(c,tileW<430?16:19,900);c.textAlign='left';c.fillText(item.classLabel.toUpperCase(),x+pad,y+30);
+      c.fillStyle='#111';c.strokeStyle=item.teamColor;c.lineWidth=2;canvasRoundRect(c,logoX,logoY,logoSize,logoSize,10);c.fill();c.stroke();drawContainedImage(c,item.logo,logoX+8,logoY+8,logoSize-16,logoSize-16);
+      c.fillStyle='#fff';fitCanvasFont(c,item.name,Math.max(90,copyW),tileW<430?28:32,17,900);c.textAlign='left';c.fillText(item.name,copyX,y+73);
+      c.fillStyle=item.teamColor;fitCanvasFont(c,item.team,Math.max(90,copyW),tileW<430?16:19,12,900);c.fillText(item.team.toUpperCase(),copyX,y+103);
+      c.fillStyle='#F14D07';fitCanvasFont(c,item.score,scoreW,34,23,900);c.textAlign='right';c.fillText(item.score,x+tileW-pad,y+73);c.fillStyle='#777';canvasFont(c,10,900);c.fillText('SCORE',x+tileW-pad,y+92);
+      const statY=y+tileH-69;c.fillStyle='#cfcfcf';canvasFont(c,tileW<430?12:14,700);c.textAlign='left';drawCanvasLines(c,item.stats||'No reported stat line',x+pad,statY,tileW-pad*2,16,2);
+      c.fillStyle='#fff';fitCanvasFont(c,item.result.toUpperCase(),tileW-pad*2,tileW<430?13:15,10,900);c.fillText(item.result.toUpperCase(),x+pad,y+tileH-15);
+    };
+    if(story){
+      const x=55,startY=135,gap=13,tileW=w-110,tileH=(h-startY-58-gap*6)/7;items.forEach((item,i)=>drawTile(item,x,startY+i*(tileH+gap),tileW,tileH));
+    }else if(landscape){
+      const gap=14,tileW=(w-110-gap*3)/4,startY=120,tileH=(h-startY-52-gap)/2;items.forEach((item,i)=>{const row=i<4?0:1,count=row===0?4:3,index=row===0?i:i-4,total=count*tileW+(count-1)*gap,x=(w-total)/2+index*(tileW+gap);drawTile(item,x,startY+row*(tileH+gap),tileW,tileH)});
+    }else{
+      const gap=12,tileW=(w-112-gap)/2,startY=128,tileH=(h-startY-52-gap*3)/4;items.forEach((item,i)=>{const row=Math.floor(i/2),last=i===6,x=last?(w-tileW)/2:50+(i%2)*(tileW+gap);drawTile(item,x,startY+row*(tileH+gap),tileW,tileH)});
+    }
+    c.fillStyle='#777';canvasFont(c,15,800);c.textAlign='left';c.fillText('ruralutahsports.github.io',50,h-23);const blob=await new Promise(resolve=>out.toBlob(resolve,'image/png',1));if(!blob)throw new Error('PNG export failed');return blob;
+  }
+  function renderWeeklyTarget(el,w,h,label){return el?.matches?.('.class-grid')?renderClassMvpCollection(el,w,h,label):renderWeeklyAward(el,w,h,label)}
   async function waitForImages(root){
     const jobs=[...root.querySelectorAll('img')].map(img=>img.complete?(img.decode?img.decode().catch(()=>{}):Promise.resolve()):new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true})}));
     await Promise.race([Promise.all(jobs),new Promise(resolve=>setTimeout(resolve,5000))]);
@@ -319,8 +350,8 @@
   }
   async function make(format,target=null,labelOverride='',preparedBlob=null){
     const el=target||currentSection(),label=labelOverride||titleFor(el),dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
-    const weeklyTarget=PAGE==='weekly-awards.html'&&el?.matches?.('.award-card,.class-card');
-    const blob=preparedBlob||(weeklyTarget?await renderWeeklyAward(el,dims[0],dims[1],label):await render(el,dims[0],dims[1],label));await deliver(blob,`rural-utah-sports-${format}-${Date.now()}.png`);
+    const weeklyTarget=PAGE==='weekly-awards.html'&&el?.matches?.('.award-card,.class-card,.class-grid');
+    const blob=preparedBlob||(weeklyTarget?await renderWeeklyTarget(el,dims[0],dims[1],label):await render(el,dims[0],dims[1],label));await deliver(blob,`rural-utah-sports-${format}-${Date.now()}.png`);
   }
   async function modal(initialTarget=null,initialLabel=''){
     if(PAGE.includes('standings')&&window.RUSStandingsShare?.openModal)return window.RUSStandingsShare.openModal();
@@ -332,12 +363,12 @@
       const classes=classSelect?[...classSelect.options].filter(o=>o.value&&o.value!=='all').map(o=>({value:o.value,label:o.textContent.trim()})):[];
       standingsControls=`<label class="rus-share-region-label">Share View</label><select class="rus-share-region rus-share-standings-scope"><option value="region">Single Region</option><option value="classification">Whole Classification — Region by Region</option></select><div class="rus-share-region-picker"><label class="rus-share-region-label">Region</label><select class="rus-share-region rus-share-region-select">${regions.map((r,i)=>`<option value="${i}">${esc(r.title)}</option>`).join('')}</select></div><div class="rus-share-class-picker" style="display:none"><label class="rus-share-region-label">Classification</label><select class="rus-share-region rus-share-class-select">${classes.map(c=>`<option value="${esc(c.value)}">${esc(c.label)}</option>`).join('')}</select></div>`;
     }
-    const el=document.createElement('div');el.className='rus-share-modal';el.innerHTML=`<div class="rus-share-sheet"><h3>Share Graphic</h3><p>${PAGE.includes('standings')?'Share one region, or choose a whole classification to put every region in that class on one graphic using the same region-by-region standings look.':initialTarget?'Creates a branded graphic for this weekly award using the player’s school colors, logo, stats and result.':'Creates a branded graphic from the section currently in view. Rankings use team colors, local logos and a layout that fills the canvas.'}</p>${standingsControls}<div class="rus-share-grid"><button class="rus-share-option" data-f="square"><strong>Instagram Post</strong>1080 × 1080</button><button class="rus-share-option" data-f="story"><strong>Instagram Story</strong>1080 × 1920</button><button class="rus-share-option" data-f="x"><strong>X Post</strong>1600 × 900</button><button class="rus-share-option" data-f="square"><strong>Square PNG</strong>Download / Share</button></div><button class="rus-share-close">Cancel</button></div>`;
+    const collectionTarget=initialTarget?.matches?.('.class-grid'),el=document.createElement('div');el.className='rus-share-modal';el.innerHTML=`<div class="rus-share-sheet"><h3>Share Graphic</h3><p>${PAGE.includes('standings')?'Share one region, or choose a whole classification to put every region in that class on one graphic using the same region-by-region standings look.':collectionTarget?'Creates one branded graphic featuring all seven classification MVPs.':initialTarget?'Creates a branded graphic for this weekly award using the player’s school colors, logo, stats and result.':'Creates a branded graphic from the section currently in view. Rankings use team colors, local logos and a layout that fills the canvas.'}</p>${standingsControls}<div class="rus-share-grid"><button class="rus-share-option" data-f="square"><strong>Instagram Post</strong>1080 × 1080</button><button class="rus-share-option" data-f="story"><strong>Instagram Story</strong>1080 × 1920</button><button class="rus-share-option" data-f="x"><strong>X Post</strong>1600 × 900</button><button class="rus-share-option" data-f="square"><strong>Square PNG</strong>Download / Share</button></div><button class="rus-share-close">Cancel</button></div>`;
     document.body.appendChild(el);
-    const preparedWeekly=new Map(),weeklyShare=PAGE==='weekly-awards.html'&&initialTarget?.matches?.('.award-card,.class-card');
+    const preparedWeekly=new Map(),weeklyShare=PAGE==='weekly-awards.html'&&initialTarget?.matches?.('.award-card,.class-card,.class-grid');
     if(weeklyShare){
       const buttons=[...el.querySelectorAll('[data-f]')],original=new Map(buttons.map(button=>[button,button.innerHTML]));buttons.forEach(button=>{button.disabled=true;button.innerHTML=button.innerHTML.replace(/(<strong>.*?<\/strong>)[\s\S]*/,'$1Preparing…')});
-      [...new Set(buttons.map(button=>button.dataset.f))].forEach(async format=>{const dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];try{preparedWeekly.set(format,await renderWeeklyAward(initialTarget,dims[0],dims[1],initialLabel||titleFor(initialTarget)));buttons.filter(button=>button.dataset.f===format).forEach(button=>{button.disabled=false;button.innerHTML=original.get(button)})}catch(error){console.error(error);buttons.filter(button=>button.dataset.f===format).forEach(button=>{button.disabled=false;button.innerHTML='<strong>Try Again</strong>Tap to retry'})}});
+      [...new Set(buttons.map(button=>button.dataset.f))].forEach(async format=>{const dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];try{preparedWeekly.set(format,await renderWeeklyTarget(initialTarget,dims[0],dims[1],initialLabel||titleFor(initialTarget)));buttons.filter(button=>button.dataset.f===format).forEach(button=>{button.disabled=false;button.innerHTML=original.get(button)})}catch(error){console.error(error);buttons.filter(button=>button.dataset.f===format).forEach(button=>{button.disabled=false;button.innerHTML='<strong>Try Again</strong>Tap to retry'})}});
     }
     const scope=el.querySelector('.rus-share-standings-scope');
     if(scope){
