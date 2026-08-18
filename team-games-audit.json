@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T05:16:07.102Z",
+  "updatedAt": "2026-08-18T05:17:35.286Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67776,
+    "scheduleRowsAudited": 67774,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 124,
+    "sameDayMultipleOpponents": 123,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -191,16 +191,6 @@
       "opponents": [
         "LDS",
         "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "CEDAR CITY",
-      "season": "2021",
-      "date": "10/22/2021",
-      "opponents": [
-        "EAST",
-        "LOGAN"
       ]
     },
     {
@@ -1404,7 +1394,7 @@
       "team": "CEDAR CITY",
       "file": "cedar-city.json",
       "seasons": 77,
-      "totalGames": 769
+      "totalGames": 768
     },
     {
       "team": "CEDAR VALLEY",
@@ -1494,7 +1484,7 @@
       "team": "EAST",
       "file": "east.json",
       "seasons": 112,
-      "totalGames": 1069
+      "totalGames": 1068
     },
     {
       "team": "EMERY",
