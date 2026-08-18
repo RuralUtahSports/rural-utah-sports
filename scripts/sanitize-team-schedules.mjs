@@ -6,6 +6,7 @@ const aliases = {
   'GUNNISON': 'GUNNISON VALLEY',
   'MAPLE MTN': 'MAPLE MOUNTAIN',
   'MONUMENT VAL': 'MONUMENT VALLEY',
+  'MOUNUMENT VALLEY': 'MONUMENT VALLEY',
   'CEDAR': 'CEDAR CITY',
   'SUMMIT': 'SUMMIT ACADEMY',
   'WASATCH ACAD': 'WASATCH ACADEMY',
@@ -13,10 +14,15 @@ const aliases = {
   'BY HIGH': 'BYH',
   'BRIGHAM YOUNG': 'BYH',
   'FREMOND': 'FREMONT',
+  'AMRICAN FORK': 'AMERICAN FORK',
   // Historical Salt Lake school: sources use LDS College, LDS High School,
   // and Latter-day Saints' University/LDSU for the same institution. The
   // football record book convention is LDSU, so collapse LDS duplicate rows.
-  'LDS': 'LDSU'
+  'LDS': 'LDSU',
+  // Historical Utah School for the Deaf records also appear under the broader
+  // Utah Schools for the Deaf and the Blind abbreviation. Treat these as one
+  // opponent so same-game duplicate rows collapse.
+  'UTAH DEAF SCHOOL': 'USDB'
 };
 
 const canonical = value => {
