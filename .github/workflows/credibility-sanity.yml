@@ -1,0 +1,47 @@
+name: Credibility Sanity
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'site-credibility.js'
+      - 'about.html'
+      - 'methodology.html'
+      - 'media.html'
+      - 'corrections.html'
+      - 'pwa.js'
+      - 'sw.js'
+      - 'scripts/check-credibility.mjs'
+      - '.github/workflows/credibility-sanity.yml'
+  pull_request:
+    paths:
+      - 'site-credibility.js'
+      - 'about.html'
+      - 'methodology.html'
+      - 'media.html'
+      - 'corrections.html'
+      - 'pwa.js'
+      - 'sw.js'
+      - 'scripts/check-credibility.mjs'
+      - '.github/workflows/credibility-sanity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          node --check site-credibility.js
+          node --check pwa.js
+          node --check sw.js
+          node --check scripts/check-credibility.mjs
+      - name: Verify credibility package
+        run: node scripts/check-credibility.mjs
