@@ -45,7 +45,17 @@ const dropGames = new Set([
   // 2016 — the 24-16 Oct. 25 Region 7 play-in was Skyridge at Provo. Snow
   // Canyon did not play that day; these copied rows are not real games.
   'PROVO|SNOW CANYON|10/25/2016',
-  'SNOW CANYON|PROVO|10/25/2016'
+  'SNOW CANYON|PROVO|10/25/2016',
+
+  // 2004 — Beaver beat Richfield 35-7 on Sept. 10 while Rich played West
+  // Side, Idaho. The Beaver/Rich rows are crossed copies, not a real game.
+  'BEAVER|RICH|9/10/2004',
+  'RICH|BEAVER|9/10/2004',
+
+  // 2004 — Enterprise opened at Beaver Aug. 20 while North Sevier hosted
+  // Duchesne. The Enterprise/North Sevier rows duplicate those real finals.
+  'ENTERPRISE|NORTH SEVIER|8/20/2004',
+  'NORTH SEVIER|ENTERPRISE|8/20/2004'
 ]);
 
 if (!fs.existsSync(FILE)) throw new Error(`${FILE} not found`);
