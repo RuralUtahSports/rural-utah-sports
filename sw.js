@@ -1,5 +1,5 @@
-const CACHE='rus-site-20260817-opt1';
-const CORE=['./','./index.html','./teams.html','./scoreboard.html','./rankings.html','./standings.html','./RUSlogoNew.png','./nav-menu.js','./mobile-shell.js','./app-shell-polish.js'];
+const CACHE='rus-site-20260817-opt2';
+const CORE=['./','./index.html','./teams.html','./scoreboard.html','./rankings.html','./standings.html','./RUSlogoNew.png','./nav-menu.js','./mobile-shell.js','./site-search.js','./app-shell-polish.js'];
 const LIVE=/(weekly-simulation|deseret|live-|scoreboard|standings-2026|2026\.json|playoff-picture)/i;
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>Promise.allSettled(CORE.map(x=>cache.add(x)))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
