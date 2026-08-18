@@ -14,10 +14,26 @@ function addStyles(){if(document.getElementById('rus-search-style'))return;const
 `;document.head.appendChild(s)}
 async function teams(){return teamPromise||(teamPromise=fetch('teams-data.json').then(r=>r.ok?r.json():[]).catch(()=>[]))}
 async function games(){return gamePromise||(gamePromise=fetch('weekly-simulation.json').then(r=>r.ok?r.json():{}).then(x=>x.games||[]).catch(()=>[]))}
-async function players(){return playerPromise||(playerPromise=fetch('player-search-index.json').then(r=>r.ok?r.json():{}).then(x=>x.players||[]).catch(()=>[]))}
+async function rosterPlayers(season){
+  try{
+    const r=await fetch(`deseret-rosters-stats-${season}.json`);
+    if(!r.ok)return[];
+    const data=await r.json(),out=[];
+    for(const [teamKey,teamData] of Object.entries(data?.teams||{})){
+      const team=String(teamData?.team||teamKey||'').trim();
+      for(const player of teamData?.roster||[]){
+        const id=String(player?.playerId||'').trim(),name=String(player?.name||'').trim();
+        if(!id||!name)continue;
+        out.push({id,n:name,t:team,y:season,no:String(player?.number||'').trim(),p:String(player?.position||'').trim(),c:String(player?.class||'').trim()});
+      }
+    }
+    return out;
+  }catch{return[]}
+}
+async function players(){return playerPromise||(playerPromise=Promise.all([rosterPlayers(2026),rosterPlayers(2025)]).then(groups=>groups.flat()).catch(()=>[]))}
 function pageHits(q){return pages.filter(([name,,group])=>norm(name+' '+group).includes(q)).map(([name,href,group])=>({name,href,type:'Page',meta:group,score:norm(name).startsWith(q)?0:3}))}
-function playerMeta(p){return [`#${p.no||''}`,p.t,p.p,p.c?`Class ${p.c}`:''].filter(x=>x&&x!=='#').join(' • ')}
-async function search(q){q=norm(q);if(!q){render(pages.slice(0,9).map(([name,href,group])=>({name,href,type:'Quick Link',meta:group,score:0})));return}const [ts,gs,ps]=await Promise.all([teams(),games(),q.length>=2?players():Promise.resolve([])]);const out=pageHits(q);for(const t of ts){const name=String(t?.team||'');if(norm(name).includes(q))out.push({name,href:`team.html?team=${encodeURIComponent(name)}`,type:'Team',meta:[t.classification,t.region].filter(Boolean).join(' • '),score:norm(name).startsWith(q)?0:1})}for(const p of ps){const name=String(p?.n||'');const team=String(p?.t||'');const hay=norm(`${name} ${team} ${p?.no||''} ${p?.p||''}`);if(!hay.includes(q))continue;out.push({name,href:`player.html?id=${encodeURIComponent(p.id)}&season=${encodeURIComponent(p.y||2026)}`,type:'Player',meta:playerMeta(p),score:norm(name).startsWith(q)?.5:1.5})}for(const g of gs){const away=String(g?.awayTeam||''),home=String(g?.homeTeam||''),hay=norm(`${away} ${home}`);if(hay.includes(q)){const d=isoDate(g.date);out.push({name:`${away} at ${home}`,href:`game.html?${new URLSearchParams({date:d,away,home})}`,type:'Game',meta:d||String(g.date||''),score:2})}}out.sort((a,b)=>a.score-b.score||a.name.localeCompare(b.name));render(out.slice(0,24))}
+function playerMeta(p){return [`#${p.no||''}`,p.t,p.p,p.c?`Class ${p.c}`:'',String(p.y||'')].filter(x=>x&&x!=='#').join(' • ')}
+async function search(q){q=norm(q);if(!q){render(pages.slice(0,9).map(([name,href,group])=>({name,href,type:'Quick Link',meta:group,score:0})));return}const [ts,gs,ps]=await Promise.all([teams(),games(),q.length>=2?players():Promise.resolve([])]);const out=pageHits(q);for(const t of ts){const name=String(t?.team||'');if(norm(name).includes(q))out.push({name,href:`team.html?team=${encodeURIComponent(name)}`,type:'Team',meta:[t.classification,t.region].filter(Boolean).join(' • '),score:norm(name).startsWith(q)?0:1})}for(const p of ps){const name=String(p?.n||''),team=String(p?.t||''),hay=norm(`${name} ${team} ${p?.no||''} ${p?.p||''} ${p?.c||''}`);if(!hay.includes(q))continue;out.push({name,href:`player.html?id=${encodeURIComponent(p.id)}&season=${encodeURIComponent(p.y||2026)}`,type:'Player',meta:playerMeta(p),score:norm(name).startsWith(q)?.5:1.5})}for(const g of gs){const away=String(g?.awayTeam||''),home=String(g?.homeTeam||''),hay=norm(`${away} ${home}`);if(hay.includes(q)){const d=isoDate(g.date);out.push({name:`${away} at ${home}`,href:`game.html?${new URLSearchParams({date:d,away,home})}`,type:'Game',meta:d||String(g.date||''),score:2})}}out.sort((a,b)=>a.score-b.score||a.name.localeCompare(b.name));render(out.slice(0,24))}
 function render(items){results.innerHTML=items.length?items.map(x=>`<a class="rus-search-result" href="${esc(x.href)}"><span><b>${esc(x.name)}</b><small>${esc(x.meta||'')}</small></span><span class="rus-search-type">${esc(x.type)}</span></a>`).join(''):'<div class="rus-search-empty">No matching teams, players, games or pages.</div>'}
 function open(){layer.classList.add('open');layer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';input.value='';search('');requestAnimationFrame(()=>input.focus())}
 function close(){layer.classList.remove('open');layer.setAttribute('aria-hidden','true');document.body.style.overflow=''}
