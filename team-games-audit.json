@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T12:20:15.990Z",
+  "updatedAt": "2026-08-18T12:23:47.512Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67691,
+    "scheduleRowsAudited": 67685,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 36,
+    "sameDayMultipleOpponents": 32,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -23,26 +23,6 @@
   "exactDuplicates": [],
   "sameDateOpponentConflicts": [],
   "sameDayMultipleOpponents": [
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BEAVER",
-      "season": "2002",
-      "date": "10/25/2002",
-      "opponents": [
-        "JUAB",
-        "JUAN DIEGO"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BEAVER",
-      "season": "2002",
-      "date": "11/9/2002",
-      "opponents": [
-        "JUAB",
-        "JUAN DIEGO"
-      ]
-    },
     {
       "type": "same-day-multiple-opponents",
       "team": "BONNEVILLE",
@@ -245,16 +225,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "RICH",
-      "season": "1993",
-      "date": "11/6/1993",
-      "opponents": [
-        "ALTAMONT",
-        "WASATCH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SKY VIEW",
       "season": "1999",
       "date": "10/26/1999",
@@ -365,16 +335,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "WASATCH",
-      "season": "1993",
-      "date": "11/6/1993",
-      "opponents": [
-        "RICH",
-        "RICHFIELD"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "WEST",
       "season": "1998",
       "date": "8/28/1998",
@@ -470,7 +430,7 @@
       "team": "BEAVER",
       "file": "beaver.json",
       "seasons": 86,
-      "totalGames": 830
+      "totalGames": 828
     },
     {
       "team": "BEN LOMOND",
@@ -710,7 +670,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 71,
-      "totalGames": 720
+      "totalGames": 718
     },
     {
       "team": "JUAN DIEGO",
@@ -926,7 +886,7 @@
       "team": "RICH",
       "file": "rich.json",
       "seasons": 41,
-      "totalGames": 440
+      "totalGames": 439
     },
     {
       "team": "RICHFIELD",
@@ -1094,7 +1054,7 @@
       "team": "WASATCH",
       "file": "wasatch.json",
       "seasons": 102,
-      "totalGames": 939
+      "totalGames": 938
     },
     {
       "team": "WATER CANYON",
