@@ -16,6 +16,7 @@ on:
       - 'scripts/schedule-historical-audit-corrections.mjs'
       - 'scripts/sanitize-team-schedules.mjs'
       - 'scripts/rebuild-team-summaries-from-schedules.mjs'
+      - 'scripts/build_verified_elo_2026.mjs'
       - '.github/workflows/rebuild-team-summaries-after-dedupe.yml'
 
 permissions:
@@ -35,7 +36,7 @@ jobs:
         with:
           ref: main
 
-      - name: Correct schedules, sanitize, rebuild summaries, and commit
+      - name: Correct schedules, rebuild summaries and ELO, and commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -48,9 +49,10 @@ jobs:
             node scripts/schedule-historical-audit-corrections.mjs
             node scripts/sanitize-team-schedules.mjs
             node scripts/rebuild-team-summaries-from-schedules.mjs
-            git add team-schedules.json team-record-breakdowns.json season-history.json team-page-data teams-data.json
+            node scripts/build_verified_elo_2026.mjs
+            git add team-schedules.json team-record-breakdowns.json season-history.json team-page-data teams-data.json team-elo-history.json elo-summary.json elo-live-summary.json elo-game-changes-2026.json elo-cleanup-report.json
             if git diff --cached --quiet; then
-              echo "Team schedules and summaries are already clean."
+              echo "Team schedules, summaries, and ELO are already clean."
               ok=1
               break
             fi
