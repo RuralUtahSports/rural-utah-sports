@@ -17,6 +17,23 @@
   function gamesDeepLink(){
     if(path!=='games.html')return;const q=new URLSearchParams(location.search),year=q.get('year'),type=q.get('type'),sort=q.get('sort');if(!year&&!type&&!sort)return;let tries=0;const apply=()=>{tries++;const y=document.getElementById('year'),t=document.getElementById('type'),s=document.getElementById('sort');if(!y||!t||!s||(year&&![...y.options].some(o=>o.value===year))){if(tries<100)setTimeout(apply,100);return}if(year)y.value=year;if(type&&[...t.options].some(o=>o.value===type))t.value=type;if(sort&&[...s.options].some(o=>o.value===sort))s.value=sort;y.dispatchEvent(new Event('change',{bubbles:true}))};setTimeout(apply,180);
   }
+  function championshipDeepLink(){
+    if(path!=='championships.html')return;
+    const q=new URLSearchParams(location.search),wantedYear=q.get('year'),wantedClass=q.get('class'),wantedTeam=q.get('team');
+    if(!wantedYear&&!wantedClass&&!wantedTeam)return;
+    let tries=0;
+    const jump=()=>{
+      tries++;
+      const sec=document.querySelector('.bracket-test'),year=document.getElementById('bracketYear'),active=document.querySelector('.bracket-tab.active'),grid=document.getElementById('bracketGrid');
+      if(!sec||!year||!active||!grid||grid.querySelector('.bracket-loading')){if(tries<140)setTimeout(jump,75);return}
+      const activeClass=String(active.dataset.cls||active.textContent||'').trim();
+      if((wantedYear&&year.value!==wantedYear)||(wantedClass&&activeClass!==wantedClass)){if(tries<140)setTimeout(jump,75);return}
+      sec.style.scrollMarginTop='62px';
+      sec.scrollIntoView({behavior:'auto',block:'start'});
+      setTimeout(()=>sec.scrollIntoView({behavior:'auto',block:'start'}),140);
+    };
+    setTimeout(jump,0);
+  }
   function addRelated(){
     const main=document.querySelector('main');if(!main||main.querySelector('.rus-related'))return;const links=[],add=(name,href,desc)=>links.push([name,href,desc]);
     if(path==='teams.html'){add('Program Leaderboard','programs.html','Rank every program');add('Season Explorer','season.html','Browse by year');add('Team Comparison','compare.html','Compare programs');add('Games','games.html','Game history')}
@@ -50,6 +67,6 @@
     `;
     if(!css)return;const s=document.createElement('style');s.id='rus-20260818-ui-hotfix';s.textContent=css;document.head.appendChild(s);
   }
-  function init(){uiHotfixes();recordsState();greatestSeasonsState();gamesDeepLink();setTimeout(addRelated,700);shareButton()}
+  function init(){uiHotfixes();recordsState();greatestSeasonsState();gamesDeepLink();championshipDeepLink();setTimeout(addRelated,700);shareButton()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
