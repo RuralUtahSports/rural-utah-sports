@@ -12,7 +12,11 @@ const aliases = {
   'HINKLEY': 'HINCKLEY',
   'BY HIGH': 'BYH',
   'BRIGHAM YOUNG': 'BYH',
-  'FREMOND': 'FREMONT'
+  'FREMOND': 'FREMONT',
+  // Historical Salt Lake school: sources use LDS College, LDS High School,
+  // and Latter-day Saints' University/LDSU for the same institution. The
+  // football record book convention is LDSU, so collapse LDS duplicate rows.
+  'LDS': 'LDSU'
 };
 
 const canonical = value => {
@@ -258,20 +262,20 @@ fs.writeFileSync('team-record-breakdowns.json', JSON.stringify(rebuiltBreakdowns
 if (fs.existsSync('season-history.json')) {
   const seasonHistory = JSON.parse(fs.readFileSync('season-history.json', 'utf8'));
   let seasonHistoryChanged = false;
-  for (const [team, schedules] of Object.entries(globalSchedules)) {
-    const key = Object.keys(seasonHistory).find(name => canonical(name) === canonical(team));
-    if (!key) continue;
-    if (syncSeasonRows(seasonHistory[key], schedules)) seasonHistoryChanged = true;
+  for (const [team, rows] of Object.entries(seasonHistory)) {
+    const schedules = globalSchedules[team];
+    if (!schedules) continue;
+    if (syncSeasonRows(rows, schedules)) seasonHistoryChanged = true;
   }
   if (seasonHistoryChanged) fs.writeFileSync('season-history.json', JSON.stringify(seasonHistory) + '\n');
 }
 
-let pageFilesChanged = 0;
-for (const file of fs.readdirSync('team-page-data').filter(name => name.endsWith('.json'))) {
-  const fullPath = path.join('team-page-data', file);
-  const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-  const pageSlug = file.replace(/\.json$/i, '');
-  const team = slugToTeam.get(pageSlug) || canonical(pageSlug.replace(/-/g, ' '));
+const files = fs.readdirSync('team-page-data').filter(file => file.endsWith('.json'));
+let teamPageFilesChanged = 0;
+for (const file of files) {
+  const full = path.join('team-page-data', file);
+  const data = JSON.parse(fs.readFileSync(full, 'utf8'));
+  const team = slugToTeam.get(file.replace(/\.json$/i, '')) || canonical(file.replace(/\.json$/i, '-').replace(/-/g, ' '));
   const schedules = globalSchedules[team];
   if (!schedules) continue;
 
@@ -280,25 +284,22 @@ for (const file of fs.readdirSync('team-page-data').filter(name => name.endsWith
     data.schedules = schedules;
     changed = true;
   }
-
-  const breakdown = rebuiltBreakdowns[team] || breakdownFor(schedules);
+  const breakdown = breakdownFor(schedules);
   if (JSON.stringify(data.breakdown || {}) !== JSON.stringify(breakdown)) {
     data.breakdown = breakdown;
     changed = true;
   }
-
   if (syncSeasonRows(data.seasonHistory, schedules)) changed = true;
 
   if (changed) {
-    fs.writeFileSync(fullPath, JSON.stringify(data) + '\n');
-    pageFilesChanged++;
+    fs.writeFileSync(full, JSON.stringify(data) + '\n');
+    teamPageFilesChanged++;
   }
 }
 
-console.log(`Schedule sanitizer complete.`);
+console.log('Team schedule sanitation complete.');
 console.log(`Exact duplicate rows removed: ${removedExact}`);
-console.log(`Shifted-date duplicate rows removed: ${removedNearDate}`);
+console.log(`Near-date duplicate rows removed: ${removedNearDate}`);
 console.log(`Opponent names normalized: ${normalizedOpponents}`);
-console.log(`Teams affected by duplicate removal: ${affectedTeams.size}`);
-console.log(`Team-page files changed: ${pageFilesChanged}`);
+console.log(`Team page files synchronized: ${teamPageFilesChanged}`);
 if (affectedTeams.size) console.log(`Affected teams: ${[...affectedTeams].sort().join(', ')}`);
