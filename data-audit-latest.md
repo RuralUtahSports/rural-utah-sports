@@ -1,12 +1,8 @@
 # RUS Football Data Audit
 
-Generated: 2026-08-18T02:31:49.530Z
+Generated: 2026-08-18T02:33:36.947Z
 
-**0 errors • 1 warnings**
-
-## Warnings (1)
-
-- **ELO_MISSING** — MONUMENT VAL has no ELO summary entry.
+**0 errors • 0 warnings**
 
 ## Infos (1)
 
