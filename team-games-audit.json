@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T05:27:54.433Z",
+  "updatedAt": "2026-08-18T05:30:57.537Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67693,
+    "scheduleRowsAudited": 67689,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 44,
+    "sameDayMultipleOpponents": 37,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -23,16 +23,6 @@
   "exactDuplicates": [],
   "sameDateOpponentConflicts": [],
   "sameDayMultipleOpponents": [
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "AMERICAN FORK",
-      "season": "2019",
-      "date": "9/27/2019",
-      "opponents": [
-        "WEST",
-        "WESTLAKE"
-      ]
-    },
     {
       "type": "same-day-multiple-opponents",
       "team": "BEAVER",
@@ -111,16 +101,6 @@
       "opponents": [
         "TIMPANOGOS",
         "TIMPVIEW"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "GRAND",
-      "season": "1998",
-      "date": "9/11/1998",
-      "opponents": [
-        "JUAB",
-        "RICH"
       ]
     },
     {
@@ -285,42 +265,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "RICH",
-      "season": "1998",
-      "date": "9/11/1998",
-      "opponents": [
-        "EVANSTON (WY) JV",
-        "GRAND"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SAN JUAN",
-      "season": "1998",
-      "date": "9/11/1998",
-      "opponents": [
-        "MONUMENT VALLEY (AZ)",
-        "ST. JOHNS (AZ)"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SKY VIEW",
       "season": "1999",
       "date": "10/26/1999",
       "opponents": [
         "BOX ELDER",
         "ROY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SKYLINE",
-      "season": "2001",
-      "date": "8/31/2001",
-      "opponents": [
-        "HIGHLAND",
-        "UINTAH"
       ]
     },
     {
@@ -386,16 +336,6 @@
     {
       "type": "same-day-multiple-opponents",
       "team": "UINTAH",
-      "season": "2001",
-      "date": "8/31/2001",
-      "opponents": [
-        "SKY VIEW",
-        "SKYLINE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "UINTAH",
       "season": "2010",
       "date": "10/26/2010",
       "opponents": [
@@ -451,16 +391,6 @@
       "opponents": [
         "BOUNTIFUL",
         "ST LOUIS (HI)"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "2019",
-      "date": "9/27/2019",
-      "opponents": [
-        "AMERICAN FORK",
-        "TAYLORSVILLE"
       ]
     }
   ],
@@ -538,7 +468,7 @@
       "team": "AMERICAN FORK",
       "file": "american-fork.json",
       "seasons": 100,
-      "totalGames": 922
+      "totalGames": 921
     },
     {
       "team": "BEAR RIVER",
@@ -1060,7 +990,7 @@
       "team": "SKYLINE",
       "file": "skyline.json",
       "seasons": 64,
-      "totalGames": 729
+      "totalGames": 728
     },
     {
       "team": "SKYRIDGE",
@@ -1144,7 +1074,7 @@
       "team": "UINTAH",
       "file": "uintah.json",
       "seasons": 81,
-      "totalGames": 718
+      "totalGames": 717
     },
     {
       "team": "UMA-HILLFIELD",
@@ -1204,7 +1134,7 @@
       "team": "WEST",
       "file": "west.json",
       "seasons": 132,
-      "totalGames": 1105
+      "totalGames": 1104
     },
     {
       "team": "WESTLAKE",
