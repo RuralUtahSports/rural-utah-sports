@@ -7,6 +7,7 @@
 <meta name="description" content="Utah high school football player stat leaders from Rural Utah Sports, using stats reported to Deseret News.">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,Helvetica,sans-serif;background:#111;color:#fff}header{background:#000;border-bottom:4px solid #F14D07;padding:15px 25px}.header-content{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px}.logo{width:80px;height:80px;object-fit:contain}.site-title h1{font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.site-title p{color:#F14D07;font-weight:bold;margin-top:5px}nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;margin:auto;display:flex;flex-wrap:wrap}.container{max-width:1400px;margin:auto;padding:36px 20px 70px}.season-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}.season-bar label{font-size:10px;color:#888;text-transform:uppercase;font-weight:900}.season-bar select{background:#171717;color:#fff;border:1px solid #444;border-radius:6px;padding:10px 34px 10px 12px;font-size:12px;font-weight:900}.season-badge{display:inline-block;background:#171717;border:1px solid #444;color:#ddd;border-radius:999px;padding:6px 10px;font-size:9px;font-weight:900;text-transform:uppercase}.hero{background:#000;border:1px solid #333;border-top:6px solid #F14D07;border-radius:8px;padding:30px;margin-bottom:22px}.hero h2{font-size:38px;text-transform:uppercase;margin-bottom:8px}.hero h2 span{color:#F14D07}.hero p{color:#aaa;line-height:1.55;max-width:900px}.updated{margin-top:10px;color:#666;font-size:11px;text-transform:uppercase;font-weight:800}.controls{background:#000;border:1px solid #333;border-radius:8px;padding:18px;margin-bottom:18px}.control-title{font-size:11px;color:#888;text-transform:uppercase;font-weight:900;margin-bottom:9px}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.buttons:last-child{margin-bottom:0}.filter-btn{border:1px solid #444;background:#171717;color:#fff;border-radius:999px;padding:9px 13px;font-weight:900;font-size:11px;text-transform:uppercase;cursor:pointer}.filter-btn:hover,.filter-btn.active{background:#F14D07;color:#000;border-color:#F14D07}.metric-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.metric-row select{background:#171717;color:#fff;border:1px solid #444;border-radius:6px;padding:10px 34px 10px 12px;font-weight:800;min-width:180px}.summary{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px}.pill{background:#171717;border:1px solid #333;border-radius:999px;padding:8px 11px;font-size:10px;color:#aaa;font-weight:900;text-transform:uppercase}.pill strong{color:#fff}.table-wrap{overflow-x:auto!important;overflow-y:visible!important;max-height:none!important;background:#000;border:1px solid #333;border-radius:8px;overscroll-behavior:auto!important;touch-action:pan-x pan-y}.leaders{width:100%;border-collapse:collapse;min-width:700px}.leaders th{background:#F14D07;color:#000;padding:11px 9px;text-transform:uppercase;font-size:10px;white-space:nowrap}.leaders td{padding:11px 9px;text-align:center;border-bottom:1px solid #292929;font-size:12px;white-space:nowrap}.leaders tbody tr:hover{background:#171717}.rank{font-weight:900;color:#F14D07;font-size:16px}.player{text-align:left!important;font-weight:900}.team{text-align:left!important}.team a,.player a{color:#fff;text-decoration:none}.team a:hover,.player a:hover{color:#F14D07}.metric{font-weight:900;font-size:17px;color:#F14D07}.more-wrap{display:flex;justify-content:center;padding:14px 0 0}.more-btn{border:1px solid #F14D07;background:#171717;color:#fff;border-radius:999px;padding:10px 18px;font-size:11px;font-weight:900;text-transform:uppercase;cursor:pointer}.more-btn:hover{background:#F14D07;color:#000}.empty{background:#000;border:1px solid #333;border-radius:8px;padding:42px 20px;text-align:center;color:#888;line-height:1.55}.notice{margin-top:12px;color:#777;font-size:11px;line-height:1.5}.notice strong{color:#aaa}footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}footer strong{color:#F14D07}@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}.container{padding:25px 12px 50px}.hero{padding:23px 18px}.hero h2{font-size:30px}.filter-btn{padding:8px 11px;font-size:10px}}
+.season-bar select{max-width:100%}.season-bar #leaderWeek{min-width:210px}@media(max-width:600px){.season-bar{align-items:flex-end}.season-bar label{width:100%}.season-bar select{flex:1;min-width:0}.season-bar #leaderWeek{min-width:min(210px,100%)}}
 </style>
 
 <link rel="manifest" href="manifest.webmanifest?v=20260817-opt1">
@@ -23,10 +24,10 @@
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav><div class="nav-content"></div></nav>
 <main class="container">
-<div class="season-bar"><label for="leaderSeason">Season</label><select id="leaderSeason"><option value="2026">2026 — Current</option><option value="2025">2025 — Final</option></select><span class="season-badge" id="seasonBadge">Current season</span></div>
+<div class="season-bar"><label for="leaderSeason">Season</label><select id="leaderSeason"><option value="2026">2026 — Current</option><option value="2025">2025 — Final</option></select><label for="leaderWeek">Week</label><select id="leaderWeek" disabled><option value="season">Season totals</option></select><span class="season-badge" id="seasonBadge">Current season</span></div>
 <section class="hero"><h2><span id="heroYear">2026</span> <span>Stat Leaders</span></h2><p id="heroCopy">Statewide football leaders using player statistics reported on Deseret team pages. Rankings update automatically as schools submit new stats.</p><div class="updated" id="updated">Loading latest stats…</div></section>
 <section class="controls"><div class="control-title">Stat Category</div><div class="buttons" id="categoryButtons"></div><div class="control-title">Classification</div><div class="buttons" id="classButtons"></div><div class="metric-row"><div><div class="control-title">Rank By</div><select id="metricSelect"></select></div></div></section>
-<div class="summary" id="summary"></div><div id="results"><div class="empty">Loading stat leaders…</div></div><div class="notice"><strong>Source note:</strong> These are reported statistics, not estimates. A player or school may be missing if its stats were not submitted to Deseret. Blank stat fields are not treated as zero when building the leaderboards.</div>
+<div class="summary" id="summary"></div><div id="results"><div class="empty">Loading stat leaders…</div></div><div class="notice"><strong>Source note:</strong> These are reported statistics, not estimates. A player or school may be missing if its stats were not submitted to Deseret. Blank stat fields are not treated as zero when building the leaderboards. <span id="scopeNote"></span></div>
 </main><footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
 <script>
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
@@ -36,21 +37,139 @@ const canon=v=>aliases[compact(v)]||compact(v);
 const categories=['Passing','Rushing','Receiving','Kicking','Defense/Special Teams'];
 const classes=['All','6A','5A','4A','3A','2A','1A','8P'];
 const availableSeasons=[2026,2025];
-const requested=Number(new URLSearchParams(location.search).get('season'));
-let season=availableSeasons.includes(requested)?requested:2026,allStats=null,teamMeta=new Map(),longFgMap=new Map(),category='Passing',classification='All',metric='',visibleCount=5;
+const params=new URLSearchParams(location.search),requested=Number(params.get('season')),requestedWeek=Number(params.get('week'));
+let season=availableSeasons.includes(requested)?requested:2026,allStats=null,playerGames=null,weeks=[],timeframe='season',teamMeta=new Map(),longFgMap=new Map(),rowCache=new Map(),category='Passing',classification='All',metric='',visibleCount=5;
 function numValue(v){const s=String(v??'').trim().replace(/,/g,'');if(!s)return null;const m=s.match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null}
 function catKey(v){const x=String(v||'').toLowerCase();if(x.startsWith('pass'))return'Passing';if(x.startsWith('rush'))return'Rushing';if(x.startsWith('receiv'))return'Receiving';if(x.startsWith('kick')||x.includes('special'))return x.includes('defense')?'Defense/Special Teams':'Kicking';if(x.startsWith('defense'))return'Defense/Special Teams';return v}
 function preferredMetric(cat,headers){const wants={Passing:['Yards','TD','Comp-Att','Comp %'],Rushing:['Yards','TD','Carries'],Receiving:['Yards','TD','Receptions'],Kicking:['FG','Long FG','PAT','Points'],'Defense/Special Teams':['Tackles','Sacks','Pass Int','Interceptions','Return TD']};for(const want of wants[cat]||[]){const hit=headers.find(h=>compact(h)===compact(want)||compact(h).includes(compact(want)));if(hit)return hit}return headers[0]||''}
 function loadLongFieldGoals(details){longFgMap=new Map();for(const d of Object.values(details?.games||{})){for(const play of d?.scoringPlays||[]){const m=String(play).match(/^\s*(.*?)\s+—\s+\([^)]*\)\s*(.*?)\s*,\s*(\d+)-yard\s+FG\b/i);if(!m)continue;const team=canon(m[1]),player=compact(m[2]),yards=Number(m[3]);if(!team||!player||!Number.isFinite(yards))continue;const k=`${team}|${player}`,old=longFgMap.get(k)||0;if(yards>old)longFgMap.set(k,yards)}}}
-function buildRows(cat){const out=[];for(const [teamName,t] of Object.entries(allStats?.teams||{})){const meta=teamMeta.get(canon(teamName))||{};for(const section of t.stats||[]){if(catKey(section.category)!==cat)continue;for(const r of section.rows||[]){const values={...(r.values||{})},headers=[...(section.headers||[])];if(cat==='Kicking'){const longest=longFgMap.get(`${canon(teamName)}|${compact(r.name)}`);if(Number.isFinite(longest)){values['Long FG']=String(longest);if(!headers.includes('Long FG'))headers.push('Long FG')}}out.push({team:teamName,classification:meta.classification||'',number:r.number||'',name:r.name||'',playerId:r.playerId||'',values,headers})}}}return out}
+const DAY=86400000;
+function dayStamp(v){
+ const s=String(v||'').trim();let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+ if(m)return Date.UTC(Number(m[1]),Number(m[2])-1,Number(m[3]));
+ m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+ return m?Date.UTC(Number(m[3]),Number(m[1])-1,Number(m[2])):NaN;
+}
+function weekStart(v){const t=dayStamp(v);if(!Number.isFinite(t))return NaN;return t-((new Date(t).getUTCDay()+6)%7)*DAY}
+function shortDate(t){return new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric',timeZone:'UTC'})}
+function weekRange(start){const end=start+6*DAY,a=new Date(start),b=new Date(end);return a.getUTCMonth()===b.getUTCMonth()?`${a.toLocaleDateString(undefined,{month:'short',timeZone:'UTC'})} ${a.getUTCDate()}–${b.getUTCDate()}`:`${shortDate(start)}–${shortDate(end)}`}
+function buildWeeks(data){
+ const starts=new Set(),gameKeys=new Map();
+ for(const [teamName,t] of Object.entries(data?.teams||{}))for(const g of t.games||[]){
+  const start=weekStart(g.date);if(!Number.isFinite(start))continue;starts.add(start);
+  if(!gameKeys.has(start))gameKeys.set(start,new Set());
+  const pair=[canon(teamName),canon(g.opponent)].sort().join('|');gameKeys.get(start).add(g.gameKey||`${g.date}|${pair}`);
+ }
+ const ordered=[...starts].sort((a,b)=>a-b),first=ordered[0];
+ return ordered.map(start=>({start,value:String(start),number:Math.round((start-first)/(7*DAY))+1,label:weekRange(start),gameCount:gameKeys.get(start)?.size||0}));
+}
+function activeWeek(){return weeks.find(w=>w.value===timeframe)||null}
+function weeklyMetricName(cat,key){
+ const k=compact(key),maps={
+  Passing:{COMPATT:'Comp-Att',COMP:'Comp %',COMPPCT:'Comp %',YARDS:'Yards',YARDSCOMP:'Yards/Comp.',TD:'TD',TDS:'TD',INT:'Int',INTS:'Int',INTERCEPTIONS:'Int'},
+  Rushing:{CARRIES:'Carries',RUSHATT:'Carries',YARDS:'Yards',YARDSCARRY:'Yards/Carry',TD:'TD',TDS:'TD'},
+  Receiving:{RECEPTIONS:'Receptions',REC:'Receptions',YARDS:'Yards',YARDSRECEP:'Yards/Recep.',YARDSRECEPTION:'Yards/Recep.',TD:'TD',TDS:'TD'},
+  Kicking:{FG:'FG',PAT:'PAT',PTS:'Points',POINTS:'Points',LONGFG:'Long FG'},
+  'Defense/Special Teams':{TACKLES:'Tackles',SACKS:'Sacks',PASSINT:'Pass Int.',PASSINTS:'Pass Int.',INTERCEPTIONS:'Pass Int.',INTS:'Pass Int.',DEFENSETD:'Defense TD',DEFENSIVETD:'Defense TD',RETURNTD:'Return TD',RETURNTDS:'Return TD',TD:'Defense TD'}
+ };
+ return maps[cat]?.[k]||String(key||'').trim();
+}
+function normalizeWeeklyLines(line){
+ const raw=compact(line?.category),values=line?.values||{};
+ if(raw==='SPECIALTEAMS'){
+  const kicking={},defense={};
+  for(const [k,v] of Object.entries(values)){const key=compact(k);if(['FG','PAT','PTS','POINTS','LONGFG'].includes(key))kicking[k]=v;if(['RETURNTD','RETURNTDS'].includes(key))defense[k]=v}
+  return[{category:'Kicking',values:kicking},{category:'Defense/Special Teams',values:defense}].filter(x=>Object.keys(x.values).length);
+ }
+ if(raw==='DEFENSE')return[{category:'Defense/Special Teams',values}];
+ return[{category:catKey(line?.category),values}];
+}
+function cleanTotal(v){return Number.isInteger(v)?String(v):String(Number(v.toFixed(2)))}
+function mergeWeeklyValue(row,label,raw){
+ if(label==='Comp-Att'){const m=String(raw||'').match(/(\d+)\s*[-/]\s*(\d+)/);if(m){row.completions+=Number(m[1]);row.attempts+=Number(m[2]);row.hasCompAtt=true}return}
+ if(['Comp %','Yards/Comp.','Yards/Carry','Yards/Recep.'].includes(label))return;
+ const value=numValue(raw);if(value===null)return;
+ row.sums[label]=label==='Long FG'?Math.max(row.sums[label]||0,value):(row.sums[label]||0)+value;row.seen.add(label);
+}
+function buildWeeklyRows(cat){
+ const wk=activeWeek();if(!wk)return[];const map=new Map();
+ for(const [teamName,t] of Object.entries(playerGames?.teams||{})){
+  const meta=teamMeta.get(canon(teamName))||{};
+  for(const game of t.games||[]){
+   if(weekStart(game.date)!==wk.start)continue;
+   for(const player of game.players||[]){
+    const base=`${canon(teamName)}|${player.playerId||`${compact(player.number)}-${compact(player.name)}`}`;
+    const ensure=catName=>{const key=`${base}|${catName}`;if(!map.has(key))map.set(key,{team:teamName,classification:meta.classification||'',number:player.number||'',name:player.name||'',playerId:player.playerId||'',sums:{},seen:new Set(),completions:0,attempts:0,hasCompAtt:false});return map.get(key)};
+    for(const line of player.statLines||[])for(const normalized of normalizeWeeklyLines(line)){
+     if(normalized.category!==cat)continue;const row=ensure(cat);
+     for(const [name,value] of Object.entries(normalized.values||{}))mergeWeeklyValue(row,weeklyMetricName(cat,name),value);
+    }
+    if(cat==='Kicking'){
+     const longest=(player.scoringPlays||[]).reduce((best,play)=>{const m=String(play).match(/(\d+)-yard\s+FG\b/i);return m?Math.max(best,Number(m[1])):best},0);
+     if(longest){const row=ensure(cat);row.sums['Long FG']=Math.max(row.sums['Long FG']||0,longest);row.seen.add('Long FG')}
+    }
+   }
+  }
+ }
+ const orders={Passing:['Yards','TD','Comp-Att','Comp %','Yards/Comp.','Int'],Rushing:['Yards','TD','Carries','Yards/Carry'],Receiving:['Yards','TD','Receptions','Yards/Recep.'],Kicking:['FG','Long FG','PAT','Points'],'Defense/Special Teams':['Tackles','Sacks','Pass Int.','Defense TD','Return TD']};
+ return[...map.values()].map(row=>{
+  const values={};for(const label of row.seen)values[label]=cleanTotal(row.sums[label]);
+  if(cat==='Passing'&&row.hasCompAtt){values['Comp-Att']=`${row.completions}-${row.attempts}`;if(row.attempts)values['Comp %']=`${cleanTotal(row.completions/row.attempts*100)}%`;if(row.completions&&row.seen.has('Yards'))values['Yards/Comp.']=cleanTotal(row.sums.Yards/row.completions)}
+  if(cat==='Rushing'&&row.seen.has('Carries')&&row.sums.Carries&&row.seen.has('Yards'))values['Yards/Carry']=cleanTotal(row.sums.Yards/row.sums.Carries);
+  if(cat==='Receiving'&&row.seen.has('Receptions')&&row.sums.Receptions&&row.seen.has('Yards'))values['Yards/Recep.']=cleanTotal(row.sums.Yards/row.sums.Receptions);
+  if(cat==='Kicking'&&(row.seen.has('FG')||row.seen.has('PAT')))values.Points=cleanTotal((row.sums.FG||0)*3+(row.sums.PAT||0));
+  const preferred=orders[cat]||[],headers=[...preferred.filter(x=>Object.prototype.hasOwnProperty.call(values,x)),...Object.keys(values).filter(x=>!preferred.includes(x))];
+  return{team:row.team,classification:row.classification,number:row.number,name:row.name,playerId:row.playerId,values,headers};
+ });
+}
+function buildRows(cat){
+ const cacheKey=`${season}|${timeframe}|${cat}`;if(rowCache.has(cacheKey))return rowCache.get(cacheKey);let out;
+ if(timeframe!=='season')out=buildWeeklyRows(cat);
+ else{out=[];for(const [teamName,t] of Object.entries(allStats?.teams||{})){const meta=teamMeta.get(canon(teamName))||{};for(const section of t.stats||[]){if(catKey(section.category)!==cat)continue;for(const r of section.rows||[]){const values={...(r.values||{})},headers=[...(section.headers||[])];if(cat==='Kicking'){const longest=longFgMap.get(`${canon(teamName)}|${compact(r.name)}`);if(Number.isFinite(longest)){values['Long FG']=String(longest);if(!headers.includes('Long FG'))headers.push('Long FG')}}out.push({team:teamName,classification:meta.classification||'',number:r.number||'',name:r.name||'',playerId:r.playerId||'',values,headers})}}}}
+ rowCache.set(cacheKey,out);return out;
+}
 function availableMetrics(cat){const set=[];for(const r of buildRows(cat))for(const h of r.headers||[])if(h&&!set.includes(h))set.push(h);return set}
 function renderButtons(){document.getElementById('categoryButtons').innerHTML=categories.map(c=>`<button class="filter-btn ${c===category?'active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');document.getElementById('classButtons').innerHTML=classes.map(c=>`<button class="filter-btn ${c===classification?'active':''}" data-class="${esc(c)}">${c==='8P'?'8-Player':esc(c)}</button>`).join('');document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{category=b.dataset.cat;metric='';visibleCount=5;render()});document.querySelectorAll('[data-class]').forEach(b=>b.onclick=()=>{classification=b.dataset.class;visibleCount=5;render()})}
 function render(){renderButtons();const metrics=availableMetrics(category);if(!metric||!metrics.includes(metric))metric=preferredMetric(category,metrics);const sel=document.getElementById('metricSelect');sel.innerHTML=metrics.map(m=>`<option value="${esc(m)}" ${m===metric?'selected':''}>${esc(m)}</option>`).join('');sel.onchange=()=>{metric=sel.value;visibleCount=5;renderTable()};renderTable()}
 function seasonSuffix(){return season===2026?'':`&season=${season}`}
-function renderTable(){let rows=buildRows(category);if(classification!=='All')rows=rows.filter(r=>compact(r.classification)===compact(classification));rows=rows.map(r=>({...r,value:numValue(r.values?.[metric]),display:r.values?.[metric]??''})).filter(r=>r.value!==null).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name));document.getElementById('summary').innerHTML=`<span class="pill"><strong>${rows.length}</strong> reported players</span><span class="pill"><strong>${esc(category)}</strong></span><span class="pill">Ranked by <strong>${esc(metric||'—')}</strong></span>`;if(!rows.length){document.getElementById('results').innerHTML=`<div class="empty"><strong>No reported ${season} stats in this category.</strong><br>${season===2026?'As Deseret receives more current-season stats, this leaderboard will fill in automatically.':'No archived reported stats were found for this filter.'}</div>`;return}const top=rows.slice(0,Math.min(visibleCount,100)),hasMore=Math.min(rows.length,100)>top.length;document.getElementById('results').innerHTML=`<div class="table-wrap"><table class="leaders"><thead><tr><th>Rank</th><th>Player</th><th>Team</th><th>Class</th><th>${esc(metric)}</th></tr></thead><tbody>${top.map((r,i)=>`<tr><td class="rank">${i+1}</td><td class="player">${r.playerId?`<a href="player.html?id=${encodeURIComponent(r.playerId)}${seasonSuffix()}">${esc(r.name)}</a>`:esc(r.name)}</td><td class="team"><a href="team.html?team=${encodeURIComponent(r.team)}${seasonSuffix()}">${esc(r.team)}</a></td><td>${esc(r.classification||'—')}</td><td class="metric">${esc(r.display)}</td></tr>`).join('')}</tbody></table></div>${hasMore?`<div class="more-wrap"><button id="showMoreLeaders" class="more-btn" type="button">Show 10 more</button></div>`:''}`;const more=document.getElementById('showMoreLeaders');if(more)more.onclick=()=>{visibleCount=Math.min(visibleCount+10,100);renderTable()}}
+function updateScopeCopy(){
+ const wk=activeWeek(),copy=document.getElementById('heroCopy'),note=document.getElementById('scopeNote');
+ if(wk){copy.textContent=`${season} Week ${wk.number} leaders from games played ${wk.label}, using game-level statistics reported to Deseret.`;note.textContent=`Weekly views add together a player's reported production if that player appeared in more than one game during the selected week.`}
+ else{copy.textContent=season===2026?'Statewide football leaders using player statistics reported on Deseret team pages. Rankings update automatically as schools submit new stats.':`Final ${season} statewide football leaders using archived player statistics reported on Deseret team pages.`;note.textContent='Season totals come from each player’s cumulative team stat page.'}
+}
+function renderTable(){
+ let rows=buildRows(category);if(classification!=='All')rows=rows.filter(r=>compact(r.classification)===compact(classification));
+ rows=rows.map(r=>({...r,value:numValue(r.values?.[metric]),display:r.values?.[metric]??''})).filter(r=>r.value!==null).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name));
+ const wk=activeWeek(),scope=wk?`Week ${wk.number} • ${wk.label}`:'Season totals',games=wk?`<span class="pill"><strong>${wk.gameCount}</strong> games with stats</span>`:'';
+ document.getElementById('summary').innerHTML=`<span class="pill"><strong>${rows.length}</strong> reported players</span><span class="pill"><strong>${esc(scope)}</strong></span>${games}<span class="pill"><strong>${esc(category)}</strong></span><span class="pill">Ranked by <strong>${esc(metric||'—')}</strong></span>`;
+ if(!rows.length){const title=wk?`No reported ${season} Week ${wk.number} stats for this filter.`:`No reported ${season} stats in this category.`;document.getElementById('results').innerHTML=`<div class="empty"><strong>${esc(title)}</strong><br>${season===2026?'As Deseret receives more current-season stats, this leaderboard will fill in automatically.':'No archived reported stats were found for this filter.'}</div>`;return}
+ const top=rows.slice(0,Math.min(visibleCount,100)),hasMore=Math.min(rows.length,100)>top.length;
+ document.getElementById('results').innerHTML=`<div class="table-wrap"><table class="leaders"><thead><tr><th>Rank</th><th>Player</th><th>Team</th><th>Class</th><th>${esc(metric)}</th></tr></thead><tbody>${top.map((r,i)=>`<tr><td class="rank">${i+1}</td><td class="player">${r.playerId?`<a href="player.html?id=${encodeURIComponent(r.playerId)}${seasonSuffix()}">${esc(r.name)}</a>`:esc(r.name)}</td><td class="team"><a href="team.html?team=${encodeURIComponent(r.team)}${seasonSuffix()}">${esc(r.team)}</a></td><td>${esc(r.classification||'—')}</td><td class="metric">${esc(r.display)}</td></tr>`).join('')}</tbody></table></div>${hasMore?`<div class="more-wrap"><button id="showMoreLeaders" class="more-btn" type="button">Show 10 more</button></div>`:''}`;
+ const more=document.getElementById('showMoreLeaders');if(more)more.onclick=()=>{visibleCount=Math.min(visibleCount+10,100);renderTable()};
+}
 function buildPastMeta(alignment){teamMeta.clear();for(const r of alignment?.regions||[])for(const t of r.teams||[])teamMeta.set(canon(t),{team:t,classification:r.classification||'',region:r.region||''})}
-async function load(){try{const stamp=Date.now();document.title=`${season} Stat Leaders | Rural Utah Sports`;document.getElementById('heroYear').textContent=season;document.getElementById('seasonBadge').textContent=season===2026?'Current season':'Completed season';document.getElementById('heroCopy').textContent=season===2026?'Statewide football leaders using player statistics reported on Deseret team pages. Rankings update automatically as schools submit new stats.':`Final ${season} statewide football leaders using archived player statistics reported on Deseret team pages.`;const statUrl=`deseret-rosters-stats-${season}.json?v=${stamp}`;if(season===2026){const [s,t,d]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)]);if(!s.ok||!t.ok)throw new Error('Unable to load current stat data');allStats=await s.json();teamMeta.clear();for(const x of await t.json())teamMeta.set(canon(x.team),x);if(d?.ok)loadLongFieldGoals(await d.json())}else{const [s,a]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(`full-season-alignment-${season}.json?v=${stamp}`,{cache:'no-store'})]);if(!s.ok||!a.ok)throw new Error(`Archived ${season} stat data is not available`);allStats=await s.json();longFgMap=new Map();buildPastMeta(await a.json())}const d=new Date(allStats.updatedAt);document.getElementById('updated').textContent=season===2026?`Last stat sync: ${Number.isFinite(d.getTime())?d.toLocaleString():'recently'} • ${allStats.summary?.teamsWithStats||0} teams currently reporting stats`:`${allStats.summary?.teamsWithStats||0} teams with reported stats in the ${season} archive`;render()}catch(e){console.error(e);document.getElementById('updated').textContent=`${season} stat archive unavailable`;document.getElementById('results').innerHTML=`<div class="empty">The ${season} stat leader archive could not be loaded.</div>`}}
-const seasonSelect=document.getElementById('leaderSeason');seasonSelect.value=String(season);seasonSelect.addEventListener('change',()=>{const y=Number(seasonSelect.value);const u=new URL(location.href);if(y===2026)u.searchParams.delete('season');else u.searchParams.set('season',String(y));location.href=u.toString()});load();
+function setupWeekSelect(){
+ const select=document.getElementById('leaderWeek');
+ select.innerHTML=`<option value="season">Season totals</option>${weeks.map(w=>`<option value="${w.value}">Week ${w.number} — ${esc(w.label)}</option>`).join('')}`;
+ const wanted=weeks.find(w=>w.number===requestedWeek);timeframe=wanted?wanted.value:'season';select.value=timeframe;select.disabled=!weeks.length;
+ select.onchange=()=>{timeframe=select.value;metric='';visibleCount=5;updateScopeCopy();const u=new URL(location.href),wk=activeWeek();if(wk)u.searchParams.set('week',String(wk.number));else u.searchParams.delete('week');history.replaceState(null,'',u);render()};
+}
+async function load(){
+ try{
+  const stamp=Date.now();document.title=`${season} Stat Leaders | Rural Utah Sports`;document.getElementById('heroYear').textContent=season;document.getElementById('seasonBadge').textContent=season===2026?'Current season':'Completed season';
+  const statUrl=`deseret-rosters-stats-${season}.json?v=${stamp}`,gameStatUrl=`player-game-stats-${season}.json?v=${stamp}`;
+  if(season===2026){
+   const [s,g,t,d]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)]);
+   if(!s.ok||!t.ok)throw new Error('Unable to load current stat data');allStats=await s.json();playerGames=g?.ok?await g.json():null;teamMeta.clear();for(const x of await t.json())teamMeta.set(canon(x.team),x);if(d?.ok)loadLongFieldGoals(await d.json());
+  }else{
+   const [s,g,a]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`full-season-alignment-${season}.json?v=${stamp}`,{cache:'no-store'})]);
+   if(!s.ok||!a.ok)throw new Error(`Archived ${season} stat data is not available`);allStats=await s.json();playerGames=g?.ok?await g.json():null;longFgMap=new Map();buildPastMeta(await a.json());
+  }
+  weeks=buildWeeks(playerGames);rowCache.clear();setupWeekSelect();updateScopeCopy();
+  const d=new Date(allStats.updatedAt);document.getElementById('updated').textContent=season===2026?`Last stat sync: ${Number.isFinite(d.getTime())?d.toLocaleString():'recently'} • ${allStats.summary?.teamsWithStats||0} teams currently reporting stats`:`${allStats.summary?.teamsWithStats||0} teams with reported stats in the ${season} archive`;render();
+ }catch(e){console.error(e);document.getElementById('updated').textContent=`${season} stat archive unavailable`;document.getElementById('results').innerHTML=`<div class="empty">The ${season} stat leader archive could not be loaded.</div>`}
+}
+const seasonSelect=document.getElementById('leaderSeason');seasonSelect.value=String(season);seasonSelect.addEventListener('change',()=>{const y=Number(seasonSelect.value);const u=new URL(location.href);if(y===2026)u.searchParams.delete('season');else u.searchParams.set('season',String(y));u.searchParams.delete('week');location.href=u.toString()});load();
 </script><script src="back-to-top.js" defer></script>
 
 <script src="school-assets-bundle.js?v=20260818-perf1"></script>
