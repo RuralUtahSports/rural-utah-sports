@@ -3,9 +3,10 @@
 const MOBILE='(max-width:700px)';
 const mq=matchMedia(MOBILE);
 const path=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-let shell=null,moreButton=null,lastFocus=null;
+let shell=null,moreButton=null,lastFocus=null,backBar=null;
 
 const icons={
+  back:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6M9 12h11"/></svg>',
   home:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5v8a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H4.5A1.5 1.5 0 0 1 3 19.5z"/></svg>',
   scores:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v14H5zM8 9h2m4 0h2M8 13h2m4 0h2"/></svg>',
   teams:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M3.5 19c.5-4 2.7-6 5.5-6s5 2 5.5 6M14 14c3.5-.2 5.7 1.5 6.3 5"/></svg>',
@@ -25,7 +26,7 @@ function navLink(key,label,href){return `<a class="rus-mobile-nav-item${activeFo
 function addStyles(){
   if(document.getElementById('rus-mobile-shell-style'))return;
   const s=document.createElement('style');s.id='rus-mobile-shell-style';s.textContent=`
-.rus-mobile-bottom-nav,.rus-mobile-menu-layer{display:none}
+.rus-app-backbar,.rus-mobile-bottom-nav,.rus-mobile-menu-layer{display:none}
 @media(max-width:700px){
   body.rus-mobile-shell-ready{padding-bottom:calc(72px + env(safe-area-inset-bottom))!important}
   html body.rus-mobile-shell-ready>nav{display:none!important} body.rus-mobile-shell-ready .rus-mobile-core-nav{display:none!important}
@@ -36,6 +37,11 @@ function addStyles(){
   header .site-title{min-width:0!important}
   header .site-title h1{font-size:20px!important;line-height:1.05!important;letter-spacing:1px!important;white-space:normal!important}
   header .site-title p{font-size:10px!important;line-height:1.2!important;margin-top:3px!important}
+  .rus-app-backbar{display:flex;align-items:center;min-height:46px;padding:0 max(8px,env(safe-area-inset-left));background:rgba(8,8,8,.98);border-bottom:1px solid #2d2d2d}
+  .rus-app-back-button{appearance:none;border:0;background:transparent;color:#ccc;min-height:44px;padding:0 10px 0 4px;display:inline-flex;align-items:center;gap:7px;font:900 12px/1 Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.45px;-webkit-tap-highlight-color:transparent}
+  .rus-app-back-button svg{width:21px;height:21px;fill:none;stroke:#F14D07;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .rus-app-back-button:active{background:#1b1b1b;border-radius:8px}
+  body.rus-has-app-back main .back{display:none!important}
   .container{padding-top:22px!important;padding-bottom:32px!important}
   .page-title{font-size:clamp(27px,8vw,34px)!important;margin-bottom:8px!important}
   .section-title{font-size:21px!important;line-height:1.15!important}
@@ -113,11 +119,38 @@ function openMenu(){
   if(moreButton)moreButton.setAttribute('aria-expanded','true');
   requestAnimationFrame(()=>shell.querySelector('.rus-mobile-menu-close')?.focus({preventScroll:true}));
 }
+function sameAppReferrer(){
+  if(!document.referrer)return false;
+  try{
+    const ref=new URL(document.referrer);
+    const base=location.pathname.slice(0,location.pathname.lastIndexOf('/')+1);
+    return ref.origin===location.origin&&ref.pathname.startsWith(base)&&ref.href!==location.href;
+  }catch{return false}
+}
+function fallbackHref(){
+  const pageBack=document.querySelector('main a.back[href],main .back[href]');
+  if(pageBack?.getAttribute('href'))return pageBack.getAttribute('href');
+  return {'game.html':'scoreboard.html','team.html':'teams.html','player.html':'teams.html'}[path]||'index.html';
+}
+function goBack(){
+  const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+  if(history.length>1&&(standalone||sameAppReferrer()))history.back();
+  else location.href=fallbackHref();
+}
+function buildBackBar(){
+  if(path==='index.html'||backBar||document.querySelector('.rus-app-backbar'))return;
+  const header=document.querySelector('header');if(!header)return;
+  backBar=document.createElement('div');backBar.className='rus-app-backbar';backBar.setAttribute('role','navigation');backBar.setAttribute('aria-label','Back navigation');
+  backBar.innerHTML=`<button type="button" class="rus-app-back-button" aria-label="Go back">${icons.back}<span>Back</span></button>`;
+  header.insertAdjacentElement('afterend',backBar);document.body.classList.add('rus-has-app-back');
+  backBar.querySelector('.rus-app-back-button').addEventListener('click',goBack);
+}
 function buildShell(){
   if(!mq.matches||document.querySelector('.rus-mobile-bottom-nav'))return;
   document.getElementById('rusMobileCoreNav')?.remove();
   const nav=document.querySelector('nav .rus-nav');if(!nav)return;
   document.body.classList.add('rus-mobile-shell-ready');
+  buildBackBar();
   const bottom=document.createElement('div');bottom.className='rus-mobile-bottom-nav';bottom.setAttribute('role','navigation');bottom.setAttribute('aria-label','Mobile navigation');
   bottom.innerHTML=navLink('home','Home','index.html')+navLink('scores','Scores','scoreboard.html')+navLink('teams','Teams','teams.html')+navLink('rankings','Rankings','rankings.html')+`<button type="button" class="rus-mobile-more-button${activeFor('more')?' active':''}" aria-label="Open more navigation" aria-expanded="false">${icons.more}<span>More</span></button>`;
   document.body.appendChild(bottom);
@@ -134,8 +167,8 @@ function buildShell(){
 }
 function teardown(){
   if(mq.matches)return;
-  closeMenu();document.body.classList.remove('rus-mobile-shell-ready','rus-mobile-menu-open');
-  document.querySelector('.rus-mobile-bottom-nav')?.remove();document.querySelector('.rus-mobile-menu-layer')?.remove();shell=null;moreButton=null;
+  closeMenu();document.body.classList.remove('rus-mobile-shell-ready','rus-mobile-menu-open','rus-has-app-back');
+  document.querySelector('.rus-mobile-bottom-nav')?.remove();document.querySelector('.rus-mobile-menu-layer')?.remove();document.querySelector('.rus-app-backbar')?.remove();shell=null;moreButton=null;backBar=null;
 }
 function install(){addStyles();if(mq.matches)buildShell();mq.addEventListener?.('change',e=>e.matches?buildShell():teardown())}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
