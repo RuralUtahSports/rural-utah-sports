@@ -5,7 +5,8 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='2026-08-17-v2';
+  const VERSION='2026-08-18-v3';
+  const DEFENSE_SCALE=3;
   const clean=v=>String(v??'').trim();
   const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
   const n=v=>{const m=String(v??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0};
@@ -71,7 +72,8 @@
   }
 
   function defenseScore(values){
-    return Math.max(0,statValue(values,'TACKLES')*.6+statValue(values,'SACKS')*3+Math.max(statValue(values,'PASS INT','PASS INTS'),statValue(values,'INTERCEPTIONS','INTS'))*4+statValue(values,'DEFENSE TD','DEFENSIVE TD')*6+statValue(values,'RETURN TD','RETURN TDS')*6);
+    const base=statValue(values,'TACKLES')*.6+statValue(values,'SACKS')*3+Math.max(statValue(values,'PASS INT','PASS INTS'),statValue(values,'INTERCEPTIONS','INTS'))*4+statValue(values,'DEFENSE TD','DEFENSIVE TD')*6+statValue(values,'RETURN TD','RETURN TDS')*6;
+    return Math.max(0,base*DEFENSE_SCALE);
   }
 
   function isPassing(category){return /^Pass/i.test(category||'')}
@@ -109,5 +111,5 @@
     return Math.max(0,total);
   }
 
-  return {VERSION,compact,n,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore};
+  return {VERSION,DEFENSE_SCALE,compact,n,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore};
 });
