@@ -18,7 +18,8 @@ const aliases = {
   'LAY': 'LAYTON',
   'ST JOSEPH': 'SAINT JOSEPH',
   'DESERET HILLS': 'DESERT HILLS',
-  'PINE': 'PINE VIEW'
+  'PINE': 'PINE VIEW',
+  'UMA-CW': 'UMA-LEHI'
 };
 
 const canonical = value => {
