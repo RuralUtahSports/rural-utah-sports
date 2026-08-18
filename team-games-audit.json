@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T04:15:42.739Z",
+  "updatedAt": "2026-08-18T04:17:55.216Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,16 +8,16 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67805,
+    "scheduleRowsAudited": 67803,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 2,
-    "sameDayMultipleOpponents": 193,
-    "suspiciousRepeatGames": 9,
+    "sameDayMultipleOpponents": 186,
+    "suspiciousRepeatGames": 7,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
     "reciprocalMismatches": 4,
     "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 54
+    "recent2025PlusIssues": 45
   },
   "recent2025PlusIssues": [
     {
@@ -28,16 +28,6 @@
       "opponents": [
         "BRIGHTON",
         "ROY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "CARBON",
-      "season": "2025",
-      "date": "9/26/2025",
-      "opponents": [
-        "DELTA",
-        "NORTH SANPETE"
       ]
     },
     {
@@ -61,31 +51,6 @@
       ]
     },
     {
-      "type": "suspicious-repeat",
-      "team": "DELTA",
-      "season": "2025",
-      "index": 10,
-      "date": "10/31/2025",
-      "opponent": "SOUTH SEVIER",
-      "teamScore": 42,
-      "opponentScore": 43,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/17/2025",
-      "daysApart": 14
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DELTA",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "EMERY",
-        "GRAND"
-      ]
-    },
-    {
       "type": "same-day-multiple-opponents",
       "team": "EAST",
       "season": "2025",
@@ -93,16 +58,6 @@
       "opponents": [
         "COTTONWOOD",
         "JORDAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EMERY",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "DELTA",
-        "SAN JUAN"
       ]
     },
     {
@@ -382,16 +337,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "SAN JUAN",
-      "season": "2025",
-      "date": "9/12/2025",
-      "opponents": [
-        "DELTA",
-        "SOUTH SUMMIT"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SKY VIEW",
       "season": "2025",
       "date": "10/17/2025",
@@ -411,41 +356,6 @@
       ]
     },
     {
-      "type": "suspicious-repeat",
-      "team": "SOUTH SEVIER",
-      "season": "2025",
-      "index": 11,
-      "date": "10/31/2025",
-      "opponent": "DELTA",
-      "teamScore": 43,
-      "opponentScore": 42,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/17/2025",
-      "daysApart": 14
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SOUTH SEVIER",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "DELTA",
-        "GRAND"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SOUTH SEVIER",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "DELTA",
-        "SAN JUAN"
-      ]
-    },
-    {
       "type": "same-day-multiple-opponents",
       "team": "SOUTH SUMMIT",
       "season": "2025",
@@ -453,16 +363,6 @@
       "opponents": [
         "BEN LOMOND",
         "JUAB"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SUMMIT ACADEMY",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "DELTA",
-        "SAN JUAN"
       ]
     },
     {
@@ -878,16 +778,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "CARBON",
-      "season": "2025",
-      "date": "9/26/2025",
-      "opponents": [
-        "DELTA",
-        "NORTH SANPETE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "CEDAR CITY",
       "season": "2021",
       "date": "10/22/2021",
@@ -1058,16 +948,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "DELTA",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "EMERY",
-        "GRAND"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "EAST",
       "season": "1919",
       "date": "10/10/1919",
@@ -1194,16 +1074,6 @@
       "opponents": [
         "COTTONWOOD",
         "JORDAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EMERY",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "DELTA",
-        "SAN JUAN"
       ]
     },
     {
@@ -2058,16 +1928,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "SAN JUAN",
-      "season": "2025",
-      "date": "9/12/2025",
-      "opponents": [
-        "DELTA",
-        "SOUTH SUMMIT"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SKY VIEW",
       "season": "1999",
       "date": "10/26/1999",
@@ -2138,26 +1998,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "SOUTH SEVIER",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "DELTA",
-        "GRAND"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SOUTH SEVIER",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "DELTA",
-        "SAN JUAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SOUTH SUMMIT",
       "season": "2002",
       "date": "10/28/2002",
@@ -2194,16 +2034,6 @@
       "opponents": [
         "MAPLE MOUNTAIN",
         "WASATCH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SUMMIT ACADEMY",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "DELTA",
-        "SAN JUAN"
       ]
     },
     {
@@ -2610,21 +2440,6 @@
   "suspiciousRepeatGames": [
     {
       "type": "suspicious-repeat",
-      "team": "DELTA",
-      "season": "2025",
-      "index": 10,
-      "date": "10/31/2025",
-      "opponent": "SOUTH SEVIER",
-      "teamScore": 42,
-      "opponentScore": 43,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/17/2025",
-      "daysApart": 14
-    },
-    {
-      "type": "suspicious-repeat",
       "team": "MILLARD",
       "season": "1926",
       "index": 3,
@@ -2681,21 +2496,6 @@
       "playoff": false,
       "notes": "",
       "otherDate": "10/20/2023",
-      "daysApart": 14
-    },
-    {
-      "type": "suspicious-repeat",
-      "team": "SOUTH SEVIER",
-      "season": "2025",
-      "index": 11,
-      "date": "10/31/2025",
-      "opponent": "DELTA",
-      "teamScore": 43,
-      "opponentScore": 42,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/17/2025",
       "daysApart": 14
     },
     {
@@ -3066,7 +2866,7 @@
       "team": "DELTA",
       "file": "delta.json",
       "seasons": 103,
-      "totalGames": 956
+      "totalGames": 955
     },
     {
       "team": "DESERET PEAK",
@@ -3480,7 +3280,7 @@
       "team": "SOUTH SEVIER",
       "file": "south-sevier.json",
       "seasons": 71,
-      "totalGames": 624
+      "totalGames": 623
     },
     {
       "team": "SOUTH SUMMIT",
