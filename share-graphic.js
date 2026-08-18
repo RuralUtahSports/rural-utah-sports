@@ -287,7 +287,7 @@
       c.fillStyle='#fff';fitCanvasFont(c,item.name,Math.max(90,copyW),tileW<430?28:32,17,900);c.textAlign='left';c.fillText(item.name,copyX,y+73);
       c.fillStyle=item.teamColor;fitCanvasFont(c,item.team,Math.max(90,copyW),tileW<430?16:19,12,900);c.fillText(item.team.toUpperCase(),copyX,y+103);
       c.fillStyle='#F14D07';fitCanvasFont(c,item.score,scoreW,34,23,900);c.textAlign='right';c.fillText(item.score,x+tileW-pad,y+73);c.fillStyle='#777';canvasFont(c,10,900);c.fillText('SCORE',x+tileW-pad,y+92);
-      const statTop=y+tileH-72;c.fillStyle='#090909';c.fillRect(x+12,statTop-4,tileW-24,39);c.save();c.beginPath();c.rect(x+pad,statTop,tileW-pad*2,34);c.clip();c.fillStyle='#cfcfcf';canvasFont(c,tileW<430?11:13,700);c.textAlign='left';drawCanvasLines(c,item.stats||'No reported stat line',x+pad,statTop+14,tileW-pad*2,15,2);c.restore();
+      const statTop=y+tileH-(tileH>280?72:60);c.fillStyle='#090909';c.fillRect(x+12,statTop-4,tileW-24,35);c.save();c.beginPath();c.rect(x+pad,statTop,tileW-pad*2,31);c.clip();c.fillStyle='#cfcfcf';canvasFont(c,tileW<430?11:13,700);c.textAlign='left';drawCanvasLines(c,item.stats||'No reported stat line',x+pad,statTop+13,tileW-pad*2,14,2);c.restore();
       c.fillStyle='#fff';fitCanvasFont(c,item.result.toUpperCase(),tileW-pad*2,tileW<430?13:15,10,900);c.fillText(item.result.toUpperCase(),x+pad,y+tileH-15);
     };
     if(story){
