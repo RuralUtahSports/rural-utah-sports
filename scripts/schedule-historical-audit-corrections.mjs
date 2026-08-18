@@ -12,7 +12,17 @@ const dateCorrections = new Map(Object.entries({
   'DAVIS|WEBER|10/7/2022': '10/6/2022',
   'WEBER|DAVIS|10/7/2022': '10/6/2022',
   'SKYRIDGE|PLEASANT GROVE|10/7/2022': '10/6/2022',
-  'PLEASANT GROVE|SKYRIDGE|10/7/2022': '10/6/2022'
+  'PLEASANT GROVE|SKYRIDGE|10/7/2022': '10/6/2022',
+
+  // 1998 — several copied source dates landed on Sept. 11. Grand actually
+  // played Rich on Sept. 18; Rich played Evanston JV Sept. 12.
+  'GRAND|RICH|9/11/1998': '9/18/1998',
+  'RICH|GRAND|9/11/1998': '9/18/1998',
+  'RICH|EVANSTON (WY) JV|9/11/1998': '9/12/1998',
+
+  // 1998 — San Juan played Monument Valley, Ariz. on Sept. 4, then St. Johns,
+  // Ariz. on Sept. 11. The Monument Valley final was shifted one week late.
+  'SAN JUAN|MONUMENT VALLEY (AZ)|9/11/1998': '9/4/1998'
 }));
 
 const scoreCorrections = new Map(Object.entries({
@@ -37,6 +47,11 @@ const dropGames = new Set([
   'CEDAR CITY|EAST|10/22/2021',
   'EAST|CEDAR CITY|10/22/2021',
 
+  // 2019 — American Fork played Westlake Sept. 27 while West played
+  // Taylorsville. Their stored American Fork/West pairing is a copied row.
+  'AMERICAN FORK|WEST|9/27/2019',
+  'WEST|AMERICAN FORK|9/27/2019',
+
   // 2016 — Ben Lomond's real opener was a 40-17 win over Richfield. The Rich
   // copy and Rich's reciprocal-looking Ben Lomond row are both source mixups.
   'BEN LOMOND|RICH|8/19/2016',
@@ -55,7 +70,12 @@ const dropGames = new Set([
   // 2004 — Enterprise opened at Beaver Aug. 20 while North Sevier hosted
   // Duchesne. The Enterprise/North Sevier rows duplicate those real finals.
   'ENTERPRISE|NORTH SEVIER|8/20/2004',
-  'NORTH SEVIER|ENTERPRISE|8/20/2004'
+  'NORTH SEVIER|ENTERPRISE|8/20/2004',
+
+  // 2001 — Skyline played Highland Aug. 31 while Uintah played Sky View.
+  // The Skyline/Uintah rows are crossed copies, not a real game.
+  'SKYLINE|UINTAH|8/31/2001',
+  'UINTAH|SKYLINE|8/31/2001'
 ]);
 
 if (!fs.existsSync(FILE)) throw new Error(`${FILE} not found`);
