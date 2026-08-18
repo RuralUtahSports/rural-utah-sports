@@ -99,6 +99,59 @@ function addStyles(){
   document.head.appendChild(s);
 }
 
+function addRankingsStyles(){
+  if(path!=='rankings.html'||document.getElementById('rus-rankings-desktop-layout'))return;
+  const s=document.createElement('style');
+  s.id='rus-rankings-desktop-layout';
+  s.textContent=`
+@media(min-width:901px){
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .rank-head{padding:11px 14px!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .rank-row{
+    grid-template-columns:34px minmax(0,1fr) auto!important;
+    gap:6px!important;
+    min-height:48px!important;
+    padding:5px 10px 5px 7px!important;
+    border-left-width:4px!important;
+  }
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .rank-row.has-class-movement{
+    grid-template-columns:34px 46px minmax(0,1fr) auto!important;
+  }
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .rank-num{width:29px!important;height:29px!important;font-size:13px!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .class-movement{font-size:10px!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .team-link{gap:0!important;min-width:0!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .rus-ranking-school-logo{width:36px!important;height:36px!important;flex:0 0 36px!important;margin-right:8px!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .team-link .team-pill{
+    font-size:17px!important;
+    line-height:1.08!important;
+    letter-spacing:0!important;
+    padding:0!important;
+    min-height:0!important;
+  }
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .team-class{font-size:9px!important;padding:3px 6px!important}
+}
+@media(min-width:1001px){
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-row,
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-labels{
+    grid-template-columns:36px 52px minmax(220px,.9fr) 48px 64px minmax(280px,1.5fr)!important;
+    gap:6px!important;
+  }
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-row{
+    padding:7px 12px 7px 8px!important;
+    min-height:54px!important;
+    border-left-width:5px!important;
+  }
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-labels{padding:7px 12px!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-row .rank-num{width:30px!important;height:30px!important;font-size:13px!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-row .movement{font-size:10px!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-row .team-link{min-width:0!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-row .rus-ranking-school-logo{width:38px!important;height:38px!important;flex:0 0 38px!important;margin-right:8px!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-row .team-pill{font-size:17px!important;line-height:1.08!important;padding:6px 8px!important;min-height:0!important}
+  body[data-rus-page="rankings.html"][data-rus-desktop="1"] .state25-row .state25-reason{font-size:12px!important;line-height:1.3!important}
+}
+`;
+  document.head.appendChild(s);
+}
+
 function optimizeImages(){
   const imgs=[...document.images];
   imgs.forEach((img,i)=>{
@@ -128,6 +181,7 @@ function loadDesktopV2(){
 function start(){
   document.body?.setAttribute('data-rus-page',document.body?.getAttribute('data-rus-page')||path);
   addStyles();
+  addRankingsStyles();
   optimizeImages();
   removeNestedVerticalScroll();
   loadDesktopV2();
