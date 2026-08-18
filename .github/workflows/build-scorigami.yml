@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - '.github/workflows/build-scorigami.yml'
+      - 'scripts/build_home_history.mjs'
       - 'weekly-simulation.json'
 
 permissions:
@@ -67,9 +68,11 @@ jobs:
             for(const g of unique){const {date,team1,team2,score1,score2}=g,high=Math.max(score1,score2),low=Math.min(score1,score2),k=`${high}-${low}`,yr=year(date);let e=scoreMap.get(k);if(!e){e={winner:high,loser:low,count:0,firstYear:null,recentYear:null,games:[]};scoreMap.set(k,e)}e.count++;if(yr!==null){e.firstYear=e.firstYear===null?yr:Math.min(e.firstYear,yr);e.recentYear=e.recentYear===null?yr:Math.max(e.recentYear,yr)}const tie=score1===score2,winningTeam=tie?team1:(score1>score2?team1:team2),losingTeam=tie?team2:(score1>score2?team2:team1);e.games.push({date,year:yr,winner:winningTeam,loser:losingTeam,winnerScore:high,loserScore:low,tie,team1,team2,score1,score2});maxWinningScore=Math.max(maxWinningScore,high);maxLosingScore=Math.max(maxLosingScore,low)}
             for(const e of scoreMap.values())e.games.sort((a,b)=>stamp(b.date)-stamp(a.date));const scores=[...scoreMap.values()].sort((a,b)=>a.winner-b.winner||a.loser-b.loser),duplicatesRemoved=exactDuplicatesRemoved+nearDuplicatesRemoved+knownCorrectionsRemoved;const payload={summary:{sourceRows,weeklyFinalsAdded,uniqueGames:unique.length,duplicatesRemoved,exactDuplicatesRemoved,nearDuplicatesRemoved,knownCorrectionsRemoved,conflictingDuplicates,uniqueFinalScores:scores.length,skippedRows},maxWinningScore,maxLosingScore,scores};if(!scores.length||!unique.length)throw new Error('No score data');fs.writeFileSync('scorigami.json',JSON.stringify(payload));console.log(`Source rows: ${sourceRows}; weekly finals merged: ${weeklyFinalsAdded}; unique games: ${unique.length}; duplicates removed: ${duplicatesRemoved} (${exactDuplicatesRemoved} exact, ${nearDuplicatesRemoved} near-date, ${knownCorrectionsRemoved} known correction); conflicts: ${conflictingDuplicates}`)})().catch(e=>{console.error(e);process.exit(1)});
           NODE
+      - name: Build compact homepage history
+        run: node scripts/build_home_history.mjs
       - name: Commit Scorigami data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add scorigami.json
+          git add scorigami.json home-streak-watch.json home-history
           if git diff --cached --quiet; then echo "Scorigami data is already current."; else git commit -m "Auto-sync deeply deduplicated Scorigami data"; git pull --rebase origin main; git push; fi

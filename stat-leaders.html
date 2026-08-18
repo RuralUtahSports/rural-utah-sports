@@ -53,7 +53,7 @@ async function load(){try{const stamp=Date.now();document.title=`${season} Stat 
 const seasonSelect=document.getElementById('leaderSeason');seasonSelect.value=String(season);seasonSelect.addEventListener('change',()=>{const y=Number(seasonSelect.value);const u=new URL(location.href);if(y===2026)u.searchParams.delete('season');else u.searchParams.set('season',String(y));location.href=u.toString()});load();
 </script><script src="back-to-top.js" defer></script>
 
-<script src="school-assets.js?v=20260815-logo2"></script>
+<script src="school-assets-bundle.js?v=20260818-perf1"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
 <script src="nav-menu.js?v=20260818-tableheaderfix" defer></script>
 </body></html>

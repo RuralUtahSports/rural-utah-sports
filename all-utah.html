@@ -32,7 +32,7 @@ function render(){const players=build().filter(p=>p.overallW>0);const overall=[.
 async function init(){const stamp=Date.now();const [a,b]=await Promise.all([fetch(`deseret-rosters-stats-2026.json?v=${stamp}`,{cache:'no-store'}),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'})]);if(!a.ok||!b.ok)throw new Error('Data unavailable');data=await a.json();teams=await b.json();document.getElementById('updated').textContent=`Updated ${new Date(data.updatedAt||Date.now()).toLocaleString()} • ${data.summary?.teamsWithStats||0} teams currently reporting stats`;render()}init().catch(e=>{console.error(e);document.getElementById('awards').innerHTML='<div class="empty">All-Utah data is still syncing. Try again shortly.</div>';document.getElementById('teams').innerHTML=''})
 </script><script src="back-to-top.js" defer></script>
 
-<script src="school-assets.js?v=20260815-logo2"></script>
+<script src="school-assets-bundle.js?v=20260818-perf1"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
 <script src="nav-menu.js?v=20260817-growth1" defer></script>
 </body></html>

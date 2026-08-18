@@ -41,7 +41,7 @@ function render(){document.getElementById('typeButtons').innerHTML=types.map(x=>
 async function init(){const stamp=Date.now();const [a,b]=await Promise.all([fetch(`deseret-rosters-stats-2026.json?v=${stamp}`,{cache:'no-store'}),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'})]);rosterData=await a.json();teams=await b.json();document.getElementById('updated').textContent=`Updated ${new Date(rosterData.updatedAt||Date.now()).toLocaleString()}`;render()}init().catch(e=>{console.error(e);results.innerHTML='<div class="empty">MVP data is still syncing. Try again shortly.</div>'});
 </script>
 
-<script src="school-assets.js?v=20260815-logo2"></script>
+<script src="school-assets-bundle.js?v=20260818-perf1"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
 <script src="award-school-branding.js?v=20260818-contrast2"></script>
 <script src="nav-menu.js?v=20260817-growth1" defer></script>

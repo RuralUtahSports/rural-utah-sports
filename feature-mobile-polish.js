@@ -107,7 +107,7 @@ function loadSchoolAssets(){
     let s=document.querySelector('script[data-rus-feature-assets]');
     if(!s){
       s=document.createElement('script');
-      s.src='school-assets.js?v=20260816-feature';
+      s.src='school-assets-bundle.js?v=20260818-perf1';
       s.async=true;
       s.dataset.rusFeatureAssets='1';
       document.body.appendChild(s);

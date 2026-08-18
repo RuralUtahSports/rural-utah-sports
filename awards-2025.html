@@ -29,7 +29,7 @@ subtabsEl.innerHTML=subs.map(x=>{const key=typeof x==='string'?x:x.key,label=typ
 (async()=>{try{const r=await fetch(`awards-2025.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error('2025 awards archive unavailable');data=await r.json();coverageEl.textContent=`${data.coverage?.rankedPlayers||0} ranked players • ${data.coverage?.teamsWithStats||0} teams with reported stats • ${data.coverage?.teamsInArchive||0} varsity programs in archive • Calculated ${new Date(data.generatedAt||Date.now()).toLocaleString()}`;render()}catch(e){console.error(e);coverageEl.textContent='The 2025 awards archive could not be loaded.';resultsEl.innerHTML='<div class="empty">The calculated 2025 awards data is temporarily unavailable.</div>';noteEl.textContent='Only players with archived reported statistics are ranked.'}})();
 </script><script src="back-to-top.js" defer></script><script src="share-graphic.js?v=20260815-region1" defer></script>
 
-<script src="school-assets.js?v=20260815-logo2"></script>
+<script src="school-assets-bundle.js?v=20260818-perf1"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
 <script src="nav-menu.js?v=20260817-growth1" defer></script>
 </body></html>

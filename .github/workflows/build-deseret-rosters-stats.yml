@@ -8,9 +8,11 @@ on:
     paths:
       - 'deseret-team-data-2026.json'
       - 'deseret-game-details.json'
+      - 'standings-2026.json'
       - 'weekly-simulation.json'
       - 'scripts/build_deseret_rosters_stats.mjs'
       - 'scripts/build_player_game_stats.mjs'
+      - 'scripts/build_team_current_shards.mjs'
       - '.github/workflows/build-deseret-rosters-stats.yml'
 
 permissions:
@@ -31,6 +33,8 @@ jobs:
         run: node scripts/build_deseret_rosters_stats.mjs
       - name: Connect roster players to individual game box scores
         run: node scripts/build_player_game_stats.mjs
+      - name: Build compact per-team payloads
+        run: node scripts/build_team_current_shards.mjs
       - name: Verify roster/stat data
         run: |
           node - <<'NODE'
@@ -39,12 +43,15 @@ jobs:
           if(!d.summary||d.summary.teams<100) throw new Error('Roster/stat output incomplete');
           console.log(d.summary);
           if(fs.existsSync('player-game-stats-2026.json')) console.log(JSON.parse(fs.readFileSync('player-game-stats-2026.json','utf8')).summary);
+          const shards=fs.readdirSync('team-current-data').filter(name=>name.endsWith('.json'));
+          if(shards.length<100) throw new Error('Per-team current-data output incomplete');
+          console.log(`Verified ${shards.length} per-team shards`);
           NODE
       - name: Commit roster/stat data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add deseret-rosters-stats-2026.json player-game-stats-2026.json
+          git add deseret-rosters-stats-2026.json player-game-stats-2026.json team-current-data
           if git diff --cached --quiet; then echo "Roster/stat data already current."; exit 0; fi
           git commit -m "Auto-sync Deseret rosters and stats"
           ok=0
