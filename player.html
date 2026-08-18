@@ -40,10 +40,10 @@ document.getElementById('page').innerHTML=`<a class="back" href="${teamURL(profi
 async function load(){const id=wanted(),seasonYear=requestedSeason();if(!id){document.getElementById('page').innerHTML='<div class="error">No player was selected.</div>';return}try{const stamp=Date.now(),suffix=seasonYear===2025?'2025':'2026';const [rr,gr,tr]=await Promise.all([fetch(`deseret-rosters-stats-${suffix}.json?v=${stamp}`,{cache:'no-store'}),fetch(`player-game-stats-${suffix}.json?v=${stamp}`,{cache:'no-store'}),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'})]);if(!rr.ok)throw new Error('Roster data unavailable');const rosters=await rr.json(),games=gr.ok?await gr.json():{teams:{}},teams=tr.ok?await tr.json():[];let profile=findProfile(rosters,id);if(!profile&&seasonYear===2025){const looseId=compact(id);outer:for(const [team,t] of Object.entries(rosters.teams||{})){for(const p of t.roster||[]){if(compact(p.playerId)===looseId){profile={team,data:t,player:p};break outer}}}}if(!profile)throw new Error('Player not found');const gkey=Object.keys(games.teams||{}).find(k=>canon(k)===canon(profile.team));const meta=teams.find(t=>canon(t.team)===canon(profile.team))||{};render(profile,meta,gkey?games.teams[gkey]:null,seasonYear)}catch(e){console.error(e);document.getElementById('page').innerHTML=`<div class="error">This ${requestedSeason()} player profile could not be loaded. That player may not have archived data for this season.</div>`}}
 load();
 </script>
-<script src="nav-menu.js?v=20260817-core4" defer></script>
+<script src="nav-menu.js?v=20260817-bottomonly1" defer></script>
 
 <script src="school-assets.js?v=20260815-logo2"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
-<script src="nav-menu.js?v=20260817-universal5"></script>
+<script src="nav-menu.js?v=20260817-bottomonly1"></script>
 </body>
 </html>

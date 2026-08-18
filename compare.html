@@ -23,10 +23,10 @@ async function render(){const aName=$('team1').value,bName=$('team2').value;if(!
 async function init(){try{const stamp=Date.now(),[tr,er]=await Promise.all([fetch('teams-data.json?v='+stamp),fetch('elo-summary.json?v='+stamp)]);if(!tr.ok)throw new Error('Team data unavailable');teams=(await tr.json()).sort((a,b)=>a.team.localeCompare(b.team));if(er.ok)elo=await er.json();const options=teams.map(t=>`<option value="${esc(t.team)}">${esc(t.team)}</option>`).join('');$('team1').innerHTML=options;$('team2').innerHTML=options;const q=new URLSearchParams(location.search),a=q.get('team1'),b=q.get('team2');$('team1').value=teams.some(t=>t.team===a)?a:(teams.find(t=>t.team==='BEAVER')?.team||teams[0]?.team||'');$('team2').value=teams.some(t=>t.team===b)?b:(teams.find(t=>t.team==='KANAB')?.team||teams[1]?.team||'');if($('team1').value===$('team2').value&&teams.length>1)$('team2').value=teams.find(t=>t.team!==$('team1').value).team;render()}catch(e){console.error(e);$('result').className='error';$('result').textContent='Unable to load comparison data.'}}
 $('compare').addEventListener('click',render);$('swap').addEventListener('click',()=>{const a=$('team1').value;$('team1').value=$('team2').value;$('team2').value=a;render()});init();
 </script><script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260817-core4" defer></script>
+<script src="nav-menu.js?v=20260817-bottomonly1" defer></script>
 <script src="weekly-simulation-promo.js" defer></script>
 
 <script src="school-assets.js?v=20260815-logo2"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
-<script src="nav-menu.js?v=20260817-universal5"></script>
+<script src="nav-menu.js?v=20260817-bottomonly1"></script>
 </body></html>

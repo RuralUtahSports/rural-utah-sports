@@ -56,12 +56,12 @@ async function init(){try{const stamp=Date.now(),[sr,cr]=await Promise.all([fetc
 $('search').addEventListener('input',filter);$('year').addEventListener('change',filter);$('type').addEventListener('change',filter);$('sort').addEventListener('change',filter);$('clear').addEventListener('click',()=>{$('search').value='';$('year').value='all';$('type').value='all';$('sort').value='newest';quick('recent')});$('loadMore').addEventListener('click',()=>{visible+=100;render()});document.querySelectorAll('.quick button').forEach(b=>b.addEventListener('click',()=>quick(b.dataset.mode)));init();
 </script>
 <script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260817-core4" defer></script>
+<script src="nav-menu.js?v=20260817-bottomonly1" defer></script>
 <script src="weekly-simulation-promo.js" defer></script>
 <script src="games-team-records.js" defer></script>
 
 <script src="school-assets.js?v=20260815-logo2"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
-<script src="nav-menu.js?v=20260817-universal5"></script>
+<script src="nav-menu.js?v=20260817-bottomonly1"></script>
 </body>
 </html>

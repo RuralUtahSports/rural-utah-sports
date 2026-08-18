@@ -70,13 +70,13 @@ function render(){if(!data)return;const f=$('filter').value;let html='';if(mode=
 (async()=>{try{const r=await fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error('standings');data=await r.json();fixKnownAlignments();for(const c of classOrder)if(data.byClassification?.[c]?.length)$('filter').insertAdjacentHTML('beforeend',`<option value="${c}">${classLabel(c)}</option>`);const played=data.summary?.completedGames||0,total=data.summary?.scheduledGames||0,when=data.updatedAt?new Date(data.updatedAt).toLocaleString():'';$('meta').textContent=`${played.toLocaleString()} completed games • ${total.toLocaleString()} scheduled games${when?' • Updated '+when:''}`;$('classBtn').onclick=()=>{mode='classification';$('classBtn').classList.add('active');$('regionBtn').classList.remove('active');render()};$('regionBtn').onclick=()=>{mode='region';$('regionBtn').classList.add('active');$('classBtn').classList.remove('active');render()};$('filter').onchange=render;render()}catch(e){console.error(e);$('meta').textContent='';$('content').innerHTML='<div class="error">Unable to load the 2026 standings.</div>'}})();
 </script>
 <script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260817-core4" defer></script>
+<script src="nav-menu.js?v=20260817-bottomonly1" defer></script>
 <script src="weekly-simulation-promo.js" defer></script>
 <script src="share-graphic.js?v=20260816-standings-delegate-v2" defer></script>
 <script src="standings-share-layout.js?v=20260816-v7" defer></script>
 
 <script src="school-assets.js?v=20260815-logo2"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
-<script src="nav-menu.js?v=20260817-universal5"></script>
+<script src="nav-menu.js?v=20260817-bottomonly1"></script>
 </body>
 </html>

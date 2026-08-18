@@ -28,7 +28,7 @@ function addStyles(){
 .rus-mobile-bottom-nav,.rus-mobile-menu-layer{display:none}
 @media(max-width:700px){
   body.rus-mobile-shell-ready{padding-bottom:calc(72px + env(safe-area-inset-bottom))!important}
-  body.rus-mobile-shell-ready>nav{display:none!important}
+  html body.rus-mobile-shell-ready>nav{display:none!important} body.rus-mobile-shell-ready .rus-mobile-core-nav{display:none!important}
   body.rus-mobile-menu-open{overflow:hidden!important;touch-action:none}
   header{padding:8px 10px!important}
   header .header-content{min-height:56px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;text-align:left!important}
@@ -115,6 +115,7 @@ function openMenu(){
 }
 function buildShell(){
   if(!mq.matches||document.querySelector('.rus-mobile-bottom-nav'))return;
+  document.getElementById('rusMobileCoreNav')?.remove();
   const nav=document.querySelector('nav .rus-nav');if(!nav)return;
   document.body.classList.add('rus-mobile-shell-ready');
   const bottom=document.createElement('div');bottom.className='rus-mobile-bottom-nav';bottom.setAttribute('role','navigation');bottom.setAttribute('aria-label','Mobile navigation');
