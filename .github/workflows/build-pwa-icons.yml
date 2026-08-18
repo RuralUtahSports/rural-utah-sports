@@ -1,0 +1,62 @@
+name: Build PWA Icons
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'RUSlogoNew.png'
+      - '.github/workflows/build-pwa-icons.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-icons:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Pillow
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Generate app icons
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          source = Path('RUSlogoNew.png')
+          out = Path('icons')
+          out.mkdir(exist_ok=True)
+
+          with Image.open(source) as im:
+              im = im.convert('RGBA')
+              for size, name in [
+                  (192, 'icon-192.png'),
+                  (512, 'icon-512.png'),
+                  (180, 'apple-touch-icon.png'),
+              ]:
+                  icon = im.resize((size, size), Image.Resampling.LANCZOS)
+                  icon.save(out / name, optimize=True)
+          PY
+
+      - name: Commit generated icons
+        run: |
+          if git diff --quiet -- icons/; then
+            echo 'PWA icons are already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add icons/
+          git commit -m 'Generate PWA app icons'
+          git push
