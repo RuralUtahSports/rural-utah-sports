@@ -19,7 +19,9 @@ const aliases = {
   'ST JOSEPH': 'SAINT JOSEPH',
   'DESERET HILLS': 'DESERT HILLS',
   'PINE': 'PINE VIEW',
-  'UMA-CW': 'UMA-LEHI'
+  'UMA-CW': 'UMA-LEHI',
+  'LCA': 'LAYTON CHRISTIAN',
+  'MOUTNAIN CREST': 'MOUNTAIN CREST'
 };
 
 const canonical = value => {
@@ -29,6 +31,21 @@ const canonical = value => {
 };
 
 const dateCorrections = new Map(Object.entries({
+  // Verified 2024 cleanup batch.
+  'BEN LOMOND|OGDEN|10/11/2024': '10/17/2024',
+  'BOUNTIFUL|MAPLE MOUNTAIN|11/1/2024': '11/8/2024',
+  'CEDAR VALLEY|TIMPVIEW|9/20/2024': '9/27/2024',
+  'COPPER HILLS|WESTLAKE|10/18/2024': '10/25/2024',
+  'GRANTSVILLE|OGDEN|9/20/2024': '9/27/2024',
+  'JUAN DIEGO|OGDEN|9/27/2024': '10/4/2024',
+  'MORGAN|OGDEN|10/4/2024': '10/11/2024',
+  'NORTHRIDGE|MAPLE MOUNTAIN|10/25/2024': '11/1/2024',
+  'UNION|OGDEN|9/13/2024': '9/20/2024',
+  'WASATCH|TIMPVIEW|9/27/2024': '10/4/2024',
+  'LAYTON|WEBER|10/18/2024': '10/16/2024',
+  'WEST|BRIGHTON|10/18/2024': '10/16/2024',
+  'WESTLAKE|LONE PEAK|10/18/2024': '10/16/2024',
+
   // Corner Canyon vs American Fork was played Oct. 9, 2025.
   'CORNER CANYON|AMERICAN FORK|10/3/2025': '10/9/2025',
   'CORNER CANYON|AMERICAN FORK|10/10/2025': '10/9/2025',
@@ -166,12 +183,24 @@ const dateCorrections = new Map(Object.entries({
 }));
 
 const scoreCorrections = new Map(Object.entries({
+  // Verified 2024 finals.
+  'GUNNISON VALLEY|MILLARD|10/18/2024': { teamScore: 0, opponentScore: 45, result: 'L' },
+  'MILLARD|GUNNISON VALLEY|10/18/2024': { teamScore: 45, opponentScore: 0, result: 'W' },
+  'WHITEHORSE|SAINT JOSEPH|8/23/2024': { teamScore: 8, opponentScore: 41, result: 'L' },
+  'SAINT JOSEPH|WHITEHORSE|8/23/2024': { teamScore: 41, opponentScore: 8, result: 'W' },
+
   // Verified final: Hillfield 36, St. Joseph 0 on Oct. 10, 2025.
   'UMA-HILLFIELD|SAINT JOSEPH|10/10/2025': { teamScore: 36, opponentScore: 0, result: 'W' },
   'SAINT JOSEPH|UMA-HILLFIELD|10/10/2025': { teamScore: 0, opponentScore: 36, result: 'L' }
 }));
 
 const dropGames = new Set([
+  // Verified 2024 copied/bad rows.
+  'LAYTON|WEST|10/18/2024',
+  'WEST|LAYTON|10/18/2024',
+  'SYRACUSE|WOODS CROSS|11/1/2024',
+  'WOODS CROSS|SYRACUSE|11/1/2024',
+
   // Grand played Delta once, Oct. 10, 2025 (Delta 42, Grand 6).
   // The Oct. 3 Delta row is a bad source row; Grand played San Juan that week.
   'GRAND|DELTA|10/3/2025',
