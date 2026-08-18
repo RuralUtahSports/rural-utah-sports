@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {applyGameDetailCorrections} from './apply_manual_stat_corrections.mjs';
 
 const SOURCE = 'weekly-simulation.json';
 const OUTPUT = 'deseret-game-details.json';
@@ -415,5 +416,7 @@ for (const game of games) {
   await new Promise(r => setTimeout(r, 100));
 }
 
+const manualChanges=applyGameDetailCorrections(details);
 fs.writeFileSync(OUTPUT, JSON.stringify({ updatedAt: new Date().toISOString(), games: details }, null, 2) + '\n');
 console.log(`Deseret game details: ${fetched} fetched, ${reusedFinal} complete finals cached, ${deferredStats} partial/no-stat finals deferred, ${skippedFuture} outside refresh window, ${failures} failures.`);
+if(manualChanges)console.log(`Manual game-detail corrections applied: ${manualChanges}.`);

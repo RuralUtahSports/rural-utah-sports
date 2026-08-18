@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {applyRosterStatCorrections} from './apply_manual_stat_corrections.mjs';
 
 const SEASON=2026;
 const DESERET_SEASON=SEASON+1; // fall 2026 is the 2026-27 school year
@@ -37,5 +38,7 @@ async function one(x){const team=x.team,s=schoolSlug(team);let roster=[],stats=[
   result.teams[team]={team,deseretSlug:x.deseretSlug||s,rosterUrl:rosterUrlUsed,statsUrl:statsUrlUsed,roster,stats,rosterFetched:rosterOk,statsFetched:statsOk,manualRoster:override.length>0}}
 async function worker(){while(true){const i=next++;if(i>=entries.length)return;await one(entries[i]);await new Promise(r=>setTimeout(r,80))}}
 await Promise.all(Array.from({length:Math.min(6,entries.length)},()=>worker()));
+applyRosterStatCorrections(result);
+statRows=Object.values(result.teams).reduce((total,team)=>total+(team.stats||[]).reduce((sum,section)=>sum+(section.rows||[]).length,0),0);
 result.summary={teams:entries.length,rosterPages,statPages,teamsWithRoster:Object.values(result.teams).filter(x=>x.roster?.length).length,teamsWithStats:Object.values(result.teams).filter(x=>x.stats?.some(s=>s.rows?.length)).length,rosterPlayers,statRows,failedTeams:failures,unversionedRosterFallbacks,unversionedStatsFallbacks,manualRosterTeams};
 fs.writeFileSync(OUT,JSON.stringify(result,null,2)+'\n');console.log(`Roster/stat build: ${result.summary.teamsWithRoster} teams with rosters (${rosterPlayers} players); ${result.summary.teamsWithStats} teams with stats (${statRows} stat rows); ${unversionedRosterFallbacks} roster fallback(s); ${unversionedStatsFallbacks} stats fallback(s); ${manualRosterTeams} manual roster override(s).`);if(rosterPages<Math.max(20,Math.floor(entries.length*.5)))throw new Error(`Too many roster page failures: ${rosterPages}/${entries.length}`);

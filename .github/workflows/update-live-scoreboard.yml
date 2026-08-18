@@ -17,6 +17,8 @@ on:
   push:
     paths:
       - 'scripts/enrich-deseret-game-details.mjs'
+      - 'scripts/apply_manual_stat_corrections.mjs'
+      - 'manual-stat-corrections-2026.json'
       - 'scripts/reconcile-deseret-day-status.mjs'
       - 'scripts/repair-live-status-anomalies.mjs'
       - 'scripts/build_standings_2026.mjs'

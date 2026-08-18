@@ -1,0 +1,30 @@
+{
+  "season": 2026,
+  "corrections": [
+    {
+      "id": "2026-08-14-bear-river-ogden-passer",
+      "note": "Ozzie Williams threw Bear River's five touchdown passes; Preston Wilkinson did not play.",
+      "gameKey": "2026-08-14|BEARRIVER|OGDEN",
+      "team": "BEAR RIVER",
+      "category": "Passing",
+      "sourcePlayer": "Preston Wilkinson",
+      "targetPlayer": "Ozzie Williams",
+      "targetNumber": "19",
+      "stat": "TD",
+      "minimumValue": 5,
+      "scoringPlayFrom": "pass from Preston Wilkinson",
+      "scoringPlayTo": "pass from Ozzie Williams",
+      "removeSourceFromGame": true,
+      "removeSourceSeasonRowWhenOnlyCorrection": true
+    },
+    {
+      "id": "2026-week-1-kemper-castro-half-sack",
+      "note": "Kemper Castro recorded 3.5 sacks against Bountiful; preserve the half-sack in season totals.",
+      "team": "HERRIMAN",
+      "category": "Defense/Special Teams",
+      "targetPlayer": "Kemper Castro",
+      "stat": "SACKS",
+      "minimumValue": 3.5
+    }
+  ]
+}

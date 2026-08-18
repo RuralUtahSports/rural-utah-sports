@@ -10,6 +10,8 @@ on:
     paths:
       - 'scripts/enrich-weekly-deseret.mjs'
       - 'scripts/enrich-deseret-game-details.mjs'
+      - 'scripts/apply_manual_stat_corrections.mjs'
+      - 'manual-stat-corrections-2026.json'
       - '.github/workflows/enrich-weekly-deseret.yml'
 
 permissions:

@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {applyGameDetailCorrections} from './apply_manual_stat_corrections.mjs';
 
 const DETAILS='deseret-game-details.json';
 const ROSTERS='deseret-rosters-stats-2026.json';
@@ -23,6 +24,7 @@ function scoreValue(...values){for(const value of values){if(value===null||value
 
 if(!fs.existsSync(DETAILS)||!fs.existsSync(ROSTERS)||!fs.existsSync(WEEKLY)){console.log('Player game stat inputs missing; skipping.');process.exit(0)}
 const details=JSON.parse(fs.readFileSync(DETAILS,'utf8')).games||{};
+applyGameDetailCorrections(details);
 const rosterData=JSON.parse(fs.readFileSync(ROSTERS,'utf8')).teams||{};
 const weekly=JSON.parse(fs.readFileSync(WEEKLY,'utf8')).games||[];
 const byKey=new Map(weekly.map(g=>[gameKey(g),g]));
