@@ -22,6 +22,7 @@ function zonedDate(timeZone){const parts=new Intl.DateTimeFormat('en-US',{timeZo
 function dayStamp(v){const s=clean(v);let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return Date.UTC(Number(m[1]),Number(m[2])-1,Number(m[3]));m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?Date.UTC(Number(m[3]),Number(m[1])-1,Number(m[2])):NaN}
 function weekStart(v){const t=dayStamp(v);return Number.isFinite(t)?t-((new Date(t).getUTCDay()+6)%7)*DAY:NaN}
 function isoDate(v){const t=dayStamp(v);return Number.isFinite(t)?isoDay(t):''}
+function scoreValue(v){if(v===null||v===undefined||clean(v)==='')return null;const n=Number(v);return Number.isFinite(n)?n:null}
 function gameKey(g){return`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`}
 function primaryPosition(v){const x=clean(v).toUpperCase();if(/\bQB\b/.test(x))return'QB';if(/\b(?:RB|HB|FB)\b/.test(x))return'RB';if(/\b(?:WR|SE|FL)\b/.test(x))return'WR';if(/\bTE\b/.test(x))return'TE';if(/\b(?:DL|DE|DT|NT)\b/.test(x))return'DL';if(/\bLB\b/.test(x))return'LB';if(/\b(?:DB|CB|FS|SS|SAF)\b/.test(x))return'DB';if(/\b[KP]\b/.test(x))return'K/P';return'ATH'}
 function splitLine(line){
@@ -74,7 +75,7 @@ for(const [teamName,teamData] of Object.entries(playerGames.teams||{})){
       for(const line of player.statLines||[])for(const part of splitLine(line)){
         const points=scoring.categoryScore(part.category,part.values,p.primaryPosition);if(part.side==='offense')p.offense+=points;else p.defense+=points;p.lines.push({...part,score:points});
       }
-      const teamScore=Number.isFinite(Number(game.teamScore))?Number(game.teamScore):null,opponentScore=Number.isFinite(Number(game.opponentScore))?Number(game.opponentScore):null,win=teamScore!==null&&opponentScore!==null&&teamScore>opponentScore;
+      const teamScore=scoreValue(game.teamScore),opponentScore=scoreValue(game.opponentScore),win=teamScore!==null&&opponentScore!==null&&teamScore>opponentScore;
       p.results.push({opponent:clean(game.opponent),teamScore,opponentScore,win});if(win)p.winBonus+=2;
     }
   }

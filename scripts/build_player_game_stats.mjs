@@ -7,7 +7,7 @@ const OUT='player-game-stats-2026.json';
 const clean=v=>String(v??'').trim();
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const slug=v=>clean(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-const aliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN'};
+const aliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN',STJOSEPH:'SAINTJOSEPH'};
 const canon=v=>aliases[compact(v)]||compact(v);
 function isoDate(v){const s=clean(v);let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return `${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return `${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;return''}
 function gameKey(g){return `${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`}
@@ -19,6 +19,7 @@ function matchScore(idx,no,name){const n=compact(no),b=nameBits(name),candidates
 function teamLabelMatches(label,team){const l=compact(label),t=canon(team);return !!l&&!!t&&(l.includes(t)||t.includes(l))}
 function statRows(table){const headers=(table.headers||[]).map(clean);const hu=headers.map(compact);let noI=hu.findIndex(x=>x==='NO'||x==='NUMBER'||x==='#');let nameI=hu.findIndex(x=>x==='PLAYER'||x.includes('PLAYERNAME'));if(noI<0)noI=0;if(nameI<0)nameI=1;const out=[];for(const raw of table.rows||[]){const row=Array.isArray(raw)?raw.map(clean):[];if(!row.length)continue;const no=clean(row[noI]||''),rawName=cleanGameName(row[nameI]||'');if(!rawName||compact(rawName)==='PLAYER')continue;const values={};for(let i=0;i<headers.length;i++){if(i===noI||i===nameI)continue;values[headers[i]||`Stat ${i+1}`]=clean(row[i]||'')}out.push({number:no,rawName,category:clean(table.category)||'Stats',values})}return out}
 function playMatchesPlayer(play,p){const txt=compact(play),b=nameBits(p.name);if(!b.last||b.last.length<3||!txt.includes(b.last))return false;if(b.first&&txt.includes(b.first+b.last))return true;if(b.initial&&txt.includes(b.initial+b.last))return true;return txt.includes(b.last)}
+function scoreValue(...values){for(const value of values){if(value===null||value===undefined||clean(value)==='')continue;const n=Number(value);if(Number.isFinite(n))return n}return null}
 
 if(!fs.existsSync(DETAILS)||!fs.existsSync(ROSTERS)||!fs.existsSync(WEEKLY)){console.log('Player game stat inputs missing; skipping.');process.exit(0)}
 const details=JSON.parse(fs.readFileSync(DETAILS,'utf8')).games||{};
@@ -44,13 +45,13 @@ for(const [key,d] of Object.entries(details)){
   }
   for(const team of [g.awayTeam,g.homeTeam]){
     const ctx=contexts[team],opponent=canon(team)===canon(g.awayTeam)?g.homeTeam:g.awayTeam,isAway=canon(team)===canon(g.awayTeam);
-    const ownScore=scoreRows.find(r=>teamLabelMatches(r.team,team))?.total,oppScore=scoreRows.find(r=>teamLabelMatches(r.team,opponent))?.total;
+    const ownScore=scoreValue(scoreRows.find(r=>teamLabelMatches(r.team,team))?.total,isAway?g.actualAway:g.actualHome),oppScore=scoreValue(scoreRows.find(r=>teamLabelMatches(r.team,opponent))?.total,isAway?g.actualHome:g.actualAway);
     if(!ctx.rows.length&&!d.scoringPlays?.length)continue;
     const players={};
     for(const r of ctx.rows){if(!players[r.playerId])players[r.playerId]={playerId:r.playerId,number:r.number,name:r.name,position:r.position||'',rosterMatched:r.rosterMatched,statLines:[],scoringPlays:[]};if(!players[r.playerId].position&&r.position)players[r.playerId].position=r.position;players[r.playerId].statLines.push({category:r.category,values:r.values})}
     for(const p of Object.values(players))p.scoringPlays=(d.scoringPlays||[]).filter(play=>playMatchesPlayer(play,p)&&teamLabelMatches(play.split('—')[0],team)).slice(0,12);
     if(!teams[team])teams[team]={team,games:[]};
-    teams[team].games.push({gameKey:key,date:gameDate,opponent,location:isAway?'Away':'Home',status,final,teamScore:Number.isFinite(Number(ownScore))?Number(ownScore):null,opponentScore:Number.isFinite(Number(oppScore))?Number(oppScore):null,url:d.url||g.deseretUrl||'',players:Object.values(players),scoringPlays:(d.scoringPlays||[]).filter(play=>teamLabelMatches(play.split('—')[0],team))});gameCount++;
+    teams[team].games.push({gameKey:key,date:gameDate,opponent,location:isAway?'Away':'Home',status,final,teamScore:ownScore,opponentScore:oppScore,url:d.url||g.deseretUrl||'',players:Object.values(players),scoringPlays:(d.scoringPlays||[]).filter(play=>teamLabelMatches(play.split('—')[0],team))});gameCount++;
   }
 }
 for(const t of Object.values(teams))t.games.sort((a,b)=>a.date.localeCompare(b.date));
