@@ -32,12 +32,18 @@ jobs:
           const fs=require('fs');const sheetId=process.env.SHEET_ID,gid=process.env.CLEAN_GAMES_GID;
           const url=`https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}&range=${encodeURIComponent('A1:F50000')}`;
           function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}else{if(c==='"')quoted=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
-          const clean=v=>String(v??'').trim(),norm=v=>clean(v).replace(/\s+/g,' ').toUpperCase(),num=v=>{const n=Number(clean(v).replace(/,/g,''));return Number.isFinite(n)?n:null};
+          const clean=v=>String(v??'').trim(),norm=v=>clean(v).replace(/\s+/g,' ').toUpperCase(),num=v=>{const s=clean(v).replace(/,/g,'');if(!s)return null;const n=Number(s);return Number.isFinite(n)?n:null};
           const aliases={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH','BRIGHAM YOUNG':'BYH','UTAH SCH DEAF':'USDB','AMRICAN FORK':'AMERICAN FORK','DESERET HILLS':'DESERT HILLS','MOUNUMENT VALLEY':'MONUMENT VALLEY','MONTUMENT VALLEY':'MONUMENT VALLEY','MOAPA VALLEY(NV)':'MOAPA VALLEY (NV)','VIRGIN VAL (NV)':'VIRGIN VALLEY (NV)','VIRGIN VALLEY (NV))':'VIRGIN VALLEY (NV)','BOULDER CITY(NV)':'BOULDER CITY (NV)','HIGHLAND, ID':'HIGHLAND (ID)','MARSH VALLEY(ID)':'MARSH VALLEY (ID)','ONEIDA ACAD.(ID)':'ONEIDA ACADEMY (ID)','RAYMOND, ALBERTA':'RAYMOND (ALBERTA)','ST LOUIS (HI)':'ST. LOUIS (HI)','CROWNPOINT (NM)':'CROWN POINT (NM)','KIRKLAND (NM)':'KIRTLAND (NM)','MTN CREST JV':'MOUNTAIN CREST JV','EAST HIGH 2ND TEAM':'EAST 2ND TEAM','WEST HIGH 2ND TEAM':'WEST 2ND TEAM','MTN. VIEW CHRISTIAN (NV)':'MTN VIEW CHRISTIAN (NV)','MONUMENT VAL (AZ) JV':'MONUMENT VALLEY (AZ) JV','BLOOMFIELD(NM)JV':'BLOOMFIELD (NM) JV'};
           function team(v){const n=norm(v).replace(/\.+$/,'').trim();if(n.startsWith('WASATCH ACAD'))return'WASATCH ACADEMY';return aliases[n]||n}
           const year=v=>{const m=clean(v).match(/(18|19|20)\d{2}/);return m?Number(m[0]):null},stamp=v=>{const d=new Date(clean(v));return Number.isFinite(d.getTime())?d.getTime():0};
           function pairKey(a,b){return [a,b].sort().join('|')}
           function scoreSig(a,sa,b,sb){return [[a,sa],[b,sb]].sort((x,y)=>x[0].localeCompare(y[0])).map(x=>`${x[0]}:${x[1]}`).join('|')}
+          function correctedDate(date,a,b,sa,sb){
+            const pair=pairKey(a,b),sig=scoreSig(a,sa,b,sb);
+            // 2025 3A championship: Cedar City 41, Manti 35 on Nov. 15.
+            if(date==='11/7/2025'&&pair==='CEDAR CITY|MANTI'&&sig==='CEDAR CITY:41|MANTI:35')return'11/15/2025';
+            return date;
+          }
           function isKnownBadDuplicate(date,a,b,sa,sb){
             const pair=pairKey(a,b),sig=scoreSig(a,sa,b,sb);
             if(date==='9/19/2025'&&pair==='MONUMENT VALLEY|PANGUITCH')return true;
@@ -47,15 +53,15 @@ jobs:
             return false;
           }
           (async()=>{const res=await fetch(url);if(!res.ok)throw new Error(`Sheet download failed ${res.status}`);const rows=parseCSV(await res.text()),scoreMap=new Map(),candidates=[];let skippedRows=0,sourceRows=0,weeklyFinalsAdded=0,exactDuplicatesRemoved=0,nearDuplicatesRemoved=0,conflictingDuplicates=0,knownCorrectionsRemoved=0,maxWinningScore=0,maxLosingScore=0;
-            for(let i=1;i<rows.length;i++){const r=rows[i],date=clean(r[0]),team1=team(r[1]),team2=team(r[2]),score1=num(r[3]),score2=num(r[4]),ts=stamp(date);if(!date||!ts||!team1||!team2||team1===team2||score1===null||score2===null||score1<0||score2<0){if(r.some(v=>clean(v)))skippedRows++;continue}if(isKnownBadDuplicate(date,team1,team2,score1,score2)){knownCorrectionsRemoved++;continue}sourceRows++;candidates.push({date,team1,team2,score1,score2,ts,index:i,pair:pairKey(team1,team2),sig:scoreSig(team1,score1,team2,score2),source:'clean'})}
+            for(let i=1;i<rows.length;i++){const r=rows[i],team1=team(r[1]),team2=team(r[2]),score1=num(r[3]),score2=num(r[4]),date=correctedDate(clean(r[0]),team1,team2,score1,score2),ts=stamp(date);if(!date||!ts||ts>Date.now()||!team1||!team2||team1===team2||score1===null||score2===null||score1<0||score2<0){if(r.some(v=>clean(v)))skippedRows++;continue}if(isKnownBadDuplicate(date,team1,team2,score1,score2)){knownCorrectionsRemoved++;continue}sourceRows++;candidates.push({date,team1,team2,score1,score2,ts,index:i,pair:pairKey(team1,team2),sig:scoreSig(team1,score1,team2,score2),source:'clean'})}
             // Merge finalized Weekly Simulation games so Scorigami updates as soon as a final reaches the site,
             // even if the Google Sheet Clean Games rebuild has not finished yet. Normal dedupe below prevents double counting.
             if(fs.existsSync('weekly-simulation.json')){
               try{
                 const weekly=JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));
                 for(const [i,g] of (weekly.games||[]).entries()){
-                  const date=clean(g.date),team1=team(g.awayTeam),team2=team(g.homeTeam),score1=num(g.actualAway),score2=num(g.actualHome),ts=stamp(date);
-                  if(!date||!ts||!team1||!team2||team1===team2||score1===null||score2===null||score1<0||score2<0)continue;
+                  const team1=team(g.awayTeam),team2=team(g.homeTeam),score1=num(g.actualAway),score2=num(g.actualHome),date=correctedDate(clean(g.date),team1,team2,score1,score2),ts=stamp(date);
+                  if(!date||!ts||ts>Date.now()||!team1||!team2||team1===team2||score1===null||score2===null||score1<0||score2<0)continue;
                   if(isKnownBadDuplicate(date,team1,team2,score1,score2)){knownCorrectionsRemoved++;continue}
                   weeklyFinalsAdded++;
                   candidates.push({date,team1,team2,score1,score2,ts,index:1000000+i,pair:pairKey(team1,team2),sig:scoreSig(team1,score1,team2,score2),source:'weekly'});

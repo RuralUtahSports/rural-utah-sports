@@ -53,7 +53,28 @@ function teamLink(team){if(!team)return '—';const c=colorFor(team),bg=safeHex(
 const TEAM_ALIASES={'WASATCH ACAD':'WASATCH ACADEMY'};
 function canonicalTeam(v){const name=String(v??'').trim(),n=norm(name).replace(/\.+$/,'').trim();if(n.startsWith('WASATCH ACAD'))return 'WASATCH ACADEMY';return TEAM_ALIASES[n]||name}
 function gameDedupKey(date,a,sa,b,sb){const pairs=[[keyName(a),Number(sa)],[keyName(b),Number(sb)]].sort((x,y)=>x[0].localeCompare(y[0]));return `${String(date||'').trim()}|${pairs[0][0]}:${pairs[0][1]}|${pairs[1][0]}:${pairs[1][1]}`}
-function flattenScorigami(data){const out=[],seen=new Set();for(const entry of (data.scores||[])){for(const g of (Array.isArray(entry.games)?entry.games:[])){if(g.tie){const s1=Number(g.score1),s2=Number(g.score2),team1=canonicalTeam(g.team1),team2=canonicalTeam(g.team2),key=gameDedupKey(g.date,team1,s1,team2,s2);if(seen.has(key))continue;seen.add(key);out.push({date:g.date||'',team1,team2,score1:s1,score2:s2,tie:true,total:s1+s2,margin:Math.abs(s1-s2),year:yearOf(g.date)})}else{const s1=Number(g.winnerScore),s2=Number(g.loserScore),team1=canonicalTeam(g.winner),team2=canonicalTeam(g.loser),key=gameDedupKey(g.date,team1,s1,team2,s2);if(seen.has(key))continue;seen.add(key);out.push({date:g.date||'',team1,team2,score1:s1,score2:s2,tie:false,total:s1+s2,margin:s1-s2,year:yearOf(g.date)})}}}return out}
+function scoreNumber(v){if(v===null||v===undefined||String(v).trim()==='')return null;const n=Number(v);return Number.isFinite(n)&&n>=0?n:null}
+function isFutureGame(date){const t=dateValue(date);return t>0&&t>Date.now()}
+function flattenScorigami(data){
+ const out=[],seen=new Set();
+ for(const entry of (data.scores||[])){
+  for(const g of (Array.isArray(entry.games)?entry.games:[])){
+   if(isFutureGame(g.date))continue;
+   if(g.tie){
+    const s1=scoreNumber(g.score1),s2=scoreNumber(g.score2),team1=canonicalTeam(g.team1),team2=canonicalTeam(g.team2);
+    if(s1===null||s2===null)continue;
+    const key=gameDedupKey(g.date,team1,s1,team2,s2);if(seen.has(key))continue;seen.add(key);
+    out.push({date:g.date||'',team1,team2,score1:s1,score2:s2,tie:true,total:s1+s2,margin:Math.abs(s1-s2),year:yearOf(g.date)});
+   }else{
+    const s1=scoreNumber(g.winnerScore),s2=scoreNumber(g.loserScore),team1=canonicalTeam(g.winner),team2=canonicalTeam(g.loser);
+    if(s1===null||s2===null)continue;
+    const key=gameDedupKey(g.date,team1,s1,team2,s2);if(seen.has(key))continue;seen.add(key);
+    out.push({date:g.date||'',team1,team2,score1:s1,score2:s2,tie:false,total:s1+s2,margin:s1-s2,year:yearOf(g.date)});
+   }
+  }
+ }
+ return out;
+}
 function parseSearch(){const raw=$('search').value.trim();if(!raw)return{one:'',two:''};const parts=raw.split(/\s+(?:vs\.?|v\.?|@)\s+/i);return{one:norm(parts[0]||''),two:norm(parts[1]||'')}}
 function matchesName(team,q){return !q||norm(team).includes(q)}
 function exactPair(g,a,b){if(!a||!b)return false;return (matchesName(g.team1,a)&&matchesName(g.team2,b))||(matchesName(g.team1,b)&&matchesName(g.team2,a))}

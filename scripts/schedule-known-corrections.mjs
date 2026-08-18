@@ -30,6 +30,11 @@ const canonical = value => {
   return aliases[key] || key;
 };
 
+const dateValue = value => {
+  const match = clean(value).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  return match ? Date.UTC(Number(match[3]), Number(match[1]) - 1, Number(match[2])) : 0;
+};
+
 const dateCorrections = new Map(Object.entries({
   // Verified 2023 Games-audit corrections.
   'WATER CANYON|FREDONIA (AZ)|9/8/2023': '9/1/2023',
@@ -301,7 +306,15 @@ for (const [rawTeam, seasons] of Object.entries(schedules)) {
       next.push(game);
     }
 
-    seasons[season] = next;
+    const ordered = next
+      .map((game, index) => ({ game, index }))
+      .sort((a, b) => dateValue(a.game.date) - dateValue(b.game.date) || a.index - b.index)
+      .map(item => item.game);
+    if (ordered.some((game, index) => game !== next[index])) {
+      changed = true;
+      affectedTeams.add(team);
+    }
+    seasons[season] = ordered;
   }
 }
 

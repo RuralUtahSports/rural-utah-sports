@@ -455,6 +455,11 @@ jobs:
           })().catch(err => { console.error(err); process.exit(1); });
           NODE
 
+      - name: Apply verified schedule corrections
+        run: |
+          node scripts/schedule-known-corrections.mjs
+          node scripts/sanitize-team-schedules.mjs
+
       - name: Commit updated data
         run: |
           git config user.name "RuralUtahSports"
