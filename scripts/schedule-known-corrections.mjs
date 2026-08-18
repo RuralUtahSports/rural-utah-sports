@@ -16,7 +16,8 @@ const aliases = {
   'BRIGHAM YOUNG': 'BYH',
   'FREMOND': 'FREMONT',
   'LAY': 'LAYTON',
-  'ST JOSEPH': 'SAINT JOSEPH'
+  'ST JOSEPH': 'SAINT JOSEPH',
+  'DESERET HILLS': 'DESERT HILLS'
 };
 
 const canonical = value => {
@@ -36,9 +37,7 @@ const dateCorrections = new Map(Object.entries({
   'CORNER CANYON|LEHI|10/10/2025': '10/15/2025',
   'LEHI|CORNER CANYON|10/10/2025': '10/15/2025',
 
-  // Delta's 2025 source block was shifted one week early. Deseret's final
-  // schedule confirms these local dates. Apply both sides so reciprocal team
-  // pages stay synchronized.
+  // Delta's 2025 source block was shifted one week early.
   'DELTA|SUMMIT ACADEMY|9/5/2025': '9/12/2025',
   'SUMMIT ACADEMY|DELTA|9/5/2025': '9/12/2025',
   'DELTA|SAN JUAN|9/12/2025': '9/19/2025',
@@ -49,12 +48,44 @@ const dateCorrections = new Map(Object.entries({
   'CARBON|DELTA|9/26/2025': '10/3/2025',
   'DELTA|EMERY|10/10/2025': '10/17/2025',
   'EMERY|DELTA|10/10/2025': '10/17/2025',
-
-  // The 43-42 South Sevier win was the Oct. 31 2A quarterfinal. Converting
-  // the shifted Oct. 17 copy to the verified date lets the normal exact
-  // deduper merge it with the real playoff row instead of counting it twice.
   'DELTA|SOUTH SEVIER|10/17/2025': '10/31/2025',
-  'SOUTH SEVIER|DELTA|10/17/2025': '10/31/2025'
+  'SOUTH SEVIER|DELTA|10/17/2025': '10/31/2025',
+
+  // Verified 2025 shifted-date corrections found by the full Games audit.
+  'ALTA|ROY|10/17/2025': '10/24/2025',
+  'ROY|ALTA|10/17/2025': '10/24/2025',
+
+  'COPPER HILLS|RIVERTON|10/10/2025': '10/17/2025',
+  'RIVERTON|COPPER HILLS|10/10/2025': '10/17/2025',
+
+  'DAVIS|LAYTON|10/10/2025': '10/9/2025',
+  'LAYTON|DAVIS|10/10/2025': '10/9/2025',
+  'DAVIS|WEBER|10/10/2025': '10/15/2025',
+  'WEBER|DAVIS|10/10/2025': '10/15/2025',
+
+  'EAST|JORDAN|10/10/2025': '10/9/2025',
+  'JORDAN|EAST|10/10/2025': '10/9/2025',
+  'EAST|COTTONWOOD|10/10/2025': '10/15/2025',
+  'COTTONWOOD|EAST|10/10/2025': '10/15/2025',
+
+  'FREMONT|WEST FIELD|10/10/2025': '10/9/2025',
+  'WEST FIELD|FREMONT|10/10/2025': '10/9/2025',
+  'FREMONT|ROY|10/10/2025': '10/15/2025',
+  'ROY|FREMONT|10/10/2025': '10/15/2025',
+
+  'GRANTSVILLE|BEN LOMOND|9/12/2025': '9/19/2025',
+  'BEN LOMOND|GRANTSVILLE|9/12/2025': '9/19/2025',
+
+  // Green Canyon's 10-3 playoff win was Oct. 24. A second source row also
+  // misspelled Desert Hills as "Deseret Hills"; alias normalization above
+  // makes the two copies merge on the verified date.
+  'GREEN CANYON|DESERT HILLS|10/17/2025': '10/24/2025',
+  'DESERT HILLS|GREEN CANYON|10/17/2025': '10/24/2025',
+
+  'HERRIMAN|CEDAR VALLEY|10/17/2025': '10/16/2025',
+  'CEDAR VALLEY|HERRIMAN|10/17/2025': '10/16/2025',
+  'HERRIMAN|WEBER|10/17/2025': '10/31/2025',
+  'WEBER|HERRIMAN|10/17/2025': '10/31/2025'
 }));
 
 const dropGames = new Set([
