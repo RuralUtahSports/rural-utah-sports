@@ -146,11 +146,12 @@ function buildBackBar(){
   backBar.querySelector('.rus-app-back-button').addEventListener('click',goBack);
 }
 function buildShell(){
-  if(!mq.matches||document.querySelector('.rus-mobile-bottom-nav'))return;
+  if(!mq.matches)return;
+  buildBackBar();
+  if(document.querySelector('.rus-mobile-bottom-nav'))return;
   document.getElementById('rusMobileCoreNav')?.remove();
   const nav=document.querySelector('nav .rus-nav');if(!nav)return;
   document.body.classList.add('rus-mobile-shell-ready');
-  buildBackBar();
   const bottom=document.createElement('div');bottom.className='rus-mobile-bottom-nav';bottom.setAttribute('role','navigation');bottom.setAttribute('aria-label','Mobile navigation');
   bottom.innerHTML=navLink('home','Home','index.html')+navLink('scores','Scores','scoreboard.html')+navLink('teams','Teams','teams.html')+navLink('rankings','Rankings','rankings.html')+`<button type="button" class="rus-mobile-more-button${activeFor('more')?' active':''}" aria-label="Open more navigation" aria-expanded="false">${icons.more}<span>More</span></button>`;
   document.body.appendChild(bottom);
