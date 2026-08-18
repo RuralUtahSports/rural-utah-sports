@@ -33,6 +33,23 @@
   function shareButton(){
     const main=document.querySelector('main');if(!main||document.getElementById('rusShareView'))return;const b=document.createElement('button');b.id='rusShareView';b.type='button';b.textContent='Copy Share Link';b.style.cssText='position:fixed;right:16px;bottom:76px;z-index:40;background:#1b1b1b;color:#fff;border:1px solid #444;border-radius:999px;padding:9px 13px;font:700 10px Arial;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35)';b.onclick=async()=>{try{await navigator.clipboard.writeText(location.href);const old=b.textContent;b.textContent='Link Copied';setTimeout(()=>b.textContent=old,1400)}catch(e){prompt('Copy this link:',location.href)}};document.body.appendChild(b);
   }
-  function init(){recordsState();greatestSeasonsState();gamesDeepLink();setTimeout(addRelated,700);shareButton()}
+  function uiHotfixes(){
+    if(document.getElementById('rus-20260818-ui-hotfix'))return;
+    let css='';
+    if(['mvp-race.html','all-state-watch.html','all-utah.html','awards-2025.html'].includes(path))css+=`
+      .rus-award-name-pill .rus-player-link,
+      .rus-award-name-pill .rus-player-link:visited,
+      .rus-award-name-pill .rus-player-link:hover,
+      .rus-award-name-pill .rus-player-link:active{color:inherit!important}
+    `;
+    if(path==='team-stats.html')css+=`
+      @media(min-width:901px){
+        body[data-rus-page="team-stats.html"] table.rus-desktop-table thead th,
+        body[data-rus-page="team-stats.html"] .rank-table thead th{top:0!important;z-index:12!important}
+      }
+    `;
+    if(!css)return;const s=document.createElement('style');s.id='rus-20260818-ui-hotfix';s.textContent=css;document.head.appendChild(s);
+  }
+  function init(){uiHotfixes();recordsState();greatestSeasonsState();gamesDeepLink();setTimeout(addRelated,700);shareButton()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
