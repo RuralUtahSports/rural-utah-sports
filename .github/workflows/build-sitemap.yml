@@ -1,0 +1,38 @@
+name: Build Sitemap
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'teams-data.json'
+      - 'weekly-simulation.json'
+      - 'deseret-rosters-stats-2026.json'
+      - 'scripts/build-sitemap.mjs'
+      - '.github/workflows/build-sitemap.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check sitemap builder
+        run: node --check scripts/build-sitemap.mjs
+      - name: Build sitemap
+        run: node scripts/build-sitemap.mjs
+      - name: Commit sitemap if changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sitemap.xml
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Refresh generated sitemap'
+          git push
