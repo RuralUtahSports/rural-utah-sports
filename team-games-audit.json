@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T12:23:47.512Z",
+  "updatedAt": "2026-08-18T12:29:58.798Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67685,
+    "scheduleRowsAudited": 67681,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 32,
+    "sameDayMultipleOpponents": 30,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -125,16 +125,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "MILLARD",
-      "season": "1998",
-      "date": "10/15/1998",
-      "opponents": [
-        "BEAVER",
-        "PAROWAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "MONTICELLO",
       "season": "1983",
       "date": "10/21/1983",
@@ -211,16 +201,6 @@
       "opponents": [
         "MOUNTAIN VIEW",
         "TIMPANOGOS"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PROVO",
-      "season": "2004",
-      "date": "10/23/2004",
-      "opponents": [
-        "PAYSON",
-        "SPANISH FORK"
       ]
     },
     {
@@ -856,7 +836,7 @@
       "team": "PAYSON",
       "file": "payson.json",
       "seasons": 115,
-      "totalGames": 971
+      "totalGames": 970
     },
     {
       "team": "PINE VIEW",
@@ -880,7 +860,7 @@
       "team": "PROVO",
       "file": "provo.json",
       "seasons": 111,
-      "totalGames": 1001
+      "totalGames": 999
     },
     {
       "team": "RICH",
@@ -970,7 +950,7 @@
       "team": "SPANISH FORK",
       "file": "spanish-fork.json",
       "seasons": 106,
-      "totalGames": 929
+      "totalGames": 928
     },
     {
       "team": "SPRINGVILLE",
