@@ -38,7 +38,7 @@ function addStyles(){if(document.getElementById('rus-desktop-v2-style'))return;c
   .rus-header-favorites{margin-left:0!important}
   body[data-rus-desktop-v2="1"] main.container,body[data-rus-desktop-v2="1"] .container{width:min(calc(100% - 42px),1500px)!important}
   table.rus-desktop-table{border-collapse:separate!important;border-spacing:0!important}
-  table.rus-desktop-table thead th{position:sticky!important;top:46px!important;z-index:11!important;box-shadow:0 1px 0 #402016,0 5px 12px rgba(0,0,0,.16)!important}
+  table.rus-desktop-table thead th{position:sticky!important;top:0!important;z-index:11!important;box-shadow:0 1px 0 #402016,0 5px 12px rgba(0,0,0,.16)!important}
   table.rus-desktop-table tbody tr:nth-child(even)>td{background:rgba(255,255,255,.018)}
   table.rus-desktop-table tbody tr:hover>td{background:#1b1715!important}
   table.rus-desktop-table td,table.rus-desktop-table th{padding-top:9px!important;padding-bottom:9px!important}
