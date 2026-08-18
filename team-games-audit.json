@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T05:26:04.697Z",
+  "updatedAt": "2026-08-18T05:27:54.433Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67697,
+    "scheduleRowsAudited": 67693,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 48,
+    "sameDayMultipleOpponents": 44,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -51,16 +51,6 @@
       "opponents": [
         "JUAB",
         "JUAN DIEGO"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BEAVER",
-      "season": "2004",
-      "date": "9/10/2004",
-      "opponents": [
-        "RICH",
-        "RICHFIELD"
       ]
     },
     {
@@ -111,16 +101,6 @@
       "opponents": [
         "KEARNS",
         "SKYLINE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "ENTERPRISE",
-      "season": "2004",
-      "date": "8/20/2004",
-      "opponents": [
-        "BEAVER",
-        "NORTH SEVIER"
       ]
     },
     {
@@ -235,16 +215,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "NORTH SEVIER",
-      "season": "2004",
-      "date": "8/20/2004",
-      "opponents": [
-        "DUCHESNE",
-        "ENTERPRISE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "NORTHRIDGE",
       "season": "1994",
       "date": "10/25/1994",
@@ -321,16 +291,6 @@
       "opponents": [
         "EVANSTON (WY) JV",
         "GRAND"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "RICH",
-      "season": "2004",
-      "date": "9/10/2004",
-      "opponents": [
-        "BEAVER",
-        "WEST SIDE (ID)"
       ]
     },
     {
@@ -590,7 +550,7 @@
       "team": "BEAVER",
       "file": "beaver.json",
       "seasons": 86,
-      "totalGames": 831
+      "totalGames": 830
     },
     {
       "team": "BEN LOMOND",
@@ -746,7 +706,7 @@
       "team": "ENTERPRISE",
       "file": "enterprise.json",
       "seasons": 29,
-      "totalGames": 316
+      "totalGames": 315
     },
     {
       "team": "FARMINGTON",
@@ -962,7 +922,7 @@
       "team": "NORTH SEVIER",
       "file": "north-sevier.json",
       "seasons": 67,
-      "totalGames": 581
+      "totalGames": 580
     },
     {
       "team": "NORTH SUMMIT",
@@ -1046,7 +1006,7 @@
       "team": "RICH",
       "file": "rich.json",
       "seasons": 41,
-      "totalGames": 441
+      "totalGames": 440
     },
     {
       "team": "RICHFIELD",
