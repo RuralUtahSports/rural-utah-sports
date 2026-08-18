@@ -75,7 +75,13 @@ const dropGames = new Set([
   // 2001 — Skyline played Highland Aug. 31 while Uintah played Sky View.
   // The Skyline/Uintah rows are crossed copies, not a real game.
   'SKYLINE|UINTAH|8/31/2001',
-  'UINTAH|SKYLINE|8/31/2001'
+  'UINTAH|SKYLINE|8/31/2001',
+
+  // 2001 — Fremont's Sept. 14 nonregion game was a 43-3 win over Timpanogos.
+  // Timpview had no game Sept. 14 and played Provo Sept. 15. The same 43-3
+  // final was copied onto a Fremont/Timpview pairing in both directions.
+  'FREMONT|TIMPVIEW|9/14/2001',
+  'TIMPVIEW|FREMONT|9/14/2001'
 ]);
 
 if (!fs.existsSync(FILE)) throw new Error(`${FILE} not found`);
