@@ -20,25 +20,25 @@ function addStyles(){
     .rus-scorigami-dot{width:8px;height:8px;flex:0 0 8px;border:0;border-radius:50%;padding:0;background:rgba(0,0,0,.35);cursor:pointer}
     .rus-scorigami-dot.active{background:#000;transform:scale(1.2)}
     @media(max-width:800px){
-      .rus-scorigami-alert .rus-scorigami-wrap{display:block!important;padding:16px 14px 18px!important;text-align:left}
+      .rus-scorigami-alert .rus-scorigami-wrap{display:block!important;padding:10px 12px 12px!important;text-align:left}
       .rus-scorigami-alert .rus-scorigami-burst{display:none!important}
       .rus-scorigami-carousel{width:100%;max-width:none}
-      .rus-scorigami-kicker{font-size:9px!important;letter-spacing:1px!important;padding:6px 10px!important;margin-bottom:8px}
-      .rus-scorigami-main{font-size:18px!important;line-height:1.12!important;margin-top:0!important;overflow-wrap:anywhere}
-      .rus-scorigami-main .rus-scorigami-score{font-size:25px!important;margin:0 3px!important;white-space:nowrap}
-      .rus-scorigami-sub{font-size:9px!important;line-height:1.35!important;margin-top:6px!important}
-      .rus-scorigami-nav{display:grid!important;grid-template-columns:40px minmax(0,1fr) 40px;align-items:center;gap:10px;margin-top:13px}
-      .rus-scorigami-nav-center{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px}
-      .rus-scorigami-arrow{width:40px;height:40px;flex-basis:40px;font-size:24px}
-      .rus-scorigami-position{font-size:10px;line-height:1}
-      .rus-scorigami-dots{gap:7px;min-height:10px}
-      .rus-scorigami-dot{width:8px;height:8px;flex-basis:8px}
-      .rus-scorigami-alert .rus-scorigami-link{display:block!important;width:100%;margin-top:14px!important;padding:13px 12px!important;text-align:center!important;font-size:10px!important}
+      .rus-scorigami-kicker{font-size:8px!important;letter-spacing:.8px!important;padding:4px 8px!important;margin-bottom:5px!important}
+      .rus-scorigami-main{font-size:15px!important;line-height:1.08!important;margin-top:0!important;overflow-wrap:anywhere}
+      .rus-scorigami-main .rus-scorigami-score{font-size:21px!important;margin:0 2px!important;white-space:nowrap}
+      .rus-scorigami-sub{font-size:8px!important;line-height:1.25!important;margin-top:4px!important}
+      .rus-scorigami-nav{display:grid!important;grid-template-columns:34px minmax(0,1fr) 34px;align-items:center;gap:8px;margin-top:8px!important}
+      .rus-scorigami-nav-center{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:4px}
+      .rus-scorigami-arrow{width:34px;height:34px;flex-basis:34px;font-size:21px}
+      .rus-scorigami-position{font-size:8px;line-height:1}
+      .rus-scorigami-dots{gap:5px;min-height:8px}
+      .rus-scorigami-dot{width:6px;height:6px;flex-basis:6px}
+      .rus-scorigami-alert .rus-scorigami-link{display:block!important;width:100%;margin-top:9px!important;padding:9px 10px!important;text-align:center!important;font-size:9px!important}
     }
     @media(max-width:390px){
-      .rus-scorigami-main{font-size:16px!important}
-      .rus-scorigami-main .rus-scorigami-score{font-size:23px!important}
-      .rus-scorigami-kicker{font-size:8px!important;letter-spacing:.8px!important}
+      .rus-scorigami-main{font-size:14px!important}
+      .rus-scorigami-main .rus-scorigami-score{font-size:20px!important}
+      .rus-scorigami-kicker{font-size:7px!important;letter-spacing:.7px!important}
     }
   `;
   document.head.appendChild(s);
