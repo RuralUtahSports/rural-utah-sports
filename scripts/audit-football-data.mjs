@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import path from 'node:path';
 
 const issues=[];
 const error=(code,message,context={})=>issues.push({severity:'error',code,message,context});
@@ -7,6 +6,8 @@ const warn=(code,message,context={})=>issues.push({severity:'warning',code,messa
 const info=(code,message,context={})=>issues.push({severity:'info',code,message,context});
 const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
 const num=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
+const ALIASES={'MONUMENT VAL':'MONUMENT VALLEY'};
+const canonical=v=>ALIASES[norm(v)]||norm(v);
 const parseJSON=file=>{try{return JSON.parse(fs.readFileSync(file,'utf8'))}catch(e){error('INVALID_JSON',`${file} could not be parsed: ${e.message}`);return null}};
 const exists=file=>fs.existsSync(file);
 const required=['teams-data.json','weekly-simulation.json','standings-2026.json','rankings-current-2026.json','elo-summary.json','deseret-rosters-stats-2026.json'];
@@ -76,7 +77,7 @@ for(const [cls,arr] of Object.entries(rankings?.classifications||{})){
   }
 }
 
-if(elo&&typeof elo==='object')for(const team of teamSet){const row=elo[team]||elo[team.replace(/\s+/g,' ')];if(!row)warn('ELO_MISSING',`${team} has no ELO summary entry.`);else if(num(row.currentElo)===null)warn('ELO_INVALID',`${team} has a non-numeric current ELO.`,{value:row.currentElo})}
+if(elo&&typeof elo==='object')for(const team of teamSet){const key=canonical(team),row=elo[key]||elo[team];if(!row)warn('ELO_MISSING',`${team} has no ELO summary entry.`);else if(num(row.currentElo)===null)warn('ELO_INVALID',`${team} has a non-numeric current ELO.`,{value:row.currentElo})}
 
 const rosterTeams=Array.isArray(rosters?.teams)?rosters.teams:Object.values(rosters?.teams||{});
 const playerIds=new Map();
