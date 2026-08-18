@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T04:57:15.243Z",
+  "updatedAt": "2026-08-18T05:03:22.481Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,11 +8,11 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67783,
+    "scheduleRowsAudited": 67779,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 130,
-    "suspiciousRepeatGames": 5,
+    "sameDayMultipleOpponents": 127,
+    "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
     "reciprocalMismatches": 0,
@@ -201,16 +201,6 @@
       "opponents": [
         "EAST",
         "LOGAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "CEDAR CITY",
-      "season": "2023",
-      "date": "10/13/2023",
-      "opponents": [
-        "DESERT HILLS",
-        "WASATCH"
       ]
     },
     {
@@ -1165,16 +1155,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "WATER CANYON",
-      "season": "2023",
-      "date": "9/8/2023",
-      "opponents": [
-        "FREDONIA (AZ)",
-        "MONTICELLO"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "WEBER",
       "season": "1927",
       "date": "10/7/1927",
@@ -1305,16 +1285,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "2023",
-      "date": "9/22/2023",
-      "opponents": [
-        "SKYLINE",
-        "ST FRANCIS (MD)"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "WHITEHORSE",
       "season": "2019",
       "date": "10/25/2019",
@@ -1339,36 +1309,6 @@
       "notes": "",
       "otherDate": "10/27/1926",
       "daysApart": 9
-    },
-    {
-      "type": "suspicious-repeat",
-      "team": "SAN JUAN",
-      "season": "2023",
-      "index": 11,
-      "date": "11/3/2023",
-      "opponent": "SUMMIT ACADEMY",
-      "teamScore": 51,
-      "opponentScore": 0,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/20/2023",
-      "daysApart": 14
-    },
-    {
-      "type": "suspicious-repeat",
-      "team": "SUMMIT ACADEMY",
-      "season": "2023",
-      "index": 12,
-      "date": "11/3/2023",
-      "opponent": "SAN JUAN",
-      "teamScore": 0,
-      "opponentScore": 51,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "10/20/2023",
-      "daysApart": 14
     },
     {
       "type": "suspicious-repeat",
@@ -1510,7 +1450,7 @@
       "team": "CEDAR CITY",
       "file": "cedar-city.json",
       "seasons": 77,
-      "totalGames": 770
+      "totalGames": 769
     },
     {
       "team": "CEDAR VALLEY",
@@ -1954,7 +1894,7 @@
       "team": "SAN JUAN",
       "file": "san-juan.json",
       "seasons": 70,
-      "totalGames": 746
+      "totalGames": 745
     },
     {
       "team": "SKY VIEW",
@@ -2014,7 +1954,7 @@
       "team": "SUMMIT ACADEMY",
       "file": "summit-academy.json",
       "seasons": 14,
-      "totalGames": 162
+      "totalGames": 161
     },
     {
       "team": "SYRACUSE",
@@ -2080,7 +2020,7 @@
       "team": "WASATCH",
       "file": "wasatch.json",
       "seasons": 102,
-      "totalGames": 940
+      "totalGames": 939
     },
     {
       "team": "WATER CANYON",
