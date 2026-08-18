@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T04:32:01.407Z",
+  "updatedAt": "2026-08-18T04:50:23.811Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,15 +8,15 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67815,
+    "scheduleRowsAudited": 67805,
     "exactDuplicates": 0,
-    "sameDateOpponentConflicts": 21,
-    "sameDayMultipleOpponents": 148,
+    "sameDateOpponentConflicts": 18,
+    "sameDayMultipleOpponents": 130,
     "suspiciousRepeatGames": 5,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
-    "reciprocalMismatches": 1,
-    "likelyOpponentTypos": 2,
+    "reciprocalMismatches": 26,
+    "likelyOpponentTypos": 1,
     "recent2025PlusIssues": 0
   },
   "recent2025PlusIssues": [],
@@ -144,21 +144,6 @@
     },
     {
       "type": "same-date-opponent-conflict",
-      "team": "GUNNISON VALLEY",
-      "season": "2024",
-      "index": 8,
-      "date": "10/18/2024",
-      "opponent": "MILLARD",
-      "teamScore": 41,
-      "opponentScore": 6,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 7,
-      "otherScore": "0|45|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
       "team": "JUAB",
       "season": "2001",
       "index": 5,
@@ -216,21 +201,6 @@
       "notes": "",
       "otherIndex": 7,
       "otherScore": "39|12|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "MILLARD",
-      "season": "2024",
-      "index": 10,
-      "date": "10/18/2024",
-      "opponent": "GUNNISON VALLEY",
-      "teamScore": 6,
-      "opponentScore": 41,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 9,
-      "otherScore": "45|0|W"
     },
     {
       "type": "same-date-opponent-conflict",
@@ -321,21 +291,6 @@
       "notes": "",
       "otherIndex": 1,
       "otherScore": "19|27|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "WHITEHORSE",
-      "season": "2024",
-      "index": 1,
-      "date": "8/23/2024",
-      "opponent": "SAINT JOSEPH",
-      "teamScore": 8,
-      "opponentScore": 31,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 0,
-      "otherScore": "8|41|L"
     }
   ],
   "sameDayMultipleOpponents": [
@@ -391,16 +346,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "BEN LOMOND",
-      "season": "2024",
-      "date": "10/11/2024",
-      "opponents": [
-        "JUAN DIEGO",
-        "OGDEN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "BONNEVILLE",
       "season": "1960",
       "date": "10/8/1960",
@@ -417,16 +362,6 @@
       "opponents": [
         "COTTONWOOD",
         "DAVIS"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BOUNTIFUL",
-      "season": "2024",
-      "date": "11/1/2024",
-      "opponents": [
-        "ALTA",
-        "MAPLE MOUNTAIN"
       ]
     },
     {
@@ -547,26 +482,6 @@
       "opponents": [
         "DESERT HILLS",
         "WASATCH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "CEDAR VALLEY",
-      "season": "2024",
-      "date": "9/20/2024",
-      "opponents": [
-        "SPRINGVILLE",
-        "TIMPVIEW"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "COPPER HILLS",
-      "season": "2024",
-      "date": "10/18/2024",
-      "opponents": [
-        "RIVERTON",
-        "WESTLAKE"
       ]
     },
     {
@@ -791,16 +706,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "2024",
-      "date": "8/16/2024",
-      "opponents": [
-        "LAYTON CHRISTIAN",
-        "LCA"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "ENTERPRISE",
       "season": "2004",
       "date": "8/20/2004",
@@ -837,16 +742,6 @@
       "opponents": [
         "BEAR RIVER",
         "BEN LOMOND"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "GRANTSVILLE",
-      "season": "2024",
-      "date": "9/20/2024",
-      "opponents": [
-        "BEN LOMOND",
-        "OGDEN"
       ]
     },
     {
@@ -961,26 +856,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "JUAB",
-      "season": "2024",
-      "date": "8/23/2024",
-      "opponents": [
-        "LAYTON CHRISTIAN",
-        "LCA"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUAN DIEGO",
-      "season": "2024",
-      "date": "9/27/2024",
-      "opponents": [
-        "OGDEN",
-        "UNION"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "JUDGE MEMORIAL",
       "season": "1929",
       "date": "9/27/1929",
@@ -1007,16 +882,6 @@
       "opponents": [
         "CLEARFIELD",
         "WEBER"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "LAYTON",
-      "season": "2024",
-      "date": "10/18/2024",
-      "opponents": [
-        "WEBER",
-        "WEST"
       ]
     },
     {
@@ -1077,16 +942,6 @@
       "opponents": [
         "MONUMENT VALLEY",
         "MOUNUMENT VALLEY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MORGAN",
-      "season": "2024",
-      "date": "10/4/2024",
-      "opponents": [
-        "GRANTSVILLE",
-        "OGDEN"
       ]
     },
     {
@@ -1167,16 +1022,6 @@
       "opponents": [
         "FREMONT",
         "ROY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "NORTHRIDGE",
-      "season": "2024",
-      "date": "10/25/2024",
-      "opponents": [
-        "HUNTER",
-        "MAPLE MOUNTAIN"
       ]
     },
     {
@@ -1431,16 +1276,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "SKY VIEW",
-      "season": "2024",
-      "date": "9/13/2024",
-      "opponents": [
-        "MOUNTAIN CREST",
-        "MOUTNAIN CREST"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SKYLINE",
       "season": "2001",
       "date": "8/31/2001",
@@ -1497,16 +1332,6 @@
       "opponents": [
         "MAPLE MOUNTAIN",
         "WASATCH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SYRACUSE",
-      "season": "2024",
-      "date": "11/1/2024",
-      "opponents": [
-        "FREMONT",
-        "WOODS CROSS"
       ]
     },
     {
@@ -1571,16 +1396,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "UNION",
-      "season": "2024",
-      "date": "9/13/2024",
-      "opponents": [
-        "CANYON VIEW",
-        "OGDEN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "VIEWMONT",
       "season": "1986",
       "date": "10/28/1986",
@@ -1617,16 +1432,6 @@
       "opponents": [
         "RICH",
         "RICHFIELD"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WASATCH",
-      "season": "2024",
-      "date": "9/27/2024",
-      "opponents": [
-        "SPRINGVILLE",
-        "TIMPVIEW"
       ]
     },
     {
@@ -1781,42 +1586,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "2024",
-      "date": "10/18/2024",
-      "opponents": [
-        "BRIGHTON",
-        "LAYTON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WESTLAKE",
-      "season": "2024",
-      "date": "10/18/2024",
-      "opponents": [
-        "COPPER HILLS",
-        "LONE PEAK"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "WHITEHORSE",
       "season": "2019",
       "date": "10/25/2019",
       "opponents": [
         "MONUMENT VALLEY",
         "MOUNUMENT VALLEY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WOODS CROSS",
-      "season": "2024",
-      "date": "11/1/2024",
-      "opponents": [
-        "OLYMPUS",
-        "SYRACUSE"
       ]
     }
   ],
@@ -1902,42 +1677,521 @@
   "reciprocalMismatches": [
     {
       "type": "reciprocal-mismatch",
-      "teamA": "SAINT JOSEPH",
-      "teamB": "WHITEHORSE",
-      "date": "8/23/2024",
+      "teamA": "BEN LOMOND",
+      "teamB": "OGDEN",
+      "date": "10/17/2024",
       "season": "2024",
       "sideA": [
         {
-          "team": "SAINT JOSEPH",
-          "opponent": "WHITEHORSE",
-          "date": "8/23/2024",
-          "teamScore": 41,
-          "opponentScore": 8,
-          "result": "W",
+          "team": "BEN LOMOND",
+          "opponent": "OGDEN",
+          "date": "10/17/2024",
+          "teamScore": 8,
+          "opponentScore": 56,
+          "result": "L",
           "season": "2024",
-          "index": 0
+          "index": 9
         }
       ],
-      "sideB": [
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BOUNTIFUL",
+      "teamB": "MAPLE MOUNTAIN",
+      "date": "11/8/2024",
+      "season": "2024",
+      "sideA": [
         {
-          "team": "WHITEHORSE",
-          "opponent": "SAINT JOSEPH",
-          "date": "8/23/2024",
-          "teamScore": 8,
+          "team": "BOUNTIFUL",
+          "opponent": "MAPLE MOUNTAIN",
+          "date": "11/8/2024",
+          "teamScore": 42,
+          "opponentScore": 35,
+          "result": "W",
+          "season": "2024",
+          "index": 11
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BRIGHTON",
+      "teamB": "WEST",
+      "date": "10/18/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "BRIGHTON",
+          "opponent": "WEST",
+          "date": "10/18/2024",
+          "teamScore": 7,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2024",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "CEDAR VALLEY",
+      "teamB": "TIMPVIEW",
+      "date": "9/27/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "CEDAR VALLEY",
+          "opponent": "TIMPVIEW",
+          "date": "9/27/2024",
+          "teamScore": 10,
+          "opponentScore": 40,
+          "result": "L",
+          "season": "2024",
+          "index": 6
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "COPPER HILLS",
+      "teamB": "WESTLAKE",
+      "date": "10/25/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "COPPER HILLS",
+          "opponent": "WESTLAKE",
+          "date": "10/25/2024",
+          "teamScore": 26,
           "opponentScore": 41,
           "result": "L",
           "season": "2024",
-          "index": 0
-        },
+          "index": 10
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "GRANTSVILLE",
+      "teamB": "OGDEN",
+      "date": "9/27/2024",
+      "season": "2024",
+      "sideA": [
         {
-          "team": "WHITEHORSE",
-          "opponent": "SAINT JOSEPH",
-          "date": "8/23/2024",
-          "teamScore": 8,
-          "opponentScore": 31,
+          "team": "GRANTSVILLE",
+          "opponent": "OGDEN",
+          "date": "9/27/2024",
+          "teamScore": 17,
+          "opponentScore": 0,
+          "result": "W",
+          "season": "2024",
+          "index": 6
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "JUAN DIEGO",
+      "teamB": "OGDEN",
+      "date": "10/4/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "JUAN DIEGO",
+          "opponent": "OGDEN",
+          "date": "10/4/2024",
+          "teamScore": 28,
+          "opponentScore": 14,
+          "result": "W",
+          "season": "2024",
+          "index": 7
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "LAYTON",
+      "teamB": "WEBER",
+      "date": "10/16/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "LAYTON",
+          "opponent": "WEBER",
+          "date": "10/16/2024",
+          "teamScore": 12,
+          "opponentScore": 56,
           "result": "L",
           "season": "2024",
-          "index": 1
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "LONE PEAK",
+      "teamB": "WESTLAKE",
+      "date": "10/18/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "LONE PEAK",
+          "opponent": "WESTLAKE",
+          "date": "10/18/2024",
+          "teamScore": 35,
+          "opponentScore": 13,
+          "result": "W",
+          "season": "2024",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "MAPLE MOUNTAIN",
+      "teamB": "NORTHRIDGE",
+      "date": "10/25/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "MAPLE MOUNTAIN",
+          "opponent": "NORTHRIDGE",
+          "date": "10/25/2024",
+          "teamScore": 24,
+          "opponentScore": 21,
+          "result": "W",
+          "season": "2024",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BOUNTIFUL",
+      "teamB": "MAPLE MOUNTAIN",
+      "date": "11/1/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "MAPLE MOUNTAIN",
+          "opponent": "BOUNTIFUL",
+          "date": "11/1/2024",
+          "teamScore": 35,
+          "opponentScore": 42,
+          "result": "L",
+          "season": "2024",
+          "index": 10
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "MORGAN",
+      "teamB": "OGDEN",
+      "date": "10/11/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "MORGAN",
+          "opponent": "OGDEN",
+          "date": "10/11/2024",
+          "teamScore": 62,
+          "opponentScore": 0,
+          "result": "W",
+          "season": "2024",
+          "index": 8
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "MAPLE MOUNTAIN",
+      "teamB": "NORTHRIDGE",
+      "date": "11/1/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "NORTHRIDGE",
+          "opponent": "MAPLE MOUNTAIN",
+          "date": "11/1/2024",
+          "teamScore": 21,
+          "opponentScore": 24,
+          "result": "L",
+          "season": "2024",
+          "index": 11
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "OGDEN",
+      "teamB": "UNION",
+      "date": "9/13/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "OGDEN",
+          "opponent": "UNION",
+          "date": "9/13/2024",
+          "teamScore": 42,
+          "opponentScore": 7,
+          "result": "W",
+          "season": "2024",
+          "index": 4
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "GRANTSVILLE",
+      "teamB": "OGDEN",
+      "date": "9/20/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "OGDEN",
+          "opponent": "GRANTSVILLE",
+          "date": "9/20/2024",
+          "teamScore": 0,
+          "opponentScore": 17,
+          "result": "L",
+          "season": "2024",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "JUAN DIEGO",
+      "teamB": "OGDEN",
+      "date": "9/27/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "OGDEN",
+          "opponent": "JUAN DIEGO",
+          "date": "9/27/2024",
+          "teamScore": 14,
+          "opponentScore": 28,
+          "result": "L",
+          "season": "2024",
+          "index": 6
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "MORGAN",
+      "teamB": "OGDEN",
+      "date": "10/4/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "OGDEN",
+          "opponent": "MORGAN",
+          "date": "10/4/2024",
+          "teamScore": 0,
+          "opponentScore": 62,
+          "result": "L",
+          "season": "2024",
+          "index": 7
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BEN LOMOND",
+      "teamB": "OGDEN",
+      "date": "10/11/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "OGDEN",
+          "opponent": "BEN LOMOND",
+          "date": "10/11/2024",
+          "teamScore": 56,
+          "opponentScore": 8,
+          "result": "W",
+          "season": "2024",
+          "index": 8
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "CEDAR VALLEY",
+      "teamB": "TIMPVIEW",
+      "date": "9/20/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "TIMPVIEW",
+          "opponent": "CEDAR VALLEY",
+          "date": "9/20/2024",
+          "teamScore": 40,
+          "opponentScore": 10,
+          "result": "W",
+          "season": "2024",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "TIMPVIEW",
+      "teamB": "WASATCH",
+      "date": "9/27/2024",
+      "season": "2024",
+      "sideA": [
+        {
+          "team": "TIMPVIEW",
+          "opponent": "WASATCH",
+          "date": "9/27/2024",
+          "teamScore": 48,
+          "opponentScore": 14,
+          "result": "W",
+          "season": "2024",
+          "index": 5
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "OGDEN",
+      "teamB": "UNION",
+      "date": "9/20/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "UNION",
+          "opponent": "OGDEN",
+          "date": "9/20/2024",
+          "teamScore": 7,
+          "opponentScore": 42,
+          "result": "L",
+          "season": "2024",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "TIMPVIEW",
+      "teamB": "WASATCH",
+      "date": "10/4/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "WASATCH",
+          "opponent": "TIMPVIEW",
+          "date": "10/4/2024",
+          "teamScore": 14,
+          "opponentScore": 48,
+          "result": "L",
+          "season": "2024",
+          "index": 7
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "LAYTON",
+      "teamB": "WEBER",
+      "date": "10/18/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "WEBER",
+          "opponent": "LAYTON",
+          "date": "10/18/2024",
+          "teamScore": 56,
+          "opponentScore": 12,
+          "result": "W",
+          "season": "2024",
+          "index": 9
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BRIGHTON",
+      "teamB": "WEST",
+      "date": "10/16/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "WEST",
+          "opponent": "BRIGHTON",
+          "date": "10/16/2024",
+          "teamScore": 6,
+          "opponentScore": 7,
+          "result": "L",
+          "season": "2024",
+          "index": 9
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "COPPER HILLS",
+      "teamB": "WESTLAKE",
+      "date": "10/18/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "WESTLAKE",
+          "opponent": "COPPER HILLS",
+          "date": "10/18/2024",
+          "teamScore": 41,
+          "opponentScore": 26,
+          "result": "W",
+          "season": "2024",
+          "index": 9
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "LONE PEAK",
+      "teamB": "WESTLAKE",
+      "date": "10/16/2024",
+      "season": "2024",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "WESTLAKE",
+          "opponent": "LONE PEAK",
+          "date": "10/16/2024",
+          "teamScore": 13,
+          "opponentScore": 35,
+          "result": "L",
+          "season": "2024",
+          "index": 10
         }
       ]
     }
@@ -1957,21 +2211,6 @@
       "notes": "",
       "suggested": "MONUMENT VALLEY",
       "distance": 1
-    },
-    {
-      "type": "likely-opponent-typo",
-      "team": "SKY VIEW",
-      "season": "2024",
-      "index": 5,
-      "date": "9/13/2024",
-      "opponent": "MOUTNAIN CREST",
-      "teamScore": 31,
-      "opponentScore": 28,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "suggested": "MOUNTAIN CREST",
-      "distance": 2
     }
   ],
   "pages": [
@@ -2153,7 +2392,7 @@
       "team": "EAST",
       "file": "east.json",
       "seasons": 112,
-      "totalGames": 1070
+      "totalGames": 1069
     },
     {
       "team": "EMERY",
@@ -2207,7 +2446,7 @@
       "team": "GUNNISON VALLEY",
       "file": "gunnison-valley.json",
       "seasons": 36,
-      "totalGames": 358
+      "totalGames": 357
     },
     {
       "team": "HERRIMAN",
@@ -2249,7 +2488,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 71,
-      "totalGames": 722
+      "totalGames": 721
     },
     {
       "team": "JUAN DIEGO",
@@ -2285,7 +2524,7 @@
       "team": "LAYTON",
       "file": "layton.json",
       "seasons": 58,
-      "totalGames": 601
+      "totalGames": 600
     },
     {
       "team": "LEHI",
@@ -2327,7 +2566,7 @@
       "team": "MILLARD",
       "file": "millard.json",
       "seasons": 100,
-      "totalGames": 954
+      "totalGames": 953
     },
     {
       "team": "MONTICELLO",
@@ -2513,7 +2752,7 @@
       "team": "SKY VIEW",
       "file": "sky-view.json",
       "seasons": 62,
-      "totalGames": 633
+      "totalGames": 632
     },
     {
       "team": "SKYLINE",
@@ -2573,7 +2812,7 @@
       "team": "SYRACUSE",
       "file": "syracuse.json",
       "seasons": 19,
-      "totalGames": 210
+      "totalGames": 209
     },
     {
       "team": "TAYLORSVILLE",
@@ -2663,7 +2902,7 @@
       "team": "WEST",
       "file": "west.json",
       "seasons": 132,
-      "totalGames": 1116
+      "totalGames": 1115
     },
     {
       "team": "WESTLAKE",
@@ -2675,13 +2914,13 @@
       "team": "WHITEHORSE",
       "file": "whitehorse.json",
       "seasons": 42,
-      "totalGames": 351
+      "totalGames": 350
     },
     {
       "team": "WOODS CROSS",
       "file": "woods-cross.json",
       "seasons": 49,
-      "totalGames": 502
+      "totalGames": 501
     }
   ]
 }
