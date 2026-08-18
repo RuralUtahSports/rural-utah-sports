@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T05:22:13.394Z",
+  "updatedAt": "2026-08-18T05:24:03.072Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67770,
+    "scheduleRowsAudited": 67704,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 121,
+    "sameDayMultipleOpponents": 55,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -86,56 +86,6 @@
     {
       "type": "same-day-multiple-opponents",
       "team": "BOX ELDER",
-      "season": "1922",
-      "date": "10/12/1922",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BOX ELDER",
-      "season": "1924",
-      "date": "11/14/1924",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BOX ELDER",
-      "season": "1925",
-      "date": "11/20/1925",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BOX ELDER",
-      "season": "1926",
-      "date": "10/8/1926",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BOX ELDER",
-      "season": "1930",
-      "date": "9/26/1930",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BOX ELDER",
       "season": "2015",
       "date": "10/27/2015",
       "opponents": [
@@ -155,242 +105,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "CARBON",
-      "season": "1924",
-      "date": "11/22/1924",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "CARBON",
-      "season": "1928",
-      "date": "10/6/1928",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "CARBON",
-      "season": "1930",
-      "date": "10/3/1930",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "COTTONWOOD",
       "season": "1985",
       "date": "10/29/1985",
       "opponents": [
         "KEARNS",
         "SKYLINE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "CYPRUS",
-      "season": "1926",
-      "date": "10/5/1926",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "CYPRUS",
-      "season": "1928",
-      "date": "9/21/1928",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "1919",
-      "date": "11/13/1919",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "1920",
-      "date": "10/15/1920",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "1922",
-      "date": "9/29/1922",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "1923",
-      "date": "10/18/1923",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "1924",
-      "date": "10/17/1924",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "1925",
-      "date": "10/2/1925",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "1930",
-      "date": "10/10/1930",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1919",
-      "date": "10/10/1919",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1920",
-      "date": "11/6/1920",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1921",
-      "date": "10/21/1921",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1922",
-      "date": "11/6/1922",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1923",
-      "date": "10/12/1923",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1925",
-      "date": "10/23/1925",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1926",
-      "date": "10/22/1926",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1927",
-      "date": "10/21/1927",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1928",
-      "date": "10/19/1928",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1929",
-      "date": "10/18/1929",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "1930",
-      "date": "10/17/1930",
-      "opponents": [
-        "LDS",
-        "LDSU"
       ]
     },
     {
@@ -445,142 +165,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1919",
-      "date": "10/17/1919",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1921",
-      "date": "9/30/1921",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1922",
-      "date": "10/5/1922",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1923",
-      "date": "9/29/1923",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1924",
-      "date": "10/2/1924",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1925",
-      "date": "11/6/1925",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1926",
-      "date": "10/14/1926",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1927",
-      "date": "10/28/1927",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1929",
-      "date": "10/11/1929",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JORDAN",
-      "season": "1930",
-      "date": "10/31/1930",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUDGE MEMORIAL",
-      "season": "1929",
-      "date": "9/27/1929",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "JUDGE MEMORIAL",
-      "season": "1930",
-      "date": "9/19/1930",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "LAYTON",
       "season": "2006",
       "date": "10/24/2006",
       "opponents": [
         "CLEARFIELD",
         "WEBER"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "LEHI",
-      "season": "1919",
-      "date": "11/21/1919",
-      "opponents": [
-        "LDS",
-        "LDSU"
       ]
     },
     {
@@ -646,36 +236,6 @@
     {
       "type": "same-day-multiple-opponents",
       "team": "MURRAY",
-      "season": "1919",
-      "date": "10/3/1919",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MURRAY",
-      "season": "1924",
-      "date": "10/9/1924",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MURRAY",
-      "season": "1929",
-      "date": "9/20/1929",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MURRAY",
       "season": "1946",
       "date": "9/26/1946",
       "opponents": [
@@ -716,46 +276,6 @@
     {
       "type": "same-day-multiple-opponents",
       "team": "OGDEN",
-      "season": "1920",
-      "date": "10/7/1920",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "OGDEN",
-      "season": "1921",
-      "date": "10/8/1921",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "OGDEN",
-      "season": "1924",
-      "date": "10/31/1924",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "OGDEN",
-      "season": "1925",
-      "date": "11/11/1925",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "OGDEN",
       "season": "2001",
       "date": "10/23/2001",
       "opponents": [
@@ -771,26 +291,6 @@
       "opponents": [
         "BEN LOMOND",
         "TOOELE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PARK CITY",
-      "season": "1919",
-      "date": "10/24/1919",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PARK CITY",
-      "season": "1928",
-      "date": "9/28/1928",
-      "opponents": [
-        "LDS",
-        "LDSU"
       ]
     },
     {
@@ -851,36 +351,6 @@
       "opponents": [
         "MOUNTAIN VIEW",
         "TIMPANOGOS"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PROVO",
-      "season": "1925",
-      "date": "10/30/1925",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PROVO",
-      "season": "1928",
-      "date": "11/9/1928",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PROVO",
-      "season": "1929",
-      "date": "10/25/1929",
-      "opponents": [
-        "LDS",
-        "LDSU"
       ]
     },
     {
@@ -1005,26 +475,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "TOOELE",
-      "season": "1926",
-      "date": "11/20/1926",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "TOOELE",
-      "season": "1927",
-      "date": "9/23/1927",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "UINTAH",
       "season": "1995",
       "date": "10/24/1995",
@@ -1091,116 +541,6 @@
       "opponents": [
         "RICH",
         "RICHFIELD"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEBER",
-      "season": "1927",
-      "date": "10/7/1927",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1919",
-      "date": "9/30/1919",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1920",
-      "date": "10/29/1920",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1921",
-      "date": "10/14/1921",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1922",
-      "date": "11/8/1922",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1923",
-      "date": "10/27/1923",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1926",
-      "date": "11/12/1926",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1927",
-      "date": "11/4/1927",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1928",
-      "date": "10/27/1928",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1929",
-      "date": "10/31/1929",
-      "opponents": [
-        "LDS",
-        "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1930",
-      "date": "11/7/1930",
-      "opponents": [
-        "LDS",
-        "LDSU"
       ]
     },
     {
@@ -1350,7 +690,7 @@
       "team": "BOX ELDER",
       "file": "box-elder.json",
       "seasons": 109,
-      "totalGames": 1026
+      "totalGames": 1021
     },
     {
       "team": "BRIGHTON",
@@ -1368,7 +708,7 @@
       "team": "CARBON",
       "file": "carbon.json",
       "seasons": 107,
-      "totalGames": 944
+      "totalGames": 941
     },
     {
       "team": "CEDAR CITY",
@@ -1416,13 +756,13 @@
       "team": "CYPRUS",
       "file": "cyprus.json",
       "seasons": 100,
-      "totalGames": 911
+      "totalGames": 909
     },
     {
       "team": "DAVIS",
       "file": "davis.json",
       "seasons": 110,
-      "totalGames": 1080
+      "totalGames": 1073
     },
     {
       "team": "DEER CREEK",
@@ -1464,7 +804,7 @@
       "team": "EAST",
       "file": "east.json",
       "seasons": 112,
-      "totalGames": 1068
+      "totalGames": 1057
     },
     {
       "team": "EMERY",
@@ -1554,7 +894,7 @@
       "team": "JORDAN",
       "file": "jordan.json",
       "seasons": 116,
-      "totalGames": 1096
+      "totalGames": 1086
     },
     {
       "team": "JUAB",
@@ -1572,7 +912,7 @@
       "team": "JUDGE MEMORIAL",
       "file": "judge-memorial.json",
       "seasons": 99,
-      "totalGames": 919
+      "totalGames": 917
     },
     {
       "team": "KANAB",
@@ -1602,7 +942,7 @@
       "team": "LEHI",
       "file": "lehi.json",
       "seasons": 104,
-      "totalGames": 934
+      "totalGames": 933
     },
     {
       "team": "LOGAN",
@@ -1680,7 +1020,7 @@
       "team": "MURRAY",
       "file": "murray.json",
       "seasons": 108,
-      "totalGames": 959
+      "totalGames": 956
     },
     {
       "team": "NORTH SANPETE",
@@ -1710,7 +1050,7 @@
       "team": "OGDEN",
       "file": "ogden.json",
       "seasons": 127,
-      "totalGames": 1107
+      "totalGames": 1103
     },
     {
       "team": "OLYMPUS",
@@ -1734,7 +1074,7 @@
       "team": "PARK CITY",
       "file": "park-city.json",
       "seasons": 118,
-      "totalGames": 984
+      "totalGames": 982
     },
     {
       "team": "PAROWAN",
@@ -1770,7 +1110,7 @@
       "team": "PROVO",
       "file": "provo.json",
       "seasons": 111,
-      "totalGames": 1004
+      "totalGames": 1001
     },
     {
       "team": "RICH",
@@ -1908,7 +1248,7 @@
       "team": "TOOELE",
       "file": "tooele.json",
       "seasons": 110,
-      "totalGames": 982
+      "totalGames": 980
     },
     {
       "team": "UINTAH",
@@ -1956,7 +1296,7 @@
       "team": "WEBER",
       "file": "weber.json",
       "seasons": 100,
-      "totalGames": 905
+      "totalGames": 904
     },
     {
       "team": "WEST FIELD",
@@ -1974,7 +1314,7 @@
       "team": "WEST",
       "file": "west.json",
       "seasons": 132,
-      "totalGames": 1115
+      "totalGames": 1105
     },
     {
       "team": "WESTLAKE",
