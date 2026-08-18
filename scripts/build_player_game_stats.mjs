@@ -39,7 +39,7 @@ for(const [key,d] of Object.entries(details)){
       else if(table.team){assigned=[g.awayTeam,g.homeTeam].find(team=>teamLabelMatches(table.team,team))||''}
       if(!assigned)continue;
       const name=match?.name||raw.rawName,id=match?.playerId||playerId(assigned,raw.number,name);
-      contexts[assigned].rows.push({playerId:id,number:raw.number,name,rosterMatched:!!match,category:raw.category,values:raw.values});rowCount++;if(match)matched++;
+      contexts[assigned].rows.push({playerId:id,number:raw.number,name,position:match?.position||'',rosterMatched:!!match,category:raw.category,values:raw.values});rowCount++;if(match)matched++;
     }
   }
   for(const team of [g.awayTeam,g.homeTeam]){
@@ -47,7 +47,7 @@ for(const [key,d] of Object.entries(details)){
     const ownScore=scoreRows.find(r=>teamLabelMatches(r.team,team))?.total,oppScore=scoreRows.find(r=>teamLabelMatches(r.team,opponent))?.total;
     if(!ctx.rows.length&&!d.scoringPlays?.length)continue;
     const players={};
-    for(const r of ctx.rows){if(!players[r.playerId])players[r.playerId]={playerId:r.playerId,number:r.number,name:r.name,rosterMatched:r.rosterMatched,statLines:[],scoringPlays:[]};players[r.playerId].statLines.push({category:r.category,values:r.values})}
+    for(const r of ctx.rows){if(!players[r.playerId])players[r.playerId]={playerId:r.playerId,number:r.number,name:r.name,position:r.position||'',rosterMatched:r.rosterMatched,statLines:[],scoringPlays:[]};if(!players[r.playerId].position&&r.position)players[r.playerId].position=r.position;players[r.playerId].statLines.push({category:r.category,values:r.values})}
     for(const p of Object.values(players))p.scoringPlays=(d.scoringPlays||[]).filter(play=>playMatchesPlayer(play,p)&&teamLabelMatches(play.split('—')[0],team)).slice(0,12);
     if(!teams[team])teams[team]={team,games:[]};
     teams[team].games.push({gameKey:key,date:gameDate,opponent,location:isAway?'Away':'Home',status,final,teamScore:Number.isFinite(Number(ownScore))?Number(ownScore):null,opponentScore:Number.isFinite(Number(oppScore))?Number(oppScore):null,url:d.url||g.deseretUrl||'',players:Object.values(players),scoringPlays:(d.scoringPlays||[]).filter(play=>teamLabelMatches(play.split('—')[0],team))});gameCount++;

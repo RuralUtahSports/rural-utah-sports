@@ -4,13 +4,13 @@ const esc=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'
 const read=file=>{try{return JSON.parse(fs.readFileSync(file,'utf8'))}catch{return null}};
 const staticPages=[
  'index.html','scoreboard.html','game-week.html','teams.html','my-teams.html','games.html','rankings.html','standings.html','storylines.html',
- 'stat-leaders.html','team-stats.html','mvp-race.html','all-utah.html','all-state-watch.html','awards-2025.html','elo.html','playoff-picture.html','upsets.html','scorigami.html','fantasy-football.html','out-of-state.html','compare.html','player-compare.html','map.html',
+ 'stat-leaders.html','weekly-awards.html','team-stats.html','mvp-race.html','all-utah.html','all-state-watch.html','awards-2025.html','elo.html','playoff-picture.html','upsets.html','scorigami.html','fantasy-football.html','out-of-state.html','compare.html','player-compare.html','map.html',
  'championships.html','season.html','historical-rankings.html','programs.html','streaks.html','milestones.html','rivalry.html','dynasty.html','history-lab.html','greatest-seasons.html','records.html','simulators.html','promotion-relegation.html',
  'about.html','methodology.html','media.html','corrections.html','whats-new.html'
 ];
 const urls=new Map();
 const add=(href,priority='0.6',changefreq='weekly')=>{try{const u=new URL(href,BASE);urls.set(u.href,{loc:u.href,priority,changefreq})}catch{}};
-for(const p of staticPages)add(p,p==='index.html'?'1.0':['scoreboard.html','rankings.html','standings.html'].includes(p)?'0.9':'0.6',p==='scoreboard.html'?'hourly':['rankings.html','standings.html','stat-leaders.html','team-stats.html'].includes(p)?'daily':'weekly');
+for(const p of staticPages)add(p,p==='index.html'?'1.0':['scoreboard.html','rankings.html','standings.html'].includes(p)?'0.9':'0.6',p==='scoreboard.html'?'hourly':['rankings.html','standings.html','stat-leaders.html','weekly-awards.html','team-stats.html'].includes(p)?'daily':'weekly');
 const teams=read('teams-data.json');
 if(Array.isArray(teams))for(const t of teams){const team=String(t?.team||'').trim();if(team)add(`team.html?team=${encodeURIComponent(team)}`,'0.8','weekly')}
 const weekly=read('weekly-simulation.json');

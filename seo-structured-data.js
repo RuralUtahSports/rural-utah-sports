@@ -35,6 +35,7 @@ async function run(){setCanonical();setMeta('property','og:type','website');setM
  'games.html':['Utah High School Football Games','Search and explore Utah high school football game results and history.'],
  'teams.html':['Utah High School Football Teams','Browse Utah high school football team pages, records, schedules and history.'],
  'stat-leaders.html':['Utah High School Football Stat Leaders','Current Utah high school football individual statistical leaders.'],
+ 'weekly-awards.html':['Utah High School Football Weekly Awards','Weekly Utah high school football MVP, offense, defense, rural and classification awards.'],
  'team-stats.html':['Utah High School Football Team Stats','Current Utah high school football team statistical leaders.'],
  'records.html':['Utah High School Football Records','Utah high school football records, milestones and historical leaders.'],
  'elo.html':['Utah High School Football ELO Ratings','Rural Utah Sports ELO power ratings for Utah high school football.'],
