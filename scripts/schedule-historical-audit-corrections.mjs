@@ -105,6 +105,14 @@ const dropGames = new Set([
   'ENTERPRISE|NORTH SEVIER|8/20/2004',
   'NORTH SEVIER|ENTERPRISE|8/20/2004',
 
+  // 2002 — Beaver's Oct. 25 and Nov. 9 playoff games were both against Juan
+  // Diego (41-34 win, then 38-14 loss). JUAB rows carry those same finals and
+  // are copied opponents on both team pages.
+  'BEAVER|JUAB|10/25/2002',
+  'JUAB|BEAVER|10/25/2002',
+  'BEAVER|JUAB|11/9/2002',
+  'JUAB|BEAVER|11/9/2002',
+
   // 2001 — Skyline played Highland Aug. 31 while Uintah played Sky View.
   // The Skyline/Uintah rows are crossed copies, not a real game.
   'SKYLINE|UINTAH|8/31/2001',
@@ -114,7 +122,13 @@ const dropGames = new Set([
   // Timpview had no game Sept. 14 and played Provo Sept. 15. The same 43-3
   // final was copied onto a Fremont/Timpview pairing in both directions.
   'FREMONT|TIMPVIEW|9/14/2001',
-  'TIMPVIEW|FREMONT|9/14/2001'
+  'TIMPVIEW|FREMONT|9/14/2001',
+
+  // 1993 — Rich's Nov. 6 1A semifinal was a 14-12 loss to Altamont. Wasatch
+  // beat Richfield 47-24 in a 3A quarterfinal that same day. The Rich/Wasatch
+  // rows are a crossed matchup and did not occur.
+  'RICH|WASATCH|11/6/1993',
+  'WASATCH|RICH|11/6/1993'
 ]);
 
 if (!fs.existsSync(FILE)) throw new Error(`${FILE} not found`);
