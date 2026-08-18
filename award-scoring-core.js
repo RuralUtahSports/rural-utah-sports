@@ -5,8 +5,8 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='2026-08-18-v3';
-  const DEFENSE_SCALE=3;
+  const VERSION='2026-08-18-v4';
+  const DEFENSE_SCALE=2.5;
   const clean=v=>String(v??'').trim();
   const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
   const n=v=>{const m=String(v??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0};
