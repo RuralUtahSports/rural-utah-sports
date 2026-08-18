@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T12:29:58.798Z",
+  "updatedAt": "2026-08-18T13:04:56.977Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67681,
+    "scheduleRowsAudited": 67679,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 30,
+    "sameDayMultipleOpponents": 28,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -23,16 +23,6 @@
   "exactDuplicates": [],
   "sameDateOpponentConflicts": [],
   "sameDayMultipleOpponents": [
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BONNEVILLE",
-      "season": "1960",
-      "date": "10/8/1960",
-      "opponents": [
-        "BEN LOMOND",
-        "BOUNTIFUL"
-      ]
-    },
     {
       "type": "same-day-multiple-opponents",
       "team": "BOUNTIFUL",
@@ -312,16 +302,6 @@
         "CARBON",
         "UINTAH"
       ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST",
-      "season": "1998",
-      "date": "8/28/1998",
-      "opponents": [
-        "BOUNTIFUL",
-        "ST LOUIS (HI)"
-      ]
     }
   ],
   "suspiciousRepeatGames": [
@@ -416,7 +396,7 @@
       "team": "BEN LOMOND",
       "file": "ben-lomond.json",
       "seasons": 73,
-      "totalGames": 701
+      "totalGames": 700
     },
     {
       "team": "BINGHAM",
@@ -428,7 +408,7 @@
       "team": "BONNEVILLE",
       "file": "bonneville.json",
       "seasons": 66,
-      "totalGames": 689
+      "totalGames": 688
     },
     {
       "team": "BOUNTIFUL",
