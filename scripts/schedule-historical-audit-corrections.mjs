@@ -8,6 +8,12 @@ const keyPart = value => clean(value).toUpperCase();
 // full Games audit. Keep this separate from the modern correction layer so
 // older-source cleanup remains easy to inspect and extend season by season.
 const dateCorrections = new Map(Object.entries({
+  // 2025 — Deseret lists Panguitch at UMA-Camp Williams in the 1A 8-player
+  // playoffs on Oct. 24. The raw sheet currently carries a second copy on
+  // Oct. 17, the same night Panguitch actually played Altamont.
+  'PANGUITCH|UMA-LEHI|10/17/2025': '10/24/2025',
+  'UMA-LEHI|PANGUITCH|10/17/2025': '10/24/2025',
+
   // 2022 — both Region 1 and Region 4 played these Thursday games Oct. 6.
   'DAVIS|WEBER|10/7/2022': '10/6/2022',
   'WEBER|DAVIS|10/7/2022': '10/6/2022',
@@ -26,6 +32,33 @@ const dateCorrections = new Map(Object.entries({
 }));
 
 const scoreCorrections = new Map(Object.entries({
+  // Deseret-verified disputed finals from the full Games audit. Add both
+  // directions so every reciprocal team page is forced to the same final.
+  'MONTICELLO|MONUMENT VALLEY|9/30/2022': { teamScore: 42, opponentScore: 20, result: 'W' },
+  'MONUMENT VALLEY|MONTICELLO|9/30/2022': { teamScore: 20, opponentScore: 42, result: 'L' },
+
+  'GUNNISON VALLEY|LAYTON CHRISTIAN|9/12/2014': { teamScore: 27, opponentScore: 40, result: 'L' },
+  'LAYTON CHRISTIAN|GUNNISON VALLEY|9/12/2014': { teamScore: 40, opponentScore: 27, result: 'W' },
+
+  'ENTERPRISE|RICH|10/31/2008': { teamScore: 20, opponentScore: 46, result: 'L' },
+  'RICH|ENTERPRISE|10/31/2008': { teamScore: 46, opponentScore: 20, result: 'W' },
+
+  'GUNNISON VALLEY|RICHFIELD|9/2/2005': { teamScore: 27, opponentScore: 19, result: 'W' },
+  'RICHFIELD|GUNNISON VALLEY|9/2/2005': { teamScore: 19, opponentScore: 27, result: 'L' },
+
+  'ALTAMONT|RICH|10/10/2003': { teamScore: 28, opponentScore: 6, result: 'W' },
+  'RICH|ALTAMONT|10/10/2003': { teamScore: 6, opponentScore: 28, result: 'L' },
+
+  'GUNNISON VALLEY|KANAB|9/7/2001': { teamScore: 20, opponentScore: 16, result: 'W' },
+  'KANAB|GUNNISON VALLEY|9/7/2001': { teamScore: 16, opponentScore: 20, result: 'L' },
+  'GUNNISON VALLEY|JUAB|9/21/2001': { teamScore: 14, opponentScore: 19, result: 'L' },
+  'JUAB|GUNNISON VALLEY|9/21/2001': { teamScore: 19, opponentScore: 14, result: 'W' },
+  'GUNNISON VALLEY|MANTI|10/18/2001': { teamScore: 12, opponentScore: 39, result: 'L' },
+  'MANTI|GUNNISON VALLEY|10/18/2001': { teamScore: 39, opponentScore: 12, result: 'W' },
+
+  'GUNNISON VALLEY|NORTH SEVIER|8/28/1998': { teamScore: 20, opponentScore: 13, result: 'W' },
+  'NORTH SEVIER|GUNNISON VALLEY|8/28/1998': { teamScore: 13, opponentScore: 20, result: 'L' },
+
   // 2016 — Ben Lomond beat Richfield 40-17 on Aug. 19. Its stored Richfield
   // row had the wrong 0-36 score; Richfield's reciprocal row is already right.
   'BEN LOMOND|RICHFIELD|8/19/2016': { teamScore: 40, opponentScore: 17, result: 'W' }
