@@ -281,13 +281,13 @@
     const bg=c.createLinearGradient(0,0,w,h);bg.addColorStop(0,'#050505');bg.addColorStop(.7,'#111');bg.addColorStop(1,'#070707');c.fillStyle=bg;c.fillRect(0,0,w,h);c.fillStyle='#F14D07';c.fillRect(0,0,w,12);c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#fff';fitCanvasFont(c,'MVP BY CLASSIFICATION',w-100,landscape?43:42,28,900);c.fillText('MVP BY CLASSIFICATION',50,landscape?58:62);c.fillStyle='#F14D07';canvasFont(c,landscape?18:19,900);c.fillText(`${weekLabel.toUpperCase()} • ALL 7 WINNERS`,50,landscape?89:94);
     const drawTile=(item,x,y,tileW,tileH)=>{
       c.fillStyle='#090909';c.strokeStyle='#353535';c.lineWidth=2;canvasRoundRect(c,x,y,tileW,tileH,15);c.fill();c.stroke();c.fillStyle=item.teamColor;canvasRoundRect(c,x,y,9,tileH,5);c.fill();
-      const pad=18,logoSize=Math.max(62,Math.min(118,tileH-128,tileW*.25)),logoX=x+pad,logoY=y+52,scoreW=tileW<430?62:82,copyX=logoX+logoSize+17,copyW=x+tileW-pad-scoreW-copyX;
+      const pad=18,logoSize=Math.max(60,Math.min(118,tileH-136,tileW*.25)),logoX=x+pad,logoY=y+52,scoreW=tileW<430?62:82,copyX=logoX+logoSize+17,copyW=x+tileW-pad-scoreW-copyX;
       c.fillStyle='#F14D07';canvasFont(c,tileW<430?16:19,900);c.textAlign='left';c.fillText(item.classLabel.toUpperCase(),x+pad,y+30);
       c.fillStyle='#111';c.strokeStyle=item.teamColor;c.lineWidth=2;canvasRoundRect(c,logoX,logoY,logoSize,logoSize,10);c.fill();c.stroke();drawContainedImage(c,item.logo,logoX+8,logoY+8,logoSize-16,logoSize-16);
       c.fillStyle='#fff';fitCanvasFont(c,item.name,Math.max(90,copyW),tileW<430?28:32,17,900);c.textAlign='left';c.fillText(item.name,copyX,y+73);
       c.fillStyle=item.teamColor;fitCanvasFont(c,item.team,Math.max(90,copyW),tileW<430?16:19,12,900);c.fillText(item.team.toUpperCase(),copyX,y+103);
       c.fillStyle='#F14D07';fitCanvasFont(c,item.score,scoreW,34,23,900);c.textAlign='right';c.fillText(item.score,x+tileW-pad,y+73);c.fillStyle='#777';canvasFont(c,10,900);c.fillText('SCORE',x+tileW-pad,y+92);
-      const statY=y+tileH-69;c.fillStyle='#cfcfcf';canvasFont(c,tileW<430?12:14,700);c.textAlign='left';drawCanvasLines(c,item.stats||'No reported stat line',x+pad,statY,tileW-pad*2,16,2);
+      const statTop=y+tileH-72;c.fillStyle='#090909';c.fillRect(x+12,statTop-4,tileW-24,39);c.save();c.beginPath();c.rect(x+pad,statTop,tileW-pad*2,34);c.clip();c.fillStyle='#cfcfcf';canvasFont(c,tileW<430?11:13,700);c.textAlign='left';drawCanvasLines(c,item.stats||'No reported stat line',x+pad,statTop+14,tileW-pad*2,15,2);c.restore();
       c.fillStyle='#fff';fitCanvasFont(c,item.result.toUpperCase(),tileW-pad*2,tileW<430?13:15,10,900);c.fillText(item.result.toUpperCase(),x+pad,y+tileH-15);
     };
     if(story){
