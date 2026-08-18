@@ -10,6 +10,12 @@ on:
       - 'site-search.js'
       - 'pwa.js'
       - 'sw.js'
+      - 'optimization-polish.js'
+      - 'recently-viewed.js'
+      - 'home-personalized.js'
+      - 'my-teams-dashboard.js'
+      - 'rus-lines-dashboard.js'
+      - 'game-center-upgrade.js'
       - 'manifest.webmanifest'
       - 'RUSlogoNew.png'
       - 'deseret-rosters-stats-2026.json'
@@ -23,6 +29,12 @@ on:
       - 'site-search.js'
       - 'pwa.js'
       - 'sw.js'
+      - 'optimization-polish.js'
+      - 'recently-viewed.js'
+      - 'home-personalized.js'
+      - 'my-teams-dashboard.js'
+      - 'rus-lines-dashboard.js'
+      - 'game-center-upgrade.js'
       - 'manifest.webmanifest'
       - 'RUSlogoNew.png'
       - 'deseret-rosters-stats-2026.json'
@@ -52,6 +64,12 @@ jobs:
           node --check site-search.js
           node --check pwa.js
           node --check sw.js
+          node --check optimization-polish.js
+          node --check recently-viewed.js
+          node --check home-personalized.js
+          node --check my-teams-dashboard.js
+          node --check rus-lines-dashboard.js
+          node --check game-center-upgrade.js
           node --check scripts/check-app-shell.mjs
 
       - name: Verify app shell wiring
