@@ -30,7 +30,7 @@ const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
 const norm=v=>String(v??'').trim().toUpperCase();
 const compact=v=>norm(v).replace(/[^A-Z0-9]/g,'');
 const aliases={'CEDAR':'CEDAR CITY','MONUMENT VAL':'MONUMENT VALLEY','GUNNISON':'GUNNISON VALLEY','GRAND COUNTY':'GRAND'};
-const canon=v=>aliases[norm(v)]||norm(v);
+const canon=v=>aliases[norm(v)]||norm(v),HOME_FIELD_POINTS=3;
 const safeHex=(v,f)=>/^#[0-9A-F]{3}(?:[0-9A-F]{3})?$/i.test(String(v||'').trim())?String(v).trim():f;
 const yearOf=d=>{const m=String(d||'').match(/(?:^|\D)(18\d{2}|19\d{2}|20\d{2})(?:\D|$)/);return m?Number(m[1]):null};
 const dateValue=d=>{const t=Date.parse(String(d||''));return Number.isFinite(t)?t:(yearOf(d)?Date.UTC(yearOf(d),0,1):0)};
@@ -74,12 +74,12 @@ async function init(){
   const year=yearOf(date),awayRec=year?rec(seasonRecord(history,away,year)):'',homeRec=year?rec(seasonRecord(history,home,year)):'';
   const series=history.filter(g=>samePair(g,away,home)).sort((a,b)=>dateValue(a.date)-dateValue(b.date));let awayWins=0,homeWins=0,ties=0;for(const g of series){if(g.tie){ties++;continue}const aScore=norm(g.team1)===norm(away)?g.score1:g.score2,bScore=norm(g.team1)===norm(away)?g.score2:g.score1;if(aScore>bScore)awayWins++;else homeWins++}
   const awayInfo=teamInfo(teamMap,away),homeInfo=teamInfo(teamMap,home),awayLogo=logoFor(away,logos),homeLogo=logoFor(home,logos);
-  const predictedAway=current?.awayScore,predictedHome=current?.homeScore,predWinner=current?.winner||'',actualWinner=awayScore===null||homeScore===null?'':awayScore>homeScore?away:homeScore>awayScore?home:'Tie';const pickResult=current&&final&&predWinner&&actualWinner!=='Tie'?(norm(predWinner)===norm(actualWinner)?'Correct ✓':'Missed ✕'):'';
+  const rawPredictedAway=Number(current?.awayScore),rawPredictedHome=Number(current?.homeScore),hasPrediction=current&&Number.isFinite(rawPredictedAway)&&Number.isFinite(rawPredictedHome),predictedAway=hasPrediction?rawPredictedAway:null,predictedHome=hasPrediction?rawPredictedHome+HOME_FIELD_POINTS:null,predWinner=!hasPrediction?'':predictedAway>predictedHome?away:predictedHome>predictedAway?home:'Pick’em',actualWinner=awayScore===null||homeScore===null?'':awayScore>homeScore?away:homeScore>awayScore?home:'Tie';const pickResult=current&&final&&predWinner&&predWinner!=='Pick’em'&&actualWinner!=='Tie'?(norm(predWinner)===norm(actualWinner)?'Correct ✓':'Missed ✕'):'';
   const mercy=final&&Math.abs(Number(awayScore)-Number(homeScore))>=44,margin=final?Math.abs(Number(awayScore)-Number(homeScore)):null;
   document.title=`${away} ${final?awayScore+'-'+homeScore+' ':''}${home} | Rural Utah Sports`;document.querySelector('meta[property="og:title"]')?.setAttribute('content',document.title);
   const scoreHTML=final||live?`${awayScore??'—'}–${homeScore??'—'}`:'VS';
   const statusClass=final?'final':live?'live':'';
-  const prediction=current?`<h2 class="section-title">RUS Prediction</h2><section class="panel"><div class="prediction"><div class="prediction-team">${esc(away)}</div><div class="prediction-score">${predictedAway??'—'}–${predictedHome??'—'}</div><div class="prediction-team">${esc(home)}</div><div class="prediction-note">Predicted winner: <strong>${esc(predWinner||'—')}</strong>${pickResult?` • ${esc(pickResult)}`:''}</div></div></section>`:'';
+  const prediction=current?`<h2 class="section-title">RUS Prediction</h2><section class="panel"><div class="prediction"><div class="prediction-team">${esc(away)}</div><div class="prediction-score">${predictedAway??'—'}–${predictedHome??'—'}</div><div class="prediction-team">${esc(home)}</div><div class="prediction-note">Includes a 3-point home-field adjustment • Predicted winner: <strong>${esc(predWinner||'—')}</strong>${pickResult?` • ${esc(pickResult)}`:''}</div></div></section>`:'';
   const recent=[...series].reverse().slice(0,10);
   const seriesHTML=`<h2 class="section-title">Series History</h2><section class="panel"><div class="series-grid"><div class="series-stat"><strong>${awayWins}</strong><span>${esc(away)} Wins</span></div><div class="series-stat"><strong>${homeWins}</strong><span>${esc(home)} Wins</span></div><div class="series-stat"><strong>${ties}</strong><span>Ties</span></div><div class="series-stat"><strong>${series.length}</strong><span>Recorded Meetings</span></div></div></section>${recent.length?`<h2 class="section-title">Recent Meetings</h2><div class="table-wrap"><table><thead><tr><th>Date</th><th>${esc(away)}</th><th>Score</th><th>${esc(home)}</th></tr></thead><tbody>${recent.map(g=>{const as=norm(g.team1)===norm(away)?g.score1:g.score2,hs=norm(g.team1)===norm(away)?g.score2:g.score1;return`<tr><td>${esc(g.date)}</td><td>${esc(away)}</td><td><a class="game-link" href="${histURL(g)}">${as}–${hs}</a></td><td>${esc(home)}</td></tr>`}).join('')}</tbody></table></div>`:''}`;
   const detailEmpty=!boxHTML(detail)&&!scoringHTML(detail)&&!statsHTML(detail)?`<h2 class="section-title">Game Details</h2><section class="panel"><div class="empty-detail">Detailed box score, scoring plays and player stats will appear here when they are available for this game.</div></section>`:'';
@@ -91,6 +91,7 @@ init();
 </script>
 <script src="back-to-top.js" defer></script>
 <script src="game-detail-fixes.js?v=20260816-v4" defer></script>
+<script src="game-center-upgrade.js?v=20260818-home3" data-rus-game-center-upgrade="1" defer></script>
 <script src="school-assets-bundle.js?v=20260818-perf1"></script>
 <script src="nav-menu.js?v=20260818-perf1" defer></script>
 </body>
