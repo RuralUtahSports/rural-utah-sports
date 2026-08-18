@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T04:24:18.544Z",
+  "updatedAt": "2026-08-18T04:29:34.087Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,252 +8,26 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67820,
+    "scheduleRowsAudited": 67816,
     "exactDuplicates": 0,
-    "sameDateOpponentConflicts": 22,
-    "sameDayMultipleOpponents": 166,
+    "sameDateOpponentConflicts": 21,
+    "sameDayMultipleOpponents": 149,
     "suspiciousRepeatGames": 5,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
-    "reciprocalMismatches": 2,
+    "reciprocalMismatches": 1,
     "likelyOpponentTypos": 2,
-    "recent2025PlusIssues": 20
+    "recent2025PlusIssues": 1
   },
   "recent2025PlusIssues": [
     {
       "type": "same-day-multiple-opponents",
-      "team": "ALTAMONT",
+      "team": "MILFORD",
       "season": "2025",
-      "date": "9/12/2025",
+      "date": "10/31/2025",
       "opponents": [
-        "MONTICELLO",
-        "MONUMENT VALLEY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BEN LOMOND",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "LOGAN",
-        "UNION"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MOUNTAIN VIEW",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "PARK CITY",
-        "UINTAH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "SAINT JOSEPH",
-        "WATER CANYON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "ALTAMONT",
+        "UMA-CW",
         "UMA-LEHI"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PROVO",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "MOUNTAIN VIEW",
-        "UINTAH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SALEM HILLS",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "MOUNTAIN VIEW",
-        "UINTAH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SKYLINE",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "HIGHLAND",
-        "MURRAY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SOUTH SUMMIT",
-      "season": "2025",
-      "date": "8/29/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "JUAB"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "TIMPANOGOS",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "PINE",
-        "PINE VIEW"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "TIMPANOGOS",
-      "season": "2025",
-      "date": "9/26/2025",
-      "opponents": [
-        "MOUNTAIN VIEW",
-        "PROVO"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "UINTAH",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "MOUNTAIN VIEW",
-        "TIMPANOGOS"
-      ]
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "UMA-HILLFIELD",
-      "season": "2025",
-      "index": 9,
-      "date": "10/10/2025",
-      "opponent": "SAINT JOSEPH",
-      "teamScore": 36,
-      "opponentScore": 0,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 8,
-      "otherScore": "35|0|W"
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "UMA-HILLFIELD",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "ALTAMONT",
-        "UMA-LEHI"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "UNION",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "OGDEN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WATER CANYON",
-      "season": "2025",
-      "date": "8/29/2025",
-      "opponents": [
-        "ALTAMONT",
-        "SAINT JOSEPH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WATER CANYON",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "MILFORD",
-        "PANGUITCH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST FIELD",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "BOX ELDER",
-        "VIEWMONT"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WHITEHORSE",
-      "season": "2025",
-      "date": "9/12/2025",
-      "opponents": [
-        "UMA-HILLFIELD",
-        "WATER CANYON"
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "SAINT JOSEPH",
-      "teamB": "UMA-HILLFIELD",
-      "date": "10/10/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "SAINT JOSEPH",
-          "opponent": "UMA-HILLFIELD",
-          "date": "10/10/2025",
-          "teamScore": 0,
-          "opponentScore": 35,
-          "result": "L",
-          "season": "2025",
-          "index": 7
-        }
-      ],
-      "sideB": [
-        {
-          "team": "UMA-HILLFIELD",
-          "opponent": "SAINT JOSEPH",
-          "date": "10/10/2025",
-          "teamScore": 35,
-          "opponentScore": 0,
-          "result": "W",
-          "season": "2025",
-          "index": 8
-        },
-        {
-          "team": "UMA-HILLFIELD",
-          "opponent": "SAINT JOSEPH",
-          "date": "10/10/2025",
-          "teamScore": 36,
-          "opponentScore": 0,
-          "result": "W",
-          "season": "2025",
-          "index": 9
-        }
       ]
     }
   ],
@@ -561,21 +335,6 @@
     },
     {
       "type": "same-date-opponent-conflict",
-      "team": "UMA-HILLFIELD",
-      "season": "2025",
-      "index": 9,
-      "date": "10/10/2025",
-      "opponent": "SAINT JOSEPH",
-      "teamScore": 36,
-      "opponentScore": 0,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 8,
-      "otherScore": "35|0|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
       "team": "WHITEHORSE",
       "season": "2024",
       "index": 1,
@@ -591,16 +350,6 @@
     }
   ],
   "sameDayMultipleOpponents": [
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "ALTAMONT",
-      "season": "2025",
-      "date": "9/12/2025",
-      "opponents": [
-        "MONTICELLO",
-        "MONUMENT VALLEY"
-      ]
-    },
     {
       "type": "same-day-multiple-opponents",
       "team": "AMERICAN FORK",
@@ -659,16 +408,6 @@
       "opponents": [
         "JUAN DIEGO",
         "OGDEN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BEN LOMOND",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "LOGAN",
-        "UNION"
       ]
     },
     {
@@ -1313,6 +1052,16 @@
     },
     {
       "type": "same-day-multiple-opponents",
+      "team": "MILFORD",
+      "season": "2025",
+      "date": "10/31/2025",
+      "opponents": [
+        "UMA-CW",
+        "UMA-LEHI"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "MILLARD",
       "season": "1926",
       "date": "11/5/1926",
@@ -1369,16 +1118,6 @@
       "opponents": [
         "BONNEVILLE",
         "BOX ELDER"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MOUNTAIN VIEW",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "PARK CITY",
-        "UINTAH"
       ]
     },
     {
@@ -1523,26 +1262,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "SAINT JOSEPH",
-        "WATER CANYON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "ALTAMONT",
-        "UMA-LEHI"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "PARK CITY",
       "season": "1919",
       "date": "10/24/1919",
@@ -1673,16 +1392,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "PROVO",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "MOUNTAIN VIEW",
-        "UINTAH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "RICH",
       "season": "1993",
       "date": "11/6/1993",
@@ -1719,16 +1428,6 @@
       "opponents": [
         "MONTUMENT VALLEY",
         "MONUMENT VALLEY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SALEM HILLS",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "MOUNTAIN VIEW",
-        "UINTAH"
       ]
     },
     {
@@ -1783,16 +1482,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "SKYLINE",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "HIGHLAND",
-        "MURRAY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SKYRIDGE",
       "season": "2022",
       "date": "10/7/2022",
@@ -1823,16 +1512,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "SOUTH SUMMIT",
-      "season": "2025",
-      "date": "8/29/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "JUAB"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SPANISH FORK",
       "season": "2014",
       "date": "10/28/2014",
@@ -1858,26 +1537,6 @@
       "date": "10/26/2010",
       "opponents": [
         "OREM",
-        "PROVO"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "TIMPANOGOS",
-      "season": "2025",
-      "date": "9/5/2025",
-      "opponents": [
-        "PINE",
-        "PINE VIEW"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "TIMPANOGOS",
-      "season": "2025",
-      "date": "9/26/2025",
-      "opponents": [
-        "MOUNTAIN VIEW",
         "PROVO"
       ]
     },
@@ -1933,41 +1592,11 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "UINTAH",
-      "season": "2025",
-      "date": "9/19/2025",
-      "opponents": [
-        "MOUNTAIN VIEW",
-        "TIMPANOGOS"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "UMA-HILLFIELD",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "ALTAMONT",
-        "UMA-LEHI"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "UNION",
       "season": "2024",
       "date": "9/13/2024",
       "opponents": [
         "CANYON VIEW",
-        "OGDEN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "UNION",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "BEN LOMOND",
         "OGDEN"
       ]
     },
@@ -2033,42 +1662,12 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "WATER CANYON",
-      "season": "2025",
-      "date": "8/29/2025",
-      "opponents": [
-        "ALTAMONT",
-        "SAINT JOSEPH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WATER CANYON",
-      "season": "2025",
-      "date": "10/3/2025",
-      "opponents": [
-        "MILFORD",
-        "PANGUITCH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "WEBER",
       "season": "1927",
       "date": "10/7/1927",
       "opponents": [
         "LDS",
         "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "WEST FIELD",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "BOX ELDER",
-        "VIEWMONT"
       ]
     },
     {
@@ -2233,16 +1832,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "WHITEHORSE",
-      "season": "2025",
-      "date": "9/12/2025",
-      "opponents": [
-        "UMA-HILLFIELD",
-        "WATER CANYON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "WOODS CROSS",
       "season": "2024",
       "date": "11/1/2024",
@@ -2370,47 +1959,6 @@
           "result": "L",
           "season": "2024",
           "index": 1
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "SAINT JOSEPH",
-      "teamB": "UMA-HILLFIELD",
-      "date": "10/10/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "SAINT JOSEPH",
-          "opponent": "UMA-HILLFIELD",
-          "date": "10/10/2025",
-          "teamScore": 0,
-          "opponentScore": 35,
-          "result": "L",
-          "season": "2025",
-          "index": 7
-        }
-      ],
-      "sideB": [
-        {
-          "team": "UMA-HILLFIELD",
-          "opponent": "SAINT JOSEPH",
-          "date": "10/10/2025",
-          "teamScore": 35,
-          "opponentScore": 0,
-          "result": "W",
-          "season": "2025",
-          "index": 8
-        },
-        {
-          "team": "UMA-HILLFIELD",
-          "opponent": "SAINT JOSEPH",
-          "date": "10/10/2025",
-          "teamScore": 36,
-          "opponentScore": 0,
-          "result": "W",
-          "season": "2025",
-          "index": 9
         }
       ]
     }
@@ -3058,7 +2606,7 @@
       "team": "TIMPANOGOS",
       "file": "timpanogos.json",
       "seasons": 30,
-      "totalGames": 311
+      "totalGames": 310
     },
     {
       "team": "TIMPVIEW",
@@ -3082,13 +2630,13 @@
       "team": "UMA-HILLFIELD",
       "file": "uma-hillfield.json",
       "seasons": 2,
-      "totalGames": 19
+      "totalGames": 17
     },
     {
       "team": "UMA-LEHI",
       "file": "uma-lehi.json",
       "seasons": 2,
-      "totalGames": 20
+      "totalGames": 19
     },
     {
       "team": "UNION",
