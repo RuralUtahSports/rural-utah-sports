@@ -325,6 +325,15 @@
     const cols=story?1:landscape?4:2,startY=story?125:120,bottom=story?52:48,gap=story?10:landscape?13:12,rows=Math.ceil(items.length/cols),tileW=story?w-100:(w-100-gap*(cols-1))/cols,tileH=(h-startY-bottom-gap*(rows-1))/rows;items.forEach((item,i)=>{const row=Math.floor(i/cols),index=i%cols,count=Math.min(cols,items.length-row*cols),total=count*tileW+(count-1)*gap,x=(w-total)/2+index*(tileW+gap);drawTile(item,x,startY+row*(tileH+gap),tileW,tileH)});c.fillStyle='#777';canvasFont(c,15,800);c.textAlign='left';c.fillText('ruralutahsports.github.io',50,h-22);const blob=await new Promise(resolve=>out.toBlob(resolve,'image/png',1));if(!blob)throw new Error('PNG export failed');return blob;
   }
   function renderWeekReviewTarget(el,w,h,label){return el?.matches?.('.week-review-grid')?renderWeekReviewCollection(el,w,h,label):renderWeekReviewCard(el,w,h,label)}
+  function statLeaderHeadline(category,metric){
+    const key=`${norm(category)}|${norm(metric)}`,headlines={
+      'PASSING|YARDS':'PASSING YARDS LEADERS','PASSING|TD':'PASSING TOUCHDOWN LEADERS','PASSING|COMP-ATT':'PASS COMPLETION LEADERS','PASSING|COMP %':'COMPLETION PERCENTAGE LEADERS','PASSING|YARDS/COMP.':'YARDS PER COMPLETION LEADERS','PASSING|INT':'PASSING INTERCEPTION LEADERS',
+      'RUSHING|YARDS':'RUSHING YARDS LEADERS','RUSHING|TD':'RUSHING TOUCHDOWN LEADERS','RUSHING|CARRIES':'RUSHING ATTEMPT LEADERS','RUSHING|YARDS/CARRY':'YARDS PER CARRY LEADERS',
+      'RECEIVING|YARDS':'RECEIVING YARDS LEADERS','RECEIVING|TD':'RECEIVING TOUCHDOWN LEADERS','RECEIVING|RECEPTIONS':'RECEPTION LEADERS','RECEIVING|YARDS/RECEP.':'YARDS PER RECEPTION LEADERS',
+      'KICKING|POINTS':'KICKING POINTS LEADERS','KICKING|FG':'FIELD GOAL LEADERS','KICKING|LONG FG':'LONGEST FIELD GOAL LEADERS','KICKING|PAT':'PAT LEADERS',
+      'DEFENSE/SPECIAL TEAMS|TACKLES':'TACKLE LEADERS','DEFENSE/SPECIAL TEAMS|SACKS':'SACK LEADERS','DEFENSE/SPECIAL TEAMS|PASS INT.':'INTERCEPTION LEADERS','DEFENSE/SPECIAL TEAMS|DEFENSE TD':'DEFENSIVE TOUCHDOWN LEADERS','DEFENSE/SPECIAL TEAMS|RETURN TD':'RETURN TOUCHDOWN LEADERS'
+    };return headlines[key]||`${String(category||'STAT').toUpperCase()} ${String(metric||'').toUpperCase()} LEADERS`.replace(/\s+/g,' ').trim();
+  }
   async function renderStatLeaderCategory(w,h){
     const data=window.RUSStatLeadersShareData?.();
     if(!data?.players?.length||!data?.metrics?.length)throw new Error('Stat leaders are still loading');
@@ -333,7 +342,7 @@
       return{...player,logo:await loadCanvasImage(rawLogo)};
     }));
     const story=h>w*1.3,landscape=w>h*1.25,out=document.createElement('canvas');out.width=w;out.height=h;const c=out.getContext('2d'),bg=c.createLinearGradient(0,0,w,h);bg.addColorStop(0,'#050505');bg.addColorStop(.72,'#111');bg.addColorStop(1,'#080808');c.fillStyle=bg;c.fillRect(0,0,w,h);c.fillStyle='#F14D07';c.fillRect(0,0,w,12);
-    const margin=landscape?50:44,title=`${String(data.category).toUpperCase()} LEADERS`,titleY=landscape?57:64;c.fillStyle='#fff';c.textAlign='left';c.textBaseline='alphabetic';fitCanvasFont(c,title,w-margin*2,landscape?43:42,25,900);c.fillText(title,margin,titleY);
+    const margin=landscape?50:44,title=statLeaderHeadline(data.category,data.rankMetric),titleY=landscape?57:64;c.fillStyle='#fff';c.textAlign='left';c.textBaseline='alphabetic';fitCanvasFont(c,title,w-margin*2,landscape?43:42,25,900);c.fillText(title,margin,titleY);
     const scope=`${data.season} • ${String(data.scope).toUpperCase()} • ${String(data.classification).toUpperCase()}`;c.fillStyle='#F14D07';fitCanvasFont(c,scope,w-margin*2,landscape?18:19,12,900);c.fillText(scope,margin,landscape?88:97);
     const rankNote=`RANKED BY ${String(data.rankMetric).toUpperCase()} • TOP ${players.length} REPORTED PLAYER${players.length===1?'':'S'}`;c.fillStyle='#777';fitCanvasFont(c,rankNote,w-margin*2,landscape?14:15,10,900);c.fillText(rankNote,margin,landscape?115:126);
     const tableX=margin,tableW=w-margin*2,startY=landscape?137:story?160:153,footerH=landscape?53:64,headerH=landscape?40:44,rowH=(h-startY-footerH-headerH)/players.length,rankW=landscape?52:46,playerW=Math.max(300,Math.min(tableW*.38,landscape?560:410)),metricW=(tableW-rankW-playerW)/data.metrics.length,playerX=tableX+rankW;
