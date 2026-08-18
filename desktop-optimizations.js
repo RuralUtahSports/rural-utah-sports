@@ -49,11 +49,21 @@ function removeNestedVerticalScroll(){
   }
 }
 
+function loadDesktopV2(){
+  if(!window.matchMedia('(min-width:901px)').matches||document.querySelector('script[data-rus-desktop-v2]'))return;
+  const script=document.createElement('script');
+  script.src='desktop-v2.js?v=20260817-desktop2';
+  script.async=true;
+  script.dataset.rusDesktopV2='1';
+  document.body.appendChild(script);
+}
+
 function start(){
   document.body?.setAttribute('data-rus-page',document.body?.getAttribute('data-rus-page')||path);
   addStyles();
   optimizeImages();
   removeNestedVerticalScroll();
+  loadDesktopV2();
   const observer=new MutationObserver(()=>{
     optimizeImages();
     removeNestedVerticalScroll();
