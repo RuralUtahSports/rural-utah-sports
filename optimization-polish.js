@@ -6,4 +6,11 @@ if(document.getElementById('rus-optimization-polish'))return;const s=document.cr
 @media(max-width:700px){button,a,select,input{min-touch-target-size:44px}.container{width:100%!important}}
 @media(prefers-reduced-motion:reduce){.loading:after{animation:none}}
 `;document.head.appendChild(s);const prep=root=>root.querySelectorAll?.('main img:not(.logo):not([loading])').forEach(img=>{img.loading='lazy';img.decoding='async'});prep(document);const o=new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1){if(n.matches?.('main img:not(.logo):not([loading])')){n.loading='lazy';n.decoding='async'}prep(n)}})));o.observe(document.body,{childList:true,subtree:true});
+const path=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+function load(src,key){if(document.querySelector(`script[data-${key}]`))return;const x=document.createElement('script');x.src=src;x.async=true;x.dataset[key]='1';document.body.appendChild(x)}
+load('recently-viewed.js?v=20260817-app4','rus-recently-viewed');
+if(path==='index.html')load('home-personalized.js?v=20260817-app4','rus-home-personalized');
+if(path==='my-teams.html')load('my-teams-dashboard.js?v=20260817-app4','rus-my-teams-dashboard');
+if(path==='scoreboard.html')load('rus-lines-dashboard.js?v=20260817-app4','rus-lines-dashboard');
+if(path==='game.html')load('game-center-upgrade.js?v=20260817-app4','rus-game-center-upgrade');
 })();
