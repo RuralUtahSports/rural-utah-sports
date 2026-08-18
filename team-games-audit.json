@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T05:03:22.481Z",
+  "updatedAt": "2026-08-18T05:16:07.102Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,15 +8,15 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67779,
+    "scheduleRowsAudited": 67776,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 127,
+    "sameDayMultipleOpponents": 124,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
     "reciprocalMismatches": 0,
-    "likelyOpponentTypos": 1,
+    "likelyOpponentTypos": 0,
     "recent2025PlusIssues": 0
   },
   "recent2025PlusIssues": [],
@@ -301,16 +301,6 @@
       "opponents": [
         "LDS",
         "LDSU"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "2022",
-      "date": "10/7/2022",
-      "opponents": [
-        "SKYRIDGE",
-        "WEBER"
       ]
     },
     {
@@ -965,16 +955,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "RICH",
-      "season": "2022",
-      "date": "10/28/2022",
-      "opponents": [
-        "MONTUMENT VALLEY",
-        "MONUMENT VALLEY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "SAN JUAN",
       "season": "1998",
       "date": "9/11/1998",
@@ -1011,16 +991,6 @@
       "opponents": [
         "CYPRUS",
         "HILLCREST"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "SKYRIDGE",
-      "season": "2022",
-      "date": "10/7/2022",
-      "opponents": [
-        "DAVIS",
-        "PLEASANT GROVE"
       ]
     },
     {
@@ -1344,23 +1314,7 @@
   "invalidRows": [],
   "seasonSummaryMismatches": [],
   "reciprocalMismatches": [],
-  "likelyOpponentTypos": [
-    {
-      "type": "likely-opponent-typo",
-      "team": "RICH",
-      "season": "2022",
-      "index": 11,
-      "date": "10/28/2022",
-      "opponent": "MONTUMENT VALLEY",
-      "teamScore": 47,
-      "opponentScore": 12,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "suggested": "MONUMENT VALLEY",
-      "distance": 1
-    }
-  ],
+  "likelyOpponentTypos": [],
   "pages": [
     {
       "team": "ALA",
@@ -1498,7 +1452,7 @@
       "team": "DAVIS",
       "file": "davis.json",
       "seasons": 110,
-      "totalGames": 1081
+      "totalGames": 1080
     },
     {
       "team": "DEER CREEK",
@@ -1852,7 +1806,7 @@
       "team": "RICH",
       "file": "rich.json",
       "seasons": 41,
-      "totalGames": 443
+      "totalGames": 442
     },
     {
       "team": "RICHFIELD",
@@ -1912,7 +1866,7 @@
       "team": "SKYRIDGE",
       "file": "skyridge.json",
       "seasons": 10,
-      "totalGames": 128
+      "totalGames": 127
     },
     {
       "team": "SNOW CANYON",
