@@ -38,13 +38,14 @@
   .rus-export-overall-row .rus-export-move{font-size:12px;text-align:right;white-space:nowrap}
   .rus-export-board.rus-export-landscape .rus-export-overall-feature .rus-export-logo-large{max-height:62px}.rus-export-board.rus-export-landscape .rus-export-overall-feature .rus-export-team{font-size:15px}
   .rus-export-board.rus-export-landscape .rus-export-overall-row{grid-template-columns:28px 34px minmax(0,1fr) auto;gap:5px;padding:3px 5px}.rus-export-board.rus-export-landscape .rus-export-overall-row .rus-export-rank-num{width:24px;height:24px;font-size:11px}.rus-export-board.rus-export-landscape .rus-export-overall-row-logo{width:31px;height:31px}.rus-export-board.rus-export-landscape .rus-export-overall-row-logo img{max-width:31px;max-height:31px}.rus-export-board.rus-export-landscape .rus-export-overall-row .rus-export-team{font-size:10px}.rus-export-board.rus-export-landscape .rus-export-overall-row-sub{font-size:7px}.rus-export-board.rus-export-landscape .rus-export-overall-row .rus-export-move{font-size:10px}
+  .rus-weekly-export-card,.rus-weekly-export-card *{box-sizing:border-box}.rus-weekly-export-card{position:fixed;left:-12000px;top:0;z-index:-1;width:860px;height:720px;display:grid;grid-template-columns:190px minmax(0,1fr) 175px;gap:30px;align-items:center;overflow:hidden;padding:46px;background:#050505;color:#fff;border:2px solid #383838;border-top:14px solid var(--award-team,#555);box-shadow:inset 10px 0 0 var(--award-team,#555);font-family:Arial,Helvetica,sans-serif}.rus-weekly-export-card:after{content:'RUS';position:absolute;right:-25px;bottom:-55px;color:rgba(255,255,255,.035);font:1000 210px/1 Arial,Helvetica,sans-serif;pointer-events:none}.rus-weekly-export-logo-wrap{position:relative;z-index:1;display:flex;width:190px;height:190px;align-items:center;justify-content:center}.rus-weekly-export-logo{display:block;max-width:100%;max-height:100%;object-fit:contain}.rus-weekly-export-copy{position:relative;z-index:1;min-width:0}.rus-weekly-export-week{color:#999;font-size:18px;font-weight:900;text-transform:uppercase}.rus-weekly-export-award{margin-top:8px;color:#F14D07;font-size:22px;font-weight:1000;letter-spacing:1.8px;line-height:1.15;text-transform:uppercase}.rus-weekly-export-name{margin-top:17px;color:#fff;font-size:52px;font-weight:1000;line-height:.98}.rus-weekly-export-meta{margin-top:13px;color:#b4b4b4;font-size:20px;font-weight:900}.rus-weekly-export-team{display:inline-block;margin-top:15px;padding:9px 14px;border:1px solid rgba(255,255,255,.22);border-radius:8px;background:var(--award-team,#555);color:var(--award-ink,#fff);font-size:21px;font-weight:1000;text-transform:uppercase}.rus-weekly-export-stats{margin-top:22px;color:#d1d1d1;font-size:20px;font-weight:700;line-height:1.45}.rus-weekly-export-result{margin-top:16px;color:#fff;font-size:20px;font-weight:1000;text-transform:uppercase}.rus-weekly-export-score{position:relative;z-index:1;border:2px solid #3b3b3b;border-radius:14px;background:#111;padding:24px 12px;text-align:center}.rus-weekly-export-score strong{display:block;color:#F14D07;font-size:52px;line-height:1}.rus-weekly-export-score span{display:block;margin-top:9px;color:#888;font-size:12px;font-weight:1000;line-height:1.25;text-transform:uppercase}.rus-weekly-export-card.story{height:1100px;grid-template-columns:1fr;grid-template-rows:250px auto 150px;gap:28px;padding:60px;text-align:center}.rus-weekly-export-card.story .rus-weekly-export-logo-wrap{width:250px;height:250px;margin:auto}.rus-weekly-export-card.story .rus-weekly-export-name{font-size:64px}.rus-weekly-export-card.story .rus-weekly-export-team{font-size:24px}.rus-weekly-export-card.story .rus-weekly-export-stats{font-size:23px}.rus-weekly-export-card.story .rus-weekly-export-score{width:340px;margin:auto}.rus-weekly-export-card.landscape{width:1160px;height:470px;grid-template-columns:185px minmax(0,1fr) 190px;padding:34px 48px}.rus-weekly-export-card.landscape .rus-weekly-export-logo-wrap{width:175px;height:175px}.rus-weekly-export-card.landscape .rus-weekly-export-name{font-size:49px}.rus-weekly-export-card.landscape .rus-weekly-export-stats{font-size:18px;margin-top:15px}.rus-weekly-export-card.landscape .rus-weekly-export-result{font-size:17px;margin-top:10px}
   @media(min-width:700px){.rus-share-modal{align-items:center}}
   `;
   const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
 
   function loadCanvas(){
     if(window.html2canvas)return Promise.resolve();
-    return new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s)});
+    return new Promise((res,rej)=>{const s=document.createElement('script');s.src='html2canvas.min.js?v=1.4.1';s.onload=res;s.onerror=rej;document.head.appendChild(s)});
   }
   let logoCachePromise=null;
   function loadLogoCache(){
@@ -188,10 +189,31 @@
     });
     board.appendChild(grid);document.body.appendChild(board);return {node:board,top,bottom,pad};
   }
+  function weeklyAwardSource(el,w,h,label){
+    if(PAGE!=='weekly-awards.html'||!el?.matches?.('.award-card,.class-card'))return null;
+    const text=selector=>(el.querySelector(selector)?.textContent||'').trim();
+    const computed=getComputedStyle(el),teamColor=computed.getPropertyValue('--team').trim()||'#555555',teamInk=computed.getPropertyValue('--ink').trim()||contrast(teamColor);
+    const award=text('.award-type,.class-label')||String(label||'Weekly Award').split('•')[0].trim();
+    const name=text('.player-name,.class-name')||'Weekly Award Winner';
+    const meta=text('.player-meta');
+    const team=text('.team-link');
+    const stats=text('.stat-line');
+    let result=text('.result'),score=text('.award-score strong'),scoreLabel=text('.award-score span')||'RUS weekly score';
+    if(!score){const match=result.match(/^(.*?)\s*•\s*([\d.]+)\s+score$/i);if(match){result=match[1].trim();score=match[2]}}
+    const img=el.querySelector('.award-logo,.class-logo'),logo=img?.currentSrc||img?.getAttribute('src')||'';
+    const weekLabel=(String(label||'').match(/2026\s+Week\s+\d+/i)||[])[0]||'2026 Weekly Honors';
+    const board=document.createElement('article');board.className=`rus-weekly-export-card${h>w*1.3?' story':w>h*1.25?' landscape':''}`;board.style.setProperty('--award-team',teamColor);board.style.setProperty('--award-ink',teamInk);
+    board.innerHTML=`<div class="rus-weekly-export-logo-wrap">${logo?`<img class="rus-weekly-export-logo" src="${esc(logo)}" alt="${esc(team)} logo">`:''}</div><div class="rus-weekly-export-copy"><div class="rus-weekly-export-week">${esc(weekLabel)}</div><div class="rus-weekly-export-award">${esc(award)}</div><div class="rus-weekly-export-name">${esc(name)}</div><div class="rus-weekly-export-meta">${esc(meta)}</div><div class="rus-weekly-export-team">${esc(team)}</div><div class="rus-weekly-export-stats">${esc(stats)}</div><div class="rus-weekly-export-result">${esc(result)}</div></div><div class="rus-weekly-export-score"><strong>${esc(score||'—')}</strong><span>${esc(scoreLabel)}</span></div>`;
+    document.body.appendChild(board);return{node:board,top:112,bottom:62,pad:w>h*1.25?42:46};
+  }
+  async function waitForImages(root){
+    const jobs=[...root.querySelectorAll('img')].map(img=>img.complete?(img.decode?img.decode().catch(()=>{}):Promise.resolve()):new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true})}));
+    await Promise.race([Promise.all(jobs),new Promise(resolve=>setTimeout(resolve,5000))]);
+  }
   async function render(el,w,h,label){
     await loadCanvas();document.documentElement.classList.add('rus-exporting');let special=null;
     try{
-      special=await rankingSource(el,w,h);const target=special?.node||el;
+      special=weeklyAwardSource(el,w,h,label)||await rankingSource(el,w,h);const target=special?.node||el;await waitForImages(target);
       const source=await html2canvas(target,{backgroundColor:'#111111',scale:2,useCORS:true,allowTaint:false,logging:false,windowWidth:Math.max(document.documentElement.clientWidth,target.scrollWidth)});
       const out=document.createElement('canvas');out.width=w;out.height=h;const c=out.getContext('2d');c.fillStyle='#111';c.fillRect(0,0,w,h);
       let top=special?.top??120,bottom=special?.bottom??105,pad=special?.pad??42,maxW=w-pad*2,maxH=h-top-bottom;
