@@ -12,6 +12,8 @@ const requiredFiles = [
   'sw.js',
   'nav-menu.js',
   'mobile-shell.js',
+  'desktop-optimizations.js',
+  'desktop-v2.js',
   'site-search.js',
   'optimization-polish.js',
   'recently-viewed.js',
@@ -50,6 +52,7 @@ if (manifest) {
 
 const pwa = fs.readFileSync('pwa.js', 'utf8');
 const nav = fs.readFileSync('nav-menu.js', 'utf8');
+const desktop = fs.readFileSync('desktop-optimizations.js', 'utf8');
 const search = fs.readFileSync('site-search.js', 'utf8');
 const sw = fs.readFileSync('sw.js', 'utf8');
 
@@ -57,15 +60,17 @@ for (const needle of ['manifest.webmanifest', 'apple-touch-icon', 'sw.js']) {
   if (!pwa.includes(needle)) fail(`pwa.js no longer references ${needle}.`);
 }
 
-for (const needle of ['pwa.js', 'site-search.js', 'mobile-shell.js', 'recently-viewed.js', 'home-personalized.js', 'my-teams-dashboard.js', 'rus-lines-dashboard.js', 'game-center-upgrade.js']) {
+for (const needle of ['pwa.js', 'site-search.js', 'mobile-shell.js', 'desktop-optimizations.js', 'recently-viewed.js', 'home-personalized.js', 'my-teams-dashboard.js', 'rus-lines-dashboard.js', 'game-center-upgrade.js']) {
   if (!nav.includes(needle)) fail(`nav-menu.js no longer loads ${needle}.`);
 }
+
+if (!desktop.includes('desktop-v2.js')) fail('desktop-optimizations.js no longer loads desktop-v2.js.');
 
 for (const needle of ['deseret-rosters-stats-${season}.json', 'player.html?id=', 'teams-data.json', 'weekly-simulation.json']) {
   if (!search.includes(needle)) fail(`site-search.js is missing expected search source/link: ${needle}.`);
 }
 
-for (const needle of ['RUSlogoNew.png', 'mobile-shell.js', 'site-search.js', 'optimization-polish.js', 'home-personalized', 'game-center-upgrade']) {
+for (const needle of ['RUSlogoNew.png', 'mobile-shell.js', 'site-search.js', 'optimization-polish.js', 'desktop-optimizations', 'desktop-v2', 'nav-menu', 'home-personalized', 'game-center-upgrade']) {
   if (!sw.includes(needle)) fail(`sw.js app-shell cache/freshness rules are missing ${needle}.`);
 }
 
