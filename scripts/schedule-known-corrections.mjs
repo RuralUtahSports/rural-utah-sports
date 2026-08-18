@@ -34,7 +34,27 @@ const dateCorrections = new Map(Object.entries({
 
   // Corner Canyon vs Lehi was played Oct. 15, 2025.
   'CORNER CANYON|LEHI|10/10/2025': '10/15/2025',
-  'LEHI|CORNER CANYON|10/10/2025': '10/15/2025'
+  'LEHI|CORNER CANYON|10/10/2025': '10/15/2025',
+
+  // Delta's 2025 source block was shifted one week early. Deseret's final
+  // schedule confirms these local dates. Apply both sides so reciprocal team
+  // pages stay synchronized.
+  'DELTA|SUMMIT ACADEMY|9/5/2025': '9/12/2025',
+  'SUMMIT ACADEMY|DELTA|9/5/2025': '9/12/2025',
+  'DELTA|SAN JUAN|9/12/2025': '9/19/2025',
+  'SAN JUAN|DELTA|9/12/2025': '9/19/2025',
+  'DELTA|SOUTH SEVIER|9/19/2025': '9/26/2025',
+  'SOUTH SEVIER|DELTA|9/19/2025': '9/26/2025',
+  'DELTA|CARBON|9/26/2025': '10/3/2025',
+  'CARBON|DELTA|9/26/2025': '10/3/2025',
+  'DELTA|EMERY|10/10/2025': '10/17/2025',
+  'EMERY|DELTA|10/10/2025': '10/17/2025',
+
+  // The 43-42 South Sevier win was the Oct. 31 2A quarterfinal. Converting
+  // the shifted Oct. 17 copy to the verified date lets the normal exact
+  // deduper merge it with the real playoff row instead of counting it twice.
+  'DELTA|SOUTH SEVIER|10/17/2025': '10/31/2025',
+  'SOUTH SEVIER|DELTA|10/17/2025': '10/31/2025'
 }));
 
 const dropGames = new Set([
