@@ -31,6 +31,12 @@ const canonical = value => {
 };
 
 const dateCorrections = new Map(Object.entries({
+  // Verified 2023 Games-audit corrections.
+  'WATER CANYON|FREDONIA (AZ)|9/8/2023': '9/1/2023',
+  'WEST|ST FRANCIS (MD)|9/22/2023': '9/15/2023',
+  'CEDAR CITY|DESERT HILLS|10/13/2023': '10/11/2023',
+  'DESERT HILLS|CEDAR CITY|10/13/2023': '10/11/2023',
+
   // Verified 2024 cleanup batch.
   'BEN LOMOND|OGDEN|10/11/2024': '10/17/2024',
   'BOUNTIFUL|MAPLE MOUNTAIN|11/1/2024': '11/8/2024',
@@ -195,6 +201,12 @@ const scoreCorrections = new Map(Object.entries({
 }));
 
 const dropGames = new Set([
+  // Verified 2023 copied/bad rows.
+  'CEDAR CITY|WASATCH|10/13/2023',
+  'WASATCH|CEDAR CITY|10/13/2023',
+  'SAN JUAN|SUMMIT ACADEMY|10/20/2023',
+  'SUMMIT ACADEMY|SAN JUAN|10/20/2023',
+
   // Verified 2024 copied/bad rows.
   'LAYTON|WEST|10/18/2024',
   'WEST|LAYTON|10/18/2024',
