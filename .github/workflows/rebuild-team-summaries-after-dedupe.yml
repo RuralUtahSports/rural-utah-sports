@@ -5,10 +5,12 @@ on:
   workflow_run:
     workflows:
       - Dedupe Team Page Rivalries
+      - Enrich Team Schedules With Playoff Notes
     types:
       - completed
   push:
     paths:
+      - 'scripts/schedule-known-corrections.mjs'
       - 'scripts/sanitize-team-schedules.mjs'
       - 'scripts/rebuild-team-summaries-from-schedules.mjs'
       - '.github/workflows/rebuild-team-summaries-after-dedupe.yml'
@@ -30,7 +32,7 @@ jobs:
         with:
           ref: main
 
-      - name: Sanitize schedules, rebuild summaries, and commit
+      - name: Correct schedules, sanitize, rebuild summaries, and commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -38,6 +40,7 @@ jobs:
           for attempt in 1 2 3 4; do
             git fetch origin main
             git reset --hard origin/main
+            node scripts/schedule-known-corrections.mjs
             node scripts/sanitize-team-schedules.mjs
             node scripts/rebuild-team-summaries-from-schedules.mjs
             git add team-schedules.json team-record-breakdowns.json season-history.json team-page-data teams-data.json
@@ -46,7 +49,7 @@ jobs:
               ok=1
               break
             fi
-            git commit -m "Sanitize team schedules and rebuild summaries"
+            git commit -m "Correct schedules and rebuild team summaries"
             if git push; then
               ok=1
               break
