@@ -12,6 +12,7 @@
   .rus-share-sheet h3{margin:0 0 6px;font-size:22px}.rus-share-sheet p{margin:0 0 14px;color:#aaa;font-size:12px;line-height:1.45}
   .rus-share-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.rus-share-option{border:1px solid #444;border-radius:8px;background:#1d1d1d;color:#fff;padding:13px 10px;font-weight:900;cursor:pointer}.rus-share-option strong{display:block;color:#F14D07;font-size:12px}.rus-share-close{width:100%;margin-top:10px;border:0;background:#333;color:#fff;padding:12px;border-radius:8px;font-weight:900}
   .rus-share-region-label{display:block;margin:0 0 6px;color:#aaa;font-size:10px;font-weight:900;text-transform:uppercase}.rus-share-region{width:100%;height:44px;margin:0 0 13px;background:#1d1d1d;color:#fff;border:1px solid #444;border-radius:8px;padding:0 10px;font-weight:900}
+  .rus-share-preview{position:fixed;inset:0;z-index:10020;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.92)}.rus-share-preview-card{width:min(560px,100%);max-height:94vh;overflow:auto;padding:14px;border:1px solid #444;border-top:5px solid #F14D07;border-radius:14px;background:#111;color:#fff;font-family:Arial,sans-serif}.rus-share-preview-card h3{margin:2px 0 5px;font-size:21px}.rus-share-preview-card p{margin:0 0 12px;color:#aaa;font-size:12px;line-height:1.45}.rus-share-preview-card img{display:block;width:100%;height:auto;max-height:65vh;object-fit:contain;border:1px solid #333;background:#080808}.rus-share-preview-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.rus-share-preview-actions button,.rus-share-preview-actions a{display:flex;align-items:center;justify-content:center;min-height:46px;border:1px solid #555;border-radius:8px;background:#1d1d1d;color:#fff;font-weight:900;text-decoration:none}.rus-share-preview-actions .primary{border-color:#F14D07;background:#F14D07;color:#000}
   .rus-exporting .rus-share-btn,.rus-exporting .rus-share-float{visibility:hidden!important}
   .rus-export-board{position:fixed;left:-12000px;top:0;background:#0f0f0f;color:#fff;font-family:Arial,Helvetica,sans-serif;z-index:-1;box-sizing:border-box}
   .rus-export-rank-grid{display:grid;width:100%;height:100%;box-sizing:border-box}
@@ -222,9 +223,10 @@
   function drawCanvasLines(c,text,x,y,maxWidth,lineHeight,maxLines=4,align='left'){
     const lines=canvasLines(c,text,maxWidth,maxLines);c.textAlign=align;lines.forEach((line,i)=>c.fillText(line,x,y+i*lineHeight));return y+Math.max(0,lines.length-1)*lineHeight;
   }
+  const canvasImagePromises=new Map();
   function loadCanvasImage(src){
-    if(!src)return Promise.resolve(null);
-    return new Promise(resolve=>{const img=new Image(),done=value=>{clearTimeout(timer);resolve(value)};img.decoding='async';img.onload=()=>done(img);img.onerror=()=>done(null);const timer=setTimeout(()=>done(null),3500);img.src=new URL(src,location.href).href});
+    if(!src)return Promise.resolve(null);const url=new URL(src,location.href).href;if(canvasImagePromises.has(url))return canvasImagePromises.get(url);
+    const job=new Promise(resolve=>{const img=new Image();let settled=false,timer=null;const done=value=>{if(settled)return;settled=true;clearTimeout(timer);resolve(value)};img.decoding='async';img.onload=()=>done(img);img.onerror=()=>done(null);timer=setTimeout(()=>done(null),3500);img.src=url});canvasImagePromises.set(url,job);return job;
   }
   function drawContainedImage(c,img,x,y,w,h){
     if(!img?.naturalWidth||!img?.naturalHeight)return;const scale=Math.min(w/img.naturalWidth,h/img.naturalHeight),dw=img.naturalWidth*scale,dh=img.naturalHeight*scale;c.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);
@@ -287,9 +289,15 @@
       return await new Promise(r=>out.toBlob(r,'image/png',1));
     }finally{special?.node?.remove();document.documentElement.classList.remove('rus-exporting')}
   }
+  function showSharePreview(blob,name,file){
+    const url=URL.createObjectURL(blob),overlay=document.createElement('div');overlay.className='rus-share-preview';overlay.innerHTML=`<div class="rus-share-preview-card"><h3>Your graphic is ready</h3><p>Tap Share PNG. You can also press and hold the image to save it.</p><img src="${url}" alt="Generated Rural Utah Sports graphic"><div class="rus-share-preview-actions"><button type="button" class="primary rus-preview-share">Share PNG</button><a href="${url}" download="${esc(name)}">Save PNG</a><button type="button" class="rus-preview-close" style="grid-column:1/-1">Close</button></div></div>`;document.body.appendChild(overlay);
+    const close=()=>{overlay.remove();setTimeout(()=>URL.revokeObjectURL(url),500)};overlay.querySelector('.rus-preview-close').onclick=close;overlay.addEventListener('click',e=>{if(e.target===overlay)close()});const share=overlay.querySelector('.rus-preview-share');
+    if(!(navigator.share&&navigator.canShare?.({files:[file]})))share.remove();else share.onclick=async()=>{try{await navigator.share({files:[file],title:'Rural Utah Sports'});close()}catch(e){if(e?.name!=='AbortError')console.error(e)}};
+  }
   async function deliver(blob,name){
     const file=new File([blob],name,{type:'image/png'});
     if(navigator.share&&navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:'Rural Utah Sports'});return}catch(e){if(e?.name==='AbortError')return}}
+    if(matchMedia('(pointer:coarse)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){showSharePreview(blob,name,file);return}
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
   }
   function standingsRegions(){
@@ -309,10 +317,10 @@
       await new Promise(r=>setTimeout(r,70));
     }
   }
-  async function make(format,target=null,labelOverride=''){
+  async function make(format,target=null,labelOverride='',preparedBlob=null){
     const el=target||currentSection(),label=labelOverride||titleFor(el),dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
     const weeklyTarget=PAGE==='weekly-awards.html'&&el?.matches?.('.award-card,.class-card');
-    const blob=weeklyTarget?await renderWeeklyAward(el,dims[0],dims[1],label):await render(el,dims[0],dims[1],label);await deliver(blob,`rural-utah-sports-${format}-${Date.now()}.png`);
+    const blob=preparedBlob||(weeklyTarget?await renderWeeklyAward(el,dims[0],dims[1],label):await render(el,dims[0],dims[1],label));await deliver(blob,`rural-utah-sports-${format}-${Date.now()}.png`);
   }
   async function modal(initialTarget=null,initialLabel=''){
     if(PAGE.includes('standings')&&window.RUSStandingsShare?.openModal)return window.RUSStandingsShare.openModal();
@@ -326,6 +334,11 @@
     }
     const el=document.createElement('div');el.className='rus-share-modal';el.innerHTML=`<div class="rus-share-sheet"><h3>Share Graphic</h3><p>${PAGE.includes('standings')?'Share one region, or choose a whole classification to put every region in that class on one graphic using the same region-by-region standings look.':initialTarget?'Creates a branded graphic for this weekly award using the player’s school colors, logo, stats and result.':'Creates a branded graphic from the section currently in view. Rankings use team colors, local logos and a layout that fills the canvas.'}</p>${standingsControls}<div class="rus-share-grid"><button class="rus-share-option" data-f="square"><strong>Instagram Post</strong>1080 × 1080</button><button class="rus-share-option" data-f="story"><strong>Instagram Story</strong>1080 × 1920</button><button class="rus-share-option" data-f="x"><strong>X Post</strong>1600 × 900</button><button class="rus-share-option" data-f="square"><strong>Square PNG</strong>Download / Share</button></div><button class="rus-share-close">Cancel</button></div>`;
     document.body.appendChild(el);
+    const preparedWeekly=new Map(),weeklyShare=PAGE==='weekly-awards.html'&&initialTarget?.matches?.('.award-card,.class-card');
+    if(weeklyShare){
+      const buttons=[...el.querySelectorAll('[data-f]')],original=new Map(buttons.map(button=>[button,button.innerHTML]));buttons.forEach(button=>{button.disabled=true;button.innerHTML=button.innerHTML.replace(/(<strong>.*?<\/strong>)[\s\S]*/,'$1Preparing…')});
+      [...new Set(buttons.map(button=>button.dataset.f))].forEach(async format=>{const dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];try{preparedWeekly.set(format,await renderWeeklyAward(initialTarget,dims[0],dims[1],initialLabel||titleFor(initialTarget)));buttons.filter(button=>button.dataset.f===format).forEach(button=>{button.disabled=false;button.innerHTML=original.get(button)})}catch(error){console.error(error);buttons.filter(button=>button.dataset.f===format).forEach(button=>{button.disabled=false;button.innerHTML='<strong>Try Again</strong>Tap to retry'})}});
+    }
     const scope=el.querySelector('.rus-share-standings-scope');
     if(scope){
       const sync=()=>{const whole=scope.value==='classification';el.querySelector('.rus-share-region-picker').style.display=whole?'none':'';el.querySelector('.rus-share-class-picker').style.display=whole?'':'none'};
@@ -339,7 +352,7 @@
         }else{
           if(document.getElementById('filter')?.value!=='all'){const filter=document.getElementById('filter');filter.value='all';filter.dispatchEvent(new Event('change',{bubbles:true}));await new Promise(r=>setTimeout(r,70));}
           const regions=standingsRegions(),idx=Number(el.querySelector('.rus-share-region-select')?.value||0);target=regions[idx]?.el||null;
-        }}await make(f,target,label);el.remove()}catch(err){console.error(err);b.disabled=false;b.textContent='Try Again';alert('Could not create the graphic. Please try again.')}});
+        }}await make(f,target,label,preparedWeekly.get(f)||null);el.remove()}catch(err){console.error(err);b.disabled=false;b.textContent='Try Again';alert('Could not create the graphic. Please try again.')}});
   }
   Object.assign(window.RUSShareGraphic,{openModal:modal,make});
   function init(){if(PAGE==='weekly-awards.html')return;const b=document.createElement('button');b.className='rus-share-btn rus-share-float';b.textContent='Share Graphic';b.onclick=()=>modal();document.body.appendChild(b)}
