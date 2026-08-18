@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T04:29:34.087Z",
+  "updatedAt": "2026-08-18T04:32:01.407Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,29 +8,18 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67816,
+    "scheduleRowsAudited": 67815,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 21,
-    "sameDayMultipleOpponents": 149,
+    "sameDayMultipleOpponents": 148,
     "suspiciousRepeatGames": 5,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
     "reciprocalMismatches": 1,
     "likelyOpponentTypos": 2,
-    "recent2025PlusIssues": 1
+    "recent2025PlusIssues": 0
   },
-  "recent2025PlusIssues": [
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MILFORD",
-      "season": "2025",
-      "date": "10/31/2025",
-      "opponents": [
-        "UMA-CW",
-        "UMA-LEHI"
-      ]
-    }
-  ],
+  "recent2025PlusIssues": [],
   "exactDuplicates": [],
   "sameDateOpponentConflicts": [
     {
@@ -1048,16 +1037,6 @@
       "opponents": [
         "ALUMNI",
         "WASATCH ACADEMY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MILFORD",
-      "season": "2025",
-      "date": "10/31/2025",
-      "opponents": [
-        "UMA-CW",
-        "UMA-LEHI"
       ]
     },
     {
@@ -2342,7 +2321,7 @@
       "team": "MILFORD",
       "file": "milford.json",
       "seasons": 84,
-      "totalGames": 739
+      "totalGames": 738
     },
     {
       "team": "MILLARD",
