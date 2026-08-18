@@ -14,6 +14,7 @@ on:
       - 'scripts/schedule-known-corrections.mjs'
       - 'scripts/schedule-2024-reciprocal-date-corrections.mjs'
       - 'scripts/schedule-historical-audit-corrections.mjs'
+      - 'scripts/schedule-historical-audit-corrections-2.mjs'
       - 'scripts/sanitize-team-schedules.mjs'
       - 'scripts/rebuild-team-summaries-from-schedules.mjs'
       - 'scripts/build_verified_elo_2026.mjs'
@@ -47,6 +48,7 @@ jobs:
             node scripts/schedule-known-corrections.mjs
             node scripts/schedule-2024-reciprocal-date-corrections.mjs
             node scripts/schedule-historical-audit-corrections.mjs
+            node scripts/schedule-historical-audit-corrections-2.mjs
             node scripts/sanitize-team-schedules.mjs
             node scripts/rebuild-team-summaries-from-schedules.mjs
             node scripts/build_verified_elo_2026.mjs
