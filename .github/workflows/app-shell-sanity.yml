@@ -7,6 +7,8 @@ on:
     paths:
       - 'nav-menu.js'
       - 'mobile-shell.js'
+      - 'desktop-optimizations.js'
+      - 'desktop-v2.js'
       - 'site-search.js'
       - 'pwa.js'
       - 'sw.js'
@@ -26,6 +28,8 @@ on:
     paths:
       - 'nav-menu.js'
       - 'mobile-shell.js'
+      - 'desktop-optimizations.js'
+      - 'desktop-v2.js'
       - 'site-search.js'
       - 'pwa.js'
       - 'sw.js'
@@ -61,6 +65,8 @@ jobs:
         run: |
           node --check nav-menu.js
           node --check mobile-shell.js
+          node --check desktop-optimizations.js
+          node --check desktop-v2.js
           node --check site-search.js
           node --check pwa.js
           node --check sw.js
