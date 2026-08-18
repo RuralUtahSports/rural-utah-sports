@@ -12,6 +12,16 @@
 #toTopButton:hover{background:#fff}
 @media(max-width:600px){#toTopButton{right:12px;bottom:12px;padding:11px 14px;font-size:12px}}
 </style>
+
+<link rel="manifest" href="manifest.webmanifest?v=20260817-opt1">
+<meta name="theme-color" content="#F14D07">
+<link rel="apple-touch-icon" href="RUSlogoNew.png">
+<meta property="og:title" content="Promotion &amp; Relegation Simulator | Rural Utah Sports">
+<meta property="og:description" content="Promotion &amp; Relegation Simulator from Rural Utah Sports — Utah high school football history, scores, rankings and data.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ruralutahsports.github.io/rural-utah-sports/promotion-relegation.html">
+<meta property="og:image" content="https://ruralutahsports.github.io/rural-utah-sports/RUSlogoNew.png">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
@@ -64,11 +74,10 @@
 </main>
 <footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
 <button id="toTopButton" type="button" aria-label="Back to top">↑ Top</button>
-<script src="nav-menu.js?v=20260817-bottomonly1" defer></script>
 <script src="promotion-relegation.js?v=20260816c" defer></script>
 <script>
 (()=>{const button=document.getElementById('toTopButton');if(!button)return;const update=()=>button.classList.toggle('show',window.scrollY>650);window.addEventListener('scroll',update,{passive:true});button.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));update()})();
 </script>
-<script src="nav-menu.js?v=20260817-bottomonly1"></script>
+<script src="nav-menu.js?v=20260817-opt1" defer></script>
 </body>
 </html>

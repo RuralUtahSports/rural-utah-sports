@@ -5,6 +5,17 @@
 <style id="rus-mobile-performance">
 html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulation}.table-wrap,.games-wrap,.chart-wrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}@media(max-width:700px){body{-webkit-font-smoothing:antialiased}main img:not(.logo){max-width:100%;height:auto}table{contain:layout style}.table-wrap{contain:layout paint}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
+
+<link rel="manifest" href="manifest.webmanifest?v=20260817-opt1">
+<meta name="theme-color" content="#F14D07">
+<link rel="apple-touch-icon" href="RUSlogoNew.png">
+<meta name="description" content="Out of State Games from Rural Utah Sports — Utah high school football history, scores, rankings and data.">
+<meta property="og:title" content="Out of State Games | Rural Utah Sports">
+<meta property="og:description" content="Out of State Games from Rural Utah Sports — Utah high school football history, scores, rankings and data.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ruralutahsports.github.io/rural-utah-sports/out-of-state.html">
+<meta property="og:image" content="https://ruralutahsports.github.io/rural-utah-sports/RUSlogoNew.png">
+<meta name="twitter:card" content="summary_large_image">
 </head><body>
 <header><div class="header-content"><img src="RUSlogoNew.png" class="logo" width="80" height="80" decoding="async" alt="Rural Utah Sports"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav><div class="nav-content"><a href="index.html">Home</a><a href="teams.html">Teams</a><a href="greatest-seasons.html">Greatest Seasons</a><a href="championships.html">Championships</a><a href="records.html">Records</a><a href="scorigami.html">Scorigami</a><a href="games.html">Games</a><a href="out-of-state.html" class="active">Out of State</a><a href="elo.html">ELO</a><a href="rankings.html">Rankings</a><a href="standings.html">Standings</a><a href="simulators.html">Simulators</a></div></nav>
@@ -26,10 +37,9 @@ function renderGames(){const rows=filt(),view=rows.slice(0,shown);$('gameRows').
 function renderAll(){updateSummary();renderStates();renderYears();renderGames()}
 (async()=>{try{const r=await fetch('out-of-state.json');if(!r.ok)throw new Error('data');data=await r.json();$('team').innerHTML='<option value="all">All Utah Teams</option>'+data.teams.map(x=>`<option>${esc(x)}</option>`).join('');$('state').innerHTML='<option value="all">All States</option>'+data.states.map(x=>`<option value="${esc(x.state)}">${esc(x.stateName)} (${esc(x.state)})</option>`).join('');const years=[...new Set(data.games.map(g=>g.year))].sort((a,b)=>b-a);$('year').innerHTML='<option value="all">All Years</option>'+years.map(y=>`<option>${y}</option>`).join('');['team','state','year'].forEach(id=>$(id).addEventListener('change',()=>{shown=100;renderAll()}));$('clear').onclick=()=>{$('team').value='all';$('state').value='all';$('year').value='all';shown=100;renderAll()};$('more').onclick=()=>{shown+=100;renderGames()};renderAll()}catch(e){console.error(e);$('gameRows').innerHTML='<tr><td colspan="7" class="error">Unable to load out-of-state data.</td></tr>'}})();
 </script><script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260817-bottomonly1" defer></script>
 <script src="weekly-simulation-promo.js" defer></script>
 
 <script src="school-assets.js?v=20260815-logo2"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
-<script src="nav-menu.js?v=20260817-bottomonly1"></script>
+<script src="nav-menu.js?v=20260817-opt1" defer></script>
 </body></html>

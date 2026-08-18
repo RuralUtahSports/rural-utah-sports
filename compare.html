@@ -5,6 +5,17 @@
 <style id="rus-mobile-performance">
 html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulation}.table-wrap,.games-wrap,.chart-wrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}@media(max-width:700px){body{-webkit-font-smoothing:antialiased}main img:not(.logo){max-width:100%;height:auto}table{contain:layout style}.table-wrap{contain:layout paint}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
+
+<link rel="manifest" href="manifest.webmanifest?v=20260817-opt1">
+<meta name="theme-color" content="#F14D07">
+<link rel="apple-touch-icon" href="RUSlogoNew.png">
+<meta name="description" content="Team Comparison from Rural Utah Sports — Utah high school football history, scores, rankings and data.">
+<meta property="og:title" content="Team Comparison | Rural Utah Sports">
+<meta property="og:description" content="Team Comparison from Rural Utah Sports — Utah high school football history, scores, rankings and data.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ruralutahsports.github.io/rural-utah-sports/compare.html">
+<meta property="og:image" content="https://ruralutahsports.github.io/rural-utah-sports/RUSlogoNew.png">
+<meta name="twitter:card" content="summary_large_image">
 </head><body>
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav><div class="nav-content"><a href="index.html">Home</a><a href="teams.html" class="active">Teams</a><a href="greatest-seasons.html">Greatest Seasons</a><a href="championships.html">Championships</a><a href="records.html">Records</a><a href="scorigami.html">Scorigami</a><a href="games.html">Games</a><a href="out-of-state.html">Out of State</a><a href="elo.html">ELO</a><a href="rankings.html">Rankings</a><a href="standings.html">Standings</a><a href="simulators.html">Simulators</a></div></nav>
@@ -23,10 +34,9 @@ async function render(){const aName=$('team1').value,bName=$('team2').value;if(!
 async function init(){try{const stamp=Date.now(),[tr,er]=await Promise.all([fetch('teams-data.json?v='+stamp),fetch('elo-summary.json?v='+stamp)]);if(!tr.ok)throw new Error('Team data unavailable');teams=(await tr.json()).sort((a,b)=>a.team.localeCompare(b.team));if(er.ok)elo=await er.json();const options=teams.map(t=>`<option value="${esc(t.team)}">${esc(t.team)}</option>`).join('');$('team1').innerHTML=options;$('team2').innerHTML=options;const q=new URLSearchParams(location.search),a=q.get('team1'),b=q.get('team2');$('team1').value=teams.some(t=>t.team===a)?a:(teams.find(t=>t.team==='BEAVER')?.team||teams[0]?.team||'');$('team2').value=teams.some(t=>t.team===b)?b:(teams.find(t=>t.team==='KANAB')?.team||teams[1]?.team||'');if($('team1').value===$('team2').value&&teams.length>1)$('team2').value=teams.find(t=>t.team!==$('team1').value).team;render()}catch(e){console.error(e);$('result').className='error';$('result').textContent='Unable to load comparison data.'}}
 $('compare').addEventListener('click',render);$('swap').addEventListener('click',()=>{const a=$('team1').value;$('team1').value=$('team2').value;$('team2').value=a;render()});init();
 </script><script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260817-bottomonly1" defer></script>
 <script src="weekly-simulation-promo.js" defer></script>
 
 <script src="school-assets.js?v=20260815-logo2"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
-<script src="nav-menu.js?v=20260817-bottomonly1"></script>
+<script src="nav-menu.js?v=20260817-opt1" defer></script>
 </body></html>

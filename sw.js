@@ -1,0 +1,9 @@
+const CACHE='rus-site-20260817-opt1';
+const CORE=['./','./index.html','./teams.html','./scoreboard.html','./rankings.html','./standings.html','./RUSlogoNew.png','./nav-menu.js','./mobile-shell.js','./app-shell-polish.js'];
+const LIVE=/(weekly-simulation|deseret|live-|scoreboard|standings-2026|2026\.json|playoff-picture)/i;
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>Promise.allSettled(CORE.map(x=>cache.add(x)))).then(()=>self.skipWaiting()))});
+self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
+async function networkFirst(req){const cache=await caches.open(CACHE);try{const res=await fetch(req);if(res&&res.ok)cache.put(req,res.clone());return res}catch(err){const hit=await cache.match(req);if(hit)return hit;throw err}}
+async function staleWhileRevalidate(req){const cache=await caches.open(CACHE);const hit=await cache.match(req);const fresh=fetch(req).then(res=>{if(res&&res.ok)cache.put(req,res.clone());return res}).catch(()=>null);return hit||await fresh||Response.error()}
+async function cacheFirst(req){const cache=await caches.open(CACHE);const hit=await cache.match(req);if(hit)return hit;const res=await fetch(req);if(res&&res.ok)cache.put(req,res.clone());return res}
+self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);if(url.origin!==location.origin)return;if(req.mode==='navigate'||LIVE.test(url.pathname)){event.respondWith(networkFirst(req));return}if(/\.(?:png|jpg|jpeg|webp|svg|ico)$/i.test(url.pathname)){event.respondWith(cacheFirst(req));return}event.respondWith(staleWhileRevalidate(req))});
