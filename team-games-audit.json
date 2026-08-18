@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T05:30:57.537Z",
+  "updatedAt": "2026-08-18T05:33:51.050Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67689,
+    "scheduleRowsAudited": 67687,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 37,
+    "sameDayMultipleOpponents": 36,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -91,16 +91,6 @@
       "opponents": [
         "KEARNS",
         "SKYLINE"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "FREMONT",
-      "season": "2001",
-      "date": "9/14/2001",
-      "opponents": [
-        "TIMPANOGOS",
-        "TIMPVIEW"
       ]
     },
     {
@@ -648,7 +638,7 @@
       "team": "FREMONT",
       "file": "fremont.json",
       "seasons": 32,
-      "totalGames": 363
+      "totalGames": 362
     },
     {
       "team": "GRAND",
@@ -1062,7 +1052,7 @@
       "team": "TIMPVIEW",
       "file": "timpview.json",
       "seasons": 49,
-      "totalGames": 566
+      "totalGames": 565
     },
     {
       "team": "TOOELE",
