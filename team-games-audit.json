@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T05:17:35.286Z",
+  "updatedAt": "2026-08-18T05:22:13.394Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,10 +8,10 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67774,
+    "scheduleRowsAudited": 67770,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 123,
+    "sameDayMultipleOpponents": 121,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
@@ -58,16 +58,6 @@
       "team": "BEAVER",
       "season": "2004",
       "date": "9/10/2004",
-      "opponents": [
-        "RICH",
-        "RICHFIELD"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "BEN LOMOND",
-      "season": "2016",
-      "date": "8/19/2016",
       "opponents": [
         "RICH",
         "RICHFIELD"
@@ -905,16 +895,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "PROVO",
-      "season": "2016",
-      "date": "10/25/2016",
-      "opponents": [
-        "SKYRIDGE",
-        "SNOW CANYON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "RICH",
       "season": "1993",
       "date": "11/6/1993",
@@ -1346,7 +1326,7 @@
       "team": "BEN LOMOND",
       "file": "ben-lomond.json",
       "seasons": 73,
-      "totalGames": 702
+      "totalGames": 701
     },
     {
       "team": "BINGHAM",
@@ -1790,13 +1770,13 @@
       "team": "PROVO",
       "file": "provo.json",
       "seasons": 111,
-      "totalGames": 1005
+      "totalGames": 1004
     },
     {
       "team": "RICH",
       "file": "rich.json",
       "seasons": 41,
-      "totalGames": 442
+      "totalGames": 441
     },
     {
       "team": "RICHFIELD",
@@ -1862,7 +1842,7 @@
       "team": "SNOW CANYON",
       "file": "snow-canyon.json",
       "seasons": 32,
-      "totalGames": 338
+      "totalGames": 337
     },
     {
       "team": "SOUTH SEVIER",
