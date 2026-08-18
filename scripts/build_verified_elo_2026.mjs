@@ -1,56 +1,59 @@
 import fs from 'node:fs';
 
-const SHEET_ID=process.env.SHEET_ID||'1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo';
-const CLEAN_GAMES_GID=process.env.CLEAN_GAMES_GID||'627882418';
 const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).replace(/\s+/g,' ').toUpperCase();
 const num=v=>{const s=clean(v).replace(/,/g,'');if(s==='')return null;const n=Number(s);return Number.isFinite(n)?n:null};
-const aliases={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH','BRIGHAM YOUNG':'BYH','AMERICAN LEADERSHIP':'ALA','AMERICAN LEADERSHIP ACADEMY':'ALA','AMRICAN FORK':'AMERICAN FORK','DESERET HILLS':'DESERT HILLS','MOUNUMENT VALLEY':'MONUMENT VALLEY','MONTUMENT VALLEY':'MONUMENT VALLEY','MOAPA VALLEY(NV)':'MOAPA VALLEY (NV)','VIRGIN VAL (NV)':'VIRGIN VALLEY (NV)','VIRGIN VALLEY (NV))':'VIRGIN VALLEY (NV)','BOULDER CITY(NV)':'BOULDER CITY (NV)','HIGHLAND, ID':'HIGHLAND (ID)','MARSH VALLEY(ID)':'MARSH VALLEY (ID)','ONEIDA ACAD.(ID)':'ONEIDA ACADEMY (ID)','RAYMOND, ALBERTA':'RAYMOND (ALBERTA)','ST LOUIS (HI)':'ST. LOUIS (HI)','CROWNPOINT (NM)':'CROWN POINT (NM)','KIRKLAND (NM)':'KIRTLAND (NM)','MTN CREST JV':'MOUNTAIN CREST JV','EAST HIGH 2ND TEAM':'EAST 2ND TEAM','WEST HIGH 2ND TEAM':'WEST 2ND TEAM','LAYTON CHRISTIAN ACADEMY':'LAYTON CHRISTIAN','UTAH MILITARY ACADEMY - CAMP WILLIAMS':'UMA-LEHI','UMA CAMP WILLIAMS':'UMA-LEHI'};
+const aliases={
+  'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY',
+  'WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH','BRIGHAM YOUNG':'BYH',
+  'AMERICAN LEADERSHIP':'ALA','AMERICAN LEADERSHIP ACADEMY':'ALA','AMRICAN FORK':'AMERICAN FORK','DESERET HILLS':'DESERT HILLS',
+  'MOUNUMENT VALLEY':'MONUMENT VALLEY','MONTUMENT VALLEY':'MONUMENT VALLEY','FREMOND':'FREMONT','LAY':'LAYTON','ST JOSEPH':'SAINT JOSEPH',
+  'PINE':'PINE VIEW','UMA-CW':'UMA-LEHI','LCA':'LAYTON CHRISTIAN','MOUTNAIN CREST':'MOUNTAIN CREST',
+  'MOAPA VALLEY(NV)':'MOAPA VALLEY (NV)','VIRGIN VAL (NV)':'VIRGIN VALLEY (NV)','VIRGIN VALLEY (NV))':'VIRGIN VALLEY (NV)',
+  'BOULDER CITY(NV)':'BOULDER CITY (NV)','HIGHLAND, ID':'HIGHLAND (ID)','MARSH VALLEY(ID)':'MARSH VALLEY (ID)',
+  'ONEIDA ACAD.(ID)':'ONEIDA ACADEMY (ID)','RAYMOND, ALBERTA':'RAYMOND (ALBERTA)','ST LOUIS (HI)':'ST. LOUIS (HI)',
+  'CROWNPOINT (NM)':'CROWN POINT (NM)','KIRKLAND (NM)':'KIRTLAND (NM)','MTN CREST JV':'MOUNTAIN CREST JV',
+  'EAST HIGH 2ND TEAM':'EAST 2ND TEAM','WEST HIGH 2ND TEAM':'WEST 2ND TEAM','LAYTON CHRISTIAN ACADEMY':'LAYTON CHRISTIAN',
+  'UTAH MILITARY ACADEMY - CAMP WILLIAMS':'UMA-LEHI','UMA CAMP WILLIAMS':'UMA-LEHI'
+};
 function team(v){const n=norm(v).replace(/\.+$/,'').trim();if(n.startsWith('WASATCH ACAD'))return'WASATCH ACADEMY';return aliases[n]||n}
 const compact=v=>team(v).replace(/[^A-Z0-9]/g,'');
 const slug=v=>team(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
 function parseDate(v){const s=clean(v);let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(!m){const x=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(x)m=[x[0],x[2],x[3],x[1]]}if(!m)return null;return{year:+m[3],month:+m[1],day:+m[2],key:+m[3]*10000+(+m[1])*100+(+m[2]),ms:Date.UTC(+m[3],+m[1]-1,+m[2]),iso:`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`}}
-function parseCSV(text){const rows=[];let row=[],field='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')q=false;else field+=c}else if(c==='"')q=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
 const pair=(a,b)=>[a,b].sort().join('|');
 const sig=(a,sa,b,sb)=>[[a,sa],[b,sb]].sort((x,y)=>x[0].localeCompare(y[0])).map(x=>`${x[0]}:${x[1]}`).join('|');
 const expected=(a,b)=>1/(1+Math.pow(10,(b-a)/400));
 const round=x=>x>=0?Math.floor(x+.5):Math.ceil(x-.5);
 const mov=m=>m<=1?1:1+.35*Math.pow(Math.log(Math.min(m,40))/Math.log(40),1.5);
-
-const verifiedBadScores=new Set([
-  '2003-10-10|ALTAMONT|RICH|ALTAMONT:48|RICH:6',
-  '2001-09-21|GUNNISON VALLEY|JUAB|GUNNISON VALLEY:19|JUAB:14',
-  '1998-08-28|GUNNISON VALLEY|NORTH SEVIER|GUNNISON VALLEY:30|NORTH SEVIER:13',
-  '2001-09-07|GUNNISON VALLEY|KANAB|GUNNISON VALLEY:16|KANAB:20',
-  '2001-10-18|GUNNISON VALLEY|MANTI|GUNNISON VALLEY:39|MANTI:12',
-  '2005-09-02|GUNNISON VALLEY|RICHFIELD|GUNNISON VALLEY:27|RICHFIELD:7',
-  '2014-09-12|GUNNISON VALLEY|LAYTON CHRISTIAN|GUNNISON VALLEY:20|LAYTON CHRISTIAN:47',
-  '2024-10-18|GUNNISON VALLEY|MILLARD|GUNNISON VALLEY:41|MILLARD:6',
-  '2008-10-31|ENTERPRISE|RICH|ENTERPRISE:21|RICH:46',
-  '2022-09-30|MONTICELLO|MONUMENT VALLEY|MONTICELLO:41|MONUMENT VALLEY:20'
-]);
-function verifiedBadKey(date,a,b,sa,sb){const d=parseDate(date);return d?`${d.iso}|${pair(a,b)}|${sig(a,sa,b,sb)}`:''}
-function knownBad(date,a,b,sa,sb){const p=pair(a,b),s=sig(a,sa,b,sb);if(date==='9/19/2025'&&p==='MONUMENT VALLEY|PANGUITCH')return true;if(date==='10/18/2024'&&p==='COPPER HILLS|WESTLAKE'&&s==='COPPER HILLS:26|WESTLAKE:41')return true;if(verifiedBadScores.has(verifiedBadKey(date,a,b,sa,sb)))return true;return false}
 function gameKey(date,a,b){const d=parseDate(date);return d?`${d.iso}|${compact(a)}|${compact(b)}`:''}
 
 const teamRows=JSON.parse(fs.readFileSync('teams-data.json','utf8'));
 const website=new Set(teamRows.map(t=>team(t.team)));
 const weekly=fs.existsSync('weekly-simulation.json')?JSON.parse(fs.readFileSync('weekly-simulation.json','utf8')):{games:[]};
 const details=fs.existsSync('deseret-game-details.json')?JSON.parse(fs.readFileSync('deseret-game-details.json','utf8')):{games:{}};
-const candidates=[];
-let sourceRows=0,verified2026=0,duplicatesRemoved=0,conflicts=0,knownCorrectionsRemoved=0;
+if(!fs.existsSync('team-schedules.json'))throw new Error('team-schedules.json not found; refusing to build historical ELO from an unclean source.');
+const schedules=JSON.parse(fs.readFileSync('team-schedules.json','utf8'));
 
-const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${CLEAN_GAMES_GID}&range=${encodeURIComponent('A1:F50000')}`;
-const res=await fetch(url);
-if(!res.ok)throw new Error(`Clean Games download failed ${res.status}`);
-const rows=parseCSV(await res.text());
-for(let i=1;i<rows.length;i++){
-  const r=rows[i],date=clean(r[0]),d=parseDate(date),a=team(r[1]),b=team(r[2]),sa=num(r[3]),sb=num(r[4]);
-  if(!d||!a||!b||a===b||sa===null||sb===null)continue;
-  if(d.year>=2026)continue;
-  if(knownBad(date,a,b,sa,sb)){knownCorrectionsRemoved++;continue}
-  sourceRows++;
-  candidates.push({date,d,a,b,sa,sb,index:i,source:'historical',priority:1,pair:pair(a,b),sig:sig(a,sa,b,sb)});
+const candidates=[];
+let sourceRows=0,verified2026=0,duplicatesRemoved=0,conflicts=0;
+
+// Historical ELO now comes from the same corrected/sanitized schedule database
+// shown on team pages. This prevents the raw Google Sheet from reintroducing
+// aliases, copied dates, duplicate games, or disputed scores into ELO after a
+// schedule correction has already been verified.
+let historicalIndex=0;
+for(const [rawTeam,seasons] of Object.entries(schedules)){
+  const a=team(rawTeam);
+  if(!a||!seasons||typeof seasons!=='object')continue;
+  for(const games of Object.values(seasons)){
+    if(!Array.isArray(games))continue;
+    for(const row of games){
+      const date=clean(row?.date),d=parseDate(date),b=team(row?.opponent),sa=num(row?.teamScore),sb=num(row?.opponentScore);
+      if(!d||d.year>=2026||!b||a===b||sa===null||sb===null)continue;
+      sourceRows++;
+      candidates.push({date,d,a,b,sa,sb,index:historicalIndex++,source:'cleaned-schedule',priority:1,pair:pair(a,b),sig:sig(a,sa,b,sb)});
+    }
+  }
 }
 
 for(let i=0;i<(weekly.games||[]).length;i++){
@@ -71,19 +74,20 @@ for(let i=0;i<(weekly.games||[]).length;i++){
 }
 
 candidates.sort((x,y)=>x.d.ms-y.d.ms||x.index-y.index);
-const exact=new Map(),lastSig=new Map(),games=[];
+const exact=new Map(),games=[];
 for(const g of candidates){
   const k=`${g.d.iso}|${g.pair}`,prior=exact.get(k);
   if(prior){
     duplicatesRemoved++;
     if(prior.sig!==g.sig){
       conflicts++;
+      if(g.priority===prior.priority&&g.d.year<2026){
+        throw new Error(`Conflicting cleaned historical final reached ELO: ${g.d.iso} ${g.pair} (${prior.sig} vs ${g.sig})`);
+      }
       if(g.priority>prior.priority){const at=games.indexOf(prior);if(at>=0)games.splice(at,1);exact.delete(k)}else continue;
     }else if(g.priority<=prior.priority)continue;else{const at=games.indexOf(prior);if(at>=0)games.splice(at,1);exact.delete(k)}
   }
-  const sk=`${g.pair}|${g.sig}`,near=lastSig.get(sk);
-  if(g.d.year<2026&&near&&g.d.ms>near.d.ms&&(g.d.ms-near.d.ms)<=3*86400000){duplicatesRemoved++;continue}
-  exact.set(k,g);lastSig.set(sk,g);games.push(g);
+  exact.set(k,g);games.push(g);
 }
 games.sort((x,y)=>x.d.key-y.d.key||x.index-y.index);
 
@@ -116,6 +120,6 @@ fs.writeFileSync('team-elo-history.json',JSON.stringify(history));
 fs.writeFileSync('elo-summary.json',JSON.stringify(summary));
 fs.writeFileSync('elo-live-summary.json',JSON.stringify(live));
 fs.writeFileSync('elo-game-changes-2026.json',JSON.stringify({updatedAt:new Date().toISOString(),games:gameChanges},null,2)+'\n');
-fs.writeFileSync('elo-cleanup-report.json',JSON.stringify({sourceRows,verified2026,uniqueGames:games.length,duplicatesRemoved,knownCorrectionsRemoved,conflicts,kFactor:32,startingElo:1500,verified2026FinalsOnly:true},null,2)+'\n');
+fs.writeFileSync('elo-cleanup-report.json',JSON.stringify({historicalSource:'team-schedules.json',sourceRows,verified2026,uniqueGames:games.length,duplicatesRemoved,conflicts,kFactor:32,startingElo:1500,verified2026FinalsOnly:true},null,2)+'\n');
 for(const t of website){const p=`team-page-data/${slug(t)}.json`;if(!fs.existsSync(p))continue;const d=JSON.parse(fs.readFileSync(p,'utf8'));d.eloHistory=history[t]||[];fs.writeFileSync(p,JSON.stringify(d))}
-console.log(`ELO rebuilt from ${games.length} games; verified 2026 finals ${Object.keys(gameChanges).length}.`);
+console.log(`ELO rebuilt from ${games.length} cleaned games; verified 2026 finals ${Object.keys(gameChanges).length}.`);
