@@ -8,6 +8,8 @@ on:
     paths:
       - '.github/workflows/build-scorigami.yml'
       - 'scripts/build_home_history.mjs'
+      - 'scripts/build_team_single_game_records.mjs'
+      - 'teams-data.json'
       - 'weekly-simulation.json'
 
 permissions:
@@ -76,9 +78,11 @@ jobs:
           NODE
       - name: Build compact homepage history
         run: node scripts/build_home_history.mjs
+      - name: Build compact team single-game records
+        run: node scripts/build_team_single_game_records.mjs
       - name: Commit Scorigami data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add scorigami.json home-streak-watch.json home-history
+          git add scorigami.json home-streak-watch.json home-history team-single-game-records.json
           if git diff --cached --quiet; then echo "Scorigami data is already current."; else git commit -m "Auto-sync deeply deduplicated Scorigami data"; git pull --rebase origin main; git push; fi
