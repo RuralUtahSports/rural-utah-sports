@@ -15,6 +15,12 @@ const dateCorrections = new Map(Object.entries({
   'PLEASANT GROVE|SKYRIDGE|10/7/2022': '10/6/2022'
 }));
 
+const scoreCorrections = new Map(Object.entries({
+  // 2016 — Ben Lomond beat Richfield 40-17 on Aug. 19. Its stored Richfield
+  // row had the wrong 0-36 score; Richfield's reciprocal row is already right.
+  'BEN LOMOND|RICHFIELD|8/19/2016': { teamScore: 40, opponentScore: 17, result: 'W' }
+}));
+
 const dropGames = new Set([
   // 2022 — Davis and Skyridge met in the 6A quarterfinal Nov. 4. The Oct. 7
   // copies duplicate that 47-22 game on both team pages.
@@ -29,13 +35,24 @@ const dropGames = new Set([
   // actually played Cedar Valley; this 35-7 pairing was copied onto both
   // Cedar City and East schedules.
   'CEDAR CITY|EAST|10/22/2021',
-  'EAST|CEDAR CITY|10/22/2021'
+  'EAST|CEDAR CITY|10/22/2021',
+
+  // 2016 — Ben Lomond's real opener was a 40-17 win over Richfield. The Rich
+  // copy and Rich's reciprocal-looking Ben Lomond row are both source mixups.
+  'BEN LOMOND|RICH|8/19/2016',
+  'RICH|BEN LOMOND|8/19/2016',
+
+  // 2016 — the 24-16 Oct. 25 Region 7 play-in was Skyridge at Provo. Snow
+  // Canyon did not play that day; these copied rows are not real games.
+  'PROVO|SNOW CANYON|10/25/2016',
+  'SNOW CANYON|PROVO|10/25/2016'
 ]);
 
 if (!fs.existsSync(FILE)) throw new Error(`${FILE} not found`);
 const schedules = JSON.parse(fs.readFileSync(FILE, 'utf8'));
 
 let datesFixed = 0;
+let scoresFixed = 0;
 let dropped = 0;
 let changed = false;
 const affectedTeams = new Set();
@@ -69,6 +86,22 @@ for (const [rawTeam, seasons] of Object.entries(schedules)) {
         affectedTeams.add(team);
       }
 
+      const currentKey = `${team}|${opponent}|${clean(game.date)}`;
+      const scoreFix = scoreCorrections.get(currentKey);
+      if (scoreFix) {
+        const scoreChanged = Number(game.teamScore) !== scoreFix.teamScore
+          || Number(game.opponentScore) !== scoreFix.opponentScore
+          || clean(game.result).toUpperCase() !== scoreFix.result;
+        if (scoreChanged) {
+          game.teamScore = scoreFix.teamScore;
+          game.opponentScore = scoreFix.opponentScore;
+          game.result = scoreFix.result;
+          scoresFixed++;
+          changed = true;
+          affectedTeams.add(team);
+        }
+      }
+
       next.push(game);
     }
 
@@ -80,6 +113,7 @@ if (changed) fs.writeFileSync(FILE, JSON.stringify(schedules) + '\n');
 
 console.log('Historical schedule audit correction layer complete.');
 console.log(`Verified dates corrected: ${datesFixed}`);
+console.log(`Verified scores corrected: ${scoresFixed}`);
 console.log(`Verified bad/duplicate rows removed: ${dropped}`);
 console.log(`Teams affected: ${affectedTeams.size}`);
 if (affectedTeams.size) console.log([...affectedTeams].sort().join(', '));
