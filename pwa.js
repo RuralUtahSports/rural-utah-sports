@@ -1,8 +1,8 @@
 (()=>{
 'use strict';
 const head=document.head;
-const VERSION='20260817-iosicon2';
-const ICON=`RUSlogoNew.png?v=${VERSION}`;
+const VERSION='20260817-desktop2';
+const ICON='RUSlogoNew.png?v=20260817-iosicon2';
 function meta(name,content){let m=document.querySelector(`meta[name="${name}"]`);if(!m){m=document.createElement('meta');m.name=name;head.appendChild(m)}m.content=content}
 let manifest=document.querySelector('link[rel="manifest"]');if(!manifest){manifest=document.createElement('link');manifest.rel='manifest';head.appendChild(manifest)}manifest.href=`manifest.webmanifest?v=${VERSION}`;
 let touch=document.querySelector('link[rel="apple-touch-icon"]');if(!touch){touch=document.createElement('link');touch.rel='apple-touch-icon';head.appendChild(touch)}touch.href=ICON;touch.setAttribute('sizes','320x320');
