@@ -13,6 +13,12 @@ const requiredFiles = [
   'nav-menu.js',
   'mobile-shell.js',
   'site-search.js',
+  'optimization-polish.js',
+  'recently-viewed.js',
+  'home-personalized.js',
+  'my-teams-dashboard.js',
+  'rus-lines-dashboard.js',
+  'game-center-upgrade.js',
   'deseret-rosters-stats-2026.json',
   'deseret-rosters-stats-2025.json'
 ];
@@ -51,7 +57,7 @@ for (const needle of ['manifest.webmanifest', 'apple-touch-icon', 'sw.js']) {
   if (!pwa.includes(needle)) fail(`pwa.js no longer references ${needle}.`);
 }
 
-for (const needle of ['pwa.js', 'site-search.js', 'mobile-shell.js']) {
+for (const needle of ['pwa.js', 'site-search.js', 'mobile-shell.js', 'recently-viewed.js', 'home-personalized.js', 'my-teams-dashboard.js', 'rus-lines-dashboard.js', 'game-center-upgrade.js']) {
   if (!nav.includes(needle)) fail(`nav-menu.js no longer loads ${needle}.`);
 }
 
@@ -59,8 +65,8 @@ for (const needle of ['deseret-rosters-stats-${season}.json', 'player.html?id=',
   if (!search.includes(needle)) fail(`site-search.js is missing expected search source/link: ${needle}.`);
 }
 
-for (const needle of ['RUSlogoNew.png', 'mobile-shell.js', 'site-search.js']) {
-  if (!sw.includes(needle)) fail(`sw.js app-shell cache is missing ${needle}.`);
+for (const needle of ['RUSlogoNew.png', 'mobile-shell.js', 'site-search.js', 'optimization-polish.js', 'home-personalized', 'game-center-upgrade']) {
+  if (!sw.includes(needle)) fail(`sw.js app-shell cache/freshness rules are missing ${needle}.`);
 }
 
 if (!process.exitCode) console.log('App shell sanity checks passed.');
