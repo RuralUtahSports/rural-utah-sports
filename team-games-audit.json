@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-18T04:17:55.216Z",
+  "updatedAt": "2026-08-18T04:20:49.918Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,111 +8,26 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67803,
+    "scheduleRowsAudited": 67822,
     "exactDuplicates": 0,
-    "sameDateOpponentConflicts": 2,
-    "sameDayMultipleOpponents": 186,
+    "sameDateOpponentConflicts": 22,
+    "sameDayMultipleOpponents": 180,
     "suspiciousRepeatGames": 7,
     "invalidRows": 0,
     "seasonSummaryMismatches": 0,
     "reciprocalMismatches": 4,
-    "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 45
+    "likelyOpponentTypos": 2,
+    "recent2025PlusIssues": 38
   },
   "recent2025PlusIssues": [
     {
       "type": "same-day-multiple-opponents",
-      "team": "ALTA",
+      "team": "BEN LOMOND",
       "season": "2025",
-      "date": "10/17/2025",
+      "date": "9/19/2025",
       "opponents": [
-        "BRIGHTON",
-        "ROY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "COPPER HILLS",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "HERRIMAN",
-        "RIVERTON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "LAYTON",
-        "WEBER"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "COTTONWOOD",
-        "JORDAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "FREMONT",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "ROY",
-        "WEST FIELD"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "GRANTSVILLE",
-      "season": "2025",
-      "date": "9/12/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "JUAB"
-      ]
-    },
-    {
-      "type": "likely-opponent-typo",
-      "team": "GREEN CANYON",
-      "season": "2025",
-      "index": 11,
-      "date": "10/24/2025",
-      "opponent": "DESERET HILLS",
-      "teamScore": 10,
-      "opponentScore": 3,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "suggested": "DESERT HILLS",
-      "distance": 1
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "GREEN CANYON",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "DESERT HILLS",
-        "MOUNTAIN CREST"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "HERRIMAN",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "CEDAR VALLEY",
-        "WEBER"
+        "GRANTSVILLE",
+        "MORGAN"
       ]
     },
     {
@@ -207,6 +122,16 @@
     },
     {
       "type": "same-day-multiple-opponents",
+      "team": "MONUMENT VALLEY",
+      "season": "2025",
+      "date": "9/19/2025",
+      "opponents": [
+        "NAVAJO PINE (NM)",
+        "PANGUITCH"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "MORGAN",
       "season": "2025",
       "date": "9/19/2025",
@@ -274,16 +199,6 @@
       "type": "same-day-multiple-opponents",
       "team": "PANGUITCH",
       "season": "2025",
-      "date": "9/26/2025",
-      "opponents": [
-        "MONUMENT VALLEY",
-        "SAINT JOSEPH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PANGUITCH",
-      "season": "2025",
       "date": "10/10/2025",
       "opponents": [
         "ALTAMONT",
@@ -324,6 +239,16 @@
       "notes": "",
       "otherDate": "10/17/2025",
       "daysApart": 14
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "RIVERTON",
+      "season": "2025",
+      "date": "10/17/2025",
+      "opponents": [
+        "COPPER HILLS",
+        "MOUNTAIN RIDGE"
+      ]
     },
     {
       "type": "same-day-multiple-opponents",
@@ -546,6 +471,306 @@
   "sameDateOpponentConflicts": [
     {
       "type": "same-date-opponent-conflict",
+      "team": "ALTAMONT",
+      "season": "2003",
+      "index": 8,
+      "date": "10/10/2003",
+      "opponent": "RICH",
+      "teamScore": 48,
+      "opponentScore": 6,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 7,
+      "otherScore": "28|6|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "ENTERPRISE",
+      "season": "2008",
+      "index": 11,
+      "date": "10/31/2008",
+      "opponent": "RICH",
+      "teamScore": 21,
+      "opponentScore": 46,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 10,
+      "otherScore": "20|46|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "GUNNISON VALLEY",
+      "season": "1998",
+      "index": 1,
+      "date": "8/28/1998",
+      "opponent": "NORTH SEVIER",
+      "teamScore": 30,
+      "opponentScore": 13,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 0,
+      "otherScore": "20|13|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "GUNNISON VALLEY",
+      "season": "2001",
+      "index": 3,
+      "date": "9/7/2001",
+      "opponent": "KANAB",
+      "teamScore": 16,
+      "opponentScore": 20,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 2,
+      "otherScore": "20|16|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "GUNNISON VALLEY",
+      "season": "2001",
+      "index": 6,
+      "date": "9/21/2001",
+      "opponent": "JUAB",
+      "teamScore": 14,
+      "opponentScore": 19,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 5,
+      "otherScore": "19|14|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "GUNNISON VALLEY",
+      "season": "2001",
+      "index": 11,
+      "date": "10/18/2001",
+      "opponent": "MANTI",
+      "teamScore": 39,
+      "opponentScore": 12,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 10,
+      "otherScore": "12|39|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "GUNNISON VALLEY",
+      "season": "2005",
+      "index": 3,
+      "date": "9/2/2005",
+      "opponent": "RICHFIELD",
+      "teamScore": 27,
+      "opponentScore": 7,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 2,
+      "otherScore": "27|19|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "GUNNISON VALLEY",
+      "season": "2014",
+      "index": 4,
+      "date": "9/12/2014",
+      "opponent": "LAYTON CHRISTIAN",
+      "teamScore": 20,
+      "opponentScore": 47,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 3,
+      "otherScore": "27|40|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "GUNNISON VALLEY",
+      "season": "2024",
+      "index": 8,
+      "date": "10/18/2024",
+      "opponent": "MILLARD",
+      "teamScore": 41,
+      "opponentScore": 6,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 7,
+      "otherScore": "0|45|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "JUAB",
+      "season": "2001",
+      "index": 5,
+      "date": "9/21/2001",
+      "opponent": "GUNNISON VALLEY",
+      "teamScore": 19,
+      "opponentScore": 14,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 4,
+      "otherScore": "14|19|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "KANAB",
+      "season": "2001",
+      "index": 3,
+      "date": "9/7/2001",
+      "opponent": "GUNNISON VALLEY",
+      "teamScore": 20,
+      "opponentScore": 16,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 2,
+      "otherScore": "16|20|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "LAYTON CHRISTIAN",
+      "season": "2014",
+      "index": 4,
+      "date": "9/12/2014",
+      "opponent": "GUNNISON VALLEY",
+      "teamScore": 47,
+      "opponentScore": 20,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 3,
+      "otherScore": "40|27|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "MANTI",
+      "season": "2001",
+      "index": 8,
+      "date": "10/18/2001",
+      "opponent": "GUNNISON VALLEY",
+      "teamScore": 12,
+      "opponentScore": 39,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 7,
+      "otherScore": "39|12|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "MILLARD",
+      "season": "2024",
+      "index": 10,
+      "date": "10/18/2024",
+      "opponent": "GUNNISON VALLEY",
+      "teamScore": 6,
+      "opponentScore": 41,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 9,
+      "otherScore": "45|0|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "MONTICELLO",
+      "season": "2022",
+      "index": 7,
+      "date": "9/30/2022",
+      "opponent": "MONUMENT VALLEY",
+      "teamScore": 42,
+      "opponentScore": 20,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 6,
+      "otherScore": "41|20|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "MONUMENT VALLEY",
+      "season": "2022",
+      "index": 6,
+      "date": "9/30/2022",
+      "opponent": "MONTICELLO",
+      "teamScore": 20,
+      "opponentScore": 42,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 5,
+      "otherScore": "20|41|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "NORTH SEVIER",
+      "season": "1998",
+      "index": 1,
+      "date": "8/28/1998",
+      "opponent": "GUNNISON VALLEY",
+      "teamScore": 13,
+      "opponentScore": 30,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 0,
+      "otherScore": "13|20|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "RICH",
+      "season": "2003",
+      "index": 7,
+      "date": "10/10/2003",
+      "opponent": "ALTAMONT",
+      "teamScore": 6,
+      "opponentScore": 48,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 6,
+      "otherScore": "6|28|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "RICH",
+      "season": "2008",
+      "index": 10,
+      "date": "10/31/2008",
+      "opponent": "ENTERPRISE",
+      "teamScore": 46,
+      "opponentScore": 21,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 9,
+      "otherScore": "46|20|W"
+    },
+    {
+      "type": "same-date-opponent-conflict",
+      "team": "RICHFIELD",
+      "season": "2005",
+      "index": 2,
+      "date": "9/2/2005",
+      "opponent": "GUNNISON VALLEY",
+      "teamScore": 7,
+      "opponentScore": 27,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherIndex": 1,
+      "otherScore": "19|27|L"
+    },
+    {
+      "type": "same-date-opponent-conflict",
       "team": "UMA-HILLFIELD",
       "season": "2025",
       "index": 9,
@@ -576,16 +801,6 @@
     }
   ],
   "sameDayMultipleOpponents": [
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "ALTA",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "BRIGHTON",
-        "ROY"
-      ]
-    },
     {
       "type": "same-day-multiple-opponents",
       "team": "AMERICAN FORK",
@@ -644,6 +859,16 @@
       "opponents": [
         "JUAN DIEGO",
         "OGDEN"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "BEN LOMOND",
+      "season": "2025",
+      "date": "9/19/2025",
+      "opponents": [
+        "GRANTSVILLE",
+        "MORGAN"
       ]
     },
     {
@@ -818,16 +1043,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "COPPER HILLS",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "HERRIMAN",
-        "RIVERTON"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "COTTONWOOD",
       "season": "1985",
       "date": "10/29/1985",
@@ -933,16 +1148,6 @@
       "date": "10/7/2022",
       "opponents": [
         "SKYRIDGE",
-        "WEBER"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DAVIS",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "LAYTON",
         "WEBER"
       ]
     },
@@ -1068,16 +1273,6 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "EAST",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "COTTONWOOD",
-        "JORDAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "ENTERPRISE",
       "season": "2004",
       "date": "8/20/2004",
@@ -1094,16 +1289,6 @@
       "opponents": [
         "TIMPANOGOS",
         "TIMPVIEW"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "FREMONT",
-      "season": "2025",
-      "date": "10/10/2025",
-      "opponents": [
-        "ROY",
-        "WEST FIELD"
       ]
     },
     {
@@ -1134,36 +1319,6 @@
       "opponents": [
         "BEN LOMOND",
         "OGDEN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "GRANTSVILLE",
-      "season": "2025",
-      "date": "9/12/2025",
-      "opponents": [
-        "BEN LOMOND",
-        "JUAB"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "GREEN CANYON",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "DESERT HILLS",
-        "MOUNTAIN CREST"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "HERRIMAN",
-      "season": "2025",
-      "date": "10/17/2025",
-      "opponents": [
-        "CEDAR VALLEY",
-        "WEBER"
       ]
     },
     {
@@ -1488,6 +1643,16 @@
     },
     {
       "type": "same-day-multiple-opponents",
+      "team": "MONUMENT VALLEY",
+      "season": "2025",
+      "date": "9/19/2025",
+      "opponents": [
+        "NAVAJO PINE (NM)",
+        "PANGUITCH"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "MORGAN",
       "season": "2024",
       "date": "10/4/2024",
@@ -1700,16 +1865,6 @@
       "type": "same-day-multiple-opponents",
       "team": "PANGUITCH",
       "season": "2025",
-      "date": "9/26/2025",
-      "opponents": [
-        "MONUMENT VALLEY",
-        "SAINT JOSEPH"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PANGUITCH",
-      "season": "2025",
       "date": "10/10/2025",
       "opponents": [
         "ALTAMONT",
@@ -1904,6 +2059,16 @@
       "opponents": [
         "MONTUMENT VALLEY",
         "MONUMENT VALLEY"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "RIVERTON",
+      "season": "2025",
+      "date": "10/17/2025",
+      "opponents": [
+        "COPPER HILLS",
+        "MOUNTAIN RIDGE"
       ]
     },
     {
@@ -2673,21 +2838,6 @@
   "likelyOpponentTypos": [
     {
       "type": "likely-opponent-typo",
-      "team": "GREEN CANYON",
-      "season": "2025",
-      "index": 11,
-      "date": "10/24/2025",
-      "opponent": "DESERET HILLS",
-      "teamScore": 10,
-      "opponentScore": 3,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "suggested": "DESERT HILLS",
-      "distance": 1
-    },
-    {
-      "type": "likely-opponent-typo",
       "team": "RICH",
       "season": "2022",
       "index": 11,
@@ -2734,7 +2884,7 @@
       "team": "ALTAMONT",
       "file": "altamont.json",
       "seasons": 52,
-      "totalGames": 493
+      "totalGames": 494
     },
     {
       "team": "AMERICAN FORK",
@@ -2908,7 +3058,7 @@
       "team": "ENTERPRISE",
       "file": "enterprise.json",
       "seasons": 29,
-      "totalGames": 316
+      "totalGames": 317
     },
     {
       "team": "FARMINGTON",
@@ -2944,13 +3094,13 @@
       "team": "GREEN CANYON",
       "file": "green-canyon.json",
       "seasons": 9,
-      "totalGames": 104
+      "totalGames": 103
     },
     {
       "team": "GUNNISON VALLEY",
       "file": "gunnison-valley.json",
       "seasons": 36,
-      "totalGames": 351
+      "totalGames": 358
     },
     {
       "team": "HERRIMAN",
@@ -2992,7 +3142,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 71,
-      "totalGames": 721
+      "totalGames": 722
     },
     {
       "team": "JUAN DIEGO",
@@ -3010,7 +3160,7 @@
       "team": "KANAB",
       "file": "kanab.json",
       "seasons": 76,
-      "totalGames": 770
+      "totalGames": 771
     },
     {
       "team": "KEARNS",
@@ -3022,7 +3172,7 @@
       "team": "LAYTON CHRISTIAN",
       "file": "layton-christian.json",
       "seasons": 22,
-      "totalGames": 229
+      "totalGames": 230
     },
     {
       "team": "LAYTON",
@@ -3052,7 +3202,7 @@
       "team": "MANTI",
       "file": "manti.json",
       "seasons": 58,
-      "totalGames": 585
+      "totalGames": 586
     },
     {
       "team": "MAPLE MOUNTAIN",
@@ -3070,19 +3220,19 @@
       "team": "MILLARD",
       "file": "millard.json",
       "seasons": 100,
-      "totalGames": 953
+      "totalGames": 954
     },
     {
       "team": "MONTICELLO",
       "file": "monticello.json",
       "seasons": 73,
-      "totalGames": 725
+      "totalGames": 726
     },
     {
       "team": "MONUMENT VALLEY",
       "file": "monument-valley.json",
       "seasons": 37,
-      "totalGames": 296
+      "totalGames": 297
     },
     {
       "team": "MORGAN",
@@ -3124,7 +3274,7 @@
       "team": "NORTH SEVIER",
       "file": "north-sevier.json",
       "seasons": 67,
-      "totalGames": 581
+      "totalGames": 582
     },
     {
       "team": "NORTH SUMMIT",
@@ -3208,13 +3358,13 @@
       "team": "RICH",
       "file": "rich.json",
       "seasons": 41,
-      "totalGames": 443
+      "totalGames": 445
     },
     {
       "team": "RICHFIELD",
       "file": "richfield.json",
       "seasons": 96,
-      "totalGames": 847
+      "totalGames": 848
     },
     {
       "team": "RIDGELINE",
