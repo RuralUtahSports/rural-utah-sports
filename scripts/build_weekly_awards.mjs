@@ -61,10 +61,12 @@ const utahToday=zonedDate('America/Denver');
 const meta=new Map(teams.map(t=>[canon(t.team),t]));
 const weekMap=new Map();
 const reportedTeamGames=new Set();
+const gameTeamIndex=new Map();
 for(const [teamName,teamData] of Object.entries(playerGames.teams||{})){
   const tm=meta.get(canon(teamName))||{},classification=normalizeClass(tm.classification),region=clean(tm.region);
   for(const game of teamData.games||[]){
     const start=weekStart(game.date);if(!Number.isFinite(start))continue;
+    gameTeamIndex.set(`${isoDate(game.date)}|${canon(teamName)}|${canon(game.opponent)}`,{teamName,classification,region,game});
     if(!weekMap.has(start))weekMap.set(start,{start,gameKeys:new Set(),teamGames:0,players:new Map()});
     const week=weekMap.get(start);week.gameKeys.add(game.gameKey||`${game.date}|${canon(teamName)}|${canon(game.opponent)}`);week.teamGames++;
     if((game.players||[]).some(p=>(p.statLines||[]).length))reportedTeamGames.add(`${game.gameKey}|${canon(teamName)}`);
@@ -102,6 +104,26 @@ const weeks=ordered.map(week=>{
   if(shouldLock&&prior?.locked)return prior;
   return{week:weekNumber,startDate:isoDay(week.start),endDate:isoDay(week.start+6*DAY),lockDate,locked:shouldLock,lockedAt:shouldLock?new Date().toISOString():null,gameCount:week.gameKeys.size,teamGames:week.teamGames,playersReported:players.length,coverage:{teamsInCompletedGames:coverage.teams.size,teamsReportingStats:Math.max(0,coverage.teams.size-missingTeams.size),missingTeams:[...missingTeams].sort()},awards:{overall:overall[0]?playerView(overall[0],overall[0].weightedOverall,'Weighted Utah score'):null,offense:offenseAwardPool[0]?playerView(offenseAwardPool[0],offenseAwardPool[0].weightedOffense,'Weighted offense score'):null,defense:defenseAwardPool[0]?playerView(defenseAwardPool[0],defenseAwardPool[0].weightedDefense,'Weighted defense score'):null,rural:rural[0]?playerView(rural[0],rural[0].rawOverall,'Rural weekly score'):null,ruralOffense:ruralOffenseAwardPool[0]?playerView(ruralOffenseAwardPool[0],ruralOffenseAwardPool[0].offense+ruralOffenseAwardPool[0].winBonus,'Rural offense score'):null,ruralDefense:ruralDefenseAwardPool[0]?playerView(ruralDefenseAwardPool[0],ruralDefenseAwardPool[0].defense+ruralDefenseAwardPool[0].winBonus,'Rural defense score'):null},contenders:{overall:overall.slice(0,10).map(p=>playerView(p,p.weightedOverall,'Weighted Utah score')),offense:offenseAwardPool.slice(0,10).map(p=>playerView(p,p.weightedOffense,'Weighted offense score')),defense:defenseAwardPool.slice(0,10).map(p=>playerView(p,p.weightedDefense,'Weighted defense score')),rural:rural.slice(0,10).map(p=>playerView(p,p.rawOverall,'Rural weekly score')),ruralOffense:ruralOffenseAwardPool.slice(0,10).map(p=>playerView(p,p.offense+p.winBonus,'Rural offense score')),ruralDefense:ruralDefenseAwardPool.slice(0,10).map(p=>playerView(p,p.defense+p.winBonus,'Rural defense score'))},classes:classAwards};
 });
-const output={season:2026,updatedAt:playerGames.updatedAt||new Date().toISOString(),generatedAt:new Date().toISOString(),method:{scoringVersion:scoring.VERSION,defenseScale:scoring.DEFENSE_SCALE||1,ruralClasses:['3A','2A','1A','8-Player'],statewideWeights:classWeight,winBonus:'2 points added for each team win across every weekly award score; statewide multipliers are applied after the bonus',locking:'Each week remains provisional through Wednesday and locks at the start of the following Thursday in America/Denver time.'},weeks};
+const previousGameAwards=new Map((previous.gameAwards||[]).map(row=>[row.gameKey,row]));
+const weekByNumber=new Map(weeks.map(row=>[row.week,row]));
+function teamGame(date,team,opponent){return gameTeamIndex.get(`${isoDate(date)}|${canon(team)}|${canon(opponent)}`)||null}
+function scoreGamePlayer(player,ctx,opponent,won,teamScore,opponentScore){
+  const primary=primaryPosition(player.position),lines=[];let offense=0,defense=0;
+  for(const line of player.statLines||[])for(const part of splitLine(line)){const points=scoring.categoryScore(part.category,part.values,primary);if(part.side==='offense')offense+=points;else defense+=points;lines.push({...part,score:points})}
+  const winBonus=won?2:0,score=Math.max(offense,defense)+Math.min(offense,defense)*.35+winBonus;
+  return{id:clean(player.playerId)||`${canon(ctx.teamName)}|${compact(player.number)}|${compact(player.name)}`,name:clean(player.name)||'Unknown',number:clean(player.number),team:ctx.teamName,classification:ctx.classification,region:ctx.region,position:clean(player.position)||primary,score,scoreLabel:'Player of the Game score',offenseScore:offense,defenseScore:defense,winBonus,lines,result:`${teamScore>opponentScore?'W':teamScore<opponentScore?'L':'T'} ${teamScore}-${opponentScore} vs ${opponent}`};
+}
+const gameAwards=weeklyGames.filter(game=>game.actualAway!==null&&game.actualAway!==undefined&&game.actualHome!==null&&game.actualHome!==undefined).map(game=>{
+  const key=gameKey(game),start=weekStart(game.date),weekNumber=Math.round((start-first)/(7*DAY))+1,weekInfo=weekByNumber.get(weekNumber)||{},away=teamGame(game.date,game.awayTeam,game.homeTeam),home=teamGame(game.date,game.homeTeam,game.awayTeam),manualMissing=new Set((manualStatus.weeks?.[String(weekNumber)]?.missingTeams||[]).map(canon)),missing=[];
+  for(const [name,ctx] of [[game.awayTeam,away],[game.homeTeam,home]])if(!ctx||!(ctx.game.players||[]).some(player=>(player.statLines||[]).length)||manualMissing.has(canon(name)))missing.push(name);
+  const base={gameKey:key,date:isoDate(game.date),awayTeam:game.awayTeam,homeTeam:game.homeTeam,awayScore:Number(game.actualAway),homeScore:Number(game.actualHome),week:weekNumber,lockDate:weekInfo.lockDate||'',locked:!!weekInfo.locked};
+  const prior=previousGameAwards.get(key);if(weekInfo.locked&&prior?.locked)return prior;
+  if(missing.length)return{...base,status:'awaiting-stats',missingTeams:missing,player:null};
+  const candidates=[];
+  for(const [ctx,opponent,teamScore,opponentScore] of [[away,game.homeTeam,Number(game.actualAway),Number(game.actualHome)],[home,game.awayTeam,Number(game.actualHome),Number(game.actualAway)]])for(const player of ctx.game.players||[]){const row=scoreGamePlayer(player,ctx,opponent,teamScore>opponentScore,teamScore,opponentScore);if(row.score>0)candidates.push(row)}
+  candidates.sort((a,b)=>b.score-a.score||b.offenseScore-a.offenseScore||b.defenseScore-a.defenseScore||a.name.localeCompare(b.name));const winner=candidates[0];
+  return{...base,status:winner?'awarded':'no-eligible-stats',missingTeams:[],player:winner?{id:winner.id,name:winner.name,number:winner.number,team:winner.team,classification:winner.classification,region:winner.region,position:winner.position,score:Number(winner.score.toFixed(2)),scoreLabel:winner.scoreLabel,offenseScore:Number(winner.offenseScore.toFixed(2)),defenseScore:Number(winner.defenseScore.toFixed(2)),winBonus:winner.winBonus,statLine:displayLine(winner.lines),result:winner.result}:null};
+});
+const output={season:2026,updatedAt:playerGames.updatedAt||new Date().toISOString(),generatedAt:new Date().toISOString(),method:{scoringVersion:scoring.VERSION,defenseScale:scoring.DEFENSE_SCALE||1,ruralClasses:['3A','2A','1A','8-Player'],statewideWeights:classWeight,winBonus:'2 points added for each team win across every weekly award score; statewide multipliers are applied after the bonus',playerOfGame:'One unweighted overall winner per completed game: higher of offense or defense, plus 35% of the lower side, plus a 2-point team-win bonus. Both teams must have reported player statistics.',locking:'Each week remains provisional through Wednesday and locks at the start of the following Thursday in America/Denver time.'},weeks,gameAwards};
 fs.writeFileSync(OUT,JSON.stringify(output,null,2)+'\n');
-console.log(`Weekly awards: ${weeks.length} week(s), ${weeks.reduce((n,w)=>n+w.playersReported,0)} player-week candidates.`);
+console.log(`Weekly awards: ${weeks.length} week(s), ${weeks.reduce((n,w)=>n+w.playersReported,0)} player-week candidates, ${gameAwards.filter(row=>row.player).length} game awards.`);
