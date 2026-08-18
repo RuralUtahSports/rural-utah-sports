@@ -23,7 +23,13 @@ const dropGames = new Set([
 
   // 2022 — Rich beat Monument Valley 47-12 in the 1A 8-player quarterfinal.
   // The misspelled MONTUMENT VALLEY row is a duplicate of the correct row.
-  'RICH|MONTUMENT VALLEY|10/28/2022'
+  'RICH|MONTUMENT VALLEY|10/28/2022',
+
+  // 2021 — Cedar City played Logan in the 4A first round Oct. 22. East
+  // actually played Cedar Valley; this 35-7 pairing was copied onto both
+  // Cedar City and East schedules.
+  'CEDAR CITY|EAST|10/22/2021',
+  'EAST|CEDAR CITY|10/22/2021'
 ]);
 
 if (!fs.existsSync(FILE)) throw new Error(`${FILE} not found`);
