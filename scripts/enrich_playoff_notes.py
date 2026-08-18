@@ -24,6 +24,24 @@ ALIASES = {
     "HINKLEY": "HINCKLEY",
     "BY HIGH": "BYH",
     "BRIGHAM YOUNG": "BYH",
+    "FREMOND": "FREMONT",
+}
+
+# Verified one-off source corrections. These are deliberately narrow so real
+# rematches elsewhere in the database are never collapsed just because the
+# teams and scores happen to match.
+DATE_CORRECTIONS = {
+    ("CORNER CANYON", "AMERICAN FORK", "10/3/2025"): "10/9/2025",
+    ("CORNER CANYON", "AMERICAN FORK", "10/10/2025"): "10/9/2025",
+    ("AMERICAN FORK", "CORNER CANYON", "10/3/2025"): "10/9/2025",
+    ("AMERICAN FORK", "CORNER CANYON", "10/10/2025"): "10/9/2025",
+    ("CORNER CANYON", "LEHI", "10/10/2025"): "10/15/2025",
+    ("LEHI", "CORNER CANYON", "10/10/2025"): "10/15/2025",
+}
+
+DROP_GAMES = {
+    ("GRAND", "DELTA", "10/3/2025"),
+    ("DELTA", "GRAND", "10/3/2025"),
 }
 
 
@@ -93,6 +111,26 @@ def result_from_row(value, team_score, opponent_score):
     if team_score < opponent_score:
         return "L"
     return "T"
+
+
+def apply_known_correction(team, game):
+    team = canonical_team(team)
+    game["opponent"] = canonical_team(game.get("opponent"))
+    game["date"] = DATE_CORRECTIONS.get(
+        (team, game["opponent"], clean(game.get("date"))),
+        clean(game.get("date")),
+    )
+
+    if (team, game["opponent"], game["date"]) in DROP_GAMES:
+        return None
+
+    # The 10/17/2025 Kanab-Grand 2-0 result was a forfeit. It was not a
+    # UHSAA playoff game, so preserve the result but make the note explicit.
+    if game["date"] == "10/17/2025" and {team, game["opponent"]} == {"KANAB", "GRAND"}:
+        game["notes"] = "Forfeit"
+        game["playoff"] = False
+
+    return game
 
 
 def merge_game(existing, incoming):
@@ -165,6 +203,8 @@ def main():
     playoff_games = 0
     exact_removed = 0
     near_removed = 0
+    known_dropped = 0
+    known_corrected = 0
 
     for team_obj in teams:
         team = canonical_team(team_obj.get("team"))
@@ -199,7 +239,7 @@ def main():
 
                 result = result_from_row(raw_result, team_score, opponent_score)
                 playoff = is_playoff_note(notes)
-                schedules.setdefault(str(year), []).append({
+                game = {
                     "date": game_date,
                     "opponent": opponent,
                     "teamScore": team_score,
@@ -207,7 +247,15 @@ def main():
                     "result": result,
                     "playoff": playoff,
                     "notes": notes,
-                })
+                }
+                original_date = game_date
+                game = apply_known_correction(team, game)
+                if game is None:
+                    known_dropped += 1
+                    continue
+                if game["date"] != original_date:
+                    known_corrected += 1
+                schedules.setdefault(str(year), []).append(game)
 
         schedules, removed_exact, removed_near = dedupe_schedules(schedules)
         exact_removed += removed_exact
@@ -230,6 +278,8 @@ def main():
     print(f"Team schedule files enriched: {enriched_teams}")
     print(f"Schedule games enriched after dedupe: {enriched_games}")
     print(f"Playoff games identified: {playoff_games}")
+    print(f"Known source rows corrected: {known_corrected}")
+    print(f"Known bad source rows removed: {known_dropped}")
     print(f"Schedule duplicates removed during enrichment: {exact_removed + near_removed} ({exact_removed} exact, {near_removed} near-date)")
 
     if enriched_teams == 0 or enriched_games == 0 or playoff_games == 0:
