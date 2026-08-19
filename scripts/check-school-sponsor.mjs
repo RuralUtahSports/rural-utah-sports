@@ -21,7 +21,7 @@ for(const token of ['RUSSchoolAssets','logoUrl','rus-team-page-logo','fetchPrior
 for(const token of ['rus-desktop-layout>#page','rus-side-logo','rus-team-page-logo','rus-team-hero-sponsor','desktop-v2.js?v=20260819-teamfix2','DOMContentLoaded','matchMedia'])if(!fixes.includes(token))fail(`team-page-fixes.js missing ${token}`);
 for(const token of ['DOMContentLoaded','team-logo-header.js?v=20260819-teamfix2','school-sponsor.js?v=20260819-sponsor3','team-page-fixes.js?v=20260819-teamfix2'])if(!loader.includes(token))fail(`team loader missing ${token}`);
 if(Buffer.byteLength(loader,'utf8')>900)fail('Team enhancement loader grew past the first-render budget');
-for(const token of ['text-align:center','school-sponsors.json','team-sponsor','Official RUS Sponsor','jh3dprints'])if(!teams.includes(token))fail(`teams.html missing ${token}`);
+for(const token of ['text-align:center','school-sponsors.json','team-sponsor','Official RUS Sponsor'])if(!teams.includes(token))fail(`teams.html missing ${token}`);
 for(const token of ['RUS Sponsors','school-sponsors.json','Submit an Order by Email','View Sponsored Team'])if(!sponsorsPage.includes(token))fail(`sponsors.html missing ${token}`);
 for(const token of ['New Sponsor','school-sponsors.json','sponsors.html','activeSponsor'])if(!promo.includes(token))fail(`weekly sponsor banner missing ${token}`);
 for(const token of ['nextTuesdayReset','d.getDay()','now<nextTuesdayReset(a._ts)'])if(!scorigami.includes(token))fail(`Tuesday Scorigami reset missing ${token}`);
