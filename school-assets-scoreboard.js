@@ -40,6 +40,7 @@ const pairKey=(a,b)=>[rankKey(a),rankKey(b)].sort().join('|');
 let rankMap=new Map();
 const stateRankMap=new Map(state25.map((team,i)=>[rankKey(team),i+1]));
 let recordMap=new Map(),eloPairMap=new Map(),mercyCount=null;
+let refreshQueued=false,refreshDelayTimer=null;
 
 function teamFromLink(link){let team='';try{team=new URL(link.href,location.href).searchParams.get('team')||link.textContent||''}catch{team=link.textContent||''}return team}
 function applyTeamRecords(){
@@ -97,22 +98,41 @@ function applyLiveMercyBadges(){
 }
 function applyMercySummary(){
   if(mercyCount===null)return;
-  document.querySelectorAll('#summary .summary').forEach(box=>{const label=box.querySelector('span');if(!label||!/44\+.*Mercy Rule/i.test(label.textContent))return;const value=box.querySelector('strong');if(value)value.textContent=String(mercyCount)});
+  document.querySelectorAll('#summary .summary').forEach(box=>{
+    const label=box.querySelector('span');if(!label||!/44\+.*Mercy Rule/i.test(label.textContent))return;
+    const value=box.querySelector('strong'),next=String(mercyCount);if(value&&value.textContent!==next)value.textContent=next;
+  });
 }
 function refreshScoreboardExtras(){applyTeamRecords();applyScoreboardRanks();applyFinalEloChanges();applyFinalBoxRecords();applyLiveMercyBadges();applyMercySummary()}
+function queueRefresh(delay=0){
+  if(delay>0){clearTimeout(refreshDelayTimer);refreshDelayTimer=setTimeout(()=>queueRefresh(),delay);return}
+  if(refreshQueued)return;refreshQueued=true;
+  const run=()=>{refreshQueued=false;refreshScoreboardExtras()};
+  if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:220});
+  else requestAnimationFrame(run);
+}
+function watchScoreboard(){
+  const root=document.querySelector('main');if(!root)return;
+  const observer=new MutationObserver(mutations=>{
+    for(const mutation of mutations){
+      if(mutation.type==='characterData'||mutation.type==='attributes'||mutation.addedNodes.length||mutation.removedNodes.length){queueRefresh(40);return}
+    }
+  });
+  observer.observe(root,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class']});
+}
 
 fetch(`rankings-history-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{
   const snap=data?.snapshots?.at(-1);if(!snap)return;const next=new Map();
   for(const [cls,teams] of Object.entries(snap.classifications||{}))(teams||[]).forEach((team,i)=>next.set(rankKey(team),{rank:i+1,cls}));
-  rankMap=next;[0,100,400,1000].forEach(ms=>setTimeout(refreshScoreboardExtras,ms));
+  rankMap=next;queueRefresh(30);
 }).catch(()=>{});
 fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{
   const next=new Map();for(const teams of Object.values(data?.byClassification||{}))for(const row of teams||[])if(row?.team)next.set(rankKey(row.team),recordText(row));
-  recordMap=next;[0,100,400,1000].forEach(ms=>setTimeout(refreshScoreboardExtras,ms));
+  recordMap=next;queueRefresh(30);
 }).catch(()=>{});
 fetch(`elo-game-changes-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{
   const next=new Map();for(const game of Object.values(data?.games||{})){if(!game?.awayTeam||!game?.homeTeam)continue;const key=pairKey(game.awayTeam,game.homeTeam),prior=next.get(key);if(!prior||String(game.date||'')>String(prior.date||''))next.set(key,game)}
-  eloPairMap=next;[0,100,400,1000].forEach(ms=>setTimeout(refreshScoreboardExtras,ms));
+  eloPairMap=next;queueRefresh(30);
 }).catch(()=>{});
 Promise.all([
   fetch(`weekly-simulation.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null),
@@ -126,10 +146,13 @@ Promise.all([
     const sourceFinal=sheetDone||!!d?.final,status=String(d?.status||''),q4=!sourceFinal&&(/\bQ4\b|4TH|FOURTH/i.test(status)||/\bQ4\b/i.test(String(d?.clock||''))||/\bQ4\b/i.test(String(d?.period||'')));
     if(sourceFinal||q4)count++;
   }
-  mercyCount=count;refreshScoreboardExtras();
+  mercyCount=count;queueRefresh(30);
 }).catch(()=>{});
-document.addEventListener('change',e=>{if(e.target?.id==='classFilter'||e.target?.id==='statusFilter')setTimeout(refreshScoreboardExtras,0)});
-document.addEventListener('input',e=>{if(e.target?.id==='search')setTimeout(refreshScoreboardExtras,0)});
-document.addEventListener('click',e=>{if(e.target?.closest('.game-details>summary'))setTimeout(refreshScoreboardExtras,0)});
-setInterval(refreshScoreboardExtras,5000);
+
+document.addEventListener('change',e=>{if(e.target?.id==='classFilter'||e.target?.id==='statusFilter')queueRefresh(20)});
+document.addEventListener('input',e=>{if(e.target?.id==='search')queueRefresh(20)});
+document.addEventListener('click',e=>{if(e.target?.closest('.game-details>summary'))queueRefresh(20)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)queueRefresh()});
+window.addEventListener('pageshow',()=>queueRefresh(),{passive:true});
+watchScoreboard();queueRefresh(60);
 })();

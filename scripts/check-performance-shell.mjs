@@ -49,6 +49,14 @@ if(scoreboardBytes<=bundleBytes)fail('Scoreboard-only payload is not actually se
 if(!nav.includes("path==='scoreboard.html'?'school-assets-bundle.js?v=20260818-perf2':'school-assets-core.js?v=20260818-perf2'"))fail('nav-menu.js no longer routes school assets by page');
 for(const cached of ["'./school-assets-core.js'","'./school-assets-bundle.js'"])if(!sw.includes(cached))fail(`service worker core cache is missing ${cached}`);
 
+// Scoreboard extras should react to real DOM/data changes, not constantly rescan every game card.
+for(const token of ['queueRefresh','MutationObserver','observer.observe(root','requestIdleCallback']){
+  if(!scoreboardAssets.includes(token))fail(`school-assets-scoreboard.js is missing event-driven refresh token: ${token}`);
+}
+if(/setInterval\s*\(\s*refreshScoreboardExtras/i.test(scoreboardAssets))fail('Scoreboard extras returned to fixed-interval rescanning');
+if(/setTimeout\s*\(\s*refreshScoreboardExtras/i.test(scoreboardAssets))fail('Scoreboard extras directly schedule repeated full rescans');
+if(scoreboardAssets.includes('[0,100,400,1000]'))fail('Scoreboard extras restored the four-pass timer refresh pattern');
+
 // Live data must stay network-first; page/static shell must be fast from cache on repeat visits.
 for(const token of ['LIVE_DATA','normalizedLiveKey','CACHE_BUSTERS','staleWhileRevalidate','networkFirst(req,{normalize:true})'])if(!sw.includes(token))fail(`sw.js is missing ${token}`);
 if(!/req\.mode==='navigate'[\s\S]{0,180}staleWhileRevalidate\(req\)/.test(sw))fail('Navigations are not stale-while-revalidate');
