@@ -1,0 +1,79 @@
+name: Build Share Previews
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/build_share_previews.py'
+      - 'share-preview-links.js'
+      - 'app-shell-polish.js'
+      - 'growth-features.js'
+      - 'site-share.js'
+      - 'teams-data.json'
+      - 'standings-2026.json'
+      - 'rankings-current-2026.json'
+      - 'school-directory.json'
+      - 'deseret-rosters-stats-2026.json'
+      - 'weekly-simulation.json'
+      - 'school-logos/**'
+      - 'RUSlogoNew.png'
+      - '.github/workflows/build-share-previews.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_share_previews.py'
+      - 'share-preview-links.js'
+      - 'app-shell-polish.js'
+      - 'teams-data.json'
+      - 'standings-2026.json'
+      - 'rankings-current-2026.json'
+      - 'school-directory.json'
+      - 'deseret-rosters-stats-2026.json'
+      - 'weekly-simulation.json'
+      - 'school-logos/**'
+      - 'RUSlogoNew.png'
+      - '.github/workflows/build-share-previews.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: share-previews-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'push' && 'main' || github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax checks
+        run: |
+          node --check share-preview-links.js
+          python -m py_compile scripts/build_share_previews.py
+      - name: Install preview renderer
+        run: pip install pillow cairosvg
+      - name: Validate renderer
+        if: github.event_name == 'pull_request'
+        run: python scripts/build_share_previews.py --check
+      - name: Build static previews
+        if: github.event_name != 'pull_request'
+        run: python scripts/build_share_previews.py
+      - name: Commit generated previews
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add share share-images share-preview-map.json
+          if git diff --cached --quiet; then echo "Share previews already current."; exit 0; fi
+          git commit -m "Auto-build social share previews"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
