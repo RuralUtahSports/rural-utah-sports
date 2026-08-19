@@ -1,0 +1,43 @@
+name: School Sponsor Sanity
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'team-enhancements.js'
+      - 'team-logo-header.js'
+      - 'school-sponsor.js'
+      - 'school-sponsors.json'
+      - 'scripts/check-school-sponsor.mjs'
+      - '.github/workflows/school-sponsor-sanity.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'team-enhancements.js'
+      - 'team-logo-header.js'
+      - 'school-sponsor.js'
+      - 'school-sponsors.json'
+      - 'scripts/check-school-sponsor.mjs'
+      - '.github/workflows/school-sponsor-sanity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  school-sponsor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          node --check team-enhancements.js
+          node --check team-logo-header.js
+          node --check school-sponsor.js
+          node --check scripts/check-school-sponsor.mjs
+      - name: Verify school sponsor system
+        run: node scripts/check-school-sponsor.mjs
