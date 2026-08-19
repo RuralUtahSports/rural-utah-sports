@@ -19,6 +19,7 @@ const requiredFiles = [
   'recently-viewed.js',
   'home-personalized.js',
   'my-teams-dashboard.js',
+  'my-teams-dashboard-v4.js',
   'rus-lines-dashboard.js',
   'game-center-upgrade.js',
   'deseret-rosters-stats-2026.json',
@@ -70,8 +71,12 @@ for (const needle of ['deseret-rosters-stats-${season}.json', 'player.html?id=',
   if (!search.includes(needle)) fail(`site-search.js is missing expected search source/link: ${needle}.`);
 }
 
-for (const needle of ['RUSlogoNew.png', 'mobile-shell.js', 'site-search.js', 'optimization-polish.js', 'desktop-optimizations', 'desktop-v2', 'nav-menu', 'home-personalized', 'game-center-upgrade']) {
-  if (!sw.includes(needle)) fail(`sw.js app-shell cache/freshness rules are missing ${needle}.`);
+for (const needle of ['RUSlogoNew.png', 'mobile-shell.js', 'site-search.js', 'optimization-polish.js', 'desktop-optimizations.js', 'desktop-v2.js', 'nav-menu.js', 'app-shell-polish.js']) {
+  if (!sw.includes(needle)) fail(`sw.js app-shell cache is missing ${needle}.`);
+}
+
+for (const needle of ['LIVE_DATA', 'staleWhileRevalidate', 'networkFirst', 'cacheFirst']) {
+  if (!sw.includes(needle)) fail(`sw.js is missing caching strategy ${needle}.`);
 }
 
 if (!process.exitCode) console.log('App shell sanity checks passed.');
