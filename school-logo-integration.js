@@ -18,7 +18,9 @@ function start(){
     const n=parent?.querySelector('.team-name,.team-link,.team-title,[data-team]');
     return n?(n.dataset?.team||n.textContent?.trim()||''):'';
   };
+  const isProtectedLogo=img=>img.dataset.rusSponsorLogo==='1'||img.matches?.('.team-sponsor-logo,.rus-team-hero-sponsor-logo,.sponsor-logo')||!!img.closest?.('.team-sponsor,.rus-team-hero-sponsor,.sponsor-card');
   const replaceExisting=root=>nodes(root,'img').forEach(img=>{
+    if(isProtectedLogo(img))return;
     const team=teamFromImage(img);if(!team)return;
     const url=A.logoUrl?.(team)||'';if(url&&img.getAttribute('src')!==url){img.src=url;img.srcset='';img.dataset.rusCustomLogo='1'}
   });
