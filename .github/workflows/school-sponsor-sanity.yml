@@ -9,6 +9,12 @@ on:
       - 'team-page-fixes.js'
       - 'school-sponsor.js'
       - 'school-sponsors.json'
+      - 'teams.html'
+      - 'sponsors.html'
+      - 'about.html'
+      - 'nav-menu.js'
+      - 'weekly-simulation-promo.js'
+      - 'home-scorigami-carousel.js'
       - 'scripts/check-school-sponsor.mjs'
       - '.github/workflows/school-sponsor-sanity.yml'
   push:
@@ -19,6 +25,12 @@ on:
       - 'team-page-fixes.js'
       - 'school-sponsor.js'
       - 'school-sponsors.json'
+      - 'teams.html'
+      - 'sponsors.html'
+      - 'about.html'
+      - 'nav-menu.js'
+      - 'weekly-simulation-promo.js'
+      - 'home-scorigami-carousel.js'
       - 'scripts/check-school-sponsor.mjs'
       - '.github/workflows/school-sponsor-sanity.yml'
 
@@ -41,6 +53,9 @@ jobs:
           node --check team-logo-header.js
           node --check team-page-fixes.js
           node --check school-sponsor.js
+          node --check nav-menu.js
+          node --check weekly-simulation-promo.js
+          node --check home-scorigami-carousel.js
           node --check scripts/check-school-sponsor.mjs
       - name: Verify school sponsor system
         run: node scripts/check-school-sponsor.mjs
