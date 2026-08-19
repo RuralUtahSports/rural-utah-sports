@@ -1,0 +1,50 @@
+name: First Render Sanity
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'nav-menu.js'
+      - 'team-enhancements.js'
+      - 'team-enhancements-runtime.js'
+      - 'pwa.js'
+      - 'sw.js'
+      - 'scripts/check-first-render.mjs'
+      - '.github/workflows/first-render-sanity.yml'
+  pull_request:
+    paths:
+      - 'nav-menu.js'
+      - 'team-enhancements.js'
+      - 'team-enhancements-runtime.js'
+      - 'pwa.js'
+      - 'sw.js'
+      - 'scripts/check-first-render.mjs'
+      - '.github/workflows/first-render-sanity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  first-render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check nav-menu.js
+          node --check team-enhancements.js
+          node --check team-enhancements-runtime.js
+          node --check pwa.js
+          node --check sw.js
+          node --check scripts/check-first-render.mjs
+
+      - name: Verify mobile first render
+        run: node scripts/check-first-render.mjs

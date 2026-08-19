@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260818-perf6';
+const CACHE='rus-site-20260819-lcp1';
 const CORE=[
   './',
   './index.html',
