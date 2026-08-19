@@ -1,344 +1,175 @@
 #!/usr/bin/env python3
 import argparse, io, json, os, re, shutil, urllib.parse, urllib.request
+from html import escape as h
 from pathlib import Path
-from html import escape as html_escape
-
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-ROOT = Path(__file__).resolve().parents[1]
-BASE_URL = "https://ruralutahsports.github.io/rural-utah-sports"
-ORANGE = "#F14D07"
-CUSTOM_LOGOS = {
-    "GREEN CANYON":"school-logos/green-canyon.svg","HILLCREST":"school-logos/hillcrest.svg",
-    "KEARNS":"school-logos/kearns.svg","LAYTON CHRISTIAN":"school-logos/layton-christian.svg",
-    "LAYTON CHRISTIAN ACADEMY":"school-logos/layton-christian.svg","LONE PEAK":"school-logos/lone-peak.svg",
-    "MAPLE MOUNTAIN":"school-logos/maple-mountain.svg","MILFORD":"school-logos/milford.svg",
-    "MILLARD":"school-logos/millard.svg","MORGAN":"school-logos/morgan.svg","OREM":"school-logos/orem.svg",
-    "PROVIDENCE HALL":"school-logos/providence-hall.svg","RICH":"school-logos/rich-user.svg",
-    "SAN JUAN":"school-logos/san-juan.svg","VIEWMONT":"school-logos/viewmont.svg",
-    "EAST":"school-logos/east-user.svg?v=20260817-1","GRAND":"school-logos/grand.webp?v=20260817-1",
-    "GRAND COUNTY":"school-logos/grand.webp?v=20260817-1","RIDGELINE":"school-logos/ridgeline-card.png?v=20260817-7",
-    "SOUTH SUMMIT":"school-logos/south-summit.webp?v=20260817-1",
-}
-ALIASES = {
-    "CEDAR CITY":"CEDAR","GRAND COUNTY":"GRAND","MONUMENT VAL":"MONUMENT VALLEY",
-    "LAYTON CHRISTIAN ACADEMY":"LAYTON CHRISTIAN","AMERICAN LEADERSHIP ACADEMY":"ALA",
-}
-W, H = 1200, 630
+ROOT=Path(__file__).resolve().parents[1]
+BASE="https://ruralutahsports.github.io/rural-utah-sports"
+ORANGE="#F14D07"; W,H=1200,630
+ALIASES={"CEDAR CITY":"CEDAR","GRAND COUNTY":"GRAND","MONUMENT VAL":"MONUMENT VALLEY","LAYTON CHRISTIAN ACADEMY":"LAYTON CHRISTIAN","AMERICAN LEADERSHIP ACADEMY":"ALA"}
+CUSTOM={"GREEN CANYON":"school-logos/green-canyon.svg","HILLCREST":"school-logos/hillcrest.svg","KEARNS":"school-logos/kearns.svg","LAYTON CHRISTIAN":"school-logos/layton-christian.svg","LAYTON CHRISTIAN ACADEMY":"school-logos/layton-christian.svg","LONE PEAK":"school-logos/lone-peak.svg","MAPLE MOUNTAIN":"school-logos/maple-mountain.svg","MILFORD":"school-logos/milford.svg","MILLARD":"school-logos/millard.svg","MORGAN":"school-logos/morgan.svg","OREM":"school-logos/orem.svg","PROVIDENCE HALL":"school-logos/providence-hall.svg","RICH":"school-logos/rich-user.svg","SAN JUAN":"school-logos/san-juan.svg","VIEWMONT":"school-logos/viewmont.svg","EAST":"school-logos/east-user.svg","GRAND":"school-logos/grand.webp","GRAND COUNTY":"school-logos/grand.webp","RIDGELINE":"school-logos/ridgeline-card.png","SOUTH SUMMIT":"school-logos/south-summit.webp"}
+LOGO_CACHE={}
 
-def read_json(name, default):
-    p = ROOT / name
-    if not p.exists(): return default
-    with p.open(encoding="utf-8") as f: return json.load(f)
-
-def norm(v):
-    return re.sub(r"\s+", " ", str(v or "").strip()).upper()
-
-def rank_key(v):
-    n = norm(v)
-    return ALIASES.get(n, n)
-
-def compact(v):
-    return re.sub(r"[^A-Z0-9]", "", rank_key(v))
-
-def slug(v):
-    s = re.sub(r"[^a-z0-9]+", "-", str(v or "").strip().lower()).strip("-")
-    return s or "unknown"
-
-def safe_id(v):
-    return urllib.parse.quote(str(v or "").strip(), safe="-_.~")
-
-def valid_hex(v, fallback="#333333"):
-    s = str(v or "")
-    return s if re.fullmatch(r"#[0-9a-fA-F]{6}", s) else fallback
-
-def as_num(v):
-    try:
-        if v is None or v == "": return None
-        return float(str(v).replace(",", ""))
-    except Exception:
-        return None
-
-def fmt_num(v):
-    n = as_num(v)
-    if n is None: return "—"
+def data(name, fallback):
+    p=ROOT/name
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else fallback
+def norm(v): return re.sub(r"\s+"," ",str(v or "").strip()).upper()
+def key(v): return ALIASES.get(norm(v),norm(v))
+def compact(v): return re.sub(r"[^A-Z0-9]","",key(v))
+def slug(v): return re.sub(r"[^a-z0-9]+","-",str(v or "").lower()).strip("-") or "unknown"
+def safe(v): return urllib.parse.quote(str(v or "").strip(),safe="-_.~")
+def color(v,default="#333333"):
+    s=str(v or ""); return s if re.fullmatch(r"#[0-9A-Fa-f]{6}",s) else default
+def number(v):
+    try: return None if v is None or v=="" else float(str(v).replace(",",""))
+    except: return None
+def shown(v):
+    n=number(v)
+    if n is None:return "—"
     return f"{int(n):,}" if n.is_integer() else f"{n:,.1f}".rstrip("0").rstrip(".")
-
-def record_maps(standings):
-    out = {}
-    groups = standings.get("byClassification", {}) if isinstance(standings, dict) else {}
-    for rows in groups.values():
-        for r in rows or []:
-            t = rank_key(r.get("team"))
-            if not t: continue
-            w, l, ties = int(r.get("wins") or 0), int(r.get("losses") or 0), int(r.get("ties") or 0)
-            out[t] = f"{w}-{l}-{ties}" if ties else f"{w}-{l}"
-    return out
-
-def ranking_maps(rankings):
-    out = {}
-    groups = rankings.get("classifications", {}) if isinstance(rankings, dict) else {}
-    for cls, rows in groups.items():
-        for i, r in enumerate(rows or [], 1):
-            team = r if isinstance(r, str) else r.get("team")
-            if team: out[rank_key(team)] = (i, str(cls))
-    return out
-
-def team_index(teams):
-    return {rank_key(t.get("team")): t for t in teams if isinstance(t, dict) and t.get("team")}
-
-def font(size, bold=False):
-    paths = [
+def font(sz,bold=False):
+    choices=[
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
         "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
     ]
-    for p in paths:
-        if os.path.exists(p): return ImageFont.truetype(p, size)
+    for p in choices:
+        if os.path.exists(p): return ImageFont.truetype(p,sz)
     return ImageFont.load_default()
+def width(d,t,f): return d.textbbox((0,0),str(t),font=f)[2]
+def fit(d,t,maxw,start,minimum=24):
+    for s in range(start,minimum-1,-2):
+        f=font(s,True)
+        if width(d,t,f)<=maxw:return f
+    return font(minimum,True)
 
-def text_width(draw, text, fnt):
-    return draw.textbbox((0,0), str(text), font=fnt)[2]
+def records(standings):
+    out={}
+    for rows in (standings.get("byClassification") or {}).values():
+        for r in rows or []:
+            w,l,t=int(r.get("wins") or 0),int(r.get("losses") or 0),int(r.get("ties") or 0)
+            out[key(r.get("team"))]=f"{w}-{l}-{t}" if t else f"{w}-{l}"
+    return out
+def ranks(rankings):
+    out={}
+    for cls,rows in (rankings.get("classifications") or {}).items():
+        for i,r in enumerate(rows or [],1):
+            team=r if isinstance(r,str) else r.get("team")
+            if team:out[key(team)]=(i,str(cls))
+    return out
+def team_index(rows): return {key(x.get("team")):x for x in rows if isinstance(x,dict) and x.get("team")}
+def meta(team,teams,rec,rank):
+    t=teams.get(key(team),{}); rr=rank.get(key(team))
+    return t,rec.get(key(team),"0-0"),rr,str(t.get("classification") or (rr[1] if rr else "")),str(t.get("mascot") or ""),color(t.get("backgroundColor"))
 
-def fit_text(draw, text, max_width, start_size, min_size=24, bold=True):
-    for size in range(start_size, min_size-1, -2):
-        f = font(size, bold)
-        if text_width(draw, text, f) <= max_width: return f
-    return font(min_size, bold)
-
-def local_custom_logo(team):
-    raw = CUSTOM_LOGOS.get(norm(team))
-    if not raw: return None
-    return ROOT / raw.split("?", 1)[0]
-
-def load_logo(team, directory):
-    sources = []
-    p = local_custom_logo(team)
-    if p and p.exists(): sources.append(str(p))
-    d = directory.get(norm(team)) or directory.get(rank_key(team)) or {}
-    if d.get("logoUrl"): sources.append(d["logoUrl"])
-    sources.append(str(ROOT / "RUSlogoNew.png"))
+def logo(team,directory):
+    k=key(team)
+    if k in LOGO_CACHE:return LOGO_CACHE[k].copy()
+    sources=[]
+    local=CUSTOM.get(norm(team)) or CUSTOM.get(k)
+    if local and (ROOT/local).exists():sources.append(str(ROOT/local))
+    info=directory.get(norm(team)) or directory.get(k) or {}
+    if info.get("logoUrl"):sources.append(info["logoUrl"])
+    sources.append(str(ROOT/"RUSlogoNew.png"))
     for src in sources:
         try:
             if src.startswith("http"):
-                req = urllib.request.Request(src, headers={"User-Agent":"RuralUtahSports/1.0"})
-                with urllib.request.urlopen(req, timeout=10) as r: data = r.read()
-                suffix = urllib.parse.urlparse(src).path.lower()
+                req=urllib.request.Request(src,headers={"User-Agent":"RuralUtahSports/1.0"})
+                raw=urllib.request.urlopen(req,timeout=10).read(); ext=urllib.parse.urlparse(src).path.lower()
             else:
-                data = Path(src).read_bytes()
-                suffix = str(src).lower()
-            if suffix.endswith(".svg"):
+                raw=Path(src).read_bytes(); ext=src.lower()
+            if ext.endswith(".svg"):
                 import cairosvg
-                data = cairosvg.svg2png(bytestring=data, output_width=500, output_height=500)
-            img = Image.open(io.BytesIO(data)).convert("RGBA")
-            if img.width and img.height: return img
+                raw=cairosvg.svg2png(bytestring=raw,output_width=500,output_height=500)
+            im=Image.open(io.BytesIO(raw)).convert("RGBA")
+            LOGO_CACHE[k]=im
+            return im.copy()
         except Exception:
-            continue
-    return Image.new("RGBA", (1,1), (0,0,0,0))
+            pass
+    im=Image.new("RGBA",(1,1),(0,0,0,0)); LOGO_CACHE[k]=im
+    return im.copy()
+def paste(canvas,im,box):
+    x0,y0,x1,y1=box; im=ImageOps.contain(im,(x1-x0,y1-y0),Image.Resampling.LANCZOS)
+    canvas.alpha_composite(im,(x0+(x1-x0-im.width)//2,y0+(y1-y0-im.height)//2))
+def canvas():
+    im=Image.new("RGBA",(W,H),"#090909"); d=ImageDraw.Draw(im)
+    d.rectangle((0,0,W,8),fill=ORANGE); d.text((58,36),"RURAL UTAH SPORTS",font=font(27,True),fill="white"); d.text((58,73),"UTAH HIGH SCHOOL FOOTBALL",font=font(15,True),fill=ORANGE)
+    return im,d
+def save(im,p):
+    p.parent.mkdir(parents=True,exist_ok=True); im.convert("RGB").save(p,"PNG",optimize=True,compress_level=9)
 
-def paste_contain(canvas, logo, box):
-    x0,y0,x1,y1 = box
-    fitted = ImageOps.contain(logo, (x1-x0, y1-y0), Image.Resampling.LANCZOS)
-    x = x0 + (x1-x0-fitted.width)//2
-    y = y0 + (y1-y0-fitted.height)//2
-    canvas.alpha_composite(fitted, (x,y))
+def team_image(team,teams,rec,rank,directory,out):
+    _,record,r,cls,mascot,c=meta(team,teams,rec,rank); im,d=canvas()
+    d.rectangle((0,118,W,H),fill="#101010"); d.rectangle((0,118,32,H),fill=c); d.rounded_rectangle((68,155,390,544),24,fill="#171717",outline="#333333",width=2)
+    paste(im,logo(team,directory),(105,190,353,438)); d.text((109,464),f"{cls or 'UTAH'} FOOTBALL",font=font(18,True),fill="#aaa")
+    name=str(team).upper(); f=fit(d,name,700,66,34); d.text((445,174),name,font=f,fill="white")
+    if mascot:d.text((449,258),mascot.upper(),font=font(27,True),fill=c)
+    d.text((449,341),record,font=font(68,True),fill="white"); d.text((452,414),"2026 RECORD",font=font(17,True),fill="#888")
+    if r:d.rounded_rectangle((448,465,710,520),14,fill=c); d.text((468,478),f"#{r[0]} {r[1]} RUS",font=font(23,True),fill="white")
+    d.text((890,560),"ruralutahsports.github.io",font=font(15,True),fill="#666"); save(im,out)
+def game_id(date,away,home): return f"{str(date or '').strip()}|{compact(away)}|{compact(home)}"
+def game_slug(date,away,home): return slug(f"{re.sub(r'[^0-9]+','-',str(date or '')).strip('-')}-{away}-at-{home}")
+def game_image(g,teams,rec,rank,directory,out):
+    a,hme=g["awayTeam"],g["homeTeam"]; _,ar,_,_,_,ac=meta(a,teams,rec,rank); _,hr,_,_,_,hc=meta(hme,teams,rec,rank); im,d=canvas()
+    d.rectangle((0,118,W,H),fill="#101010"); d.rectangle((0,118,18,H),fill=ac); d.rectangle((W-18,118,W,H),fill=hc); d.rectangle((594,140,606,545),fill="#2b2b2b")
+    paste(im,logo(a,directory),(120,165,395,390)); paste(im,logo(hme,directory),(805,165,1080,390))
+    for team,x in ((a,0),(hme,600)):
+        f=fit(d,str(team).upper(),510,42,25); tw=width(d,str(team).upper(),f); d.text((x+(600-tw)//2,405),str(team).upper(),font=f,fill="white")
+    d.text((300-width(d,ar,font(29,True))//2,463),ar,font=font(29,True),fill=ac); d.text((900-width(d,hr,font(29,True))//2,463),hr,font=font(29,True),fill=hc)
+    aa,hh=number(g.get("actualAway")),number(g.get("actualHome")); center=f"FINAL  {shown(aa)} – {shown(hh)}" if aa is not None and hh is not None else "GAME PREVIEW"
+    f=font(24,True); tw=width(d,center,f); d.rounded_rectangle((600-tw//2-24,523,600+tw//2+24,568),12,fill=ORANGE); d.text((600-tw//2,531),center,font=f,fill="black")
+    dt=str(g.get("date") or "2026"); f=font(17,True); d.text((600-width(d,dt,f)//2,579),dt,font=f,fill="#888"); save(im,out)
 
-def base_canvas():
-    img = Image.new("RGBA", (W,H), "#090909")
-    d = ImageDraw.Draw(img)
-    d.rectangle((0,0,W,8), fill=ORANGE)
-    d.text((58,36), "RURAL UTAH SPORTS", font=font(27, True), fill="#FFFFFF")
-    d.text((58,73), "UTAH HIGH SCHOOL FOOTBALL", font=font(15, True), fill=ORANGE)
-    return img, d
-
-def save_png(img, path):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    img.convert("RGB").save(path, "PNG", optimize=True, compress_level=9)
-
-def team_meta(team, teams_by_name, records, ranks):
-    t = teams_by_name.get(rank_key(team), {})
-    rec = records.get(rank_key(team), "0-0")
-    rank = ranks.get(rank_key(team))
-    cls = str(t.get("classification") or (rank[1] if rank else ""))
-    mascot = str(t.get("mascot") or "")
-    bg = valid_hex(t.get("backgroundColor"), "#333333")
-    return t, rec, rank, cls, mascot, bg
-
-def draw_team_image(team, teams_by_name, records, ranks, directory, out):
-    t, rec, rank, cls, mascot, bg = team_meta(team, teams_by_name, records, ranks)
-    img,d = base_canvas()
-    d.rectangle((0,118,W,H), fill="#101010")
-    d.rectangle((0,118,32,H), fill=bg)
-    d.rounded_rectangle((68,155,390,544), radius=24, fill="#171717", outline="#333333", width=2)
-    logo = load_logo(team, directory)
-    paste_contain(img, logo, (105,190,353,438))
-    d.text((109,464), f"{cls or 'UTAH'} FOOTBALL", font=font(18, True), fill="#AAAAAA")
-    name = norm(team).title() if norm(team).isupper() else str(team)
-    nf = fit_text(d, name.upper(), 700, 66, 34, True)
-    d.text((445,174), name.upper(), font=nf, fill="#FFFFFF")
-    if mascot:
-        d.text((449,258), mascot.upper(), font=font(27, True), fill=bg)
-    d.text((449,341), rec, font=font(68, True), fill="#FFFFFF")
-    d.text((452,414), "2026 RECORD", font=font(17, True), fill="#888888")
-    if rank:
-        d.rounded_rectangle((448,465,700,520), radius=14, fill=bg)
-        d.text((468,478), f"#{rank[0]} {rank[1]} RUS", font=font(23, True), fill="#FFFFFF")
-    d.text((920,560), "ruralutahsports.com", font=font(15, True), fill="#666666")
-    save_png(img, out)
-
-def game_key(date, away, home):
-    return f"{str(date or '').strip()}|{compact(away)}|{compact(home)}"
-
-def game_slug(date, away, home):
-    date_s = re.sub(r"[^0-9]+", "-", str(date or "")).strip("-")
-    return slug(f"{date_s}-{away}-at-{home}")
-
-def draw_game_image(g, teams_by_name, records, ranks, directory, out):
-    away, home = g.get("awayTeam",""), g.get("homeTeam","")
-    _, arec, arank, acls, _, acolor = team_meta(away, teams_by_name, records, ranks)
-    _, hrec, hrank, hcls, _, hcolor = team_meta(home, teams_by_name, records, ranks)
-    img,d = base_canvas()
-    d.rectangle((0,118,600,H), fill="#101010")
-    d.rectangle((600,118,W,H), fill="#101010")
-    d.rectangle((0,118,18,H), fill=acolor); d.rectangle((W-18,118,W,H), fill=hcolor)
-    d.rectangle((594,140,606,545), fill="#2b2b2b")
-    alogo, hlogo = load_logo(away,directory), load_logo(home,directory)
-    paste_contain(img, alogo, (120,165,395,390))
-    paste_contain(img, hlogo, (805,165,1080,390))
-    af = fit_text(d, str(away).upper(), 510, 42, 25, True)
-    hf = fit_text(d, str(home).upper(), 510, 42, 25, True)
-    aw = text_width(d, str(away).upper(), af); hw = text_width(d, str(home).upper(), hf)
-    d.text(((600-aw)//2,405), str(away).upper(), font=af, fill="#FFFFFF")
-    d.text((600+(600-hw)//2,405), str(home).upper(), font=hf, fill="#FFFFFF")
-    d.text((300-text_width(d,arec,font(29,True))//2,463), arec, font=font(29,True), fill=acolor)
-    d.text((900-text_width(d,hrec,font(29,True))//2,463), hrec, font=font(29,True), fill=hcolor)
-    actual_a, actual_h = as_num(g.get("actualAway")), as_num(g.get("actualHome"))
-    if actual_a is not None and actual_h is not None:
-        center = f"FINAL  {fmt_num(actual_a)} – {fmt_num(actual_h)}"
-    else:
-        center = "GAME PREVIEW"
-    cf = font(24, True)
-    cw=text_width(d,center,cf)
-    d.rounded_rectangle((600-cw//2-24,523,600+cw//2+24,568), radius=12, fill=ORANGE)
-    d.text((600-cw//2,531),center,font=cf,fill="#000000")
-    date=str(g.get("date") or "2026")
-    df=font(17,True); dw=text_width(d,date,df); d.text((600-dw//2,579),date,font=df,fill="#888888")
-    save_png(img, out)
-
-def html_page(title, description, share_url, image_url, target_url):
-    e = html_escape
-    return f"""<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{e(title)}</title><meta name="description" content="{e(description)}">
-<meta name="robots" content="noindex,follow"><link rel="canonical" href="{e(target_url)}">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Rural Utah Sports">
-<meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(description)}">
-<meta property="og:url" content="{e(share_url)}"><meta property="og:image" content="{e(image_url)}">
-<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)}">
-<meta name="twitter:description" content="{e(description)}"><meta name="twitter:image" content="{e(image_url)}">
-<meta http-equiv="refresh" content="0;url={e(target_url)}">
-<style>body{{margin:0;background:#111;color:#fff;font:16px Arial,sans-serif;display:grid;place-items:center;min-height:100vh}}a{{color:#F14D07;font-weight:800}}</style>
-</head><body><p>Opening <a href="{e(target_url)}">{e(title)}</a>…</p>
-<script>location.replace({json.dumps(target_url)});</script></body></html>"""
-
-def write_text(path, text):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
-
-def player_stat_summary(team_data, player):
-    pid = str(player.get("playerId") or "")
-    items=[]
-    for section in team_data.get("stats",[]) or []:
-        for row in section.get("rows",[]) or []:
-            if str(row.get("playerId") or "") != pid: continue
+def page(title,desc,share,image,target):
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{h(title)}</title><meta name="description" content="{h(desc)}"><meta name="robots" content="noindex,follow"><link rel="canonical" href="{h(target)}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Rural Utah Sports"><meta property="og:title" content="{h(title)}"><meta property="og:description" content="{h(desc)}"><meta property="og:url" content="{h(share)}"><meta property="og:image" content="{h(image)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{h(title)}"><meta name="twitter:description" content="{h(desc)}"><meta name="twitter:image" content="{h(image)}"><meta http-equiv="refresh" content="0;url={h(target)}">
+<style>body{{margin:0;background:#111;color:#fff;font:16px Arial,sans-serif;display:grid;place-items:center;min-height:100vh}}a{{color:#F14D07;font-weight:800}}</style></head><body><p>Opening <a href="{h(target)}">{h(title)}</a>…</p><script>location.replace({json.dumps(target)});</script></body></html>'''
+def write(p,s): p.parent.mkdir(parents=True,exist_ok=True); p.write_text(s,encoding="utf-8")
+def stat_summary(td,p):
+    pid=str(p.get("playerId") or ""); bits=[]
+    for sec in td.get("stats",[]) or []:
+        for row in sec.get("rows",[]) or []:
+            if str(row.get("playerId") or "")!=pid:continue
             vals=row.get("values") or {}
-            for key in ("Yards","TD","Touchdowns","Tackles","Sacks","Interceptions","Catches"):
-                if key in vals and str(vals[key]).strip():
-                    items.append(f"{key} {vals[key]}")
-                    break
-            if len(items)>=2: return " • ".join(items)
+            for k in ("Yards","TD","Touchdowns","Tackles","Sacks","Interceptions","Catches"):
+                if k in vals and str(vals[k]).strip():bits.append(f"{k} {vals[k]}");break
+            if len(bits)>=2:return " • ".join(bits)
     return "2026 player profile and reported statistics"
 
 def build(check=False):
-    teams = read_json("teams-data.json", [])
-    standings = read_json("standings-2026.json", {})
-    rankings = read_json("rankings-current-2026.json", {})
-    directory = read_json("school-directory.json", {})
-    rosters = read_json("deseret-rosters-stats-2026.json", {})
-    weekly = read_json("weekly-simulation.json", {})
-    teams_by_name = team_index(teams)
-    records = record_maps(standings)
-    ranks = ranking_maps(rankings)
-    current_teams = sorted({rank_key(k) for k in (rosters.get("teams") or {}).keys()} | set(teams_by_name.keys()))
-    current_teams = [t for t in current_teams if t]
-    players = []
-    for team, data in (rosters.get("teams") or {}).items():
+    team_rows=data("teams-data.json",[]); standings=data("standings-2026.json",{}); ranking=data("rankings-current-2026.json",{}); directory=data("school-directory.json",{}); rosters=data("deseret-rosters-stats-2026.json",{}); weekly=data("weekly-simulation.json",{})
+    teams=team_index(team_rows); rec=records(standings); rank=ranks(ranking); roster_teams=rosters.get("teams") or {}; games=[g for g in (weekly.get("games") or []) if g.get("awayTeam") and g.get("homeTeam")]
+    current=sorted({key(x) for x in roster_teams}|{key(g["awayTeam"]) for g in games}|{key(g["homeTeam"]) for g in games}); players=[]
+    for t,td in roster_teams.items():
         seen=set()
-        for p in data.get("roster",[]) or []:
+        for p in td.get("roster",[]) or []:
             pid=str(p.get("playerId") or "").strip()
-            if pid and p.get("name") and pid not in seen:
-                seen.add(pid); players.append((team,data,p))
-    games = [g for g in (weekly.get("games") or []) if g.get("awayTeam") and g.get("homeTeam")]
+            if pid and p.get("name") and pid not in seen:seen.add(pid); players.append((t,td,p))
     if check:
-        if len(current_teams) < 100: raise SystemExit(f"share preview check: only {len(current_teams)} teams")
-        if len(players) < 1000: raise SystemExit(f"share preview check: only {len(players)} players")
-        if not games: raise SystemExit("share preview check: no weekly games")
-        tmp = ROOT / ".share-preview-check.png"
-        draw_team_image(current_teams[0], teams_by_name, records, ranks, directory, tmp)
-        if not tmp.exists() or tmp.stat().st_size < 5000: raise SystemExit("team preview render failed")
-        tmp.unlink(missing_ok=True)
-        print(f"Share preview check passed: {len(current_teams)} teams, {len(players)} players, {len(games)} games.")
-        return
-
-    share_root, image_root = ROOT/"share", ROOT/"share-images"
-    if share_root.exists(): shutil.rmtree(share_root)
-    if image_root.exists(): shutil.rmtree(image_root)
+        if len(current)<100 or len(players)<1000 or not games:raise SystemExit(f"Insufficient share data: teams={len(current)} players={len(players)} games={len(games)}")
+        tmp=ROOT/".share-preview-check.png"; team_image(current[0],teams,rec,rank,directory,tmp)
+        if not tmp.exists() or tmp.stat().st_size<5000:raise SystemExit("Preview render failed")
+        tmp.unlink(missing_ok=True); print(f"Share preview check passed: {len(current)} teams, {len(players)} players, {len(games)} games."); return
+    for p in (ROOT/"share",ROOT/"share-images"):
+        if p.exists():shutil.rmtree(p)
     manifest={"generatedFor":"2026","team":{},"player":{},"game":{}}
-    for team in current_teams:
-        key=rank_key(team); s=slug(team)
-        t, rec, rank, cls, mascot, _ = team_meta(team, teams_by_name, records, ranks)
-        image_rel=f"share-images/teams/{s}.png"
-        draw_team_image(team, teams_by_name, records, ranks, directory, ROOT/image_rel)
-        target=f"{BASE_URL}/team.html?team={urllib.parse.quote(str(team))}"
-        share=f"{BASE_URL}/share/team/{s}/"
-        rank_text=f" • #{rank[0]} {rank[1]} RUS" if rank else ""
-        title=f"{str(team).title()} {mascot} Football | Rural Utah Sports".replace("  "," ")
-        desc=f"2026 {cls or 'Utah'} football • {rec}{rank_text}. Team history, games, rankings, ELO and stats."
-        write_text(ROOT/f"share/team/{s}/index.html", html_page(title,desc,share,f"{BASE_URL}/{image_rel}",target))
-        manifest["team"][key]=f"share/team/{s}/"
-    for team,data,p in players:
-        pid=str(p["playerId"]); sid=safe_id(pid)
-        t, rec, rank, cls, mascot, _=team_meta(team,teams_by_name,records,ranks)
-        number=f"#{p.get('number')} " if str(p.get("number") or "").strip() else ""
-        pos=str(p.get("position") or "").strip()
-        klass=str(p.get("class") or "").strip()
-        bits=[x for x in (pos,klass,cls) if x]
-        title=f"{p.get('name')} | {team} Football | Rural Utah Sports"
-        desc=f"{number}{' • '.join(bits)} • {team}. {player_stat_summary(data,p)}."
-        image_rel=f"share-images/teams/{slug(rank_key(team))}.png"
-        if not (ROOT/image_rel).exists(): image_rel="RUSlogoNew.png"
-        target=f"{BASE_URL}/player.html?id={urllib.parse.quote(pid)}"
-        share=f"{BASE_URL}/share/player/{sid}/"
-        write_text(ROOT/f"share/player/{sid}/index.html", html_page(title,desc,share,f"{BASE_URL}/{image_rel}",target))
-        manifest["player"][pid]=f"share/player/{sid}/"
+    for t in current:
+        _,record,r,cls,mascot,_=meta(t,teams,rec,rank); s=slug(t); image=f"share-images/teams/{s}.png"; team_image(t,teams,rec,rank,directory,ROOT/image)
+        target=f"{BASE}/team.html?team={urllib.parse.quote(t)}"; share=f"{BASE}/share/team/{s}/"; rtxt=f" • #{r[0]} {r[1]} RUS" if r else ""
+        title=f"{t.title()} {mascot} Football | Rural Utah Sports".replace("  "," "); desc=f"2026 {cls or 'Utah'} football • {record}{rtxt}. Team history, games, rankings, ELO and stats."
+        write(ROOT/f"share/team/{s}/index.html",page(title,desc,share,f"{BASE}/{image}",target)); manifest["team"][key(t)]=f"share/team/{s}/"
+    for t,td,p in players:
+        pid=str(p["playerId"]); sid=safe(pid); _,_,_,cls,_,_=meta(t,teams,rec,rank); bits=[x for x in (str(p.get("position") or "").strip(),str(p.get("class") or "").strip(),cls) if x]; num=f"#{p.get('number')} " if str(p.get("number") or "").strip() else ""
+        title=f"{p.get('name')} | {t} Football | Rural Utah Sports"; desc=f"{num}{' • '.join(bits)} • {t}. {stat_summary(td,p)}."; image=f"share-images/teams/{slug(key(t))}.png"
+        if not (ROOT/image).exists():image="RUSlogoNew.png"
+        target=f"{BASE}/player.html?id={urllib.parse.quote(pid)}"; share=f"{BASE}/share/player/{sid}/"; write(ROOT/f"share/player/{sid}/index.html",page(title,desc,share,f"{BASE}/{image}",target)); manifest["player"][pid]=f"share/player/{sid}/"
     for g in games:
-        away,home,date=g["awayTeam"],g["homeTeam"],g.get("date","")
-        gs=game_slug(date,away,home); k=game_key(date,away,home)
-        image_rel=f"share-images/games/{gs}.png"
-        draw_game_image(g,teams_by_name,records,ranks,directory,ROOT/image_rel)
-        actual_a,actual_h=as_num(g.get("actualAway")),as_num(g.get("actualHome"))
-        status=f"Final: {fmt_num(actual_a)}-{fmt_num(actual_h)}" if actual_a is not None and actual_h is not None else "2026 matchup preview"
-        title=f"{away} at {home} | Rural Utah Sports"
-        desc=f"{status} • {date}. Scores, team records, rankings, ELO and game information."
-        q=urllib.parse.urlencode({"date":date,"away":away,"home":home})
-        target=f"{BASE_URL}/game.html?{q}"; share=f"{BASE_URL}/share/game/{gs}/"
-        write_text(ROOT/f"share/game/{gs}/index.html", html_page(title,desc,share,f"{BASE_URL}/{image_rel}",target))
-        manifest["game"][k]=f"share/game/{gs}/"
-    write_text(ROOT/"share-preview-map.json", json.dumps(manifest,indent=2,ensure_ascii=False)+"\n")
-    print(f"Built {len(manifest['team'])} team, {len(manifest['player'])} player and {len(manifest['game'])} game share previews.")
+        a,hme,dt=g["awayTeam"],g["homeTeam"],g.get("date",""); gs=game_slug(dt,a,hme); image=f"share-images/games/{gs}.png"; game_image(g,teams,rec,rank,directory,ROOT/image); aa,hh=number(g.get("actualAway")),number(g.get("actualHome"))
+        status=f"Final: {shown(aa)}-{shown(hh)}" if aa is not None and hh is not None else "2026 matchup preview"; title=f"{a} at {hme} | Rural Utah Sports"; desc=f"{status} • {dt}. Scores, team records, rankings, ELO and game information."; q=urllib.parse.urlencode({"date":dt,"away":a,"home":hme}); target=f"{BASE}/game.html?{q}"; share=f"{BASE}/share/game/{gs}/"
+        write(ROOT/f"share/game/{gs}/index.html",page(title,desc,share,f"{BASE}/{image}",target)); manifest["game"][game_id(dt,a,hme)]=f"share/game/{gs}/"
+    write(ROOT/"share-preview-map.json",json.dumps(manifest,indent=2,ensure_ascii=False)+"\n"); print(f"Built {len(manifest['team'])} team, {len(manifest['player'])} player and {len(manifest['game'])} game share previews.")
 
-if __name__ == "__main__":
-    ap=argparse.ArgumentParser()
-    ap.add_argument("--check", action="store_true")
-    args=ap.parse_args()
-    build(check=args.check)
+if __name__=="__main__":
+    ap=argparse.ArgumentParser(); ap.add_argument("--check",action="store_true"); build(ap.parse_args().check)
