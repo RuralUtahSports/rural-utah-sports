@@ -7,6 +7,7 @@ on:
     paths:
       - 'index.html'
       - 'nav-menu.js'
+      - 'rus-fetch-cache.js'
       - 'mobile-shell.js'
       - 'desktop-optimizations.js'
       - 'desktop-v2.js'
@@ -56,6 +57,7 @@ on:
     paths:
       - 'index.html'
       - 'nav-menu.js'
+      - 'rus-fetch-cache.js'
       - 'mobile-shell.js'
       - 'desktop-optimizations.js'
       - 'desktop-v2.js'
@@ -120,6 +122,7 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check nav-menu.js
+          node --check rus-fetch-cache.js
           node --check mobile-shell.js
           node --check desktop-optimizations.js
           node --check desktop-v2.js

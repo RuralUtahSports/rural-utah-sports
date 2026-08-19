@@ -1,4 +1,23 @@
 (()=>{
+  function ensureFetchCache(){
+    if(window.__rusFetchCacheInstalled)return Promise.resolve();
+    const existing=[...document.scripts].find(s=>/rus-fetch-cache\.js(?:\?|$)/.test(s.getAttribute('src')||''));
+    return new Promise(resolve=>{
+      if(existing){
+        if(window.__rusFetchCacheInstalled){resolve();return}
+        existing.addEventListener('load',resolve,{once:true});
+        existing.addEventListener('error',resolve,{once:true});
+        setTimeout(resolve,1200);
+        return;
+      }
+      const s=document.createElement('script');
+      s.src='rus-fetch-cache.js?v=20260818-perf5';
+      s.dataset.rusFetchCache='1';
+      s.onload=resolve;s.onerror=resolve;
+      document.head.appendChild(s);
+    });
+  }
+  const fetchCacheReady=ensureFetchCache();
   const GA_ID='G-VB4Y6BRN9M';
   function setupAnalytics(){
     if(!document.querySelector(`script[data-rus-ga="${GA_ID}"]`)){const s=document.createElement('script');s.async=true;s.src=`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_ID)}`;s.dataset.rusGa=GA_ID;document.head.appendChild(s)}
@@ -20,8 +39,9 @@
   function dropdown(label,key){const items=groups[key],cls=groupActive(items)?'active':'';return `<details class="${cls}"><summary>${label}<span class="caret">▼</span></summary><div class="drop">${items.map(([name,href])=>link(name,href)).join('')}</div></details>`}
   function addScript(src,key,async=true){const attr=`data-${key.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}`;if(document.querySelector(`script[${attr}]`)||(key==='rusSchoolAssets'&&window.RUSSchoolAssets))return;const s=document.createElement('script');s.src=src;s.async=async;s.dataset[key]='1';document.body.appendChild(s)}
   function oneOf(...names){return names.includes(path)}
-  function loadExtras(){
-    addScript('pwa.js?v=20260818-perf2','rusPwa',true);addScript('site-search.js?v=20260817-player2','rusSiteSearch',true);addScript('optimization-polish.js?v=20260818-perf1','rusOptimizationPolish',true);addScript('recently-viewed.js?v=20260817-app4','rusRecentlyViewed',true);
+  async function loadExtras(){
+    await fetchCacheReady;
+    addScript('pwa.js?v=20260818-perf5','rusPwa',true);addScript('site-search.js?v=20260817-player2','rusSiteSearch',true);addScript('optimization-polish.js?v=20260818-perf1','rusOptimizationPolish',true);addScript('recently-viewed.js?v=20260817-app4','rusRecentlyViewed',true);
     addScript('site-extras.js','rusExtras',true);addScript('site-polish.js?v=20260818-nav1','rusSitePolish',true);addScript('app-shell-polish.js?v=20260817-app3','rusAppShellPolish',true);addScript('site-share.js','rusShare',true);addScript('favorites.js?v=20260817-header3','rusFavorites',true);addScript('mobile-optimizations.js?v=20260817-mobile2','rusMobileOptimizations',true);addScript('mobile-shell.js?v=20260818-back2','rusMobileShell',true);addScript('desktop-optimizations.js?v=20260818-tableheaderfix','rusDesktopOptimizations',true);
     const schoolAssetPages=['teams.html','team.html','scoreboard.html','standings.html','rankings.html','storylines.html','records.html','stat-leaders.html','weekly-awards.html','team-stats.html','mvp-race.html','all-utah.html','all-state-watch.html','awards-2025.html','player.html','map.html','compare.html','rivalry.html','streaks.html','milestones.html','playoff-picture.html','upsets.html','game-week.html','my-teams.html','player-compare.html','fantasy-football.html','historical-rankings.html'];
     if(oneOf(...schoolAssetPages)){const assetScript=path==='scoreboard.html'?'school-assets-bundle.js?v=20260818-perf2':'school-assets-core.js?v=20260818-perf2';addScript(assetScript,'rusSchoolAssets',true);addScript('school-logo-integration.js?v=20260817-ridgeline6','rusSchoolLogoIntegration',true);addScript('school-colors.js?v=20260813c','rusSchoolColors',true)}

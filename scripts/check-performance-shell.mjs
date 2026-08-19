@@ -10,6 +10,7 @@ const optimization=read('optimization-polish.js');
 const nav=read('nav-menu.js');
 const sw=read('sw.js');
 const pwa=read('pwa.js');
+const fetchCache=read('rus-fetch-cache.js');
 const schoolCore=read('school-assets-core.js');
 const schoolBundle=read('school-assets-bundle.js');
 const scoreboardAssets=read('school-assets-scoreboard.js');
@@ -30,6 +31,19 @@ if(optimization.includes('observer.observe(document.body'))fail('Dynamic image o
 for(const feature of ['recently-viewed.js','home-personalized.js','rus-lines-dashboard.js','game-center-upgrade.js']){
   if(!nav.includes(feature))fail(`nav-menu.js is missing global/page feature loader ${feature}`);
 }
+
+// Shared JSON requests should collapse only while they overlap, not freeze live data for the life of a page.
+for(const token of ['DEDUPE_MS=900','CACHE_BUSTERS','removeLater','response.clone()','window.RUSFetchCache']){
+  if(!fetchCache.includes(token))fail(`rus-fetch-cache.js is missing ${token}`);
+}
+for(const buster of ['v','ver','version','t','ts','timestamp','_']){
+  if(!fetchCache.includes(`'${buster}'`))fail(`rus-fetch-cache.js does not normalize ${buster} cache-busters`);
+}
+if(fetchCache.includes("cache==='no-store'"))fail("rus-fetch-cache.js must allow simultaneous no-store JSON requests to dedupe");
+if(!/setTimeout\([\s\S]{0,180}pending\.delete\(key\)/.test(fetchCache))fail('rus-fetch-cache.js does not expire completed request entries');
+if(!nav.includes('ensureFetchCache')||!nav.includes('fetchCacheReady'))fail('nav-menu.js does not coordinate the shared JSON fetch cache');
+if(!nav.includes("rus-fetch-cache.js?v=20260818-perf5"))fail('nav-menu.js is not loading the current shared fetch cache');
+if(!/async function loadExtras\(\)[\s\S]{0,80}await fetchCacheReady/.test(nav))fail('Feature scripts can start before the shared fetch cache is ready');
 
 // School assets: one shared exact-logo source, lightweight compatibility wrappers, page-scoped enhancements.
 for(const file of ['school-assets-core.js','school-assets-bundle.js','school-assets-scoreboard.js','school-logo-integration.js','school-colors.js','school-colors-page.js']){
@@ -69,12 +83,14 @@ const coreBytes=Buffer.byteLength(schoolCore,'utf8');
 const bundleBytes=Buffer.byteLength(schoolBundle,'utf8');
 const scoreboardBytes=Buffer.byteLength(scoreboardAssets,'utf8');
 const colorLoaderBytes=Buffer.byteLength(colorLoader,'utf8');
+const fetchCacheBytes=Buffer.byteLength(fetchCache,'utf8');
 if(coreBytes>5000)fail(`school-assets-core.js grew too large (${coreBytes} bytes)`);
 if(bundleBytes>1800)fail(`school-assets-bundle.js compatibility wrapper grew too large (${bundleBytes} bytes)`);
 if(colorLoaderBytes>1200)fail(`school-colors.js loader grew too large (${colorLoaderBytes} bytes)`);
+if(fetchCacheBytes>5000)fail(`rus-fetch-cache.js grew too large (${fetchCacheBytes} bytes)`);
 if(scoreboardBytes<=bundleBytes)fail('Scoreboard-only payload is not actually separated from the compatibility wrapper');
 if(!nav.includes("path==='scoreboard.html'?'school-assets-bundle.js?v=20260818-perf2':'school-assets-core.js?v=20260818-perf2'"))fail('nav-menu.js no longer routes school assets by page');
-for(const cached of ["'./school-assets-core.js'","'./school-assets-bundle.js'","'./school-logo-integration.js'","'./school-colors.js'"]){
+for(const cached of ["'./rus-fetch-cache.js'","'./school-assets-core.js'","'./school-assets-bundle.js'","'./school-logo-integration.js'","'./school-colors.js'"]){
   if(!sw.includes(cached))fail(`service worker core cache is missing ${cached}`);
 }
 
@@ -86,9 +102,12 @@ if(/setInterval\s*\(\s*refreshScoreboardExtras/i.test(scoreboardAssets))fail('Sc
 if(/setTimeout\s*\(\s*refreshScoreboardExtras/i.test(scoreboardAssets))fail('Scoreboard extras directly schedule repeated full rescans');
 if(scoreboardAssets.includes('[0,100,400,1000]'))fail('Scoreboard extras restored the four-pass timer refresh pattern');
 
-// Live data must stay network-first; page/static shell must be fast from cache on repeat visits.
-for(const token of ['LIVE_DATA','normalizedLiveKey','CACHE_BUSTERS','staleWhileRevalidate','networkFirst(req,{normalize:true})'])if(!sw.includes(token))fail(`sw.js is missing ${token}`);
+// Live data stays network-first, while the service worker also shares simultaneous network work.
+for(const token of ['LIVE_DATA','JSON_DATA','normalizedLiveKey','CACHE_BUSTERS','NETWORK_INFLIGHT','sharedNetwork','staleWhileRevalidate','networkFirst(req,{normalize:true})']){
+  if(!sw.includes(token))fail(`sw.js is missing ${token}`);
+}
 if(!/req\.mode==='navigate'[\s\S]{0,180}staleWhileRevalidate\(req\)/.test(sw))fail('Navigations are not stale-while-revalidate');
+if(!sw.includes("const key=JSON_DATA.test(url.pathname)?normalizedLiveKey(req):req"))fail('Static JSON cache-busters are not normalized in stale-while-revalidate');
 const liveLine=sw.split('\n').find(line=>line.includes('const LIVE_DATA='))||'';
 for(const staticScript of ['nav-menu','pwa','desktop-optimizations','home-personalized','my-teams-dashboard','game-center-upgrade'])if(liveLine.includes(staticScript))fail(`Static script ${staticScript} is incorrectly classified as LIVE_DATA`);
 for(const liveSource of ['weekly-simulation','deseret','standings-2026','rankings-current','elo-summary'])if(!liveLine.includes(liveSource))fail(`Live source ${liveSource} is missing from LIVE_DATA`);
@@ -109,4 +128,4 @@ for(const file of fs.readdirSync('.').filter(name=>name.endsWith('.html'))){
   if(srcs.includes('school-assets-bundle.js'))legacyBundlePages++;
 }
 
-if(!process.exitCode)console.log(`Performance shell checks passed. Core ${coreBytes} B; legacy wrapper ${bundleBytes} B; scoreboard-only ${scoreboardBytes} B; color loader ${colorLoaderBytes} B; ${legacyBundlePages} legacy HTML tags use the lightweight wrapper.`);
+if(!process.exitCode)console.log(`Performance shell checks passed. Fetch cache ${fetchCacheBytes} B; core ${coreBytes} B; legacy wrapper ${bundleBytes} B; scoreboard-only ${scoreboardBytes} B; color loader ${colorLoaderBytes} B; ${legacyBundlePages} legacy HTML tags use the lightweight wrapper.`);
