@@ -18,11 +18,15 @@ on:
       - 'my-teams-dashboard.js'
       - 'rus-lines-dashboard.js'
       - 'game-center-upgrade.js'
+      - 'app-shell-polish.js'
+      - 'growth-features.js'
+      - 'players.html'
       - 'manifest.webmanifest'
       - 'RUSlogoNew.png'
       - 'deseret-rosters-stats-2026.json'
       - 'deseret-rosters-stats-2025.json'
       - 'scripts/check-app-shell.mjs'
+      - 'scripts/check-growth-features.mjs'
       - '.github/workflows/app-shell-sanity.yml'
   pull_request:
     paths:
@@ -39,11 +43,15 @@ on:
       - 'my-teams-dashboard.js'
       - 'rus-lines-dashboard.js'
       - 'game-center-upgrade.js'
+      - 'app-shell-polish.js'
+      - 'growth-features.js'
+      - 'players.html'
       - 'manifest.webmanifest'
       - 'RUSlogoNew.png'
       - 'deseret-rosters-stats-2026.json'
       - 'deseret-rosters-stats-2025.json'
       - 'scripts/check-app-shell.mjs'
+      - 'scripts/check-growth-features.mjs'
       - '.github/workflows/app-shell-sanity.yml'
 
 permissions:
@@ -76,7 +84,13 @@ jobs:
           node --check my-teams-dashboard.js
           node --check rus-lines-dashboard.js
           node --check game-center-upgrade.js
+          node --check app-shell-polish.js
+          node --check growth-features.js
           node --check scripts/check-app-shell.mjs
+          node --check scripts/check-growth-features.mjs
 
       - name: Verify app shell wiring
         run: node scripts/check-app-shell.mjs
+
+      - name: Verify growth features
+        run: node scripts/check-growth-features.mjs
