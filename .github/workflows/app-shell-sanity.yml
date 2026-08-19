@@ -17,6 +17,9 @@ on:
       - 'school-assets-core.js'
       - 'school-assets-bundle.js'
       - 'school-assets-scoreboard.js'
+      - 'school-logo-integration.js'
+      - 'school-colors.js'
+      - 'school-colors-page.js'
       - 'home-scorigami-carousel.js'
       - 'scorigami-latest.json'
       - 'recently-viewed.js'
@@ -63,6 +66,9 @@ on:
       - 'school-assets-core.js'
       - 'school-assets-bundle.js'
       - 'school-assets-scoreboard.js'
+      - 'school-logo-integration.js'
+      - 'school-colors.js'
+      - 'school-colors-page.js'
       - 'home-scorigami-carousel.js'
       - 'scorigami-latest.json'
       - 'recently-viewed.js'
@@ -124,6 +130,9 @@ jobs:
           node --check school-assets-core.js
           node --check school-assets-bundle.js
           node --check school-assets-scoreboard.js
+          node --check school-logo-integration.js
+          node --check school-colors.js
+          node --check school-colors-page.js
           node --check home-scorigami-carousel.js
           node --check recently-viewed.js
           node --check home-personalized.js
