@@ -12,7 +12,7 @@ for(const token of ['afterFirstPaint','requestAnimationFrame(()=>requestAnimatio
   if(!nav.includes(token))fail(`nav-menu.js is missing deferred first-render token: ${token}`);
 }
 if(/\bsetupAnalytics\(\);/.test(nav.split('const groups=')[0]))fail('Analytics starts immediately before the page can paint');
-for(const token of ['content-visibility:auto','contain-intrinsic-size','#board .date-section:nth-child(n+2)','#state25List .state25-row:nth-child(n+9)','#rankings .rank-card:nth-child(n+3)','#rusMtGrid .rus-mt-card:nth-child(n+3)','#page .single-game-explorer']){
+for(const token of ['content-visibility:auto','contain-intrinsic-size','#board .game:nth-child(n+5)','#state25List .state25-row:nth-child(n+9)','#rankings .rank-card:nth-child(n+3)','#rusMtGrid .rus-mt-card:nth-child(n+3)','#page .single-game-explorer']){
   if(!nav.includes(token))fail(`Mobile off-screen rendering guard is missing ${token}`);
 }
 
