@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260818-perf4';
+const CACHE='rus-site-20260818-perf5';
 const CORE=[
   './',
   './index.html',
@@ -11,6 +11,7 @@ const CORE=[
   './changelog.json',
   './RUSlogoNew.png?v=20260817-iosicon2',
   './nav-menu.js',
+  './rus-fetch-cache.js',
   './mobile-shell.js',
   './site-search.js',
   './optimization-polish.js',
@@ -27,9 +28,11 @@ const CORE=[
 
 // Data that must prefer the network because it can change during the season or on game night.
 const LIVE_DATA=/(weekly-simulation|deseret|live-|standings-2026|rankings-current|rankings-history-2026|elo-summary|playoff-picture|scoreboard.*\.json|2026\.json)/i;
+const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
 const CACHE_BUSTERS=new Set(['v','ver','version','t','ts','timestamp','_']);
+const NETWORK_INFLIGHT=new Map();
 
 self.addEventListener('install',event=>{
   event.waitUntil(
@@ -55,29 +58,42 @@ function normalizedLiveKey(req){
   return new Request(url.toString(),{method:'GET',headers:req.headers,mode:req.mode,credentials:req.credentials,redirect:req.redirect});
 }
 
+function sharedNetwork(id,factory){
+  if(!NETWORK_INFLIGHT.has(id)){
+    const task=Promise.resolve().then(factory);
+    NETWORK_INFLIGHT.set(id,task);
+    task.finally(()=>{if(NETWORK_INFLIGHT.get(id)===task)NETWORK_INFLIGHT.delete(id)}).catch(()=>{});
+  }
+  return NETWORK_INFLIGHT.get(id).then(res=>res.clone());
+}
+
 async function networkFirst(req,{normalize=false}={}){
   const cache=await caches.open(CACHE);
   const key=normalize?normalizedLiveKey(req):req;
-  try{
-    const res=await fetch(req);
-    if(res&&res.ok)await cache.put(key,res.clone());
-    return res;
-  }catch(err){
-    const hit=await cache.match(key);
-    if(hit)return hit;
-    throw err;
-  }
+  const id=`network:${key.url}`;
+  return sharedNetwork(id,async()=>{
+    try{
+      const res=await fetch(req);
+      if(res&&res.ok)await cache.put(key,res.clone());
+      return res;
+    }catch(err){
+      const hit=await cache.match(key);
+      if(hit)return hit;
+      throw err;
+    }
+  });
 }
 
 async function staleWhileRevalidate(req){
   const cache=await caches.open(CACHE);
-  const hit=await cache.match(req);
-  const fresh=fetch(req)
-    .then(async res=>{
-      if(res&&res.ok)await cache.put(req,res.clone());
-      return res;
-    })
-    .catch(()=>null);
+  const url=new URL(req.url);
+  const key=JSON_DATA.test(url.pathname)?normalizedLiveKey(req):req;
+  const hit=await cache.match(key);
+  const fresh=sharedNetwork(`swr:${key.url}`,async()=>{
+    const res=await fetch(req);
+    if(res&&res.ok)await cache.put(key,res.clone());
+    return res;
+  }).catch(()=>null);
   return hit||await fresh||Response.error();
 }
 
@@ -85,9 +101,11 @@ async function cacheFirst(req){
   const cache=await caches.open(CACHE);
   const hit=await cache.match(req);
   if(hit)return hit;
-  const res=await fetch(req);
-  if(res&&res.ok)await cache.put(req,res.clone());
-  return res;
+  return sharedNetwork(`cache:${req.url}`,async()=>{
+    const res=await fetch(req);
+    if(res&&res.ok)await cache.put(req,res.clone());
+    return res;
+  });
 }
 
 self.addEventListener('fetch',event=>{
@@ -96,7 +114,7 @@ self.addEventListener('fetch',event=>{
   const url=new URL(req.url);
   if(url.origin!==location.origin)return;
 
-  // Live football data stays network-first, but cache-busting query strings no longer create endless cache entries.
+  // Live football data stays network-first; duplicate simultaneous requests share one network trip.
   if(LIVE_DATA.test(url.pathname)){
     event.respondWith(networkFirst(req,{normalize:true}));
     return;
@@ -114,6 +132,6 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Versioned JS/CSS, changelog/What's New data, and other static assets refresh quietly after a fast cached response.
+  // Static JSON also normalizes cache-buster parameters, so shared data does not create duplicate cache entries.
   event.respondWith(staleWhileRevalidate(req));
 });
