@@ -7,6 +7,8 @@ const CORE=[
   './rankings.html',
   './standings.html',
   './my-teams.html',
+  './whats-new.html',
+  './changelog.json',
   './RUSlogoNew.png?v=20260817-iosicon2',
   './nav-menu.js',
   './mobile-shell.js',
@@ -108,6 +110,6 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Versioned JS/CSS and other static assets are fast on repeat visits but still refresh quietly.
+  // Versioned JS/CSS, changelog/What's New data, and other static assets refresh quietly after a fast cached response.
   event.respondWith(staleWhileRevalidate(req));
 });
