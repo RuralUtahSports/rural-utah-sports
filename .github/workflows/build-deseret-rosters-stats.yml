@@ -13,6 +13,7 @@ on:
       - 'weekly-awards-stat-status.json'
       - 'manual-stat-corrections-2026.json'
       - 'scripts/build_deseret_rosters_stats.mjs'
+      - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/build_player_game_stats.mjs'
       - 'scripts/build_weekly_awards.mjs'
       - 'scripts/apply_manual_stat_corrections.mjs'
@@ -36,6 +37,8 @@ jobs:
           ref: main
       - name: Build rosters and season player stats
         run: node scripts/build_deseret_rosters_stats.mjs
+      - name: Build compact shared stat metrics
+        run: node scripts/build_deseret_stat_metrics.mjs
       - name: Connect roster players to individual game box scores
         run: node scripts/build_player_game_stats.mjs
       - name: Build automatic weekly awards
@@ -49,6 +52,12 @@ jobs:
           const d=JSON.parse(fs.readFileSync('deseret-rosters-stats-2026.json','utf8'));
           if(!d.summary||d.summary.teams<100) throw new Error('Roster/stat output incomplete');
           console.log(d.summary);
+          const metrics=JSON.parse(fs.readFileSync('deseret-stat-metrics-2026.json','utf8'));
+          const fullBytes=fs.statSync('deseret-rosters-stats-2026.json').size;
+          const metricBytes=fs.statSync('deseret-stat-metrics-2026.json').size;
+          if(Object.keys(metrics.teams||{}).length!==Object.keys(d.teams||{}).length) throw new Error('Compact stat metrics team coverage mismatch');
+          if(metricBytes>=fullBytes*.5) throw new Error('Compact stat metrics payload is unexpectedly large');
+          console.log(`Compact stat metrics: ${(metricBytes/1024).toFixed(1)} KB vs ${(fullBytes/1024).toFixed(1)} KB full`);
           if(fs.existsSync('player-game-stats-2026.json')) console.log(JSON.parse(fs.readFileSync('player-game-stats-2026.json','utf8')).summary);
           const weeklyAwards=JSON.parse(fs.readFileSync('weekly-awards-2026.json','utf8'));
           if(!weeklyAwards.weeks?.length) throw new Error('Weekly awards output is empty');
@@ -61,7 +70,7 @@ jobs:
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add deseret-rosters-stats-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
+          git add deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
           if git diff --cached --quiet; then echo "Roster/stat data already current."; exit 0; fi
           git commit -m "Auto-sync Deseret rosters and stats"
           ok=0
