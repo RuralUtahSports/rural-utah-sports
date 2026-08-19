@@ -65,7 +65,7 @@ const swVersion=sw.match(/const CACHE='rus-site-([^']+)'/)?.[1];
 if(!pwaVersion||!swVersion)fail('Could not read PWA/service-worker cache versions');
 else if(pwaVersion!==swVersion)fail(`PWA version ${pwaVersion} does not match service-worker cache ${swVersion}`);
 
-// Catch accidental duplicate direct script tags within any single HTML page.
+// Catch accidental duplicate direct script tags and keep the large school bundle off non-scoreboard HTML.
 for(const file of fs.readdirSync('.').filter(name=>name.endsWith('.html'))){
   const html=read(file);
   const srcs=[...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi)].map(m=>m[1].split('?')[0]);
@@ -73,6 +73,9 @@ for(const file of fs.readdirSync('.').filter(name=>name.endsWith('.html'))){
   for(const src of srcs){
     if(seen.has(src))fail(`${file} directly includes ${src} more than once`);
     seen.add(src);
+  }
+  if(file!=='scoreboard.html'&&srcs.includes('school-assets-bundle.js')){
+    fail(`${file} directly loads the full school-assets-bundle.js instead of the lightweight core`);
   }
 }
 
