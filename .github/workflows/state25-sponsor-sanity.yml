@@ -1,0 +1,43 @@
+name: State Top 25 Sponsor Sanity
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'feature-sponsors.json'
+      - 'rankings-sponsor.js'
+      - 'rankings.html'
+      - 'sponsors.html'
+      - 'share-graphic.js'
+      - 'scripts/check-state25-sponsor.mjs'
+      - '.github/workflows/state25-sponsor-sanity.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'feature-sponsors.json'
+      - 'rankings-sponsor.js'
+      - 'rankings.html'
+      - 'sponsors.html'
+      - 'share-graphic.js'
+      - 'scripts/check-state25-sponsor.mjs'
+      - '.github/workflows/state25-sponsor-sanity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  state25-sponsor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          node --check rankings-sponsor.js
+          node --check scripts/check-state25-sponsor.mjs
+      - name: Verify State Top 25 sponsorship
+        run: node scripts/check-state25-sponsor.mjs
