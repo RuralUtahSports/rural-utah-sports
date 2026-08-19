@@ -1,7 +1,15 @@
 (()=>{
 'use strict';
+const TTL=8*24*60*60*1000;
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-const parseDate=v=>{const t=Date.parse(String(v||''));return Number.isFinite(t)?t:0};
+const parseDate=v=>{
+  const text=String(v||'').trim();
+  const m=text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(m)return new Date(Number(m[3]),Number(m[1])-1,Number(m[2])).getTime();
+  const t=Date.parse(text);
+  return Number.isFinite(t)?t:0;
+};
+let recentAlerts=null,alertsPromise=null;
 
 function addStyles(){
   if(document.getElementById('rus-scorigami-carousel-style'))return;
@@ -44,22 +52,55 @@ function addStyles(){
   document.head.appendChild(s);
 }
 
+function freshAlerts(data){
+  const now=Date.now();
+  return (Array.isArray(data?.alerts)?data.alerts:[])
+    .filter(a=>a&&a.date&&a.score)
+    .map(a=>({...a,_ts:parseDate(a.date)}))
+    .filter(a=>a._ts&&now-a._ts>=0&&now-a._ts<TTL)
+    .sort((a,b)=>b._ts-a._ts);
+}
+
+async function loadAlerts(){
+  if(recentAlerts)return recentAlerts;
+  if(alertsPromise)return alertsPromise;
+  alertsPromise=fetch(`scorigami-latest.json?v=${Date.now()}`,{cache:'no-store'})
+    .then(r=>{if(!r.ok)throw new Error('scorigami-latest');return r.json()})
+    .then(data=>{recentAlerts=freshAlerts(data);return recentAlerts})
+    .finally(()=>{alertsPromise=null});
+  return alertsPromise;
+}
+
 function resultHTML(a){
   if(a.tie)return `${esc(a.awayTeam)} <span class="rus-scorigami-score">${a.awayScore}–${a.homeScore}</span> ${esc(a.homeTeam)}`;
   return `${esc(a.winner)} <span class="rus-scorigami-score">${a.winnerScore}–${a.loserScore}</span> ${esc(a.loser)}`;
+}
+
+function chipHTML(a){
+  const left=a.awayTeam||a.winner||'';
+  const right=a.homeTeam||a.loser||'';
+  const leftScore=a.awayScore??a.winnerScore??'';
+  const rightScore=a.homeScore??a.loserScore??'';
+  return `<a class="rus-home-chip" href="scorigami.html?score=${encodeURIComponent(a.score||'')}"><span>${esc(left)} ${esc(leftScore)}–${esc(rightScore)} ${esc(right)}</span><strong>NEW</strong></a>`;
+}
+
+function syncPersonalized(alerts){
+  const heading=[...document.querySelectorAll('.rus-home-block h3')].find(h=>h.textContent.trim().toLowerCase()==='new scorigami');
+  const mini=heading?.parentElement?.querySelector('.rus-home-mini');
+  if(!mini)return;
+  const top=alerts.slice(0,3);
+  const signature=top.map(a=>`${a.date}|${a.score}`).join('||')||'none';
+  if(mini.dataset.rusScorigamiFreshness===signature)return;
+  mini.dataset.rusScorigamiFreshness=signature;
+  mini.innerHTML=top.length?top.map(chipHTML).join(''):'<div class="rus-home-empty">No new Scorigami alerts loaded.</div>';
 }
 
 async function upgrade(alertEl){
   if(!alertEl||alertEl.dataset.carouselReady==='1')return;
   alertEl.dataset.carouselReady='1';
   try{
-    const r=await fetch(`scorigami-latest.json?v=${Date.now()}`,{cache:'no-store'});
-    if(!r.ok)throw new Error('scorigami-latest');
-    const d=await r.json();
-    const alerts=(Array.isArray(d.alerts)?d.alerts:[]).filter(a=>{
-      const age=Date.now()-parseDate(a.date);
-      return age>=0&&age<=8*24*3600*1000;
-    });
+    const alerts=await loadAlerts();
+    if(!alerts.length){alertEl.remove();return}
     if(alerts.length<2)return;
 
     addStyles();
@@ -116,9 +157,18 @@ async function upgrade(alertEl){
   }
 }
 
-const existing=document.querySelector('.rus-scorigami-alert');
-if(existing)upgrade(existing);
+async function refresh(){
+  try{
+    const alerts=await loadAlerts();
+    syncPersonalized(alerts);
+    const alertEl=document.querySelector('.rus-scorigami-alert');
+    if(alertEl)upgrade(alertEl);
+  }catch(e){console.warn('Scorigami freshness unavailable',e)}
+}
+
+refresh();
 const observer=new MutationObserver(()=>{
+  if(recentAlerts)syncPersonalized(recentAlerts);
   const el=document.querySelector('.rus-scorigami-alert');
   if(el)upgrade(el);
 });
