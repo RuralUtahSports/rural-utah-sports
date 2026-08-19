@@ -1,14 +1,14 @@
 import fs from 'node:fs';
 
-const required=['my-teams.html','my-teams-dashboard.js','teams-data.json','standings-2026.json','elo-summary.json','weekly-simulation.json','rankings-current-2026.json','deseret-rosters-stats-2026.json','share-preview-map.json'];
+const required=['my-teams.html','my-teams-dashboard-v3.js','teams-data.json','standings-2026.json','elo-summary.json','weekly-simulation.json','rankings-current-2026.json','deseret-rosters-stats-2026.json','share-preview-map.json'];
 for(const file of required) if(!fs.existsSync(file)) throw new Error(`Missing My Teams dependency: ${file}`);
 
 const html=fs.readFileSync('my-teams.html','utf8');
-for(const token of ['my-teams-dashboard.js?v=20260818-mt3','data-rus-my-teams-dashboard','without needing a full-season schedule']){
+for(const token of ['my-teams-dashboard-v3.js?v=20260818-mt3','data-rus-my-teams-dashboard','without needing a full-season schedule']){
   if(!html.includes(token)) throw new Error(`My Teams page is missing ${token}`);
 }
 
-const js=fs.readFileSync('my-teams-dashboard.js','utf8');
+const js=fs.readFileSync('my-teams-dashboard-v3.js','utf8');
 for(const token of ['RUS Projection:','RUS Line:','2026 Key Players','Share Team','Share Game','Playing This Week','eloLast','share-preview-map.json','data-rus-key-players']){
   if(!js.includes(token)) throw new Error(`My Teams dashboard is missing ${token}`);
 }
