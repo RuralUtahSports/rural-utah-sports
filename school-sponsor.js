@@ -1,5 +1,7 @@
 (()=>{
 'use strict';
+if((location.pathname.split('/').pop()||'').toLowerCase()!=='team.html')return;
+if(window.__rusSchoolSponsorLoaded)return;window.__rusSchoolSponsorLoaded=true;
 const norm=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const aliases={AMERICANLEADERSHIPACADEMY:'ALA'};
@@ -46,7 +48,8 @@ async function start(){
   const entry=data[key]||null;if(!entry)return;
   if(render(entry))return;
   const root=document.getElementById('page');if(!root)return;
-  const observer=new MutationObserver(()=>{if(render(entry))observer.disconnect()});observer.observe(root,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),10000);
+  const observer=new MutationObserver(()=>{if(render(entry))observer.disconnect()});observer.observe(root,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),30000);
 }
-start();
+function boot(){start();window.addEventListener('pageshow',()=>setTimeout(start,0),{passive:true})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
