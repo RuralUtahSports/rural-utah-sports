@@ -5,6 +5,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'index.html'
       - 'nav-menu.js'
       - 'mobile-shell.js'
       - 'desktop-optimizations.js'
@@ -15,6 +16,8 @@ on:
       - 'optimization-polish.js'
       - 'school-assets-core.js'
       - 'school-assets-bundle.js'
+      - 'home-scorigami-carousel.js'
+      - 'scorigami-latest.json'
       - 'recently-viewed.js'
       - 'home-personalized.js'
       - 'my-teams.html'
@@ -43,9 +46,11 @@ on:
       - 'scripts/check-record-watch-everywhere.mjs'
       - 'scripts/check-my-teams.mjs'
       - 'scripts/check-performance-shell.mjs'
+      - 'scripts/check-home-scorigami.mjs'
       - '.github/workflows/app-shell-sanity.yml'
   pull_request:
     paths:
+      - 'index.html'
       - 'nav-menu.js'
       - 'mobile-shell.js'
       - 'desktop-optimizations.js'
@@ -56,6 +61,8 @@ on:
       - 'optimization-polish.js'
       - 'school-assets-core.js'
       - 'school-assets-bundle.js'
+      - 'home-scorigami-carousel.js'
+      - 'scorigami-latest.json'
       - 'recently-viewed.js'
       - 'home-personalized.js'
       - 'my-teams.html'
@@ -84,6 +91,7 @@ on:
       - 'scripts/check-record-watch-everywhere.mjs'
       - 'scripts/check-my-teams.mjs'
       - 'scripts/check-performance-shell.mjs'
+      - 'scripts/check-home-scorigami.mjs'
       - '.github/workflows/app-shell-sanity.yml'
 
 permissions:
@@ -113,6 +121,7 @@ jobs:
           node --check optimization-polish.js
           node --check school-assets-core.js
           node --check school-assets-bundle.js
+          node --check home-scorigami-carousel.js
           node --check recently-viewed.js
           node --check home-personalized.js
           node --check my-teams-dashboard.js
@@ -127,12 +136,16 @@ jobs:
           node --check scripts/check-record-watch-everywhere.mjs
           node --check scripts/check-my-teams.mjs
           node --check scripts/check-performance-shell.mjs
+          node --check scripts/check-home-scorigami.mjs
 
       - name: Verify app shell wiring
         run: node scripts/check-app-shell.mjs
 
       - name: Verify performance shell
         run: node scripts/check-performance-shell.mjs
+
+      - name: Verify homepage Scorigami freshness
+        run: node scripts/check-home-scorigami.mjs
 
       - name: Verify growth features
         run: node scripts/check-growth-features.mjs
