@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260819-lcp1';
+const CACHE='rus-site-20260819-sponsor2';
 const CORE=[
   './',
   './index.html',
@@ -31,6 +31,7 @@ const LIVE_DATA=/(weekly-simulation|deseret|live-|standings-2026|rankings-curren
 const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
+const FRESH_HTML=/\/rankings\.html$/i;
 const CACHE_BUSTERS=new Set(['v','ver','version','t','ts','timestamp','_']);
 const NETWORK_INFLIGHT=new Map();
 
@@ -120,7 +121,13 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Once visited, page shells can render immediately while refreshing in the background.
+  // Rankings carries live editorial content and sponsor placements, so always prefer the fresh shell.
+  if(FRESH_HTML.test(url.pathname)){
+    event.respondWith(networkFirst(req));
+    return;
+  }
+
+  // Other visited page shells can render immediately while refreshing in the background.
   if(req.mode==='navigate'||HTML.test(url.pathname)){
     event.respondWith(staleWhileRevalidate(req));
     return;
