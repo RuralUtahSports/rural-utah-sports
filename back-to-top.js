@@ -70,6 +70,51 @@
   });
   update();
 
+  function setupCompactTeamFilters(){
+    if(!/(^|\/)teams\.html$/.test(location.pathname)&&!location.pathname.endsWith('/teams'))return;
+    const panel=document.querySelector('.filter-panel'),title=panel?.querySelector('.filter-title'),grid=panel?.querySelector('.filter-grid');
+    if(!panel||!title||!grid||document.getElementById('rusMobileTeamFilterToggle'))return;
+    document.body.classList.add('rus-compact-team-filters');
+    const compactStyle=document.createElement('style');
+    compactStyle.id='rus-compact-team-filter-style';
+    compactStyle.textContent=`
+      .rus-mobile-team-filter-toggle{display:none}
+      @media(max-width:700px){
+        body.rus-compact-team-filters .compare-link{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:34px!important;height:auto!important;padding:7px 10px!important;margin:0 0 10px!important;font-size:10px!important;border-radius:6px!important}
+        body.rus-compact-team-filters .filter-panel{padding:10px 12px!important;margin-bottom:12px!important;border-top-width:3px!important;border-radius:8px!important}
+        body.rus-compact-team-filters .filter-title{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;margin:0 0 8px!important;font-size:14px!important;line-height:1!important}
+        body.rus-compact-team-filters .rus-mobile-team-filter-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:32px!important;height:32px!important;padding:0 10px!important;border:1px solid #444!important;border-radius:999px!important;background:#171717!important;color:#fff!important;font:900 10px/1 Arial,Helvetica,sans-serif!important;text-transform:uppercase!important;letter-spacing:.35px!important}
+        body.rus-compact-team-filters .rus-mobile-team-filter-toggle[aria-expanded="true"]{border-color:#F14D07!important;color:#F14D07!important}
+        body.rus-compact-team-filters .filter-grid{display:grid!important;grid-template-columns:1fr!important;gap:7px!important}
+        body.rus-compact-team-filters .filter-grid>.filter-group:first-child{display:flex!important;gap:0!important}
+        body.rus-compact-team-filters .filter-grid>.filter-group:first-child label{display:none!important}
+        body.rus-compact-team-filters .filter-grid>.filter-group:nth-child(n+2){display:none!important}
+        body.rus-compact-team-filters .filter-panel.rus-filter-open .filter-grid>.filter-group:nth-child(n+2){display:flex!important}
+        body.rus-compact-team-filters .filter-panel.rus-filter-open .filter-grid>.filter-group{gap:4px!important}
+        body.rus-compact-team-filters .filter-input{height:42px!important;min-height:42px!important;padding:0 12px!important;font-size:16px!important}
+        body.rus-compact-team-filters .filter-select,body.rus-compact-team-filters .clear-button{height:40px!important;min-height:40px!important;font-size:14px!important}
+        body.rus-compact-team-filters .filter-panel.rus-filter-open{padding-bottom:12px!important}
+        body.rus-compact-team-filters .result-count{margin:0 0 8px!important;font-size:12px!important;line-height:1.2!important}
+      }
+    `;
+    document.head.appendChild(compactStyle);
+    const toggle=document.createElement('button');
+    toggle.id='rusMobileTeamFilterToggle';
+    toggle.className='rus-mobile-team-filter-toggle';
+    toggle.type='button';
+    toggle.setAttribute('aria-expanded','false');
+    toggle.setAttribute('aria-controls','teamsFilterGrid');
+    toggle.textContent='Filters';
+    grid.id=grid.id||'teamsFilterGrid';
+    title.appendChild(toggle);
+    const sync=()=>{const open=panel.classList.contains('rus-filter-open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'Hide Filters':'Filters'};
+    toggle.addEventListener('click',()=>{panel.classList.toggle('rus-filter-open');sync()});
+    const clear=panel.querySelector('.clear-button');
+    clear?.addEventListener('click',()=>{if(matchMedia('(max-width:700px)').matches){panel.classList.remove('rus-filter-open');sync()}},{capture:false});
+    matchMedia('(min-width:701px)').addEventListener?.('change',e=>{if(e.matches){panel.classList.remove('rus-filter-open');sync()}});
+  }
+  setupCompactTeamFilters();
+
   if(/(^|\/)championships\.html$/.test(location.pathname)||location.pathname.endsWith('/championships')){
     const champRows=document.getElementById('champRows');
     const winnersWrap=champRows?.closest('.table-wrap');
