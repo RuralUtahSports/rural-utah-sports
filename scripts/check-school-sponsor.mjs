@@ -25,8 +25,8 @@ for(const token of ['isProtectedLogo','.team-sponsor-logo','.rus-team-hero-spons
 if(Buffer.byteLength(loader,'utf8')>900)fail('Team enhancement loader grew past the first-render budget');
 for(const token of ['text-align:center','school-sponsors.json','team-sponsor','Official RUS Sponsor'])if(!teams.includes(token))fail(`teams.html missing ${token}`);
 for(const token of ['RUS Sponsors','school-sponsors.json','Submit an Order by Email','View Sponsored Team'])if(!sponsorsPage.includes(token))fail(`sponsors.html missing ${token}`);
-for(const token of ['New Sponsor','school-sponsors.json','sponsors.html','activeSponsor'])if(!promo.includes(token))fail(`weekly sponsor banner missing ${token}`);
+for(const token of ['New Sponsor','school-sponsors.json','sponsors.html','activeSponsor','max-width:100vw','visibility:visible','animation:rusPromoMarquee 22s','const sponsorItems=sponsors.filter(activeSponsor).map(sponsorItem),items=[...sponsorItems,weeklyItem()]'])if(!promo.includes(token))fail(`weekly sponsor banner missing ${token}`);
 for(const token of ['nextTuesdayReset','d.getDay()','now<nextTuesdayReset(a._ts)'])if(!scorigami.includes(token))fail(`Tuesday Scorigami reset missing ${token}`);
 for(const token of ["about:[['About RUS','about.html'],['Sponsors','sponsors.html']]","dropdown('About','about')"])if(!nav.includes(token))fail(`About navigation missing ${token}`);
 
-if(!process.exitCode)console.log('School sponsor checks passed: sponsor logos are protected from school-logo replacement, JH3D ordering is linked by email, sponsor visibility extends to Teams and the sponsor directory, the marquee announces active sponsors, team names are centered, and homepage Scorigami alerts reset on Tuesday.');
+if(!process.exitCode)console.log('School sponsor checks passed: sponsor logos are protected, the sponsor marquee stays visible and scrolls on mobile with sponsors first, JH3D ordering is linked by email, sponsor visibility extends to Teams and the sponsor directory, team names are centered, and homepage Scorigami alerts reset on Tuesday.');
