@@ -31,4 +31,5 @@ nav{background:rgba(5,5,5,.98)!important;border-bottom:1px solid #2a2a2a!importa
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 `;
 document.head.appendChild(s);
+if(!document.querySelector('script[data-rus-growth-features]')){const g=document.createElement('script');g.src='growth-features.js?v=20260818-growth1';g.defer=true;g.dataset.rusGrowthFeatures='1';document.body.appendChild(g)}
 })();
