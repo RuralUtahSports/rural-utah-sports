@@ -1,6 +1,5 @@
 (()=>{
 'use strict';
-const TTL=8*24*60*60*1000;
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const parseDate=v=>{
   const text=String(v||'').trim();
@@ -8,6 +7,11 @@ const parseDate=v=>{
   if(m)return new Date(Number(m[3]),Number(m[1])-1,Number(m[2])).getTime();
   const t=Date.parse(text);
   return Number.isFinite(t)?t:0;
+};
+const nextTuesdayReset=ts=>{
+  const d=new Date(ts);d.setHours(0,0,0,0);
+  let add=(2-d.getDay()+7)%7;if(add===0)add=7;
+  d.setDate(d.getDate()+add);return d.getTime();
 };
 let recentAlerts=null,alertsPromise=null;
 
@@ -57,7 +61,7 @@ function freshAlerts(data){
   return (Array.isArray(data?.alerts)?data.alerts:[])
     .filter(a=>a&&a.date&&a.score)
     .map(a=>({...a,_ts:parseDate(a.date)}))
-    .filter(a=>a._ts&&now-a._ts>=0&&now-a._ts<TTL)
+    .filter(a=>a._ts&&now>=a._ts&&now<nextTuesdayReset(a._ts))
     .sort((a,b)=>b._ts-a._ts);
 }
 
