@@ -47,7 +47,7 @@ for(const [teamKey,team] of Object.entries(source.teams||{})){
       rows+=categoryRows.length;
     }
   }
-  if(slim.length)teams[teamKey]={team:team?.team||teamKey,stats:slim};
+  teams[teamKey]={team:team?.team||teamKey,stats:slim};
 }
 
 const sourceBytes=fs.statSync(SOURCE).size;
