@@ -18,6 +18,10 @@
     'LAYTON CHRISTIAN':'Layton Christian Academy'
   };
   const CUSTOM_LOGOS={
+    'ALTA':'school-logos/alta.webp',
+    'BEAVER':'school-logos/beaver.webp',
+    'EMERY':'school-logos/emery.webp',
+    'GRANTSVILLE':'school-logos/grantsville.webp',
     'GREEN CANYON':'school-logos/green-canyon.svg',
     'HILLCREST':'school-logos/hillcrest.svg',
     'KEARNS':'school-logos/kearns.svg',
