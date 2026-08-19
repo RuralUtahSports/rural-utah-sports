@@ -16,6 +16,7 @@ on:
       - 'optimization-polish.js'
       - 'school-assets-core.js'
       - 'school-assets-bundle.js'
+      - 'school-assets-scoreboard.js'
       - 'home-scorigami-carousel.js'
       - 'scorigami-latest.json'
       - 'recently-viewed.js'
@@ -61,6 +62,7 @@ on:
       - 'optimization-polish.js'
       - 'school-assets-core.js'
       - 'school-assets-bundle.js'
+      - 'school-assets-scoreboard.js'
       - 'home-scorigami-carousel.js'
       - 'scorigami-latest.json'
       - 'recently-viewed.js'
@@ -121,6 +123,7 @@ jobs:
           node --check optimization-polish.js
           node --check school-assets-core.js
           node --check school-assets-bundle.js
+          node --check school-assets-scoreboard.js
           node --check home-scorigami-carousel.js
           node --check recently-viewed.js
           node --check home-personalized.js
