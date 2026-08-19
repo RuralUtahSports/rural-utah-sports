@@ -22,7 +22,9 @@ async function insert(){
   const copy=document.createElement('div');copy.className='rus-team-brand-copy';title.parentNode.insertBefore(wrap,title);wrap.append(img,copy);copy.append(title,subtitle);
   return true;
 }
-if(!insert()){
-  const root=document.getElementById('page');if(root){const observer=new MutationObserver(async()=>{if(await insert())observer.disconnect()});observer.observe(root,{childList:true,subtree:true})}
-}
+insert().then(ok=>{
+  if(ok)return;
+  const root=document.getElementById('page');if(!root)return;
+  const observer=new MutationObserver(async()=>{if(await insert())observer.disconnect()});observer.observe(root,{childList:true,subtree:true});
+});
 })();
