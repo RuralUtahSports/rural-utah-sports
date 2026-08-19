@@ -1,0 +1,40 @@
+name: Home Game of the Week Sanity
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'home-game-of-week.js'
+      - 'game-of-the-week-2026.json'
+      - 'weekly-simulation-promo.js'
+      - 'home-week-data.json'
+      - 'scripts/check-home-game-of-week.mjs'
+      - '.github/workflows/home-game-of-week-sanity.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'home-game-of-week.js'
+      - 'game-of-the-week-2026.json'
+      - 'weekly-simulation-promo.js'
+      - 'home-week-data.json'
+      - 'scripts/check-home-game-of-week.mjs'
+      - '.github/workflows/home-game-of-week-sanity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  gotw:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          node --check home-game-of-week.js
+          node --check weekly-simulation-promo.js
+          node --check scripts/check-home-game-of-week.mjs
+      - name: Verify homepage Game of the Week
+        run: node scripts/check-home-game-of-week.mjs
