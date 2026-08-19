@@ -15,7 +15,9 @@ on:
       - 'optimization-polish.js'
       - 'recently-viewed.js'
       - 'home-personalized.js'
+      - 'my-teams.html'
       - 'my-teams-dashboard.js'
+      - 'my-teams-dashboard-v4.js'
       - 'rus-lines-dashboard.js'
       - 'game-center-upgrade.js'
       - 'app-shell-polish.js'
@@ -24,6 +26,11 @@ on:
       - 'players.html'
       - 'manifest.webmanifest'
       - 'RUSlogoNew.png'
+      - 'teams-data.json'
+      - 'standings-2026.json'
+      - 'elo-summary.json'
+      - 'rankings-current-2026.json'
+      - 'share-preview-map.json'
       - 'deseret-rosters-stats-2026.json'
       - 'deseret-rosters-stats-2025.json'
       - 'uhsaa-football-records.json'
@@ -32,6 +39,7 @@ on:
       - 'scripts/check-app-shell.mjs'
       - 'scripts/check-growth-features.mjs'
       - 'scripts/check-record-watch-everywhere.mjs'
+      - 'scripts/check-my-teams.mjs'
       - '.github/workflows/app-shell-sanity.yml'
   pull_request:
     paths:
@@ -45,7 +53,9 @@ on:
       - 'optimization-polish.js'
       - 'recently-viewed.js'
       - 'home-personalized.js'
+      - 'my-teams.html'
       - 'my-teams-dashboard.js'
+      - 'my-teams-dashboard-v4.js'
       - 'rus-lines-dashboard.js'
       - 'game-center-upgrade.js'
       - 'app-shell-polish.js'
@@ -54,6 +64,11 @@ on:
       - 'players.html'
       - 'manifest.webmanifest'
       - 'RUSlogoNew.png'
+      - 'teams-data.json'
+      - 'standings-2026.json'
+      - 'elo-summary.json'
+      - 'rankings-current-2026.json'
+      - 'share-preview-map.json'
       - 'deseret-rosters-stats-2026.json'
       - 'deseret-rosters-stats-2025.json'
       - 'uhsaa-football-records.json'
@@ -62,6 +77,7 @@ on:
       - 'scripts/check-app-shell.mjs'
       - 'scripts/check-growth-features.mjs'
       - 'scripts/check-record-watch-everywhere.mjs'
+      - 'scripts/check-my-teams.mjs'
       - '.github/workflows/app-shell-sanity.yml'
 
 permissions:
@@ -92,6 +108,7 @@ jobs:
           node --check recently-viewed.js
           node --check home-personalized.js
           node --check my-teams-dashboard.js
+          node --check my-teams-dashboard-v4.js
           node --check rus-lines-dashboard.js
           node --check game-center-upgrade.js
           node --check app-shell-polish.js
@@ -100,6 +117,7 @@ jobs:
           node --check scripts/check-app-shell.mjs
           node --check scripts/check-growth-features.mjs
           node --check scripts/check-record-watch-everywhere.mjs
+          node --check scripts/check-my-teams.mjs
 
       - name: Verify app shell wiring
         run: node scripts/check-app-shell.mjs
@@ -109,3 +127,6 @@ jobs:
 
       - name: Verify Record Watch everywhere
         run: node scripts/check-record-watch-everywhere.mjs
+
+      - name: Verify My Teams dashboard
+        run: node scripts/check-my-teams.mjs
