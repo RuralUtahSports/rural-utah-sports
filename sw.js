@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260818-perf2';
+const CACHE='rus-site-20260818-perf3';
 const CORE=[
   './',
   './index.html',
@@ -19,7 +19,8 @@ const CORE=[
   './site-credibility.js',
   './seo-structured-data.js',
   './app-shell-polish.js',
-  './school-assets-core.js'
+  './school-assets-core.js',
+  './school-assets-bundle.js'
 ];
 
 // Data that must prefer the network because it can change during the season or on game night.
