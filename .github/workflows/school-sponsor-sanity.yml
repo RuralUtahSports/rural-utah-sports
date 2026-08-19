@@ -6,6 +6,7 @@ on:
     paths:
       - 'team-enhancements.js'
       - 'team-logo-header.js'
+      - 'team-page-fixes.js'
       - 'school-sponsor.js'
       - 'school-sponsors.json'
       - 'scripts/check-school-sponsor.mjs'
@@ -15,6 +16,7 @@ on:
     paths:
       - 'team-enhancements.js'
       - 'team-logo-header.js'
+      - 'team-page-fixes.js'
       - 'school-sponsor.js'
       - 'school-sponsors.json'
       - 'scripts/check-school-sponsor.mjs'
@@ -37,6 +39,7 @@ jobs:
         run: |
           node --check team-enhancements.js
           node --check team-logo-header.js
+          node --check team-page-fixes.js
           node --check school-sponsor.js
           node --check scripts/check-school-sponsor.mjs
       - name: Verify school sponsor system
