@@ -17,6 +17,7 @@ on:
       - 'home-personalized.js'
       - 'my-teams.html'
       - 'my-teams-dashboard.js'
+      - 'my-teams-dashboard-v3.js'
       - 'rus-lines-dashboard.js'
       - 'game-center-upgrade.js'
       - 'app-shell-polish.js'
@@ -54,6 +55,7 @@ on:
       - 'home-personalized.js'
       - 'my-teams.html'
       - 'my-teams-dashboard.js'
+      - 'my-teams-dashboard-v3.js'
       - 'rus-lines-dashboard.js'
       - 'game-center-upgrade.js'
       - 'app-shell-polish.js'
@@ -106,6 +108,7 @@ jobs:
           node --check recently-viewed.js
           node --check home-personalized.js
           node --check my-teams-dashboard.js
+          node --check my-teams-dashboard-v3.js
           node --check rus-lines-dashboard.js
           node --check game-center-upgrade.js
           node --check app-shell-polish.js
