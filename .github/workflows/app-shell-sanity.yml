@@ -40,6 +40,7 @@ on:
       - 'scripts/check-growth-features.mjs'
       - 'scripts/check-record-watch-everywhere.mjs'
       - 'scripts/check-my-teams.mjs'
+      - 'scripts/check-performance-shell.mjs'
       - '.github/workflows/app-shell-sanity.yml'
   pull_request:
     paths:
@@ -78,6 +79,7 @@ on:
       - 'scripts/check-growth-features.mjs'
       - 'scripts/check-record-watch-everywhere.mjs'
       - 'scripts/check-my-teams.mjs'
+      - 'scripts/check-performance-shell.mjs'
       - '.github/workflows/app-shell-sanity.yml'
 
 permissions:
@@ -118,9 +120,13 @@ jobs:
           node --check scripts/check-growth-features.mjs
           node --check scripts/check-record-watch-everywhere.mjs
           node --check scripts/check-my-teams.mjs
+          node --check scripts/check-performance-shell.mjs
 
       - name: Verify app shell wiring
         run: node scripts/check-app-shell.mjs
+
+      - name: Verify performance shell
+        run: node scripts/check-performance-shell.mjs
 
       - name: Verify growth features
         run: node scripts/check-growth-features.mjs
