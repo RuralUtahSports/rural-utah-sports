@@ -42,15 +42,18 @@ on:
       - 'rankings-current-2026.json'
       - 'share-preview-map.json'
       - 'deseret-rosters-stats-2026.json'
+      - 'deseret-stat-metrics-2026.json'
       - 'deseret-rosters-stats-2025.json'
       - 'uhsaa-football-records.json'
       - 'uhsaa-records-defense.json'
       - 'weekly-simulation.json'
+      - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/check-app-shell.mjs'
       - 'scripts/check-growth-features.mjs'
       - 'scripts/check-record-watch-everywhere.mjs'
       - 'scripts/check-my-teams.mjs'
       - 'scripts/check-performance-shell.mjs'
+      - 'scripts/check-payload-size.mjs'
       - 'scripts/check-home-scorigami.mjs'
       - '.github/workflows/app-shell-sanity.yml'
   pull_request:
@@ -92,15 +95,18 @@ on:
       - 'rankings-current-2026.json'
       - 'share-preview-map.json'
       - 'deseret-rosters-stats-2026.json'
+      - 'deseret-stat-metrics-2026.json'
       - 'deseret-rosters-stats-2025.json'
       - 'uhsaa-football-records.json'
       - 'uhsaa-records-defense.json'
       - 'weekly-simulation.json'
+      - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/check-app-shell.mjs'
       - 'scripts/check-growth-features.mjs'
       - 'scripts/check-record-watch-everywhere.mjs'
       - 'scripts/check-my-teams.mjs'
       - 'scripts/check-performance-shell.mjs'
+      - 'scripts/check-payload-size.mjs'
       - 'scripts/check-home-scorigami.mjs'
       - '.github/workflows/app-shell-sanity.yml'
 
@@ -146,12 +152,20 @@ jobs:
           node --check app-shell-polish.js
           node --check growth-features.js
           node --check record-watch-everywhere.js
+          node --check scripts/build_deseret_stat_metrics.mjs
           node --check scripts/check-app-shell.mjs
           node --check scripts/check-growth-features.mjs
           node --check scripts/check-record-watch-everywhere.mjs
           node --check scripts/check-my-teams.mjs
           node --check scripts/check-performance-shell.mjs
+          node --check scripts/check-payload-size.mjs
           node --check scripts/check-home-scorigami.mjs
+
+      - name: Build compact stat payload
+        run: node scripts/build_deseret_stat_metrics.mjs
+
+      - name: Verify compact stat payload
+        run: node scripts/check-payload-size.mjs
 
       - name: Verify app shell wiring
         run: node scripts/check-app-shell.mjs
