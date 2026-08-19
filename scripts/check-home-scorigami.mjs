@@ -10,9 +10,10 @@ const html=fs.readFileSync('index.html','utf8');
 const data=JSON.parse(fs.readFileSync('scorigami-latest.json','utf8'));
 
 for(const token of [
-  'const TTL=8*24*60*60*1000',
+  'nextTuesdayReset',
   "text.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$/)",
-  'now-a._ts<TTL',
+  'd.getDay()',
+  'now<nextTuesdayReset(a._ts)',
   'if(!alerts.length){alertEl.remove();return}',
   'syncPersonalized(alerts)',
   'No new Scorigami alerts loaded.'
@@ -30,14 +31,21 @@ const parse=value=>{
   const t=Date.parse(String(value||''));
   return Number.isFinite(t)?t:0;
 };
+const nextTuesdayReset=ts=>{
+  const d=new Date(ts);d.setHours(0,0,0,0);
+  let add=(2-d.getDay()+7)%7;if(add===0)add=7;
+  d.setDate(d.getDate()+add);return d.getTime();
+};
 for(const alert of data.alerts||[]){
   if(!parse(alert.date))fail(`Invalid Scorigami date: ${alert.date}`);
 }
 
-// A date-only alert must be eligible until just before day 8 and expired at day 8.
-const sample=parse('8/14/2026');
-const ttl=8*24*60*60*1000;
-if(!((sample+ttl-1)-sample<ttl))fail('Scorigami TTL boundary setup is invalid');
-if((sample+ttl)-sample<ttl)fail('Scorigami does not expire at the eight-day boundary');
+// Weekend alerts should disappear at the start of the following Tuesday.
+const friday=parse('8/14/2026');
+const reset=nextTuesdayReset(friday);
+const expected=parse('8/18/2026');
+if(reset!==expected)fail(`Expected Friday alert to reset Tuesday 8/18/2026, got ${new Date(reset).toISOString()}`);
+if(!(reset-1<reset))fail('Scorigami Tuesday reset boundary setup is invalid');
+if(!(reset>=expected))fail('Scorigami reset did not reach Tuesday boundary');
 
-if(!process.exitCode)console.log(`Homepage Scorigami freshness checks passed for ${(data.alerts||[]).length} stored alerts.`);
+if(!process.exitCode)console.log(`Homepage Scorigami Tuesday-reset checks passed for ${(data.alerts||[]).length} stored alerts.`);
