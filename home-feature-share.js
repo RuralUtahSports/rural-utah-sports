@@ -2,7 +2,7 @@
 'use strict';
 const PAGE=(location.pathname.split('/').pop()||'index.html').toLowerCase();
 if(PAGE!==''&&PAGE!=='index.html')return;
-const BUILD='home-feature-share-v1';
+const BUILD='home-feature-share-v2-shapes-logo';
 if(window.__rusHomeFeatureShareBuild===BUILD)return;
 window.__rusHomeFeatureShareBuild=BUILD;
 const ORANGE='#F14D07',GOLD='#D5AD35',BG='#0B0B0B';
@@ -14,14 +14,14 @@ const safeHex=(v,f='#333333')=>/^#[0-9A-F]{6}$/i.test(String(v||''))?String(v):f
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const isoDate=d=>{const s=String(d||'').trim();let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:''};
 const detailKey=g=>`${isoDate(g?.date)}|${String(g?.awayTeam||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}|${String(g?.homeTeam||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}`;
-function roundRect(c,x,y,w,h,r){r=Math.min(r,w/2,h/2);c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function roundRect(c,x,y,w,h,r){r=Math.min(r,w/2,h/2);c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 function fit(c,value,maxWidth,start,min=10,weight=900){let n=start;for(;n>min;n--){c.font=`${weight} ${n}px Arial,Helvetica,sans-serif`;if(c.measureText(String(value)).width<=maxWidth)break}return n}
 function loadImage(src){if(!src)return Promise.resolve(null);return new Promise(resolve=>{let done=false,img=new Image(),url;try{url=new URL(src,location.href)}catch{return resolve(null)}const finish=v=>{if(done)return;done=true;clearTimeout(timer);resolve(v)};if(url.origin!==location.origin)img.crossOrigin='anonymous';img.decoding='async';img.onload=()=>finish(img);img.onerror=()=>finish(null);const timer=setTimeout(()=>finish(null),3500);img.src=url.href})}
 function drawContain(c,img,x,y,w,h,pad=.9){if(!img?.naturalWidth||!img?.naturalHeight)return;const s=Math.min(w/img.naturalWidth,h/img.naturalHeight)*pad,dw=img.naturalWidth*s,dh=img.naturalHeight*s;c.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh)}
 let cache=null;
 async function getJson(name,fallback={}){try{const r=await fetch(`${name}?v=${Date.now()}`,{cache:'no-store'});return r.ok?await r.json():fallback}catch{return fallback}}
 async function loadData(){if(cache)return cache;const [home,cfg,weekly,teams,logos,eloChanges]=await Promise.all([getJson('home-week-data.json',{}),getJson('game-of-the-week-2026.json',{}),getJson('weekly-simulation.json',{}),getJson('teams-data.json',[]),getJson('school-logo-cache.json',{}),getJson('elo-game-changes-2026.json',{})]);const teamMap=new Map();for(const t of teams||[])if(t?.team){teamMap.set(key(t.team),t);teamMap.set(norm(t.team),t)}const rankMap=new Map(),rankSrc=home?.rankings?.classifications||home?.rankings||{};for(const [cls,arr] of Object.entries(rankSrc||{}))(arr||[]).forEach((t,i)=>rankMap.set(key(typeof t==='string'?t:t?.team),{rank:i+1,cls}));cache={home,cfg,weekly,teams,teamMap,rankMap,logos:logos||{},eloChanges:eloChanges?.games||{}};return cache}
-function teamInfo(team,d){const t=d.teamMap.get(key(team))||{},rank=d.rankMap.get(key(team))||null;let logo=d.logos?.[norm(team)]||d.logos?.[key(team)]||'';if(!logo&&window.RUSSchoolAssets?.logoUrl)try{logo=window.RUSSchoolAssets.logoUrl(team)||''}catch{}return{team,rank,logo,bg:safeHex(t.backgroundColor,'#292929'),fg:safeHex(t.textColor,'#FFFFFF'),classification:String(t.classification||rank?.cls||'').toUpperCase()}}
+function teamInfo(team,d){const t=d.teamMap.get(key(team))||{},rank=d.rankMap.get(key(team))||null;let logo='';if(window.RUSSchoolAssets?.customLogo)try{logo=window.RUSSchoolAssets.customLogo(team)||''}catch{}if(!logo)logo=d.logos?.[norm(team)]||d.logos?.[key(team)]||'';if(!logo&&window.RUSSchoolAssets?.logoUrl)try{logo=window.RUSSchoolAssets.logoUrl(team)||''}catch{}return{team,rank,logo,bg:safeHex(t.backgroundColor,'#292929'),fg:safeHex(t.textColor,'#FFFFFF'),classification:String(t.classification||rank?.cls||'').toUpperCase()}}
 function findGame(games,cfg){if(!cfg)return null;return(games||[]).find(g=>(!cfg.date||String(g.date)===String(cfg.date))&&key(g.awayTeam)===key(cfg.awayTeam)&&key(g.homeTeam)===key(cfg.homeTeam))||null}
 function fmtDate(v){const iso=isoDate(v);if(!iso)return String(v||'');const dt=new Date(`${iso}T12:00:00`);return dt.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'})}
 function lineText(g){const a=num(g?.awayScore),h=num(g?.homeScore);if(a===null||h===null)return'RUS featured matchup';const diff=a-h;if(!diff)return'RUS Line: Pick ’em';return`RUS Line: ${diff>0?g.awayTeam:g.homeTeam} -${Math.abs(diff)}`}
