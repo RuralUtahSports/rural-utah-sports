@@ -13,7 +13,11 @@ const loadRankingsSponsorRemoval=()=>{
   if(!rankingsPage||document.querySelector('script[data-rus-rankings-sponsor-removal]'))return;
   const s=document.createElement('script');s.src='rankings-sponsor-removal.js?v=20260819-remove-jh3d';s.async=true;s.dataset.rusRankingsSponsorRemoval='1';document.body.appendChild(s);
 };
-const loadExtras=()=>{loadScoreboard();loadGameVisuals();loadRankingsSponsorRemoval()};
+const loadOverallRankingsShare=()=>{
+  if(!rankingsPage||window.__rusOverallDirectShareBuild==='ios1-overall-direct-canvas'||document.querySelector('script[data-rus-rankings-overall-share]'))return;
+  const s=document.createElement('script');s.src='rankings-overall-share-direct.js?v=20260819-ios1-overall-direct-canvas';s.async=true;s.dataset.rusRankingsOverallShare='1';document.body.appendChild(s);
+};
+const loadExtras=()=>{loadScoreboard();loadGameVisuals();loadRankingsSponsorRemoval();loadOverallRankingsShare()};
 if(window.RUSSchoolAssets){loadExtras();return}
 let core=[...document.scripts].find(s=>(s.getAttribute('src')||'').split('?')[0].endsWith('school-assets-core.js'));
 if(!core){
@@ -21,5 +25,5 @@ if(!core){
 }
 core.addEventListener('load',loadExtras,{once:true});
 window.addEventListener('rus:school-assets-ready',loadExtras,{once:true});
-loadGameVisuals();loadRankingsSponsorRemoval();
+loadGameVisuals();loadRankingsSponsorRemoval();loadOverallRankingsShare();
 })();
