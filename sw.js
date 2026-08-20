@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260819-preview1';
+const CACHE='rus-site-20260819-home-share2';
 const CORE=[
   './',
   './index.html',
@@ -32,7 +32,7 @@ const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
 const FRESH_HTML=/\/rankings\.html$/i;
-const FRESH_JS=/(?:home-game-of-week|game-center-upgrade)\.js$/i;
+const FRESH_JS=/(?:home-game-of-week|home-feature-share|game-center-upgrade)\.js$/i;
 const CACHE_BUSTERS=new Set(['v','ver','version','t','ts','timestamp','_']);
 const NETWORK_INFLIGHT=new Map();
 
@@ -122,7 +122,7 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Editorial preview scripts and rankings should always prefer the current published version.
+  // Editorial preview/share scripts and rankings should always prefer the current published version.
   if(FRESH_JS.test(url.pathname)||FRESH_HTML.test(url.pathname)){
     event.respondWith(networkFirst(req));
     return;
