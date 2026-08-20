@@ -14,8 +14,8 @@ const loadRankingsSponsorRemoval=()=>{
   const s=document.createElement('script');s.src='rankings-sponsor-removal.js?v=20260819-remove-jh3d';s.async=true;s.dataset.rusRankingsSponsorRemoval='1';document.body.appendChild(s);
 };
 const loadOverallRankingsShare=()=>{
-  if(!rankingsPage||window.__rusOverallDirectShareBuild==='ios1-overall-direct-canvas'||document.querySelector('script[data-rus-rankings-overall-share]'))return;
-  const s=document.createElement('script');s.src='rankings-overall-share-direct.js?v=20260819-ios1-overall-direct-canvas';s.async=true;s.dataset.rusRankingsOverallShare='1';document.body.appendChild(s);
+  if(!rankingsPage||window.__rusOverallDirectShareBuild==='ios2-overall-featured-top3'||document.querySelector('script[data-rus-rankings-overall-share]'))return;
+  const s=document.createElement('script');s.src='rankings-overall-share-direct.js?v=20260820-ios2-overall-featured-top3';s.async=true;s.dataset.rusRankingsOverallShare='1';document.body.appendChild(s);
 };
 const loadExtras=()=>{loadScoreboard();loadGameVisuals();loadRankingsSponsorRemoval();loadOverallRankingsShare()};
 if(window.RUSSchoolAssets){loadExtras();return}
