@@ -1,6 +1,6 @@
 (()=>{
 const STYLE_ID='rus-weekly-promo-style',BANNER_ID='rus-weekly-promo';
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;'}[m]));
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const validDate=v=>{const t=Date.parse(String(v||''));return Number.isFinite(t)?t:null};
 const activeSponsor=s=>{if(!s||s.mode!=='sponsor')return false;const now=Date.now(),start=validDate(s.startDate),end=validDate(s.endDate);return(!start||now>=start)&&(!end||now<=end+86399999)};
 if(!document.getElementById(STYLE_ID)){
