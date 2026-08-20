@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260819-projection-consistency1';
+const CACHE='rus-site-20260819-featured-preview3';
 const CORE=[
   './',
   './index.html',
