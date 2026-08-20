@@ -27,7 +27,7 @@
 <main class="container">
 <h2 class="page-title">Weekly Scoreboard</h2>
 <p class="subtitle">RUS projected lines with live/final scores, quarter-by-quarter box scores, scoring plays and available game stats. Live games only display verified reported scores.</p>
-<div class="scoreboard-actions"><button id="shareScoreboardGrid" class="scoreboard-share-button" type="button">Share Scoreboard Graphic</button><span>Build a 4-column × 8-row graphic with up to 32 games.</span></div>
+<div class="scoreboard-actions"><button id="shareScoreboardGrid" class="scoreboard-share-button" type="button">Share All Games / Graphics</button><span>Export every game as full boards or a readable social carousel.</span></div>
 <p class="rus-line-note">RUS spread and O/U are model projections with a 3-point home-field adjustment, not sportsbook or wagering lines.</p>
 <div id="summary" class="summary-grid"></div>
 <div class="filters"><select id="classFilter"><option value="ALL">All Classifications</option><option>6A</option><option>5A</option><option>4A</option><option>3A</option><option>2A</option><option>1A</option><option value="8P">8-Player</option></select><select id="statusFilter"><option value="ALL">All Games</option><option value="LIVE">Live</option><option value="UPCOMING">Upcoming</option><option value="FINAL">Final</option><option value="MERCY">44+ Mercy Rule</option></select><input id="search" type="search" placeholder="Search team…"></div>
@@ -59,7 +59,7 @@ function render(){const cf=$('classFilter').value,sf=$('statusFilter').value,q=n
 ['classFilter','statusFilter'].forEach(id=>$(id).addEventListener('change',render));$('search').addEventListener('input',render);
 </script>
 <script src="share-graphic.js?v=20260820-scoreboard-single-v1" defer></script>
-<script src="scoreboard-share-layout.js?v=20260820-multipage1" defer></script>
+<script src="scoreboard-share-layout.js?v=20260820-multipage2" defer></script>
 <script src="scoreboard-refresh.js?v=3"></script>
 <script src="rus-lines-dashboard.js?v=20260818-ou1" data-rus-lines-dashboard="1" defer></script>
 
