@@ -26,11 +26,7 @@ function watchExports(s){
   document.querySelectorAll('.rus-export-board.rus-export-state25').forEach(board=>enhanceExport(board,s));
   new MutationObserver(records=>records.forEach(record=>record.addedNodes.forEach(scan))).observe(document.body,{childList:true,subtree:true});
 }
-function protectShareButtons(){
-  if(window.__rusState25ShareWatchdog)return;window.__rusState25ShareWatchdog=true;
-  document.addEventListener('click',e=>{const b=e.target.closest?.('.rus-share-option[data-f]');if(!b||!document.querySelector('#state-top-25'))return;setTimeout(()=>{if(b.isConnected&&b.disabled&&/creating/i.test(b.textContent||'')){b.disabled=false;b.textContent='Try Again';console.warn('State Top 25 share export timed out and was reset.')}},15000)},true);
-}
-function loadDirectShareFix(){if(window.__rusState25DirectShareVersion==='ios5-logo-grid'||document.querySelector('script[src*="rankings-share-direct.js?v=20260819-ios5-logo-grid"]'))return;const s=document.createElement('script');s.src='rankings-share-direct.js?v=20260819-ios5-logo-grid';s.defer=true;s.dataset.rusState25DirectShare='ios5-logo-grid';document.body.appendChild(s)}
-async function start(){try{loadDirectShareFix();const r=await fetch(`feature-sponsors.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)return;const cfg=await r.json(),s=cfg?.stateTop25;if(!active(s))return;window.RUSState25FeatureSponsor=s;render(s);watchExports(s);protectShareButtons()}catch(e){console.warn('State Top 25 sponsor unavailable',e)}}
+function loadDirectShareFix(){if(window.__rusState25DirectShareBuild==='ios8-class-share-safety'||document.querySelector('script[src*="rankings-share-direct.js?v=20260819-ios8-class-share-safety"]'))return;const s=document.createElement('script');s.src='rankings-share-direct.js?v=20260819-ios8-class-share-safety';s.defer=true;s.dataset.rusState25DirectShare='ios8-class-share-safety';document.body.appendChild(s)}
+async function start(){try{loadDirectShareFix();const r=await fetch(`feature-sponsors.json?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)return;const cfg=await r.json(),s=cfg?.stateTop25;if(!active(s))return;window.RUSState25FeatureSponsor=s;render(s);watchExports(s)}catch(e){console.warn('State Top 25 sponsor unavailable',e)}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
