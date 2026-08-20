@@ -5,7 +5,10 @@
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   const loadCanvas=()=>window.html2canvas?Promise.resolve():new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)});
   const normTeam=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
+  const TEAM_ALIASES={'CEDAR':'CEDAR CITY','MONUMENT VAL':'MONUMENT VALLEY','GUNNISON':'GUNNISON VALLEY','GRAND COUNTY':'GRAND'};
+  const canonTeam=v=>TEAM_ALIASES[normTeam(v)]||normTeam(v);
   let shareLogosPromise=null;
+  let shareContextPromise=null;
   const loadShareLogos=()=>shareLogosPromise||(shareLogosPromise=(async()=>{
     const logos=await fetch(`school-logo-cache.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():{}).catch(()=>({}));
     try{
@@ -17,17 +20,58 @@
   })());
   const shareLogoFor=(team,logos)=>logos[normTeam(team)]||window.RUSSchoolAssets?.logoUrl?.(team)||'';
 
+  function recordText(row){
+    if(!row)return'';
+    const wins=Number(row.wins),losses=Number(row.losses),ties=Number(row.ties||0);
+    if(!Number.isFinite(wins)||!Number.isFinite(losses))return'';
+    return `${wins}-${losses}${Number.isFinite(ties)&&ties?`-${ties}`:''}`;
+  }
+
+  function metaParts(meta){
+    const parts=String(meta||'').split('•').map(x=>x.trim()).filter(Boolean);
+    return{classification:parts.shift()||'',region:parts.join(' • ')};
+  }
+
+  function formatRegion(region){
+    const value=String(region||'').trim();
+    return /^\d+$/.test(value)?`Region ${value}`:value;
+  }
+
+  function enrichTeam(team,context){
+    const key=canonTeam(team.name),standing=context.records.get(key),classRank=context.classRanks.get(key),stateRank=context.stateRanks.get(key),base=metaParts(team.meta),classification=classRank?.classification||base.classification,record=recordText(standing),meta=[];
+    if(record)meta.push(record);
+    if(classRank)meta.push(`${classRank.classification} #${classRank.rank}`);
+    else if(classification)meta.push(classification);
+    if(base.region)meta.push(formatRegion(base.region));
+    return{...team,displayName:stateRank?`#${stateRank.rank} ${team.name}`:team.name,meta:meta.join(' • ')||team.meta,record,classRank:classRank?.rank||null,stateRank:stateRank?.rank||null};
+  }
+
+  function loadShareContext(){
+    if(shareContextPromise)return shareContextPromise;
+    shareContextPromise=(async()=>{
+      const stamp=Date.now(),get=file=>fetch(`${file}?v=${stamp}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),[standings,classData,stateData]=await Promise.all([get('standings-2026.json'),get('rankings-current-2026.json'),get('state-top25-history-2026.json')]),records=new Map(),classRanks=new Map(),stateRanks=new Map();
+      for(const rows of Object.values(standings?.byClassification||{}))for(const row of rows||[])if(row?.team)records.set(canonTeam(row.team),row);
+      for(const[classification,teams]of Object.entries(classData?.classifications||{}))(teams||[]).forEach((team,index)=>{const name=typeof team==='string'?team:team?.team;if(name)classRanks.set(canonTeam(name),{rank:index+1,classification:classification==='8-PLAYER'?'8P':classification})});
+      const snapshots=stateData?.snapshots||[],latest=snapshots[snapshots.length-1]||stateData;
+      (latest?.teams||latest?.rankings||[]).forEach((team,index)=>{const name=typeof team==='string'?team:team?.team;if(name)stateRanks.set(canonTeam(name),{rank:Number(team?.rank)||index+1})});
+      return{records,classRanks,stateRanks};
+    })();
+    return shareContextPromise;
+  }
+
   function classFromMeta(meta){
     let value=String(meta||'').split('•')[0].trim().toUpperCase();
     if(value==='8-PLAYER')value='8P';
     return value;
   }
 
-  function visibleGames(){
+  async function visibleGames(){
+    const context=await loadShareContext();
     return [...document.querySelectorAll('#board .game')].map((el,index)=>{
       const rows=[...el.querySelectorAll('.team-row')];
-      const teamData=rows.slice(0,2).map(row=>{const nameEl=row.querySelector('.team-name'),img=row.querySelector('.team-logo'),actual=row.querySelector('.actual b')?.textContent?.trim()||'—';return{name:nameEl?.textContent?.trim()||'',meta:row.querySelector('.team-meta')?.textContent?.trim()||'',score:actual,hasActualScore:actual!=='—',color:nameEl?.style.getPropertyValue('--team-bg')||row.style.getPropertyValue('--team-wash')||'#252525',logo:img?.currentSrc||img?.src||'',winner:row.classList.contains('rus-winner')||row.classList.contains('winner')}});
+      const rawTeamData=rows.slice(0,2).map(row=>{const nameEl=row.querySelector('.team-name'),img=row.querySelector('.team-logo'),actual=row.querySelector('.actual b')?.textContent?.trim()||'—';return{name:nameEl?.textContent?.trim()||'',meta:row.querySelector('.team-meta')?.textContent?.trim()||'',score:actual,hasActualScore:actual!=='—',color:nameEl?.style.getPropertyValue('--team-bg')||row.style.getPropertyValue('--team-wash')||'#252525',logo:img?.currentSrc||img?.src||'',winner:row.classList.contains('rus-winner')||row.classList.contains('winner')}});
       const classes=rows.map(row=>classFromMeta(row.querySelector('.team-meta')?.textContent||''));
+      const teamData=rawTeamData.map(team=>enrichTeam(team,context));
       const date=el.closest('.date-section')?.querySelector('.date-head h2')?.textContent?.trim()||'';
       const status=el.querySelector('.status')?.textContent?.trim()||'';
       const pickParts=[...el.querySelectorAll('.pick-result>span')].map(x=>x.textContent?.trim()).filter(Boolean),pick=pickParts.length?pickParts.join(' • '):el.querySelector('.pick-result')?.textContent?.replace(/\s+/g,' ').trim()||'';
@@ -52,9 +96,12 @@
     [item.away,item.home].forEach((team,i)=>{
       const row=teamRows[i];if(!row)return;
       const main=row.querySelector('.team-main');if(!main)return;
+      const teamData=item.teams[i]||{};
       let img=main.querySelector('.team-logo');
       if(!img){img=document.createElement('img');img.className='team-logo';img.alt=`${team} logo`;main.prepend(img)}
-      if(!item.teams[i]?.hasActualScore){row.querySelector('.scores')?.remove();row.classList.add('rus-no-score')}
+      const name=main.querySelector('.team-name');if(name)name.textContent=teamData.displayName||team;
+      const meta=main.querySelector('.team-meta');if(meta)meta.textContent=teamData.meta||'';
+      if(!teamData.hasActualScore){row.querySelector('.scores')?.remove();row.classList.add('rus-no-score')}
       const src=shareLogoFor(team,logos);
       if(src){img.src=src;img.style.display='block';img.style.objectFit='contain';img.style.objectPosition='center'}
       else img.style.display='none';
@@ -86,7 +133,7 @@
     limited.forEach((item,index)=>{const col=index%columns,row=Math.floor(index/columns),x=margin+col*(cardW+gap),y=gridTop+row*(cardH+gap),topH=compactCanvas?38:46,footH=compactCanvas?30:36,teamH=(cardH-topH-footH)/2;
       c.fillStyle='#050505';canvasRoundRect(c,x,y,cardW,cardH,9);c.fill();c.strokeStyle='#353535';c.lineWidth=2;c.stroke();c.save();canvasRoundRect(c,x,y,cardW,cardH,9);c.clip();c.fillStyle='#171717';c.fillRect(x,y,cardW,topH);
       const status=String(item.status||'UPCOMING').toUpperCase(),statusFill=/FINAL/.test(status)?ORANGE:/LIVE|Q[1-4]|HALF|OT/.test(status)?'#FFD54A':'#252525',badgeH=compactCanvas?22:25,badgeY=y+(topH-badgeH)/2,badgeW=Math.min(compactCanvas?108:116,Math.max(64,status.length*(compactCanvas?7:8)+22));c.fillStyle=statusFill;canvasRoundRect(c,x+11,badgeY,badgeW,badgeH,badgeH/2);c.fill();c.fillStyle=statusFill==='#252525'?'#bbb':'#080808';c.font=`1000 ${compactCanvas?10:12}px Arial,Helvetica,sans-serif`;c.textAlign='center';c.textBaseline='middle';c.fillText(status,x+11+badgeW/2,badgeY+badgeH/2);c.textAlign='right';c.fillStyle='#888';fitCanvasText(c,item.date,cardW-badgeW-42,compactCanvas?10:12,7,900);c.fillText(item.date,x+cardW-11,y+topH*.58);
-      item.teams.slice(0,2).forEach((team,teamIndex)=>{const ty=y+topH+teamIndex*teamH,color=safeCanvasColor(team.color),logoSize=Math.min(compactCanvas?50:60,teamH-18),logoX=x+(compactCanvas?12:14),logoY=ty+(teamH-logoSize)/2,nameX=x+(compactCanvas?70:84),showScore=team.hasActualScore===true,scorePanelW=showScore?(compactCanvas?82:90):0,contentW=cardW-scorePanelW,scoreX=x+contentW+scorePanelW/2,textWidth=Math.max(80,x+contentW-(compactCanvas?12:14)-nameX);c.fillStyle=teamIndex?'#080808':'#0c0c0c';c.fillRect(x,ty,cardW,teamH);c.save();c.globalAlpha=.22;c.fillStyle=color;c.fillRect(x,ty,contentW,teamH);c.restore();if(showScore){c.fillStyle='rgba(0,0,0,.28)';c.fillRect(x+contentW,ty,scorePanelW,teamH)}c.fillStyle=color;c.fillRect(x,ty,7,teamH);const img=images[index*2+teamIndex];if(img)drawCanvasContain(c,img,logoX,logoY,logoSize,logoSize);c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#fff';fitCanvasText(c,team.name,textWidth,compactCanvas?22:23,12,1000);c.fillText(team.name,nameX,ty+teamH*.48);c.fillStyle='#8b8b8b';fitCanvasText(c,team.meta,textWidth,compactCanvas?11:12,8,900);c.fillText(team.meta,nameX,ty+teamH*.73);if(showScore){c.textAlign='center';c.fillStyle='#777';c.font=`900 ${compactCanvas?8:9}px Arial,Helvetica,sans-serif`;c.fillText('SCORE',scoreX,ty+teamH*.34);c.fillStyle=team.winner?'#73D977':ORANGE;c.font=`1000 ${compactCanvas?32:34}px Arial,Helvetica,sans-serif`;c.fillText(team.score||'—',scoreX,ty+teamH*.69)}});
+      item.teams.slice(0,2).forEach((team,teamIndex)=>{const ty=y+topH+teamIndex*teamH,color=safeCanvasColor(team.color),logoSize=Math.min(compactCanvas?50:60,teamH-18),logoX=x+(compactCanvas?12:14),logoY=ty+(teamH-logoSize)/2,nameX=x+(compactCanvas?70:84),showScore=team.hasActualScore===true,scorePanelW=showScore?(compactCanvas?82:90):0,contentW=cardW-scorePanelW,scoreX=x+contentW+scorePanelW/2,textWidth=Math.max(80,x+contentW-(compactCanvas?12:14)-nameX),displayName=team.displayName||team.name;c.fillStyle=teamIndex?'#080808':'#0c0c0c';c.fillRect(x,ty,cardW,teamH);c.save();c.globalAlpha=.22;c.fillStyle=color;c.fillRect(x,ty,contentW,teamH);c.restore();if(showScore){c.fillStyle='rgba(0,0,0,.28)';c.fillRect(x+contentW,ty,scorePanelW,teamH)}c.fillStyle=color;c.fillRect(x,ty,7,teamH);const img=images[index*2+teamIndex];if(img)drawCanvasContain(c,img,logoX,logoY,logoSize,logoSize);c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#fff';fitCanvasText(c,displayName,textWidth,compactCanvas?22:23,12,1000);c.fillText(displayName,nameX,ty+teamH*.48);c.fillStyle='#8b8b8b';fitCanvasText(c,team.meta,textWidth,compactCanvas?11:12,8,900);c.fillText(team.meta,nameX,ty+teamH*.73);if(showScore){c.textAlign='center';c.fillStyle='#777';c.font=`900 ${compactCanvas?8:9}px Arial,Helvetica,sans-serif`;c.fillText('SCORE',scoreX,ty+teamH*.34);c.fillStyle=team.winner?'#73D977':ORANGE;c.font=`1000 ${compactCanvas?32:34}px Arial,Helvetica,sans-serif`;c.fillText(team.score||'—',scoreX,ty+teamH*.69)}});
       const fy=y+cardH-footH;c.fillStyle='#111';c.fillRect(x,fy,cardW,footH);c.textAlign='center';c.textBaseline='middle';c.fillStyle=/RUS PICK:\s*W/i.test(item.pick)?'#73D977':/RUS PICK:\s*L/i.test(item.pick)?'#FF7B7B':'#aaa';fitCanvasText(c,item.pick||'RUS SCOREBOARD',cardW-24,13,8,900);c.fillText(item.pick||'RUS SCOREBOARD',x+cardW/2,fy+footH/2);c.restore()});
     c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#777';c.font=`900 ${compactCanvas?14:18}px Arial,Helvetica,sans-serif`;c.fillText('ruralutahsports.github.io',margin,height-(compactCanvas?14:20));c.textAlign='right';c.fillText(`${pageLabel?pageLabel+' • ':''}${limited.length} GAME${limited.length===1?'':'S'}`,width-margin,height-(compactCanvas?14:20));return canvas;
   }
@@ -138,13 +185,13 @@
   }
 
   async function openModal(){
-    addStyles();const games=visibleGames();if(!games.length){alert('No visible games to share.');return}
+    addStyles();const games=await visibleGames();if(!games.length){alert('No visible games to share.');return}
     document.querySelectorAll('.rus-share-modal').forEach(x=>x.remove());
     const pageClass=document.getElementById('classFilter')?.value||'ALL';
     const modal=document.createElement('div');modal.className='rus-share-modal';modal.innerHTML=`
       <div class="rus-share-sheet">
         <h3>Share Scoreboard</h3>
-        <p>Export every game currently shown, or open the custom picker to choose individual games.</p>
+        <p>Export every game currently shown. Current records, class rankings and State Top 25 numbers are included automatically.</p>
         <label class="rus-sb-filter-label">Classification</label>
         <select class="rus-sb-class-filter"><option value="ALL">All Classifications</option><option value="6A">6A</option><option value="5A">5A</option><option value="4A">4A</option><option value="3A">3A</option><option value="2A">2A</option><option value="1A">1A</option><option value="8P">8-Player</option></select>
         <div class="rus-sb-all-label">Export all games shown</div>
