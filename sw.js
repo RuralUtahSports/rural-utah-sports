@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260819-sponsor2';
+const CACHE='rus-site-20260819-preview1';
 const CORE=[
   './',
   './index.html',
@@ -27,11 +27,12 @@ const CORE=[
 ];
 
 // Data that must prefer the network because it can change during the season or on game night.
-const LIVE_DATA=/(weekly-simulation|deseret|live-|standings-2026|rankings-current|rankings-history-2026|elo-summary|playoff-picture|scoreboard.*\.json|2026\.json)/i;
+const LIVE_DATA=/(weekly-simulation|deseret|live-|standings-2026|rankings-current|rankings-history-2026|elo-summary|playoff-picture|game-preview-overrides|scoreboard.*\.json|2026\.json)/i;
 const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
 const FRESH_HTML=/\/rankings\.html$/i;
+const FRESH_JS=/(?:home-game-of-week|game-center-upgrade)\.js$/i;
 const CACHE_BUSTERS=new Set(['v','ver','version','t','ts','timestamp','_']);
 const NETWORK_INFLIGHT=new Map();
 
@@ -121,8 +122,8 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  // Rankings carries live editorial content and sponsor placements, so always prefer the fresh shell.
-  if(FRESH_HTML.test(url.pathname)){
+  // Editorial preview scripts and rankings should always prefer the current published version.
+  if(FRESH_JS.test(url.pathname)||FRESH_HTML.test(url.pathname)){
     event.respondWith(networkFirst(req));
     return;
   }
