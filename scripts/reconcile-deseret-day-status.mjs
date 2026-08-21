@@ -152,7 +152,13 @@ for(const date of dates){
   for(const g of games.filter(x=>isoDate(x.date)===date)){
     const state=liveStateForGame(text,g);if(!state.status)continue;
     const key=gameKey(g),d=details.games?.[key];if(!d)continue;
+    if(d.final===true&&!d.finalSource){
+      // An untagged Final entering this reconciler came from the specific game-page scraper.
+      d.finalSource='deseret-game-page';updated++;
+      console.log(`Preserved game-page Final source: ${key}`);
+    }
     const confirmed=confirmedFinalGameIds.has(gameId(g));
+    const gamePageFinal=d.final===true&&d.finalSource==='deseret-game-page';
     const before=currentTotals(d);
     const score=scoreForGame(text,g,state.status);
     const scoreChanged=!!score&&(!before||before.away!==score.away||before.home!==score.home);
@@ -162,7 +168,7 @@ for(const date of dates){
         d.status='Final';d.final=true;d.clock='';d.period='';d.finalSource='deseret-day-scoreboard';updated++;
         console.log(`Marked Final from day scoreboard: ${key}`);
       }
-    }else if(!confirmed){
+    }else if(!confirmed&&!gamePageFinal){
       let nextStatus=state.status,nextClock=state.clock,nextPeriod=state.period;
       const priorSpecific=/^(?:Q[1-4]|HALFTIME|OT)$/i.test(String(d.status||''));
       if(state.status==='Live'&&priorSpecific&&!scoreChanged){
