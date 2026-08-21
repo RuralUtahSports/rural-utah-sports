@@ -1,21 +1,57 @@
 (()=>{
 'use strict';
 const scorePage=/(?:^|\/)scoreboard\.html$/i.test(location.pathname),gamePage=/(?:^|\/)game\.html$/i.test(location.pathname),rankingsPage=/(?:^|\/)rankings\.html$/i.test(location.pathname);
+
+// Keep the existing scoreboard/game code intact, but transparently overlay the
+// fast Supabase live cache on top of the full GitHub detail history. If the
+// Supabase cache ever gets more than six minutes old, fall back to GitHub.
+if((scorePage||gamePage)&&!window.__RUS_SUPABASE_LIVE_FETCH__){
+  window.__RUS_SUPABASE_LIVE_FETCH__=true;
+  const nativeFetch=window.fetch.bind(window);
+  const supabaseUrl='https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/live-scoreboard';
+  const isDetailRequest=input=>{
+    const raw=typeof input==='string'?input:String(input?.url||'');
+    return /(?:^|\/)deseret-game-details\.json(?:\?|$)/i.test(raw);
+  };
+  window.fetch=async(input,init)=>{
+    if(!isDetailRequest(input))return nativeFetch(input,init);
+    try{
+      const [baseResponse,liveResponse]=await Promise.all([
+        nativeFetch(input,init),
+        nativeFetch(`${supabaseUrl}?v=${Date.now()}`,{cache:'no-store',headers:{Accept:'application/json'}})
+      ]);
+      if(!liveResponse.ok)return baseResponse;
+      if(!baseResponse.ok)return liveResponse;
+      const [base,live]=await Promise.all([baseResponse.json(),liveResponse.json()]);
+      const liveStamp=Date.parse(String(live?.updatedAt||''));
+      const fresh=Number.isFinite(liveStamp)&&Date.now()-liveStamp<6*60*1000&&live?.games&&Object.keys(live.games).length>0;
+      if(!fresh)return new Response(JSON.stringify(base),{status:200,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
+      const baseStamp=Date.parse(String(base?.updatedAt||''));
+      const updatedAt=Number.isFinite(baseStamp)&&baseStamp>liveStamp?base.updatedAt:live.updatedAt;
+      const merged={...base,updatedAt,source:'supabase-live-merged',liveUpdatedAt:live.updatedAt,games:{...(base?.games||{}),...(live?.games||{})}};
+      return new Response(JSON.stringify(merged),{status:200,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
+    }catch(error){
+      console.warn('Supabase live overlay unavailable; using normal scoreboard source.',error);
+      return nativeFetch(input,init);
+    }
+  };
+}
+
 const loadScoreboard=()=>{
   if(!scorePage||document.querySelector('script[data-rus-scoreboard-school-assets]'))return;
-  const s=document.createElement('script');s.src='school-assets-scoreboard.js?v=20260818-perf4';s.async=true;s.dataset.rusScoreboardSchoolAssets='1';document.body.appendChild(s);
+  const s=document.createElement('script');s.src='school-assets-scoreboard.js?v=20260820-supabase-live1';s.async=true;s.dataset.rusScoreboardSchoolAssets='1';document.body.appendChild(s);
 };
 const loadScoreboardLiveClock=()=>{
   if(!scorePage||document.querySelector('script[data-rus-scoreboard-live-clock]'))return;
-  const s=document.createElement('script');s.src='scoreboard-live-clock.js?v=20260820-clock-safe2';s.async=true;s.dataset.rusScoreboardLiveClock='1';document.body.appendChild(s);
+  const s=document.createElement('script');s.src='scoreboard-live-clock.js?v=20260820-supabase-live1';s.async=true;s.dataset.rusScoreboardLiveClock='1';document.body.appendChild(s);
 };
 const loadGameVisuals=()=>{
   if(!gamePage||document.querySelector('script[data-rus-game-center-color-layout]'))return;
-  const s=document.createElement('script');s.src='game-center-color-layout.js?v=20260819-colors2-previewpin';s.async=true;s.dataset.rusGameCenterColorLayout='1';document.body.appendChild(s);
+  const s=document.createElement('script');s.src='game-center-color-layout.js?v=20260820-midwidth1';s.async=true;s.dataset.rusGameCenterColorLayout='1';document.body.appendChild(s);
 };
 const loadGameLiveStatus=()=>{
   if(!gamePage||document.querySelector('script[data-rus-game-live-status-fix]'))return;
-  const s=document.createElement('script');s.src='game-live-status-fix.js?v=20260820-live-final1';s.async=true;s.dataset.rusGameLiveStatusFix='1';document.body.appendChild(s);
+  const s=document.createElement('script');s.src='game-live-status-fix.js?v=20260820-supabase-live1';s.async=true;s.dataset.rusGameLiveStatusFix='1';document.body.appendChild(s);
 };
 const loadRankingsSponsorRemoval=()=>{
   if(!rankingsPage||document.querySelector('script[data-rus-rankings-sponsor-removal]'))return;
@@ -29,7 +65,7 @@ const loadExtras=()=>{loadScoreboard();loadScoreboardLiveClock();loadGameVisuals
 if(window.RUSSchoolAssets){loadExtras();return}
 let core=[...document.scripts].find(s=>(s.getAttribute('src')||'').split('?')[0].endsWith('school-assets-core.js'));
 if(!core){
-  core=document.createElement('script');core.src='school-assets-core.js?v=20260818-perf4';core.async=true;core.dataset.rusSchoolAssetsCore='1';document.body.appendChild(core);
+  core=document.createElement('script');core.src='school-assets-core.js?v=20260820-emery-e1';core.async=true;core.dataset.rusSchoolAssetsCore='1';document.body.appendChild(core);
 }
 core.addEventListener('load',loadExtras,{once:true});
 window.addEventListener('rus:school-assets-ready',loadExtras,{once:true});
