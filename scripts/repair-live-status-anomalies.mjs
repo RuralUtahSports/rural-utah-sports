@@ -34,16 +34,17 @@ for(const [key,g] of Object.entries(data.games||{})){
   const hasClock=!!String(g.clock||'').trim();
   const isConfirmedFinal=confirmedFinalGameIds.has(gameId(g));
   const isMercyFinal=mercyBox(g);
+  const hasAuthoritativeFinal=g.final===true&&(g.finalSource==='deseret-day-scoreboard'||g.finalSource==='confirmed');
 
-  // Same-day games are only allowed to remain Final when we have real end-game
-  // evidence: a known confirmed final, a 44+ mercy finish after three quarters,
-  // or actual fourth-quarter data. This prevents an in-progress game with a
-  // partial box score from inheriting a stray "Final" label from Deseret HTML.
-  if(g.final===true && !isConfirmedFinal && !isMercyFinal && !hasQ4Evidence){
+  // Explicit Finals from the Deseret day scoreboard are authoritative. The
+  // anomaly repair only demotes Finals that came from an ambiguous/weaker
+  // source and have no other end-game evidence.
+  if(g.final===true && !hasAuthoritativeFinal && !isConfirmedFinal && !isMercyFinal && !hasQ4Evidence){
     g.final=false;
     g.status=plays.length?'Live':'Scheduled';
     g.clock='';
     g.period='';
+    delete g.finalSource;
     fixed++;
     console.log(`Reset suspicious Final: ${key} -> ${g.status}`);
     continue;
