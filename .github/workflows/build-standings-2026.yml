@@ -3,7 +3,9 @@ name: Build 2026 Standings
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/15 * * * *'
+    # Stagger this off the top of the hour. A successful run also triggers
+    # Update Live Scoreboard through its workflow_run backup.
+    - cron: '7,17,27,37,47,57 * * * *'
   push:
     paths:
       - 'teams-data.json'
