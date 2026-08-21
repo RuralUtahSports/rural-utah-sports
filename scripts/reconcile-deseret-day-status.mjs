@@ -86,6 +86,18 @@ function liveStateForGame(text,g){
   return{status:'',clock:'',period:''};
 }
 
+function directGamePageFinal(html,g){
+  const raw=String(html||'');
+  const topRaw=raw.slice(0,Math.min(raw.length,220000));
+  if(/['"](?:status|gameStatus)['"]\s*:\s*['"]Final['"]/i.test(topRaw))return true;
+  const text=textOf(topRaw);
+  const beforeDetails=text.split(/Game Details/i)[0]||text.slice(0,12000);
+  const away=positionsOfAny(beforeDetails,namesFor(g.awayTeam));
+  const home=positionsOfAny(beforeDetails,namesFor(g.homeTeam));
+  if(away.length&&home.length&&/\bFinal\b/i.test(beforeDetails))return true;
+  return false;
+}
+
 function lineScore(seg,names){
   const lines=String(seg||'').split(/\n+/).map(clean).filter(Boolean);
   for(let i=0;i<lines.length;i++){
@@ -163,8 +175,19 @@ for(const date of dates){
   try{html=await fetchHtml(`${BASE}/high-school/football/scores-schedule/${date}?region=all`)}catch(e){console.warn(`Day status ${date}: ${e.message}`);continue}
   const text=textOf(html);
   for(const g of games.filter(x=>isoDate(x.date)===date)){
-    const state=liveStateForGame(text,g);if(!state.status)continue;
+    let state=liveStateForGame(text,g);if(!state.status)continue;
     const key=gameKey(g),d=details.games?.[key];if(!d)continue;
+    let stateSource='deseret-day-scoreboard';
+    if(/^Live$/i.test(state.status)&&!state.clock&&!state.period&&d?.boxScore?.rows?.length===2){
+      try{
+        const gameHtml=await fetchHtml(g.deseretUrl);
+        if(directGamePageFinal(gameHtml,g)){
+          state={status:'Final',clock:'',period:''};
+          stateSource='deseret-game-page';
+          console.log(`Direct game page confirms Final: ${key}`);
+        }
+      }catch(e){console.warn(`Direct status fallback ${key}: ${e.message}`)}
+    }
     if(d.final===true&&!d.finalSource){
       // An untagged Final entering this reconciler came from the specific game-page scraper.
       d.finalSource='deseret-game-page';updated++;
@@ -177,9 +200,9 @@ for(const date of dates){
     const scoreChanged=!!score&&(!before||before.away!==score.away||before.home!==score.home);
 
     if(state.status==='Final'){
-      if(!d.final||d.status!=='Final'||d.clock||d.period||d.finalSource!=='deseret-day-scoreboard'){
-        d.status='Final';d.final=true;d.clock='';d.period='';d.finalSource='deseret-day-scoreboard';updated++;
-        console.log(`Marked Final from day scoreboard: ${key}`);
+      if(!d.final||d.status!=='Final'||d.clock||d.period||d.finalSource!==stateSource){
+        d.status='Final';d.final=true;d.clock='';d.period='';d.finalSource=stateSource;updated++;
+        console.log(`Marked Final from ${stateSource}: ${key}`);
       }
     }else if(!confirmed&&!gamePageFinal){
       let nextStatus=state.status,nextClock=state.clock,nextPeriod=state.period;
