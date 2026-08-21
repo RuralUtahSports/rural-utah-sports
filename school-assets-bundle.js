@@ -26,9 +26,16 @@ if((scorePage||gamePage)&&!window.__RUS_SUPABASE_LIVE_FETCH__){
       const liveStamp=Date.parse(String(live?.updatedAt||''));
       const fresh=Number.isFinite(liveStamp)&&Date.now()-liveStamp<6*60*1000&&live?.games&&Object.keys(live.games).length>0;
       if(!fresh)return new Response(JSON.stringify(base),{status:200,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
+      const liveGames={};
+      for(const [key,value] of Object.entries(live.games||{})){
+        const detail=value&&typeof value==='object'?{...value}:value;
+        if(detail&&/half/i.test(String(detail.status||'')))detail.clock='';
+        if(detail?.final){detail.clock='';detail.period='';}
+        liveGames[key]=detail;
+      }
       const baseStamp=Date.parse(String(base?.updatedAt||''));
       const updatedAt=Number.isFinite(baseStamp)&&baseStamp>liveStamp?base.updatedAt:live.updatedAt;
-      const merged={...base,updatedAt,source:'supabase-live-merged',liveUpdatedAt:live.updatedAt,games:{...(base?.games||{}),...(live?.games||{})}};
+      const merged={...base,updatedAt,source:'supabase-live-merged',liveUpdatedAt:live.updatedAt,games:{...(base?.games||{}),...liveGames}};
       return new Response(JSON.stringify(merged),{status:200,headers:{'Content-Type':'application/json','Cache-Control':'no-store'}});
     }catch(error){
       console.warn('Supabase live overlay unavailable; using normal scoreboard source.',error);
