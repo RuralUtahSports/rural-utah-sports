@@ -21,7 +21,13 @@ const aliases={
   UTAHMILITARYCAMPWILLIAMS:['UMA-Lehi','UMA Camp Williams','Utah Military Academy Camp Williams'],
   UTAHMILITARYACADEMYCAMPWILLIAMS:['UMA-Lehi','UMA Camp Williams','Utah Military Camp Williams']
 };
-function isoDate(v){let m=clean(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=clean(v).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:''}
+
+function isoDate(v){
+  let m=clean(v).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;
+  m=clean(v).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:'';
+}
 const gameKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
 const gameId=g=>{const m=clean(g.deseretUrl).match(/\/(\d+)\/?$/);return m?m[1]:''};
 function decode(s){return String(s||'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&quot;/gi,'"').replace(/&#39;|&apos;/gi,"'").replace(/&lt;/gi,'<').replace(/&gt;/gi,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n)))}
@@ -29,23 +35,34 @@ function textOf(html){return decode(html).replace(/<(script|style|noscript|svg)\
 function namesFor(v){const base=compact(v);return[...new Set([clean(v),...(aliases[base]||[])].filter(Boolean))]}
 function escRe(s){return String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
 function positionsOfAny(hay,names){const out=[];for(const n of names){const re=new RegExp(`(^|[^A-Za-z0-9])${escRe(n).replace(/\\ /g,'\\s+')}(?=$|[^A-Za-z0-9])`,'ig');let m;while((m=re.exec(hay))){out.push(m.index+(m[1]?.length||0));if(m.index===re.lastIndex)re.lastIndex++}}return[...new Set(out)].sort((a,b)=>a-b)}
+
 function segmentForGame(text,g){
   const away=positionsOfAny(text,namesFor(g.awayTeam)),home=positionsOfAny(text,namesFor(g.homeTeam));
   let best=null;
-  for(const a of away)for(const h of home){const gap=Math.abs(a-h);if(gap>500)continue;if(!best||gap<best.gap)best={a,h,gap}}
+  for(const a of away)for(const h of home){const gap=Math.abs(a-h);if(gap>650)continue;if(!best||gap<best.gap)best={a,h,gap}}
   if(!best)return'';
   const lo=Math.min(best.a,best.h),hi=Math.max(best.a,best.h);
-  return text.slice(Math.max(0,lo-140),Math.min(text.length,hi+240));
+  return text.slice(Math.max(0,lo-280),Math.min(text.length,hi+700));
 }
-function statusForGame(text,g){
+
+function liveStateForGame(text,g){
   const seg=segmentForGame(text,g);
-  if(!seg)return'';
-  const live=seg.match(/\b(Halftime|OT|Q\s*[1-4]|[1-4]Q)\b/i);
-  if(live)return live[1].replace(/\s+/g,'').toUpperCase();
-  if(/\bFinal\b/i.test(seg))return'Final';
-  if(/\bLive\b/i.test(seg))return'Live';
-  return'';
+  if(!seg)return{status:'',clock:'',period:''};
+  if(/\bFinal\b/i.test(seg))return{status:'Final',clock:'',period:''};
+
+  let m=seg.match(/\b(\d{1,2}:\d{2}(?:\.\d+)?)\s*(?:left|remaining)?\s*(?:in\s*(?:the\s*)?)?(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+quarter)?)/i);
+  if(m){const period=`Q${m[2]||m[3]||m[4]}`;return{status:period,clock:m[1],period}}
+  m=seg.match(/\b(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+quarter)?)\s*[-–—|•:]?\s*(\d{1,2}:\d{2}(?:\.\d+)?)/i);
+  if(m){const period=`Q${m[1]||m[2]||m[3]}`;return{status:period,clock:m[4],period}}
+
+  const q=seg.match(/\b(?:Q\s*([1-4])|([1-4])Q|([1-4])(?:st|nd|rd|th)(?:\s+quarter)?)\b/i);
+  if(q){const period=`Q${q[1]||q[2]||q[3]}`;return{status:period,clock:'',period}}
+  if(/\bHalftime\b/i.test(seg))return{status:'HALFTIME',clock:'',period:'HALFTIME'};
+  if(/\bOT\b/i.test(seg))return{status:'OT',clock:'',period:'OT'};
+  if(/\bLive\b/i.test(seg))return{status:'Live',clock:'',period:''};
+  return{status:'',clock:'',period:''};
 }
+
 function lineScore(seg,names){
   const lines=String(seg||'').split(/\n+/).map(clean).filter(Boolean);
   for(let i=0;i<lines.length;i++){
@@ -60,37 +77,94 @@ function lineScore(seg,names){
   }
   return null;
 }
+
 function scoreForGame(text,g,status){
-  if(!status||!(/^(?:FINAL|LIVE|HALFTIME|OT|Q[1-4]|[1-4]Q)$/i.test(status)))return null;
-  const seg=segmentForGame(text,g);
-  if(!seg)return null;
+  if(!status||!(/^(?:FINAL|LIVE|HALFTIME|OT|Q[1-4])$/i.test(status)))return null;
+  const seg=segmentForGame(text,g);if(!seg)return null;
   const away=lineScore(seg,namesFor(g.awayTeam)),home=lineScore(seg,namesFor(g.homeTeam));
   return Number.isInteger(away)&&Number.isInteger(home)?{away,home}:null;
 }
+
+function currentTotals(d){
+  const rows=d?.boxScore?.rows;
+  const away=Number(rows?.[0]?.total),home=Number(rows?.[1]?.total);
+  return Number.isFinite(away)&&Number.isFinite(home)?{away,home}:null;
+}
+
 function applyDayScore(d,g,score){
   if(!score)return false;
   const rows=d?.boxScore?.rows;
-  const realBox=Array.isArray(rows)&&rows.length===2&&d?.boxScore?.source!=='deseret-day-scoreboard';
-  if(realBox)return false;
-  const oldAway=Number(rows?.[0]?.total),oldHome=Number(rows?.[1]?.total);
-  if(d?.boxScore?.source==='deseret-day-scoreboard'&&oldAway===score.away&&oldHome===score.home)return false;
-  d.boxScore={
-    periods:['Q1','Q2','Q3','Q4'],
-    rows:[
-      {team:g.awayTeam,quarters:[null,null,null,null],total:score.away},
-      {team:g.homeTeam,quarters:[null,null,null,null],total:score.home}
-    ],
-    source:'deseret-day-scoreboard'
-  };
+  if(Array.isArray(rows)&&rows.length===2){
+    const oldAway=Number(rows[0]?.total),oldHome=Number(rows[1]?.total);
+    if(oldAway===score.away&&oldHome===score.home)return false;
+    rows[0].total=score.away;
+    rows[1].total=score.home;
+    d.scoreSource='deseret-day-scoreboard';
+    return true;
+  }
+  d.boxScore={periods:['Q1','Q2','Q3','Q4'],rows:[
+    {team:g.awayTeam,quarters:[null,null,null,null],total:score.away},
+    {team:g.homeTeam,quarters:[null,null,null,null],total:score.home}
+  ],source:'deseret-day-scoreboard'};
   d.scoreSource='deseret-day-scoreboard';
   return true;
 }
-async function fetchHtml(url){const r=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.github.io/)'},signal:AbortSignal.timeout(15000)});if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);return r.text()}
-if(!fs.existsSync(WEEKLY)||!fs.existsSync(DETAILS))process.exit(0);
-const weekly=JSON.parse(fs.readFileSync(WEEKLY,'utf8')),details=JSON.parse(fs.readFileSync(DETAILS,'utf8'));const games=(weekly.games||[]).filter(g=>clean(g.deseretUrl));
-let updated=0;
-for(const g of games){if(!confirmedFinalGameIds.has(gameId(g)))continue;const key=gameKey(g),d=details.games?.[key];if(d&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked confirmed Final: ${key}`)}}
-const dates=[...new Set(games.map(g=>isoDate(g.date)).filter(Boolean))];
-for(const date of dates){const delta=(Date.parse(`${date}T12:00:00Z`)-Date.now())/86400000;if(delta>2.25||delta<-2.25)continue;let html;try{html=await fetchHtml(`${BASE}/high-school/football/scores-schedule/${date}?region=all`)}catch(e){console.warn(`Day status ${date}: ${e.message}`);continue}const text=textOf(html);for(const g of games.filter(x=>isoDate(x.date)===date)){const status=statusForGame(text,g);if(!status)continue;const key=gameKey(g),d=details.games?.[key];if(!d)continue;const confirmed=confirmedFinalGameIds.has(gameId(g));if(status==='Final'&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked Final from day scoreboard: ${key}`)}else if(status!=='Final'&&!confirmed){const specific=/^(?:Q[1-4]|HALFTIME|OT)$/i.test(String(d.status||''));const genericWouldDowngrade=status==='Live'&&specific;if(!genericWouldDowngrade&&(d.final||d.status!==status)){d.final=false;d.status=status;updated++;console.log(`Corrected live status from day scoreboard: ${key} -> ${status}`)}}const score=scoreForGame(text,g,status);if(applyDayScore(d,g,score)){updated++;console.log(`Updated verified day-scoreboard score: ${key} -> ${score.away}-${score.home}`)}}
+
+async function fetchHtml(url){
+  const target=new URL(url);target.searchParams.set('_rus',String(Date.now()));
+  const r=await fetch(target,{headers:{'user-agent':'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.github.io/)','cache-control':'no-cache','pragma':'no-cache'},signal:AbortSignal.timeout(15000)});
+  if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);
+  return r.text();
 }
-details.updatedAt=new Date().toISOString();fs.writeFileSync(DETAILS,JSON.stringify(details,null,2)+'\n');console.log(`Deseret day-status reconciliation updated ${updated} games.`);
+
+if(!fs.existsSync(WEEKLY)||!fs.existsSync(DETAILS))process.exit(0);
+const weekly=JSON.parse(fs.readFileSync(WEEKLY,'utf8'));
+const details=JSON.parse(fs.readFileSync(DETAILS,'utf8'));
+const games=(weekly.games||[]).filter(g=>clean(g.deseretUrl));
+let updated=0;
+
+for(const g of games){
+  if(!confirmedFinalGameIds.has(gameId(g)))continue;
+  const key=gameKey(g),d=details.games?.[key];
+  if(d&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked confirmed Final: ${key}`)}
+}
+
+const dates=[...new Set(games.map(g=>isoDate(g.date)).filter(Boolean))];
+for(const date of dates){
+  const delta=(Date.parse(`${date}T12:00:00Z`)-Date.now())/86400000;
+  if(delta>2.25||delta<-2.25)continue;
+  let html;
+  try{html=await fetchHtml(`${BASE}/high-school/football/scores-schedule/${date}?region=all`)}catch(e){console.warn(`Day status ${date}: ${e.message}`);continue}
+  const text=textOf(html);
+  for(const g of games.filter(x=>isoDate(x.date)===date)){
+    const state=liveStateForGame(text,g);if(!state.status)continue;
+    const key=gameKey(g),d=details.games?.[key];if(!d)continue;
+    const confirmed=confirmedFinalGameIds.has(gameId(g));
+    const before=currentTotals(d);
+    const score=scoreForGame(text,g,state.status);
+    const scoreChanged=!!score&&(!before||before.away!==score.away||before.home!==score.home);
+
+    if(state.status==='Final'&&!d.final){
+      d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked Final from day scoreboard: ${key}`);
+    }else if(state.status!=='Final'&&!confirmed){
+      let nextStatus=state.status,nextClock=state.clock,nextPeriod=state.period;
+      const priorSpecific=/^(?:Q[1-4]|HALFTIME|OT)$/i.test(String(d.status||''));
+      if(state.status==='Live'&&priorSpecific&&!scoreChanged){
+        nextStatus=d.status;nextClock=d.clock||'';nextPeriod=d.period||'';
+      }else if(state.status==='Live'&&priorSpecific&&scoreChanged){
+        // A changed score proves the game moved on; never leave a stale halftime/clock label visible.
+        nextStatus='Live';nextClock='';nextPeriod='';
+      }
+      if(d.final||d.status!==nextStatus||String(d.clock||'')!==String(nextClock||'')||String(d.period||'')!==String(nextPeriod||'')){
+        d.final=false;d.status=nextStatus;d.clock=nextClock||'';d.period=nextPeriod||'';updated++;
+        console.log(`Corrected live state from day scoreboard: ${key} -> ${nextStatus}${nextClock?` ${nextClock}`:''}`);
+      }
+    }
+
+    if(applyDayScore(d,g,score)){updated++;console.log(`Updated verified day-scoreboard score: ${key} -> ${score.away}-${score.home}`)}
+  }
+}
+
+details.updatedAt=new Date().toISOString();
+fs.writeFileSync(DETAILS,JSON.stringify(details,null,2)+'\n');
+console.log(`Deseret day-status reconciliation updated ${updated} fields.`);
