@@ -63,22 +63,28 @@
   }
 
   async function fetchLatestLiveDetails() {
+    const stamp = Date.now();
     const sources = [
-      LIVE_DETAILS_URL,
-      `deseret-game-details.json?v=${Date.now()}`
+      `${LIVE_DETAILS_URL}?v=${stamp}`,
+      `deseret-game-details.json?v=${stamp}`
     ];
-    let lastError = null;
-    for (const url of sources) {
+    const payloads = (await Promise.all(sources.map(async url => {
       try {
-        const response = await fetch(url, { cache: 'no-cache' });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) return null;
         const payload = await response.json();
-        if (payload && payload.games) return payload;
-      } catch (error) {
-        lastError = error;
+        return payload && payload.games ? payload : null;
+      } catch {
+        return null;
       }
-    }
-    throw lastError || new Error('Live scoreboard data unavailable');
+    }))).filter(Boolean);
+    if (!payloads.length) throw new Error('Live scoreboard data unavailable');
+    payloads.sort((a, b) => {
+      const bt = Date.parse(String(b.updatedAt || '')) || 0;
+      const at = Date.parse(String(a.updatedAt || '')) || 0;
+      return bt - at;
+    });
+    return payloads[0];
   }
 
   async function refreshLiveDetails({ announce = false } = {}) {
