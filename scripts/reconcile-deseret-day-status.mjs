@@ -45,14 +45,27 @@ function segmentForGame(text,g){
   return text.slice(Math.max(0,lo-280),Math.min(text.length,hi+700));
 }
 
+function markerPositions(seg,re){return[...seg.matchAll(re)].map(m=>m.index)}
 function finalNearGame(seg,g){
   const away=positionsOfAny(seg,namesFor(g.awayTeam)),home=positionsOfAny(seg,namesFor(g.homeTeam));
   let best=null;
   for(const a of away)for(const h of home){const gap=Math.abs(a-h);if(gap>650)continue;if(!best||gap<best.gap)best={a,h,gap}}
   if(!best)return false;
   const lo=Math.min(best.a,best.h),hi=Math.max(best.a,best.h);
-  const finals=[...seg.matchAll(/\bFinal\b/ig)].map(m=>m.index);
-  return finals.some(pos=>pos>=lo-120&&pos<=hi+180);
+  const distance=pos=>pos<lo?lo-pos:pos>hi?pos-hi:0;
+  const finals=markerPositions(seg,/\bFinal\b/ig);
+  if(!finals.length)return false;
+  const finalDist=Math.min(...finals.map(distance));
+  const competing=[
+    ...markerPositions(seg,/\bHalftime\b/ig),
+    ...markerPositions(seg,/\bLive\b/ig),
+    ...markerPositions(seg,/\bOT\b/ig),
+    ...markerPositions(seg,/\b(?:Q\s*[1-4]|[1-4]\s*Q|[1-4](?:st|nd|rd|th)(?:\s+quarter)?)\b/ig),
+    ...markerPositions(seg,/\bScheduled\b/ig),
+    ...markerPositions(seg,/\b\d{1,2}(?::\d{2})?\s*[AP]M\b/ig)
+  ];
+  const otherDist=competing.length?Math.min(...competing.map(distance)):Infinity;
+  return finalDist<=650&&finalDist<=otherDist;
 }
 
 function liveStateForGame(text,g){
