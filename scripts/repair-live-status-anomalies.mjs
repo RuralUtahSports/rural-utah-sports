@@ -34,11 +34,11 @@ for(const [key,g] of Object.entries(data.games||{})){
   const hasClock=!!String(g.clock||'').trim();
   const isConfirmedFinal=confirmedFinalGameIds.has(gameId(g));
   const isMercyFinal=mercyBox(g);
-  const hasAuthoritativeFinal=g.final===true&&(g.finalSource==='deseret-day-scoreboard'||g.finalSource==='confirmed');
+  const hasAuthoritativeFinal=g.final===true&&['deseret-game-page','deseret-day-scoreboard','confirmed'].includes(g.finalSource);
 
-  // Explicit Finals from the Deseret day scoreboard are authoritative. The
-  // anomaly repair only demotes Finals that came from an ambiguous/weaker
-  // source and have no other end-game evidence.
+  // Finals from a specific Deseret game page or a tightly matched Deseret day
+  // scoreboard entry are authoritative. Only ambiguous untagged Finals are
+  // eligible for automatic demotion.
   if(g.final===true && !hasAuthoritativeFinal && !isConfirmedFinal && !isMercyFinal && !hasQ4Evidence){
     g.final=false;
     g.status=plays.length?'Live':'Scheduled';
