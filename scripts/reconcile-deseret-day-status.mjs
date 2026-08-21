@@ -65,15 +65,14 @@ function finalNearGame(seg,g){
     ...markerPositions(seg,/\b\d{1,2}(?::\d{2})?\s*[AP]M\b/ig)
   ];
   const otherDist=competing.length?Math.min(...competing.map(distance)):Infinity;
-  return finalDist<=650&&finalDist<=otherDist;
+  // A status badge for this matchup should sit close to its two team names.
+  // Keeping this window tight prevents a neighboring game's Final badge from leaking in.
+  return finalDist<=240&&finalDist<=otherDist;
 }
 
 function liveStateForGame(text,g){
   const seg=segmentForGame(text,g);
   if(!seg)return{status:'',clock:'',period:''};
-  // Deseret occasionally leaves the live badge in the markup when it adds
-  // the final badge, producing the literal text "Live Final". Final wins.
-  if(/\b(?:Live\s+Final|Final\s+Live)\b/i.test(seg))return{status:'Final',clock:'',period:''};
   if(finalNearGame(seg,g))return{status:'Final',clock:'',period:''};
 
   let m=seg.match(/\b(\d{1,2}:\d{2}(?:\.\d+)?)\s*(?:left|remaining)?\s*(?:in\s*(?:the\s*)?)?(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+quarter)?)/i);
