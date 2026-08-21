@@ -17,27 +17,39 @@ const mercyBox=g=>{
   const at=Number(a?.total),bt=Number(b?.total);
   return q4Unplayed&&firstThreePlayed&&Number.isFinite(at)&&Number.isFinite(bt)&&Math.abs(at-bt)>=44;
 };
+const q4Played=g=>{
+  const rows=g?.boxScore?.rows;
+  if(!Array.isArray(rows)||rows.length!==2)return false;
+  const aq=Array.isArray(rows[0]?.quarters)?rows[0].quarters:[];
+  const bq=Array.isArray(rows[1]?.quarters)?rows[1].quarters:[];
+  return Number.isFinite(aq[3])&&Number.isFinite(bq[3]);
+};
 let fixed=0;
 
 for(const [key,g] of Object.entries(data.games||{})){
   if(!key.startsWith(utahDate+'|')||!g) continue;
   const plays=Array.isArray(g.scoringPlays)?g.scoringPlays:[];
-  const hasBox=!!(g.boxScore?.rows?.length===2);
-  const hasQ4=plays.some(p=>/\b4Q\b|\b4th\b/i.test(String(p)));
+  const hasQ4Play=plays.some(p=>/\b4Q\b|\b4th\b/i.test(String(p)));
+  const hasQ4Evidence=q4Played(g)||hasQ4Play;
   const hasClock=!!String(g.clock||'').trim();
   const isConfirmedFinal=confirmedFinalGameIds.has(gameId(g));
   const isMercyFinal=mercyBox(g);
 
-  if(g.final===true && !isConfirmedFinal && !isMercyFinal && !hasBox && !hasQ4){
+  // Same-day games are only allowed to remain Final when we have real end-game
+  // evidence: a known confirmed final, a 44+ mercy finish after three quarters,
+  // or actual fourth-quarter data. This prevents an in-progress game with a
+  // partial box score from inheriting a stray "Final" label from Deseret HTML.
+  if(g.final===true && !isConfirmedFinal && !isMercyFinal && !hasQ4Evidence){
     g.final=false;
     g.status=plays.length?'Live':'Scheduled';
-    g.period=hasClock?String(g.period||''):'';
+    g.clock='';
+    g.period='';
     fixed++;
     console.log(`Reset suspicious Final: ${key} -> ${g.status}`);
     continue;
   }
 
-  if(/^halftime$/i.test(String(g.status||'')) && !hasBox && !plays.length && !hasClock){
+  if(/^halftime$/i.test(String(g.status||'')) && !plays.length && !hasClock){
     g.status='Scheduled';
     g.period='';
     fixed++;
