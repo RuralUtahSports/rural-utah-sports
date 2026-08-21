@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260819-gamepreview-gap-jh3d-off';
+const CACHE='rus-site-20260820-scoreboard-share-fresh1';
 const CORE=[
   './',
   './index.html',
@@ -30,7 +30,7 @@ const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
 const FRESH_HTML=/\/(?:rankings|scoreboard|game)\.html$/i;
-const FRESH_JS=/(?:home-game-of-week|home-feature-share|game-center-upgrade|game-center-color-layout|rankings-sponsor-removal|school-assets-bundle|rus-lines-dashboard|scoreboard-refresh|mobile-shell|mobile-scoreboard-polish|nav-menu)\.js$/i;
+const FRESH_JS=/(?:home-game-of-week|home-feature-share|game-center-upgrade|game-center-color-layout|rankings-sponsor-removal|school-assets-bundle|rus-lines-dashboard|scoreboard-refresh|scoreboard-share-layout|scoreboard-share-layout-core|share-graphic|mobile-shell|mobile-scoreboard-polish|nav-menu)\.js$/i;
 const CACHE_BUSTERS=new Set(['v','ver','version','t','ts','timestamp','_']);
 const NETWORK_INFLIGHT=new Map();
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>Promise.allSettled(CORE.map(x=>cache.add(x)))).then(()=>self.skipWaiting()))});
