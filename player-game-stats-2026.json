@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-21T04:05:02.473Z",
+  "updatedAt": "2026-08-21T04:56:16.962Z",
   "summary": {
     "teams": 119,
     "teamGames": 125,
-    "statRows": 1962,
-    "rosterMatchedRows": 1892
+    "statRows": 1964,
+    "rosterMatchedRows": 1894
   },
   "teams": {
     "CEDAR CITY": {
@@ -26950,12 +26950,32 @@
           "date": "2026-08-20",
           "opponent": "BINGHAM",
           "location": "Home",
-          "status": "Live",
-          "final": false,
-          "teamScore": 6,
+          "status": "Final",
+          "final": true,
+          "teamScore": 13,
           "opponentScore": 12,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-20/bingham-football-vs-alta-football/274391",
           "players": [
+            {
+              "playerId": "alta-16-xavier-cocci",
+              "number": "16",
+              "name": "Xavier Cocci",
+              "position": "QB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Alta — ( 2:10 4Q ) Xavier Cocci , 5-yard run ( kick from Madden McCallister )"
+              ]
+            },
             {
               "playerId": "alta-7-treven-cooke",
               "number": "7",
@@ -26975,10 +26995,31 @@
               "scoringPlays": [
                 "Alta — ( 1:33 3Q ) Treven Cooke , 2-yard run ( kick failed )"
               ]
+            },
+            {
+              "playerId": "alta-15-madden-mccallister",
+              "number": "15",
+              "name": "Madden McCallister",
+              "position": "K",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "1",
+                    "Return TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Alta — ( 2:10 4Q ) Xavier Cocci , 5-yard run ( kick from Madden McCallister )"
+              ]
             }
           ],
           "scoringPlays": [
-            "Alta — ( 1:33 3Q ) Treven Cooke , 2-yard run ( kick failed )"
+            "Alta — ( 1:33 3Q ) Treven Cooke , 2-yard run ( kick failed )",
+            "Alta — ( 2:10 4Q ) Xavier Cocci , 5-yard run ( kick from Madden McCallister )"
           ]
         }
       ]
@@ -27743,10 +27784,10 @@
           "date": "2026-08-20",
           "opponent": "ALTA",
           "location": "Away",
-          "status": "Live",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 12,
-          "opponentScore": 6,
+          "opponentScore": 13,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-20/bingham-football-vs-alta-football/274391",
           "players": [
             {
