@@ -5,6 +5,10 @@ const loadScoreboard=()=>{
   if(!scorePage||document.querySelector('script[data-rus-scoreboard-school-assets]'))return;
   const s=document.createElement('script');s.src='school-assets-scoreboard.js?v=20260818-perf4';s.async=true;s.dataset.rusScoreboardSchoolAssets='1';document.body.appendChild(s);
 };
+const loadScoreboardLiveClock=()=>{
+  if(!scorePage||document.querySelector('script[data-rus-scoreboard-live-clock]'))return;
+  const s=document.createElement('script');s.src='scoreboard-live-clock.js?v=20260820-clock-safe2';s.async=true;s.dataset.rusScoreboardLiveClock='1';document.body.appendChild(s);
+};
 const loadGameVisuals=()=>{
   if(!gamePage||document.querySelector('script[data-rus-game-center-color-layout]'))return;
   const s=document.createElement('script');s.src='game-center-color-layout.js?v=20260819-colors2-previewpin';s.async=true;s.dataset.rusGameCenterColorLayout='1';document.body.appendChild(s);
@@ -21,7 +25,7 @@ const loadOverallRankingsShare=()=>{
   if(!rankingsPage||window.__rusOverallDirectShareBuild==='ios3-overall-featured-top3-logos'||document.querySelector('script[data-rus-rankings-overall-share]'))return;
   const s=document.createElement('script');s.src='rankings-overall-share-direct-v3.js?v=20260820-ios3-overall-featured-top3-logos';s.async=true;s.dataset.rusRankingsOverallShare='1';document.body.appendChild(s);
 };
-const loadExtras=()=>{loadScoreboard();loadGameVisuals();loadGameLiveStatus();loadRankingsSponsorRemoval();loadOverallRankingsShare()};
+const loadExtras=()=>{loadScoreboard();loadScoreboardLiveClock();loadGameVisuals();loadGameLiveStatus();loadRankingsSponsorRemoval();loadOverallRankingsShare()};
 if(window.RUSSchoolAssets){loadExtras();return}
 let core=[...document.scripts].find(s=>(s.getAttribute('src')||'').split('?')[0].endsWith('school-assets-core.js'));
 if(!core){
@@ -29,5 +33,5 @@ if(!core){
 }
 core.addEventListener('load',loadExtras,{once:true});
 window.addEventListener('rus:school-assets-ready',loadExtras,{once:true});
-loadGameVisuals();loadGameLiveStatus();loadRankingsSponsorRemoval();loadOverallRankingsShare();
+loadScoreboardLiveClock();loadGameVisuals();loadGameLiveStatus();loadRankingsSponsorRemoval();loadOverallRankingsShare();
 })();
