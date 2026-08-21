@@ -17,34 +17,32 @@
 
   const subtitle = document.querySelector('.subtitle');
   let refreshRow = null;
+  let refreshNote = null;
+  let refreshButton = null;
   if (subtitle && !document.getElementById('scoreboardRefreshButton')) {
     refreshRow = document.createElement('div');
     refreshRow.className = 'scoreboard-refresh-row';
-    const btn = document.createElement('button');
-    btn.id = 'scoreboardRefreshButton';
-    btn.className = 'scoreboard-refresh-btn';
-    btn.type = 'button';
-    btn.textContent = '↻ Refresh Scores';
-    const note = document.createElement('span');
-    note.className = 'scoreboard-refresh-note';
-    note.textContent = 'Loads the newest published scoreboard and prediction data';
-    refreshRow.append(btn, note);
+    refreshButton = document.createElement('button');
+    refreshButton.id = 'scoreboardRefreshButton';
+    refreshButton.className = 'scoreboard-refresh-btn';
+    refreshButton.type = 'button';
+    refreshButton.textContent = '↻ Refresh Scores';
+    refreshNote = document.createElement('span');
+    refreshNote.className = 'scoreboard-refresh-note';
+    refreshNote.textContent = 'Live scores auto-update every minute';
+    refreshRow.append(refreshButton, refreshNote);
     subtitle.insertAdjacentElement('afterend', refreshRow);
-
-    btn.addEventListener('click', () => {
-      btn.disabled = true;
-      btn.textContent = '↻ Refreshing…';
-      const url = new URL(window.location.href);
-      url.searchParams.set('_refresh', Date.now().toString());
-      window.location.replace(url.toString());
-    });
   } else {
     refreshRow = document.querySelector('.scoreboard-refresh-row');
+    refreshButton = document.getElementById('scoreboardRefreshButton');
+    refreshNote = refreshRow?.querySelector('.scoreboard-refresh-note') || null;
   }
 
   const norm = value => String(value ?? '').trim().toUpperCase().replace(/\s+/g, ' ');
   const DAY = 24 * 60 * 60 * 1000;
   const WEEK = 7 * DAY;
+  const LIVE_REFRESH_MS = 60 * 1000;
+  const LIVE_DETAILS_URL = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
 
   const originalRender = render;
   let seasonGames = null;
@@ -55,6 +53,73 @@
   let prevWeekBtn = null;
   let nextWeekBtn = null;
   let livePredictions = new Map();
+  let liveRefreshInFlight = false;
+  let lastLiveUpdatedAt = '';
+
+  function formatLiveUpdatedAt(value) {
+    const when = new Date(value);
+    if (!Number.isFinite(when.getTime())) return '';
+    return when.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  }
+
+  async function fetchLatestLiveDetails() {
+    const sources = [
+      LIVE_DETAILS_URL,
+      `deseret-game-details.json?v=${Date.now()}`
+    ];
+    let lastError = null;
+    for (const url of sources) {
+      try {
+        const response = await fetch(url, { cache: 'no-cache' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const payload = await response.json();
+        if (payload && payload.games) return payload;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError || new Error('Live scoreboard data unavailable');
+  }
+
+  async function refreshLiveDetails({ announce = false } = {}) {
+    if (liveRefreshInFlight) return false;
+    liveRefreshInFlight = true;
+    if (announce && refreshButton) {
+      refreshButton.disabled = true;
+      refreshButton.textContent = '↻ Refreshing…';
+    }
+
+    try {
+      const payload = await fetchLatestLiveDetails();
+      const updatedAt = String(payload.updatedAt || '');
+      const changed = !lastLiveUpdatedAt || updatedAt !== lastLiveUpdatedAt || !detailMap.size;
+      lastLiveUpdatedAt = updatedAt || lastLiveUpdatedAt;
+
+      if (changed) {
+        detailMap.clear();
+        for (const [key, value] of Object.entries(payload.games || {})) detailMap.set(key, value);
+        render();
+      }
+
+      const clock = formatLiveUpdatedAt(updatedAt);
+      if (refreshNote) refreshNote.textContent = clock
+        ? `Live data ${clock} • auto-checks every minute`
+        : 'Live scores auto-update every minute';
+      return changed;
+    } catch (error) {
+      console.warn('Live scoreboard refresh failed', error);
+      if (refreshNote) refreshNote.textContent = 'Auto-refresh retrying • tap Refresh Scores anytime';
+      return false;
+    } finally {
+      liveRefreshInFlight = false;
+      if (refreshButton) {
+        refreshButton.disabled = false;
+        refreshButton.textContent = '↻ Refresh Scores';
+      }
+    }
+  }
+
+  if (refreshButton) refreshButton.addEventListener('click', () => refreshLiveDetails({ announce: true }));
 
   function startOfLocalDay(value) {
     const d = new Date(value);
@@ -70,8 +135,6 @@
   }
 
   // Utah football Week 1 begins with the second Thursday in August.
-  // Using a season anchor keeps Week 2 labeled Week 2 even when the loaded
-  // scoreboard data happens to begin with the second week of games.
   function seasonWeekOneStart(year) {
     const d = new Date(Number(year), 7, 8);
     d.setHours(0, 0, 0, 0);
@@ -118,10 +181,6 @@
     if (Number.isInteger(requested) && weekBuckets.some(w => w.number === requested)) return requested;
 
     const today = startOfLocalDay(Date.now()).getTime();
-
-    // For navigation purposes a football week begins Monday, even though the
-    // game bucket is anchored on Thursday. That means Monday Aug. 17, 2026
-    // opens Week 2 (Aug. 20-22 games), not the completed Week 1 slate.
     const current = weekBuckets.find(w => {
       const monday = w.start - (3 * DAY);
       const nextMonday = monday + WEEK;
@@ -213,9 +272,7 @@
     return changed;
   }
 
-  // Keep every loaded season game available, but render one Thursday–Wednesday
-  // football week at a time. This prevents the scoreboard from growing into one
-  // giant season-long list while still making older/future weeks easy to reach.
+  // Keep every loaded season game available, but render one football week at a time.
   render = function () {
     if (!seasonGames && Array.isArray(games) && games.length) {
       seasonGames = games.slice();
@@ -235,8 +292,6 @@
   };
 
   // Pull A:F directly from Weekly Simulation as a live prediction overlay.
-  // Include the date in the key so a repeat matchup in another week/season
-  // can never inherit the wrong manual prediction.
   window.rusWeeklySheetCallback = payload => {
     try {
       const rows = payload?.table?.rows || [];
@@ -345,4 +400,11 @@
   }
 
   hydrateScoreboardLogos();
+
+  // The repository's live-score job updates main independently of GitHub Pages.
+  // Read that source directly so an already-open scoreboard does not wait for a Pages deploy.
+  window.addEventListener('load', () => {
+    setTimeout(() => refreshLiveDetails(), 1200);
+    setInterval(() => refreshLiveDetails(), LIVE_REFRESH_MS);
+  }, { once: true });
 })();
