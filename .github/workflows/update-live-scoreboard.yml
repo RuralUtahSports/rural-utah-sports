@@ -22,6 +22,7 @@ on:
       - 'manual-stat-corrections-2026.json'
       - 'scripts/reconcile-deseret-day-status.mjs'
       - 'scripts/repair-live-status-anomalies.mjs'
+      - 'scripts/apply-kickoff-live-fallback.mjs'
       - 'scripts/build_standings_2026.mjs'
       - '.github/workflows/update-live-scoreboard.yml'
 
@@ -51,6 +52,9 @@ jobs:
 
       - name: Repair suspicious same-day statuses
         run: node scripts/repair-live-status-anomalies.mjs
+
+      - name: Mark overdue scheduled games live after kickoff grace period
+        run: node scripts/apply-kickoff-live-fallback.mjs
 
       - name: Refresh 2026 team records for rankings and standings
         env:
