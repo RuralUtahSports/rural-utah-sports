@@ -45,10 +45,20 @@ function segmentForGame(text,g){
   return text.slice(Math.max(0,lo-280),Math.min(text.length,hi+700));
 }
 
+function finalNearGame(seg,g){
+  const away=positionsOfAny(seg,namesFor(g.awayTeam)),home=positionsOfAny(seg,namesFor(g.homeTeam));
+  let best=null;
+  for(const a of away)for(const h of home){const gap=Math.abs(a-h);if(gap>650)continue;if(!best||gap<best.gap)best={a,h,gap}}
+  if(!best)return false;
+  const lo=Math.min(best.a,best.h),hi=Math.max(best.a,best.h);
+  const finals=[...seg.matchAll(/\bFinal\b/ig)].map(m=>m.index);
+  return finals.some(pos=>pos>=lo-120&&pos<=hi+180);
+}
+
 function liveStateForGame(text,g){
   const seg=segmentForGame(text,g);
   if(!seg)return{status:'',clock:'',period:''};
-  if(/\bFinal\b/i.test(seg))return{status:'Final',clock:'',period:''};
+  if(finalNearGame(seg,g))return{status:'Final',clock:'',period:''};
 
   let m=seg.match(/\b(\d{1,2}:\d{2}(?:\.\d+)?)\s*(?:left|remaining)?\s*(?:in\s*(?:the\s*)?)?(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+quarter)?)/i);
   if(m){const period=`Q${m[2]||m[3]||m[4]}`;return{status:period,clock:m[1],period}}
@@ -126,7 +136,10 @@ let updated=0;
 for(const g of games){
   if(!confirmedFinalGameIds.has(gameId(g)))continue;
   const key=gameKey(g),d=details.games?.[key];
-  if(d&&!d.final){d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked confirmed Final: ${key}`)}
+  if(d&&(!d.final||d.status!=='Final'||d.finalSource!=='confirmed')){
+    d.status='Final';d.final=true;d.clock='';d.period='';d.finalSource='confirmed';updated++;
+    console.log(`Marked confirmed Final: ${key}`);
+  }
 }
 
 const dates=[...new Set(games.map(g=>isoDate(g.date)).filter(Boolean))];
@@ -144,9 +157,12 @@ for(const date of dates){
     const score=scoreForGame(text,g,state.status);
     const scoreChanged=!!score&&(!before||before.away!==score.away||before.home!==score.home);
 
-    if(state.status==='Final'&&!d.final){
-      d.status='Final';d.final=true;d.clock='';d.period='';updated++;console.log(`Marked Final from day scoreboard: ${key}`);
-    }else if(state.status!=='Final'&&!confirmed){
+    if(state.status==='Final'){
+      if(!d.final||d.status!=='Final'||d.clock||d.period||d.finalSource!=='deseret-day-scoreboard'){
+        d.status='Final';d.final=true;d.clock='';d.period='';d.finalSource='deseret-day-scoreboard';updated++;
+        console.log(`Marked Final from day scoreboard: ${key}`);
+      }
+    }else if(!confirmed){
       let nextStatus=state.status,nextClock=state.clock,nextPeriod=state.period;
       const priorSpecific=/^(?:Q[1-4]|HALFTIME|OT)$/i.test(String(d.status||''));
       if(state.status==='Live'&&priorSpecific&&!scoreChanged){
@@ -155,8 +171,9 @@ for(const date of dates){
         // A changed score proves the game moved on; never leave a stale halftime/clock label visible.
         nextStatus='Live';nextClock='';nextPeriod='';
       }
-      if(d.final||d.status!==nextStatus||String(d.clock||'')!==String(nextClock||'')||String(d.period||'')!==String(nextPeriod||'')){
-        d.final=false;d.status=nextStatus;d.clock=nextClock||'';d.period=nextPeriod||'';updated++;
+      const hadFinalSource=!!d.finalSource;
+      if(d.final||d.status!==nextStatus||String(d.clock||'')!==String(nextClock||'')||String(d.period||'')!==String(nextPeriod||'')||hadFinalSource){
+        d.final=false;d.status=nextStatus;d.clock=nextClock||'';d.period=nextPeriod||'';delete d.finalSource;updated++;
         console.log(`Corrected live state from day scoreboard: ${key} -> ${nextStatus}${nextClock?` ${nextClock}`:''}`);
       }
     }
