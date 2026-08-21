@@ -19,11 +19,9 @@
 
   const style=document.createElement('style');
   style.textContent=`
-    .status.live.rus-live-clock{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+    .status.live.rus-live-clock{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;font-size:10px;padding:5px 8px}
     .status.live.rus-live-clock:before{content:'●';font-size:7px;line-height:1}
-    .rus-live-time{color:#ffd54a;font-size:10px;font-weight:1000;text-transform:uppercase;letter-spacing:.2px;white-space:nowrap}
-    .rus-live-time small{color:#999;font-size:8px;font-weight:900;margin-left:5px}
-    @media(max-width:700px){.game-top{align-items:flex-start}.rus-live-time{font-size:9px;white-space:normal;text-align:right}.rus-live-time small{display:block;margin:2px 0 0}}
+    @media(max-width:700px){.game-top{align-items:flex-start}.status.live.rus-live-clock{white-space:normal;line-height:1.25;max-width:58%;font-size:9px}}
   `;
   document.head.appendChild(style);
 
@@ -42,6 +40,14 @@
     if(raw==='HALF'||raw==='HALFTIME')return'Halftime';
     if(/^OT\d*$/.test(raw))return raw.replace('OT','Overtime ' ).trim();
     return String(d?.period||d?.status||'').trim();
+  }
+
+  function periodShort(d){
+    const raw=String(d?.period||d?.status||'').trim().toUpperCase();
+    if(/^Q[1-4]$/.test(raw))return raw;
+    if(raw==='HALF'||raw==='HALFTIME')return'HALF';
+    if(/^OT\d*$/.test(raw))return raw;
+    return raw||'LIVE';
   }
 
   function isLive(d){
@@ -88,26 +94,23 @@
         const label=liveLabel(d);
         const live=isLive(d);
         if(status){
-          status.textContent=d.final?'Final':live?(periodLabel(d)||'Live'):(d.status||'Upcoming');
+          if(d.final){
+            status.textContent='Final';
+            status.removeAttribute('title');
+          }else if(live){
+            status.textContent=d.clock?`LIVE • ${d.clock} LEFT • ${periodShort(d)}`:`LIVE • ${periodShort(d)}`;
+            status.title=label;
+          }else{
+            status.textContent=d.status||'Upcoming';
+            status.removeAttribute('title');
+          }
           status.classList.toggle('final',!!d.final);
           status.classList.toggle('live',live);
           status.classList.toggle('rus-live-clock',live);
         }
 
-        const top=card.querySelector('.game-top');
-        let clock=card.querySelector('.rus-live-time');
-        if(live&&top){
-          if(!clock){
-            clock=document.createElement('span');
-            clock.className='rus-live-time';
-            const pick=top.querySelector('.pick-result');
-            if(pick)top.insertBefore(clock,pick);else top.appendChild(clock);
-          }
-          const period=periodLabel(d)||'Live';
-          clock.innerHTML=d.clock?`${d.clock} left <small>${period}</small>`:period;
-        }else if(clock){
-          clock.remove();
-        }
+        const oldClock=card.querySelector('.rus-live-time');
+        if(oldClock)oldClock.remove();
 
         const scores=liveScores(d);
         if(scores&&(live||d.final)){
