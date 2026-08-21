@@ -11,6 +11,7 @@
     .scoreboard-week-btn{padding:10px 12px;white-space:nowrap}
     .game-page-link{color:#000!important;text-decoration:none!important;font-weight:1000!important;background:#F14D07!important;border:1px solid #F14D07!important;border-radius:5px;padding:6px 9px;white-space:nowrap;text-transform:uppercase;letter-spacing:.15px}
     .game-page-link:hover{filter:brightness(1.1)}
+    .game-details .detail-status{display:none!important}
     @media(max-width:700px){.scoreboard-refresh-row{margin-top:-5px}.scoreboard-refresh-btn{width:100%;padding:12px 14px;font-size:13px;text-align:center}.scoreboard-refresh-note{width:100%;text-align:center}.scoreboard-week-nav{grid-template-columns:1fr 1fr;padding:9px}.scoreboard-week-select{grid-column:1/-1;grid-row:1}.scoreboard-week-btn{width:100%;font-size:11px}.game-page-link{width:100%;text-align:center;padding:8px 10px}}
   `;
   document.head.appendChild(style);
@@ -63,10 +64,9 @@
   }
 
   async function fetchLatestLiveDetails() {
-    const stamp = Date.now();
     const sources = [
-      `${LIVE_DETAILS_URL}?v=${stamp}`,
-      `deseret-game-details.json?v=${stamp}`
+      `${LIVE_DETAILS_URL}?v=${Date.now()}`,
+      `deseret-game-details.json?v=${Date.now()}`
     ];
     const payloads = (await Promise.all(sources.map(async url => {
       try {
