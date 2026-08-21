@@ -1,0 +1,41 @@
+name: Apply Team Color Overrides
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'team-color-overrides.json'
+      - 'scripts/apply-team-color-overrides.mjs'
+      - '.github/workflows/apply-team-color-overrides.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: team-color-overrides-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Apply saved team colors
+        run: node scripts/apply-team-color-overrides.mjs
+
+      - name: Commit updated team data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add teams-data.json
+          if git diff --cached --quiet; then
+            echo "Team colors are already current."
+            exit 0
+          fi
+          git commit -m "Apply team color overrides"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
