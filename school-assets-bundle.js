@@ -46,7 +46,7 @@ if((scorePage||gamePage)&&!window.__RUS_SUPABASE_LIVE_FETCH__){
 
 const loadScoreboard=()=>{
   if(!scorePage||document.querySelector('script[data-rus-scoreboard-school-assets]'))return;
-  const s=document.createElement('script');s.src='school-assets-scoreboard.js?v=20260821-emery-scoreboard3';s.async=true;s.dataset.rusScoreboardSchoolAssets='1';document.body.appendChild(s);
+  const s=document.createElement('script');s.src='school-assets-scoreboard.js?v=20260821-emery-exact4';s.async=true;s.dataset.rusScoreboardSchoolAssets='1';document.body.appendChild(s);
 };
 const loadScoreboardLiveClock=()=>{
   if(!scorePage||document.querySelector('script[data-rus-scoreboard-live-clock]'))return;
@@ -72,7 +72,7 @@ const loadExtras=()=>{loadScoreboard();loadScoreboardLiveClock();loadGameVisuals
 if(window.RUSSchoolAssets){loadExtras();return}
 let core=[...document.scripts].find(s=>(s.getAttribute('src')||'').split('?')[0].endsWith('school-assets-core.js'));
 if(!core){
-  core=document.createElement('script');core.src='school-assets-core.js?v=20260821-emery-scoreboard3';core.async=true;core.dataset.rusSchoolAssetsCore='1';document.body.appendChild(core);
+  core=document.createElement('script');core.src='school-assets-core.js?v=20260821-emery-exact4';core.async=true;core.dataset.rusSchoolAssetsCore='1';document.body.appendChild(core);
 }
 core.addEventListener('load',loadExtras,{once:true});
 window.addEventListener('rus:school-assets-ready',loadExtras,{once:true});
