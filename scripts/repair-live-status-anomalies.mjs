@@ -50,6 +50,17 @@ for(const [key,g] of Object.entries(data.games||{})){
     continue;
   }
 
+  // A bare quarter label with no clock, no scoring plays and no box score is
+  // not enough to call a game live. Deseret's pregame page can contain Q1-Q4
+  // table/header text, which previously caused scheduled games to appear live.
+  if(/^Q[1-4]$/i.test(String(g.status||'')) && !plays.length && !hasClock && !g.boxScore){
+    g.status='Scheduled';
+    g.period='';
+    fixed++;
+    console.log(`Reset unsupported quarter status: ${key} -> Scheduled`);
+    continue;
+  }
+
   if(/^halftime$/i.test(String(g.status||'')) && !plays.length && !hasClock){
     g.status='Scheduled';
     g.period='';
