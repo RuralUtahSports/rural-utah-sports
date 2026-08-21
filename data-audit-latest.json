@@ -1,11 +1,65 @@
 {
-  "generatedAt": "2026-08-20T13:23:40.817Z",
+  "generatedAt": "2026-08-21T13:22:52.817Z",
   "summary": {
     "errors": 0,
-    "warnings": 0,
+    "warnings": 6,
     "info": 1
   },
   "issues": [
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "ALTA standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "2-0-0",
+        "calculated": "1-0-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "GRANGER standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "0-2-0",
+        "calculated": "0-1-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "SYRACUSE standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "1-1-0",
+        "calculated": "0-1-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "BINGHAM standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "0-2-0",
+        "calculated": "0-1-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "SKY VIEW standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "1-1-0",
+        "calculated": "1-0-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "MORGAN standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "1-1-0",
+        "calculated": "0-1-1"
+      }
+    },
     {
       "severity": "info",
       "code": "AUDIT_COUNTS",
@@ -15,7 +69,7 @@
         "games": 123,
         "standings": 118,
         "rankedTeams": 68,
-        "playerIds": 6165
+        "playerIds": 6168
       }
     }
   ]
