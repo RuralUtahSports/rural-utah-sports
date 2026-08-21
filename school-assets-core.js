@@ -10,7 +10,7 @@ const ALIASES={
 };
 const CUSTOM_LOGOS={
   'ALTA':'school-logos/alta.webp','BEAVER':'school-logos/beaver.webp','EAST':'school-logos/east-user.svg?v=20260817-1',
-  'EMERY':'school-logo-cache/emery.png?v=20260820-emery-e1','GRAND':'school-logos/grand.webp?v=20260817-1','GRAND COUNTY':'school-logos/grand.webp?v=20260817-1',
+  'EMERY':'school-logos/emery-user.svg?v=20260821-2','GRAND':'school-logos/grand.webp?v=20260817-1','GRAND COUNTY':'school-logos/grand.webp?v=20260817-1',
   'GRANTSVILLE':'school-logos/grantsville.webp','GREEN CANYON':'school-logos/green-canyon.svg','HILLCREST':'school-logos/hillcrest.svg',
   'KEARNS':'school-logos/kearns.svg','LAYTON CHRISTIAN':'school-logos/layton-christian.svg','LAYTON CHRISTIAN ACADEMY':'school-logos/layton-christian.svg',
   'LONE PEAK':'school-logos/lone-peak.svg','MAPLE MOUNTAIN':'school-logos/maple-mountain.svg','MILFORD':'school-logos/milford.svg',
