@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-21T01:59:38.409Z",
+  "updatedAt": "2026-08-21T03:12:13.384Z",
   "summary": {
     "teams": 119,
     "teamGames": 125,
-    "statRows": 1957,
-    "rosterMatchedRows": 1887
+    "statRows": 1962,
+    "rosterMatchedRows": 1892
   },
   "teams": {
     "CEDAR CITY": {
@@ -3818,9 +3818,9 @@
           "date": "2026-08-20",
           "opponent": "SKY VIEW",
           "location": "Home",
-          "status": "Q2",
-          "final": false,
-          "teamScore": 34,
+          "status": "Final",
+          "final": true,
+          "teamScore": 47,
           "opponentScore": 0,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-20/sky-view-football-vs-morgan-football/273288",
           "players": [
@@ -3838,10 +3838,19 @@
                     "Yards": "",
                     "TD": "1"
                   }
+                },
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
                 }
               ],
               "scoringPlays": [
-                "Morgan — ( 11:54 2Q ) Rhett Larsen , 1-yard run ( kick from Seth Turner )"
+                "Morgan — ( 11:54 2Q ) Rhett Larsen , 1-yard run ( kick from Seth Turner )",
+                "Morgan — ( 1:23 2Q ) Rhett Larsen , 91-yard pass from Owen Gilson ( kick from Seth Turner )"
               ]
             },
             {
@@ -3864,35 +3873,14 @@
                   "values": {
                     "Receptions": "",
                     "Yards": "",
-                    "TD": "1"
+                    "TD": "2"
                   }
                 }
               ],
               "scoringPlays": [
                 "Morgan — ( 9:24 1Q ) George Thurston , 1-yard pass from Owen Gilson ( kick from Seth Turner )",
-                "Morgan — ( 6:05 1Q ) George Thurston , 10-yard run ( kick from Seth Turner )"
-              ]
-            },
-            {
-              "playerId": "morgan-33-cooper-giles",
-              "number": "33",
-              "name": "Cooper Giles",
-              "position": "LB",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Passing",
-                  "values": {
-                    "Comp-Att": "",
-                    "Comp %": "",
-                    "Yards": "",
-                    "TD": "1",
-                    "Int": ""
-                  }
-                }
-              ],
-              "scoringPlays": [
-                "Morgan — ( 6:20 2Q ) Owen Belliston , 31-yard pass from Cooper Giles ( kick failed )"
+                "Morgan — ( 6:05 1Q ) George Thurston , 10-yard run ( kick from Seth Turner )",
+                "Morgan — ( 9:17 3Q ) George Thurston , 3-yard pass from Owen Gilson ( kick from Seth Turner )"
               ]
             },
             {
@@ -3908,13 +3896,16 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "4",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Morgan — ( 9:24 1Q ) George Thurston , 1-yard pass from Owen Gilson ( kick from Seth Turner )"
+                "Morgan — ( 9:24 1Q ) George Thurston , 1-yard pass from Owen Gilson ( kick from Seth Turner )",
+                "Morgan — ( 6:20 2Q ) Owen Belliston , 31-yard pass from Owen Gilson ( kick failed )",
+                "Morgan — ( 1:23 2Q ) Rhett Larsen , 91-yard pass from Owen Gilson ( kick from Seth Turner )",
+                "Morgan — ( 9:17 3Q ) George Thurston , 3-yard pass from Owen Gilson ( kick from Seth Turner )"
               ]
             },
             {
@@ -3934,7 +3925,7 @@
                 }
               ],
               "scoringPlays": [
-                "Morgan — ( 6:20 2Q ) Owen Belliston , 31-yard pass from Cooper Giles ( kick failed )"
+                "Morgan — ( 6:20 2Q ) Owen Belliston , 31-yard pass from Owen Gilson ( kick failed )"
               ]
             },
             {
@@ -3948,7 +3939,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "4",
+                    "PAT": "6",
                     "Return TD": ""
                   }
                 }
@@ -3957,7 +3948,9 @@
                 "Morgan — ( 11:46 1Q ) Cade Spens , 21-yard int. return ( kick from Seth Turner )",
                 "Morgan — ( 9:24 1Q ) George Thurston , 1-yard pass from Owen Gilson ( kick from Seth Turner )",
                 "Morgan — ( 6:05 1Q ) George Thurston , 10-yard run ( kick from Seth Turner )",
-                "Morgan — ( 11:54 2Q ) Rhett Larsen , 1-yard run ( kick from Seth Turner )"
+                "Morgan — ( 11:54 2Q ) Rhett Larsen , 1-yard run ( kick from Seth Turner )",
+                "Morgan — ( 1:23 2Q ) Rhett Larsen , 91-yard pass from Owen Gilson ( kick from Seth Turner )",
+                "Morgan — ( 9:17 3Q ) George Thurston , 3-yard pass from Owen Gilson ( kick from Seth Turner )"
               ]
             },
             {
@@ -3987,7 +3980,9 @@
             "Morgan — ( 9:24 1Q ) George Thurston , 1-yard pass from Owen Gilson ( kick from Seth Turner )",
             "Morgan — ( 6:05 1Q ) George Thurston , 10-yard run ( kick from Seth Turner )",
             "Morgan — ( 11:54 2Q ) Rhett Larsen , 1-yard run ( kick from Seth Turner )",
-            "Morgan — ( 6:20 2Q ) Owen Belliston , 31-yard pass from Cooper Giles ( kick failed )"
+            "Morgan — ( 6:20 2Q ) Owen Belliston , 31-yard pass from Owen Gilson ( kick failed )",
+            "Morgan — ( 1:23 2Q ) Rhett Larsen , 91-yard pass from Owen Gilson ( kick from Seth Turner )",
+            "Morgan — ( 9:17 3Q ) George Thurston , 3-yard pass from Owen Gilson ( kick from Seth Turner )"
           ]
         }
       ]
@@ -7861,13 +7856,36 @@
           "date": "2026-08-20",
           "opponent": "SYRACUSE",
           "location": "Away",
-          "status": "Q2",
-          "final": false,
-          "teamScore": 0,
-          "opponentScore": 31,
+          "status": "Final",
+          "final": true,
+          "teamScore": 6,
+          "opponentScore": 52,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-20/granger-football-vs-syracuse-football/274387",
-          "players": [],
-          "scoringPlays": []
+          "players": [
+            {
+              "playerId": "granger-62-maa-imoa-havili",
+              "number": "62",
+              "name": "Maa'imoa Havili",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Granger — ( 10:14 3Q ) Maa'imoa Havili , 80-yard run ( kick failed )"
+              ]
+            }
+          ],
+          "scoringPlays": [
+            "Granger — ( 10:14 3Q ) Maa'imoa Havili , 80-yard run ( kick failed )"
+          ]
         }
       ]
     },
@@ -19314,10 +19332,10 @@
           "date": "2026-08-20",
           "opponent": "MORGAN",
           "location": "Away",
-          "status": "Q2",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 0,
-          "opponentScore": 34,
+          "opponentScore": 47,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-20/sky-view-football-vs-morgan-football/273288",
           "players": [],
           "scoringPlays": []
@@ -25396,10 +25414,10 @@
           "date": "2026-08-20",
           "opponent": "GRANGER",
           "location": "Home",
-          "status": "Q2",
-          "final": false,
-          "teamScore": 31,
-          "opponentScore": 0,
+          "status": "Final",
+          "final": true,
+          "teamScore": 52,
+          "opponentScore": 6,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-20/granger-football-vs-syracuse-football/274387",
           "players": [
             {
@@ -25414,12 +25432,13 @@
                   "values": {
                     "Carries": "",
                     "Yards": "",
-                    "TD": "1"
+                    "TD": "2"
                   }
                 }
               ],
               "scoringPlays": [
-                "Syracuse — ( 11:10 1Q ) Kao Prom , 10-yard run ( kick from Jed Beutler )"
+                "Syracuse — ( 11:10 1Q ) Kao Prom , 10-yard run ( kick from Jed Beutler )",
+                "Syracuse — ( 4:19 2Q ) Kao Prom , 53-yard run ( kick from Jed Beutler )"
               ]
             },
             {
@@ -25443,7 +25462,7 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "3",
                     "Int": ""
                   }
                 },
@@ -25459,7 +25478,9 @@
               "scoringPlays": [
                 "Syracuse — ( 11:33 1Q ) Ledger Wight , 51-yard run ( pass from William Norton )",
                 "Syracuse — ( 9:25 1Q ) Ledger Wight , 3-yard pass from Bo Metcalfe ( kick from Jed Beutler )",
-                "Syracuse — ( 6:09 1Q ) Isaac Edwards , 19-yard pass from Ledger Wight ( kick from Jed Beutler )"
+                "Syracuse — ( 6:09 1Q ) Isaac Edwards , 19-yard pass from Ledger Wight ( kick from Jed Beutler )",
+                "Syracuse — ( 8:16 2Q ) Bryson Hall , 50-yard pass from Ledger Wight ( kick from Jed Beutler )",
+                "Syracuse — ( 1:44 2Q ) Taggart Gailey , 25-yard pass from Ledger Wight ( kick from Jed Beutler )"
               ]
             },
             {
@@ -25482,6 +25503,46 @@
               ],
               "scoringPlays": [
                 "Syracuse — ( 9:25 1Q ) Ledger Wight , 3-yard pass from Bo Metcalfe ( kick from Jed Beutler )"
+              ]
+            },
+            {
+              "playerId": "syracuse-13-taggart-gailey",
+              "number": "13",
+              "name": "Taggart Gailey",
+              "position": "WR",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Syracuse — ( 1:44 2Q ) Taggart Gailey , 25-yard pass from Ledger Wight ( kick from Jed Beutler )"
+              ]
+            },
+            {
+              "playerId": "syracuse-16-bryson-hall",
+              "number": "16",
+              "name": "Bryson Hall",
+              "position": "WR/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Syracuse — ( 8:16 2Q ) Bryson Hall , 50-yard pass from Ledger Wight ( kick from Jed Beutler )"
               ]
             },
             {
@@ -25515,7 +25576,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "3",
+                    "PAT": "6",
                     "Return TD": ""
                   }
                 }
@@ -25523,7 +25584,10 @@
               "scoringPlays": [
                 "Syracuse — ( 11:10 1Q ) Kao Prom , 10-yard run ( kick from Jed Beutler )",
                 "Syracuse — ( 9:25 1Q ) Ledger Wight , 3-yard pass from Bo Metcalfe ( kick from Jed Beutler )",
-                "Syracuse — ( 6:09 1Q ) Isaac Edwards , 19-yard pass from Ledger Wight ( kick from Jed Beutler )"
+                "Syracuse — ( 6:09 1Q ) Isaac Edwards , 19-yard pass from Ledger Wight ( kick from Jed Beutler )",
+                "Syracuse — ( 8:16 2Q ) Bryson Hall , 50-yard pass from Ledger Wight ( kick from Jed Beutler )",
+                "Syracuse — ( 4:19 2Q ) Kao Prom , 53-yard run ( kick from Jed Beutler )",
+                "Syracuse — ( 1:44 2Q ) Taggart Gailey , 25-yard pass from Ledger Wight ( kick from Jed Beutler )"
               ]
             }
           ],
@@ -25532,7 +25596,10 @@
             "Syracuse — ( 11:10 1Q ) Kao Prom , 10-yard run ( kick from Jed Beutler )",
             "Syracuse — ( 9:25 1Q ) Ledger Wight , 3-yard pass from Bo Metcalfe ( kick from Jed Beutler )",
             "Syracuse — ( 6:09 1Q ) Isaac Edwards , 19-yard pass from Ledger Wight ( kick from Jed Beutler )",
-            "Syracuse — ( 1:32 1Q ) Cooper Smith , safety"
+            "Syracuse — ( 1:32 1Q ) Cooper Smith , safety",
+            "Syracuse — ( 8:16 2Q ) Bryson Hall , 50-yard pass from Ledger Wight ( kick from Jed Beutler )",
+            "Syracuse — ( 4:19 2Q ) Kao Prom , 53-yard run ( kick from Jed Beutler )",
+            "Syracuse — ( 1:44 2Q ) Taggart Gailey , 25-yard pass from Ledger Wight ( kick from Jed Beutler )"
           ]
         }
       ]
@@ -26883,13 +26950,36 @@
           "date": "2026-08-20",
           "opponent": "BINGHAM",
           "location": "Home",
-          "status": "Q2",
-          "final": false,
-          "teamScore": 0,
-          "opponentScore": 6,
+          "status": "Final",
+          "final": true,
+          "teamScore": 6,
+          "opponentScore": 12,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-20/bingham-football-vs-alta-football/274391",
-          "players": [],
-          "scoringPlays": []
+          "players": [
+            {
+              "playerId": "alta-7-treven-cooke",
+              "number": "7",
+              "name": "Treven Cooke",
+              "position": "RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Alta — ( 1:33 3Q ) Treven Cooke , 2-yard run ( kick failed )"
+              ]
+            }
+          ],
+          "scoringPlays": [
+            "Alta — ( 1:33 3Q ) Treven Cooke , 2-yard run ( kick failed )"
+          ]
         }
       ]
     },
@@ -27653,12 +27743,32 @@
           "date": "2026-08-20",
           "opponent": "ALTA",
           "location": "Away",
-          "status": "Q2",
-          "final": false,
-          "teamScore": 6,
-          "opponentScore": 0,
+          "status": "Final",
+          "final": true,
+          "teamScore": 12,
+          "opponentScore": 6,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-20/bingham-football-vs-alta-football/274391",
           "players": [
+            {
+              "playerId": "bingham-2-tovo-paea",
+              "number": "2",
+              "name": "Tovo Paea",
+              "position": "RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Bingham — ( 5:32 3Q ) Tovo Paea , 3-yard run ( run failed )"
+              ]
+            },
             {
               "playerId": "bingham-2-kash-dawson",
               "number": "2",
@@ -27703,7 +27813,8 @@
             }
           ],
           "scoringPlays": [
-            "Bingham — ( 7:42 2Q ) Chance Marti , 3-yard pass from Kash Dawson ( kick failed )"
+            "Bingham — ( 7:42 2Q ) Chance Marti , 3-yard pass from Kash Dawson ( kick failed )",
+            "Bingham — ( 5:32 3Q ) Tovo Paea , 3-yard run ( run failed )"
           ]
         }
       ]
