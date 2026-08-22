@@ -25,6 +25,7 @@ on:
       - 'scripts/apply-kickoff-live-fallback.mjs'
       - 'scripts/build_standings_2026.mjs'
       - 'scripts/audit_standings_records_2026.mjs'
+      - 'scripts/update-alltime-team-records.mjs'
       - '.github/workflows/update-live-scoreboard.yml'
 
 permissions:
@@ -66,11 +67,17 @@ jobs:
       - name: Audit all 2026 Utah team records
         run: node scripts/audit_standings_records_2026.mjs
 
+      - name: Refresh all-time team records with verified 2026 finals
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
+          CLEAN_GAMES_GID: 627882418
+        run: node scripts/update-alltime-team-records.mjs
+
       - name: Commit live scoreboard and team records
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add deseret-game-details.json standings-2026.json
+          git add deseret-game-details.json standings-2026.json teams-data.json
           if git diff --cached --quiet; then
             echo "Live scoreboard and records are already current."
             exit 0
