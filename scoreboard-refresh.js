@@ -34,6 +34,10 @@
     return `${isoDate(game?.date)}|${compact(game?.awayTeam)}|${compact(game?.homeTeam)}`;
   }
 
+  function hasReportedActual(game) {
+    return clean(game?.actualAway) !== '' && clean(game?.actualHome) !== '';
+  }
+
   function detailScore(detail) {
     const rows = detail?.boxScore?.rows;
     if (!Array.isArray(rows) || rows.length < 2) return { away: null, home: null, hasDes: false };
@@ -101,9 +105,13 @@
           };
         }
 
-        // A genuinely Scheduled record must never inherit another game's clock,
-        // quarter, score, or stale Final state.
+        // A stale Scheduled detail must not erase an actual score already
+        // reported for this exact date/away/home game in the weekly feed.
         if (detail.final !== true && /^scheduled$/i.test(status)) {
+          if (hasReportedActual(game)) {
+            const reported = priorScoreState(game);
+            if (reported && (reported.done || reported.sheetDone || (reported.away != null && reported.home != null))) return reported;
+          }
           return {
             done: false,
             away: null,
