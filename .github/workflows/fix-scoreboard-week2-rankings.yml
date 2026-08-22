@@ -1,10 +1,10 @@
 name: Fix Scoreboard Week 2 Rankings
 
-# Triggered after workflow creation so GitHub runs the one-time repair.
 on:
   push:
     paths:
       - '.github/workflows/fix-scoreboard-week2-rankings.yml'
+      - '.github/trigger-scoreboard-week2-ranks.txt'
 
 permissions:
   contents: write
