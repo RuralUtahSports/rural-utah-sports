@@ -36,6 +36,14 @@
     return /^(?:live|q[1-4]|halftime|half|ot)$/i.test(status) || !!clean(detail.clock);
   }
 
+  function isVerifiedUnlinkedScore(detail, score) {
+    if (!detail || !score?.hasDes || detail.final === true) return false;
+    const source = `${clean(detail.scoreSource)} ${clean(detail?.boxScore?.source)}`;
+    if (!/deseret-day-scoreboard-unlinked/i.test(source)) return false;
+    // Avoid turning a pregame 0-0 placeholder into a live game solely from a score shell.
+    return Number(score.away) > 0 || Number(score.home) > 0;
+  }
+
   function installAuthoritativeScoreState() {
     if (typeof scoreState !== 'function') return;
     const priorScoreState = scoreState;
@@ -49,21 +57,24 @@
       if (detail) {
         const status = clean(detail.status) || 'Upcoming';
         const score = detailScore(detail);
+        const verifiedUnlinkedScore = isVerifiedUnlinkedScore(detail, score);
 
         // Fresh per-game live data always beats stale sheet/final fields.
-        if (isLiveDetail(detail)) {
+        // For unlinked/OOS games Deseret sometimes publishes the score but leaves the
+        // status label as Scheduled. A verified day-scoreboard score is still live data.
+        if (isLiveDetail(detail) || verifiedUnlinkedScore) {
           return {
             done: false,
             away: score.hasDes ? score.away : null,
             home: score.hasDes ? score.home : null,
-            status,
+            status: isLiveDetail(detail) ? status : 'Live',
             live: true,
             sheetDone: false,
             hasDes: score.hasDes
           };
         }
 
-        // A current Scheduled record must never inherit another game's clock,
+        // A genuinely Scheduled record must never inherit another game's clock,
         // quarter, score, or stale Final state.
         if (detail.final !== true && /^scheduled$/i.test(status)) {
           return {
