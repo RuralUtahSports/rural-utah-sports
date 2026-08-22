@@ -6,6 +6,12 @@ const BASE='https://sports.deseret.com';
 const TIME_ZONE='America/Denver';
 const GRACE_MINUTES=20;
 
+// Verified kickoff corrections for games where Deseret's listed start time is wrong.
+// Values are Utah-local minutes after midnight.
+const KICKOFF_OVERRIDES=new Map([
+  ['2026-08-21|MONTICELLO|UMALEHI',18*60]
+]);
+
 const clean=v=>String(v??'').trim();
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
 
@@ -117,12 +123,12 @@ if(!games.length){
   process.exit(0);
 }
 
-let html;
+let html='';
 try{
   html=await fetchHtml(`${BASE}/high-school/football/scores-schedule/${now.date}?region=all`);
 }catch(e){
-  console.warn(`Kickoff fallback: ${e.message}`);
-  process.exit(0);
+  // A verified kickoff override can still safely work if Deseret's day page is unavailable.
+  console.warn(`Kickoff fallback day page: ${e.message}`);
 }
 
 const text=textOf(html);
@@ -133,24 +139,29 @@ for(const g of games){
   const d=details.games?.[key];
   if(!d||d.final===true||!/^Scheduled$/i.test(clean(d.status))||hasRealGameEvidence(d))continue;
 
-  const seg=segmentForGame(text,g);
-  if(!seg)continue;
-  const kickoff=kickoffMinutes(seg);
-  if(kickoff===null)continue;
+  const overrideKickoff=KICKOFF_OVERRIDES.get(key);
+  let kickoff=overrideKickoff;
 
-  // Deseret sometimes leaves an already-started game labeled Upcoming until
-  // the first score/status report arrives. After a 20-minute grace period,
-  // show a generic Live state. We never invent a quarter, clock, or score.
-  if(now.minutes<kickoff+GRACE_MINUTES)continue;
+  if(kickoff===undefined){
+    const seg=segmentForGame(text,g);
+    if(!seg)continue;
+    kickoff=kickoffMinutes(seg);
+    if(kickoff===null)continue;
+  }
+
+  // Normal Deseret times keep a 20-minute grace period because some games start late.
+  // A manually verified correction is trusted from the confirmed kickoff itself.
+  const grace=overrideKickoff===undefined?GRACE_MINUTES:0;
+  if(now.minutes<kickoff+grace)continue;
 
   d.status='Live';
   d.final=false;
   d.clock='';
   d.period='';
-  d.statusSource='kickoff-time-fallback';
+  d.statusSource=overrideKickoff===undefined?'kickoff-time-fallback':'verified-kickoff-override';
   d.kickoffFallbackAt=new Date().toISOString();
   updated++;
-  console.log(`Kickoff fallback marked Live: ${key}`);
+  console.log(`Kickoff fallback marked Live: ${key}${overrideKickoff===undefined?'':' (verified override)'}`);
 }
 
 if(updated){
