@@ -26,7 +26,9 @@ const aliases = {
   UMALEHI: ['UMA Camp Williams', 'Utah Military Camp Williams', 'Utah Military Academy Camp Williams'],
   UMACAMPWILLIAMS: ['UMA-Lehi', 'Utah Military Camp Williams', 'Utah Military Academy Camp Williams'],
   UTAHMILITARYCAMPWILLIAMS: ['UMA-Lehi', 'UMA Camp Williams', 'Utah Military Academy Camp Williams'],
-  UTAHMILITARYACADEMYCAMPWILLIAMS: ['UMA-Lehi', 'UMA Camp Williams', 'Utah Military Camp Williams']
+  UTAHMILITARYACADEMYCAMPWILLIAMS: ['UMA-Lehi', 'UMA Camp Williams', 'Utah Military Camp Williams'],
+  UTAHMILITARYHILLFIELD: ['UMA-Hillfield', 'Utah Military Academy Hillfield'],
+  UTAHMILITARYACADEMYHILLFIELD: ['UMA-Hillfield', 'Utah Military Hillfield']
 };
 
 const stateNames = {
@@ -94,94 +96,83 @@ function escRe(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function positionsOfAny(haystack, names) {
-  const out = [];
-  for (const name of names) {
-    const re = new RegExp(`(^|[^A-Za-z0-9])${escRe(name).replace(/\\ /g, '\\s+')}(?=$|[^A-Za-z0-9])`, 'ig');
-    let match;
-    while ((match = re.exec(haystack))) {
-      out.push(match.index + (match[1]?.length || 0));
-      if (match.index === re.lastIndex) re.lastIndex++;
-    }
-  }
-  return [...new Set(out)].sort((a, b) => a - b);
+function nameRegex(name) {
+  return new RegExp(`(^|[^A-Za-z0-9])${escRe(name).replace(/\\ /g, '\\s+')}(?=$|[^A-Za-z0-9])`, 'i');
 }
 
-function segmentForGame(text, game) {
-  const away = positionsOfAny(text, namesFor(game.awayTeam));
-  const home = positionsOfAny(text, namesFor(game.homeTeam));
+function lineMatches(line, names) {
+  return names.some(name => nameRegex(name).test(line));
+}
+
+function bestLinePair(lines, game) {
+  const awayNames = namesFor(game.awayTeam);
+  const homeNames = namesFor(game.homeTeam);
+  const away = [];
+  const home = [];
+  lines.forEach((line, index) => {
+    if (lineMatches(line, awayNames)) away.push(index);
+    if (lineMatches(line, homeNames)) home.push(index);
+  });
+
   let best = null;
   for (const a of away) {
     for (const h of home) {
       const gap = Math.abs(a - h);
-      if (gap > 650) continue;
+      if (gap > 6) continue;
       if (!best || gap < best.gap) best = { a, h, gap };
     }
   }
-  if (!best) return '';
-  const lo = Math.min(best.a, best.h);
-  const hi = Math.max(best.a, best.h);
-  return text.slice(Math.max(0, lo - 280), Math.min(text.length, hi + 700));
+  return best;
 }
 
-function statusForGame(text, game) {
-  const segment = segmentForGame(text, game);
-  if (!segment) return { status: '', clock: '', period: '' };
+function parseStatusLine(value) {
+  const line = clean(value);
+  if (!line) return null;
+  if (/\bFinal\b/i.test(line)) return { status: 'Final', clock: '', period: '' };
+  if (/\b(?:Live\s+)?Halftime\b/i.test(line)) return { status: 'HALFTIME', clock: '', period: 'HALFTIME' };
+  if (/\b(?:Live\s+)?OT\b/i.test(line)) return { status: 'OT', clock: '', period: 'OT' };
 
-  const awayPositions = positionsOfAny(segment, namesFor(game.awayTeam));
-  const homePositions = positionsOfAny(segment, namesFor(game.homeTeam));
-  if (!awayPositions.length || !homePositions.length) return { status: '', clock: '', period: '' };
-  const firstTeam = Math.min(awayPositions[0], homePositions[0]);
-  const before = segment.slice(Math.max(0, firstTeam - 220), firstTeam);
-
-  if (/\bFinal\b/i.test(before)) return { status: 'Final', clock: '', period: '' };
-  if (/\bHalftime\b/i.test(before)) return { status: 'HALFTIME', clock: '', period: 'HALFTIME' };
-  if (/\bOT\b/i.test(before)) return { status: 'OT', clock: '', period: 'OT' };
-
-  let match = before.match(/\bLive\s+(\d{1,2}:\d{2}(?:\.\d+)?)\s+(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+Quarter)?)/i);
+  let match = line.match(/\bLive\s+(\d{1,2}:\d{2}(?:\.\d+)?)\s+(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+Quarter)?)/i);
   if (match) {
     const period = `Q${match[2] || match[3] || match[4]}`;
     return { status: period, clock: match[1], period };
   }
 
-  match = before.match(/\bLive\s+(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+Quarter)?)\s+(\d{1,2}:\d{2}(?:\.\d+)?)/i);
+  match = line.match(/\bLive\s+(?:End\s+)?(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+Quarter)?)/i);
   if (match) {
     const period = `Q${match[1] || match[2] || match[3]}`;
-    return { status: period, clock: match[4], period };
-  }
-
-  const quarter = before.match(/\bLive\b[\s\S]*?\b(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+Quarter)?)\b/i);
-  if (quarter) {
-    const period = `Q${quarter[1] || quarter[2] || quarter[3]}`;
     return { status: period, clock: '', period };
   }
-  if (/\bLive\b/i.test(before)) return { status: 'Live', clock: '', period: '' };
-  return { status: '', clock: '', period: '' };
-}
 
-function lineScore(segment, names) {
-  const lines = String(segment || '').split(/\n+/).map(clean).filter(Boolean);
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (!names.some(name => new RegExp(`(^|[^A-Za-z0-9])${escRe(name).replace(/\\ /g, '\\s+')}(?=$|[^A-Za-z0-9])`, 'i').test(line))) continue;
-    const local = [line, lines[i + 1] || ''].join(' ')
-      .replace(/\(\s*\d+\s*-\s*\d+(?:\s*-\s*\d+)?\s*\)/g, ' ')
-      .replace(/\b(?:19|20)\d{2}\b/g, ' ')
-      .replace(/\b\d{1,2}:\d{2}\b/g, ' ');
-    const numbers = [...local.matchAll(/(?:^|[^A-Za-z0-9])(\d{1,3})(?=$|[^A-Za-z0-9])/g)]
-      .map(match => Number(match[1]))
-      .filter(number => Number.isInteger(number) && number >= 0 && number <= 199);
-    if (numbers.length) return numbers[numbers.length - 1];
-  }
+  if (/\bLive\b/i.test(line)) return { status: 'Live', clock: '', period: '' };
   return null;
 }
 
-function scoreForGame(text, game, status) {
-  if (!/^(?:FINAL|LIVE|HALFTIME|OT|Q[1-4])$/i.test(status || '')) return null;
-  const segment = segmentForGame(text, game);
-  if (!segment) return null;
-  const away = lineScore(segment, namesFor(game.awayTeam));
-  const home = lineScore(segment, namesFor(game.homeTeam));
+function stateForPair(lines, pair) {
+  if (!pair) return { status: '', clock: '', period: '' };
+  const first = Math.min(pair.a, pair.h);
+  for (let i = first - 1; i >= Math.max(0, first - 10); i--) {
+    const parsed = parseStatusLine(lines[i]);
+    if (parsed) return parsed;
+  }
+  return { status: '', clock: '', period: '' };
+}
+
+function scoreFromLine(line) {
+  const scrubbed = clean(line)
+    .replace(/\(\s*\d+\s*-\s*\d+(?:\s*-\s*\d+)?\s*\)/g, ' ')
+    .replace(/\b(?:19|20)\d{2}\b/g, ' ')
+    .replace(/\b\d{1,2}:\d{2}(?:\.\d+)?\b/g, ' ');
+  const numbers = [...scrubbed.matchAll(/(?:^|[^A-Za-z0-9])(\d{1,3})(?=$|[^A-Za-z0-9])/g)]
+    .map(match => Number(match[1]))
+    .filter(number => Number.isInteger(number) && number >= 0 && number <= 199);
+  return numbers.length ? numbers[numbers.length - 1] : null;
+}
+
+function scoreForPair(lines, pair) {
+  if (!pair) return null;
+  const away = scoreFromLine(lines[pair.a]);
+  const home = scoreFromLine(lines[pair.h]);
   return Number.isInteger(away) && Number.isInteger(home) ? { away, home } : null;
 }
 
@@ -266,10 +257,19 @@ for (const date of dates) {
     continue;
   }
 
-  const text = textOf(html);
+  const lines = textOf(html).split(/\n+/).map(clean).filter(Boolean);
   for (const game of games.filter(item => isoDate(item.date) === date)) {
-    const state = statusForGame(text, game);
-    if (!state.status) continue;
+    const pair = bestLinePair(lines, game);
+    if (!pair) {
+      console.warn(`Unlinked no team-pair match: ${gameKey(game)}`);
+      continue;
+    }
+
+    const state = stateForPair(lines, pair);
+    if (!state.status) {
+      console.warn(`Unlinked no live status: ${gameKey(game)}`);
+      continue;
+    }
     matched++;
 
     const key = gameKey(game);
@@ -277,7 +277,7 @@ for (const date of dates) {
     const detail = ensureDetail(details, game);
     if (!existed) updated++;
 
-    const score = scoreForGame(text, game, state.status);
+    const score = scoreForPair(lines, pair);
     if (state.status === 'Final') {
       if (!detail.final || detail.status !== 'Final' || detail.clock || detail.period || detail.finalSource !== 'deseret-day-scoreboard-unlinked') {
         detail.final = true;
@@ -299,10 +299,11 @@ for (const date of dates) {
     }
 
     if (applyScore(detail, game, score)) updated++;
+    detail.statusSource = 'deseret-day-scoreboard-unlinked';
     console.log(`Unlinked live match: ${key} -> ${detail.status}${score ? ` ${score.away}-${score.home}` : ''}`);
   }
 }
 
 details.updatedAt = new Date().toISOString();
 fs.writeFileSync(DETAILS, JSON.stringify(details, null, 2) + '\n');
-console.log(`Unlinked Deseret reconciliation matched ${matched} games and updated ${updated} fields.`);
+console.log(`Unlinked Deseret reconciliation matched ${matched} game(s); ${updated} change(s).`);
