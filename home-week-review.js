@@ -42,6 +42,27 @@
     m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
     return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:'';
   };
+  const dateMs=d=>{
+    const iso=isoDate(d);
+    if(!iso)return 0;
+    const [y,m,day]=iso.split('-').map(Number);
+    return new Date(y,m-1,day).getTime();
+  };
+  const thursdayStart=ts=>{
+    const d=new Date(ts);
+    d.setHours(0,0,0,0);
+    const back=(d.getDay()+3)%7;
+    d.setDate(d.getDate()-back);
+    return d.getTime();
+  };
+  const currentWeekGames=games=>{
+    const start=thursdayStart(Date.now());
+    const end=start+(7*24*60*60*1000);
+    return games.filter(g=>{
+      const t=dateMs(g?.date);
+      return t>=start&&t<end;
+    });
+  };
   const detailKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
   const safeHex=(v,f='#444444')=>/^#[0-9A-F]{3}(?:[0-9A-F]{3})?$/i.test(String(v||''))?String(v):f;
   const hexRgb=hex=>{let h=String(hex||'').replace('#','');if(h.length===3)h=h.split('').map(x=>x+x).join('');const n=parseInt(h,16);return Number.isFinite(n)?`${(n>>16)&255},${(n>>8)&255},${n&255}`:'68,68,68'};
@@ -104,7 +125,7 @@
       }
       if(dr?.ok){const details=await dr.json();detailGames=details?.games||{}}else detailGames={};
       if(er?.ok){const e=await er.json();eloGames=e?.games||{}}else eloGames={};
-      const data=await r.json(), rows=finalGames(data.games||[]).map(result).filter(x=>x.winner!=='Tie');
+      const data=await r.json(), weekGames=currentWeekGames(data.games||[]), rows=finalGames(weekGames).map(result).filter(x=>x.winner!=='Tie');
       if(!rows.length){host.innerHTML=card('Top Win',null,'');return}
       const upsets=rows.filter(x=>x.predWinner!=='Tie'&&x.predWinner!==x.winner).sort((a,b)=>b.predMargin-a.predMargin||b.margin-a.margin);
       const upset=upsets[0]||null;
