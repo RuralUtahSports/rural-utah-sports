@@ -175,6 +175,11 @@ function loadDesktopV2(){
   script.src='desktop-v2.js?v=20260818-tableheaderfix';
   script.async=true;
   script.dataset.rusDesktopV2='1';
+  if(path==='scorigami.html'){
+    script.addEventListener('load',()=>{
+      document.querySelectorAll('table.score-table.rus-desktop-table').forEach(table=>table.classList.remove('rus-desktop-table'));
+    },{once:true});
+  }
   document.body.appendChild(script);
 }
 
