@@ -36,11 +36,10 @@
     return /^(?:live|q[1-4]|halftime|half|ot)$/i.test(status) || !!clean(detail.clock);
   }
 
-  function isVerifiedUnlinkedScore(detail, score) {
+  function hasScoreOnlyLiveFallback(detail, score) {
     if (!detail || !score?.hasDes || detail.final === true) return false;
-    const source = `${clean(detail.scoreSource)} ${clean(detail?.boxScore?.source)}`;
-    if (!/deseret-day-scoreboard-unlinked/i.test(source)) return false;
-    // Avoid turning a pregame 0-0 placeholder into a live game solely from a score shell.
+    // A non-zero box score belongs to this exact date/away/home key and is actual
+    // Deseret game data. Some OOS cards omit their live status label entirely.
     return Number(score.away) > 0 || Number(score.home) > 0;
   }
 
@@ -57,12 +56,12 @@
       if (detail) {
         const status = clean(detail.status) || 'Upcoming';
         const score = detailScore(detail);
-        const verifiedUnlinkedScore = isVerifiedUnlinkedScore(detail, score);
+        const scoreOnlyLive = hasScoreOnlyLiveFallback(detail, score);
 
         // Fresh per-game live data always beats stale sheet/final fields.
-        // For unlinked/OOS games Deseret sometimes publishes the score but leaves the
-        // status label as Scheduled. A verified day-scoreboard score is still live data.
-        if (isLiveDetail(detail) || verifiedUnlinkedScore) {
+        // Deseret sometimes publishes an OOS box score while leaving status as
+        // Scheduled. A real non-zero box score is enough to display the score.
+        if (isLiveDetail(detail) || scoreOnlyLive) {
           return {
             done: false,
             away: score.hasDes ? score.away : null,
