@@ -117,9 +117,10 @@ jobs:
           fs.writeFileSync('simulator-data.json',JSON.stringify({teams:featureMap,pairs}));
           console.log(`Simulator teams: ${names.length}`);console.log(`Pair context rows: ${Object.keys(pairs).length}`);
 
-          function csvUrl(gid,range){return `https://docs.google.com/spreadsheets/d/${process.env.SHEET_ID}/export?format=csv&gid=${gid}&range=${encodeURIComponent(range)}`}
+          // Cache-bust the Sheet export so recent row deletions/edits do not linger in the generated weekly feed.
+          function csvUrl(gid,range){return `https://docs.google.com/spreadsheets/d/${process.env.SHEET_ID}/export?format=csv&gid=${gid}&range=${encodeURIComponent(range)}&_rus=${Date.now()}`}
           function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(quoted){if(c==='"'&&text[i+1]==='"'){field+='"';i++}else if(c==='"')quoted=false;else field+=c}else{if(c==='"')quoted=true;else if(c===','){row.push(field);field=''}else if(c==='\n'){row.push(field.replace(/\r$/,''));rows.push(row);row=[];field=''}else field+=c}}if(field.length||row.length){row.push(field.replace(/\r$/,''));rows.push(row)}return rows}
-          const res=await fetch(csvUrl(process.env.WEEKLY_GID,'A1:K1000'));if(!res.ok)throw new Error(`Weekly Simulation download failed: ${res.status}`);const rows=parseCSV(await res.text()),weekly=[];
+          const res=await fetch(csvUrl(process.env.WEEKLY_GID,'A1:K1000'),{cache:'no-store'});if(!res.ok)throw new Error(`Weekly Simulation download failed: ${res.status}`);const rows=parseCSV(await res.text()),weekly=[];
           for(const r of rows.slice(1)){if(!clean(r[1])||!clean(r[2]))continue;weekly.push({date:clean(r[0]),awayTeam:clean(r[1]),homeTeam:clean(r[2]),awayScore:n(r[3]),homeScore:n(r[4]),winner:clean(r[5]),actualAway:n(r[7]),actualHome:n(r[8]),actualWinner:clean(r[9]),wl:clean(r[10])})}
           fs.writeFileSync('weekly-simulation.json',JSON.stringify({games:weekly}));console.log(`Weekly simulation games: ${weekly.length}`);
           NODE
