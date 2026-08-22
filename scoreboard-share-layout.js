@@ -53,12 +53,12 @@
 
   let contextPromise=null;
   function loadContext(){
-    if(contextPromise)return contextPromise;
+    contextPromise=null;
     contextPromise=(async()=>{
       const [standings,classData,stateData,logoCache]=await Promise.all([
-        fetchJson('standings-2026.json'),
-        fetchJson('rankings-current-2026.json'),
-        fetchJson('state-top25-history-2026.json'),
+        fetchJson('https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/standings-2026.json'),
+        fetchJson('https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/rankings-current-2026.json'),
+        fetchJson('https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/state-top25-history-2026.json'),
         fetchJson('school-logo-cache.json',5200)
       ]);
       const records=new Map(),classRanks=new Map(),stateRanks=new Map();
