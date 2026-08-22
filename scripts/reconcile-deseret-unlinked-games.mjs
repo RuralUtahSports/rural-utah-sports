@@ -144,6 +144,12 @@ function parseStatusLine(value) {
     return { status: period, clock: '', period };
   }
 
+  match = line.match(/\bEnd\s+(?:of\s+)?(?:the\s+)?(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+Quarter)?)/i);
+  if (match) {
+    const period = `Q${match[1] || match[2] || match[3]}`;
+    return { status: period, clock: '', period };
+  }
+
   if (/\bLive\b/i.test(line)) return { status: 'Live', clock: '', period: '' };
   return null;
 }
@@ -151,11 +157,20 @@ function parseStatusLine(value) {
 function stateForPair(lines, pair) {
   if (!pair) return { status: '', clock: '', period: '' };
   const first = Math.min(pair.a, pair.h);
-  for (let i = first - 1; i >= Math.max(0, first - 10); i--) {
+  const last = Math.max(pair.a, pair.h);
+
+  // Deseret usually places the status immediately before the teams, but a few
+  // out-of-state cards put it alongside or just after them. Prefer the closest
+  // status marker in a tight window around this matchup.
+  const candidates = [];
+  for (let i = Math.max(0, first - 10); i <= Math.min(lines.length - 1, last + 3); i++) {
     const parsed = parseStatusLine(lines[i]);
-    if (parsed) return parsed;
+    if (!parsed) continue;
+    const distance = i < first ? first - i : i > last ? i - last : 0;
+    candidates.push({ parsed, distance, index: i });
   }
-  return { status: '', clock: '', period: '' };
+  candidates.sort((a, b) => a.distance - b.distance || Math.abs(first - a.index) - Math.abs(first - b.index));
+  return candidates[0]?.parsed || { status: '', clock: '', period: '' };
 }
 
 function scoreFromLine(line) {
@@ -265,19 +280,33 @@ for (const date of dates) {
       continue;
     }
 
-    const state = stateForPair(lines, pair);
-    if (!state.status) {
-      console.warn(`Unlinked no live status: ${gameKey(game)}`);
+    const score = scoreForPair(lines, pair);
+    let state = stateForPair(lines, pair);
+
+    // Some Deseret out-of-state cards publish a current score but omit the live
+    // badge/quarter in the text representation. A non-zero verified score means
+    // the game has started, so do not leave it marked Scheduled.
+    if (!state.status && score && (score.away > 0 || score.home > 0)) {
+      state = { status: 'Live', clock: '', period: '' };
+    }
+
+    if (!state.status && !score) {
+      console.warn(`Unlinked no live status or score: ${gameKey(game)}`);
       continue;
     }
-    matched++;
 
+    matched++;
     const key = gameKey(game);
     const existed = !!details.games?.[key];
     const detail = ensureDetail(details, game);
     if (!existed) updated++;
 
-    const score = scoreForPair(lines, pair);
+    // If a score is present but the status remains unavailable (for example 0-0
+    // just after kickoff), preserve an already-live state rather than reverting.
+    if (!state.status && detail.final !== true && /^(?:live|q[1-4]|halftime|half|ot)$/i.test(clean(detail.status))) {
+      state = { status: detail.status, clock: detail.clock || '', period: detail.period || '' };
+    }
+
     if (state.status === 'Final') {
       if (!detail.final || detail.status !== 'Final' || detail.clock || detail.period || detail.finalSource !== 'deseret-day-scoreboard-unlinked') {
         detail.final = true;
@@ -287,7 +316,7 @@ for (const date of dates) {
         detail.finalSource = 'deseret-day-scoreboard-unlinked';
         updated++;
       }
-    } else {
+    } else if (state.status) {
       if (detail.final || detail.status !== state.status || clean(detail.clock) !== clean(state.clock) || clean(detail.period) !== clean(state.period) || detail.finalSource) {
         detail.final = false;
         detail.status = state.status;
@@ -299,7 +328,7 @@ for (const date of dates) {
     }
 
     if (applyScore(detail, game, score)) updated++;
-    detail.statusSource = 'deseret-day-scoreboard-unlinked';
+    if (state.status) detail.statusSource = 'deseret-day-scoreboard-unlinked';
     console.log(`Unlinked live match: ${key} -> ${detail.status}${score ? ` ${score.away}-${score.home}` : ''}`);
   }
 }
