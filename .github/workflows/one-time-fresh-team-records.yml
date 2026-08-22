@@ -1,0 +1,62 @@
+name: One-time fresh team records
+
+on:
+  push:
+    paths:
+      - '.github/workflows/one-time-fresh-team-records.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Make standings and share records always fresh
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('scoreboard-share-layout.js')
+          s=p.read_text()
+          replacements={
+            "if(contextPromise)return contextPromise;":"contextPromise=null;",
+            "fetchJson('standings-2026.json'),":"fetchJson('https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/standings-2026.json'),",
+            "fetchJson('rankings-current-2026.json'),":"fetchJson('https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/rankings-current-2026.json'),",
+            "fetchJson('state-top25-history-2026.json'),":"fetchJson('https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/state-top25-history-2026.json'),",
+          }
+          for old,new in replacements.items():
+            if old not in s:
+              raise SystemExit(f'missing scoreboard-share target: {old}')
+            s=s.replace(old,new,1)
+          p.write_text(s)
+
+          p=Path('standings.html')
+          s=p.read_text()
+          old="fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'})"
+          new="fetch(`https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/standings-2026.json?v=${Date.now()}`,{cache:'no-store'})"
+          if old not in s:
+            raise SystemExit('missing standings fetch target')
+          p.write_text(s.replace(old,new,1))
+
+          p=Path('scoreboard.html')
+          s=p.read_text()
+          old='scoreboard-share-layout.js?v=20260820-records-rankings1'
+          new='scoreboard-share-layout.js?v=20260821-fresh-records1'
+          if old not in s:
+            raise SystemExit('missing scoreboard share version target')
+          p.write_text(s.replace(old,new,1))
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add scoreboard-share-layout.js scoreboard.html standings.html
+          git commit -m "Keep team records fresh across standings and share graphics"
+          git pull --rebase origin main
+          git push
