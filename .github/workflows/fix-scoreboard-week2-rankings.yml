@@ -1,5 +1,6 @@
 name: Fix Scoreboard Week 2 Rankings
 
+# Triggered after workflow creation so GitHub runs the one-time repair.
 on:
   push:
     paths:
