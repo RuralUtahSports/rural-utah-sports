@@ -1,0 +1,55 @@
+name: Fix Sheet Sync Range Caps
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-sheet-sync-ranges.yml'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove hard row caps from sheet sync
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/rebuild-teams-data.yml')
+          text = path.read_text()
+          replacements = {
+              "'A1:G1000'": "'A:G'",
+              "'R1:AP241'": "'R:AP'",
+              "'A1:AD125'": "'A:AD'",
+              "'A1:Q6791'": "'A:Q'",
+              "'A1:F40906'": "'A:F'",
+              "'A1:H81811'": "'A:H'",
+          }
+          missing = [old for old in replacements if old not in text]
+          if missing:
+              raise SystemExit(f'Expected range caps not found: {missing}')
+          for old, new in replacements.items():
+              text = text.replace(old, new)
+          path.write_text(text)
+          PY
+
+      - name: Commit permanent fix
+        run: |
+          rm .github/workflows/fix-sheet-sync-ranges.yml
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add .github/workflows/rebuild-teams-data.yml .github/workflows/fix-sheet-sync-ranges.yml
+          git commit -m "Remove Google Sheet sync row caps"
+          git pull --rebase origin main
+          git push
+
+      - name: Rebuild website data immediately
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST repos/${{ github.repository }}/actions/workflows/rebuild-teams-data.yml/dispatches -f ref=main
+          echo "Dispatched sheet data rebuild on main."
