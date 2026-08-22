@@ -22,6 +22,7 @@ on:
       - 'manual-stat-corrections-2026.json'
       - 'scripts/reconcile-deseret-day-status.mjs'
       - 'scripts/reconcile-deseret-unlinked-games.mjs'
+      - 'scripts/fill-boxscore-from-scoring-plays.mjs'
       - 'scripts/repair-live-status-anomalies.mjs'
       - 'scripts/apply-kickoff-live-fallback.mjs'
       - 'scripts/build_standings_2026.mjs'
@@ -55,6 +56,9 @@ jobs:
 
       - name: Reconcile out-of-state games without direct Deseret URLs
         run: node scripts/reconcile-deseret-unlinked-games.mjs
+
+      - name: Fill missing quarter scores from scoring plays
+        run: node scripts/fill-boxscore-from-scoring-plays.mjs
 
       - name: Repair suspicious same-day statuses
         run: node scripts/repair-live-status-anomalies.mjs
