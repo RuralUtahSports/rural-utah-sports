@@ -56,15 +56,15 @@
     contextPromise=null;
     contextPromise=(async()=>{
       const [standings,classData,stateData,logoCache]=await Promise.all([
-        fetchJson('https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/standings-2026.json'),
-        fetchJson('https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/rankings-current-2026.json'),
-        fetchJson('https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/state-top25-history-2026.json'),
+        fetchJson('standings-2026.json'),
+        fetchJson('rankings-current-2026.json'),
+        fetchJson('state-top25-history-2026.json'),
         fetchJson('school-logo-cache.json',5200)
       ]);
       const records=new Map(),classRanks=new Map(),stateRanks=new Map();
       for(const rows of Object.values(standings?.byClassification||{}))for(const row of rows||[])if(row?.team)records.set(canon(row.team),row);
       for(const [classification,teams] of Object.entries(classData?.classifications||{}))(teams||[]).forEach((team,index)=>{const name=typeof team==='string'?team:team?.team;if(name)classRanks.set(canon(name),{rank:index+1,classification:classification==='8-PLAYER'?'8P':classification})});
-      const snapshots=stateData?.snapshots||[],latest=snapshots[snapshots.length-1]||stateData;
+      const snapshots=stateData?.snapshots||[],rankingLabel=String(classData?.label||'').trim(),matching=snapshots.find(s=>String(s?.label||'').trim()===rankingLabel),dated=[...snapshots].sort((a,b)=>Date.parse(a?.date||0)-Date.parse(b?.date||0)),latest=matching||dated[dated.length-1]||stateData;
       (latest?.teams||latest?.rankings||[]).forEach((team,index)=>{const name=typeof team==='string'?team:team?.team;if(name)stateRanks.set(canon(name),{rank:Number(team?.rank)||index+1})});
       return{records,classRanks,stateRanks,logoCache:logoCache||{}};
     })();
