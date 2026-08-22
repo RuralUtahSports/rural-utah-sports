@@ -21,6 +21,7 @@ on:
       - 'scripts/apply_manual_stat_corrections.mjs'
       - 'manual-stat-corrections-2026.json'
       - 'scripts/reconcile-deseret-day-status.mjs'
+      - 'scripts/reconcile-deseret-unlinked-games.mjs'
       - 'scripts/repair-live-status-anomalies.mjs'
       - 'scripts/apply-kickoff-live-fallback.mjs'
       - 'scripts/build_standings_2026.mjs'
@@ -51,6 +52,9 @@ jobs:
 
       - name: Reconcile Final/Live status from Deseret daily scoreboard
         run: node scripts/reconcile-deseret-day-status.mjs
+
+      - name: Reconcile out-of-state games without direct Deseret URLs
+        run: node scripts/reconcile-deseret-unlinked-games.mjs
 
       - name: Repair suspicious same-day statuses
         run: node scripts/repair-live-status-anomalies.mjs
