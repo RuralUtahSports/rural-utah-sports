@@ -2,6 +2,7 @@
 'use strict';
 if((location.pathname.split('/').pop()||'').toLowerCase()!=='team.html')return;
 if(window.__rusTeamPageFixes)return;window.__rusTeamPageFixes=true;
+let singleGameSortPatched=false;
 function addStyles(){
   if(document.getElementById('rus-team-page-fixes-style'))return;
   const style=document.createElement('style');style.id='rus-team-page-fixes-style';style.textContent=`
@@ -18,6 +19,32 @@ function clean(){
   const key=srcKey(keep);if(!key)return;
   hero.querySelectorAll('img').forEach(img=>{if(img===keep||img.closest('.rus-team-hero-sponsor'))return;if(srcKey(img)===key)img.remove()});
 }
+function gameDateKey(v){
+  const m=String(v||'').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  return m?(Number(m[3])*10000+Number(m[1])*100+Number(m[2])):0;
+}
+function installLossMarginSort(){
+  if(!singleGameSortPatched&&typeof window.sortSingleGames==='function'){
+    const baseSort=window.sortSingleGames;
+    window.sortSingleGames=function(rows,mode){
+      if(mode!=='loss-margin-desc')return baseSort(rows,mode);
+      return [...rows]
+        .filter(g=>Number(g?.margin)<0)
+        .sort((a,b)=>Number(a.margin)-Number(b.margin)
+          ||Number(b.opponentScore)-Number(a.opponentScore)
+          ||Number(a.teamScore)-Number(b.teamScore)
+          ||gameDateKey(b.date)-gameDateKey(a.date));
+    };
+    singleGameSortPatched=true;
+  }
+  const select=document.getElementById('singleGameSort');
+  if(!select||select.querySelector('option[value="loss-margin-desc"]'))return;
+  const option=document.createElement('option');
+  option.value='loss-margin-desc';
+  option.textContent='Biggest Loss Margin';
+  const winMargin=select.querySelector('option[value="margin-desc"]');
+  if(winMargin)winMargin.insertAdjacentElement('afterend',option);else select.appendChild(option);
+}
 function ensureDesktop(){
   if(!matchMedia('(min-width:901px)').matches)return;
   document.body?.setAttribute('data-rus-desktop','1');
@@ -25,10 +52,10 @@ function ensureDesktop(){
   const script=document.createElement('script');script.src='desktop-v2.js?v=20260819-teamfix2';script.async=true;script.dataset.rusDesktopV2='1';document.body.appendChild(script);
 }
 function boot(){
-  addStyles();ensureDesktop();clean();
-  let timer=0;const observer=new MutationObserver(()=>{clean();clearTimeout(timer);timer=setTimeout(()=>observer.disconnect(),15000)});observer.observe(document.body,{childList:true,subtree:true});timer=setTimeout(()=>observer.disconnect(),30000);
+  addStyles();ensureDesktop();clean();installLossMarginSort();
+  let timer=0;const observer=new MutationObserver(()=>{clean();installLossMarginSort();clearTimeout(timer);timer=setTimeout(()=>observer.disconnect(),15000)});observer.observe(document.body,{childList:true,subtree:true});timer=setTimeout(()=>observer.disconnect(),30000);
   const mq=matchMedia('(min-width:901px)');mq.addEventListener?.('change',e=>{if(e.matches)ensureDesktop()});
-  window.addEventListener('pageshow',()=>{ensureDesktop();clean()},{passive:true});
+  window.addEventListener('pageshow',()=>{ensureDesktop();clean();installLossMarginSort()},{passive:true});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
