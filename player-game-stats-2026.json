@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-22T03:50:22.224Z",
+  "updatedAt": "2026-08-22T04:38:32.710Z",
   "summary": {
     "teams": 122,
     "teamGames": 223,
-    "statRows": 2351,
-    "rosterMatchedRows": 2276
+    "statRows": 2402,
+    "rosterMatchedRows": 2327
   },
   "teams": {
     "CEDAR CITY": {
@@ -457,10 +457,10 @@
           "date": "2026-08-21",
           "opponent": "PINE VIEW",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 30,
-          "opponentScore": 28,
+          "opponentScore": 34,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/cedar-city-football-vs-pine-view-football/273435",
           "players": [
             {
@@ -678,10 +678,10 @@
           "date": "2026-08-21",
           "opponent": "MOUNTAIN CREST",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 15,
-          "opponentScore": 26,
+          "opponentScore": 46,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/wasatch-football-vs-mountain-crest-football/273390",
           "players": [
             {
@@ -865,10 +865,10 @@
           "date": "2026-08-21",
           "opponent": "HERRIMAN",
           "location": "Home",
-          "status": "Q3",
-          "final": false,
-          "teamScore": 29,
-          "opponentScore": 33,
+          "status": "Final",
+          "final": true,
+          "teamScore": 36,
+          "opponentScore": 40,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/herriman-football-vs-stansbury-football/273549",
           "players": [
             {
@@ -924,7 +924,7 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "2",
+                    "TD": "3",
                     "Int": ""
                   }
                 }
@@ -932,7 +932,28 @@
               "scoringPlays": [
                 "Stansbury — ( 10:16 2Q ) Boston Rowley , 12-yard pass from Brighton Reutzel ( kick from Seth Wilcox )",
                 "Stansbury — ( 2:21 2Q ) Boston Rowley , 8-yard pass from Brighton Reutzel ( kick from Seth Wilcox )",
-                "Stansbury — ( 6:32 4Q ) Gabe Camargo , 1-yard run ( pass from Brighton Reutzel )"
+                "Stansbury — ( 6:32 4Q ) Gabe Camargo , 1-yard run ( pass from Brighton Reutzel )",
+                "Stansbury — ( 0:33 4Q ) Ladarius Rhodes , 3-yard pass from Brighton Reutzel ( kick from Seth Wilcox )"
+              ]
+            },
+            {
+              "playerId": "stansbury-6-ladarius-rhodes",
+              "number": "6",
+              "name": "Ladarius Rhodes",
+              "position": "WR/C",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Stansbury — ( 0:33 4Q ) Ladarius Rhodes , 3-yard pass from Brighton Reutzel ( kick from Seth Wilcox )"
               ]
             },
             {
@@ -967,7 +988,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "3",
+                    "PAT": "4",
                     "Return TD": ""
                   }
                 }
@@ -975,7 +996,8 @@
               "scoringPlays": [
                 "Stansbury — ( 10:16 2Q ) Boston Rowley , 12-yard pass from Brighton Reutzel ( kick from Seth Wilcox )",
                 "Stansbury — ( 2:21 2Q ) Boston Rowley , 8-yard pass from Brighton Reutzel ( kick from Seth Wilcox )",
-                "Stansbury — ( 4:21 3Q ) Peti Vaka , 3-yard run ( kick from Seth Wilcox )"
+                "Stansbury — ( 4:21 3Q ) Peti Vaka , 3-yard run ( kick from Seth Wilcox )",
+                "Stansbury — ( 0:33 4Q ) Ladarius Rhodes , 3-yard pass from Brighton Reutzel ( kick from Seth Wilcox )"
               ]
             }
           ],
@@ -983,7 +1005,8 @@
             "Stansbury — ( 10:16 2Q ) Boston Rowley , 12-yard pass from Brighton Reutzel ( kick from Seth Wilcox )",
             "Stansbury — ( 2:21 2Q ) Boston Rowley , 8-yard pass from Brighton Reutzel ( kick from Seth Wilcox )",
             "Stansbury — ( 4:21 3Q ) Peti Vaka , 3-yard run ( kick from Seth Wilcox )",
-            "Stansbury — ( 6:32 4Q ) Gabe Camargo , 1-yard run ( pass from Brighton Reutzel )"
+            "Stansbury — ( 6:32 4Q ) Gabe Camargo , 1-yard run ( pass from Brighton Reutzel )",
+            "Stansbury — ( 0:33 4Q ) Ladarius Rhodes , 3-yard pass from Brighton Reutzel ( kick from Seth Wilcox )"
           ]
         }
       ]
@@ -1076,10 +1099,10 @@
           "date": "2026-08-21",
           "opponent": "OLYMPUS",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 14,
-          "opponentScore": 9,
+          "status": "Final",
+          "final": true,
+          "teamScore": 21,
+          "opponentScore": 16,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/skyline-football-vs-olympus-football/273590",
           "players": [
             {
@@ -1102,11 +1125,54 @@
                 "Skyline — ( 10:56 3Q ) Tate Johnson , 1-yard run ( kick successful )",
                 "Skyline — ( 8:00 3Q ) Tate Johnson , 12-yard run ( kick successful )"
               ]
+            },
+            {
+              "playerId": "skyline-13-simon-johnsen",
+              "number": "13",
+              "name": "Simon Johnsen",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Skyline — ( 2:12 4Q ) Tu'i Will , 32-yard pass from Simon Johnsen ( kick successful )"
+              ]
+            },
+            {
+              "playerId": "skyline-7-tu-i-will",
+              "number": "7",
+              "name": "Tu'i Will",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Skyline — ( 2:12 4Q ) Tu'i Will , 32-yard pass from Simon Johnsen ( kick successful )"
+              ]
             }
           ],
           "scoringPlays": [
             "Skyline — ( 10:56 3Q ) Tate Johnson , 1-yard run ( kick successful )",
-            "Skyline — ( 8:00 3Q ) Tate Johnson , 12-yard run ( kick successful )"
+            "Skyline — ( 8:00 3Q ) Tate Johnson , 12-yard run ( kick successful )",
+            "Skyline — ( 2:12 4Q ) Tu'i Will , 32-yard pass from Simon Johnsen ( kick successful )"
           ]
         }
       ]
@@ -1809,12 +1875,32 @@
           "date": "2026-08-21",
           "opponent": "LEHI",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 34,
+          "status": "Final",
+          "final": true,
+          "teamScore": 42,
           "opponentScore": 0,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/mountain-ridge-football-vs-lehi-football/273728",
           "players": [
+            {
+              "playerId": "mountain-ridge-28-jayden-romero",
+              "number": "28",
+              "name": "Jayden Romero",
+              "position": "RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Mountain Ridge — ( 3:00 4Q ) Jayden Romero , 43-yard run ( run from Will O'Neil )"
+              ]
+            },
             {
               "playerId": "mountain-ridge-7-xander-thayer",
               "number": "7",
@@ -1948,7 +2034,8 @@
                 "Mountain Ridge — ( 1:00 1Q ) Bradley Foster , 1-yard run ( kick from Will O'Neil )",
                 "Mountain Ridge — ( 8:00 2Q ) Tagg Dejong , 9-yard pass from Jaxon Hunt ( kick from Will O'Neil )",
                 "Mountain Ridge — ( 6:00 2Q ) Xander Thayer , 6-yard run ( kick from Will O'Neil )",
-                "Mountain Ridge — ( 2:00 3Q ) Bennett Neilson , 26-yard pass from Jaxon Hunt ( kick from Will O'Neil )"
+                "Mountain Ridge — ( 2:00 3Q ) Bennett Neilson , 26-yard pass from Jaxon Hunt ( kick from Will O'Neil )",
+                "Mountain Ridge — ( 3:00 4Q ) Jayden Romero , 43-yard run ( run from Will O'Neil )"
               ]
             }
           ],
@@ -1957,7 +2044,9 @@
             "Mountain Ridge — ( 8:00 2Q ) Tagg Dejong , 9-yard pass from Jaxon Hunt ( kick from Will O'Neil )",
             "Mountain Ridge — ( 6:00 2Q ) Xander Thayer , 6-yard run ( kick from Will O'Neil )",
             "Mountain Ridge — ( 5:00 3Q ) Xander Thayer , 60-yard pass from Jaxon Hunt ( kick failed )",
-            "Mountain Ridge — ( 2:00 3Q ) Bennett Neilson , 26-yard pass from Jaxon Hunt ( kick from Will O'Neil )"
+            "Mountain Ridge — ( 2:00 3Q ) Bennett Neilson , 26-yard pass from Jaxon Hunt ( kick from Will O'Neil )",
+            "Mountain Ridge — ( 3:00 4Q ) Jayden Romero , 43-yard run ( run from Will O'Neil )",
+            "Mountain Ridge — ( 2:00 4Q ) safety"
           ]
         }
       ]
@@ -2440,10 +2529,10 @@
           "date": "2026-08-21",
           "opponent": "RICH",
           "location": "Home",
-          "status": "Q3",
-          "final": false,
-          "teamScore": 13,
-          "opponentScore": 47,
+          "status": "Final",
+          "final": true,
+          "teamScore": 19,
+          "opponentScore": 65,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/rich-football-vs-milford-football/274425",
           "players": [
             {
@@ -2458,12 +2547,13 @@
                   "values": {
                     "Carries": "",
                     "Yards": "",
-                    "TD": "1"
+                    "TD": "2"
                   }
                 }
               ],
               "scoringPlays": [
-                "Milford — ( 3:21 2Q ) Braxton Hansen , 1-yard run ( kick failed )"
+                "Milford — ( 3:21 2Q ) Braxton Hansen , 1-yard run ( kick failed )",
+                "Milford — ( 1:54 3Q ) Braxton Hansen , 1-yard run ( run failed )"
               ]
             },
             {
@@ -2509,7 +2599,8 @@
           ],
           "scoringPlays": [
             "Milford — ( 2:04 1Q ) Haze Marshall , 5-yard run ( kick from Maddix Alger )",
-            "Milford — ( 3:21 2Q ) Braxton Hansen , 1-yard run ( kick failed )"
+            "Milford — ( 3:21 2Q ) Braxton Hansen , 1-yard run ( kick failed )",
+            "Milford — ( 1:54 3Q ) Braxton Hansen , 1-yard run ( run failed )"
           ]
         }
       ]
@@ -2888,9 +2979,9 @@
           "date": "2026-08-21",
           "opponent": "HIGHLAND",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 6,
+          "status": "Final",
+          "final": true,
+          "teamScore": 14,
           "opponentScore": 36,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/highland-football-vs-hunter-football/273768",
           "players": [
@@ -2906,17 +2997,19 @@
                   "values": {
                     "Carries": "",
                     "Yards": "",
-                    "TD": "1"
+                    "TD": "2"
                   }
                 }
               ],
               "scoringPlays": [
-                "Hunter — ( 0:43 2Q ) Ryder Paea , 23-yard run ( kick failed )"
+                "Hunter — ( 0:43 2Q ) Ryder Paea , 23-yard run ( kick failed )",
+                "Hunter — ( 2:31 4Q ) Ryder Paea , 3-yard run ( run from Ryder Paea )"
               ]
             }
           ],
           "scoringPlays": [
-            "Hunter — ( 0:43 2Q ) Ryder Paea , 23-yard run ( kick failed )"
+            "Hunter — ( 0:43 2Q ) Ryder Paea , 23-yard run ( kick failed )",
+            "Hunter — ( 2:31 4Q ) Ryder Paea , 3-yard run ( run from Ryder Paea )"
           ]
         }
       ]
@@ -3112,10 +3205,10 @@
           "date": "2026-08-21",
           "opponent": "SNOW CANYON",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 14,
-          "opponentScore": 0,
+          "status": "Final",
+          "final": true,
+          "teamScore": 21,
+          "opponentScore": 7,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/layton-christian-football-vs-snow-canyon-football/273446",
           "players": [
             {
@@ -3135,7 +3228,7 @@
                 }
               ],
               "scoringPlays": [
-                "Layton Christian — ( 0:26 2Q ) Memphis Hunkin , 11-yard run from Colton Johns ( kick from Lopeti Reeves )"
+                "Layton Christian — ( 0:26 2Q ) Memphis Hunkin , 11-yard run from Colton Johns ( kick from Logan Rhee )"
               ]
             },
             {
@@ -3151,14 +3244,35 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "2",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Layton Christian — ( 6:01 1Q ) Synic Harvey , 12-yard pass from Colton Johns ( kick from Logan Rhee )",
-                "Layton Christian — ( 0:26 2Q ) Memphis Hunkin , 11-yard run from Colton Johns ( kick from Lopeti Reeves )"
+                "Layton Christian — ( 0:26 2Q ) Memphis Hunkin , 11-yard run from Colton Johns ( kick from Logan Rhee )",
+                "Layton Christian — ( 5:03 4Q ) Chris Munroe , 25-yard pass from Colton Johns ( kick from Logan Rhee )"
+              ]
+            },
+            {
+              "playerId": "layton-christian-4-chris-munroe",
+              "number": "4",
+              "name": "Chris Munroe",
+              "position": "RB/QB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Layton Christian — ( 5:03 4Q ) Chris Munroe , 25-yard pass from Colton Johns ( kick from Logan Rhee )"
               ]
             },
             {
@@ -3182,26 +3296,6 @@
               ]
             },
             {
-              "playerId": "layton-christian-40-lopeti-reeves",
-              "number": "40",
-              "name": "Lopeti Reeves",
-              "position": "TE/LB",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Special Teams",
-                  "values": {
-                    "FG": "",
-                    "PAT": "1",
-                    "Return TD": ""
-                  }
-                }
-              ],
-              "scoringPlays": [
-                "Layton Christian — ( 0:26 2Q ) Memphis Hunkin , 11-yard run from Colton Johns ( kick from Lopeti Reeves )"
-              ]
-            },
-            {
               "playerId": "layton-christian-16-logan-rhee",
               "number": "16",
               "name": "Logan Rhee",
@@ -3212,19 +3306,22 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "1",
+                    "PAT": "3",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Layton Christian — ( 6:01 1Q ) Synic Harvey , 12-yard pass from Colton Johns ( kick from Logan Rhee )"
+                "Layton Christian — ( 6:01 1Q ) Synic Harvey , 12-yard pass from Colton Johns ( kick from Logan Rhee )",
+                "Layton Christian — ( 0:26 2Q ) Memphis Hunkin , 11-yard run from Colton Johns ( kick from Logan Rhee )",
+                "Layton Christian — ( 5:03 4Q ) Chris Munroe , 25-yard pass from Colton Johns ( kick from Logan Rhee )"
               ]
             }
           ],
           "scoringPlays": [
             "Layton Christian — ( 6:01 1Q ) Synic Harvey , 12-yard pass from Colton Johns ( kick from Logan Rhee )",
-            "Layton Christian — ( 0:26 2Q ) Memphis Hunkin , 11-yard run from Colton Johns ( kick from Lopeti Reeves )"
+            "Layton Christian — ( 0:26 2Q ) Memphis Hunkin , 11-yard run from Colton Johns ( kick from Logan Rhee )",
+            "Layton Christian — ( 5:03 4Q ) Chris Munroe , 25-yard pass from Colton Johns ( kick from Logan Rhee )"
           ]
         }
       ]
@@ -4545,8 +4642,8 @@
           "date": "2026-08-21",
           "opponent": "CARBON",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 41,
           "opponentScore": 14,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/carbon-football-vs-emery-football/273685",
@@ -4858,9 +4955,9 @@
           "date": "2026-08-21",
           "opponent": "PARK CITY",
           "location": "Home",
-          "status": "Q3",
-          "final": false,
-          "teamScore": 16,
+          "status": "Final",
+          "final": true,
+          "teamScore": 31,
           "opponentScore": 9,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/park-city-football-vs-ridgeline-football/273622",
           "players": [
@@ -4876,19 +4973,43 @@
                   "values": {
                     "Carries": "",
                     "Yards": "",
-                    "TD": "2"
+                    "TD": "4"
                   }
                 }
               ],
               "scoringPlays": [
                 "Ridgeline — ( 10:41 2Q ) Noah Fiefia , 2-yard run ( pass from Kennedy Taukeiaho )",
-                "Ridgeline — ( ) Noah Fiefia , 24-yard run ( run from Boston Parry )"
+                "Ridgeline — ( ) Noah Fiefia , 24-yard run ( run from Boston Parry )",
+                "Ridgeline — ( 5:45 4Q ) Noah Fiefia , 5-yard run ( run from Noah Fiefia )",
+                "Ridgeline — ( 0:30 4Q ) Noah Fiefia , 4-yard run ( kick from Hayden Miller )"
+              ]
+            },
+            {
+              "playerId": "ridgeline-11-hayden-miller",
+              "number": "11",
+              "name": "Hayden Miller",
+              "position": "WR",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "1",
+                    "Return TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Ridgeline — ( 0:30 4Q ) Noah Fiefia , 4-yard run ( kick from Hayden Miller )"
               ]
             }
           ],
           "scoringPlays": [
             "Ridgeline — ( 10:41 2Q ) Noah Fiefia , 2-yard run ( pass from Kennedy Taukeiaho )",
-            "Ridgeline — ( ) Noah Fiefia , 24-yard run ( run from Boston Parry )"
+            "Ridgeline — ( ) Noah Fiefia , 24-yard run ( run from Boston Parry )",
+            "Ridgeline — ( 5:45 4Q ) Noah Fiefia , 5-yard run ( run from Noah Fiefia )",
+            "Ridgeline — ( 0:30 4Q ) Noah Fiefia , 4-yard run ( kick from Hayden Miller )"
           ]
         }
       ]
@@ -5400,10 +5521,10 @@
           "date": "2026-08-21",
           "opponent": "GRANTSVILLE",
           "location": "Away",
-          "status": "Q3",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 24,
-          "opponentScore": 17,
+          "opponentScore": 31,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/richfield-football-vs-grantsville-football/273298",
           "players": [
             {
@@ -5856,8 +5977,8 @@
           "date": "2026-08-21",
           "opponent": "CANYON VIEW",
           "location": "Away",
-          "status": "Q3",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 26,
           "opponentScore": 41,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/dixie-football-vs-canyon-view-football/273406",
@@ -7331,12 +7452,32 @@
           "date": "2026-08-21",
           "opponent": "DESERET PEAK",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 14,
-          "opponentScore": 14,
+          "status": "Final",
+          "final": true,
+          "teamScore": 22,
+          "opponentScore": 21,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/north-sanpete-football-vs-deseret-peak-football-football/273329",
           "players": [
+            {
+              "playerId": "north-sanpete-3-chaetton-osborne",
+              "number": "3",
+              "name": "Chaetton Osborne",
+              "position": "RB/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "North Sanpete — ( OT ) Chaetton Osborne , 5-yard run ( run from Trevor Mann )"
+              ]
+            },
             {
               "playerId": "north-sanpete-12-luke-lee",
               "number": "12",
@@ -7412,7 +7553,8 @@
           ],
           "scoringPlays": [
             "North Sanpete — ( 2:41 2Q ) Luke Lee , 2-yard run ( kick from Gunner Pollock )",
-            "North Sanpete — ( 6:55 3Q ) Seth Burningham , 30-yard pass from Luke Lee ( kick from Gunner Pollock )"
+            "North Sanpete — ( 6:55 3Q ) Seth Burningham , 30-yard pass from Luke Lee ( kick from Gunner Pollock )",
+            "North Sanpete — ( OT ) Chaetton Osborne , 5-yard run ( run from Trevor Mann )"
           ]
         }
       ]
@@ -7808,10 +7950,10 @@
           "date": "2026-08-21",
           "opponent": "SOUTH SUMMIT",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 14,
-          "opponentScore": 42,
+          "opponentScore": 45,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/south-summit-football-vs-north-summit-football/273360",
           "players": [
             {
@@ -7952,9 +8094,9 @@
           "date": "2026-08-21",
           "opponent": "SOUTH SEVIER",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 21,
+          "status": "Final",
+          "final": true,
+          "teamScore": 28,
           "opponentScore": 12,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/south-sevier-football-vs-enterprise-football/273372",
           "players": [
@@ -7972,10 +8114,19 @@
                     "Yards": "",
                     "TD": "1"
                   }
+                },
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
                 }
               ],
               "scoringPlays": [
-                "Enterprise — ( 1:12 3Q ) Brannoc Davidson , 13-yard run ( kick from Dylan Liebetrau )"
+                "Enterprise — ( 1:12 3Q ) Brannoc Davidson , 13-yard run ( kick from Dylan Liebetrau )",
+                "Enterprise — ( 4:59 4Q ) Brannoc Davidson , 24-yard pass from Jack Moyle ( kick from Dylan Liebetrau )"
               ]
             },
             {
@@ -8012,10 +8163,21 @@
                     "Yards": "",
                     "TD": "1"
                   }
+                },
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
                 }
               ],
               "scoringPlays": [
-                "Enterprise — ( 5:37 2Q ) Jack Moyle , 2-yard run ( kick from Dylan Liebetrau )"
+                "Enterprise — ( 5:37 2Q ) Jack Moyle , 2-yard run ( kick from Dylan Liebetrau )",
+                "Enterprise — ( 4:59 4Q ) Brannoc Davidson , 24-yard pass from Jack Moyle ( kick from Dylan Liebetrau )"
               ]
             },
             {
@@ -8029,7 +8191,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "3",
+                    "PAT": "4",
                     "Return TD": ""
                   }
                 }
@@ -8037,14 +8199,16 @@
               "scoringPlays": [
                 "Enterprise — ( 5:37 2Q ) Jack Moyle , 2-yard run ( kick from Dylan Liebetrau )",
                 "Enterprise — ( 0:52 2Q ) Jake Christensen , 3-yard run ( kick from Dylan Liebetrau )",
-                "Enterprise — ( 1:12 3Q ) Brannoc Davidson , 13-yard run ( kick from Dylan Liebetrau )"
+                "Enterprise — ( 1:12 3Q ) Brannoc Davidson , 13-yard run ( kick from Dylan Liebetrau )",
+                "Enterprise — ( 4:59 4Q ) Brannoc Davidson , 24-yard pass from Jack Moyle ( kick from Dylan Liebetrau )"
               ]
             }
           ],
           "scoringPlays": [
             "Enterprise — ( 5:37 2Q ) Jack Moyle , 2-yard run ( kick from Dylan Liebetrau )",
             "Enterprise — ( 0:52 2Q ) Jake Christensen , 3-yard run ( kick from Dylan Liebetrau )",
-            "Enterprise — ( 1:12 3Q ) Brannoc Davidson , 13-yard run ( kick from Dylan Liebetrau )"
+            "Enterprise — ( 1:12 3Q ) Brannoc Davidson , 13-yard run ( kick from Dylan Liebetrau )",
+            "Enterprise — ( 4:59 4Q ) Brannoc Davidson , 24-yard pass from Jack Moyle ( kick from Dylan Liebetrau )"
           ]
         }
       ]
@@ -8766,8 +8930,8 @@
           "date": "2026-08-21",
           "opponent": "DESERT HILLS",
           "location": "Away",
-          "status": "Q3",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 13,
           "opponentScore": 29,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/timpanogos-football-vs-desert-hills-football/273364",
@@ -9427,12 +9591,34 @@
           "date": "2026-08-21",
           "opponent": "MOUNTAIN VIEW",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 7,
-          "opponentScore": 28,
+          "status": "Final",
+          "final": true,
+          "teamScore": 13,
+          "opponentScore": 34,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/tooele-football-vs-mountain-view-football/274350",
           "players": [
+            {
+              "playerId": "tooele-8-gus-pater",
+              "number": "8",
+              "name": "Gus Pater",
+              "position": "QB/S",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Tooele — ( 1:21 4Q ) Landon Avina , 36-yard pass from Gus Pater ( run failed )"
+              ]
+            },
             {
               "playerId": "tooele-11-landon-avina",
               "number": "11",
@@ -9449,10 +9635,19 @@
                     "TD": "1",
                     "Int": ""
                   }
+                },
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
                 }
               ],
               "scoringPlays": [
-                "Tooele — ( 6:11 3Q ) Bronson Borders , 1-yard pass from Landon Avina ( kick from Davin Green )"
+                "Tooele — ( 6:11 3Q ) Bronson Borders , 1-yard pass from Landon Avina ( kick from Davin Green )",
+                "Tooele — ( 1:21 4Q ) Landon Avina , 36-yard pass from Gus Pater ( run failed )"
               ]
             },
             {
@@ -9497,7 +9692,8 @@
             }
           ],
           "scoringPlays": [
-            "Tooele — ( 6:11 3Q ) Bronson Borders , 1-yard pass from Landon Avina ( kick from Davin Green )"
+            "Tooele — ( 6:11 3Q ) Bronson Borders , 1-yard pass from Landon Avina ( kick from Davin Green )",
+            "Tooele — ( 1:21 4Q ) Landon Avina , 36-yard pass from Gus Pater ( run failed )"
           ]
         }
       ]
@@ -9637,8 +9833,8 @@
           "date": "2026-08-21",
           "opponent": "DIXIE",
           "location": "Home",
-          "status": "Q3",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 41,
           "opponentScore": 26,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/dixie-football-vs-canyon-view-football/273406",
@@ -11263,8 +11459,8 @@
           "date": "2026-08-21",
           "opponent": "SPANISH FORK",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 28,
           "opponentScore": 33,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/salem-hills-football-vs-spanish-fork-football/273431",
@@ -11846,10 +12042,10 @@
           "date": "2026-08-21",
           "opponent": "BOX ELDER",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 27,
-          "opponentScore": 23,
+          "status": "Final",
+          "final": true,
+          "teamScore": 34,
+          "opponentScore": 50,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/box-elder-football-vs-bear-river-football/273508",
           "players": [
             {
@@ -11880,9 +12076,29 @@
               ],
               "scoringPlays": [
                 "Bear River — ( 3:36 1Q ) Eli Braegger , 15-yard pass from Preston Wilkinson ( kick successful )",
-                "Bear River — ( 7:56 2Q ) Karson Summers , 12-yard pass from Preston Wilkinson ( kick from Gideon Nelson )",
+                "Bear River — ( 7:56 2Q ) Karson Summers , 12-yard pass from Preston Wilkinson ( kick from Helaman Nelson )",
                 "Bear River — ( 8:22 3Q ) Preston Wilkinson , 1-yard run ( kick failed )",
                 "Bear River — ( 5:16 3Q ) Eli Braegger , 17-yard pass from Preston Wilkinson ( pass failed )"
+              ]
+            },
+            {
+              "playerId": "bear-river-16-summit-phillips",
+              "number": "16",
+              "name": "Summit Phillips",
+              "position": "WR/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Bear River — ( 0:42 3Q ) Summit Phillips , 1-yard run ( kick from Helaman Nelson )"
               ]
             },
             {
@@ -11902,7 +12118,7 @@
                 }
               ],
               "scoringPlays": [
-                "Bear River — ( 7:56 2Q ) Karson Summers , 12-yard pass from Preston Wilkinson ( kick from Gideon Nelson )"
+                "Bear River — ( 7:56 2Q ) Karson Summers , 12-yard pass from Preston Wilkinson ( kick from Helaman Nelson )"
               ]
             },
             {
@@ -11927,9 +12143,9 @@
               ]
             },
             {
-              "playerId": "bear-river-37-gideon-nelson",
-              "number": "37",
-              "name": "Gideon Nelson",
+              "playerId": "bear-river-99-helaman-nelson",
+              "number": "99",
+              "name": "Helaman Nelson",
               "position": "K/",
               "rosterMatched": true,
               "statLines": [
@@ -11937,21 +12153,23 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "1",
+                    "PAT": "2",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Bear River — ( 7:56 2Q ) Karson Summers , 12-yard pass from Preston Wilkinson ( kick from Gideon Nelson )"
+                "Bear River — ( 7:56 2Q ) Karson Summers , 12-yard pass from Preston Wilkinson ( kick from Helaman Nelson )",
+                "Bear River — ( 0:42 3Q ) Summit Phillips , 1-yard run ( kick from Helaman Nelson )"
               ]
             }
           ],
           "scoringPlays": [
             "Bear River — ( 3:36 1Q ) Eli Braegger , 15-yard pass from Preston Wilkinson ( kick successful )",
-            "Bear River — ( 7:56 2Q ) Karson Summers , 12-yard pass from Preston Wilkinson ( kick from Gideon Nelson )",
+            "Bear River — ( 7:56 2Q ) Karson Summers , 12-yard pass from Preston Wilkinson ( kick from Helaman Nelson )",
             "Bear River — ( 8:22 3Q ) Preston Wilkinson , 1-yard run ( kick failed )",
-            "Bear River — ( 5:16 3Q ) Eli Braegger , 17-yard pass from Preston Wilkinson ( pass failed )"
+            "Bear River — ( 5:16 3Q ) Eli Braegger , 17-yard pass from Preston Wilkinson ( pass failed )",
+            "Bear River — ( 0:42 3Q ) Summit Phillips , 1-yard run ( kick from Helaman Nelson )"
           ]
         }
       ]
@@ -12393,8 +12611,8 @@
           "date": "2026-08-21",
           "opponent": "BONNEVILLE",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 7,
           "opponentScore": 6,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/bonneville-football-vs-ogden-football/273459",
@@ -13613,9 +13831,9 @@
           "date": "2026-08-21",
           "opponent": "PROVO",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 21,
+          "status": "Final",
+          "final": true,
+          "teamScore": 31,
           "opponentScore": 13,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/crimson-cliffs-football-vs-provo-football/273490",
           "players": [
@@ -13636,30 +13854,7 @@
                 }
               ],
               "scoringPlays": [
-                "Crimson Cliffs — ( 8:44 4Q ) Hu Alisa , 2-yard run ( kick from Porter Wright )"
-              ]
-            },
-            {
-              "playerId": "crimson-cliffs-80-toa-andresen",
-              "number": "80",
-              "name": "Toa Andresen",
-              "position": "WR",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Passing",
-                  "values": {
-                    "Comp-Att": "",
-                    "Comp %": "",
-                    "Yards": "",
-                    "TD": "1",
-                    "Int": ""
-                  }
-                }
-              ],
-              "scoringPlays": [
-                "Crimson Cliffs — ( 6:40 1Q ) Noah Whitmore , 34-yard pass from Tanoai Andresen ( kick from Porter Wright )",
-                "Crimson Cliffs — ( 4:35 3Q ) Ryder Tebbs , 14-yard pass from Toa Andresen ( kick from Porter Wright )"
+                "Crimson Cliffs — ( 8:44 4Q ) Hu Alisa , 2-yard run ( kick from Jacob Sparks )"
               ]
             },
             {
@@ -13675,14 +13870,35 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "3",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Crimson Cliffs — ( 6:40 1Q ) Noah Whitmore , 34-yard pass from Tanoai Andresen ( kick from Porter Wright )",
-                "Crimson Cliffs — ( 4:35 3Q ) Ryder Tebbs , 14-yard pass from Toa Andresen ( kick from Porter Wright )"
+                "Crimson Cliffs — ( 6:40 1Q ) Noah Whitmore , 34-yard pass from Tanoai Andresen ( kick from Jacob Sparks )",
+                "Crimson Cliffs — ( 4:35 3Q ) Ryder Tebbs , 14-yard pass from Tanoai Andresen ( kick from Jacob Sparks )",
+                "Crimson Cliffs — ( 5:44 4Q ) Colt Bastian , 56-yard pass from Tanoai Andresen ( kick from Jacob Sparks )"
+              ]
+            },
+            {
+              "playerId": "crimson-cliffs-95-colt-bastian",
+              "number": "95",
+              "name": "Colt Bastian",
+              "position": "DL",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Crimson Cliffs — ( 5:44 4Q ) Colt Bastian , 56-yard pass from Tanoai Andresen ( kick from Jacob Sparks )"
               ]
             },
             {
@@ -13702,7 +13918,7 @@
                 }
               ],
               "scoringPlays": [
-                "Crimson Cliffs — ( 4:35 3Q ) Ryder Tebbs , 14-yard pass from Toa Andresen ( kick from Porter Wright )"
+                "Crimson Cliffs — ( 4:35 3Q ) Ryder Tebbs , 14-yard pass from Tanoai Andresen ( kick from Jacob Sparks )"
               ]
             },
             {
@@ -13722,36 +13938,40 @@
                 }
               ],
               "scoringPlays": [
-                "Crimson Cliffs — ( 6:40 1Q ) Noah Whitmore , 34-yard pass from Tanoai Andresen ( kick from Porter Wright )"
+                "Crimson Cliffs — ( 6:40 1Q ) Noah Whitmore , 34-yard pass from Tanoai Andresen ( kick from Jacob Sparks )"
               ]
             },
             {
-              "playerId": "crimson-cliffs-34-porter-wright",
-              "number": "34",
-              "name": "Porter Wright",
-              "position": "MLB",
+              "playerId": "crimson-cliffs-10-jacob-sparks",
+              "number": "10",
+              "name": "Jacob Sparks",
+              "position": "K",
               "rosterMatched": true,
               "statLines": [
                 {
                   "category": "Special Teams",
                   "values": {
-                    "FG": "",
-                    "PAT": "3",
+                    "FG": "1",
+                    "PAT": "4",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Crimson Cliffs — ( 6:40 1Q ) Noah Whitmore , 34-yard pass from Tanoai Andresen ( kick from Porter Wright )",
-                "Crimson Cliffs — ( 4:35 3Q ) Ryder Tebbs , 14-yard pass from Toa Andresen ( kick from Porter Wright )",
-                "Crimson Cliffs — ( 8:44 4Q ) Hu Alisa , 2-yard run ( kick from Porter Wright )"
+                "Crimson Cliffs — ( 6:40 1Q ) Noah Whitmore , 34-yard pass from Tanoai Andresen ( kick from Jacob Sparks )",
+                "Crimson Cliffs — ( 4:35 3Q ) Ryder Tebbs , 14-yard pass from Tanoai Andresen ( kick from Jacob Sparks )",
+                "Crimson Cliffs — ( 8:44 4Q ) Hu Alisa , 2-yard run ( kick from Jacob Sparks )",
+                "Crimson Cliffs — ( 5:44 4Q ) Colt Bastian , 56-yard pass from Tanoai Andresen ( kick from Jacob Sparks )",
+                "Crimson Cliffs — ( 0:26 4Q ) Jacob Sparks , 30-yard FG"
               ]
             }
           ],
           "scoringPlays": [
-            "Crimson Cliffs — ( 6:40 1Q ) Noah Whitmore , 34-yard pass from Tanoai Andresen ( kick from Porter Wright )",
-            "Crimson Cliffs — ( 4:35 3Q ) Ryder Tebbs , 14-yard pass from Toa Andresen ( kick from Porter Wright )",
-            "Crimson Cliffs — ( 8:44 4Q ) Hu Alisa , 2-yard run ( kick from Porter Wright )"
+            "Crimson Cliffs — ( 6:40 1Q ) Noah Whitmore , 34-yard pass from Tanoai Andresen ( kick from Jacob Sparks )",
+            "Crimson Cliffs — ( 4:35 3Q ) Ryder Tebbs , 14-yard pass from Tanoai Andresen ( kick from Jacob Sparks )",
+            "Crimson Cliffs — ( 8:44 4Q ) Hu Alisa , 2-yard run ( kick from Jacob Sparks )",
+            "Crimson Cliffs — ( 5:44 4Q ) Colt Bastian , 56-yard pass from Tanoai Andresen ( kick from Jacob Sparks )",
+            "Crimson Cliffs — ( 0:26 4Q ) Jacob Sparks , 30-yard FG"
           ]
         }
       ]
@@ -13958,10 +14178,10 @@
           "date": "2026-08-21",
           "opponent": "TIMPVIEW",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 40,
-          "opponentScore": 0,
+          "opponentScore": 7,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/corner-canyon-football-vs-timpview-football/273476",
           "players": [
             {
@@ -14598,12 +14818,32 @@
           "date": "2026-08-21",
           "opponent": "FREMONT",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 42,
-          "opponentScore": 21,
+          "status": "Final",
+          "final": true,
+          "teamScore": 56,
+          "opponentScore": 28,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/davis-football-vs-fremont-football/273515",
           "players": [
+            {
+              "playerId": "davis-21-briggs-taylor",
+              "number": "21",
+              "name": "Briggs Taylor",
+              "position": "RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Davis — ( 1:05 4Q ) Briggs Taylor , 9-yard run ( kick from Will Potter )"
+              ]
+            },
             {
               "playerId": "davis-3-bridger-young",
               "number": "3",
@@ -14658,14 +14898,35 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "2",
+                    "TD": "3",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Davis — ( 7:15 1Q ) Bode Sparrow , 8-yard pass from Brodie Scheinberg ( kick from Will Potter )",
-                "Davis — ( 1:55 2Q ) Cooper Rigby , 3-yard pass from Brodie Scheinberg ( kick from Will Potter )"
+                "Davis — ( 1:55 2Q ) Cooper Rigby , 3-yard pass from Brodie Scheinberg ( kick from Will Potter )",
+                "Davis — ( 7:54 4Q ) Jaxton Itaaheau , 8-yard pass from Brodie Scheinberg ( kick from Will Potter )"
+              ]
+            },
+            {
+              "playerId": "davis-88-jaxton-itaaheau",
+              "number": "88",
+              "name": "Jaxton Itaaheau",
+              "position": "WR/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Davis — ( 7:54 4Q ) Jaxton Itaaheau , 8-yard pass from Brodie Scheinberg ( kick from Will Potter )"
               ]
             },
             {
@@ -14728,7 +14989,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "6",
+                    "PAT": "8",
                     "Return TD": ""
                   }
                 }
@@ -14739,7 +15000,9 @@
                 "Davis — ( 5:11 2Q ) Bridger Young , 1-yard run ( kick from Will Potter )",
                 "Davis — ( 1:55 2Q ) Cooper Rigby , 3-yard pass from Brodie Scheinberg ( kick from Will Potter )",
                 "Davis — ( 9:04 3Q ) Kysen Gallegos , 1-yard run ( kick from Will Potter )",
-                "Davis — ( 5:10 3Q ) Bode Sparrow , 80-yard kick return ( kick from Will Potter )"
+                "Davis — ( 5:10 3Q ) Bode Sparrow , 80-yard kick return ( kick from Will Potter )",
+                "Davis — ( 7:54 4Q ) Jaxton Itaaheau , 8-yard pass from Brodie Scheinberg ( kick from Will Potter )",
+                "Davis — ( 1:05 4Q ) Briggs Taylor , 9-yard run ( kick from Will Potter )"
               ]
             }
           ],
@@ -14749,7 +15012,9 @@
             "Davis — ( 5:11 2Q ) Bridger Young , 1-yard run ( kick from Will Potter )",
             "Davis — ( 1:55 2Q ) Cooper Rigby , 3-yard pass from Brodie Scheinberg ( kick from Will Potter )",
             "Davis — ( 9:04 3Q ) Kysen Gallegos , 1-yard run ( kick from Will Potter )",
-            "Davis — ( 5:10 3Q ) Bode Sparrow , 80-yard kick return ( kick from Will Potter )"
+            "Davis — ( 5:10 3Q ) Bode Sparrow , 80-yard kick return ( kick from Will Potter )",
+            "Davis — ( 7:54 4Q ) Jaxton Itaaheau , 8-yard pass from Brodie Scheinberg ( kick from Will Potter )",
+            "Davis — ( 1:05 4Q ) Briggs Taylor , 9-yard run ( kick from Will Potter )"
           ]
         }
       ]
@@ -14940,8 +15205,8 @@
           "date": "2026-08-21",
           "opponent": "TIMPANOGOS",
           "location": "Home",
-          "status": "Q3",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 29,
           "opponentScore": 13,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/timpanogos-football-vs-desert-hills-football/273364",
@@ -15510,12 +15775,32 @@
           "date": "2026-08-21",
           "opponent": "DEER CREEK",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 40,
+          "status": "Final",
+          "final": true,
+          "teamScore": 53,
           "opponentScore": 7,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/deer-creek-football-football-vs-hillcrest-football/273338",
           "players": [
+            {
+              "playerId": "hillcrest-22-maxwell-call",
+              "number": "22",
+              "name": "Maxwell Call",
+              "position": "RB / S",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Hillcrest — ( 4Q ) Maxwell Call , 14-yard run"
+              ]
+            },
             {
               "playerId": "hillcrest-15-k-von-houston",
               "number": "15",
@@ -15537,7 +15822,7 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "4",
+                    "TD": "5",
                     "Int": ""
                   }
                 }
@@ -15548,7 +15833,28 @@
                 "Hillcrest — ( 2:34 1Q ) Alani Latu , 12-yard pass from K'Von Houston ( kick failed )",
                 "Hillcrest — ( 9:44 2Q ) K'Von Houston , 7-yard run ( kick from Weston Allen )",
                 "Hillcrest — ( 9:27 3Q ) Alani Latu , 18-yard pass from K'Von Houston ( kick from Weston Allen )",
-                "Hillcrest — ( 0:56 4Q ) Alani Latu , 75-yard pass from K'Von Houston ( kick from Weston Allen )"
+                "Hillcrest — ( 0:56 4Q ) Alani Latu , 75-yard pass from K'Von Houston ( kick from Weston Allen )",
+                "Hillcrest — ( 8:23 4Q ) Levi Lavaka , 1-yard pass from K'Von Houston ( kick from Weston Allen )"
+              ]
+            },
+            {
+              "playerId": "hillcrest-11-levi-lavaka",
+              "number": "11",
+              "name": "Levi Lavaka",
+              "position": "WR / DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Hillcrest — ( 8:23 4Q ) Levi Lavaka , 1-yard pass from K'Von Houston ( kick from Weston Allen )"
               ]
             },
             {
@@ -15585,7 +15891,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "4",
+                    "PAT": "5",
                     "Return TD": ""
                   }
                 }
@@ -15594,7 +15900,8 @@
                 "Hillcrest — ( 10:07 1Q ) K'Von Houston , 7-yard run ( kick from Weston Allen )",
                 "Hillcrest — ( 9:44 2Q ) K'Von Houston , 7-yard run ( kick from Weston Allen )",
                 "Hillcrest — ( 9:27 3Q ) Alani Latu , 18-yard pass from K'Von Houston ( kick from Weston Allen )",
-                "Hillcrest — ( 0:56 4Q ) Alani Latu , 75-yard pass from K'Von Houston ( kick from Weston Allen )"
+                "Hillcrest — ( 0:56 4Q ) Alani Latu , 75-yard pass from K'Von Houston ( kick from Weston Allen )",
+                "Hillcrest — ( 8:23 4Q ) Levi Lavaka , 1-yard pass from K'Von Houston ( kick from Weston Allen )"
               ]
             }
           ],
@@ -15604,7 +15911,9 @@
             "Hillcrest — ( 2:34 1Q ) Alani Latu , 12-yard pass from K'Von Houston ( kick failed )",
             "Hillcrest — ( 9:44 2Q ) K'Von Houston , 7-yard run ( kick from Weston Allen )",
             "Hillcrest — ( 9:27 3Q ) Alani Latu , 18-yard pass from K'Von Houston ( kick from Weston Allen )",
-            "Hillcrest — ( 0:56 4Q ) Alani Latu , 75-yard pass from K'Von Houston ( kick from Weston Allen )"
+            "Hillcrest — ( 0:56 4Q ) Alani Latu , 75-yard pass from K'Von Houston ( kick from Weston Allen )",
+            "Hillcrest — ( 8:23 4Q ) Levi Lavaka , 1-yard pass from K'Von Houston ( kick from Weston Allen )",
+            "Hillcrest — ( 4Q ) Maxwell Call , 14-yard run"
           ]
         }
       ]
@@ -15630,8 +15939,8 @@
           "date": "2026-08-21",
           "opponent": "OGDEN",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 6,
           "opponentScore": 7,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/bonneville-football-vs-ogden-football/273459",
@@ -16472,9 +16781,9 @@
           "date": "2026-08-21",
           "opponent": "BRIGHTON",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 28,
+          "status": "Final",
+          "final": true,
+          "teamScore": 38,
           "opponentScore": 31,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/brighton-football-vs-weber-football/273747",
           "players": [
@@ -16491,7 +16800,7 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "3",
+                    "TD": "4",
                     "Int": ""
                   }
                 }
@@ -16499,7 +16808,8 @@
               "scoringPlays": [
                 "Weber — ( 8:10 1Q ) Creed Devries , 15-yard pass from Carter Payne ( kick from Zach Jenkins )",
                 "Weber — ( 11:13 2Q ) Reese Cantwell , 57-yard pass from Carter Payne ( kick from Zach Jenkins )",
-                "Weber — ( 8:35 2Q ) Creed Devries , 52-yard pass from Carter Payne ( kick from Zach Jenkins )"
+                "Weber — ( 8:35 2Q ) Creed Devries , 52-yard pass from Carter Payne ( kick from Zach Jenkins )",
+                "Weber — ( 2:44 4Q ) Creed Devries , 13-yard pass from Carter Payne ( kick from Zach Jenkins )"
               ]
             },
             {
@@ -16534,13 +16844,14 @@
                   "values": {
                     "Receptions": "",
                     "Yards": "",
-                    "TD": "2"
+                    "TD": "3"
                   }
                 }
               ],
               "scoringPlays": [
                 "Weber — ( 8:10 1Q ) Creed Devries , 15-yard pass from Carter Payne ( kick from Zach Jenkins )",
-                "Weber — ( 8:35 2Q ) Creed Devries , 52-yard pass from Carter Payne ( kick from Zach Jenkins )"
+                "Weber — ( 8:35 2Q ) Creed Devries , 52-yard pass from Carter Payne ( kick from Zach Jenkins )",
+                "Weber — ( 2:44 4Q ) Creed Devries , 13-yard pass from Carter Payne ( kick from Zach Jenkins )"
               ]
             },
             {
@@ -16553,8 +16864,8 @@
                 {
                   "category": "Special Teams",
                   "values": {
-                    "FG": "",
-                    "PAT": "4",
+                    "FG": "1",
+                    "PAT": "5",
                     "Return TD": ""
                   }
                 }
@@ -16563,7 +16874,9 @@
                 "Weber — ( 8:10 1Q ) Creed Devries , 15-yard pass from Carter Payne ( kick from Zach Jenkins )",
                 "Weber — ( 11:13 2Q ) Reese Cantwell , 57-yard pass from Carter Payne ( kick from Zach Jenkins )",
                 "Weber — ( 8:35 2Q ) Creed Devries , 52-yard pass from Carter Payne ( kick from Zach Jenkins )",
-                "Weber — ( 0:20 2Q ) Bracken Day , 99-yard kick return ( kick from Zach Jenkins )"
+                "Weber — ( 0:20 2Q ) Bracken Day , 99-yard kick return ( kick from Zach Jenkins )",
+                "Weber — ( 9:13 4Q ) Zach Jenkins , 27-yard FG",
+                "Weber — ( 2:44 4Q ) Creed Devries , 13-yard pass from Carter Payne ( kick from Zach Jenkins )"
               ]
             },
             {
@@ -16591,7 +16904,9 @@
             "Weber — ( 8:10 1Q ) Creed Devries , 15-yard pass from Carter Payne ( kick from Zach Jenkins )",
             "Weber — ( 11:13 2Q ) Reese Cantwell , 57-yard pass from Carter Payne ( kick from Zach Jenkins )",
             "Weber — ( 8:35 2Q ) Creed Devries , 52-yard pass from Carter Payne ( kick from Zach Jenkins )",
-            "Weber — ( 0:20 2Q ) Bracken Day , 99-yard kick return ( kick from Zach Jenkins )"
+            "Weber — ( 0:20 2Q ) Bracken Day , 99-yard kick return ( kick from Zach Jenkins )",
+            "Weber — ( 9:13 4Q ) Zach Jenkins , 27-yard FG",
+            "Weber — ( 2:44 4Q ) Creed Devries , 13-yard pass from Carter Payne ( kick from Zach Jenkins )"
           ]
         }
       ]
@@ -17232,10 +17547,10 @@
           "date": "2026-08-21",
           "opponent": "DAVIS",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 21,
-          "opponentScore": 42,
+          "status": "Final",
+          "final": true,
+          "teamScore": 28,
+          "opponentScore": 56,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/davis-football-vs-fremont-football/273515",
           "players": [
             {
@@ -17273,7 +17588,7 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "2",
+                    "TD": "3",
                     "Int": ""
                   }
                 },
@@ -17289,7 +17604,28 @@
               "scoringPlays": [
                 "Fremont — ( 7:36 2Q ) Calvin Cooper , 24-yard pass from Ky Majors ( kick from Jax Atkinson )",
                 "Fremont — ( 0:50 2Q ) Jack Moss , 14-yard pass from Calvin Cooper ( kick from Jax Atkinson )",
-                "Fremont — ( 5:22 3Q ) Isaia Fonotisatele , 15-yard pass from Calvin Cooper ( kick from Jax Atkinson )"
+                "Fremont — ( 5:22 3Q ) Isaia Fonotisatele , 15-yard pass from Calvin Cooper ( kick from Jax Atkinson )",
+                "Fremont — ( 5:10 4Q ) Porter Hales , 5-yard pass from Calvin Cooper ( kick from Jax Atkinson )"
+              ]
+            },
+            {
+              "playerId": "fremont-21-porter-hales",
+              "number": "21",
+              "name": "Porter Hales",
+              "position": "DB/RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Fremont — ( 5:10 4Q ) Porter Hales , 5-yard pass from Calvin Cooper ( kick from Jax Atkinson )"
               ]
             },
             {
@@ -17343,7 +17679,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "3",
+                    "PAT": "4",
                     "Return TD": ""
                   }
                 }
@@ -17351,14 +17687,16 @@
               "scoringPlays": [
                 "Fremont — ( 7:36 2Q ) Calvin Cooper , 24-yard pass from Ky Majors ( kick from Jax Atkinson )",
                 "Fremont — ( 0:50 2Q ) Jack Moss , 14-yard pass from Calvin Cooper ( kick from Jax Atkinson )",
-                "Fremont — ( 5:22 3Q ) Isaia Fonotisatele , 15-yard pass from Calvin Cooper ( kick from Jax Atkinson )"
+                "Fremont — ( 5:22 3Q ) Isaia Fonotisatele , 15-yard pass from Calvin Cooper ( kick from Jax Atkinson )",
+                "Fremont — ( 5:10 4Q ) Porter Hales , 5-yard pass from Calvin Cooper ( kick from Jax Atkinson )"
               ]
             }
           ],
           "scoringPlays": [
             "Fremont — ( 7:36 2Q ) Calvin Cooper , 24-yard pass from Ky Majors ( kick from Jax Atkinson )",
             "Fremont — ( 0:50 2Q ) Jack Moss , 14-yard pass from Calvin Cooper ( kick from Jax Atkinson )",
-            "Fremont — ( 5:22 3Q ) Isaia Fonotisatele , 15-yard pass from Calvin Cooper ( kick from Jax Atkinson )"
+            "Fremont — ( 5:22 3Q ) Isaia Fonotisatele , 15-yard pass from Calvin Cooper ( kick from Jax Atkinson )",
+            "Fremont — ( 5:10 4Q ) Porter Hales , 5-yard pass from Calvin Cooper ( kick from Jax Atkinson )"
           ]
         }
       ]
@@ -18731,10 +19069,10 @@
           "date": "2026-08-21",
           "opponent": "LAYTON",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 0,
-          "opponentScore": 17,
+          "opponentScore": 30,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/northridge-football-vs-layton-football/273530",
           "players": [],
           "scoringPlays": []
@@ -19882,8 +20220,8 @@
           "date": "2026-08-21",
           "opponent": "WESTLAKE",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 14,
           "opponentScore": 0,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/westlake-football-vs-pleasant-grove-football/273735",
@@ -20426,12 +20764,32 @@
           "date": "2026-08-21",
           "opponent": "FARMINGTON",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 21,
-          "opponentScore": 3,
+          "status": "Final",
+          "final": true,
+          "teamScore": 35,
+          "opponentScore": 10,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/farmington-football-vs-bountiful-football/274366",
           "players": [
+            {
+              "playerId": "bountiful-15-easton-lowe",
+              "number": "15",
+              "name": "Easton Lowe",
+              "position": "RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Bountiful — ( 6:55 4Q ) Easton Lowe , 5-yard run ( kick from Parker Hoffman )"
+              ]
+            },
             {
               "playerId": "bountiful-27-ami-vunipola",
               "number": "27",
@@ -20465,13 +20823,14 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "2",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Bountiful — ( 8:25 2Q ) Mason Tidwell , 31-yard pass from Hudson Malmrose ( kick from Parker Hoffman )"
+                "Bountiful — ( 8:25 2Q ) Mason Tidwell , 31-yard pass from Hudson Malmrose ( kick from Parker Hoffman )",
+                "Bountiful — ( 7:31 4Q ) Mason Tidwell , 10-yard pass from Hudson Malmrose ( kick from Parker Hoffman )"
               ]
             },
             {
@@ -20486,12 +20845,13 @@
                   "values": {
                     "Receptions": "",
                     "Yards": "",
-                    "TD": "1"
+                    "TD": "2"
                   }
                 }
               ],
               "scoringPlays": [
-                "Bountiful — ( 8:25 2Q ) Mason Tidwell , 31-yard pass from Hudson Malmrose ( kick from Parker Hoffman )"
+                "Bountiful — ( 8:25 2Q ) Mason Tidwell , 31-yard pass from Hudson Malmrose ( kick from Parker Hoffman )",
+                "Bountiful — ( 7:31 4Q ) Mason Tidwell , 10-yard pass from Hudson Malmrose ( kick from Parker Hoffman )"
               ]
             },
             {
@@ -20505,7 +20865,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "3",
+                    "PAT": "5",
                     "Return TD": ""
                   }
                 }
@@ -20513,7 +20873,9 @@
               "scoringPlays": [
                 "Bountiful — ( 1:57 1Q ) Braden Boucha , 48-yard int. return ( kick from Parker Hoffman )",
                 "Bountiful — ( 0:51 1Q ) Ami Vunipola , 1-yard run ( kick from Parker Hoffman )",
-                "Bountiful — ( 8:25 2Q ) Mason Tidwell , 31-yard pass from Hudson Malmrose ( kick from Parker Hoffman )"
+                "Bountiful — ( 8:25 2Q ) Mason Tidwell , 31-yard pass from Hudson Malmrose ( kick from Parker Hoffman )",
+                "Bountiful — ( 7:31 4Q ) Mason Tidwell , 10-yard pass from Hudson Malmrose ( kick from Parker Hoffman )",
+                "Bountiful — ( 6:55 4Q ) Easton Lowe , 5-yard run ( kick from Parker Hoffman )"
               ]
             },
             {
@@ -20541,7 +20903,9 @@
           "scoringPlays": [
             "Bountiful — ( 1:57 1Q ) Braden Boucha , 48-yard int. return ( kick from Parker Hoffman )",
             "Bountiful — ( 0:51 1Q ) Ami Vunipola , 1-yard run ( kick from Parker Hoffman )",
-            "Bountiful — ( 8:25 2Q ) Mason Tidwell , 31-yard pass from Hudson Malmrose ( kick from Parker Hoffman )"
+            "Bountiful — ( 8:25 2Q ) Mason Tidwell , 31-yard pass from Hudson Malmrose ( kick from Parker Hoffman )",
+            "Bountiful — ( 7:31 4Q ) Mason Tidwell , 10-yard pass from Hudson Malmrose ( kick from Parker Hoffman )",
+            "Bountiful — ( 6:55 4Q ) Easton Lowe , 5-yard run ( kick from Parker Hoffman )"
           ]
         }
       ]
@@ -21087,32 +21451,12 @@
           "date": "2026-08-21",
           "opponent": "STANSBURY",
           "location": "Away",
-          "status": "Q3",
-          "final": false,
-          "teamScore": 33,
-          "opponentScore": 29,
+          "status": "Final",
+          "final": true,
+          "teamScore": 40,
+          "opponentScore": 36,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/herriman-football-vs-stansbury-football/273549",
           "players": [
-            {
-              "playerId": "herriman-29-jp-itema",
-              "number": "29",
-              "name": "JP Itema",
-              "position": "DB",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Rushing",
-                  "values": {
-                    "Carries": "",
-                    "Yards": "",
-                    "TD": "1"
-                  }
-                }
-              ],
-              "scoringPlays": [
-                "Herriman — ( 4:48 4Q ) JP Itema , 10-yard run ( kick from Kemper Castro )"
-              ]
-            },
             {
               "playerId": "herriman-8-filisi-filipe",
               "number": "8",
@@ -21125,14 +21469,15 @@
                   "values": {
                     "Carries": "",
                     "Yards": "",
-                    "TD": "3"
+                    "TD": "4"
                   }
                 }
               ],
               "scoringPlays": [
                 "Herriman — ( 4:00 1Q ) Filisi Filipe , 8-yard run ( kick failed )",
                 "Herriman — ( 9:54 2Q ) Filisi Filipe , 68-yard run ( run failed )",
-                "Herriman — ( 0:44 2Q ) Filisi Filipe , 14-yard run ( pass from Cameron Curtis )"
+                "Herriman — ( 0:44 2Q ) Filisi Filipe , 14-yard run ( pass from Cameron Curtis )",
+                "Herriman — ( 4:48 4Q ) Filisi Filipe , 10-yard run ( kick from Kemper Castro )"
               ]
             },
             {
@@ -21148,13 +21493,34 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "2",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Herriman — ( 0:58 3Q ) Kemper Castro , 10-yard pass from Bryson Sweeney ( run failed )"
+                "Herriman — ( 0:58 3Q ) Kemper Castro , 10-yard pass from Bryson Sweeney ( run failed )",
+                "Herriman — ( 0:03 4Q ) Hayes Priest , 50-yard pass from Bryson Sweeney ( kick from Kemper Castro )"
+              ]
+            },
+            {
+              "playerId": "herriman-19-hayes-priest",
+              "number": "19",
+              "name": "Hayes Priest",
+              "position": "WR",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Herriman — ( 0:03 4Q ) Hayes Priest , 50-yard pass from Bryson Sweeney ( kick from Kemper Castro )"
               ]
             },
             {
@@ -21176,14 +21542,15 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "1",
+                    "PAT": "2",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Herriman — ( 0:58 3Q ) Kemper Castro , 10-yard pass from Bryson Sweeney ( run failed )",
-                "Herriman — ( 4:48 4Q ) JP Itema , 10-yard run ( kick from Kemper Castro )"
+                "Herriman — ( 4:48 4Q ) Filisi Filipe , 10-yard run ( kick from Kemper Castro )",
+                "Herriman — ( 0:03 4Q ) Hayes Priest , 50-yard pass from Bryson Sweeney ( kick from Kemper Castro )"
               ]
             }
           ],
@@ -21192,7 +21559,8 @@
             "Herriman — ( 9:54 2Q ) Filisi Filipe , 68-yard run ( run failed )",
             "Herriman — ( 0:44 2Q ) Filisi Filipe , 14-yard run ( pass from Cameron Curtis )",
             "Herriman — ( 0:58 3Q ) Kemper Castro , 10-yard pass from Bryson Sweeney ( run failed )",
-            "Herriman — ( 4:48 4Q ) JP Itema , 10-yard run ( kick from Kemper Castro )"
+            "Herriman — ( 4:48 4Q ) Filisi Filipe , 10-yard run ( kick from Kemper Castro )",
+            "Herriman — ( 0:03 4Q ) Hayes Priest , 50-yard pass from Bryson Sweeney ( kick from Kemper Castro )"
           ]
         }
       ]
@@ -21890,10 +22258,10 @@
           "date": "2026-08-21",
           "opponent": "MAPLE MOUNTAIN",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 17,
-          "opponentScore": 24,
+          "opponentScore": 27,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/riverton-football-vs-maple-mountain-football/273576",
           "players": [
             {
@@ -22148,13 +22516,78 @@
           "date": "2026-08-21",
           "opponent": "CORNER CANYON",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 0,
+          "status": "Final",
+          "final": true,
+          "teamScore": 7,
           "opponentScore": 40,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/corner-canyon-football-vs-timpview-football/273476",
-          "players": [],
-          "scoringPlays": []
+          "players": [
+            {
+              "playerId": "timpview-14-marley-fakatoumafi",
+              "number": "14",
+              "name": "Marley Fakatoumafi",
+              "position": "QB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Timpview — ( 1:57 4Q ) Malosi Ilaoa , 64-yard pass from Marley Fakatoumafi ( kick from Easton Baird )"
+              ]
+            },
+            {
+              "playerId": "timpview-13-malosi-ilaoa",
+              "number": "13",
+              "name": "Malosi Ilaoa",
+              "position": "DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Timpview — ( 1:57 4Q ) Malosi Ilaoa , 64-yard pass from Marley Fakatoumafi ( kick from Easton Baird )"
+              ]
+            },
+            {
+              "playerId": "timpview-27-easton-baird",
+              "number": "27",
+              "name": "Easton Baird",
+              "position": "K",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "1",
+                    "Return TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Timpview — ( 1:57 4Q ) Malosi Ilaoa , 64-yard pass from Marley Fakatoumafi ( kick from Easton Baird )"
+              ]
+            }
+          ],
+          "scoringPlays": [
+            "Timpview — ( 1:57 4Q ) Malosi Ilaoa , 64-yard pass from Marley Fakatoumafi ( kick from Easton Baird )"
+          ]
         }
       ]
     },
@@ -22644,12 +23077,52 @@
           "date": "2026-08-21",
           "opponent": "NORTHRIDGE",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 17,
+          "status": "Final",
+          "final": true,
+          "teamScore": 30,
           "opponentScore": 0,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/northridge-football-vs-layton-football/273530",
           "players": [
+            {
+              "playerId": "layton-42-jake-strong",
+              "number": "42",
+              "name": "Jake Strong",
+              "position": "RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Layton — ( 3:12 4Q ) Jake Strong , 2-yard run ( kick from Miles Neuteboom )"
+              ]
+            },
+            {
+              "playerId": "layton-7-luke-byers",
+              "number": "7",
+              "name": "Luke Byers",
+              "position": "LB/RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Layton — ( 7:34 4Q ) Luke Byers , 2-yard run ( kick failed )"
+              ]
+            },
             {
               "playerId": "layton-5-tillman-thomas",
               "number": "5",
@@ -22705,7 +23178,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "1",
-                    "PAT": "2",
+                    "PAT": "3",
                     "Return TD": ""
                   }
                 }
@@ -22713,14 +23186,17 @@
               "scoringPlays": [
                 "Layton — ( 11:20 1Q ) Carter Hughes , 39-yard pass from Tillman Thomas ( kick from Miles Neuteboom )",
                 "Layton — ( 3:31 2Q ) Miles Neuteboom , 31-yard FG",
-                "Layton — ( 0:36 2Q ) Carter Hughes , 21-yard pass from Tillman Thomas ( kick from Miles Neuteboom )"
+                "Layton — ( 0:36 2Q ) Carter Hughes , 21-yard pass from Tillman Thomas ( kick from Miles Neuteboom )",
+                "Layton — ( 3:12 4Q ) Jake Strong , 2-yard run ( kick from Miles Neuteboom )"
               ]
             }
           ],
           "scoringPlays": [
             "Layton — ( 11:20 1Q ) Carter Hughes , 39-yard pass from Tillman Thomas ( kick from Miles Neuteboom )",
             "Layton — ( 3:31 2Q ) Miles Neuteboom , 31-yard FG",
-            "Layton — ( 0:36 2Q ) Carter Hughes , 21-yard pass from Tillman Thomas ( kick from Miles Neuteboom )"
+            "Layton — ( 0:36 2Q ) Carter Hughes , 21-yard pass from Tillman Thomas ( kick from Miles Neuteboom )",
+            "Layton — ( 7:34 4Q ) Luke Byers , 2-yard run ( kick failed )",
+            "Layton — ( 3:12 4Q ) Jake Strong , 2-yard run ( kick from Miles Neuteboom )"
           ]
         }
       ]
@@ -23432,30 +23908,32 @@
           "date": "2026-08-21",
           "opponent": "SKYLINE",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 9,
-          "opponentScore": 14,
+          "status": "Final",
+          "final": true,
+          "teamScore": 16,
+          "opponentScore": 21,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/skyline-football-vs-olympus-football/273590",
           "players": [
             {
-              "playerId": "olympus-85-henry-o-neil",
-              "number": "85",
-              "name": "Henry O'Neil",
-              "position": "K",
+              "playerId": "olympus-2-preston-ferran",
+              "number": "2",
+              "name": "Preston Ferran",
+              "position": "QB",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Special Teams",
+                  "category": "Passing",
                   "values": {
-                    "FG": "",
-                    "PAT": "1",
-                    "Return TD": ""
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Olympus — ( 4Q ) Sam Ngata , 39-yard int. return ( kick from Henry O'Neil )"
+                "Olympus — ( 1:23 4Q ) Sam Ngata , 7-yard pass from Preston Ferran ( kick from Henry O'Neil )"
               ]
             },
             {
@@ -23465,6 +23943,14 @@
               "position": "LB/WR",
               "rosterMatched": true,
               "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                },
                 {
                   "category": "Defense",
                   "values": {
@@ -23476,13 +23962,36 @@
                 }
               ],
               "scoringPlays": [
-                "Olympus — ( 4Q ) Sam Ngata , 39-yard int. return ( kick from Henry O'Neil )"
+                "Olympus — ( 4Q ) Sam Ngata , 39-yard int. return ( kick from Henry O'Neil )",
+                "Olympus — ( 1:23 4Q ) Sam Ngata , 7-yard pass from Preston Ferran ( kick from Henry O'Neil )"
+              ]
+            },
+            {
+              "playerId": "olympus-85-henry-o-neil",
+              "number": "85",
+              "name": "Henry O'Neil",
+              "position": "K",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "2",
+                    "Return TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Olympus — ( 4Q ) Sam Ngata , 39-yard int. return ( kick from Henry O'Neil )",
+                "Olympus — ( 1:23 4Q ) Sam Ngata , 7-yard pass from Preston Ferran ( kick from Henry O'Neil )"
               ]
             }
           ],
           "scoringPlays": [
             "Olympus — ( 3:12 2Q ) safety",
-            "Olympus — ( 4Q ) Sam Ngata , 39-yard int. return ( kick from Henry O'Neil )"
+            "Olympus — ( 4Q ) Sam Ngata , 39-yard int. return ( kick from Henry O'Neil )",
+            "Olympus — ( 1:23 4Q ) Sam Ngata , 7-yard pass from Preston Ferran ( kick from Henry O'Neil )"
           ]
         }
       ]
@@ -24217,7 +24726,7 @@
                 }
               ],
               "scoringPlays": [
-                "Clearfield — ( 9:41 4Q ) Jayce Ellis , 23-yard run"
+                "Clearfield — ( 9:41 4Q ) Jayce Ellis , 23-yard run ( kick failed )"
               ]
             },
             {
@@ -24334,7 +24843,7 @@
             "Clearfield — ( 0:00 2Q ) Bryson Ridge , 6-yard pass from Brik Barlow ( kick from Daxton Johnson )",
             "Clearfield — ( 11:50 3Q ) Bryson Ridge , 95-yard kick return ( kick failed )",
             "Clearfield — ( 8:45 3Q ) Brik Barlow , 3-yard run ( kick failed )",
-            "Clearfield — ( 9:41 4Q ) Jayce Ellis , 23-yard run"
+            "Clearfield — ( 9:41 4Q ) Jayce Ellis , 23-yard run ( kick failed )"
           ]
         }
       ]
@@ -24424,10 +24933,10 @@
           "date": "2026-08-21",
           "opponent": "RIDGELINE",
           "location": "Away",
-          "status": "Q3",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 9,
-          "opponentScore": 16,
+          "opponentScore": 31,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/park-city-football-vs-ridgeline-football/273622",
           "players": [
             {
@@ -25044,9 +25553,9 @@
           "date": "2026-08-21",
           "opponent": "RIVERTON",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 24,
+          "status": "Final",
+          "final": true,
+          "teamScore": 27,
           "opponentScore": 17,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/riverton-football-vs-maple-mountain-football/273576",
           "players": [
@@ -25101,7 +25610,7 @@
                 {
                   "category": "Special Teams",
                   "values": {
-                    "FG": "1",
+                    "FG": "2",
                     "PAT": "3",
                     "Return TD": ""
                   }
@@ -25111,7 +25620,8 @@
                 "Maple Mountain — ( 11:55 2Q ) Kyren Jones , 4-yard run ( kick from Israel Vaenuku )",
                 "Maple Mountain — ( 4:00 2Q ) Israel Vaenuku , 33-yard FG",
                 "Maple Mountain — ( 0:29 2Q ) Frank Schwenke , 8-yard run ( kick from Israel Vaenuku )",
-                "Maple Mountain — ( 11:55 4Q ) Frank Schwenke , 11-yard run ( kick from Israel Vaenuku )"
+                "Maple Mountain — ( 11:55 4Q ) Frank Schwenke , 11-yard run ( kick from Israel Vaenuku )",
+                "Maple Mountain — ( 3:18 4Q ) Israel Vaenuku , 41-yard FG"
               ]
             }
           ],
@@ -25119,7 +25629,8 @@
             "Maple Mountain — ( 11:55 2Q ) Kyren Jones , 4-yard run ( kick from Israel Vaenuku )",
             "Maple Mountain — ( 4:00 2Q ) Israel Vaenuku , 33-yard FG",
             "Maple Mountain — ( 0:29 2Q ) Frank Schwenke , 8-yard run ( kick from Israel Vaenuku )",
-            "Maple Mountain — ( 11:55 4Q ) Frank Schwenke , 11-yard run ( kick from Israel Vaenuku )"
+            "Maple Mountain — ( 11:55 4Q ) Frank Schwenke , 11-yard run ( kick from Israel Vaenuku )",
+            "Maple Mountain — ( 3:18 4Q ) Israel Vaenuku , 41-yard FG"
           ]
         }
       ]
@@ -25828,10 +26339,10 @@
           "date": "2026-08-21",
           "opponent": "MOUNTAIN RIDGE",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 0,
-          "opponentScore": 34,
+          "opponentScore": 42,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/mountain-ridge-football-vs-lehi-football/273728",
           "players": [],
           "scoringPlays": []
@@ -26278,10 +26789,10 @@
           "date": "2026-08-21",
           "opponent": "CRIMSON CLIFFS",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 13,
-          "opponentScore": 21,
+          "opponentScore": 31,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/crimson-cliffs-football-vs-provo-football/273490",
           "players": [
             {
@@ -27309,10 +27820,10 @@
           "date": "2026-08-21",
           "opponent": "MILFORD",
           "location": "Away",
-          "status": "Q3",
-          "final": false,
-          "teamScore": 47,
-          "opponentScore": 13,
+          "status": "Final",
+          "final": true,
+          "teamScore": 65,
+          "opponentScore": 19,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/rich-football-vs-milford-football/274425",
           "players": [
             {
@@ -27356,7 +27867,7 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "2",
                     "Int": ""
                   }
                 }
@@ -27365,7 +27876,8 @@
                 "Rich — ( 2:38 2Q ) Wilkes Weston , 54-yard run ( kick from Paxton Nicolodemos )",
                 "Rich — ( 10:13 3Q ) Wilkes Weston , 34-yard run ( kick failed )",
                 "Rich — ( 7:48 3Q ) Wilkes Weston , 59-yard run ( kick from Paxton Nicolodemos )",
-                "Rich — ( 4:40 3Q ) Wyatt O'Mealy , 4-yard pass from Wilkes Weston ( kick from Paxton Nicolodemos )"
+                "Rich — ( 4:40 3Q ) Wyatt O'Mealy , 4-yard pass from Wilkes Weston ( kick from Paxton Nicolodemos )",
+                "Rich — ( 10:14 4Q ) Paxton Nicolodemos , pass from Wilkes Weston ( kick failed )"
               ]
             },
             {
@@ -27380,12 +27892,43 @@
                   "values": {
                     "Carries": "",
                     "Yards": "",
+                    "TD": "2"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Rich — ( 0:57 1Q ) Brayden Stokes , 76-yard run ( kick failed )",
+                "Rich — ( 9:43 4Q ) Brayden Stokes , 15-yard run ( kick failed )"
+              ]
+            },
+            {
+              "playerId": "rich-20-jasper-johnson",
+              "number": "20",
+              "name": "Jasper Johnson",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                },
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "",
+                    "Sacks": "",
+                    "Pass Int.": "",
                     "TD": "1"
                   }
                 }
               ],
               "scoringPlays": [
-                "Rich — ( 0:57 1Q ) Brayden Stokes , 76-yard run ( kick failed )"
+                "Rich — ( 8:03 1Q ) Jasper Johnson , 74-yard fumble recovery ( kick from Paxton Nicolodemos )",
+                "Rich — ( 6:44 4Q ) Jasper Johnson , 38-yard run"
               ]
             },
             {
@@ -27416,6 +27959,14 @@
               "rosterMatched": true,
               "statLines": [
                 {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                },
+                {
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
@@ -27429,28 +27980,8 @@
                 "Rich — ( 2:38 2Q ) Wilkes Weston , 54-yard run ( kick from Paxton Nicolodemos )",
                 "Rich — ( 10:36 3Q ) Brady Cornia , 70-yard run ( kick from Paxton Nicolodemos )",
                 "Rich — ( 7:48 3Q ) Wilkes Weston , 59-yard run ( kick from Paxton Nicolodemos )",
-                "Rich — ( 4:40 3Q ) Wyatt O'Mealy , 4-yard pass from Wilkes Weston ( kick from Paxton Nicolodemos )"
-              ]
-            },
-            {
-              "playerId": "rich-20-jasper-johnson",
-              "number": "20",
-              "name": "Jasper Johnson",
-              "position": "-",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense",
-                  "values": {
-                    "Tackles": "",
-                    "Sacks": "",
-                    "Pass Int.": "",
-                    "TD": "1"
-                  }
-                }
-              ],
-              "scoringPlays": [
-                "Rich — ( 8:03 1Q ) Jasper Johnson , 74-yard fumble recovery ( kick from Paxton Nicolodemos )"
+                "Rich — ( 4:40 3Q ) Wyatt O'Mealy , 4-yard pass from Wilkes Weston ( kick from Paxton Nicolodemos )",
+                "Rich — ( 10:14 4Q ) Paxton Nicolodemos , pass from Wilkes Weston ( kick failed )"
               ]
             }
           ],
@@ -27461,7 +27992,10 @@
             "Rich — ( 10:36 3Q ) Brady Cornia , 70-yard run ( kick from Paxton Nicolodemos )",
             "Rich — ( 10:13 3Q ) Wilkes Weston , 34-yard run ( kick failed )",
             "Rich — ( 7:48 3Q ) Wilkes Weston , 59-yard run ( kick from Paxton Nicolodemos )",
-            "Rich — ( 4:40 3Q ) Wyatt O'Mealy , 4-yard pass from Wilkes Weston ( kick from Paxton Nicolodemos )"
+            "Rich — ( 4:40 3Q ) Wyatt O'Mealy , 4-yard pass from Wilkes Weston ( kick from Paxton Nicolodemos )",
+            "Rich — ( 10:14 4Q ) Paxton Nicolodemos , pass from Wilkes Weston ( kick failed )",
+            "Rich — ( 9:43 4Q ) Brayden Stokes , 15-yard run ( kick failed )",
+            "Rich — ( 6:44 4Q ) Jasper Johnson , 38-yard run"
           ]
         }
       ]
@@ -28092,8 +28626,8 @@
           "date": "2026-08-21",
           "opponent": "EMERY",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 14,
           "opponentScore": 41,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/carbon-football-vs-emery-football/273685",
@@ -28273,10 +28807,10 @@
           "date": "2026-08-21",
           "opponent": "PAROWAN",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": null,
-          "opponentScore": 14,
+          "opponentScore": 27,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/american-leadership-football-vs-parowan-football/274326",
           "players": [
             {
@@ -28302,6 +28836,44 @@
                     "Yards": "",
                     "TD": "1",
                     "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "ala-7-cooper-dupaix",
+              "number": "7",
+              "name": "Cooper DuPaix",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "ala-13-carter-crandall",
+              "number": "13",
+              "name": "Carter Crandall",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
                   }
                 }
               ],
@@ -28476,10 +29048,10 @@
           "date": "2026-08-21",
           "opponent": "TOOELE",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 28,
-          "opponentScore": 7,
+          "status": "Final",
+          "final": true,
+          "teamScore": 34,
+          "opponentScore": 13,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/tooele-football-vs-mountain-view-football/274350",
           "players": [
             {
@@ -28494,13 +29066,14 @@
                   "values": {
                     "Carries": "",
                     "Yards": "",
-                    "TD": "1"
+                    "TD": "2"
                   }
                 }
               ],
               "scoringPlays": [
                 "Mountain View — ( 2:18 3Q ) Carter Vance , 10-yard run ( kick failed )",
-                "Mountain View — ( 9:12 3Q ) Brigham Moses , 44-yard pass from Hyrum Stafford ( pass from Carter Vance )"
+                "Mountain View — ( 9:12 3Q ) Brigham Moses , 44-yard pass from Hyrum Stafford ( pass from Carter Vance )",
+                "Mountain View — ( 2:04 4Q ) Carter Vance , 6-yard run ( kick failed )"
               ]
             },
             {
@@ -28612,7 +29185,8 @@
             "Mountain View — ( 5:32 2Q ) Jrae Fua , 2-yard run ( kick from Landon Pace )",
             "Mountain View — ( 2:18 3Q ) Carter Vance , 10-yard run ( kick failed )",
             "Mountain View — ( 9:12 3Q ) Brigham Moses , 44-yard pass from Hyrum Stafford ( pass from Carter Vance )",
-            "Mountain View — ( 6:58 4Q ) Brawley Tuitupou , 41-yard pass from Hyrum Stafford ( kick from Landon Pace )"
+            "Mountain View — ( 6:58 4Q ) Brawley Tuitupou , 41-yard pass from Hyrum Stafford ( kick from Landon Pace )",
+            "Mountain View — ( 2:04 4Q ) Carter Vance , 6-yard run ( kick failed )"
           ]
         }
       ]
@@ -29071,9 +29645,9 @@
           "date": "2026-08-21",
           "opponent": "JUAB",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 14,
+          "status": "Final",
+          "final": true,
+          "teamScore": 20,
           "opponentScore": 31,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/payson-football-vs-juab-football/273895",
           "players": [
@@ -29090,14 +29664,35 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "2",
+                    "TD": "3",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Payson — ( 0:00 2Q ) Carson Wall , 17-yard pass from Justice Taylor ( kick from Bronx Newbury )",
-                "Payson — ( 11:01 3Q ) Valentin Sanchez , 10-yard pass from Justice Taylor ( kick from Bronx Newbury )"
+                "Payson — ( 11:01 3Q ) Valentin Sanchez , 10-yard pass from Justice Taylor ( kick from Bronx Newbury )",
+                "Payson — ( 0:51 4Q ) Tyson Hazlett , 10-yard pass from Justice Taylor ( run failed )"
+              ]
+            },
+            {
+              "playerId": "payson-14-tyson-hazlett",
+              "number": "14",
+              "name": "Tyson Hazlett",
+              "position": "FS/WR",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Payson — ( 0:51 4Q ) Tyson Hazlett , 10-yard pass from Justice Taylor ( run failed )"
               ]
             },
             {
@@ -29164,7 +29759,8 @@
           ],
           "scoringPlays": [
             "Payson — ( 0:00 2Q ) Carson Wall , 17-yard pass from Justice Taylor ( kick from Bronx Newbury )",
-            "Payson — ( 11:01 3Q ) Valentin Sanchez , 10-yard pass from Justice Taylor ( kick from Bronx Newbury )"
+            "Payson — ( 11:01 3Q ) Valentin Sanchez , 10-yard pass from Justice Taylor ( kick from Bronx Newbury )",
+            "Payson — ( 0:51 4Q ) Tyson Hazlett , 10-yard pass from Justice Taylor ( run failed )"
           ]
         }
       ]
@@ -29697,9 +30293,9 @@
           "date": "2026-08-21",
           "opponent": "CEDAR CITY",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 28,
+          "status": "Final",
+          "final": true,
+          "teamScore": 34,
           "opponentScore": 30,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/cedar-city-football-vs-pine-view-football/273435",
           "players": [
@@ -29724,7 +30320,7 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "3",
+                    "TD": "4",
                     "Int": ""
                   }
                 }
@@ -29733,7 +30329,28 @@
                 "Pine View — ( 8:50 1Q ) Carter Buchanan , 68-yard pass from Coy Doman ( kick from Russell Jacobs )",
                 "Pine View — ( 11:54 2Q ) Carter Buchanan , 38-yard pass from Coy Doman ( kick from Russell Jacobs )",
                 "Pine View — ( 1:58 2Q ) Stephen Robbins , 3-yard pass from Coy Doman ( kick from Russell Jacobs )",
-                "Pine View — ( 4:02 4Q ) Coy Doman , 1-yard run ( kick from Russell Jacobs )"
+                "Pine View — ( 4:02 4Q ) Coy Doman , 1-yard run ( kick from Russell Jacobs )",
+                "Pine View — ( 2:02 4Q ) Max Yocham , 21-yard pass from Coy Doman ( kick failed )"
+              ]
+            },
+            {
+              "playerId": "pine-view-3-max-yocham",
+              "number": "3",
+              "name": "Max Yocham",
+              "position": "WR/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Pine View — ( 2:02 4Q ) Max Yocham , 21-yard pass from Coy Doman ( kick failed )"
               ]
             },
             {
@@ -29813,7 +30430,8 @@
             "Pine View — ( 8:50 1Q ) Carter Buchanan , 68-yard pass from Coy Doman ( kick from Russell Jacobs )",
             "Pine View — ( 11:54 2Q ) Carter Buchanan , 38-yard pass from Coy Doman ( kick from Russell Jacobs )",
             "Pine View — ( 1:58 2Q ) Stephen Robbins , 3-yard pass from Coy Doman ( kick from Russell Jacobs )",
-            "Pine View — ( 4:02 4Q ) Coy Doman , 1-yard run ( kick from Russell Jacobs )"
+            "Pine View — ( 4:02 4Q ) Coy Doman , 1-yard run ( kick from Russell Jacobs )",
+            "Pine View — ( 2:02 4Q ) Max Yocham , 21-yard pass from Coy Doman ( kick failed )"
           ]
         }
       ]
@@ -30305,8 +30923,8 @@
           "date": "2026-08-21",
           "opponent": "SALEM HILLS",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 33,
           "opponentScore": 28,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/salem-hills-football-vs-spanish-fork-football/273431",
@@ -31000,13 +31618,56 @@
           "date": "2026-08-21",
           "opponent": "LAYTON CHRISTIAN",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 0,
-          "opponentScore": 14,
+          "status": "Final",
+          "final": true,
+          "teamScore": 7,
+          "opponentScore": 21,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/layton-christian-football-vs-snow-canyon-football/273446",
-          "players": [],
-          "scoringPlays": []
+          "players": [
+            {
+              "playerId": "snow-canyon-41-kyron-lukes",
+              "number": "41",
+              "name": "Kyron Lukes",
+              "position": "K / LB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "1",
+                    "Return TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Snow Canyon — ( 4:48 4Q ) Brody Lounsbury , 92-yard kick return ( kick from Kyron Lukes )"
+              ]
+            },
+            {
+              "playerId": "snow-canyon-12-brody-lounsbury",
+              "number": "12",
+              "name": "Brody Lounsbury",
+              "position": "RB/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "",
+                    "Return TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Snow Canyon — ( 4:48 4Q ) Brody Lounsbury , 92-yard kick return ( kick from Kyron Lukes )"
+              ]
+            }
+          ],
+          "scoringPlays": [
+            "Snow Canyon — ( 4:48 4Q ) Brody Lounsbury , 92-yard kick return ( kick from Kyron Lukes )"
+          ]
         }
       ]
     },
@@ -31296,10 +31957,10 @@
           "date": "2026-08-21",
           "opponent": "HUNTER",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 36,
-          "opponentScore": 6,
+          "opponentScore": 14,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/highland-football-vs-hunter-football/273768",
           "players": [
             {
@@ -31620,8 +32281,8 @@
           "date": "2026-08-21",
           "opponent": "PLEASANT GROVE",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 0,
           "opponentScore": 14,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/westlake-football-vs-pleasant-grove-football/273735",
@@ -32371,12 +33032,32 @@
           "date": "2026-08-21",
           "opponent": "WEST FIELD",
           "location": "Home",
-          "status": "Q3",
-          "final": false,
-          "teamScore": 20,
-          "opponentScore": 7,
+          "status": "Final",
+          "final": true,
+          "teamScore": 26,
+          "opponentScore": 21,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/west-field-football-football-vs-woods-cross-football/273524",
           "players": [
+            {
+              "playerId": "woods-cross-22-sam-bahr",
+              "number": "22",
+              "name": "Sam Bahr",
+              "position": "FB/OLB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Woods Cross — ( 1:10 4Q ) Sam Bahr , 5-yard run ( run failed )"
+              ]
+            },
             {
               "playerId": "woods-cross-8-bronson-martin",
               "number": "8",
@@ -32462,7 +33143,8 @@
           "scoringPlays": [
             "Woods Cross — ( 7:49 1Q ) Teiyon Halbasch , 20-yard run ( kick from Archer Gale )",
             "Woods Cross — ( 1:00 1Q ) Vili Brown , 4-yard run ( kick failed )",
-            "Woods Cross — ( 10:43 2Q ) Bronson Martin , 21-yard run ( kick from Archer Gale )"
+            "Woods Cross — ( 10:43 2Q ) Bronson Martin , 21-yard run ( kick from Archer Gale )",
+            "Woods Cross — ( 1:10 4Q ) Sam Bahr , 5-yard run ( run failed )"
           ]
         }
       ]
@@ -32598,10 +33280,10 @@
           "date": "2026-08-21",
           "opponent": "PAYSON",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 31,
-          "opponentScore": 14,
+          "opponentScore": 20,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/payson-football-vs-juab-football/273895",
           "players": [
             {
@@ -35141,12 +35823,54 @@
           "date": "2026-08-21",
           "opponent": "BOUNTIFUL",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 3,
-          "opponentScore": 21,
+          "status": "Final",
+          "final": true,
+          "teamScore": 10,
+          "opponentScore": 35,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/farmington-football-vs-bountiful-football/274366",
           "players": [
+            {
+              "playerId": "farmington-13-mason-gillilan",
+              "number": "13",
+              "name": "Mason Gillilan",
+              "position": "QB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Farmington — ( 2:29 4Q ) Thayne Boyle , 5-yard pass from Mason Gillilan ( kick from Owen Morris )"
+              ]
+            },
+            {
+              "playerId": "farmington-14-thayne-boyle",
+              "number": "14",
+              "name": "Thayne Boyle",
+              "position": "TE",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Farmington — ( 2:29 4Q ) Thayne Boyle , 5-yard pass from Mason Gillilan ( kick from Owen Morris )"
+              ]
+            },
             {
               "playerId": "farmington-24-owen-morris",
               "number": "24",
@@ -35158,18 +35882,20 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "1",
-                    "PAT": "",
+                    "PAT": "1",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Farmington — ( 10:30 2Q ) Owen Morris , 32-yard FG"
+                "Farmington — ( 10:30 2Q ) Owen Morris , 32-yard FG",
+                "Farmington — ( 2:29 4Q ) Thayne Boyle , 5-yard pass from Mason Gillilan ( kick from Owen Morris )"
               ]
             }
           ],
           "scoringPlays": [
-            "Farmington — ( 10:30 2Q ) Owen Morris , 32-yard FG"
+            "Farmington — ( 10:30 2Q ) Owen Morris , 32-yard FG",
+            "Farmington — ( 2:29 4Q ) Thayne Boyle , 5-yard pass from Mason Gillilan ( kick from Owen Morris )"
           ]
         }
       ]
@@ -35307,9 +36033,9 @@
           "date": "2026-08-21",
           "opponent": "RICHFIELD",
           "location": "Home",
-          "status": "Q3",
-          "final": false,
-          "teamScore": 17,
+          "status": "Final",
+          "final": true,
+          "teamScore": 31,
           "opponentScore": 24,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/richfield-football-vs-grantsville-football/273298",
           "players": [
@@ -35326,13 +36052,36 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "3",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Grantsville — ( 11:48 4Q ) JJ Holm , 7-yard pass from Crew Allred ( kick from Cache Hammond )"
+                "Grantsville — ( 11:48 4Q ) JJ Holm , 7-yard pass from Crew Allred ( kick from Cache Hammond )",
+                "Grantsville — ( 3:00 4Q ) Dawson Dunlevy , 45-yard pass from Crew Allred ( kick from Cache Hammond )",
+                "Grantsville — ( 1:15 4Q ) Dawson Dunlevy , 20-yard pass from Crew Allred ( kick from Cache Hammond )"
+              ]
+            },
+            {
+              "playerId": "grantsville-22-dawson-dunlevy",
+              "number": "22",
+              "name": "Dawson Dunlevy",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "2"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Grantsville — ( 3:00 4Q ) Dawson Dunlevy , 45-yard pass from Crew Allred ( kick from Cache Hammond )",
+                "Grantsville — ( 1:15 4Q ) Dawson Dunlevy , 20-yard pass from Crew Allred ( kick from Cache Hammond )"
               ]
             },
             {
@@ -35366,14 +36115,16 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "1",
-                    "PAT": "1",
+                    "PAT": "3",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Grantsville — ( 3:40 3Q ) Cache Hammond , 24-yard FG",
-                "Grantsville — ( 11:48 4Q ) JJ Holm , 7-yard pass from Crew Allred ( kick from Cache Hammond )"
+                "Grantsville — ( 11:48 4Q ) JJ Holm , 7-yard pass from Crew Allred ( kick from Cache Hammond )",
+                "Grantsville — ( 3:00 4Q ) Dawson Dunlevy , 45-yard pass from Crew Allred ( kick from Cache Hammond )",
+                "Grantsville — ( 1:15 4Q ) Dawson Dunlevy , 20-yard pass from Crew Allred ( kick from Cache Hammond )"
               ]
             },
             {
@@ -35400,7 +36151,9 @@
           "scoringPlays": [
             "Grantsville — ( 1Q ) Graeson Warren , 95-yard kick return",
             "Grantsville — ( 3:40 3Q ) Cache Hammond , 24-yard FG",
-            "Grantsville — ( 11:48 4Q ) JJ Holm , 7-yard pass from Crew Allred ( kick from Cache Hammond )"
+            "Grantsville — ( 11:48 4Q ) JJ Holm , 7-yard pass from Crew Allred ( kick from Cache Hammond )",
+            "Grantsville — ( 3:00 4Q ) Dawson Dunlevy , 45-yard pass from Crew Allred ( kick from Cache Hammond )",
+            "Grantsville — ( 1:15 4Q ) Dawson Dunlevy , 20-yard pass from Crew Allred ( kick from Cache Hammond )"
           ]
         }
       ]
@@ -35866,8 +36619,8 @@
           "date": "2026-08-21",
           "opponent": "BEAVER",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 52,
           "opponentScore": 22,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/san-juan-football-vs-beaver-football/273351",
@@ -37006,9 +37759,9 @@
           "date": "2026-08-21",
           "opponent": "NORTH SUMMIT",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 42,
+          "status": "Final",
+          "final": true,
+          "teamScore": 45,
           "opponentScore": 14,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/south-summit-football-vs-north-summit-football/273360",
           "players": [
@@ -37114,7 +37867,7 @@
                 {
                   "category": "Special Teams",
                   "values": {
-                    "FG": "",
+                    "FG": "1",
                     "PAT": "2",
                     "Return TD": ""
                   }
@@ -37122,7 +37875,8 @@
               ],
               "scoringPlays": [
                 "South Summit — ( 11:37 3Q ) Cruz Woodard , 35-yard fumble recovery ( kick from Tuff Thornton )",
-                "South Summit — ( 10:11 4Q ) Brody Larsen , 1-yard run ( kick from Tuff Thornton )"
+                "South Summit — ( 10:11 4Q ) Brody Larsen , 1-yard run ( kick from Tuff Thornton )",
+                "South Summit — ( 4:01 4Q ) Tuff Thornton , 14-yard FG"
               ]
             },
             {
@@ -37153,7 +37907,8 @@
             "South Summit — ( 5:22 2Q ) Steele Woodward , 4-yard run",
             "South Summit — ( 11:37 3Q ) Cruz Woodard , 35-yard fumble recovery ( kick from Tuff Thornton )",
             "South Summit — ( 6:08 3Q ) Brody Larsen , 16-yard run ( kick failed )",
-            "South Summit — ( 10:11 4Q ) Brody Larsen , 1-yard run ( kick from Tuff Thornton )"
+            "South Summit — ( 10:11 4Q ) Brody Larsen , 1-yard run ( kick from Tuff Thornton )",
+            "South Summit — ( 4:01 4Q ) Tuff Thornton , 14-yard FG"
           ]
         }
       ]
@@ -37893,10 +38648,10 @@
           "date": "2026-08-21",
           "opponent": "ENTERPRISE",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 12,
-          "opponentScore": 21,
+          "opponentScore": 28,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/south-sevier-football-vs-enterprise-football/273372",
           "players": [
             {
@@ -38230,7 +38985,7 @@
           "location": "Home",
           "status": "Final",
           "final": true,
-          "teamScore": null,
+          "teamScore": 35,
           "opponentScore": 68,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/monticello-football-vs-utah-military-camp-williams-football-football/274415",
           "players": [
@@ -39645,12 +40400,32 @@
           "date": "2026-08-21",
           "opponent": "WASATCH",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 26,
+          "status": "Final",
+          "final": true,
+          "teamScore": 46,
           "opponentScore": 15,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/wasatch-football-vs-mountain-crest-football/273390",
           "players": [
+            {
+              "playerId": "mountain-crest-5-tayton-page",
+              "number": "5",
+              "name": "Tayton Page",
+              "position": "LB, RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Mountain Crest — ( 10:20 4Q ) Tayton Page , 11-yard run ( kick from Brenton Leishman )"
+              ]
+            },
             {
               "playerId": "mountain-crest-3-kolden-kennington",
               "number": "3",
@@ -39684,14 +40459,56 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "2",
+                    "TD": "4",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Mountain Crest — ( 10:28 2Q ) Kael Olsen , 10-yard pass from Brady Muir ( pass failed )",
-                "Mountain Crest — ( 5:57 2Q ) Kael Olsen , 54-yard pass from Brady Muir ( kick failed )"
+                "Mountain Crest — ( 5:57 2Q ) Kael Olsen , 54-yard pass from Brady Muir ( kick failed )",
+                "Mountain Crest — ( 3:49 3Q ) Brock Hunter , 47-yard pass from Brady Muir ( run failed )",
+                "Mountain Crest — ( 4:31 4Q ) Tanner Harris , 2-yard pass from Brady Muir ( kick from Brenton Leishman )"
+              ]
+            },
+            {
+              "playerId": "mountain-crest-0-tanner-harris",
+              "number": "0",
+              "name": "Tanner Harris",
+              "position": "WR, C",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Mountain Crest — ( 4:31 4Q ) Tanner Harris , 2-yard pass from Brady Muir ( kick from Brenton Leishman )"
+              ]
+            },
+            {
+              "playerId": "mountain-crest-1-brock-hunter",
+              "number": "1",
+              "name": "Brock Hunter",
+              "position": "WR, C",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Mountain Crest — ( 3:49 3Q ) Brock Hunter , 47-yard pass from Brady Muir ( run failed )"
               ]
             },
             {
@@ -39726,14 +40543,16 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "2",
+                    "PAT": "4",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Mountain Crest — ( 4:58 1Q ) Kolden Kennington , 3-yard run ( kick from Brenton Leishman )",
-                "Mountain Crest — ( 3:46 1Q ) Lincoln Alley , 27-yard punt return ( kick from Brenton Leishman )"
+                "Mountain Crest — ( 3:46 1Q ) Lincoln Alley , 27-yard punt return ( kick from Brenton Leishman )",
+                "Mountain Crest — ( 10:20 4Q ) Tayton Page , 11-yard run ( kick from Brenton Leishman )",
+                "Mountain Crest — ( 4:31 4Q ) Tanner Harris , 2-yard pass from Brady Muir ( kick from Brenton Leishman )"
               ]
             },
             {
@@ -39761,7 +40580,10 @@
             "Mountain Crest — ( 4:58 1Q ) Kolden Kennington , 3-yard run ( kick from Brenton Leishman )",
             "Mountain Crest — ( 3:46 1Q ) Lincoln Alley , 27-yard punt return ( kick from Brenton Leishman )",
             "Mountain Crest — ( 10:28 2Q ) Kael Olsen , 10-yard pass from Brady Muir ( pass failed )",
-            "Mountain Crest — ( 5:57 2Q ) Kael Olsen , 54-yard pass from Brady Muir ( kick failed )"
+            "Mountain Crest — ( 5:57 2Q ) Kael Olsen , 54-yard pass from Brady Muir ( kick failed )",
+            "Mountain Crest — ( 3:49 3Q ) Brock Hunter , 47-yard pass from Brady Muir ( run failed )",
+            "Mountain Crest — ( 10:20 4Q ) Tayton Page , 11-yard run ( kick from Brenton Leishman )",
+            "Mountain Crest — ( 4:31 4Q ) Tanner Harris , 2-yard pass from Brady Muir ( kick from Brenton Leishman )"
           ]
         }
       ]
@@ -39787,10 +40609,10 @@
           "date": "2026-08-21",
           "opponent": "HILLCREST",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 7,
-          "opponentScore": 40,
+          "opponentScore": 53,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/deer-creek-football-football-vs-hillcrest-football/273338",
           "players": [
             {
@@ -40215,10 +41037,10 @@
           "date": "2026-08-21",
           "opponent": "NORTH SANPETE",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 14,
-          "opponentScore": 14,
+          "status": "Final",
+          "final": true,
+          "teamScore": 21,
+          "opponentScore": 22,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/north-sanpete-football-vs-deseret-peak-football-football/273329",
           "players": [
             {
@@ -40229,6 +41051,14 @@
               "rosterMatched": true,
               "statLines": [
                 {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                },
+                {
                   "category": "Passing",
                   "values": {
                     "Comp-Att": "",
@@ -40237,11 +41067,20 @@
                     "TD": "2",
                     "Int": ""
                   }
+                },
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "1",
+                    "Return TD": ""
+                  }
                 }
               ],
               "scoringPlays": [
                 "Deseret Peak — ( 7:50 1Q ) Karter Stroyek , 74-yard pass from Andrew Harris ( kick failed )",
-                "Deseret Peak — ( 11:19 4Q ) Karter Stroyek , 9-yard pass from Andrew Harris ( run from Andrew Harris )"
+                "Deseret Peak — ( 11:19 4Q ) Karter Stroyek , 9-yard pass from Andrew Harris ( run from Andrew Harris )",
+                "Deseret Peak — ( OT ) Andrew Harris , 2-yard run ( kick from Andrew Harris )"
               ]
             },
             {
@@ -40268,7 +41107,8 @@
           ],
           "scoringPlays": [
             "Deseret Peak — ( 7:50 1Q ) Karter Stroyek , 74-yard pass from Andrew Harris ( kick failed )",
-            "Deseret Peak — ( 11:19 4Q ) Karter Stroyek , 9-yard pass from Andrew Harris ( run from Andrew Harris )"
+            "Deseret Peak — ( 11:19 4Q ) Karter Stroyek , 9-yard pass from Andrew Harris ( run from Andrew Harris )",
+            "Deseret Peak — ( OT ) Andrew Harris , 2-yard run ( kick from Andrew Harris )"
           ]
         }
       ]
@@ -41078,10 +41918,10 @@
           "date": "2026-08-21",
           "opponent": "BEAR RIVER",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 23,
-          "opponentScore": 27,
+          "status": "Final",
+          "final": true,
+          "teamScore": 50,
+          "opponentScore": 34,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/box-elder-football-vs-bear-river-football/273508",
           "players": [
             {
@@ -41112,18 +41952,28 @@
               "rosterMatched": true,
               "statLines": [
                 {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                },
+                {
                   "category": "Passing",
                   "values": {
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "2",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Box Elder — ( 9:12 1Q ) Judd Howells , 11-yard pass from Kadyn Reyes ( run failed )"
+                "Box Elder — ( 9:12 1Q ) Judd Howells , 11-yard pass from Kadyn Reyes ( run failed )",
+                "Box Elder — ( 10:53 4Q ) Kadyn Reyes , 11-yard run ( kick failed )",
+                "Box Elder — ( 3:24 4Q ) Pierre Pierren , 4-yard pass from Kadyn Reyes ( kick from Tytan Hupp )"
               ]
             },
             {
@@ -41131,6 +41981,35 @@
               "number": "0",
               "name": "Judd Howells",
               "position": "RB/LB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                },
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Box Elder — ( 9:12 1Q ) Judd Howells , 11-yard pass from Kadyn Reyes ( run failed )",
+                "Box Elder — ( 2:14 4Q ) Judd Howells , 2-yard run ( kick from Tytan Hupp )"
+              ]
+            },
+            {
+              "playerId": "box-elder-15-pierre-pierren",
+              "number": "15",
+              "name": "Pierre Pierren",
+              "position": "TE/DL",
               "rosterMatched": true,
               "statLines": [
                 {
@@ -41143,7 +42022,7 @@
                 }
               ],
               "scoringPlays": [
-                "Box Elder — ( 9:12 1Q ) Judd Howells , 11-yard pass from Kadyn Reyes ( run failed )"
+                "Box Elder — ( 3:24 4Q ) Pierre Pierren , 4-yard pass from Kadyn Reyes ( kick from Tytan Hupp )"
               ]
             },
             {
@@ -41157,7 +42036,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "1",
-                    "PAT": "2",
+                    "PAT": "5",
                     "Return TD": ""
                   }
                 }
@@ -41165,7 +42044,10 @@
               "scoringPlays": [
                 "Box Elder — ( 1:08 1Q ) Bridger Richards , 7-yard run ( kick from Tytan Hupp )",
                 "Box Elder — ( 0:18 2Q ) Tytan Hupp , 22-yard FG",
-                "Box Elder — ( 8:11 3Q ) Josh Pugsley , 93-yard kick return ( kick from Tytan Hupp )"
+                "Box Elder — ( 8:11 3Q ) Josh Pugsley , 93-yard kick return ( kick from Tytan Hupp )",
+                "Box Elder — ( 4:11 3Q ) 60-yard run ( kick from Tytan Hupp )",
+                "Box Elder — ( 3:24 4Q ) Pierre Pierren , 4-yard pass from Kadyn Reyes ( kick from Tytan Hupp )",
+                "Box Elder — ( 2:14 4Q ) Judd Howells , 2-yard run ( kick from Tytan Hupp )"
               ]
             },
             {
@@ -41193,7 +42075,11 @@
             "Box Elder — ( 9:12 1Q ) Judd Howells , 11-yard pass from Kadyn Reyes ( run failed )",
             "Box Elder — ( 1:08 1Q ) Bridger Richards , 7-yard run ( kick from Tytan Hupp )",
             "Box Elder — ( 0:18 2Q ) Tytan Hupp , 22-yard FG",
-            "Box Elder — ( 8:11 3Q ) Josh Pugsley , 93-yard kick return ( kick from Tytan Hupp )"
+            "Box Elder — ( 8:11 3Q ) Josh Pugsley , 93-yard kick return ( kick from Tytan Hupp )",
+            "Box Elder — ( 4:11 3Q ) 60-yard run ( kick from Tytan Hupp )",
+            "Box Elder — ( 10:53 4Q ) Kadyn Reyes , 11-yard run ( kick failed )",
+            "Box Elder — ( 3:24 4Q ) Pierre Pierren , 4-yard pass from Kadyn Reyes ( kick from Tytan Hupp )",
+            "Box Elder — ( 2:14 4Q ) Judd Howells , 2-yard run ( kick from Tytan Hupp )"
           ]
         }
       ]
@@ -41673,10 +42559,10 @@
           "date": "2026-08-21",
           "opponent": "WEBER",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 31,
-          "opponentScore": 28,
+          "opponentScore": 38,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/brighton-football-vs-weber-football/273747",
           "players": [
             {
@@ -41806,12 +42692,32 @@
           "date": "2026-08-21",
           "opponent": "WOODS CROSS",
           "location": "Away",
-          "status": "Q3",
-          "final": false,
-          "teamScore": 7,
-          "opponentScore": 20,
+          "status": "Final",
+          "final": true,
+          "teamScore": 21,
+          "opponentScore": 26,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/west-field-football-football-vs-woods-cross-football/273524",
           "players": [
+            {
+              "playerId": "west-field-22-elijah-woods",
+              "number": "22",
+              "name": "Elijah Woods",
+              "position": "RB/LB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "West Field — ( 10:58 4Q ) Elijah Woods , 5-yard run ( kick from Jaxon Hart )"
+              ]
+            },
             {
               "playerId": "west-field-6-easton-eilertson",
               "number": "6",
@@ -41825,13 +42731,34 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "2",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "West Field — ( 4:56 3Q ) Kolt Abbott , 10-yard pass from Easton Eilertson ( kick from Jaxon Hart )"
+                "West Field — ( 4:56 3Q ) Kolt Abbott , 10-yard pass from Easton Eilertson ( kick from Jaxon Hart )",
+                "West Field — ( 7:26 4Q ) Gavin Ortegon , 80-yard pass from Easton Eilertson ( kick from Jaxon Hart )"
+              ]
+            },
+            {
+              "playerId": "west-field-88-gavin-ortegon",
+              "number": "88",
+              "name": "Gavin Ortegon",
+              "position": "WR/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "West Field — ( 7:26 4Q ) Gavin Ortegon , 80-yard pass from Easton Eilertson ( kick from Jaxon Hart )"
               ]
             },
             {
@@ -41865,18 +42792,22 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "1",
+                    "PAT": "3",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "West Field — ( 4:56 3Q ) Kolt Abbott , 10-yard pass from Easton Eilertson ( kick from Jaxon Hart )"
+                "West Field — ( 4:56 3Q ) Kolt Abbott , 10-yard pass from Easton Eilertson ( kick from Jaxon Hart )",
+                "West Field — ( 10:58 4Q ) Elijah Woods , 5-yard run ( kick from Jaxon Hart )",
+                "West Field — ( 7:26 4Q ) Gavin Ortegon , 80-yard pass from Easton Eilertson ( kick from Jaxon Hart )"
               ]
             }
           ],
           "scoringPlays": [
-            "West Field — ( 4:56 3Q ) Kolt Abbott , 10-yard pass from Easton Eilertson ( kick from Jaxon Hart )"
+            "West Field — ( 4:56 3Q ) Kolt Abbott , 10-yard pass from Easton Eilertson ( kick from Jaxon Hart )",
+            "West Field — ( 10:58 4Q ) Elijah Woods , 5-yard run ( kick from Jaxon Hart )",
+            "West Field — ( 7:26 4Q ) Gavin Ortegon , 80-yard pass from Easton Eilertson ( kick from Jaxon Hart )"
           ]
         }
       ]
@@ -42301,8 +43232,8 @@
           "date": "2026-08-21",
           "opponent": "SAN JUAN",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 22,
           "opponentScore": 52,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/san-juan-football-vs-beaver-football/273351",
@@ -42422,7 +43353,7 @@
           "status": "Live",
           "final": false,
           "teamScore": null,
-          "opponentScore": 28,
+          "opponentScore": 49,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/hurricane-football-vs-moapa-valley-nev-football/273717",
           "players": [],
           "scoringPlays": []
@@ -42577,10 +43508,30 @@
           "location": "Away",
           "status": "Live",
           "final": false,
-          "teamScore": 28,
+          "teamScore": 49,
           "opponentScore": null,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/hurricane-football-vs-moapa-valley-nev-football/273717",
           "players": [
+            {
+              "playerId": "hurricane-25-porter-allred",
+              "number": "25",
+              "name": "Porter Allred",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Hurricane — ( 8:33 3Q ) Porter Allred , 4-yard run ( kick from Cameron Lemmon )"
+              ]
+            },
             {
               "playerId": "hurricane-10-drake-gines",
               "number": "10",
@@ -42613,12 +43564,14 @@
                   "values": {
                     "Carries": "",
                     "Yards": "",
-                    "TD": "1"
+                    "TD": "3"
                   }
                 }
               ],
               "scoringPlays": [
-                "Hurricane — ( 3:24 1Q ) Titan Borchardt , 25-yard run ( kick from Cameron Lemmon )"
+                "Hurricane — ( 3:24 1Q ) Titan Borchardt , 25-yard run ( kick from Cameron Lemmon )",
+                "Hurricane — ( 9:04 4Q ) Titan Borchardt , 5-yard run ( kick from Cameron Lemmon )",
+                "Hurricane — ( 6:19 4Q ) Titan Borchardt , 7-yard run ( kick from Cameron Lemmon )"
               ]
             },
             {
@@ -42641,7 +43594,7 @@
               ],
               "scoringPlays": [
                 "Hurricane — ( 9:04 1Q ) Parker Hurst , 35-yard pass from Kannon Cowan ( kick from Cameron Lemmon )",
-                "Hurricane — ( 0:13 3Q ) Parker Hurst , 15-yard pass from Kannon Cowan ( kick from Cameron Lemmon )"
+                "Hurricane — ( 0:13 2Q ) Parker Hurst , 15-yard pass from Kannon Cowan ( kick from Cameron Lemmon )"
               ]
             },
             {
@@ -42662,7 +43615,7 @@
               ],
               "scoringPlays": [
                 "Hurricane — ( 9:04 1Q ) Parker Hurst , 35-yard pass from Kannon Cowan ( kick from Cameron Lemmon )",
-                "Hurricane — ( 0:13 3Q ) Parker Hurst , 15-yard pass from Kannon Cowan ( kick from Cameron Lemmon )"
+                "Hurricane — ( 0:13 2Q ) Parker Hurst , 15-yard pass from Kannon Cowan ( kick from Cameron Lemmon )"
               ]
             },
             {
@@ -42676,7 +43629,7 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "4",
+                    "PAT": "7",
                     "Return TD": ""
                   }
                 }
@@ -42685,7 +43638,10 @@
                 "Hurricane — ( 9:04 1Q ) Parker Hurst , 35-yard pass from Kannon Cowan ( kick from Cameron Lemmon )",
                 "Hurricane — ( 3:24 1Q ) Titan Borchardt , 25-yard run ( kick from Cameron Lemmon )",
                 "Hurricane — ( 2:36 2Q ) Drake Gines , 5-yard run ( kick from Cameron Lemmon )",
-                "Hurricane — ( 0:13 3Q ) Parker Hurst , 15-yard pass from Kannon Cowan ( kick from Cameron Lemmon )"
+                "Hurricane — ( 0:13 2Q ) Parker Hurst , 15-yard pass from Kannon Cowan ( kick from Cameron Lemmon )",
+                "Hurricane — ( 8:33 3Q ) Porter Allred , 4-yard run ( kick from Cameron Lemmon )",
+                "Hurricane — ( 9:04 4Q ) Titan Borchardt , 5-yard run ( kick from Cameron Lemmon )",
+                "Hurricane — ( 6:19 4Q ) Titan Borchardt , 7-yard run ( kick from Cameron Lemmon )"
               ]
             }
           ],
@@ -42693,7 +43649,10 @@
             "Hurricane — ( 9:04 1Q ) Parker Hurst , 35-yard pass from Kannon Cowan ( kick from Cameron Lemmon )",
             "Hurricane — ( 3:24 1Q ) Titan Borchardt , 25-yard run ( kick from Cameron Lemmon )",
             "Hurricane — ( 2:36 2Q ) Drake Gines , 5-yard run ( kick from Cameron Lemmon )",
-            "Hurricane — ( 0:13 3Q ) Parker Hurst , 15-yard pass from Kannon Cowan ( kick from Cameron Lemmon )"
+            "Hurricane — ( 0:13 2Q ) Parker Hurst , 15-yard pass from Kannon Cowan ( kick from Cameron Lemmon )",
+            "Hurricane — ( 8:33 3Q ) Porter Allred , 4-yard run ( kick from Cameron Lemmon )",
+            "Hurricane — ( 9:04 4Q ) Titan Borchardt , 5-yard run ( kick from Cameron Lemmon )",
+            "Hurricane — ( 6:19 4Q ) Titan Borchardt , 7-yard run ( kick from Cameron Lemmon )"
           ]
         }
       ]
@@ -43105,12 +44064,32 @@
           "date": "2026-08-21",
           "opponent": "ALA",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
-          "teamScore": 14,
+          "status": "Final",
+          "final": true,
+          "teamScore": 27,
           "opponentScore": null,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/american-leadership-football-vs-parowan-football/274326",
           "players": [
+            {
+              "playerId": "parowan-34-tyrel-vest",
+              "number": "34",
+              "name": "Tyrel Vest",
+              "position": "RB/LB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Parowan — ( 4:44 4Q ) Tyrel Vest , 10-yard run ( kick from Adam Haynie )"
+              ]
+            },
             {
               "playerId": "parowan-30-joshua-meibos",
               "number": "30",
@@ -43145,17 +44124,70 @@
                     "Yards": "",
                     "TD": "1"
                   }
+                },
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
                 }
               ],
               "scoringPlays": [
                 "Parowan — ( 4:22 1Q ) Tyson Bettridge , 1-yard run ( kick failed )",
-                "Parowan — ( 0:07 1Q ) Joshua Meibos , 20-yard run ( run from Tyson Bettridge )"
+                "Parowan — ( 0:07 1Q ) Joshua Meibos , 20-yard run ( run from Tyson Bettridge )",
+                "Parowan — ( 0:42 4Q ) Gradey Osborne , 5-yard pass from Tyson Bettridge ( kick failed )"
+              ]
+            },
+            {
+              "playerId": "parowan-8-gradey-osborne",
+              "number": "8",
+              "name": "Gradey Osborne",
+              "position": "WR/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Parowan — ( 0:42 4Q ) Gradey Osborne , 5-yard pass from Tyson Bettridge ( kick failed )"
+              ]
+            },
+            {
+              "playerId": "parowan-67-adam-haynie",
+              "number": "67",
+              "name": "Adam Haynie",
+              "position": "DL",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Special Teams",
+                  "values": {
+                    "FG": "",
+                    "PAT": "1",
+                    "Return TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Parowan — ( 4:44 4Q ) Tyrel Vest , 10-yard run ( kick from Adam Haynie )"
               ]
             }
           ],
           "scoringPlays": [
             "Parowan — ( 4:22 1Q ) Tyson Bettridge , 1-yard run ( kick failed )",
-            "Parowan — ( 0:07 1Q ) Joshua Meibos , 20-yard run ( run from Tyson Bettridge )"
+            "Parowan — ( 0:07 1Q ) Joshua Meibos , 20-yard run ( run from Tyson Bettridge )",
+            "Parowan — ( 4:44 4Q ) Tyrel Vest , 10-yard run ( kick from Adam Haynie )",
+            "Parowan — ( 0:42 4Q ) Gradey Osborne , 5-yard pass from Tyson Bettridge ( kick failed )"
           ]
         }
       ]
@@ -44532,8 +45564,8 @@
           "date": "2026-08-21",
           "opponent": "JUDGE MEMORIAL",
           "location": "Away",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 7,
           "opponentScore": 13,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/ben-lomond-football-vs-judge-memorial-football/273904",
@@ -45184,7 +46216,7 @@
           "status": "Final",
           "final": true,
           "teamScore": 68,
-          "opponentScore": null,
+          "opponentScore": 35,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/monticello-football-vs-utah-military-camp-williams-football-football/274415",
           "players": [
             {
@@ -45477,8 +46509,8 @@
           "date": "2026-08-21",
           "opponent": "BEN LOMOND",
           "location": "Home",
-          "status": "Q4",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 13,
           "opponentScore": 7,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-21/ben-lomond-football-vs-judge-memorial-football/273904",
