@@ -146,5 +146,13 @@ for(const [metric,def] of Object.entries(metricDefs)){
 
 teams.sort((a,b)=>a.team.localeCompare(b.team));
 const out={season,generatedAt:new Date().toISOString(),method:{note:'Team statistics are calculated from reported player season totals. Passing yards + rushing yards = total offense; receiving yards are displayed separately and are not added again. Points for/against come from completed game finals. Rankings only include teams with the required reported category.',totalOffense:'passing yards + rushing yards'},summary:{teams:teams.length,teamsWithPlayerStats:teams.filter(x=>x.hasPlayerStats).length,teamsWithGames:teams.filter(x=>x.games>0).length},metrics:metricDefs,teams:Object.fromEntries(teams.map(x=>[x.team,x]))};
-fs.writeFileSync(`team-stats-${season}.json`,JSON.stringify(out,null,2)+'\n');
+const outputFile=`team-stats-${season}.json`;
+if(fs.existsSync(outputFile)){
+  try{
+    const previous=JSON.parse(fs.readFileSync(outputFile,'utf8'));
+    const comparable=value=>{const copy={...value};delete copy.generatedAt;return JSON.stringify(copy)};
+    if(previous.generatedAt&&comparable(previous)===comparable(out))out.generatedAt=previous.generatedAt;
+  }catch{}
+}
+fs.writeFileSync(outputFile,JSON.stringify(out,null,2)+'\n');
 console.log(`${season} team stats: ${out.summary.teamsWithPlayerStats}/${out.summary.teams} teams with player stats; ${out.summary.teamsWithGames} with completed games.`);
