@@ -63,6 +63,25 @@
     return when.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
   }
 
+  function clearStaleFinalsWhenLive() {
+    let changed = false;
+    for (const game of seasonGames || games || []) {
+      const detail = detailMap.get(gameKey(game));
+      if (!detail || detail.final === true) continue;
+      const status = String(detail.status || '');
+      const isFreshLive = /live|q[1-4]|half|ot/i.test(status) || !!String(detail.clock || '').trim();
+      if (!isFreshLive) continue;
+      const hasStaleFinal = game.actualAway !== null && game.actualAway !== undefined && game.actualHome !== null && game.actualHome !== undefined;
+      if (!hasStaleFinal) continue;
+      game.actualAway = null;
+      game.actualHome = null;
+      game.actualWinner = '';
+      game.wl = '';
+      changed = true;
+    }
+    return changed;
+  }
+
   async function fetchLatestLiveDetails() {
     const sources = [
       `${LIVE_DETAILS_URL}?v=${Date.now()}`,
@@ -104,6 +123,8 @@
       if (changed) {
         detailMap.clear();
         for (const [key, value] of Object.entries(payload.games || {})) detailMap.set(key, value);
+        const staleFinalsCleared = clearStaleFinalsWhenLive();
+        if (staleFinalsCleared && seasonGames) buildWeekBuckets();
         render();
       }
 
