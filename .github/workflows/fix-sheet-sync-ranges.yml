@@ -18,12 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Remove hard row caps from sheet sync
+      - name: Remove hard row caps from sheet imports
         run: |
           python - <<'PY'
           from pathlib import Path
-          path = Path('.github/workflows/rebuild-teams-data.yml')
-          text = path.read_text()
+
+          team_path = Path('.github/workflows/rebuild-teams-data.yml')
+          text = team_path.read_text()
           replacements = {
               "'A1:G1000'": "'A:G'",
               "'R1:AP241'": "'R:AP'",
@@ -34,10 +35,18 @@ jobs:
           }
           missing = [old for old in replacements if old not in text]
           if missing:
-              raise SystemExit(f'Expected range caps not found: {missing}')
+              raise SystemExit(f'Expected team-data range caps not found: {missing}')
           for old, new in replacements.items():
               text = text.replace(old, new)
-          path.write_text(text)
+          team_path.write_text(text)
+
+          scorigami_path = Path('.github/workflows/build-scorigami.yml')
+          scorigami = scorigami_path.read_text()
+          old = "encodeURIComponent('A1:F50000')"
+          new = "encodeURIComponent('A:F')"
+          if old not in scorigami:
+              raise SystemExit('Expected Scorigami range cap not found')
+          scorigami_path.write_text(scorigami.replace(old, new))
           PY
 
       - name: Commit permanent fix
@@ -45,7 +54,7 @@ jobs:
           rm .github/workflows/fix-sheet-sync-ranges.yml
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add .github/workflows/rebuild-teams-data.yml .github/workflows/fix-sheet-sync-ranges.yml
+          git add .github/workflows/rebuild-teams-data.yml .github/workflows/build-scorigami.yml .github/workflows/fix-sheet-sync-ranges.yml
           git commit -m "Remove Google Sheet sync row caps"
           git pull --rebase origin main
           git push
@@ -55,4 +64,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh api --method POST repos/${{ github.repository }}/actions/workflows/rebuild-teams-data.yml/dispatches -f ref=main
-          echo "Dispatched sheet data rebuild on main."
+          gh api --method POST repos/${{ github.repository }}/actions/workflows/build-scorigami.yml/dispatches -f ref=main
+          echo "Dispatched team data and Scorigami rebuilds on main."
