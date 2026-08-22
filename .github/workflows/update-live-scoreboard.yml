@@ -66,6 +66,28 @@ jobs:
       - name: Mark overdue scheduled games live after kickoff grace period
         run: node scripts/apply-kickoff-live-fallback.mjs
 
+      # Publish the scoreboard before the slower record-building work below.
+      # That way a later audit failure or job timeout cannot hold live scores hostage.
+      - name: Commit live scoreboard immediately
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add deseret-game-details.json
+          if git diff --cached --quiet; then
+            echo "Live scoreboard is already current."
+          else
+            git commit -m "Auto-refresh live scoreboard"
+            ok=0
+            for attempt in 1 2 3 4; do
+              if git pull --rebase origin main && git push; then
+                ok=1
+                break
+              fi
+              sleep 5
+            done
+            if [ "$ok" -ne 1 ]; then exit 1; fi
+          fi
+
       - name: Refresh 2026 team records for rankings and standings
         env:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
@@ -81,16 +103,16 @@ jobs:
           CLEAN_GAMES_GID: 627882418
         run: node scripts/update-alltime-team-records.mjs
 
-      - name: Commit live scoreboard and team records
+      - name: Commit team records
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add deseret-game-details.json standings-2026.json teams-data.json
+          git add standings-2026.json teams-data.json
           if git diff --cached --quiet; then
-            echo "Live scoreboard and records are already current."
+            echo "Team records are already current."
             exit 0
           fi
-          git commit -m "Auto-refresh live scoreboard and records"
+          git commit -m "Auto-refresh team records"
           ok=0
           for attempt in 1 2 3 4; do
             if git pull --rebase origin main && git push; then
