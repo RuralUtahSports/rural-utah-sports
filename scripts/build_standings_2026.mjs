@@ -14,16 +14,30 @@ const aliases={
   AMERFORK:'AMERICAN FORK',CEDAR:'CEDAR CITY',WASATCHACAD:'WASATCH ACADEMY'
 };
 const resolve=v=>teamByNorm.get(norm(v))||aliases[norm(v)]||'';
+const gameKey=(date,away,home)=>`${isoDate(date)}|${norm(away)}|${norm(home)}`;
 
 let deseretGames={};
 try{deseretGames=JSON.parse(fs.readFileSync('deseret-game-details.json','utf8')).games||{}}catch{}
-const gameKey=(date,away,home)=>`${isoDate(date)}|${norm(away)}|${norm(home)}`;
+
+let weeklyGames=[];
+try{weeklyGames=JSON.parse(fs.readFileSync('weekly-simulation.json','utf8')).games||[]}catch{}
+const weeklyByKey=new Map(weeklyGames.map(g=>[gameKey(g.date,g.awayTeam,g.homeTeam),g]));
 
 const SHEET_ID=process.env.SHEET_ID||'1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo';
 const WEEKLY_GID=process.env.WEEKLY_GID||'1211467999';
 const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${WEEKLY_GID}&range=${encodeURIComponent('A1:K1000')}`;
 const res=await fetch(url);if(!res.ok)throw new Error(`Weekly Simulation download failed: ${res.status}`);
-const rows=parseCSV(await res.text()).slice(1).filter(r=>clean(r[1])&&clean(r[2]));
+const sheetRows=parseCSV(await res.text()).slice(1).filter(r=>clean(r[1])&&clean(r[2]));
+
+// Use the Sheet as the primary schedule, but include any site game that the Sheet export omitted.
+const rows=[...sheetRows];
+const rowKeys=new Set(rows.map(r=>gameKey(r[0],r[1],r[2])));
+for(const g of weeklyGames){
+  const key=gameKey(g.date,g.awayTeam,g.homeTeam);
+  if(!key||rowKeys.has(key))continue;
+  rows.push([g.date,g.awayTeam,g.homeTeam,'','','','','','','','']);
+  rowKeys.add(key);
+}
 
 // Include every current Utah team immediately, even before that school appears on the weekly sheet.
 const st={};
@@ -33,18 +47,30 @@ for(const t of teams){
 }
 
 function apply(name,pf,pa,date,isRegion){const x=st[name];if(!x)return;x.pointsFor+=pf;x.pointsAgainst+=pa;let result='T';if(pf>pa){x.wins++;result='W';if(isRegion)x.regionWins++}else if(pf<pa){x.losses++;result='L';if(isRegion)x.regionLosses++}else{x.ties++;if(isRegion)x.regionTies++}x.results.push({date,result})}
-let completed=0,sheetFinals=0,deseretFinals=0;
+let completed=0,sheetFinals=0,weeklyFinals=0,deseretFinals=0;
 for(const r of rows){
+  const key=gameKey(r[0],r[1],r[2]);
   let aa=n(r[7]),ah=n(r[8]),source='';
-  if(aa!==null&&ah!==null){source='sheet'}else{
-    const d=deseretGames[gameKey(r[0],r[1],r[2])];
-    const box=d?.boxScore?.rows||[];
-    const da=n(box[0]?.total),dh=n(box[1]?.total);
-    if((d?.final||/^final$/i.test(clean(d?.status)))&&da!==null&&dh!==null){aa=da;ah=dh;source='deseret'}
+  if(aa!==null&&ah!==null){
+    source='sheet';
+  }else{
+    const local=weeklyByKey.get(key);
+    const la=n(local?.actualAway),lh=n(local?.actualHome);
+    if(la!==null&&lh!==null){
+      aa=la;ah=lh;source='weekly';
+    }else{
+      const d=deseretGames[key];
+      const box=d?.boxScore?.rows||[];
+      const da=n(box[0]?.total),dh=n(box[1]?.total);
+      if((d?.final||/^final$/i.test(clean(d?.status)))&&da!==null&&dh!==null){aa=da;ah=dh;source='deseret'}
+    }
   }
   if(aa===null||ah===null)continue;
   const a=resolve(r[1]),h=resolve(r[2]);if(!a&&!h)continue;
-  completed++;if(source==='sheet')sheetFinals++;else if(source==='deseret')deseretFinals++;
+  completed++;
+  if(source==='sheet')sheetFinals++;
+  else if(source==='weekly')weeklyFinals++;
+  else if(source==='deseret')deseretFinals++;
   const sameRegion=!!(a&&h&&st[a]&&st[h]&&st[a].classification===st[h].classification&&st[a].region&&st[a].region===st[h].region);
   if(a)apply(a,aa,ah,r[0],sameRegion);if(h)apply(h,ah,aa,r[0],sameRegion)
 }
@@ -59,7 +85,7 @@ for(const x of Object.values(st)){(byClassification[x.classification]??=[]).push
 for(const a of Object.values(byClassification))a.sort(overallSort);
 for(const groups of Object.values(byRegion))for(const a of Object.values(groups))a.sort(regionSort);
 
-const base={season:2026,summary:{scheduledGames:rows.length,completedGames:completed,sheetFinals,deseretFinals,teams:Object.keys(st).length},byClassification,byRegion};
+const base={season:2026,summary:{scheduledGames:rows.length,completedGames:completed,sheetFinals,weeklyFinals,deseretFinals,teams:Object.keys(st).length},byClassification,byRegion};
 let updatedAt=new Date().toISOString();
 try{
   const old=JSON.parse(fs.readFileSync('standings-2026.json','utf8'));
@@ -69,5 +95,5 @@ try{
 const out={season:2026,updatedAt,...base};
 fs.writeFileSync('standings-2026.json',JSON.stringify(out));
 for(const name of ['MONTICELLO','MONUMENT VAL','PANGUITCH','GRAND']){if(!st[name])throw new Error(`${name} missing from standings`)}
-console.log(`Standings: ${Object.keys(st).length} teams, ${completed}/${rows.length} games complete (${sheetFinals} sheet, ${deseretFinals} Deseret)`);
+console.log(`Standings: ${Object.keys(st).length} teams, ${completed}/${rows.length} games complete (${sheetFinals} sheet, ${weeklyFinals} weekly, ${deseretFinals} Deseret)`);
 console.log('8-player teams:',(byClassification['8P']||[]).map(x=>x.team).join(', '));
