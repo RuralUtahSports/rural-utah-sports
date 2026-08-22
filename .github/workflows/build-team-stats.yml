@@ -2,6 +2,11 @@ name: Build Team Statistics
 
 on:
   workflow_dispatch:
+  # Source data is also committed by scheduled Actions. Those GITHUB_TOKEN
+  # commits do not reliably trigger another push workflow, so refresh this
+  # independently after the standings/roster jobs have had time to finish.
+  schedule:
+    - cron: '5,20,35,50 * * * *'
   push:
     paths:
       - 'deseret-rosters-stats-2026.json'
