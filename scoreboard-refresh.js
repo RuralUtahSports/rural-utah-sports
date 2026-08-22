@@ -17,6 +17,16 @@
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   }
 
+  function localToday() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
+  function isFutureGame(game) {
+    const day = isoDate(game?.date);
+    return !!day && day > localToday();
+  }
+
   function keyFor(game) {
     return `${isoDate(game?.date)}|${compact(game?.awayTeam)}|${compact(game?.homeTeam)}`;
   }
@@ -48,6 +58,21 @@
     const priorScoreState = scoreState;
 
     scoreState = function authoritativeScoreState(game) {
+      // Never allow a future-dated game to inherit a live quarter/clock/score.
+      // This protects rescheduled games such as Orem-Skyridge when an older
+      // Deseret record for the same matchup still exists in cached data.
+      if (isFutureGame(game)) {
+        return {
+          done: false,
+          away: null,
+          home: null,
+          status: 'Upcoming',
+          live: false,
+          sheetDone: false,
+          hasDes: false
+        };
+      }
+
       let detail = null;
       try {
         if (typeof detailMap !== 'undefined' && detailMap?.get) detail = detailMap.get(keyFor(game)) || null;
