@@ -5,6 +5,9 @@
   const STALE_GAME_KEYS = new Set([
     '2026-08-21|DOLORESCO|GRAND'
   ]);
+  const VERIFIED_FINALS = new Map([
+    ['2026-08-21|BEAVERDAMAZ|WATERCANYON', { away: 34, home: 50 }]
+  ]);
 
   const clean = value => String(value ?? '').trim();
   const compact = value => clean(value).toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -74,6 +77,22 @@
           away: null,
           home: null,
           status: 'Upcoming',
+          live: false,
+          sheetDone: false,
+          hasDes: false
+        };
+      }
+
+      // Some out-of-state matchups never receive a usable Deseret game card.
+      // Keep an exact-date verified final here so the scoreboard can still close
+      // the game without depending on a stale Scheduled/Live source.
+      const verified = VERIFIED_FINALS.get(keyFor(game));
+      if (verified) {
+        return {
+          done: true,
+          away: Number(verified.away),
+          home: Number(verified.home),
+          status: 'Final',
           live: false,
           sheetDone: false,
           hasDes: false
