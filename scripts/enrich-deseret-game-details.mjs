@@ -277,13 +277,33 @@ function extractScoringPlays(html) {
     .slice(0, 40);
 }
 
-function extractClock(html) {
+function extractClock(html, game) {
   const all = htmlText(html.slice(0, Math.min(html.length, 140000)));
   const beforeScoring = all.split(/Scoring Summary/i)[0];
-  const gameAt = beforeScoring.search(/Game Details/i);
-  const segment = gameAt >= 0
-    ? beforeScoring.slice(Math.max(0, gameAt - 1800), Math.min(beforeScoring.length, gameAt + 5000))
-    : beforeScoring.slice(0, 8000);
+  const lines = beforeScoring.split(/\n+/).map(clean).filter(Boolean);
+  const awayKeys = keysFor(game?.awayTeam || '');
+  const homeKeys = keysFor(game?.homeTeam || '');
+  const containsAny = (line, keys) => {
+    const c = compact(line);
+    return keys.some(k => k && c.includes(k));
+  };
+
+  const awayHits = [], homeHits = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (containsAny(lines[i], awayKeys)) awayHits.push(i);
+    if (containsAny(lines[i], homeKeys)) homeHits.push(i);
+  }
+
+  let best = null;
+  for (const a of awayHits) for (const h of homeHits) {
+    const gap = Math.abs(a - h);
+    if (gap <= 18 && (!best || gap < best.gap)) best = { a, h, gap };
+  }
+  if (!best) return { clock: '', period: '' };
+
+  const lo = Math.max(0, Math.min(best.a, best.h) - 8);
+  const hi = Math.min(lines.length, Math.max(best.a, best.h) + 16);
+  const segment = lines.slice(lo, hi).join('\n');
 
   let m = segment.match(/\b(\d{1,2}:\d{2}(?:\.\d+)?)\s*(?:left|remaining)?\s*(?:in\s*(?:the\s*)?)?(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+quarter)?)/i);
   if (m) return { clock: m[1], period: `Q${m[2] || m[3] || m[4]}` };
@@ -313,7 +333,7 @@ function parseGameDetails(html, game) {
   const scoringPlays = extractScoringPlays(html);
   const stats = extractStats(tables, game, scoringPlays);
   const statsInfo = statsAvailability(stats);
-  const clockInfo = extractClock(html);
+  const clockInfo = extractClock(html, game);
   const state = extractStatus(html, boxScore, scoringPlays, clockInfo);
   return {
     url: game.deseretUrl,

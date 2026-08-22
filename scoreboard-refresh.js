@@ -117,7 +117,7 @@
     try {
       const payload = await fetchLatestLiveDetails();
       const updatedAt = String(payload.updatedAt || '');
-      const changed = !lastLiveUpdatedAt || updatedAt !== lastLiveUpdatedAt || !detailMap.size;
+      const changed = true;
       lastLiveUpdatedAt = updatedAt || lastLiveUpdatedAt;
 
       if (changed) {
