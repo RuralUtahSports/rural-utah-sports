@@ -28,6 +28,7 @@ const YEAR=new Date().getFullYear(),$=id=>document.getElementById(id),esc=v=>Str
 const aliases={'MONUMENT VAL':'MONUMENT VALLEY','GUNNISON':'GUNNISON VALLEY','CEDAR':'CEDAR CITY','GRAND COUNTY':'GRAND','UTAH MILITARY ACADEMY - CAMP WILLIAMS':'UMA-LEHI','UTAH MILITARY ACADEMY - HILL FIELD':'UMA-HILLFIELD'};
 const canon=v=>aliases[norm(v)]||norm(v),yearOf=d=>{const m=String(d||'').match(/(18\d{2}|19\d{2}|20\d{2})/);return m?+m[1]:null},dateVal=d=>{const t=Date.parse(d);return Number.isFinite(t)?t:0},safeHex=(v,f)=>/^#[0-9A-F]{3}(?:[0-9A-F]{3})?$/i.test(String(v||'').trim())?String(v).trim():f;
 function flatten(data){const out=[],seen=new Set();for(const entry of data.scores||[])for(const g of entry.games||[]){let a,b,sa,sb,tie=!!g.tie;if(tie){a=canon(g.team1);b=canon(g.team2);sa=+g.score1;sb=+g.score2}else{a=canon(g.winner);b=canon(g.loser);sa=+g.winnerScore;sb=+g.loserScore}const pair=[[key(a),sa],[key(b),sb]].sort((x,y)=>x[0].localeCompare(y[0])),sig=`${g.date}|${pair[0][0]}:${pair[0][1]}|${pair[1][0]}:${pair[1][1]}`;if(seen.has(sig))continue;seen.add(sig);out.push({date:g.date||'',a,b,sa,sb,tie,year:yearOf(g.date),total:sa+sb,margin:Math.abs(sa-sb)})}return out}
+function activeStreak(games,team,target){const rows=games.filter(g=>g.a===team||g.b===team).sort((a,b)=>dateVal(a.date)-dateVal(b.date));let n=0;for(let i=rows.length-1;i>=0;i--){const g=rows[i],result=g.tie?'T':g.a===team?'W':'L';if(result!==target)break;n++}return n}
 function logo(team,cls='story-logo'){return `<img class="${cls}" src="${esc(RUSSchoolAssets.logoUrl(team))}" alt="${esc(team)} logo" onerror="this.style.display='none'">`}
 function colorFor(team,teamInfo){const x=teamInfo.get(canon(team))||teamInfo.get(norm(team));return{bg:safeHex(x?.backgroundColor,'#222222'),fg:safeHex(x?.textColor,'#FFFFFF')}}
 function teamLink(team,teamInfo){const c=colorFor(team,teamInfo);return `<a class="story-team" style="--team-bg:${c.bg};--team-fg:${c.fg}" href="team.html?team=${encodeURIComponent(team)}">${esc(team)}</a>`}
@@ -35,20 +36,19 @@ function teamRow(team,meta,value,teamInfo){return `<li class="story-row">${logo(
 function gameRow(g,teamInfo,label=''){return `<div class="game-row"><div class="game-team">${logo(g.awayTeam,'')}${teamLink(g.awayTeam,teamInfo)}</div><div>${label?`<div class="game-label">${esc(label)}</div>`:''}<div class="game-score">${g.awayScore}–${g.homeScore}</div><div class="game-date">${esc(g.date)}</div></div><div class="game-team right">${teamLink(g.homeTeam,teamInfo)}${logo(g.homeTeam,'')}</div></div>`}
 function resultRow(g,label,teamInfo){return `<div class="game-row"><div class="game-team">${logo(g.a,'')}${teamLink(g.a,teamInfo)}</div><div><div class="game-label">${esc(label)}</div><div class="game-score">${g.sa}–${g.sb}</div><div class="game-date">${esc(g.date)}</div></div><div class="game-team right">${teamLink(g.b,teamInfo)}${logo(g.b,'')}</div></div>`}
 (async()=>{try{
-  const stamp=Date.now(),[sr,wr,tr,ar,str]=await Promise.all([
-    fetch('scorigami.json?v='+stamp),fetch('weekly-simulation.json?v='+stamp),fetch('teams-data.json?v='+stamp),fetch('full-season-alignment-2025.json?v='+stamp),fetch('streak-records.json?v='+stamp)
+  const stamp=Date.now(),[sr,wr,tr,ar]=await Promise.all([
+    fetch('scorigami.json?v='+stamp),fetch('weekly-simulation.json?v='+stamp),fetch('teams-data.json?v='+stamp),fetch('full-season-alignment-2025.json?v='+stamp)
   ]);
-  if(!sr.ok||!wr.ok||!tr.ok||!ar.ok||!str.ok)throw new Error('Storyline source unavailable');
-  const sc=await sr.json(),weekly=(await wr.json()).games||[],teams=await tr.json(),align=await ar.json(),streakData=await str.json();
+  if(!sr.ok||!wr.ok||!tr.ok||!ar.ok)throw new Error('Storyline source unavailable');
+  const sc=await sr.json(),weekly=(await wr.json()).games||[],teams=await tr.json(),align=await ar.json();
   const varsity=teams.filter(t=>/^(6A|5A|4A|3A|2A|1A|8P|8-PLAYER)$/i.test(String(t.classification||''))&&!['ESCALANTE','USDB'].includes(norm(t.team)));
   const currentTeams=new Set(varsity.map(t=>canon(t.team))),teamInfo=new Map();
   for(const t of varsity){teamInfo.set(canon(t.team),t);teamInfo.set(norm(t.team),t)}
   const games=flatten(sc),season=games.filter(g=>g.year===YEAR&&(currentTeams.has(g.a)||currentTeams.has(g.b))),records=new Map([...currentTeams].map(t=>[t,{w:0,l:0,t:0}]));
   for(const g of season){if(g.tie){if(records.has(g.a))records.get(g.a).t++;if(records.has(g.b))records.get(g.b).t++}else{if(records.has(g.a))records.get(g.a).w++;if(records.has(g.b))records.get(g.b).l++}}
   const undefeated=[...records].filter(([,r])=>r.l===0).sort((a,b)=>b[1].w-a[1].w||b[1].t-a[1].t||a[0].localeCompare(b[0]));
-  const streakMap=new Map(Object.entries(streakData||{}).map(([t,row])=>[canon(t),row]));
-  const wins=[...currentTeams].map(t=>[t,Number(streakMap.get(t)?.currentWinStreak?.length)||0]).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,10);
-  const losses=[...currentTeams].map(t=>[t,Number(streakMap.get(t)?.currentLossStreak?.length)||0]).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,10);
+  const wins=[...currentTeams].map(t=>[t,activeStreak(games,t,'W')]).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,10);
+  const losses=[...currentTeams].map(t=>[t,activeStreak(games,t,'L')]).filter(([,n])=>n>0).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,10);
   const upcoming=weekly.filter(g=>yearOf(g.date)===YEAR&&g.actualAway==null&&g.actualHome==null&&Number.isFinite(Number(g.awayScore))&&Number.isFinite(Number(g.homeScore))).sort((a,b)=>Math.abs(Number(a.awayScore)-Number(a.homeScore))-Math.abs(Number(b.awayScore)-Number(b.homeScore))||dateVal(a.date)-dateVal(b.date));
   const meta=t=>{const x=teamInfo.get(canon(t));return x?`${x.classification||''}${x.region?' • '+x.region:''}`:''};
   const regionByTeam=new Map();for(const r of align.regions||[])for(const t of r.teams||[])regionByTeam.set(canon(t),r);
@@ -56,7 +56,7 @@ function resultRow(g,label,teamInfo){return `<div class="game-row"><div class="g
   const regionHTML=[...rr].sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true})).map(([name,m])=>{const rows=[...m].sort((a,b)=>(b[1].w/(b[1].w+b[1].l+b[1].t||1))-(a[1].w/(a[1].w+a[1].l+a[1].t||1))||b[1].w-a[1].w).slice(0,3);return `<div class="region-box"><h3>${esc(name)}</h3>${rows.map(([t,r])=>`<div>${teamLink(t,teamInfo)} ${r.w}-${r.l}${r.t?'-'+r.t:''}</div>`).join('')}</div>`}).join('');
   const highest=[...season].sort((a,b)=>b.total-a.total)[0],closest=[...season].filter(g=>!g.tie).sort((a,b)=>a.margin-b.margin||b.total-a.total)[0],biggest=[...season].filter(g=>!g.tie).sort((a,b)=>b.margin-a.margin)[0],seasonStarted=season.length>0;
   $('title').textContent=`${YEAR} Football Storylines`;
-  $('subtitle').textContent=seasonStarted?`Live season trends from ${season.length} recorded ${YEAR} games, plus authoritative streaks, region races and this week's RUS projections.`:`Opening-week and preseason storylines for ${YEAR}. All current varsity programs begin undefeated, and weekly projections update from the RUS simulation sheet.`;
+  $('subtitle').textContent=seasonStarted?`Live season trends from ${season.length} recorded ${YEAR} games, plus live RUS streaks, region races and this week's RUS projections.`:`Opening-week and preseason storylines for ${YEAR}. All current varsity programs begin undefeated, and weekly projections update from the RUS simulation sheet.`;
   $('content').className='';
   $('content').innerHTML=`
     <div class="summary-grid">
@@ -71,11 +71,11 @@ function resultRow(g,label,teamInfo){return `<div class="game-row"><div class="g
         ${seasonStarted?`<ul class="story-list">${undefeated.slice(0,16).map(([t,r])=>teamRow(t,meta(t),`${r.w}-${r.l}${r.t?'-'+r.t:''}`,teamInfo)).join('')||'<li class="empty">No undefeated teams.</li>'}</ul>`:`<div class="preseason-note"><strong>${undefeated.length} teams are undefeated.</strong><br>Every current Utah varsity football program begins ${YEAR} without a loss. This count will decrease automatically as results are added.</div>`}
       </section>
       <section class="story">
-        <div class="story-head"><h2>Active Winning Streaks</h2><p>Authoritative current winning streaks from each program's team schedule.</p></div>
+        <div class="story-head"><h2>Active Winning Streaks</h2><p>Calculated directly from the latest completed games already in the RUS game database.</p></div>
         <ul class="story-list">${wins.map(([t,n])=>teamRow(t,meta(t),`${n} W`,teamInfo)).join('')||'<li class="empty">No active winning streaks.</li>'}</ul>
       </section>
       <section class="story">
-        <div class="story-head"><h2>Active Losing Streaks</h2><p>Authoritative current losing streaks among active Utah varsity programs.</p></div>
+        <div class="story-head"><h2>Active Losing Streaks</h2><p>Calculated directly from the latest completed games already in the RUS game database.</p></div>
         <ul class="story-list">${losses.map(([t,n])=>teamRow(t,meta(t),`${n} L`,teamInfo)).join('')||'<li class="empty">No active losing streaks.</li>'}</ul>
       </section>
       <section class="story">
@@ -91,7 +91,7 @@ function resultRow(g,label,teamInfo){return `<div class="game-row"><div class="g
         <div class="region-grid">${regionHTML||'<div class="empty">No region games have been recorded yet.</div>'}</div>
       </section>
     </div>
-    <div class="note">Storylines update from the RUS game database, current alignment, authoritative team streak records and Weekly Simulation file. Weekly predictions are synced from the Google Sheet by the Build Simulator Data workflow.</div>`;
+    <div class="note">Storylines update from the current RUS game database, current alignment and Weekly Simulation file. Active winning and losing streaks are calculated from completed games already on the site, so they no longer depend on a separate streak file.</div>`;
 }catch(e){console.error(e);$('content').innerHTML='<div class="loading">Storyline data could not be loaded.</div>'}})();
 </script><script src="back-to-top.js" defer></script>
 
