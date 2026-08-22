@@ -24,6 +24,7 @@ on:
       - 'scripts/repair-live-status-anomalies.mjs'
       - 'scripts/apply-kickoff-live-fallback.mjs'
       - 'scripts/build_standings_2026.mjs'
+      - 'scripts/audit_standings_records_2026.mjs'
       - '.github/workflows/update-live-scoreboard.yml'
 
 permissions:
@@ -61,6 +62,9 @@ jobs:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
           WEEKLY_GID: 1211467999
         run: node scripts/build_standings_2026.mjs
+
+      - name: Audit all 2026 Utah team records
+        run: node scripts/audit_standings_records_2026.mjs
 
       - name: Commit live scoreboard and team records
         run: |
