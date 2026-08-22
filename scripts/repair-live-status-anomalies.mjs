@@ -1,15 +1,28 @@
 import fs from 'node:fs';
 
 const FILE='deseret-game-details.json';
+const WEEKLY='weekly-simulation.json';
 if(!fs.existsSync(FILE)) process.exit(0);
 
 const data=JSON.parse(fs.readFileSync(FILE,'utf8'));
+const weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):{games:[]};
 const utahDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const confirmedFinalGameIds=new Set(['273455']);
 // Some Deseret game pages initially expose only a generic Live badge before
 // a clock/score arrives. Keep only specifically verified exceptions here.
 const confirmedBareLiveGameIds=new Set(['273364']); // Timpanogos at Desert Hills, 2026-08-21
-const gameId=g=>{const m=String(g?.url||'').match(/\/(\d+)\/?$/);return m?m[1]:''};
+const clean=v=>String(v??'').trim();
+const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
+const isoDate=v=>{
+  const s=clean(v);
+  let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;
+  m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  return m?`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`:'';
+};
+const expectedKey=g=>`${isoDate(g?.date)}|${compact(g?.awayTeam)}|${compact(g?.homeTeam)}`;
+const gameIdFromUrl=url=>{const m=clean(url).match(/\/(\d+)\/?$/);return m?m[1]:''};
+const gameId=g=>gameIdFromUrl(g?.url||g?.deseretUrl||'');
 const mercyBox=g=>{
   const rows=g?.boxScore?.rows;
   if(!Array.isArray(rows)||rows.length!==2)return false;
@@ -28,6 +41,51 @@ const q4Played=g=>{
   return Number.isFinite(aq[3])&&Number.isFinite(bq[3]);
 };
 let fixed=0;
+
+// Deseret occasionally changes a game's date while keeping the same numeric
+// game ID. Move any stale detail record to the date/team key from the current
+// weekly schedule so an old date cannot leak status into the rescheduled game.
+const weeklyByGameId=new Map();
+for(const g of weekly.games||[]){
+  const id=gameIdFromUrl(g?.deseretUrl);
+  const key=expectedKey(g);
+  if(id&&key)weeklyByGameId.set(id,{key,url:clean(g.deseretUrl)});
+}
+for(const [key,g] of Object.entries({...data.games||{}})){
+  if(!g)continue;
+  const id=gameId(g),expected=weeklyByGameId.get(id);
+  if(!expected||expected.key===key)continue;
+  if(!data.games[expected.key])data.games[expected.key]=g;
+  if(data.games[expected.key]&&expected.url)data.games[expected.key].url=expected.url;
+  delete data.games[key];
+  fixed++;
+  console.log(`Moved rescheduled game detail: ${key} -> ${expected.key}`);
+}
+
+// A game dated after today in Utah cannot legitimately be in Q1-Q4, halftime,
+// OT, live or final. Clear any leaked game-page/day-board evidence until its
+// scheduled local date arrives. This also prevents stale scores from a prior
+// matchup from appearing on tomorrow's card.
+for(const [key,g] of Object.entries(data.games||{})){
+  if(!g)continue;
+  const day=String(key).split('|')[0]||'';
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(day)||day<=utahDate)continue;
+  const dirty=g.final===true||!/^(?:Scheduled|Upcoming)?$/i.test(String(g.status||''))||!!clean(g.clock)||!!clean(g.period)||!!g.boxScore||(Array.isArray(g.scoringPlays)&&g.scoringPlays.length)||(Array.isArray(g.stats)&&g.stats.length);
+  if(!dirty)continue;
+  g.status='Scheduled';
+  g.final=false;
+  g.clock='';
+  g.period='';
+  g.boxScore=null;
+  g.scoringPlays=[];
+  g.stats=[];
+  delete g.finalSource;
+  delete g.statusSource;
+  delete g.scoreSource;
+  delete g.kickoffFallbackAt;
+  fixed++;
+  console.log(`Reset future game: ${key} -> Scheduled`);
+}
 
 for(const [key,g] of Object.entries(data.games||{})){
   if(!key.startsWith(utahDate+'|')||!g) continue;
