@@ -6,6 +6,9 @@ if(!fs.existsSync(FILE)) process.exit(0);
 const data=JSON.parse(fs.readFileSync(FILE,'utf8'));
 const utahDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const confirmedFinalGameIds=new Set(['273455']);
+// Some Deseret game pages initially expose only a generic Live badge before
+// a clock/score arrives. Keep only specifically verified exceptions here.
+const confirmedBareLiveGameIds=new Set(['273364']); // Timpanogos at Desert Hills, 2026-08-21
 const gameId=g=>{const m=String(g?.url||'').match(/\/(\d+)\/?$/);return m?m[1]:''};
 const mercyBox=g=>{
   const rows=g?.boxScore?.rows;
@@ -33,6 +36,7 @@ for(const [key,g] of Object.entries(data.games||{})){
   const hasQ4Evidence=q4Played(g)||hasQ4Play;
   const hasClock=!!String(g.clock||'').trim();
   const isConfirmedFinal=confirmedFinalGameIds.has(gameId(g));
+  const isConfirmedBareLive=confirmedBareLiveGameIds.has(gameId(g));
   const isMercyFinal=mercyBox(g);
   const hasAuthoritativeFinal=g.final===true&&['deseret-game-page','deseret-day-scoreboard','confirmed'].includes(g.finalSource);
 
@@ -50,14 +54,29 @@ for(const [key,g] of Object.entries(data.games||{})){
     continue;
   }
 
-  // A bare quarter label with no clock, no scoring plays and no box score is
-  // not enough to call a game live. Deseret's pregame page can contain Q1-Q4
-  // table/header text, which previously caused scheduled games to appear live.
-  if(/^Q[1-4]$/i.test(String(g.status||'')) && !plays.length && !hasClock && !g.boxScore){
+  // A quarter/clock with no game-specific score, box score or scoring play can
+  // leak in from a neighboring matchup on Deseret's day page. Do not treat it
+  // as live until this game has its own evidence.
+  if(/^Q[1-4]$/i.test(String(g.status||'')) && !plays.length && !g.boxScore){
     g.status='Scheduled';
+    g.clock='';
     g.period='';
     fixed++;
     console.log(`Reset unsupported quarter status: ${key} -> Scheduled`);
+    continue;
+  }
+
+  // Likewise, a generic Live badge with no clock/score/game evidence is too
+  // weak to trust because neighboring badges can leak into the match segment.
+  // Timpanogos-Desert Hills is explicitly verified live while Deseret has only
+  // a bare Live badge, so preserve that one exception.
+  if(/^Live$/i.test(String(g.status||'')) && !plays.length && !hasClock && !g.boxScore && !isConfirmedBareLive){
+    g.status='Scheduled';
+    g.period='';
+    delete g.statusSource;
+    delete g.kickoffFallbackAt;
+    fixed++;
+    console.log(`Reset unsupported Live status: ${key} -> Scheduled`);
     continue;
   }
 
