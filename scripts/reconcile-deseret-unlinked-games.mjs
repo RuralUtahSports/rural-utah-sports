@@ -270,7 +270,7 @@ for (const date of dates) {
 
   let html;
   try {
-    html = await fetchHtml(`${BASE}/high-school/football/scores-schedule/${date}?region=all`);
+    html = await fetchHtml(`${BASE}/high-school/scores-schedule/${date}?region=all`);
   } catch (error) {
     console.warn(`Unlinked day scoreboard ${date}: ${error.message}`);
     continue;
