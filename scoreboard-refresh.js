@@ -2,6 +2,9 @@
   const LEGACY_HELPER = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/219ad376aa2874576e67e68c8fb1b4254d899f6c/scoreboard-refresh.js';
   const LIVE_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
   const REFRESH_MS = 15000;
+  const STALE_GAME_KEYS = new Set([
+    '2026-08-21|DOLORESCO|GRAND'
+  ]);
 
   const clean = value => String(value ?? '').trim();
   const compact = value => clean(value).toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -117,6 +120,138 @@
     };
   }
 
+  function removeKnownStaleGames() {
+    try {
+      if (typeof games === 'undefined' || !Array.isArray(games)) return;
+      for (let i = games.length - 1; i >= 0; i--) {
+        if (STALE_GAME_KEYS.has(keyFor(games[i]))) games.splice(i, 1);
+      }
+    } catch (error) {
+      console.warn('Could not prune stale scoreboard games', error);
+    }
+  }
+
+  function teamMeta(name) {
+    try {
+      if (typeof teamInfo === 'function') return teamInfo(name) || null;
+    } catch {}
+    try {
+      if (typeof teamMap !== 'undefined' && teamMap?.get) return teamMap.get(clean(name).toUpperCase()) || null;
+    } catch {}
+    return null;
+  }
+
+  function regionLabel(name) {
+    const team = teamMeta(name);
+    const classification = clean(team?.classification).toUpperCase();
+    const region = clean(team?.region);
+    if (!region) return '';
+    if (/^\d+$/.test(region)) return classification ? `${classification} • Region ${region}` : `Region ${region}`;
+    if (classification && region.toUpperCase().startsWith(classification)) return region;
+    return classification ? `${classification} • ${region}` : region;
+  }
+
+  function collectRegionLabels() {
+    const labels = new Set();
+    try {
+      if (typeof teamMap !== 'undefined' && teamMap?.values) {
+        for (const team of teamMap.values()) {
+          const classification = clean(team?.classification).toUpperCase();
+          const region = clean(team?.region);
+          if (!region) continue;
+          if (/^\d+$/.test(region)) labels.add(classification ? `${classification} • Region ${region}` : `Region ${region}`);
+          else if (classification && region.toUpperCase().startsWith(classification)) labels.add(region);
+          else labels.add(classification ? `${classification} • ${region}` : region);
+        }
+      }
+    } catch {}
+    return [...labels].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+  }
+
+  function ensureRegionFilter() {
+    const filters = document.querySelector('.filters');
+    if (!filters) return null;
+
+    let select = document.getElementById('regionFilter');
+    if (!select) {
+      select = document.createElement('select');
+      select.id = 'regionFilter';
+      select.setAttribute('aria-label', 'Filter scoreboard by region');
+      select.innerHTML = '<option value="ALL">All Regions</option>';
+      const classFilter = document.getElementById('classFilter');
+      if (classFilter?.nextSibling) filters.insertBefore(select, classFilter.nextSibling);
+      else if (classFilter) classFilter.insertAdjacentElement('afterend', select);
+      else filters.prepend(select);
+      select.addEventListener('change', () => {
+        if (typeof render === 'function') render();
+      });
+
+      if (!document.getElementById('scoreboard-region-filter-style')) {
+        const style = document.createElement('style');
+        style.id = 'scoreboard-region-filter-style';
+        style.textContent = '@media(max-width:700px){.filters #regionFilter{width:100%;font-size:14px}}';
+        document.head.appendChild(style);
+      }
+    }
+
+    const current = select.value || 'ALL';
+    const labels = collectRegionLabels();
+    const wanted = ['ALL', ...labels];
+    const existing = [...select.options].map(option => option.value);
+    if (existing.join('\u0000') !== wanted.join('\u0000')) {
+      select.innerHTML = '<option value="ALL">All Regions</option>' + labels.map(label => `<option value="${label.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">${label.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</option>`).join('');
+      select.value = wanted.includes(current) ? current : 'ALL';
+    }
+    return select;
+  }
+
+  function applyRegionFilter() {
+    const select = ensureRegionFilter();
+    if (!select) return;
+    const selected = select.value || 'ALL';
+    let visibleTotal = 0;
+
+    document.querySelectorAll('#board .date-section').forEach(section => {
+      let visibleInSection = 0;
+      section.querySelectorAll('.games > .game').forEach(card => {
+        const names = [...card.querySelectorAll('.team-name')].map(node => clean(node.textContent));
+        const show = selected === 'ALL' || names.some(name => regionLabel(name) === selected);
+        card.style.display = show ? '' : 'none';
+        if (show) visibleInSection++;
+      });
+      section.style.display = visibleInSection ? '' : 'none';
+      const count = section.querySelector('.date-head span');
+      if (count && selected !== 'ALL') count.textContent = `${visibleInSection} game${visibleInSection === 1 ? '' : 's'}`;
+      visibleTotal += visibleInSection;
+    });
+
+    let empty = document.querySelector('#board .region-filter-empty');
+    if (selected !== 'ALL' && visibleTotal === 0) {
+      if (!empty) {
+        empty = document.createElement('div');
+        empty.className = 'empty region-filter-empty';
+        document.getElementById('board')?.appendChild(empty);
+      }
+      empty.textContent = `No games match ${selected}.`;
+      empty.style.display = '';
+    } else if (empty) {
+      empty.style.display = 'none';
+    }
+  }
+
+  let regionRenderInstalled = false;
+  function installRegionAwareRender() {
+    if (regionRenderInstalled || typeof render !== 'function') return;
+    const baseRender = render;
+    render = function regionAwareRender(...args) {
+      removeKnownStaleGames();
+      const result = baseRender.apply(this, args);
+      applyRegionFilter();
+      return result;
+    };
+    regionRenderInstalled = true;
+  }
+
   async function loadLegacyHelper() {
     try {
       const response = await fetch(`${LEGACY_HELPER}?v=${Date.now()}`, { cache: 'no-store' });
@@ -170,6 +305,9 @@
   (async () => {
     await loadLegacyHelper();
     installAuthoritativeScoreState();
+    installRegionAwareRender();
+    removeKnownStaleGames();
+    ensureRegionFilter();
     await syncLatest();
     setInterval(syncLatest, REFRESH_MS);
   })();
