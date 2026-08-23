@@ -1,0 +1,43 @@
+name: Fix Skyridge Ranking Score
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-skyridge-ranking-score.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Correct Skyridge-Orem score in rankings archive
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('state-top25-history-2026.json')
+          text = p.read_text(encoding='utf-8')
+          text = text.replace(
+              'Skyridge rebounded from its opening loss to Mountain Ridge by beating defending 5A champion Orem 24-21.',
+              'Skyridge rebounded from its opening loss to Mountain Ridge by beating defending 5A champion Orem 21-14.'
+          )
+          text = text.replace(
+              'The defending 5A champion drops to No. 6 after a competitive 24-21 loss to Skyridge, remaining one of the state’s strongest teams despite the first loss.',
+              'The defending 5A champion drops to No. 6 after a 21-14 loss to Skyridge, remaining one of the state’s strongest teams despite the first loss.'
+          )
+          p.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit correction
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add state-top25-history-2026.json
+          if git diff --cached --quiet; then
+            echo "No correction needed."
+            exit 0
+          fi
+          git commit -m "Correct Skyridge 21-14 win over Orem"
+          git push
