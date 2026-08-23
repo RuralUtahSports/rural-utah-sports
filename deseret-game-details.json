@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-23T04:21:37.433Z",
+  "updatedAt": "2026-08-23T04:47:42.275Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -39406,8 +39406,8 @@
     },
     "2026-08-22|OREM|SKYRIDGE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-22/orem-football-vs-skyridge-football/273890",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "boxScore": {
@@ -39423,31 +39423,54 @@
             "quarters": [
               0,
               7,
-              null,
-              null
+              7,
+              0
             ],
-            "total": 7
+            "total": 14
           },
           {
             "team": "Skyridge Falcons (0-1)",
             "quarters": [
               7,
               0,
-              null,
-              null
+              0,
+              14
             ],
-            "total": 7
+            "total": 21
           }
         ]
       },
       "scoringPlays": [
         "Skyridge — ( 6:01 1Q ) Ethan Schriever , 6-yard pass from Jagger Fountaine ( kick from Evan Kopp )",
-        "Orem — ( 2:12 2Q ) Po Faumui , 27-yard pass from Tanner Lewis ( kick from Adrian Sanchez )"
+        "Orem — ( 2:12 2Q ) Po Faumui , 27-yard pass from Tanner Lewis ( kick from Adrian Sanchez )",
+        "Orem — ( 1:41 3Q ) Kaio Akana , 30-yard int. return ( kick from Adrian Sanchez )",
+        "Skyridge — ( 9:17 4Q ) Omarian Sanders , 43-yard pass from Jagger Fountaine ( kick from Evan Kopp )",
+        "Skyridge — ( 3:35 4Q ) Beckham Bennett , 4-yard run ( kick from Evan Kopp )"
       ],
       "stats": [
         {
+          "category": "Rushing",
+          "team": "SKYRIDGE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "4",
+              "B . Beckham Bennett",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
           "category": "Passing",
-          "team": "OREM",
+          "team": "SKYRIDGE",
           "headers": [
             "NO",
             "PLAYER",
@@ -39460,11 +39483,11 @@
           "rows": [
             [
               "3",
-              "Jagger Fountaine",
+              "J . Jagger Fountaine",
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -39484,7 +39507,7 @@
           "rows": [
             [
               "12",
-              "Tanner Lewis",
+              "T . Tanner Lewis",
               "",
               "",
               "",
@@ -39505,8 +39528,15 @@
           ],
           "rows": [
             [
+              "1",
+              "O . Omarian Sanders",
+              "",
+              "",
+              "1"
+            ],
+            [
               "5",
-              "Ethan Schriever",
+              "E . Ethan Schriever",
               "",
               "",
               "1"
@@ -39526,7 +39556,7 @@
           "rows": [
             [
               "6",
-              "Po Faumui",
+              "P . Po Faumui",
               "",
               "",
               "1"
@@ -39546,9 +39576,9 @@
           "rows": [
             [
               "31",
-              "Evan Kopp",
+              "E . Evan Kopp",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -39566,23 +39596,46 @@
           "rows": [
             [
               "25",
-              "Adrian Sanchez",
+              "A . Adrian Sanchez",
               "",
-              "1",
+              "2",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "OREM",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "10",
+              "K . Kaio Akana",
+              "",
+              "",
+              "",
+              "1"
             ]
           ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 6,
-        "rows": 6,
-        "coreCells": 12,
+        "blocks": 8,
+        "rows": 9,
+        "coreCells": 19,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
+        "emptyCoreBlocks": 6
       },
-      "fetchedAt": "2026-08-23T04:21:37.331Z"
+      "fetchedAt": "2026-08-23T04:47:35.763Z",
+      "finalRefreshCount": 1
     },
     "2026-08-21|LOGAN|PRESTONID": {
       "date": "8/21/2026",
@@ -39828,6 +39881,21 @@
       "scoreSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked",
       "finalSource": "deseret-day-scoreboard-unlinked"
+    },
+    "2026-08-21|GRAND|DOLORESCO": {
+      "date": "8/21/2026",
+      "awayTeam": "GRAND",
+      "homeTeam": "DOLORES, CO",
+      "deseretUrl": "",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "finalSource": "deseret-day-scoreboard-unlinked",
+      "statusSource": "deseret-day-scoreboard-unlinked"
     }
   }
 }
