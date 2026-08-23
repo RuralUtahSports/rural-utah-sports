@@ -1,0 +1,80 @@
+name: Add Orem Skyridge Final
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/add-orem-skyridge-final.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set Orem at Skyridge final
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          weekly = Path('weekly-simulation.json')
+          data = json.loads(weekly.read_text(encoding='utf-8'))
+          games = data.setdefault('games', [])
+          found = False
+          for g in games:
+              if (str(g.get('date','')).strip() == '8/22/2026'
+                  and str(g.get('awayTeam','')).strip().upper() == 'OREM'
+                  and str(g.get('homeTeam','')).strip().upper() == 'SKYRIDGE'):
+                  g.update({
+                      'actualAway': 14,
+                      'actualHome': 21,
+                      'actualWinner': 'SKYRIDGE',
+                      'wl': 'L'
+                  })
+                  found = True
+                  break
+          if not found:
+              games.append({
+                  'date': '8/22/2026',
+                  'awayTeam': 'OREM',
+                  'homeTeam': 'SKYRIDGE',
+                  'awayScore': 24,
+                  'homeScore': 21,
+                  'winner': 'OREM',
+                  'actualAway': 14,
+                  'actualHome': 21,
+                  'actualWinner': 'SKYRIDGE',
+                  'wl': 'L',
+                  'deseretUrl': 'https://sports.deseret.com/high-school/football/game/2026-08-22/orem-football-vs-skyridge-football/273890'
+              })
+          games.sort(key=lambda g: (str(g.get('date','')), str(g.get('awayTeam',''))))
+          weekly.write_text(json.dumps(data, separators=(',', ':')) + '\n', encoding='utf-8')
+
+          # Make this final authoritative on the live scoreboard in case a stale
+          # Deseret live/scheduled record lingers after the reschedule.
+          refresh = Path('scoreboard-refresh.js')
+          text = refresh.read_text(encoding='utf-8')
+          key = "['2026-08-22|OREM|SKYRIDGE', { away: 14, home: 21 }]"
+          if key not in text:
+              marker = "['2026-08-21|BEAVERDAMAZ|WATERCANYON', { away: 34, home: 50 }]"
+              if marker in text:
+                  text = text.replace(marker, marker + ",\n    " + key, 1)
+              else:
+                  raise SystemExit('Could not find VERIFIED_FINALS insertion point')
+              refresh.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit final score
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add weekly-simulation.json scoreboard-refresh.js
+          if git diff --cached --quiet; then
+            echo "Orem-Skyridge final is already set."
+            exit 0
+          fi
+          git commit -m "Set Skyridge 21 Orem 14 final"
+          git pull --rebase origin main
+          git push
