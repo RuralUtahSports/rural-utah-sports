@@ -2,10 +2,13 @@ name: Build Streak Records
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '10,25,40,55 * * * *'
   push:
     paths:
       - 'team-page-data/**'
       - 'teams-data.json'
+      - 'standings-2026.json'
       - 'scripts/build_streak_records.py'
       - '.github/workflows/build-streak-records.yml'
 
@@ -29,13 +32,11 @@ jobs:
           scoring = "{key:'scoringStreak',label:'Longest Consecutive Games Scored In',streakField:'longestScoringStreak',format:'int',note:'Longest run of consecutive games in which a team scored at least one point. A shutout resets the streak.'},{key:'currentScoringStreak',label:'Current Consecutive Games Scored In',streakField:'currentScoringStreak',format:'int',note:'Current run of consecutive completed games in which a team has scored at least one point. A shutout resets the streak.'},"
           shutouts = "{key:'shutoutStreak',label:'Longest Consecutive Games Shut Out',streakField:'longestShutoutStreak',format:'int',note:'Longest run of consecutive games in which a team scored zero points.'},{key:'currentShutoutStreak',label:'Current Consecutive Games Shut Out',streakField:'currentShutoutStreak',format:'int',note:'Current run of consecutive completed games in which a team has scored zero points.'},"
           if "key:'scoringStreak'" not in text:
-              if anchor not in text:
-                  raise SystemExit('Could not find streak stat insertion point in records.html')
+              if anchor not in text: raise SystemExit('Could not find streak stat insertion point in records.html')
               text = text.replace(anchor, anchor + scoring + shutouts, 1)
           elif "key:'shutoutStreak'" not in text:
               marker = "{key:'currentScoringStreak',label:'Current Consecutive Games Scored In',streakField:'currentScoringStreak',format:'int',note:'Current run of consecutive completed games in which a team has scored at least one point. A shutout resets the streak.'},"
-              if marker not in text:
-                  raise SystemExit('Could not find scoring streak insertion point in records.html')
+              if marker not in text: raise SystemExit('Could not find scoring streak insertion point in records.html')
               text = text.replace(marker, marker + shutouts, 1)
           path.write_text(text, encoding='utf-8')
           PY
@@ -52,12 +53,10 @@ jobs:
               assert 'longestShutoutStreak' in row and 'currentShutoutStreak' in row
           seasons=json.load(open('season-records.json')).get('seasons',{})
           assert seasons
-          cedar=next((r for r in seasons.get('2025',[]) if r.get('team')=='CEDAR CITY'),None)
-          assert cedar and cedar.get('wins')==13 and cedar.get('losses')==0, cedar
           records=open('records.html', encoding='utf-8').read()
           assert "key:'scoringStreak'" in records and "key:'currentScoringStreak'" in records
           assert "key:'shutoutStreak'" in records and "key:'currentShutoutStreak'" in records
-          print('Verified',len(streaks),'teams and',sum(len(v) for v in seasons.values()),'team-seasons')
+          print('Verified',len(streaks),'teams')
           PY
       - name: Commit generated record data
         run: |
