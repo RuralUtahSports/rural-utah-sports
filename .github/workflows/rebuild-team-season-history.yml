@@ -1,0 +1,88 @@
+name: Rebuild Team Season History
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'team-page-data/**'
+      - 'scripts/rebuild_team_season_history.py'
+      - '.github/workflows/rebuild-team-season-history.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rebuild-team-season-history
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Rebuild complete season histories
+        run: python scripts/rebuild_team_season_history.py
+
+      - name: Verify every schedule-backed season is shown
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          def valid_games(games):
+              seen=set()
+              count=0
+              for game in games if isinstance(games,list) else []:
+                  result=str(game.get('result','')).strip().upper()
+                  if result not in {'W','L','T'}:
+                      continue
+                  try:
+                      team_score=float(game.get('teamScore'))
+                      opponent_score=float(game.get('opponentScore'))
+                  except (TypeError,ValueError):
+                      continue
+                  key=(str(game.get('date','')).strip(),str(game.get('opponent','')).strip().upper(),result,team_score,opponent_score)
+                  if key in seen:
+                      continue
+                  seen.add(key)
+                  count+=1
+              return count
+
+          checked=0
+          missing=[]
+          ns_count=None
+          for path in sorted(Path('team-page-data').glob('*.json')):
+              data=json.loads(path.read_text(encoding='utf-8'))
+              shown={int(row['year']) for row in (data.get('seasonHistory') or []) if isinstance(row,dict) and str(row.get('year','')).isdigit()}
+              schedule_years={int(year) for year,games in (data.get('schedules') or {}).items() if str(year).isdigit() and valid_games(games)}
+              absent=sorted(schedule_years-shown)
+              if absent:
+                  missing.append((path.name,absent))
+              checked+=1
+              if path.name=='north-sanpete.json':
+                  ns_count=len(shown)
+                  assert min(shown)<=1912, f'North Sanpete earliest displayed season is only {min(shown)}'
+                  assert ns_count>100, f'North Sanpete only has {ns_count} displayed seasons'
+
+          if missing:
+              raise SystemExit('Missing schedule-backed seasons: '+repr(missing[:20]))
+          print(f'Verified {checked} team files; every schedule-backed season is present.')
+          print(f'North Sanpete season-history rows: {ns_count}')
+          PY
+
+      - name: Commit rebuilt team pages
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- team-page-data)" ]; then
+            echo "All team season histories already complete."
+            exit 0
+          fi
+          git add team-page-data
+          git commit -m "Expand all team season histories"
+          git pull --rebase origin main
+          git push origin HEAD:main
