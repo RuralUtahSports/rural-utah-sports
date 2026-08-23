@@ -5,7 +5,22 @@
   const STALE_GAME_KEYS = new Set([
     '2026-08-21|DOLORESCO|GRAND'
   ]);
+  const MANUAL_GAMES = [
+    {
+      date: '8/21/2026',
+      awayTeam: 'GRAND',
+      homeTeam: 'DOLORES, CO',
+      awayScore: 21,
+      homeScore: 10,
+      winner: 'GRAND',
+      actualAway: 12,
+      actualHome: 6,
+      actualWinner: 'GRAND',
+      wl: 'W'
+    }
+  ];
   const VERIFIED_FINALS = new Map([
+    ['2026-08-21|GRAND|DOLORESCO', { away: 12, home: 6 }],
     ['2026-08-21|BEAVERDAMAZ|WATERCANYON', { away: 34, home: 50 }],
     ['2026-08-22|OREM|SKYRIDGE', { away: 14, home: 21 }]
   ]);
@@ -59,8 +74,6 @@
 
   function hasScoreOnlyLiveFallback(detail, score) {
     if (!detail || !score?.hasDes || detail.final === true) return false;
-    // A non-zero box score belongs to this exact date/away/home key and is actual
-    // Deseret game data. Some OOS cards omit their live status label entirely.
     return Number(score.away) > 0 || Number(score.home) > 0;
   }
 
@@ -69,9 +82,6 @@
     const priorScoreState = scoreState;
 
     scoreState = function authoritativeScoreState(game) {
-      // Never allow a future-dated game to inherit a live quarter/clock/score.
-      // This protects rescheduled games such as Orem-Skyridge when an older
-      // Deseret record for the same matchup still exists in cached data.
       if (isFutureGame(game)) {
         return {
           done: false,
@@ -84,9 +94,6 @@
         };
       }
 
-      // Some out-of-state matchups never receive a usable Deseret game card.
-      // Keep an exact-date verified final here so the scoreboard can still close
-      // the game without depending on a stale Scheduled/Live source.
       const verified = VERIFIED_FINALS.get(keyFor(game));
       if (verified) {
         return {
@@ -110,9 +117,6 @@
         const score = detailScore(detail);
         const scoreOnlyLive = hasScoreOnlyLiveFallback(detail, score);
 
-        // Fresh per-game live data always beats stale sheet/final fields.
-        // Deseret sometimes publishes an OOS box score while leaving status as
-        // Scheduled. A real non-zero box score is enough to display the score.
         if (isLiveDetail(detail) || scoreOnlyLive) {
           return {
             done: false,
@@ -125,8 +129,6 @@
           };
         }
 
-        // A stale Scheduled detail must not erase an actual score already
-        // reported for this exact date/away/home game in the weekly feed.
         if (detail.final !== true && /^scheduled$/i.test(status)) {
           if (hasReportedActual(game)) {
             const reported = priorScoreState(game);
@@ -146,6 +148,22 @@
 
       return priorScoreState(game);
     };
+  }
+
+  function ensureManualGames() {
+    try {
+      if (typeof games === 'undefined' || !Array.isArray(games)) return;
+      const existing = new Set(games.map(keyFor));
+      for (const game of MANUAL_GAMES) {
+        const key = keyFor(game);
+        if (!existing.has(key)) {
+          games.push({ ...game });
+          existing.add(key);
+        }
+      }
+    } catch (error) {
+      console.warn('Could not add manual scoreboard games', error);
+    }
   }
 
   function removeKnownStaleGames() {
@@ -273,6 +291,7 @@
     const baseRender = render;
     render = function regionAwareRender(...args) {
       removeKnownStaleGames();
+      ensureManualGames();
       const result = baseRender.apply(this, args);
       applyRegionFilter();
       return result;
@@ -314,6 +333,7 @@
         for (const [key, value] of Object.entries(payload.games)) detailMap.set(key, value);
       }
 
+      ensureManualGames();
       if (typeof render === 'function') render();
 
       const note = document.querySelector('.scoreboard-refresh-note');
@@ -335,7 +355,9 @@
     installAuthoritativeScoreState();
     installRegionAwareRender();
     removeKnownStaleGames();
+    ensureManualGames();
     ensureRegionFilter();
+    if (typeof render === 'function') render();
     await syncLatest();
     setInterval(syncLatest, REFRESH_MS);
   })();
