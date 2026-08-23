@@ -1,24 +1,9 @@
 (() => {
   const LEGACY_HELPER = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/219ad376aa2874576e67e68c8fb1b4254d899f6c/scoreboard-refresh.js';
   const LIVE_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
+  const WEEKLY_FEED = 'weekly-simulation.json';
   const REFRESH_MS = 15000;
-  const STALE_GAME_KEYS = new Set([
-    '2026-08-21|DOLORESCO|GRAND'
-  ]);
-  const MANUAL_GAMES = [
-    {
-      date: '8/21/2026',
-      awayTeam: 'GRAND',
-      homeTeam: 'DOLORES, CO',
-      awayScore: 21,
-      homeScore: 10,
-      winner: 'GRAND',
-      actualAway: 12,
-      actualHome: 6,
-      actualWinner: 'GRAND',
-      wl: 'W'
-    }
-  ];
+  const STALE_GAME_KEYS = new Set(['2026-08-21|DOLORESCO|GRAND']);
   const VERIFIED_FINALS = new Map([
     ['2026-08-21|GRAND|DOLORESCO', { away: 12, home: 6 }],
     ['2026-08-21|BEAVERDAMAZ|WATERCANYON', { away: 34, home: 50 }],
@@ -27,6 +12,7 @@
 
   const clean = value => String(value ?? '').trim();
   const compact = value => clean(value).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   function isoDate(value) {
     const s = clean(value);
@@ -44,13 +30,13 @@
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   }
 
+  function keyFor(game) {
+    return `${isoDate(game?.date)}|${compact(game?.awayTeam)}|${compact(game?.homeTeam)}`;
+  }
+
   function isFutureGame(game) {
     const day = isoDate(game?.date);
     return !!day && day > localToday();
-  }
-
-  function keyFor(game) {
-    return `${isoDate(game?.date)}|${compact(game?.awayTeam)}|${compact(game?.homeTeam)}`;
   }
 
   function hasReportedActual(game) {
@@ -72,39 +58,17 @@
     return /^(?:live|q[1-4]|halftime|half|ot)$/i.test(status) || !!clean(detail.clock);
   }
 
-  function hasScoreOnlyLiveFallback(detail, score) {
-    if (!detail || !score?.hasDes || detail.final === true) return false;
-    return Number(score.away) > 0 || Number(score.home) > 0;
-  }
-
   function installAuthoritativeScoreState() {
     if (typeof scoreState !== 'function') return;
     const priorScoreState = scoreState;
-
     scoreState = function authoritativeScoreState(game) {
       if (isFutureGame(game)) {
-        return {
-          done: false,
-          away: null,
-          home: null,
-          status: 'Upcoming',
-          live: false,
-          sheetDone: false,
-          hasDes: false
-        };
+        return { done: false, away: null, home: null, status: 'Upcoming', live: false, sheetDone: false, hasDes: false };
       }
 
       const verified = VERIFIED_FINALS.get(keyFor(game));
       if (verified) {
-        return {
-          done: true,
-          away: Number(verified.away),
-          home: Number(verified.home),
-          status: 'Final',
-          live: false,
-          sheetDone: false,
-          hasDes: false
-        };
+        return { done: true, away: Number(verified.away), home: Number(verified.home), status: 'Final', live: false, sheetDone: false, hasDes: false };
       }
 
       let detail = null;
@@ -115,9 +79,8 @@
       if (detail) {
         const status = clean(detail.status) || 'Upcoming';
         const score = detailScore(detail);
-        const scoreOnlyLive = hasScoreOnlyLiveFallback(detail, score);
-
-        if (isLiveDetail(detail) || scoreOnlyLive) {
+        const live = isLiveDetail(detail) || (detail.final !== true && score.hasDes && (score.away > 0 || score.home > 0));
+        if (live) {
           return {
             done: false,
             away: score.hasDes ? score.away : null,
@@ -134,36 +97,11 @@
             const reported = priorScoreState(game);
             if (reported && (reported.done || reported.sheetDone || (reported.away != null && reported.home != null))) return reported;
           }
-          return {
-            done: false,
-            away: null,
-            home: null,
-            status: 'Upcoming',
-            live: false,
-            sheetDone: false,
-            hasDes: false
-          };
+          return { done: false, away: null, home: null, status: 'Upcoming', live: false, sheetDone: false, hasDes: false };
         }
       }
-
       return priorScoreState(game);
     };
-  }
-
-  function ensureManualGames() {
-    try {
-      if (typeof games === 'undefined' || !Array.isArray(games)) return;
-      const existing = new Set(games.map(keyFor));
-      for (const game of MANUAL_GAMES) {
-        const key = keyFor(game);
-        if (!existing.has(key)) {
-          games.push({ ...game });
-          existing.add(key);
-        }
-      }
-    } catch (error) {
-      console.warn('Could not add manual scoreboard games', error);
-    }
   }
 
   function removeKnownStaleGames() {
@@ -174,6 +112,28 @@
       }
     } catch (error) {
       console.warn('Could not prune stale scoreboard games', error);
+    }
+  }
+
+  async function ensureFullWeeklyFeed() {
+    for (let i = 0; i < 30; i++) {
+      try {
+        if (Array.isArray(games) && games.length >= 10) return;
+      } catch {}
+      await sleep(100);
+    }
+
+    try {
+      const response = await fetch(`${WEEKLY_FEED}?v=${Date.now()}`, { cache: 'no-store' });
+      if (!response.ok) return;
+      const payload = await response.json();
+      const fresh = (payload?.games || []).filter(g => g?.awayTeam && g?.homeTeam);
+      if (!fresh.length) return;
+      if (typeof games !== 'undefined' && Array.isArray(games) && fresh.length > games.length) {
+        games = fresh;
+      }
+    } catch (error) {
+      console.warn('Could not recover full weekly scoreboard feed', error);
     }
   }
 
@@ -217,7 +177,6 @@
   function ensureRegionFilter() {
     const filters = document.querySelector('.filters');
     if (!filters) return null;
-
     let select = document.getElementById('regionFilter');
     if (!select) {
       select = document.createElement('select');
@@ -228,9 +187,7 @@
       if (classFilter?.nextSibling) filters.insertBefore(select, classFilter.nextSibling);
       else if (classFilter) classFilter.insertAdjacentElement('afterend', select);
       else filters.prepend(select);
-      select.addEventListener('change', () => {
-        if (typeof render === 'function') render();
-      });
+      select.addEventListener('change', () => { if (typeof render === 'function') render(); });
 
       if (!document.getElementById('scoreboard-region-filter-style')) {
         const style = document.createElement('style');
@@ -291,7 +248,6 @@
     const baseRender = render;
     render = function regionAwareRender(...args) {
       removeKnownStaleGames();
-      ensureManualGames();
       const result = baseRender.apply(this, args);
       applyRegionFilter();
       return result;
@@ -332,8 +288,6 @@
         detailMap.clear();
         for (const [key, value] of Object.entries(payload.games)) detailMap.set(key, value);
       }
-
-      ensureManualGames();
       if (typeof render === 'function') render();
 
       const note = document.querySelector('.scoreboard-refresh-note');
@@ -351,11 +305,11 @@
   }
 
   (async () => {
+    await ensureFullWeeklyFeed();
     await loadLegacyHelper();
     installAuthoritativeScoreState();
     installRegionAwareRender();
     removeKnownStaleGames();
-    ensureManualGames();
     ensureRegionFilter();
     if (typeof render === 'function') render();
     await syncLatest();
