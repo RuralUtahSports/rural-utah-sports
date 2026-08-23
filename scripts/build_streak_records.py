@@ -61,11 +61,12 @@ def current(events, target):
     return streak_summary(run)
 
 
-def longest_scoring(events):
+def longest_by_score(events, scored):
     best = []
     run = []
     for event in events:
-        if event.get('teamScore', 0) > 0:
+        matches = event.get('teamScore', 0) > 0 if scored else event.get('teamScore', 0) == 0
+        if matches:
             run.append(event)
             if len(run) > len(best):
                 best = list(run)
@@ -74,10 +75,11 @@ def longest_scoring(events):
     return streak_summary(best)
 
 
-def current_scoring(events):
+def current_by_score(events, scored):
     run = []
     for event in reversed(events):
-        if event.get('teamScore', 0) <= 0:
+        matches = event.get('teamScore', 0) > 0 if scored else event.get('teamScore', 0) == 0
+        if not matches:
             break
         run.append(event)
     run.reverse()
@@ -134,8 +136,10 @@ def main():
             'longestLossStreak': longest(events, 'L'),
             'currentWinStreak': current(events, 'W'),
             'currentLossStreak': current(events, 'L'),
-            'longestScoringStreak': longest_scoring(events),
-            'currentScoringStreak': current_scoring(events),
+            'longestScoringStreak': longest_by_score(events, True),
+            'currentScoringStreak': current_by_score(events, True),
+            'longestShutoutStreak': longest_by_score(events, False),
+            'currentShutoutStreak': current_by_score(events, False),
         }
 
         for row in data.get('seasonHistory') or []:
