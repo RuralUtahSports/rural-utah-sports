@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-23T04:03:31.741Z",
+  "updatedAt": "2026-08-23T04:44:24.583Z",
   "summary": {
     "teams": 122,
     "teamGames": 225,
-    "statRows": 2866,
-    "rosterMatchedRows": 2789
+    "statRows": 2887,
+    "rosterMatchedRows": 2810
   },
   "teams": {
     "CEDAR CITY": {
@@ -1697,7 +1697,7 @@
           "date": "2026-08-22",
           "opponent": "OREM",
           "location": "Home",
-          "status": "HALFTIME",
+          "status": "Live",
           "final": false,
           "teamScore": 7,
           "opponentScore": 7,
@@ -40872,26 +40872,6 @@
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-20/bingham-football-vs-alta-football/274391",
           "players": [
             {
-              "playerId": "alta-16-xavier-cocci",
-              "number": "16",
-              "name": "Xavier Cocci",
-              "position": "QB",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Rushing",
-                  "values": {
-                    "Carries": "",
-                    "Yards": "",
-                    "TD": "1"
-                  }
-                }
-              ],
-              "scoringPlays": [
-                "Alta — ( 2:10 4Q ) Xavier Cocci , 5-yard run ( kick from Madden McCallister )"
-              ]
-            },
-            {
               "playerId": "alta-7-treven-cooke",
               "number": "7",
               "name": "Treven Cooke",
@@ -40901,15 +40881,169 @@
                 {
                   "category": "Rushing",
                   "values": {
-                    "Carries": "",
-                    "Yards": "",
+                    "Carries": "19",
+                    "Yards": "63",
                     "TD": "1"
+                  }
+                },
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "2",
+                    "Yards": "4",
+                    "TD": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Alta — ( 1:33 3Q ) Treven Cooke , 2-yard run ( kick failed )"
               ]
+            },
+            {
+              "playerId": "alta-16-xavier-cocci",
+              "number": "16",
+              "name": "Xavier Cocci",
+              "position": "QB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "9",
+                    "Yards": "54",
+                    "TD": "1"
+                  }
+                },
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "10-19",
+                    "Comp %": "53%",
+                    "Yards": "68",
+                    "TD": "",
+                    "Int": "2"
+                  }
+                },
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "2",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Alta — ( 2:10 4Q ) Xavier Cocci , 5-yard run ( kick from Madden McCallister )"
+              ]
+            },
+            {
+              "playerId": "alta-5-lucas-pagel",
+              "number": "5",
+              "name": "Lucas Pagel",
+              "position": "RB, S",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "3",
+                    "Yards": "10",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "3",
+                    "Yards": "19",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "2",
+                    "Sacks": "",
+                    "Pass Int.": "2",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-2-breck-warren",
+              "number": "2",
+              "name": "Breck Warren",
+              "position": "WR, DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "2",
+                    "Yards": "27",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-12-ryland-clayton",
+              "number": "12",
+              "name": "Ryland Clayton",
+              "position": "WR, S",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "2",
+                    "Yards": "12",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "6",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-13-kieper-coyle",
+              "number": "13",
+              "name": "Kieper Coyle",
+              "position": "WR, DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "1",
+                    "Yards": "6",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
             },
             {
               "playerId": "alta-15-madden-mccallister",
@@ -40930,6 +41064,196 @@
               "scoringPlays": [
                 "Alta — ( 2:10 4Q ) Xavier Cocci , 5-yard run ( kick from Madden McCallister )"
               ]
+            },
+            {
+              "playerId": "alta-8-charlie-gates",
+              "number": "8",
+              "name": "Charlie Gates",
+              "position": "LB, TE",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "11",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-32-thomas-deckart",
+              "number": "32",
+              "name": "Thomas Deckart",
+              "position": "DB, WR",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "11",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-9-hosny-suliman",
+              "number": "9",
+              "name": "Hosny Suliman",
+              "position": "DB, WR",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "10",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-14-evan-eyink",
+              "number": "14",
+              "name": "Evan Eyink",
+              "position": "LB, TE",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "10",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-17-malachai-lam",
+              "number": "17",
+              "name": "Malachai Lam",
+              "position": "LB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "9",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-6-mason-clark",
+              "number": "6",
+              "name": "Mason Clark",
+              "position": "LB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "7",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-44-lisiate-jr-fevaleaki",
+              "number": "44",
+              "name": "Lisiate Jr Fevaleaki",
+              "position": "DL",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "6",
+                    "Sacks": "1",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-3-steven-tuha",
+              "number": "3",
+              "name": "Steven Tuha",
+              "position": "LB, TE",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "5",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-45-gabe-whitehorse",
+              "number": "45",
+              "name": "Gabe Whitehorse",
+              "position": "LB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "4",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "alta-11-mason-albrecht",
+              "number": "11",
+              "name": "Mason Albrecht",
+              "position": "DL",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "3",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
             }
           ],
           "scoringPlays": [
@@ -52890,7 +53214,7 @@
           "date": "2026-08-22",
           "opponent": "SKYRIDGE",
           "location": "Away",
-          "status": "HALFTIME",
+          "status": "Live",
           "final": false,
           "teamScore": 7,
           "opponentScore": 7,
