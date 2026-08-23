@@ -8,6 +8,8 @@ seasons or advanced metrics while making every real season already present in
 the repository visible on team pages.
 """
 
+# Rebuild version 1: schedule-backed seasons for every team page.
+
 import json
 from pathlib import Path
 
