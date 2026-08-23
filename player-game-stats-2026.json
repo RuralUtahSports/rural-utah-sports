@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "updatedAt": "2026-08-23T04:44:24.583Z",
+  "updatedAt": "2026-08-23T04:53:45.641Z",
   "summary": {
     "teams": 122,
     "teamGames": 225,
-    "statRows": 2887,
-    "rosterMatchedRows": 2810
+    "statRows": 2890,
+    "rosterMatchedRows": 2813
   },
   "teams": {
     "CEDAR CITY": {
@@ -1697,12 +1697,32 @@
           "date": "2026-08-22",
           "opponent": "OREM",
           "location": "Home",
-          "status": "Live",
-          "final": false,
-          "teamScore": 7,
-          "opponentScore": 7,
+          "status": "Final",
+          "final": true,
+          "teamScore": 21,
+          "opponentScore": 14,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-22/orem-football-vs-skyridge-football/273890",
           "players": [
+            {
+              "playerId": "skyridge-4-beckham-bennett",
+              "number": "4",
+              "name": "Beckham Bennett",
+              "position": "RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Skyridge — ( 3:35 4Q ) Beckham Bennett , 4-yard run ( kick from Evan Kopp )"
+              ]
+            },
             {
               "playerId": "skyridge-3-jagger-fountaine",
               "number": "3",
@@ -1716,13 +1736,34 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "2",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Skyridge — ( 6:01 1Q ) Ethan Schriever , 6-yard pass from Jagger Fountaine ( kick from Evan Kopp )"
+                "Skyridge — ( 6:01 1Q ) Ethan Schriever , 6-yard pass from Jagger Fountaine ( kick from Evan Kopp )",
+                "Skyridge — ( 9:17 4Q ) Omarian Sanders , 43-yard pass from Jagger Fountaine ( kick from Evan Kopp )"
+              ]
+            },
+            {
+              "playerId": "skyridge-1-omarian-sanders",
+              "number": "1",
+              "name": "Omarian Sanders",
+              "position": "WR",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Skyridge — ( 9:17 4Q ) Omarian Sanders , 43-yard pass from Jagger Fountaine ( kick from Evan Kopp )"
               ]
             },
             {
@@ -1756,18 +1797,22 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "1",
+                    "PAT": "3",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Skyridge — ( 6:01 1Q ) Ethan Schriever , 6-yard pass from Jagger Fountaine ( kick from Evan Kopp )"
+                "Skyridge — ( 6:01 1Q ) Ethan Schriever , 6-yard pass from Jagger Fountaine ( kick from Evan Kopp )",
+                "Skyridge — ( 9:17 4Q ) Omarian Sanders , 43-yard pass from Jagger Fountaine ( kick from Evan Kopp )",
+                "Skyridge — ( 3:35 4Q ) Beckham Bennett , 4-yard run ( kick from Evan Kopp )"
               ]
             }
           ],
           "scoringPlays": [
-            "Skyridge — ( 6:01 1Q ) Ethan Schriever , 6-yard pass from Jagger Fountaine ( kick from Evan Kopp )"
+            "Skyridge — ( 6:01 1Q ) Ethan Schriever , 6-yard pass from Jagger Fountaine ( kick from Evan Kopp )",
+            "Skyridge — ( 9:17 4Q ) Omarian Sanders , 43-yard pass from Jagger Fountaine ( kick from Evan Kopp )",
+            "Skyridge — ( 3:35 4Q ) Beckham Bennett , 4-yard run ( kick from Evan Kopp )"
           ]
         }
       ]
@@ -53214,10 +53259,10 @@
           "date": "2026-08-22",
           "opponent": "SKYRIDGE",
           "location": "Away",
-          "status": "Live",
-          "final": false,
-          "teamScore": 7,
-          "opponentScore": 7,
+          "status": "Final",
+          "final": true,
+          "teamScore": 14,
+          "opponentScore": 21,
           "url": "https://sports.deseret.com/high-school/football/game/2026-08-22/orem-football-vs-skyridge-football/273890",
           "players": [
             {
@@ -53273,18 +53318,41 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "1",
+                    "PAT": "2",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
-                "Orem — ( 2:12 2Q ) Po Faumui , 27-yard pass from Tanner Lewis ( kick from Adrian Sanchez )"
+                "Orem — ( 2:12 2Q ) Po Faumui , 27-yard pass from Tanner Lewis ( kick from Adrian Sanchez )",
+                "Orem — ( 1:41 3Q ) Kaio Akana , 30-yard int. return ( kick from Adrian Sanchez )"
+              ]
+            },
+            {
+              "playerId": "orem-10-kaio-akana",
+              "number": "10",
+              "name": "Kaio Akana",
+              "position": "DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Orem — ( 1:41 3Q ) Kaio Akana , 30-yard int. return ( kick from Adrian Sanchez )"
               ]
             }
           ],
           "scoringPlays": [
-            "Orem — ( 2:12 2Q ) Po Faumui , 27-yard pass from Tanner Lewis ( kick from Adrian Sanchez )"
+            "Orem — ( 2:12 2Q ) Po Faumui , 27-yard pass from Tanner Lewis ( kick from Adrian Sanchez )",
+            "Orem — ( 1:41 3Q ) Kaio Akana , 30-yard int. return ( kick from Adrian Sanchez )"
           ]
         }
       ]
