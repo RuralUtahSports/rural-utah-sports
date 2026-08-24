@@ -24,7 +24,7 @@
     "full-season-run.js?v=20260813b",
     "full-season-view.js?v=20260813a",
     "full-season-playoffs.js?v=20260824-open1",
-    "full-season-playoff-view.js?v=20260824-open1",
+    "full-season-playoff-view.js?v=20260824-scroll1",
     "full-season-stats.js?v=20260824-open1",
     "full-season-awards.js?v=20260824-awards1",
     "full-season-colors.js?v=20260813j",
