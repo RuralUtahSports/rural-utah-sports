@@ -18,14 +18,14 @@
   const files = [
     "season-simulator-core.js?v=20260824-fullseason1",
     "season-simulator-score.js?v=20260813e",
-    "season-simulator-stats.js?v=20260824-fullseason1",
+    "season-simulator-stats.js?v=20260824-open1",
     "full-season-core.js?v=20260824b",
     "full-season-rpi.js?v=20260824-ineligible1",
     "full-season-run.js?v=20260813b",
     "full-season-view.js?v=20260813a",
-    "full-season-playoffs.js?v=20260813a",
-    "full-season-playoff-view.js?v=20260824c",
-    "full-season-stats.js?v=20260824-awards1",
+    "full-season-playoffs.js?v=20260824-open1",
+    "full-season-playoff-view.js?v=20260824-open1",
+    "full-season-stats.js?v=20260824-open1",
     "full-season-awards.js?v=20260824-awards1",
     "full-season-colors.js?v=20260813j",
     "full-season-collapse.js?v=20260824-stats1",
@@ -75,7 +75,7 @@
         const champs = [...(R.playoffs || new Map()).values()]
           .map(
             (p) =>
-              `${p.classification === "8P" ? "8-Player" : p.classification}: ${p.champion?.team || "—"}`,
+              `${p.classification === "8P" ? "8-Player" : p.classification === "OPEN" ? "Open Class" : p.classification === "ALLTEAM" ? "All-Team" : p.classification}: ${p.champion?.team || "—"}`,
           )
           .join(" • ");
         status.textContent = `${R.games} regular-season games • ${R.stats.size} programs • ${R.simulatedStats?.size || 0} team stat sets${champs ? " • " + champs : ""}`;
