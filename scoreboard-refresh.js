@@ -118,7 +118,10 @@
   async function ensureFullWeeklyFeed() {
     for (let i = 0; i < 30; i++) {
       try {
-        if (Array.isArray(games) && games.length >= 10) return;
+        if (Array.isArray(allGames) && allGames.length) {
+          games = allGames.slice();
+          return;
+        }
       } catch {}
       await sleep(100);
     }
@@ -129,7 +132,7 @@
       const payload = await response.json();
       const fresh = (payload?.games || []).filter(g => g?.awayTeam && g?.homeTeam);
       if (!fresh.length) return;
-      if (typeof games !== 'undefined' && Array.isArray(games) && fresh.length > games.length) {
+      if (typeof games !== 'undefined' && Array.isArray(games)) {
         games = fresh;
       }
     } catch (error) {
