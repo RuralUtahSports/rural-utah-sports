@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "generatedAt": "2026-08-24T03:51:32.553Z",
+  "generatedAt": "2026-08-24T04:10:46.719Z",
   "method": {
     "note": "Team statistics are calculated from reported player season totals. Passing yards + rushing yards = total offense; receiving yards are displayed separately and are not added again. Points for/against come from completed game finals. Rankings only include teams with the required reported category.",
     "totalOffense": "passing yards + rushing yards"
@@ -72,37 +72,37 @@
         "passing": true,
         "rushing": true,
         "receiving": true,
-        "defense": false,
+        "defense": true,
         "kicking": true
       },
       "passing": {
-        "completions": 0,
-        "attempts": 0,
-        "yards": 0,
+        "completions": 15,
+        "attempts": 30,
+        "yards": 352,
         "td": 4,
-        "interceptions": 0,
-        "compPct": null,
-        "yardsPerAttempt": null,
-        "yardsPerGame": 0
+        "interceptions": 2,
+        "compPct": 50,
+        "yardsPerAttempt": 11.73,
+        "yardsPerGame": 176
       },
       "rushing": {
-        "carries": 0,
-        "yards": 0,
+        "carries": 60,
+        "yards": 359,
         "td": 4,
-        "yardsPerCarry": null,
-        "yardsPerGame": 0
+        "yardsPerCarry": 5.98,
+        "yardsPerGame": 179.5
       },
       "receiving": {
-        "receptions": 0,
-        "yards": 0,
+        "receptions": 16,
+        "yards": 350,
         "td": 4,
-        "yardsPerCatch": null,
-        "yardsPerGame": 0
+        "yardsPerCatch": 21.88,
+        "yardsPerGame": 175
       },
       "defense": {
-        "tackles": 0,
-        "sacks": 0,
-        "interceptions": 0,
+        "tackles": 105,
+        "sacks": 8,
+        "interceptions": 2,
         "td": 0,
         "returnTd": 0
       },
@@ -114,13 +114,14 @@
       "ppg": 26.5,
       "pointsAllowedPerGame": 24,
       "scoringMargin": 2.5,
-      "totalOffense": 0,
-      "totalYardsPerGame": 0,
-      "yardsPerPlay": null,
+      "totalOffense": 711,
+      "totalYardsPerGame": 355.5,
+      "yardsPerPlay": 7.9,
       "statCoverage": [
         "passing",
         "rushing",
         "receiving",
+        "defense",
         "kicking"
       ],
       "hasPlayerStats": true,
@@ -154,57 +155,57 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 18,
           "stateTotal": 112,
-          "class": 9,
+          "class": 4,
           "classTotal": 10,
-          "region": 4,
+          "region": 1,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": null,
-          "stateTotal": 98,
-          "class": null,
-          "classTotal": 8,
-          "region": null,
-          "regionTotal": 3
+          "state": 26,
+          "stateTotal": 99,
+          "class": 3,
+          "classTotal": 9,
+          "region": 1,
+          "regionTotal": 4
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 14,
           "stateTotal": 111,
-          "class": 9,
+          "class": 4,
           "classTotal": 10,
-          "region": 4,
+          "region": 1,
           "regionTotal": 5
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 25,
           "stateTotal": 110,
-          "class": 9,
+          "class": 2,
           "classTotal": 9,
-          "region": 4,
+          "region": 1,
           "regionTotal": 4
         },
         "sacks": {
           "label": "Sacks",
-          "state": null,
-          "stateTotal": 98,
-          "class": null,
-          "classTotal": 8,
-          "region": null,
-          "regionTotal": 3
+          "state": 2,
+          "stateTotal": 99,
+          "class": 2,
+          "classTotal": 9,
+          "region": 1,
+          "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": null,
-          "stateTotal": 98,
-          "class": null,
-          "classTotal": 8,
-          "region": null,
-          "regionTotal": 3
+          "state": 22,
+          "stateTotal": 99,
+          "class": 3,
+          "classTotal": 9,
+          "region": 1,
+          "regionTotal": 4
         }
       }
     },
@@ -305,25 +306,25 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 30,
+          "state": 35,
           "stateTotal": 112,
-          "class": 7,
+          "class": 8,
           "classTotal": 26,
           "region": 2,
           "regionTotal": 6
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 75,
-          "stateTotal": 98,
-          "class": 18,
+          "state": 77,
+          "stateTotal": 99,
+          "class": 19,
           "classTotal": 24,
           "region": 5,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 18,
+          "state": 20,
           "stateTotal": 111,
           "class": 3,
           "classTotal": 26,
@@ -332,17 +333,17 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 58,
+          "state": 61,
           "stateTotal": 110,
-          "class": 13,
+          "class": 14,
           "classTotal": 25,
           "region": 3,
           "regionTotal": 6
         },
         "sacks": {
           "label": "Sacks",
-          "state": 7,
-          "stateTotal": 98,
+          "state": 9,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 24,
           "region": 2,
@@ -350,9 +351,9 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
-          "class": 1,
+          "state": 11,
+          "stateTotal": 99,
+          "class": 2,
           "classTotal": 24,
           "region": 1,
           "regionTotal": 6
@@ -454,7 +455,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 27,
+          "state": 31,
           "stateTotal": 112,
           "class": 4,
           "classTotal": 8,
@@ -463,8 +464,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 6,
-          "stateTotal": 98,
+          "state": 5,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 6,
           "region": 2,
@@ -481,7 +482,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 84,
+          "state": 86,
           "stateTotal": 110,
           "class": 5,
           "classTotal": 8,
@@ -491,7 +492,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -500,7 +501,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -605,7 +606,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 87,
+          "state": 89,
           "stateTotal": 112,
           "class": 13,
           "classTotal": 17,
@@ -614,8 +615,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 12,
           "classTotal": 14,
           "region": 5,
@@ -623,7 +624,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 95,
+          "state": 96,
           "stateTotal": 111,
           "class": 13,
           "classTotal": 17,
@@ -632,29 +633,29 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 54,
+          "state": 57,
           "stateTotal": 110,
-          "class": 9,
+          "class": 10,
           "classTotal": 17,
           "region": 4,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
-          "class": 2,
+          "state": 15,
+          "stateTotal": 99,
+          "class": 3,
           "classTotal": 14,
-          "region": 1,
+          "region": 2,
           "regionTotal": 5
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
-          "class": 5,
+          "state": 34,
+          "stateTotal": 99,
+          "class": 6,
           "classTotal": 14,
-          "region": 2,
+          "region": 3,
           "regionTotal": 5
         }
       }
@@ -756,7 +757,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 29,
+          "state": 34,
           "stateTotal": 112,
           "class": 7,
           "classTotal": 29,
@@ -765,8 +766,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 21,
-          "stateTotal": 98,
+          "state": 20,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 27,
           "region": 2,
@@ -774,7 +775,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 56,
+          "state": 57,
           "stateTotal": 111,
           "class": 12,
           "classTotal": 28,
@@ -783,7 +784,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 20,
+          "state": 26,
           "stateTotal": 110,
           "class": 6,
           "classTotal": 29,
@@ -792,8 +793,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 7,
@@ -801,8 +802,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
+          "state": 11,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 25,
           "region": 1,
@@ -907,7 +908,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 25,
+          "state": 29,
           "stateTotal": 112,
           "class": 2,
           "classTotal": 9,
@@ -916,8 +917,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 77,
-          "stateTotal": 98,
+          "state": 79,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 7,
           "region": 3,
@@ -925,7 +926,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 17,
+          "state": 19,
           "stateTotal": 111,
           "class": 2,
           "classTotal": 9,
@@ -934,7 +935,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 36,
+          "state": 41,
           "stateTotal": 110,
           "class": 2,
           "classTotal": 9,
@@ -943,8 +944,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
+          "state": 30,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 7,
           "region": 1,
@@ -952,8 +953,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 7,
           "region": 2,
@@ -1058,7 +1059,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 75,
+          "state": 79,
           "stateTotal": 112,
           "class": 12,
           "classTotal": 13,
@@ -1067,8 +1068,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 64,
-          "stateTotal": 98,
+          "state": 65,
+          "stateTotal": 99,
           "class": 10,
           "classTotal": 12,
           "region": 4,
@@ -1076,7 +1077,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 39,
+          "state": 41,
           "stateTotal": 111,
           "class": 8,
           "classTotal": 13,
@@ -1085,7 +1086,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 90,
+          "state": 91,
           "stateTotal": 110,
           "class": 11,
           "classTotal": 13,
@@ -1094,8 +1095,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
+          "state": 60,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 13,
           "region": 4,
@@ -1103,8 +1104,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 13,
           "region": 4,
@@ -1208,7 +1209,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 15,
           "classTotal": 17,
@@ -1218,7 +1219,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 14,
           "region": null,
@@ -1226,7 +1227,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 15,
           "classTotal": 17,
@@ -1235,7 +1236,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 15,
           "classTotal": 17,
@@ -1245,7 +1246,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 14,
           "region": null,
@@ -1254,7 +1255,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 14,
           "region": null,
@@ -1358,25 +1359,25 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 69,
+          "state": 73,
           "stateTotal": 112,
-          "class": 18,
+          "class": 20,
           "classTotal": 26,
-          "region": 4,
+          "region": 6,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 95,
-          "stateTotal": 98,
-          "class": 23,
+          "state": 97,
+          "stateTotal": 99,
+          "class": 24,
           "classTotal": 24,
-          "region": 6,
+          "region": 7,
           "regionTotal": 7
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 45,
+          "state": 47,
           "stateTotal": 111,
           "class": 12,
           "classTotal": 26,
@@ -1385,29 +1386,29 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 76,
+          "state": 78,
           "stateTotal": 110,
-          "class": 18,
+          "class": 19,
           "classTotal": 25,
-          "region": 4,
+          "region": 5,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
-          "class": 13,
+          "state": 40,
+          "stateTotal": 99,
+          "class": 14,
           "classTotal": 24,
-          "region": 3,
+          "region": 4,
           "regionTotal": 7
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 17,
+          "state": 67,
+          "stateTotal": 99,
+          "class": 18,
           "classTotal": 24,
-          "region": 5,
+          "region": 6,
           "regionTotal": 7
         }
       }
@@ -1509,7 +1510,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 25,
           "classTotal": 26,
@@ -1519,7 +1520,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -1527,7 +1528,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 25,
           "classTotal": 26,
@@ -1536,7 +1537,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 25,
           "classTotal": 25,
@@ -1545,8 +1546,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 22,
           "classTotal": 24,
           "region": 6,
@@ -1554,8 +1555,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 24,
           "region": 3,
@@ -1660,17 +1661,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 55,
+          "state": 60,
           "stateTotal": 112,
-          "class": 13,
+          "class": 15,
           "classTotal": 26,
-          "region": 2,
+          "region": 4,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 9,
-          "stateTotal": 98,
+          "state": 8,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 24,
           "region": 1,
@@ -1678,7 +1679,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 30,
+          "state": 33,
           "stateTotal": 111,
           "class": 9,
           "classTotal": 26,
@@ -1687,29 +1688,29 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 75,
+          "state": 77,
           "stateTotal": 110,
-          "class": 17,
+          "class": 18,
           "classTotal": 25,
-          "region": 3,
+          "region": 4,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 18,
+          "state": 60,
+          "stateTotal": 99,
+          "class": 20,
           "classTotal": 24,
-          "region": 5,
+          "region": 7,
           "regionTotal": 7
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 17,
+          "state": 67,
+          "stateTotal": 99,
+          "class": 18,
           "classTotal": 24,
-          "region": 5,
+          "region": 6,
           "regionTotal": 7
         }
       }
@@ -1810,25 +1811,25 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 59,
+          "state": 63,
           "stateTotal": 112,
-          "class": 14,
+          "class": 16,
           "classTotal": 26,
           "region": 4,
           "regionTotal": 6
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 54,
-          "stateTotal": 98,
-          "class": 13,
+          "state": 55,
+          "stateTotal": 99,
+          "class": 12,
           "classTotal": 24,
           "region": 4,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 28,
+          "state": 31,
           "stateTotal": 111,
           "class": 7,
           "classTotal": 26,
@@ -1837,27 +1838,27 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 78,
+          "state": 80,
           "stateTotal": 110,
-          "class": 20,
+          "class": 21,
           "classTotal": 25,
           "region": 5,
           "regionTotal": 6
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
-          "class": 8,
+          "state": 30,
+          "stateTotal": 99,
+          "class": 9,
           "classTotal": 24,
           "region": 3,
           "regionTotal": 6
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 17,
+          "state": 67,
+          "stateTotal": 99,
+          "class": 18,
           "classTotal": 24,
           "region": 5,
           "regionTotal": 6
@@ -1961,7 +1962,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 52,
+          "state": 57,
           "stateTotal": 112,
           "class": 9,
           "classTotal": 13,
@@ -1970,8 +1971,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 43,
-          "stateTotal": 98,
+          "state": 44,
+          "stateTotal": 99,
           "class": 7,
           "classTotal": 12,
           "region": 5,
@@ -1979,7 +1980,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 31,
+          "state": 34,
           "stateTotal": 111,
           "class": 6,
           "classTotal": 13,
@@ -1988,7 +1989,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 69,
+          "state": 71,
           "stateTotal": 110,
           "class": 8,
           "classTotal": 13,
@@ -1997,8 +1998,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
+          "state": 30,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 13,
           "region": 2,
@@ -2006,8 +2007,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 13,
           "region": 2,
@@ -2112,7 +2113,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 65,
+          "state": 69,
           "stateTotal": 112,
           "class": 10,
           "classTotal": 13,
@@ -2122,7 +2123,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 60,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 12,
           "region": 6,
@@ -2130,7 +2131,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 72,
+          "state": 75,
           "stateTotal": 111,
           "class": 12,
           "classTotal": 13,
@@ -2139,7 +2140,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 42,
+          "state": 45,
           "stateTotal": 110,
           "class": 4,
           "classTotal": 13,
@@ -2148,8 +2149,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 13,
           "region": 3,
@@ -2157,8 +2158,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 13,
           "region": 2,
@@ -2263,7 +2264,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 41,
+          "state": 46,
           "stateTotal": 112,
           "class": 7,
           "classTotal": 13,
@@ -2272,8 +2273,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 17,
-          "stateTotal": 98,
+          "state": 16,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 12,
           "region": 2,
@@ -2281,7 +2282,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 32,
+          "state": 35,
           "stateTotal": 111,
           "class": 7,
           "classTotal": 13,
@@ -2290,7 +2291,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 46,
+          "state": 49,
           "stateTotal": 110,
           "class": 5,
           "classTotal": 13,
@@ -2299,8 +2300,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 13,
           "region": 3,
@@ -2308,8 +2309,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 13,
           "region": 6,
@@ -2413,7 +2414,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 15,
           "classTotal": 17,
@@ -2423,7 +2424,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 14,
           "region": null,
@@ -2431,7 +2432,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 15,
           "classTotal": 17,
@@ -2440,7 +2441,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 15,
           "classTotal": 17,
@@ -2450,7 +2451,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 14,
           "region": null,
@@ -2459,7 +2460,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 14,
           "region": null,
@@ -2564,25 +2565,25 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 79,
+          "state": 82,
           "stateTotal": 112,
-          "class": 20,
+          "class": 22,
           "classTotal": 26,
-          "region": 5,
+          "region": 7,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 62,
-          "stateTotal": 98,
-          "class": 15,
+          "stateTotal": 99,
+          "class": 14,
           "classTotal": 24,
           "region": 4,
           "regionTotal": 7
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 48,
+          "state": 50,
           "stateTotal": 111,
           "class": 13,
           "classTotal": 26,
@@ -2591,7 +2592,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 91,
+          "state": 92,
           "stateTotal": 110,
           "class": 24,
           "classTotal": 25,
@@ -2600,18 +2601,18 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
-          "class": 13,
+          "state": 40,
+          "stateTotal": 99,
+          "class": 14,
           "classTotal": 24,
-          "region": 3,
+          "region": 4,
           "regionTotal": 7
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
-          "class": 6,
+          "state": 22,
+          "stateTotal": 99,
+          "class": 7,
           "classTotal": 24,
           "region": 3,
           "regionTotal": 7
@@ -2636,33 +2637,33 @@
         "kicking": true
       },
       "passing": {
-        "completions": 19,
-        "attempts": 28,
-        "yards": 167,
+        "completions": 38,
+        "attempts": 50,
+        "yards": 367,
         "td": 7,
         "interceptions": 1,
-        "compPct": 67.9,
-        "yardsPerAttempt": 5.96,
-        "yardsPerGame": 83.5
+        "compPct": 76,
+        "yardsPerAttempt": 7.34,
+        "yardsPerGame": 183.5
       },
       "rushing": {
-        "carries": 39,
-        "yards": 205,
+        "carries": 67,
+        "yards": 403,
         "td": 4,
-        "yardsPerCarry": 5.26,
-        "yardsPerGame": 102.5
+        "yardsPerCarry": 6.01,
+        "yardsPerGame": 201.5
       },
       "receiving": {
-        "receptions": 19,
-        "yards": 167,
+        "receptions": 42,
+        "yards": 384,
         "td": 7,
-        "yardsPerCatch": 8.79,
-        "yardsPerGame": 83.5
+        "yardsPerCatch": 9.14,
+        "yardsPerGame": 192
       },
       "defense": {
-        "tackles": 52,
-        "sacks": 1,
-        "interceptions": 2,
+        "tackles": 88,
+        "sacks": 2,
+        "interceptions": 4,
         "td": 0,
         "returnTd": 0
       },
@@ -2674,9 +2675,9 @@
       "ppg": 42,
       "pointsAllowedPerGame": 3.5,
       "scoringMargin": 38.5,
-      "totalOffense": 372,
-      "totalYardsPerGame": 186,
-      "yardsPerPlay": 5.55,
+      "totalOffense": 770,
+      "totalYardsPerGame": 385,
+      "yardsPerPlay": 6.58,
       "statCoverage": [
         "passing",
         "rushing",
@@ -2715,56 +2716,56 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 58,
+          "state": 12,
           "stateTotal": 112,
-          "class": 9,
+          "class": 2,
           "classTotal": 17,
-          "region": 3,
+          "region": 2,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 57,
-          "stateTotal": 98,
-          "class": 9,
+          "state": 43,
+          "stateTotal": 99,
+          "class": 7,
           "classTotal": 14,
           "region": 4,
           "regionTotal": 4
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 34,
+          "state": 11,
           "stateTotal": 111,
-          "class": 3,
+          "class": 2,
           "classTotal": 17,
-          "region": 3,
+          "region": 2,
           "regionTotal": 7
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 63,
+          "state": 23,
           "stateTotal": 110,
-          "class": 12,
+          "class": 5,
           "classTotal": 17,
-          "region": 3,
+          "region": 2,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 9,
+          "state": 40,
+          "stateTotal": 99,
+          "class": 6,
           "classTotal": 14,
           "region": 3,
           "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
+          "state": 6,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 14,
-          "region": 2,
+          "region": 1,
           "regionTotal": 4
         }
       }
@@ -2787,33 +2788,33 @@
         "kicking": true
       },
       "passing": {
-        "completions": 11,
-        "attempts": 15,
-        "yards": 295,
+        "completions": 23,
+        "attempts": 40,
+        "yards": 413,
         "td": 7,
-        "interceptions": 1,
-        "compPct": 73.3,
-        "yardsPerAttempt": 19.67,
-        "yardsPerGame": 147.5
+        "interceptions": 3,
+        "compPct": 57.5,
+        "yardsPerAttempt": 10.32,
+        "yardsPerGame": 206.5
       },
       "rushing": {
-        "carries": 22,
-        "yards": 180,
+        "carries": 49,
+        "yards": 277,
         "td": 3,
-        "yardsPerCarry": 8.18,
-        "yardsPerGame": 90
+        "yardsPerCarry": 5.65,
+        "yardsPerGame": 138.5
       },
       "receiving": {
-        "receptions": 11,
-        "yards": 295,
+        "receptions": 23,
+        "yards": 413,
         "td": 7,
-        "yardsPerCatch": 26.82,
-        "yardsPerGame": 147.5
+        "yardsPerCatch": 17.96,
+        "yardsPerGame": 206.5
       },
       "defense": {
-        "tackles": 61,
-        "sacks": 3,
-        "interceptions": 1,
+        "tackles": 128,
+        "sacks": 7,
+        "interceptions": 5,
         "td": 1,
         "returnTd": 1
       },
@@ -2825,9 +2826,9 @@
       "ppg": 45.5,
       "pointsAllowedPerGame": 10.5,
       "scoringMargin": 35,
-      "totalOffense": 475,
-      "totalYardsPerGame": 237.5,
-      "yardsPerPlay": 12.84,
+      "totalOffense": 690,
+      "totalYardsPerGame": 345,
+      "yardsPerPlay": 7.75,
       "statCoverage": [
         "passing",
         "rushing",
@@ -2866,56 +2867,56 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 33,
+          "state": 20,
           "stateTotal": 112,
-          "class": 4,
+          "class": 3,
           "classTotal": 17,
           "region": 1,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 4,
-          "stateTotal": 98,
-          "class": 1,
+          "state": 27,
+          "stateTotal": 99,
+          "class": 3,
           "classTotal": 14,
           "region": 1,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 50,
+          "state": 24,
           "stateTotal": 111,
-          "class": 6,
+          "class": 3,
           "classTotal": 17,
-          "region": 2,
+          "region": 1,
           "regionTotal": 5
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 29,
+          "state": 17,
           "stateTotal": 110,
-          "class": 5,
+          "class": 3,
           "classTotal": 17,
           "region": 1,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
-          "class": 5,
+          "state": 5,
+          "stateTotal": 99,
+          "class": 2,
           "classTotal": 14,
-          "region": 2,
+          "region": 1,
           "regionTotal": 5
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
-          "class": 5,
+          "state": 2,
+          "stateTotal": 99,
+          "class": 1,
           "classTotal": 14,
-          "region": 2,
+          "region": 1,
           "regionTotal": 5
         }
       }
@@ -3015,7 +3016,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 112,
           "class": 27,
           "classTotal": 29,
@@ -3024,8 +3025,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 91,
-          "stateTotal": 98,
+          "state": 93,
+          "stateTotal": 99,
           "class": 25,
           "classTotal": 27,
           "region": 6,
@@ -3042,7 +3043,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 86,
+          "state": 88,
           "stateTotal": 110,
           "class": 25,
           "classTotal": 29,
@@ -3052,7 +3053,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 25,
           "region": null,
@@ -3061,7 +3062,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 25,
           "region": null,
@@ -3166,7 +3167,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 53,
+          "state": 58,
           "stateTotal": 112,
           "class": 14,
           "classTotal": 29,
@@ -3176,7 +3177,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 40,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 10,
           "classTotal": 27,
           "region": 4,
@@ -3184,7 +3185,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 68,
+          "state": 71,
           "stateTotal": 111,
           "class": 18,
           "classTotal": 28,
@@ -3193,7 +3194,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 34,
+          "state": 39,
           "stateTotal": 110,
           "class": 10,
           "classTotal": 29,
@@ -3202,8 +3203,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 5,
@@ -3211,8 +3212,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 25,
           "region": 5,
@@ -3317,53 +3318,53 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 81,
+          "state": 83,
           "stateTotal": 112,
-          "class": 22,
+          "class": 23,
           "classTotal": 26,
           "region": 5,
           "regionTotal": 6
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 82,
-          "stateTotal": 98,
-          "class": 19,
+          "state": 84,
+          "stateTotal": 99,
+          "class": 20,
           "classTotal": 24,
           "region": 3,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 89,
+          "state": 93,
           "stateTotal": 111,
-          "class": 22,
+          "class": 24,
           "classTotal": 26,
           "region": 5,
           "regionTotal": 6
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 52,
+          "state": 55,
           "stateTotal": 110,
-          "class": 12,
+          "class": 13,
           "classTotal": 25,
           "region": 4,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 18,
+          "state": 60,
+          "stateTotal": 99,
+          "class": 20,
           "classTotal": 24,
           "region": 5,
           "regionTotal": 5
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 24,
           "region": 2,
@@ -3468,17 +3469,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 26,
+          "state": 30,
           "stateTotal": 112,
-          "class": 3,
+          "class": 6,
           "classTotal": 17,
-          "region": 1,
+          "region": 2,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 81,
-          "stateTotal": 98,
+          "state": 83,
+          "stateTotal": 99,
           "class": 13,
           "classTotal": 14,
           "region": 4,
@@ -3486,7 +3487,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 58,
+          "state": 59,
           "stateTotal": 111,
           "class": 8,
           "classTotal": 17,
@@ -3495,17 +3496,17 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 15,
+          "state": 16,
           "stateTotal": 110,
-          "class": 1,
+          "class": 2,
           "classTotal": 17,
-          "region": 1,
+          "region": 2,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 14,
           "region": 2,
@@ -3513,9 +3514,9 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
-          "class": 2,
+          "state": 22,
+          "stateTotal": 99,
+          "class": 4,
           "classTotal": 14,
           "region": 1,
           "regionTotal": 5
@@ -3617,7 +3618,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 28,
           "classTotal": 29,
@@ -3627,7 +3628,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 27,
           "region": null,
@@ -3644,7 +3645,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 28,
           "classTotal": 29,
@@ -3654,7 +3655,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 25,
           "region": null,
@@ -3663,7 +3664,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 25,
           "region": null,
@@ -3778,9 +3779,9 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 42,
-          "stateTotal": 98,
-          "class": 5,
-          "classTotal": 8,
+          "stateTotal": 99,
+          "class": 6,
+          "classTotal": 9,
           "region": 2,
           "regionTotal": 4
         },
@@ -3795,9 +3796,9 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 94,
+          "state": 95,
           "stateTotal": 110,
-          "class": 7,
+          "class": 8,
           "classTotal": 9,
           "region": 4,
           "regionTotal": 4
@@ -3805,18 +3806,18 @@
         "sacks": {
           "label": "Sacks",
           "state": 1,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": 1,
           "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": 1,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": 1,
           "regionTotal": 4
         }
@@ -3919,7 +3920,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 97,
+          "state": 98,
           "stateTotal": 112,
           "class": 26,
           "classTotal": 29,
@@ -3928,8 +3929,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 94,
-          "stateTotal": 98,
+          "state": 96,
+          "stateTotal": 99,
           "class": 26,
           "classTotal": 27,
           "region": 7,
@@ -3937,7 +3938,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 82,
+          "state": 86,
           "stateTotal": 111,
           "class": 23,
           "classTotal": 28,
@@ -3946,7 +3947,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 110,
           "class": 27,
           "classTotal": 29,
@@ -3955,8 +3956,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 7,
@@ -3964,8 +3965,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 25,
           "region": 7,
@@ -4070,7 +4071,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 46,
+          "state": 51,
           "stateTotal": 112,
           "class": 11,
           "classTotal": 29,
@@ -4079,8 +4080,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 25,
-          "stateTotal": 98,
+          "state": 24,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 27,
           "region": 3,
@@ -4088,7 +4089,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 38,
+          "state": 40,
           "stateTotal": 111,
           "class": 6,
           "classTotal": 28,
@@ -4097,7 +4098,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 51,
+          "state": 54,
           "stateTotal": 110,
           "class": 15,
           "classTotal": 29,
@@ -4106,8 +4107,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
+          "state": 60,
+          "stateTotal": 99,
           "class": 11,
           "classTotal": 25,
           "region": 3,
@@ -4115,8 +4116,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 25,
           "region": 2,
@@ -4221,7 +4222,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 82,
+          "state": 84,
           "stateTotal": 112,
           "class": 21,
           "classTotal": 29,
@@ -4230,8 +4231,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 71,
-          "stateTotal": 98,
+          "state": 73,
+          "stateTotal": 99,
           "class": 18,
           "classTotal": 27,
           "region": 6,
@@ -4239,7 +4240,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 75,
+          "state": 79,
           "stateTotal": 111,
           "class": 20,
           "classTotal": 28,
@@ -4248,7 +4249,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 70,
+          "state": 72,
           "stateTotal": 110,
           "class": 20,
           "classTotal": 29,
@@ -4257,8 +4258,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 5,
@@ -4266,8 +4267,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 25,
           "region": 5,
@@ -4372,7 +4373,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 93,
+          "state": 95,
           "stateTotal": 112,
           "class": 7,
           "classTotal": 9,
@@ -4381,8 +4382,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 92,
-          "stateTotal": 98,
+          "state": 94,
+          "stateTotal": 99,
           "class": 7,
           "classTotal": 7,
           "region": 4,
@@ -4390,7 +4391,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 80,
+          "state": 84,
           "stateTotal": 111,
           "class": 6,
           "classTotal": 9,
@@ -4399,7 +4400,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 92,
+          "state": 93,
           "stateTotal": 110,
           "class": 7,
           "classTotal": 9,
@@ -4408,8 +4409,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 7,
           "region": 1,
@@ -4417,8 +4418,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 7,
           "region": 3,
@@ -4522,7 +4523,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 89,
+          "state": 91,
           "stateTotal": 112,
           "class": 23,
           "classTotal": 29,
@@ -4531,8 +4532,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 78,
-          "stateTotal": 98,
+          "state": 80,
+          "stateTotal": 99,
           "class": 20,
           "classTotal": 27,
           "region": 2,
@@ -4540,7 +4541,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 61,
+          "state": 63,
           "stateTotal": 111,
           "class": 15,
           "classTotal": 28,
@@ -4549,7 +4550,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 93,
+          "state": 94,
           "stateTotal": 110,
           "class": 26,
           "classTotal": 29,
@@ -4558,8 +4559,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 2,
@@ -4567,8 +4568,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 25,
           "region": 2,
@@ -4673,55 +4674,55 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 84,
+          "state": 86,
           "stateTotal": 112,
-          "class": 6,
+          "class": 7,
           "classTotal": 10,
           "region": 3,
           "regionTotal": 4
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 87,
-          "stateTotal": 98,
-          "class": 7,
-          "classTotal": 8,
+          "state": 89,
+          "stateTotal": 99,
+          "class": 8,
+          "classTotal": 9,
           "region": 3,
           "regionTotal": 4
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 83,
+          "state": 87,
           "stateTotal": 111,
-          "class": 7,
+          "class": 8,
           "classTotal": 10,
           "region": 3,
           "regionTotal": 4
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 67,
+          "state": 69,
           "stateTotal": 110,
-          "class": 5,
+          "class": 6,
           "classTotal": 9,
           "region": 2,
           "regionTotal": 4
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 4,
-          "classTotal": 8,
+          "state": 60,
+          "stateTotal": 99,
+          "class": 5,
+          "classTotal": 9,
           "region": 3,
           "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 7,
-          "classTotal": 8,
+          "state": 67,
+          "stateTotal": 99,
+          "class": 8,
+          "classTotal": 9,
           "region": 4,
           "regionTotal": 4
         }
@@ -4823,7 +4824,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 8,
           "classTotal": 9,
@@ -4833,7 +4834,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -4841,7 +4842,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 8,
           "classTotal": 9,
@@ -4850,7 +4851,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 8,
           "classTotal": 9,
@@ -4860,7 +4861,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -4869,7 +4870,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -4974,17 +4975,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 56,
+          "state": 61,
           "stateTotal": 112,
-          "class": 8,
+          "class": 10,
           "classTotal": 17,
-          "region": 3,
+          "region": 4,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 66,
-          "stateTotal": 98,
+          "state": 68,
+          "stateTotal": 99,
           "class": 11,
           "classTotal": 14,
           "region": 3,
@@ -4992,36 +4993,36 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 84,
+          "state": 88,
           "stateTotal": 111,
-          "class": 11,
+          "class": 12,
           "classTotal": 17,
-          "region": 3,
+          "region": 4,
           "regionTotal": 5
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 28,
+          "state": 34,
           "stateTotal": 110,
-          "class": 4,
+          "class": 7,
           "classTotal": 17,
-          "region": 2,
+          "region": 3,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 9,
+          "state": 60,
+          "stateTotal": 99,
+          "class": 10,
           "classTotal": 14,
           "region": 4,
           "regionTotal": 5
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
-          "class": 5,
+          "state": 34,
+          "stateTotal": 99,
+          "class": 6,
           "classTotal": 14,
           "region": 2,
           "regionTotal": 5
@@ -5125,7 +5126,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 13,
+          "state": 14,
           "stateTotal": 112,
           "class": 3,
           "classTotal": 26,
@@ -5135,15 +5136,15 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 58,
-          "stateTotal": 98,
-          "class": 14,
+          "stateTotal": 99,
+          "class": 13,
           "classTotal": 24,
           "region": 3,
           "regionTotal": 7
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 37,
+          "state": 39,
           "stateTotal": 111,
           "class": 11,
           "classTotal": 26,
@@ -5161,8 +5162,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 4,
-          "stateTotal": 98,
+          "state": 6,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 24,
           "region": 1,
@@ -5170,9 +5171,9 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
-          "class": 1,
+          "state": 11,
+          "stateTotal": 99,
+          "class": 2,
           "classTotal": 24,
           "region": 1,
           "regionTotal": 7
@@ -5276,7 +5277,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 37,
+          "state": 42,
           "stateTotal": 112,
           "class": 5,
           "classTotal": 8,
@@ -5285,8 +5286,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 19,
-          "stateTotal": 98,
+          "state": 18,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 6,
           "region": 5,
@@ -5294,7 +5295,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 87,
+          "state": 91,
           "stateTotal": 111,
           "class": 6,
           "classTotal": 8,
@@ -5303,7 +5304,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 16,
+          "state": 19,
           "stateTotal": 110,
           "class": 1,
           "classTotal": 8,
@@ -5312,8 +5313,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 7,
-          "stateTotal": 98,
+          "state": 9,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 7,
           "region": 1,
@@ -5321,8 +5322,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 7,
           "region": 2,
@@ -5423,7 +5424,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 25,
           "classTotal": 26,
@@ -5433,7 +5434,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -5441,7 +5442,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 25,
           "classTotal": 26,
@@ -5460,7 +5461,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -5469,7 +5470,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -5574,7 +5575,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 39,
+          "state": 44,
           "stateTotal": 112,
           "class": 6,
           "classTotal": 13,
@@ -5583,8 +5584,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 52,
-          "stateTotal": 98,
+          "state": 54,
+          "stateTotal": 99,
           "class": 8,
           "classTotal": 12,
           "region": 3,
@@ -5592,7 +5593,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 25,
+          "state": 28,
           "stateTotal": 111,
           "class": 5,
           "classTotal": 13,
@@ -5601,7 +5602,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 56,
+          "state": 59,
           "stateTotal": 110,
           "class": 7,
           "classTotal": 13,
@@ -5610,8 +5611,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 10,
           "classTotal": 13,
           "region": 5,
@@ -5619,8 +5620,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 5,
-          "stateTotal": 98,
+          "state": 6,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 13,
           "region": 1,
@@ -5725,7 +5726,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 77,
+          "state": 81,
           "stateTotal": 112,
           "class": 20,
           "classTotal": 29,
@@ -5734,8 +5735,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 96,
-          "stateTotal": 98,
+          "state": 98,
+          "stateTotal": 99,
           "class": 27,
           "classTotal": 27,
           "region": 8,
@@ -5743,7 +5744,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 95,
+          "state": 96,
           "stateTotal": 111,
           "class": 26,
           "classTotal": 28,
@@ -5752,7 +5753,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 32,
+          "state": 37,
           "stateTotal": 110,
           "class": 9,
           "classTotal": 29,
@@ -5761,8 +5762,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 4,
-          "stateTotal": 98,
+          "state": 6,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 25,
           "region": 1,
@@ -5770,8 +5771,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 25,
           "region": 4,
@@ -5875,7 +5876,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 8,
           "classTotal": 9,
@@ -5885,7 +5886,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -5893,7 +5894,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 8,
           "classTotal": 9,
@@ -5902,7 +5903,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 8,
           "classTotal": 9,
@@ -5912,7 +5913,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -5921,7 +5922,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -6035,9 +6036,9 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 24,
-          "stateTotal": 98,
-          "class": 3,
+          "state": 23,
+          "stateTotal": 99,
+          "class": 2,
           "classTotal": 14,
           "region": 1,
           "regionTotal": 4
@@ -6053,17 +6054,17 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 27,
+          "state": 33,
           "stateTotal": 110,
-          "class": 3,
+          "class": 6,
           "classTotal": 17,
-          "region": 2,
+          "region": 3,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
           "state": 2,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 14,
           "region": 1,
@@ -6071,11 +6072,11 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
-          "class": 1,
+          "state": 11,
+          "stateTotal": 99,
+          "class": 3,
           "classTotal": 14,
-          "region": 1,
+          "region": 2,
           "regionTotal": 4
         }
       }
@@ -6176,7 +6177,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 71,
+          "state": 75,
           "stateTotal": 112,
           "class": 19,
           "classTotal": 29,
@@ -6185,8 +6186,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 79,
-          "stateTotal": 98,
+          "state": 81,
+          "stateTotal": 99,
           "class": 21,
           "classTotal": 27,
           "region": 3,
@@ -6194,7 +6195,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 62,
+          "state": 64,
           "stateTotal": 111,
           "class": 16,
           "classTotal": 28,
@@ -6203,7 +6204,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 65,
+          "state": 67,
           "stateTotal": 110,
           "class": 19,
           "classTotal": 29,
@@ -6213,7 +6214,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 25,
           "region": null,
@@ -6222,7 +6223,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 25,
           "region": null,
@@ -6327,7 +6328,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 17,
+          "state": 19,
           "stateTotal": 112,
           "class": 5,
           "classTotal": 26,
@@ -6336,16 +6337,16 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 44,
-          "stateTotal": 98,
-          "class": 9,
+          "state": 45,
+          "stateTotal": 99,
+          "class": 8,
           "classTotal": 24,
           "region": 2,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 53,
+          "state": 54,
           "stateTotal": 111,
           "class": 15,
           "classTotal": 26,
@@ -6363,8 +6364,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 24,
           "region": 1,
@@ -6372,8 +6373,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 24,
           "region": 2,
@@ -6477,25 +6478,25 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 35,
+          "state": 40,
           "stateTotal": 112,
-          "class": 8,
+          "class": 10,
           "classTotal": 26,
           "region": 4,
           "regionTotal": 6
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 89,
-          "stateTotal": 98,
-          "class": 20,
+          "state": 91,
+          "stateTotal": 99,
+          "class": 21,
           "classTotal": 24,
           "region": 4,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 13,
+          "state": 15,
           "stateTotal": 111,
           "class": 2,
           "classTotal": 26,
@@ -6504,26 +6505,26 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 80,
+          "state": 82,
           "stateTotal": 110,
-          "class": 22,
+          "class": 23,
           "classTotal": 25,
           "region": 5,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
-          "class": 13,
+          "state": 40,
+          "stateTotal": 99,
+          "class": 14,
           "classTotal": 24,
           "region": 4,
           "regionTotal": 5
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 24,
           "region": 2,
@@ -6628,7 +6629,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 24,
+          "state": 28,
           "stateTotal": 112,
           "class": 6,
           "classTotal": 29,
@@ -6637,8 +6638,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 8,
-          "stateTotal": 98,
+          "state": 7,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 27,
           "region": 1,
@@ -6646,7 +6647,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 12,
+          "state": 13,
           "stateTotal": 111,
           "class": 1,
           "classTotal": 28,
@@ -6655,7 +6656,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 43,
+          "state": 46,
           "stateTotal": 110,
           "class": 12,
           "classTotal": 29,
@@ -6664,8 +6665,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
+          "state": 30,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 25,
           "region": 2,
@@ -6673,8 +6674,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 25,
           "region": 2,
@@ -6778,7 +6779,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 91,
+          "state": 93,
           "stateTotal": 112,
           "class": 24,
           "classTotal": 29,
@@ -6787,8 +6788,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 83,
-          "stateTotal": 98,
+          "state": 85,
+          "stateTotal": 99,
           "class": 23,
           "classTotal": 27,
           "region": 5,
@@ -6796,7 +6797,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 86,
+          "state": 90,
           "stateTotal": 111,
           "class": 24,
           "classTotal": 28,
@@ -6805,7 +6806,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 80,
+          "state": 82,
           "stateTotal": 110,
           "class": 23,
           "classTotal": 29,
@@ -6814,8 +6815,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
+          "state": 60,
+          "stateTotal": 99,
           "class": 11,
           "classTotal": 25,
           "region": 1,
@@ -6823,8 +6824,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
+          "state": 22,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 25,
           "region": 1,
@@ -6929,7 +6930,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 13,
           "classTotal": 13,
@@ -6939,7 +6940,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 12,
           "region": null,
@@ -6947,7 +6948,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 13,
           "classTotal": 13,
@@ -6956,7 +6957,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 13,
           "classTotal": 13,
@@ -6965,8 +6966,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 10,
           "classTotal": 13,
           "region": 6,
@@ -6974,8 +6975,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 13,
           "region": 6,
@@ -7080,7 +7081,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 92,
+          "state": 94,
           "stateTotal": 112,
           "class": 25,
           "classTotal": 29,
@@ -7089,8 +7090,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 80,
-          "stateTotal": 98,
+          "state": 82,
+          "stateTotal": 99,
           "class": 22,
           "classTotal": 27,
           "region": 4,
@@ -7098,7 +7099,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 94,
+          "state": 95,
           "stateTotal": 111,
           "class": 25,
           "classTotal": 28,
@@ -7107,7 +7108,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 63,
+          "state": 66,
           "stateTotal": 110,
           "class": 18,
           "classTotal": 29,
@@ -7116,8 +7117,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 2,
@@ -7125,8 +7126,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 25,
           "region": 3,
@@ -7227,29 +7228,29 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
-          "class": 9,
+          "class": 10,
           "classTotal": 10,
-          "region": 4,
+          "region": 5,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": null,
-          "regionTotal": 3
+          "regionTotal": 4
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
-          "class": 9,
+          "class": 10,
           "classTotal": 10,
-          "region": 4,
+          "region": 5,
           "regionTotal": 5
         },
         "passingYardsPerGame": {
@@ -7264,20 +7265,20 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": null,
-          "regionTotal": 3
+          "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": null,
-          "regionTotal": 3
+          "regionTotal": 4
         }
       }
     },
@@ -7387,8 +7388,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 5,
-          "stateTotal": 98,
+          "state": 4,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 7,
           "region": 1,
@@ -7405,7 +7406,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 12,
+          "state": 13,
           "stateTotal": 110,
           "class": 1,
           "classTotal": 9,
@@ -7414,8 +7415,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
+          "state": 60,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 7,
           "region": 2,
@@ -7424,7 +7425,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": 2,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 7,
           "region": 1,
@@ -7533,7 +7534,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -7560,7 +7561,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -7569,7 +7570,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -7595,31 +7596,31 @@
         "kicking": true
       },
       "passing": {
-        "completions": 21,
-        "attempts": 31,
-        "yards": 246,
+        "completions": 44,
+        "attempts": 65,
+        "yards": 521,
         "td": 5,
         "interceptions": 2,
         "compPct": 67.7,
-        "yardsPerAttempt": 7.94,
-        "yardsPerGame": 123
+        "yardsPerAttempt": 8.02,
+        "yardsPerGame": 260.5
       },
       "rushing": {
-        "carries": 16,
-        "yards": 30,
+        "carries": 42,
+        "yards": 122,
         "td": 2,
-        "yardsPerCarry": 1.88,
-        "yardsPerGame": 15
+        "yardsPerCarry": 2.9,
+        "yardsPerGame": 61
       },
       "receiving": {
-        "receptions": 19,
-        "yards": 246,
+        "receptions": 42,
+        "yards": 521,
         "td": 5,
-        "yardsPerCatch": 12.95,
-        "yardsPerGame": 123
+        "yardsPerCatch": 12.4,
+        "yardsPerGame": 260.5
       },
       "defense": {
-        "tackles": 66,
+        "tackles": 120,
         "sacks": 4,
         "interceptions": 1,
         "td": 0,
@@ -7633,9 +7634,9 @@
       "ppg": 25.5,
       "pointsAllowedPerGame": 20,
       "scoringMargin": 5.5,
-      "totalOffense": 276,
-      "totalYardsPerGame": 138,
-      "yardsPerPlay": 5.87,
+      "totalOffense": 643,
+      "totalYardsPerGame": 321.5,
+      "yardsPerPlay": 6.01,
       "statCoverage": [
         "passing",
         "rushing",
@@ -7674,17 +7675,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 78,
+          "state": 24,
           "stateTotal": 112,
-          "class": 12,
+          "class": 4,
           "classTotal": 17,
-          "region": 4,
+          "region": 1,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 52,
-          "stateTotal": 98,
+          "state": 48,
+          "stateTotal": 99,
           "class": 8,
           "classTotal": 14,
           "region": 2,
@@ -7692,36 +7693,36 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 92,
+          "state": 70,
           "stateTotal": 111,
-          "class": 12,
-          "classTotal": 17,
-          "region": 4,
-          "regionTotal": 5
-        },
-        "passingYardsPerGame": {
-          "label": "Passing Offense",
-          "state": 40,
-          "stateTotal": 110,
-          "class": 8,
+          "class": 10,
           "classTotal": 17,
           "region": 3,
           "regionTotal": 5
         },
+        "passingYardsPerGame": {
+          "label": "Passing Offense",
+          "state": 10,
+          "stateTotal": 110,
+          "class": 1,
+          "classTotal": 17,
+          "region": 1,
+          "regionTotal": 5
+        },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
-          "class": 2,
+          "state": 15,
+          "stateTotal": 99,
+          "class": 3,
           "classTotal": 14,
           "region": 1,
           "regionTotal": 5
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
-          "class": 5,
+          "state": 34,
+          "stateTotal": 99,
+          "class": 6,
           "classTotal": 14,
           "region": 2,
           "regionTotal": 5
@@ -7835,9 +7836,9 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 2,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": 1,
           "regionTotal": 1
         },
@@ -7852,28 +7853,28 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 22,
+          "state": 28,
           "stateTotal": 110,
-          "class": 2,
+          "class": 3,
           "classTotal": 9,
           "region": 1,
           "regionTotal": 1
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
-          "class": 2,
-          "classTotal": 8,
+          "state": 15,
+          "stateTotal": 99,
+          "class": 3,
+          "classTotal": 9,
           "region": 1,
           "regionTotal": 1
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
+          "state": 11,
+          "stateTotal": 99,
           "class": 2,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": 1,
           "regionTotal": 1
         }
@@ -7976,9 +7977,9 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 42,
+          "state": 47,
           "stateTotal": 112,
-          "class": 5,
+          "class": 7,
           "classTotal": 17,
           "region": 2,
           "regionTotal": 5
@@ -7986,7 +7987,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 34,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 14,
           "region": 2,
@@ -7994,7 +7995,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 52,
+          "state": 53,
           "stateTotal": 111,
           "class": 7,
           "classTotal": 17,
@@ -8003,17 +8004,17 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 39,
+          "state": 44,
           "stateTotal": 110,
-          "class": 7,
+          "class": 9,
           "classTotal": 17,
           "region": 3,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 13,
           "classTotal": 14,
           "region": 5,
@@ -8021,11 +8022,11 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
-          "class": 2,
+          "state": 22,
+          "stateTotal": 99,
+          "class": 4,
           "classTotal": 14,
-          "region": 1,
+          "region": 2,
           "regionTotal": 5
         }
       }
@@ -8136,8 +8137,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 18,
-          "stateTotal": 98,
+          "state": 17,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 12,
           "region": 1,
@@ -8145,7 +8146,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 22,
+          "state": 24,
           "stateTotal": 111,
           "class": 4,
           "classTotal": 13,
@@ -8163,8 +8164,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 13,
           "region": 1,
@@ -8172,8 +8173,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
+          "state": 22,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 13,
           "region": 3,
@@ -8278,44 +8279,44 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 51,
+          "state": 56,
           "stateTotal": 112,
-          "class": 7,
+          "class": 9,
           "classTotal": 17,
           "region": 3,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 49,
-          "stateTotal": 98,
-          "class": 7,
+          "state": 51,
+          "stateTotal": 99,
+          "class": 9,
           "classTotal": 14,
           "region": 3,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 44,
+          "state": 46,
           "stateTotal": 111,
-          "class": 5,
+          "class": 6,
           "classTotal": 17,
-          "region": 1,
+          "region": 2,
           "regionTotal": 5
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 56,
+          "state": 59,
           "stateTotal": 110,
-          "class": 11,
+          "class": 12,
           "classTotal": 17,
           "region": 5,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 14,
           "region": 3,
@@ -8323,8 +8324,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 12,
           "classTotal": 14,
           "region": 5,
@@ -8429,7 +8430,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 14,
+          "state": 15,
           "stateTotal": 112,
           "class": 3,
           "classTotal": 13,
@@ -8438,8 +8439,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 30,
-          "stateTotal": 98,
+          "state": 31,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 12,
           "region": 4,
@@ -8447,7 +8448,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 63,
+          "state": 65,
           "stateTotal": 111,
           "class": 11,
           "classTotal": 13,
@@ -8465,8 +8466,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 10,
           "classTotal": 13,
           "region": 6,
@@ -8474,8 +8475,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
+          "state": 11,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 13,
           "region": 1,
@@ -8580,44 +8581,44 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 44,
+          "state": 50,
           "stateTotal": 112,
-          "class": 11,
+          "class": 14,
           "classTotal": 26,
-          "region": 3,
+          "region": 4,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 51,
-          "stateTotal": 98,
-          "class": 12,
+          "state": 53,
+          "stateTotal": 99,
+          "class": 11,
           "classTotal": 24,
-          "region": 5,
+          "region": 4,
           "regionTotal": 7
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 84,
+          "state": 88,
           "stateTotal": 111,
-          "class": 21,
+          "class": 23,
           "classTotal": 26,
           "region": 7,
           "regionTotal": 7
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 21,
+          "state": 27,
           "stateTotal": 110,
-          "class": 7,
+          "class": 9,
           "classTotal": 25,
           "region": 2,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 22,
           "classTotal": 24,
           "region": 5,
@@ -8625,8 +8626,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 24,
           "region": 3,
@@ -8731,7 +8732,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 23,
+          "state": 27,
           "stateTotal": 112,
           "class": 3,
           "classTotal": 8,
@@ -8740,8 +8741,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 50,
-          "stateTotal": 98,
+          "state": 52,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 6,
           "region": 6,
@@ -8749,7 +8750,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 20,
+          "state": 22,
           "stateTotal": 111,
           "class": 5,
           "classTotal": 8,
@@ -8758,7 +8759,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 26,
+          "state": 32,
           "stateTotal": 110,
           "class": 3,
           "classTotal": 8,
@@ -8767,8 +8768,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 7,
-          "stateTotal": 98,
+          "state": 9,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 7,
           "region": 1,
@@ -8776,8 +8777,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 7,
           "region": 4,
@@ -8882,7 +8883,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 85,
+          "state": 87,
           "stateTotal": 112,
           "class": 5,
           "classTotal": 9,
@@ -8891,8 +8892,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 70,
-          "stateTotal": 98,
+          "state": 72,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 7,
           "region": 3,
@@ -8900,7 +8901,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 77,
+          "state": 81,
           "stateTotal": 111,
           "class": 5,
           "classTotal": 9,
@@ -8909,7 +8910,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 73,
+          "state": 75,
           "stateTotal": 110,
           "class": 5,
           "classTotal": 9,
@@ -8918,8 +8919,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 7,
           "region": 1,
@@ -8927,8 +8928,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 7,
           "region": 2,
@@ -9033,7 +9034,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 7,
           "classTotal": 8,
@@ -9043,7 +9044,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 6,
           "region": null,
@@ -9051,7 +9052,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 7,
           "classTotal": 8,
@@ -9060,7 +9061,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 7,
           "classTotal": 8,
@@ -9069,8 +9070,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 7,
           "region": 6,
@@ -9078,8 +9079,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 7,
           "region": 4,
@@ -9188,7 +9189,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 6,
           "region": null,
@@ -9215,7 +9216,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -9224,7 +9225,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -9329,7 +9330,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 22,
+          "state": 26,
           "stateTotal": 112,
           "class": 4,
           "classTotal": 13,
@@ -9339,7 +9340,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 38,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 12,
           "region": 2,
@@ -9347,7 +9348,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 39,
+          "state": 41,
           "stateTotal": 111,
           "class": 8,
           "classTotal": 13,
@@ -9356,7 +9357,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 14,
+          "state": 15,
           "stateTotal": 110,
           "class": 3,
           "classTotal": 13,
@@ -9365,8 +9366,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 13,
           "region": 1,
@@ -9374,8 +9375,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
+          "state": 11,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 13,
           "region": 2,
@@ -9489,8 +9490,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 7,
-          "stateTotal": 98,
+          "state": 6,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 27,
           "region": 1,
@@ -9498,7 +9499,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 42,
+          "state": 44,
           "stateTotal": 111,
           "class": 8,
           "classTotal": 28,
@@ -9516,8 +9517,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 7,
           "classTotal": 25,
           "region": 5,
@@ -9525,8 +9526,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 25,
           "region": 4,
@@ -9631,17 +9632,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 21,
+          "state": 25,
           "stateTotal": 112,
-          "class": 2,
+          "class": 5,
           "classTotal": 17,
-          "region": 2,
+          "region": 3,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 28,
-          "stateTotal": 98,
+          "state": 29,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 14,
           "region": 3,
@@ -9649,26 +9650,26 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 26,
+          "state": 29,
           "stateTotal": 111,
-          "class": 2,
+          "class": 4,
           "classTotal": 17,
-          "region": 2,
+          "region": 3,
           "regionTotal": 7
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 18,
+          "state": 21,
           "stateTotal": 110,
-          "class": 2,
+          "class": 4,
           "classTotal": 17,
           "region": 1,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 13,
           "classTotal": 14,
           "region": 4,
@@ -9676,8 +9677,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 12,
           "classTotal": 14,
           "region": 4,
@@ -9782,7 +9783,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 48,
+          "state": 53,
           "stateTotal": 112,
           "class": 12,
           "classTotal": 29,
@@ -9791,8 +9792,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 47,
-          "stateTotal": 98,
+          "state": 49,
+          "stateTotal": 99,
           "class": 12,
           "classTotal": 27,
           "region": 4,
@@ -9800,7 +9801,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 39,
+          "state": 41,
           "stateTotal": 111,
           "class": 7,
           "classTotal": 28,
@@ -9809,7 +9810,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 53,
+          "state": 56,
           "stateTotal": 110,
           "class": 16,
           "classTotal": 29,
@@ -9818,8 +9819,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
+          "state": 60,
+          "stateTotal": 99,
           "class": 11,
           "classTotal": 25,
           "region": 3,
@@ -9827,8 +9828,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 25,
           "region": 5,
@@ -9933,7 +9934,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 31,
+          "state": 36,
           "stateTotal": 112,
           "class": 8,
           "classTotal": 29,
@@ -9942,8 +9943,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 10,
-          "stateTotal": 98,
+          "state": 9,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 27,
           "region": 1,
@@ -9951,7 +9952,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 59,
+          "state": 61,
           "stateTotal": 111,
           "class": 13,
           "classTotal": 28,
@@ -9960,7 +9961,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 23,
+          "state": 29,
           "stateTotal": 110,
           "class": 7,
           "classTotal": 29,
@@ -9969,8 +9970,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 2,
@@ -9978,8 +9979,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 25,
           "region": 3,
@@ -10084,7 +10085,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 12,
+          "state": 13,
           "stateTotal": 112,
           "class": 2,
           "classTotal": 13,
@@ -10093,8 +10094,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 22,
-          "stateTotal": 98,
+          "state": 21,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 12,
           "region": 3,
@@ -10111,7 +10112,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 50,
+          "state": 53,
           "stateTotal": 110,
           "class": 6,
           "classTotal": 13,
@@ -10121,7 +10122,7 @@
         "sacks": {
           "label": "Sacks",
           "state": 2,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 13,
           "region": 1,
@@ -10129,8 +10130,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 13,
           "region": 2,
@@ -10235,7 +10236,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 68,
+          "state": 72,
           "stateTotal": 112,
           "class": 3,
           "classTotal": 9,
@@ -10244,8 +10245,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 56,
-          "stateTotal": 98,
+          "state": 57,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 7,
           "region": 1,
@@ -10253,7 +10254,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 69,
+          "state": 72,
           "stateTotal": 111,
           "class": 4,
           "classTotal": 9,
@@ -10262,7 +10263,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 44,
+          "state": 47,
           "stateTotal": 110,
           "class": 3,
           "classTotal": 9,
@@ -10271,8 +10272,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 7,
           "classTotal": 7,
           "region": 4,
@@ -10281,7 +10282,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": 2,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 7,
           "region": 1,
@@ -10386,7 +10387,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 76,
+          "state": 80,
           "stateTotal": 112,
           "class": 4,
           "classTotal": 9,
@@ -10395,8 +10396,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 69,
-          "stateTotal": 98,
+          "state": 71,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 7,
           "region": 2,
@@ -10404,7 +10405,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 54,
+          "state": 55,
           "stateTotal": 111,
           "class": 3,
           "classTotal": 9,
@@ -10413,7 +10414,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 83,
+          "state": 85,
           "stateTotal": 110,
           "class": 6,
           "classTotal": 9,
@@ -10422,8 +10423,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 7,
           "region": 3,
@@ -10431,8 +10432,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 7,
           "region": 3,
@@ -10458,32 +10459,32 @@
         "kicking": false
       },
       "passing": {
-        "completions": 24,
-        "attempts": 39,
-        "yards": 246,
+        "completions": 40,
+        "attempts": 61,
+        "yards": 371,
         "td": 0,
         "interceptions": 2,
-        "compPct": 61.5,
-        "yardsPerAttempt": 6.31,
-        "yardsPerGame": 123
+        "compPct": 65.6,
+        "yardsPerAttempt": 6.08,
+        "yardsPerGame": 185.5
       },
       "rushing": {
-        "carries": 16,
-        "yards": 25,
+        "carries": 29,
+        "yards": 100,
         "td": 0,
-        "yardsPerCarry": 1.56,
-        "yardsPerGame": 12.5
+        "yardsPerCarry": 3.45,
+        "yardsPerGame": 50
       },
       "receiving": {
-        "receptions": 23,
-        "yards": 246,
+        "receptions": 39,
+        "yards": 371,
         "td": 0,
-        "yardsPerCatch": 10.7,
-        "yardsPerGame": 123
+        "yardsPerCatch": 9.51,
+        "yardsPerGame": 185.5
       },
       "defense": {
-        "tackles": 80,
-        "sacks": 1,
+        "tackles": 143,
+        "sacks": 2,
         "interceptions": 1,
         "td": 0,
         "returnTd": 0
@@ -10496,9 +10497,9 @@
       "ppg": 0,
       "pointsAllowedPerGame": 29.5,
       "scoringMargin": -29.5,
-      "totalOffense": 271,
-      "totalYardsPerGame": 135.5,
-      "yardsPerPlay": 4.93,
+      "totalOffense": 471,
+      "totalYardsPerGame": 235.5,
+      "yardsPerPlay": 5.23,
       "statCoverage": [
         "passing",
         "rushing",
@@ -10536,17 +10537,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 80,
+          "state": 39,
           "stateTotal": 112,
-          "class": 21,
+          "class": 9,
           "classTotal": 26,
-          "region": 6,
+          "region": 3,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 72,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 24,
           "region": 5,
@@ -10554,35 +10555,35 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 93,
+          "state": 76,
           "stateTotal": 111,
-          "class": 24,
+          "class": 20,
           "classTotal": 26,
           "region": 7,
           "regionTotal": 7
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 40,
+          "state": 22,
           "stateTotal": 110,
-          "class": 10,
+          "class": 7,
           "classTotal": 25,
-          "region": 2,
+          "region": 3,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 18,
+          "state": 40,
+          "stateTotal": 99,
+          "class": 14,
           "classTotal": 24,
-          "region": 5,
+          "region": 4,
           "regionTotal": 7
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 24,
           "region": 4,
@@ -10687,7 +10688,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 73,
+          "state": 77,
           "stateTotal": 112,
           "class": 11,
           "classTotal": 13,
@@ -10696,8 +10697,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 73,
-          "stateTotal": 98,
+          "state": 74,
+          "stateTotal": 99,
           "class": 11,
           "classTotal": 12,
           "region": 5,
@@ -10705,7 +10706,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 43,
+          "state": 45,
           "stateTotal": 111,
           "class": 10,
           "classTotal": 13,
@@ -10714,7 +10715,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 87,
+          "state": 89,
           "stateTotal": 110,
           "class": 10,
           "classTotal": 13,
@@ -10723,8 +10724,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 13,
           "region": 3,
@@ -10732,8 +10733,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 13,
           "region": 4,
@@ -10838,17 +10839,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 40,
+          "state": 45,
           "stateTotal": 112,
-          "class": 9,
+          "class": 11,
           "classTotal": 26,
           "region": 3,
           "regionTotal": 6
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 23,
-          "stateTotal": 98,
+          "state": 22,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 24,
           "region": 1,
@@ -10856,7 +10857,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 29,
+          "state": 32,
           "stateTotal": 111,
           "class": 8,
           "classTotal": 26,
@@ -10865,26 +10866,26 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 48,
+          "state": 51,
           "stateTotal": 110,
-          "class": 11,
+          "class": 12,
           "classTotal": 25,
           "region": 2,
           "regionTotal": 6
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
-          "class": 8,
+          "state": 30,
+          "stateTotal": 99,
+          "class": 9,
           "classTotal": 24,
           "region": 3,
           "regionTotal": 6
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 24,
           "region": 3,
@@ -10989,44 +10990,44 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 74,
+          "state": 78,
           "stateTotal": 112,
-          "class": 19,
+          "class": 21,
           "classTotal": 26,
           "region": 6,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 46,
-          "stateTotal": 98,
-          "class": 10,
+          "state": 47,
+          "stateTotal": 99,
+          "class": 9,
           "classTotal": 24,
-          "region": 4,
+          "region": 3,
           "regionTotal": 7
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 70,
+          "state": 73,
           "stateTotal": 111,
-          "class": 18,
+          "class": 19,
           "classTotal": 26,
           "region": 4,
           "regionTotal": 7
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 61,
+          "state": 64,
           "stateTotal": 110,
-          "class": 15,
+          "class": 16,
           "classTotal": 25,
           "region": 6,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 22,
           "classTotal": 24,
           "region": 5,
@@ -11034,8 +11035,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 24,
           "region": 3,
@@ -11144,7 +11145,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 6,
           "region": null,
@@ -11171,7 +11172,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -11180,7 +11181,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -11285,7 +11286,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 57,
+          "state": 62,
           "stateTotal": 112,
           "class": 15,
           "classTotal": 29,
@@ -11294,8 +11295,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 68,
-          "stateTotal": 98,
+          "state": 70,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 27,
           "region": 7,
@@ -11303,7 +11304,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 47,
+          "state": 49,
           "stateTotal": 111,
           "class": 9,
           "classTotal": 28,
@@ -11312,7 +11313,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 58,
+          "state": 61,
           "stateTotal": 110,
           "class": 17,
           "classTotal": 29,
@@ -11321,8 +11322,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 7,
           "classTotal": 25,
           "region": 1,
@@ -11330,8 +11331,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 25,
           "region": 4,
@@ -11436,7 +11437,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 86,
+          "state": 88,
           "stateTotal": 112,
           "class": 6,
           "classTotal": 9,
@@ -11446,7 +11447,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 41,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 7,
           "region": 2,
@@ -11454,7 +11455,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 88,
+          "state": 92,
           "stateTotal": 111,
           "class": 7,
           "classTotal": 9,
@@ -11463,7 +11464,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 62,
+          "state": 65,
           "stateTotal": 110,
           "class": 4,
           "classTotal": 9,
@@ -11472,8 +11473,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
+          "state": 60,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 7,
           "region": 2,
@@ -11481,8 +11482,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 7,
           "region": 3,
@@ -11587,17 +11588,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 67,
+          "state": 71,
           "stateTotal": 112,
-          "class": 17,
+          "class": 19,
           "classTotal": 26,
           "region": 5,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 66,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 24,
           "region": 6,
@@ -11605,7 +11606,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 57,
+          "state": 58,
           "stateTotal": 111,
           "class": 16,
           "classTotal": 26,
@@ -11614,27 +11615,27 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 60,
+          "state": 63,
           "stateTotal": 110,
-          "class": 14,
+          "class": 15,
           "classTotal": 25,
           "region": 5,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
-          "class": 8,
+          "state": 30,
+          "stateTotal": 99,
+          "class": 9,
           "classTotal": 24,
-          "region": 2,
+          "region": 3,
           "regionTotal": 6
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 17,
+          "state": 67,
+          "stateTotal": 99,
+          "class": 18,
           "classTotal": 24,
           "region": 5,
           "regionTotal": 6
@@ -11747,8 +11748,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 16,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 27,
           "region": 2,
@@ -11756,7 +11757,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 32,
+          "state": 35,
           "stateTotal": 111,
           "class": 5,
           "classTotal": 28,
@@ -11774,8 +11775,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 7,
-          "stateTotal": 98,
+          "state": 9,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 25,
           "region": 1,
@@ -11783,8 +11784,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 5,
-          "stateTotal": 98,
+          "state": 6,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 25,
           "region": 1,
@@ -11889,56 +11890,56 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 83,
+          "state": 85,
           "stateTotal": 112,
-          "class": 23,
+          "class": 24,
           "classTotal": 26,
           "region": 7,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 93,
-          "stateTotal": 98,
-          "class": 22,
+          "state": 95,
+          "stateTotal": 99,
+          "class": 23,
           "classTotal": 24,
           "region": 7,
           "regionTotal": 7
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 77,
+          "state": 81,
           "stateTotal": 111,
-          "class": 19,
+          "class": 21,
           "classTotal": 26,
           "region": 5,
           "regionTotal": 7
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 71,
+          "state": 73,
           "stateTotal": 110,
-          "class": 16,
+          "class": 17,
           "classTotal": 25,
           "region": 7,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
-          "class": 13,
+          "state": 40,
+          "stateTotal": 99,
+          "class": 14,
           "classTotal": 24,
           "region": 4,
           "regionTotal": 6
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
-          "class": 1,
+          "state": 11,
+          "stateTotal": 99,
+          "class": 2,
           "classTotal": 24,
-          "region": 1,
+          "region": 2,
           "regionTotal": 6
         }
       }
@@ -12040,57 +12041,57 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 95,
+          "state": 96,
           "stateTotal": 112,
-          "class": 8,
+          "class": 9,
           "classTotal": 10,
-          "region": 3,
+          "region": 4,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 85,
-          "stateTotal": 98,
-          "class": 6,
-          "classTotal": 8,
-          "region": 3,
-          "regionTotal": 3
+          "state": 87,
+          "stateTotal": 99,
+          "class": 7,
+          "classTotal": 9,
+          "region": 4,
+          "regionTotal": 4
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 66,
+          "state": 68,
           "stateTotal": 111,
-          "class": 5,
+          "class": 6,
           "classTotal": 10,
-          "region": 2,
+          "region": 3,
           "regionTotal": 5
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 97,
+          "state": 98,
           "stateTotal": 110,
-          "class": 8,
+          "class": 9,
           "classTotal": 9,
-          "region": 3,
+          "region": 4,
           "regionTotal": 4
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
-          "class": 6,
-          "classTotal": 8,
-          "region": 1,
-          "regionTotal": 3
+          "state": 75,
+          "stateTotal": 99,
+          "class": 7,
+          "classTotal": 9,
+          "region": 2,
+          "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 7,
-          "classTotal": 8,
-          "region": 3,
-          "regionTotal": 3
+          "state": 67,
+          "stateTotal": 99,
+          "class": 8,
+          "classTotal": 9,
+          "region": 4,
+          "regionTotal": 4
         }
       }
     },
@@ -12191,7 +12192,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 64,
+          "state": 68,
           "stateTotal": 112,
           "class": 17,
           "classTotal": 29,
@@ -12200,8 +12201,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 67,
-          "stateTotal": 98,
+          "state": 69,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 27,
           "region": 6,
@@ -12209,7 +12210,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 75,
+          "state": 79,
           "stateTotal": 111,
           "class": 20,
           "classTotal": 28,
@@ -12218,7 +12219,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 38,
+          "state": 43,
           "stateTotal": 110,
           "class": 11,
           "classTotal": 29,
@@ -12227,8 +12228,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
+          "state": 60,
+          "stateTotal": 99,
           "class": 11,
           "classTotal": 25,
           "region": 3,
@@ -12236,8 +12237,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 25,
           "region": 5,
@@ -12351,8 +12352,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 15,
-          "stateTotal": 98,
+          "state": 14,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 6,
           "region": 4,
@@ -12369,7 +12370,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 24,
+          "state": 30,
           "stateTotal": 110,
           "class": 2,
           "classTotal": 8,
@@ -12378,8 +12379,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 7,
           "region": 5,
@@ -12388,7 +12389,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": 2,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 7,
           "region": 1,
@@ -12493,7 +12494,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 32,
+          "state": 37,
           "stateTotal": 112,
           "class": 5,
           "classTotal": 13,
@@ -12503,7 +12504,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 3,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 12,
           "region": 1,
@@ -12511,7 +12512,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 11,
+          "state": 12,
           "stateTotal": 111,
           "class": 2,
           "classTotal": 13,
@@ -12520,7 +12521,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 80,
+          "state": 82,
           "stateTotal": 110,
           "class": 9,
           "classTotal": 13,
@@ -12529,8 +12530,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 13,
           "region": 3,
@@ -12538,8 +12539,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 13,
           "region": 2,
@@ -12644,7 +12645,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 36,
+          "state": 41,
           "stateTotal": 112,
           "class": 10,
           "classTotal": 29,
@@ -12654,7 +12655,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 35,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 8,
           "classTotal": 27,
           "region": 3,
@@ -12662,7 +12663,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 16,
+          "state": 18,
           "stateTotal": 111,
           "class": 2,
           "classTotal": 28,
@@ -12671,7 +12672,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 72,
+          "state": 74,
           "stateTotal": 110,
           "class": 21,
           "classTotal": 29,
@@ -12680,8 +12681,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 25,
           "region": 2,
@@ -12689,8 +12690,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 25,
           "region": 4,
@@ -12794,7 +12795,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 15,
           "classTotal": 17,
@@ -12804,7 +12805,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 14,
           "region": null,
@@ -12812,7 +12813,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 15,
           "classTotal": 17,
@@ -12821,7 +12822,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 15,
           "classTotal": 17,
@@ -12831,7 +12832,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 14,
           "region": null,
@@ -12840,7 +12841,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 14,
           "region": null,
@@ -12945,17 +12946,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 62,
+          "state": 66,
           "stateTotal": 112,
-          "class": 15,
+          "class": 17,
           "classTotal": 26,
-          "region": 3,
+          "region": 5,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 12,
-          "stateTotal": 98,
+          "state": 11,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 24,
           "region": 2,
@@ -12963,7 +12964,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 27,
+          "state": 30,
           "stateTotal": 111,
           "class": 6,
           "classTotal": 26,
@@ -12972,17 +12973,17 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 79,
+          "state": 81,
           "stateTotal": 110,
-          "class": 21,
+          "class": 22,
           "classTotal": 25,
-          "region": 5,
+          "region": 6,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 7,
-          "stateTotal": 98,
+          "state": 9,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 24,
           "region": 2,
@@ -12990,9 +12991,9 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
-          "class": 1,
+          "state": 11,
+          "stateTotal": 99,
+          "class": 2,
           "classTotal": 24,
           "region": 1,
           "regionTotal": 7
@@ -13095,7 +13096,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 19,
+          "state": 22,
           "stateTotal": 112,
           "class": 2,
           "classTotal": 8,
@@ -13105,7 +13106,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 1,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 6,
           "region": 1,
@@ -13122,7 +13123,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 46,
+          "state": 49,
           "stateTotal": 110,
           "class": 4,
           "classTotal": 8,
@@ -13131,8 +13132,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 7,
           "region": 3,
@@ -13140,8 +13141,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 7,
           "region": 4,
@@ -13246,7 +13247,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 20,
+          "state": 23,
           "stateTotal": 112,
           "class": 5,
           "classTotal": 29,
@@ -13256,7 +13257,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 37,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 27,
           "region": 2,
@@ -13264,7 +13265,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 65,
+          "state": 67,
           "stateTotal": 111,
           "class": 17,
           "classTotal": 28,
@@ -13273,7 +13274,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 10,
+          "state": 11,
           "stateTotal": 110,
           "class": 4,
           "classTotal": 29,
@@ -13282,8 +13283,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 7,
           "classTotal": 25,
           "region": 1,
@@ -13291,8 +13292,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 5,
-          "stateTotal": 98,
+          "state": 6,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 25,
           "region": 1,
@@ -13406,10 +13407,10 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 11,
-          "stateTotal": 98,
+          "state": 10,
+          "stateTotal": 99,
           "class": 2,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": 1,
           "regionTotal": 4
         },
@@ -13433,19 +13434,19 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 4,
-          "classTotal": 8,
+          "state": 60,
+          "stateTotal": 99,
+          "class": 5,
+          "classTotal": 9,
           "region": 3,
           "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
+          "state": 22,
+          "stateTotal": 99,
           "class": 3,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": 2,
           "regionTotal": 4
         }
@@ -13548,7 +13549,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 60,
+          "state": 64,
           "stateTotal": 112,
           "class": 16,
           "classTotal": 29,
@@ -13558,7 +13559,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 60,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 15,
           "classTotal": 27,
           "region": 4,
@@ -13566,7 +13567,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 60,
+          "state": 62,
           "stateTotal": 111,
           "class": 14,
           "classTotal": 28,
@@ -13575,7 +13576,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 45,
+          "state": 48,
           "stateTotal": 110,
           "class": 13,
           "classTotal": 29,
@@ -13584,8 +13585,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 7,
           "classTotal": 25,
           "region": 5,
@@ -13593,8 +13594,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 25,
           "region": 7,
@@ -13698,7 +13699,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 28,
           "classTotal": 29,
@@ -13708,7 +13709,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 27,
           "region": null,
@@ -13716,7 +13717,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 27,
           "classTotal": 28,
@@ -13725,7 +13726,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 28,
           "classTotal": 29,
@@ -13735,7 +13736,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 25,
           "region": null,
@@ -13744,7 +13745,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 25,
           "region": null,
@@ -13849,9 +13850,9 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 60,
+          "state": 64,
           "stateTotal": 112,
-          "class": 10,
+          "class": 11,
           "classTotal": 17,
           "region": 4,
           "regionTotal": 5
@@ -13859,7 +13860,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 63,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 10,
           "classTotal": 14,
           "region": 4,
@@ -13867,38 +13868,38 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 73,
+          "state": 76,
           "stateTotal": 111,
-          "class": 10,
+          "class": 11,
           "classTotal": 17,
           "region": 4,
           "regionTotal": 5
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 33,
+          "state": 38,
           "stateTotal": 110,
-          "class": 6,
+          "class": 8,
           "classTotal": 17,
           "region": 2,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 9,
+          "state": 60,
+          "stateTotal": 99,
+          "class": 10,
           "classTotal": 14,
           "region": 4,
           "regionTotal": 5
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
-          "class": 5,
+          "state": 34,
+          "stateTotal": 99,
+          "class": 6,
           "classTotal": 14,
-          "region": 2,
+          "region": 3,
           "regionTotal": 5
         }
       }
@@ -14000,7 +14001,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 16,
+          "state": 17,
           "stateTotal": 112,
           "class": 3,
           "classTotal": 29,
@@ -14009,8 +14010,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 55,
-          "stateTotal": 98,
+          "state": 56,
+          "stateTotal": 99,
           "class": 13,
           "classTotal": 27,
           "region": 5,
@@ -14018,7 +14019,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 51,
+          "state": 52,
           "stateTotal": 111,
           "class": 10,
           "classTotal": 28,
@@ -14036,8 +14037,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
+          "state": 60,
+          "stateTotal": 99,
           "class": 11,
           "classTotal": 25,
           "region": 3,
@@ -14045,8 +14046,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 25,
           "region": 2,
@@ -14150,55 +14151,55 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 90,
+          "state": 92,
           "stateTotal": 112,
-          "class": 7,
+          "class": 8,
           "classTotal": 10,
           "region": 4,
           "regionTotal": 4
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 88,
-          "stateTotal": 98,
-          "class": 8,
-          "classTotal": 8,
+          "state": 90,
+          "stateTotal": 99,
+          "class": 9,
+          "classTotal": 9,
           "region": 4,
           "regionTotal": 4
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 91,
+          "state": 94,
           "stateTotal": 111,
-          "class": 8,
+          "class": 9,
           "classTotal": 10,
           "region": 4,
           "regionTotal": 4
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 67,
+          "state": 69,
           "stateTotal": 110,
-          "class": 5,
+          "class": 6,
           "classTotal": 9,
           "region": 2,
           "regionTotal": 4
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
-          "class": 3,
-          "classTotal": 8,
+          "state": 30,
+          "stateTotal": 99,
+          "class": 4,
+          "classTotal": 9,
           "region": 2,
           "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
-          "class": 5,
-          "classTotal": 8,
+          "state": 34,
+          "stateTotal": 99,
+          "class": 6,
+          "classTotal": 9,
           "region": 3,
           "regionTotal": 4
         }
@@ -14301,57 +14302,57 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 63,
+          "state": 67,
           "stateTotal": 112,
-          "class": 5,
-          "classTotal": 10,
-          "region": 2,
-          "regionTotal": 5
-        },
-        "yardsPerPlay": {
-          "label": "Yards Per Play",
-          "state": 39,
-          "stateTotal": 98,
-          "class": 4,
-          "classTotal": 8,
-          "region": 2,
-          "regionTotal": 3
-        },
-        "rushingYardsPerGame": {
-          "label": "Rushing Offense",
-          "state": 71,
-          "stateTotal": 111,
           "class": 6,
           "classTotal": 10,
           "region": 3,
           "regionTotal": 5
         },
+        "yardsPerPlay": {
+          "label": "Yards Per Play",
+          "state": 39,
+          "stateTotal": 99,
+          "class": 5,
+          "classTotal": 9,
+          "region": 3,
+          "regionTotal": 4
+        },
+        "rushingYardsPerGame": {
+          "label": "Rushing Offense",
+          "state": 74,
+          "stateTotal": 111,
+          "class": 7,
+          "classTotal": 10,
+          "region": 4,
+          "regionTotal": 5
+        },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 37,
+          "state": 42,
           "stateTotal": 110,
-          "class": 4,
+          "class": 5,
           "classTotal": 9,
-          "region": 2,
+          "region": 3,
           "regionTotal": 4
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
-          "class": 6,
-          "classTotal": 8,
-          "region": 1,
-          "regionTotal": 3
+          "state": 75,
+          "stateTotal": 99,
+          "class": 7,
+          "classTotal": 9,
+          "region": 2,
+          "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
+          "state": 22,
+          "stateTotal": 99,
           "class": 3,
-          "classTotal": 8,
+          "classTotal": 9,
           "region": 1,
-          "regionTotal": 3
+          "regionTotal": 4
         }
       }
     },
@@ -14462,15 +14463,15 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 33,
-          "stateTotal": 98,
-          "class": 8,
+          "stateTotal": 99,
+          "class": 7,
           "classTotal": 24,
-          "region": 3,
+          "region": 2,
           "regionTotal": 7
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 19,
+          "state": 21,
           "stateTotal": 111,
           "class": 4,
           "classTotal": 26,
@@ -14488,8 +14489,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 7,
-          "stateTotal": 98,
+          "state": 9,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 24,
           "region": 1,
@@ -14497,9 +14498,9 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 17,
+          "state": 67,
+          "stateTotal": 99,
+          "class": 18,
           "classTotal": 24,
           "region": 5,
           "regionTotal": 6
@@ -14602,17 +14603,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 42,
+          "state": 47,
           "stateTotal": 112,
-          "class": 10,
+          "class": 12,
           "classTotal": 26,
           "region": 2,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 26,
-          "stateTotal": 98,
+          "state": 25,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 24,
           "region": 1,
@@ -14620,18 +14621,18 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 77,
+          "state": 81,
           "stateTotal": 111,
-          "class": 19,
+          "class": 21,
           "classTotal": 26,
           "region": 5,
           "regionTotal": 7
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 25,
+          "state": 31,
           "stateTotal": 110,
-          "class": 8,
+          "class": 10,
           "classTotal": 25,
           "region": 3,
           "regionTotal": 7
@@ -14639,7 +14640,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -14648,7 +14649,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -14753,7 +14754,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 88,
+          "state": 90,
           "stateTotal": 112,
           "class": 22,
           "classTotal": 29,
@@ -14762,8 +14763,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 84,
-          "stateTotal": 98,
+          "state": 86,
+          "stateTotal": 99,
           "class": 24,
           "classTotal": 27,
           "region": 6,
@@ -14771,7 +14772,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 81,
+          "state": 85,
           "stateTotal": 111,
           "class": 22,
           "classTotal": 28,
@@ -14780,7 +14781,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 85,
+          "state": 87,
           "stateTotal": 110,
           "class": 24,
           "classTotal": 29,
@@ -14789,8 +14790,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 25,
           "region": 2,
@@ -14798,8 +14799,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
+          "state": 22,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 25,
           "region": 2,
@@ -14904,57 +14905,57 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 38,
+          "state": 43,
           "stateTotal": 112,
-          "class": 4,
+          "class": 5,
           "classTotal": 10,
-          "region": 1,
+          "region": 2,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 36,
-          "stateTotal": 98,
-          "class": 3,
-          "classTotal": 8,
-          "region": 1,
-          "regionTotal": 3
+          "stateTotal": 99,
+          "class": 4,
+          "classTotal": 9,
+          "region": 2,
+          "regionTotal": 4
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 46,
+          "state": 48,
           "stateTotal": 111,
-          "class": 4,
+          "class": 5,
           "classTotal": 10,
-          "region": 1,
+          "region": 2,
           "regionTotal": 5
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 34,
+          "state": 39,
           "stateTotal": 110,
-          "class": 3,
+          "class": 4,
           "classTotal": 9,
-          "region": 1,
+          "region": 2,
           "regionTotal": 4
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
-          "class": 6,
-          "classTotal": 8,
-          "region": 1,
-          "regionTotal": 3
+          "state": 75,
+          "stateTotal": 99,
+          "class": 7,
+          "classTotal": 9,
+          "region": 2,
+          "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
-          "class": 5,
-          "classTotal": 8,
-          "region": 2,
-          "regionTotal": 3
+          "state": 34,
+          "stateTotal": 99,
+          "class": 6,
+          "classTotal": 9,
+          "region": 3,
+          "regionTotal": 4
         }
       }
     },
@@ -15055,44 +15056,44 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 47,
+          "state": 52,
           "stateTotal": 112,
-          "class": 6,
+          "class": 8,
           "classTotal": 17,
-          "region": 2,
+          "region": 3,
           "regionTotal": 5
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 20,
-          "stateTotal": 98,
-          "class": 2,
+          "state": 19,
+          "stateTotal": 99,
+          "class": 1,
           "classTotal": 14,
           "region": 1,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 36,
+          "state": 38,
           "stateTotal": 111,
-          "class": 4,
+          "class": 5,
           "classTotal": 17,
           "region": 1,
           "regionTotal": 5
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 55,
+          "state": 58,
           "stateTotal": 110,
-          "class": 10,
+          "class": 11,
           "classTotal": 17,
           "region": 4,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
+          "state": 40,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 14,
           "region": 2,
@@ -15100,8 +15101,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 12,
           "classTotal": 14,
           "region": 5,
@@ -15210,7 +15211,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -15237,7 +15238,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -15246,7 +15247,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 24,
           "region": null,
@@ -15351,7 +15352,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 50,
+          "state": 55,
           "stateTotal": 112,
           "class": 13,
           "classTotal": 29,
@@ -15360,8 +15361,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 31,
-          "stateTotal": 98,
+          "state": 32,
+          "stateTotal": 99,
           "class": 7,
           "classTotal": 27,
           "region": 1,
@@ -15369,7 +15370,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 74,
+          "state": 78,
           "stateTotal": 111,
           "class": 19,
           "classTotal": 28,
@@ -15378,7 +15379,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 30,
+          "state": 35,
           "stateTotal": 110,
           "class": 8,
           "classTotal": 29,
@@ -15387,8 +15388,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 5,
@@ -15396,8 +15397,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
+          "state": 11,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 25,
           "region": 2,
@@ -15433,23 +15434,23 @@
         "yardsPerGame": 145.5
       },
       "rushing": {
-        "carries": 25,
-        "yards": 120,
+        "carries": 50,
+        "yards": 132,
         "td": 3,
-        "yardsPerCarry": 4.8,
-        "yardsPerGame": 60
+        "yardsPerCarry": 2.64,
+        "yardsPerGame": 66
       },
       "receiving": {
-        "receptions": 21,
-        "yards": 291,
+        "receptions": 33,
+        "yards": 521,
         "td": 3,
-        "yardsPerCatch": 13.86,
-        "yardsPerGame": 145.5
+        "yardsPerCatch": 15.79,
+        "yardsPerGame": 260.5
       },
       "defense": {
-        "tackles": 49,
-        "sacks": 3,
-        "interceptions": 2,
+        "tackles": 96,
+        "sacks": 4,
+        "interceptions": 4,
         "td": 1,
         "returnTd": 0
       },
@@ -15461,9 +15462,9 @@
       "ppg": 23.5,
       "pointsAllowedPerGame": 30.5,
       "scoringMargin": -7,
-      "totalOffense": 411,
-      "totalYardsPerGame": 205.5,
-      "yardsPerPlay": 7.61,
+      "totalOffense": 423,
+      "totalYardsPerGame": 211.5,
+      "yardsPerPlay": 5.35,
       "statCoverage": [
         "passing",
         "rushing",
@@ -15502,56 +15503,56 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 45,
+          "state": 47,
           "stateTotal": 112,
           "class": 12,
           "classTotal": 26,
-          "region": 4,
+          "region": 2,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 31,
-          "stateTotal": 98,
-          "class": 7,
+          "state": 63,
+          "stateTotal": 99,
+          "class": 15,
           "classTotal": 24,
-          "region": 2,
+          "region": 5,
           "regionTotal": 7
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 67,
+          "state": 68,
           "stateTotal": 111,
-          "class": 17,
+          "class": 18,
           "classTotal": 26,
           "region": 3,
           "regionTotal": 7
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 31,
+          "state": 36,
           "stateTotal": 110,
-          "class": 9,
+          "class": 11,
           "classTotal": 25,
           "region": 4,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
-          "class": 8,
+          "state": 15,
+          "stateTotal": 99,
+          "class": 6,
           "classTotal": 24,
           "region": 2,
           "regionTotal": 6
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
-          "class": 6,
+          "state": 6,
+          "stateTotal": 99,
+          "class": 1,
           "classTotal": 24,
-          "region": 2,
+          "region": 1,
           "regionTotal": 6
         }
       }
@@ -15653,7 +15654,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 34,
+          "state": 38,
           "stateTotal": 112,
           "class": 9,
           "classTotal": 29,
@@ -15662,8 +15663,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 76,
-          "stateTotal": 98,
+          "state": 78,
+          "stateTotal": 99,
           "class": 19,
           "classTotal": 27,
           "region": 5,
@@ -15671,7 +15672,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 24,
+          "state": 27,
           "stateTotal": 111,
           "class": 4,
           "classTotal": 28,
@@ -15680,7 +15681,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 48,
+          "state": 51,
           "stateTotal": 110,
           "class": 14,
           "classTotal": 29,
@@ -15689,8 +15690,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
+          "state": 30,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 25,
           "region": 4,
@@ -15698,8 +15699,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
+          "state": 22,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 25,
           "region": 2,
@@ -15804,7 +15805,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 18,
+          "state": 21,
           "stateTotal": 112,
           "class": 4,
           "classTotal": 29,
@@ -15813,8 +15814,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 45,
-          "stateTotal": 98,
+          "state": 46,
+          "stateTotal": 99,
           "class": 11,
           "classTotal": 27,
           "region": 3,
@@ -15822,7 +15823,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 22,
+          "state": 24,
           "stateTotal": 111,
           "class": 3,
           "classTotal": 28,
@@ -15831,7 +15832,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 16,
+          "state": 19,
           "stateTotal": 110,
           "class": 5,
           "classTotal": 29,
@@ -15840,8 +15841,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 5,
@@ -15849,8 +15850,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
+          "state": 22,
+          "stateTotal": 99,
           "class": 5,
           "classTotal": 25,
           "region": 3,
@@ -15959,7 +15960,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 6,
           "region": null,
@@ -15986,7 +15987,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -15995,7 +15996,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -16100,7 +16101,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 54,
+          "state": 59,
           "stateTotal": 112,
           "class": 6,
           "classTotal": 8,
@@ -16109,8 +16110,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 12,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 6,
           "region": 3,
@@ -16118,7 +16119,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 15,
+          "state": 17,
           "stateTotal": 111,
           "class": 4,
           "classTotal": 8,
@@ -16127,7 +16128,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 96,
+          "state": 97,
           "stateTotal": 110,
           "class": 6,
           "classTotal": 8,
@@ -16136,8 +16137,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 7,
           "region": 3,
@@ -16145,8 +16146,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
+          "state": 34,
+          "stateTotal": 99,
           "class": 2,
           "classTotal": 7,
           "region": 2,
@@ -16251,7 +16252,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 49,
+          "state": 54,
           "stateTotal": 112,
           "class": 8,
           "classTotal": 13,
@@ -16260,8 +16261,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 86,
-          "stateTotal": 98,
+          "state": 88,
+          "stateTotal": 99,
           "class": 12,
           "classTotal": 12,
           "region": 6,
@@ -16269,7 +16270,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 14,
+          "state": 16,
           "stateTotal": 111,
           "class": 3,
           "classTotal": 13,
@@ -16278,7 +16279,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 95,
+          "state": 96,
           "stateTotal": 110,
           "class": 12,
           "classTotal": 13,
@@ -16287,8 +16288,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 10,
           "classTotal": 13,
           "region": 5,
@@ -16296,8 +16297,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 9,
           "classTotal": 13,
           "region": 4,
@@ -16402,7 +16403,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 15,
+          "state": 16,
           "stateTotal": 112,
           "class": 4,
           "classTotal": 26,
@@ -16411,8 +16412,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 29,
-          "stateTotal": 98,
+          "state": 30,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 24,
           "region": 2,
@@ -16420,7 +16421,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 21,
+          "state": 23,
           "stateTotal": 111,
           "class": 5,
           "classTotal": 26,
@@ -16429,7 +16430,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 13,
+          "state": 14,
           "stateTotal": 110,
           "class": 5,
           "classTotal": 25,
@@ -16438,8 +16439,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 4,
-          "stateTotal": 98,
+          "state": 6,
+          "stateTotal": 99,
           "class": 1,
           "classTotal": 24,
           "region": 1,
@@ -16447,9 +16448,9 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 19,
-          "stateTotal": 98,
-          "class": 6,
+          "state": 22,
+          "stateTotal": 99,
+          "class": 7,
           "classTotal": 24,
           "region": 2,
           "regionTotal": 6
@@ -16553,7 +16554,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 70,
+          "state": 74,
           "stateTotal": 112,
           "class": 18,
           "classTotal": 29,
@@ -16563,7 +16564,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": 59,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": 14,
           "classTotal": 27,
           "region": 5,
@@ -16571,7 +16572,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 55,
+          "state": 56,
           "stateTotal": 111,
           "class": 11,
           "classTotal": 28,
@@ -16580,7 +16581,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 73,
+          "state": 75,
           "stateTotal": 110,
           "class": 22,
           "classTotal": 29,
@@ -16589,8 +16590,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 16,
           "classTotal": 25,
           "region": 5,
@@ -16598,8 +16599,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 17,
           "classTotal": 25,
           "region": 5,
@@ -16703,7 +16704,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 112,
           "class": 7,
           "classTotal": 8,
@@ -16713,7 +16714,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 6,
           "region": null,
@@ -16721,7 +16722,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 98,
+          "state": 99,
           "stateTotal": 111,
           "class": 7,
           "classTotal": 8,
@@ -16730,7 +16731,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 99,
+          "state": 100,
           "stateTotal": 110,
           "class": 7,
           "classTotal": 8,
@@ -16739,8 +16740,8 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 74,
-          "stateTotal": 98,
+          "state": 75,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 7,
           "region": 6,
@@ -16748,8 +16749,8 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
+          "state": 67,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 7,
           "region": 4,
@@ -16853,7 +16854,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 96,
+          "state": 97,
           "stateTotal": 112,
           "class": 14,
           "classTotal": 17,
@@ -16862,8 +16863,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 98,
-          "stateTotal": 98,
+          "state": 99,
+          "stateTotal": 99,
           "class": 14,
           "classTotal": 14,
           "region": 5,
@@ -16871,7 +16872,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 97,
+          "state": 98,
           "stateTotal": 111,
           "class": 14,
           "classTotal": 17,
@@ -16880,7 +16881,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 89,
+          "state": 90,
           "stateTotal": 110,
           "class": 14,
           "classTotal": 17,
@@ -16889,18 +16890,18 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 9,
+          "state": 60,
+          "stateTotal": 99,
+          "class": 10,
           "classTotal": 14,
           "region": 4,
           "regionTotal": 5
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
-          "class": 5,
+          "state": 34,
+          "stateTotal": 99,
+          "class": 6,
           "classTotal": 14,
           "region": 2,
           "regionTotal": 5
@@ -17013,8 +17014,8 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 14,
-          "stateTotal": 98,
+          "state": 13,
+          "stateTotal": 99,
           "class": 3,
           "classTotal": 24,
           "region": 1,
@@ -17031,7 +17032,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 11,
+          "state": 12,
           "stateTotal": 110,
           "class": 4,
           "classTotal": 25,
@@ -17040,18 +17041,18 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 27,
-          "stateTotal": 98,
-          "class": 8,
+          "state": 30,
+          "stateTotal": 99,
+          "class": 9,
           "classTotal": 24,
           "region": 3,
           "regionTotal": 5
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 8,
-          "stateTotal": 98,
-          "class": 1,
+          "state": 11,
+          "stateTotal": 99,
+          "class": 2,
           "classTotal": 24,
           "region": 1,
           "regionTotal": 5
@@ -17076,33 +17077,33 @@
         "kicking": true
       },
       "passing": {
-        "completions": 11,
-        "attempts": 22,
-        "yards": 103,
+        "completions": 28,
+        "attempts": 54,
+        "yards": 391,
         "td": 2,
-        "interceptions": 0,
-        "compPct": 50,
-        "yardsPerAttempt": 4.68,
-        "yardsPerGame": 51.5
+        "interceptions": 2,
+        "compPct": 51.9,
+        "yardsPerAttempt": 7.24,
+        "yardsPerGame": 195.5
       },
       "rushing": {
-        "carries": 30,
-        "yards": 56,
+        "carries": 58,
+        "yards": 151,
         "td": 1,
-        "yardsPerCarry": 1.87,
-        "yardsPerGame": 28
+        "yardsPerCarry": 2.6,
+        "yardsPerGame": 75.5
       },
       "receiving": {
-        "receptions": 11,
-        "yards": 103,
+        "receptions": 28,
+        "yards": 391,
         "td": 2,
-        "yardsPerCatch": 9.36,
-        "yardsPerGame": 51.5
+        "yardsPerCatch": 13.96,
+        "yardsPerGame": 195.5
       },
       "defense": {
-        "tackles": 73,
-        "sacks": 1,
-        "interceptions": 0,
+        "tackles": 154,
+        "sacks": 3,
+        "interceptions": 1,
         "td": 0,
         "returnTd": 0
       },
@@ -17114,9 +17115,9 @@
       "ppg": 10.5,
       "pointsAllowedPerGame": 27,
       "scoringMargin": -16.5,
-      "totalOffense": 159,
-      "totalYardsPerGame": 79.5,
-      "yardsPerPlay": 3.06,
+      "totalOffense": 542,
+      "totalYardsPerGame": 271,
+      "yardsPerPlay": 4.84,
       "statCoverage": [
         "passing",
         "rushing",
@@ -17155,56 +17156,56 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 94,
+          "state": 33,
           "stateTotal": 112,
-          "class": 24,
+          "class": 7,
           "classTotal": 26,
-          "region": 7,
+          "region": 2,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 97,
-          "stateTotal": 98,
-          "class": 24,
+          "state": 76,
+          "stateTotal": 99,
+          "class": 18,
           "classTotal": 24,
-          "region": 7,
+          "region": 6,
           "regionTotal": 7
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 90,
+          "state": 60,
           "stateTotal": 111,
-          "class": 23,
+          "class": 17,
           "classTotal": 26,
           "region": 6,
           "regionTotal": 7
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 88,
+          "state": 18,
           "stateTotal": 110,
-          "class": 23,
+          "class": 6,
           "classTotal": 25,
-          "region": 6,
+          "region": 2,
           "regionTotal": 7
         },
         "sacks": {
           "label": "Sacks",
-          "state": 56,
-          "stateTotal": 98,
-          "class": 18,
+          "state": 30,
+          "stateTotal": 99,
+          "class": 9,
           "classTotal": 24,
-          "region": 5,
+          "region": 3,
           "regionTotal": 7
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 17,
+          "state": 34,
+          "stateTotal": 99,
+          "class": 9,
           "classTotal": 24,
-          "region": 5,
+          "region": 4,
           "regionTotal": 7
         }
       }
@@ -17306,7 +17307,7 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 27,
+          "state": 31,
           "stateTotal": 112,
           "class": 6,
           "classTotal": 26,
@@ -17315,16 +17316,16 @@
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 90,
-          "stateTotal": 98,
-          "class": 21,
+          "state": 92,
+          "stateTotal": 99,
+          "class": 22,
           "classTotal": 24,
           "region": 5,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 48,
+          "state": 50,
           "stateTotal": 111,
           "class": 13,
           "classTotal": 26,
@@ -17333,17 +17334,17 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 19,
+          "state": 24,
           "stateTotal": 110,
-          "class": 6,
+          "class": 8,
           "classTotal": 25,
           "region": 3,
           "regionTotal": 5
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
+          "state": 15,
+          "stateTotal": 99,
           "class": 6,
           "classTotal": 24,
           "region": 1,
@@ -17351,9 +17352,9 @@
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 17,
+          "state": 67,
+          "stateTotal": 99,
+          "class": 18,
           "classTotal": 24,
           "region": 5,
           "regionTotal": 5
@@ -17457,17 +17458,17 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 72,
+          "state": 76,
           "stateTotal": 112,
-          "class": 11,
+          "class": 12,
           "classTotal": 17,
           "region": 4,
           "regionTotal": 7
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 27,
-          "stateTotal": 98,
+          "state": 28,
+          "stateTotal": 99,
           "class": 4,
           "classTotal": 14,
           "region": 2,
@@ -17475,7 +17476,7 @@
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 64,
+          "state": 66,
           "stateTotal": 111,
           "class": 9,
           "classTotal": 17,
@@ -17484,7 +17485,7 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 65,
+          "state": 67,
           "stateTotal": 110,
           "class": 13,
           "classTotal": 17,
@@ -17493,18 +17494,18 @@
         },
         "sacks": {
           "label": "Sacks",
-          "state": 13,
-          "stateTotal": 98,
-          "class": 2,
+          "state": 15,
+          "stateTotal": 99,
+          "class": 3,
           "classTotal": 14,
           "region": 2,
           "regionTotal": 4
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 32,
-          "stateTotal": 98,
-          "class": 5,
+          "state": 34,
+          "stateTotal": 99,
+          "class": 6,
           "classTotal": 14,
           "region": 3,
           "regionTotal": 4
@@ -17612,7 +17613,7 @@
         "yardsPerPlay": {
           "label": "Yards Per Play",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 6,
           "region": null,
@@ -17639,7 +17640,7 @@
         "sacks": {
           "label": "Sacks",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -17648,7 +17649,7 @@
         "defensiveInterceptions": {
           "label": "Defensive INT",
           "state": null,
-          "stateTotal": 98,
+          "stateTotal": 99,
           "class": null,
           "classTotal": 7,
           "region": null,
@@ -17753,25 +17754,25 @@
         },
         "totalYardsPerGame": {
           "label": "Total Offense",
-          "state": 65,
+          "state": 69,
           "stateTotal": 112,
-          "class": 16,
+          "class": 18,
           "classTotal": 26,
           "region": 5,
           "regionTotal": 6
         },
         "yardsPerPlay": {
           "label": "Yards Per Play",
-          "state": 47,
-          "stateTotal": 98,
-          "class": 11,
+          "state": 49,
+          "stateTotal": 99,
+          "class": 10,
           "classTotal": 24,
           "region": 3,
           "regionTotal": 5
         },
         "rushingYardsPerGame": {
           "label": "Rushing Offense",
-          "state": 35,
+          "state": 37,
           "stateTotal": 111,
           "class": 10,
           "classTotal": 26,
@@ -17780,27 +17781,27 @@
         },
         "passingYardsPerGame": {
           "label": "Passing Offense",
-          "state": 77,
+          "state": 79,
           "stateTotal": 110,
-          "class": 19,
+          "class": 20,
           "classTotal": 25,
           "region": 4,
           "regionTotal": 6
         },
         "sacks": {
           "label": "Sacks",
-          "state": 38,
-          "stateTotal": 98,
-          "class": 13,
+          "state": 40,
+          "stateTotal": 99,
+          "class": 14,
           "classTotal": 24,
           "region": 5,
           "regionTotal": 6
         },
         "defensiveInterceptions": {
           "label": "Defensive INT",
-          "state": 65,
-          "stateTotal": 98,
-          "class": 17,
+          "state": 67,
+          "stateTotal": 99,
+          "class": 18,
           "classTotal": 24,
           "region": 5,
           "regionTotal": 6
