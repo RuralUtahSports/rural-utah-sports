@@ -55,6 +55,16 @@
     value: Number(p[metric]) || 0,
     p,
   });
+  function teamPill(team) {
+    const info = F.info?.(team) || {},
+      bg = /^#[0-9a-f]{6}$/i.test(info.backgroundColor || "")
+        ? info.backgroundColor
+        : "#333333",
+      fg = /^#[0-9a-f]{6}$/i.test(info.textColor || "")
+        ? info.textColor
+        : "#ffffff";
+    return `<span style="display:inline-block;background:${bg};color:${fg};padding:4px 7px;border-radius:5px;font-weight:900">${h(team)}</span>`;
+  }
   function leaders(R, metric, classification = "ALL") {
     const out = [];
     for (const [team, d] of R.simulatedStats || []) {
@@ -142,7 +152,7 @@
             .slice(0, 25)
             .map(
               (x, i) =>
-                `<tr><td>${i + 1}</td><td class="left stat-team">${h(x.name)}</td><td class="left">${h(x.team)}</td><td><strong>${x.value}</strong></td></tr>`,
+                `<tr><td>${i + 1}</td><td class="left stat-team">${h(x.name)}</td><td class="left">${teamPill(x.team)}</td><td><strong>${x.value}</strong></td></tr>`,
             ),
         );
     body.innerHTML = `<p class="note">Simulated totals only. Reported 2026 statistics are not included. Regular-season and simulated playoff games are included.</p><div class="weekly-controls"><div class="field"><label>Team Statistics</label><select id="rusFullStatTeam">${teams.map((t) => `<option>${h(t)}</option>`).join("")}</select></div></div><div id="rusFullStatTeamOut"></div><h3 class="section-title">Simulated Stat Leaders</h3><div class="weekly-controls"><div class="field"><label>Classification</label><select id="rusFullStatClass">${classes.map((c) => `<option value="${c}">${c === "ALL" ? "All Classifications" : c === "8P" ? "8-Player" : c}</option>`).join("")}</select></div></div><div id="rusFullStatLeaders"></div>`;
