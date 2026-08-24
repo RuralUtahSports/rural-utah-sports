@@ -62,7 +62,7 @@ const loadGameLiveStatus=()=>{
 };
 const loadRankingsSponsorRemoval=()=>{
   if(!rankingsPage||document.querySelector('script[data-rus-rankings-sponsor-removal]'))return;
-  const s=document.createElement('script');s.src='rankings-sponsor-removal.js?v=20260819-remove-jh3d';s.async=true;s.dataset.rusRankingsSponsorRemoval='1';document.body.appendChild(s);
+  const s=document.createElement('script');s.src='rankings-sponsor-removal.js?v=20260823-cardfix3';s.async=true;s.dataset.rusRankingsSponsorRemoval='1';document.body.appendChild(s);
 };
 const loadOverallRankingsShare=()=>{
   if(!rankingsPage||window.__rusOverallDirectShareBuild==='ios3-overall-featured-top3-logos'||document.querySelector('script[data-rus-rankings-overall-share]'))return;
