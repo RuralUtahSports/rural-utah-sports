@@ -1,6 +1,6 @@
 # RUS Football Data Audit
 
-Generated: 2026-08-24T03:51:02.033Z
+Generated: 2026-08-24T13:26:59.901Z
 
 **0 errors • 13 warnings**
 
@@ -22,5 +22,5 @@ Generated: 2026-08-24T03:51:02.033Z
 
 ## Infos (1)
 
-- **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":604,"standings":118,"rankedTeams":68,"playerIds":6285}`
+- **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":604,"standings":118,"rankedTeams":68,"playerIds":6396}`
 
