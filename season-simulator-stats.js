@@ -1,6 +1,7 @@
 (() => {
   "use strict";
   const S = (window.RUSSeasonSim = window.RUSSeasonSim || {});
+  if (S.buildSimulatedStats && S.rosterReady) return;
   let rosterData = null,
     lastContext = null;
   const n = (v) =>
