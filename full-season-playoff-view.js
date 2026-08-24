@@ -42,14 +42,15 @@
     head.className = "fsp-head";
     const intro = document.createElement("div");
     intro.innerHTML =
-      '<div class="fsp-title">Simulated 2026 State Playoffs</div><div class="fsp-sub">The simulated RPI seeds are placed into each classification bracket and played through a state champion.</div>';
+      '<div class="fsp-title">2026 Classification Brackets</div><div class="fsp-sub">Choose any classification below to view its complete RPI-seeded playoff bracket and simulated state champion.</div>';
     const tabs = document.createElement("div");
     tabs.className = "fsp-tabs";
     const body = document.createElement("div");
     entries.forEach(([c, p], i) => {
       const b = document.createElement("button");
+      b.type = "button";
       b.className = "fsp-tab" + (i === 0 ? " active" : "");
-      b.textContent = className(c);
+      b.textContent = `${className(c)} Bracket`;
       b.onclick = () => {
         tabs
           .querySelectorAll(".fsp-tab")
