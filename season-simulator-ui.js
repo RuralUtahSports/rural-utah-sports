@@ -12,7 +12,7 @@
   load("season-simulator-playoffs.js?v=20260813c", "rus-season-playoffs");
   load("season-simulator-ready.js?v=20260813d", "rus-season-ready");
   load("full-season-panel.js?v=20260824b", "rus-full-season-panel");
-  load("full-season-actions.js?v=20260824-mobile2", "rus-full-season-actions");
+  load("full-season-actions.js?v=20260824-boxscroll1", "rus-full-season-actions");
   const tabs = document.querySelector(".tabs"),
     weekly = document.getElementById("weekly");
   if (!tabs || !weekly || document.getElementById("season")) return;
