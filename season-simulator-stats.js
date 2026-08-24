@@ -246,6 +246,13 @@
     };
   }
   function build(team, sims, seed) {
+    const roster = players(team);
+    // A one- or two-player placeholder roster cannot support believable
+    // individual projections. Keep the team simulation, but suppress player
+    // stats until enough real names are available instead of assigning every
+    // snap and tackle to the same person.
+    if (roster.length < 5)
+      return { team, games: [], players: [], rosterIncomplete: true };
     const games = sims
         .filter(Boolean)
         .map((sim, i) => gameStats(team, sim, seed + i * 97)),
