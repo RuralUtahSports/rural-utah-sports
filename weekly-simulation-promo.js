@@ -100,7 +100,7 @@
     loadFullSeason = () =>
       addPair(
         "full-season-panel.js?v=20260824b",
-        "full-season-actions.js?v=20260824-mobile2",
+        "full-season-actions.js?v=20260824-boxscroll1",
         "full-season",
       ),
     loadDynasty = () =>
