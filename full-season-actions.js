@@ -20,7 +20,7 @@
     "season-simulator-score.js?v=20260813e",
     "season-simulator-stats.js?v=20260824-fullseason1",
     "full-season-core.js?v=20260824b",
-    "full-season-rpi.js?v=20260813h",
+    "full-season-rpi.js?v=20260824-ineligible1",
     "full-season-run.js?v=20260813b",
     "full-season-view.js?v=20260813a",
     "full-season-playoffs.js?v=20260813a",
