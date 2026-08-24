@@ -23,7 +23,8 @@
       else if (norm(g.b) === key)
         sims.push({ opponent: g.a, a: g.scoreB, b: g.scoreA });
     }
-    for (const p of (R.playoffs || new Map()).values())
+    for (const p of (R.playoffs || new Map()).values()) {
+      if (p.exhibition) continue;
       for (const round of p.rounds || [])
         for (const g of round.games || []) {
           if (g.bye || !g.a || !g.b) continue;
@@ -32,6 +33,7 @@
           else if (norm(g.b.team) === key)
             sims.push({ opponent: g.a.team, a: g.scoreB, b: g.scoreA });
         }
+    }
     return sims;
   }
   const baseSim = F.simulate;
