@@ -4,7 +4,7 @@ if((location.pathname.split('/').pop()||'').toLowerCase()!=='rankings.html')retu
 if(window.__RUS_STATE25_SPONSOR_REMOVAL__)return;window.__RUS_STATE25_SPONSOR_REMOVAL__=true;
 const cleanText=t=>String(t??'').trim();
 const norm=t=>cleanText(t).toUpperCase().replace(/\s+/g,' ');
-const EXPORT_FIX_VERSION='20260823-cardfix3';
+const EXPORT_FIX_VERSION='20260823-ios-rankbadge-fix1';
 function cacheBust(src){const s=cleanText(src);if(!s)return'';return s+(s.includes('?')?'&':'?')+'rusv='+EXPORT_FIX_VERSION}
 function preferredLogo(team){
   const key=norm(team),A=window.RUSSchoolAssets;
@@ -22,16 +22,38 @@ function installRankingExportCardFix(){
     .rus-export-overall-row{
       background:#151515!important;
       background-image:none!important;
+      border-radius:0!important;
+      clip-path:none!important;
+    }
+    .rus-export-rank-num{
+      border-radius:0!important;
+      clip-path:none!important;
+      overflow:visible!important;
+    }
+    .rus-export-team,
+    .rus-export-team-wrap,
+    .rus-export-team-line{
+      border-radius:0!important;
+      clip-path:none!important;
+      overflow:visible!important;
     }
   `;
   document.head.appendChild(style);
+}
+function flattenExportElement(el){
+  if(!el)return;
+  el.style.setProperty('border-radius','0','important');
+  el.style.setProperty('clip-path','none','important');
+  el.style.setProperty('overflow','visible','important');
 }
 function patchExportBoard(board){
   if(!board?.matches?.('.rus-export-board'))return;
   board.querySelectorAll('.rus-export-rank-item,.rus-export-overall-feature,.rus-export-overall-row').forEach(card=>{
     card.style.setProperty('background','#151515','important');
     card.style.setProperty('background-image','none','important');
+    flattenExportElement(card);
   });
+  board.querySelectorAll('.rus-export-rank-num,.rus-export-team,.rus-export-team-wrap,.rus-export-team-line').forEach(flattenExportElement);
   board.querySelectorAll('img[alt]').forEach(img=>{
     const alt=cleanText(img.getAttribute('alt'));
     const team=alt.replace(/\s+logo$/i,'').trim();
