@@ -55,13 +55,16 @@
     value: Number(p[metric]) || 0,
     p,
   });
-  function leaders(R, metric) {
+  function leaders(R, metric, classification = "ALL") {
     const out = [];
-    for (const [team, d] of R.simulatedStats || [])
+    for (const [team, d] of R.simulatedStats || []) {
+      const teamClass = R.stats.get(team)?.classification || "";
+      if (classification !== "ALL" && teamClass !== classification) continue;
       for (const p of d.players || []) {
         const x = row(p, team, metric);
         if (x.value) out.push(x);
       }
+    }
     return out.sort(
       (a, b) => b.value - a.value || a.name.localeCompare(b.name),
     );
@@ -130,27 +133,42 @@
       '<summary>All-Team Simulated Statistics</summary><div class="fs-collapse-body"></div>';
     const body = section.querySelector(".fs-collapse-body"),
       teams = [...R.simulatedStats.keys()].sort(),
-      top = (title, metric, label) =>
+      classes = ["ALL", "6A", "5A", "4A", "3A", "2A", "1A", "8P"],
+      top = (title, metric, label, classification) =>
         table(
           title,
           ["#", "Player", "Team", label],
-          leaders(R, metric)
+          leaders(R, metric, classification)
             .slice(0, 25)
             .map(
               (x, i) =>
                 `<tr><td>${i + 1}</td><td class="left stat-team">${h(x.name)}</td><td class="left">${h(x.team)}</td><td><strong>${x.value}</strong></td></tr>`,
             ),
         );
-    body.innerHTML = `<p class="note">Simulated totals only. Reported 2026 statistics are not included. Regular-season and simulated playoff games are included.</p><div class="weekly-controls"><div class="field"><label>Team Statistics</label><select id="rusFullStatTeam">${teams.map((t) => `<option>${h(t)}</option>`).join("")}</select></div></div><div id="rusFullStatTeamOut"></div><h3 class="section-title">Statewide Simulated Leaders</h3>${top("Passing Yards", "passY", "Yards")}${top("Rushing Yards", "rushY", "Yards")}${top("Receiving Yards", "recY", "Yards")}${top("Tackles", "tackles", "Tackles")}`;
+    body.innerHTML = `<p class="note">Simulated totals only. Reported 2026 statistics are not included. Regular-season and simulated playoff games are included.</p><div class="weekly-controls"><div class="field"><label>Team Statistics</label><select id="rusFullStatTeam">${teams.map((t) => `<option>${h(t)}</option>`).join("")}</select></div></div><div id="rusFullStatTeamOut"></div><h3 class="section-title">Simulated Stat Leaders</h3><div class="weekly-controls"><div class="field"><label>Classification</label><select id="rusFullStatClass">${classes.map((c) => `<option value="${c}">${c === "ALL" ? "All Classifications" : c === "8P" ? "8-Player" : c}</option>`).join("")}</select></div></div><div id="rusFullStatLeaders"></div>`;
     host.append(section);
     const select = body.querySelector("#rusFullStatTeam"),
       out = body.querySelector("#rusFullStatTeamOut"),
+      classSelect = body.querySelector("#rusFullStatClass"),
+      leaderOut = body.querySelector("#rusFullStatLeaders"),
       draw = () => {
         const d = R.simulatedStats.get(select.value);
         out.innerHTML = `<h3>${h(select.value)} Simulated Season</h3>${d?.players?.length ? playerTables(d) : '<p class="note">No 2026 roster is loaded for this team, so only its simulated game results and team totals are available.</p>'}`;
+      },
+      drawLeaders = () => {
+        const classification = classSelect.value,
+          label =
+            classification === "ALL"
+              ? "Statewide"
+              : classification === "8P"
+                ? "8-Player"
+                : classification;
+        leaderOut.innerHTML = `<h3>${h(label)} Leaders</h3>${top("Passing Yards", "passY", "Yards", classification)}${top("Passing Touchdowns", "passTD", "TD", classification)}${top("Rushing Yards", "rushY", "Yards", classification)}${top("Rushing Touchdowns", "rushTD", "TD", classification)}${top("Receiving Yards", "recY", "Yards", classification)}${top("Receiving Touchdowns", "recTD", "TD", classification)}${top("Tackles", "tackles", "Tackles", classification)}${top("Sacks", "sacks", "Sacks", classification)}${top("Defensive Interceptions", "defInt", "INT", classification)}`;
       };
     select.onchange = draw;
+    classSelect.onchange = drawLeaders;
     draw();
+    drawLeaders();
   }
   const baseRender = F.render;
   F.render = async (R, host, filter = "ALL") => {
