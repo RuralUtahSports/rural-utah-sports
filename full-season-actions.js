@@ -16,6 +16,9 @@
   };
   document.addEventListener("click", early, true);
   const files = [
+    "season-simulator-core.js?v=20260824-fullseason1",
+    "season-simulator-score.js?v=20260813e",
+    "season-simulator-stats.js?v=20260824-fullseason1",
     "full-season-core.js?v=20260824b",
     "full-season-rpi.js?v=20260813h",
     "full-season-run.js?v=20260813b",
@@ -24,7 +27,7 @@
     "full-season-playoff-view.js?v=20260824c",
     "full-season-stats.js?v=20260824c",
     "full-season-colors.js?v=20260813j",
-    "full-season-collapse.js?v=20260813h",
+    "full-season-collapse.js?v=20260824-stats1",
     "full-season-scores.js?v=20260813i",
   ];
   const load = (i) => {
@@ -41,7 +44,12 @@
       status = document.getElementById("fullSeasonStatus"),
       out = document.getElementById("fullSeasonOutput"),
       sim = typeof simulator !== "undefined" ? simulator : window.simulator,
-      simReady = !!sim?.teams && Object.keys(sim.teams).length > 0;
+      seasonEngine = window.RUSSeasonSim,
+      simReady =
+        !!sim?.teams &&
+        Object.keys(sim.teams).length > 0 &&
+        typeof seasonEngine?.score === "function" &&
+        typeof seasonEngine?.buildSimulatedStats === "function";
     if (
       (!F?.simulate ||
         !F?.addRpi ||
