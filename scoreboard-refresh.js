@@ -1,5 +1,5 @@
 (() => {
-  const LEGACY_HELPER = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/219ad376aa2874576e67e68c8fb1b4254d899f6c/scoreboard-refresh.js';
+  const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20260824-wednesday1';
   const LIVE_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
   const WEEKLY_FEED = 'weekly-simulation.json';
   const REFRESH_MS = 15000;
