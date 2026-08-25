@@ -58,7 +58,7 @@ for(const [i,g] of games.entries()){
   }
   for(const team of [away,home])if(team&&!teamSet.has(team)&&!/,[ ]?[A-Z]{2,}$/.test(team)&&!/AMERICAN SAMOA|CANADA/i.test(team))warn('UNKNOWN_TEAM',`Game uses a team not found in teams-data.json: ${team}`,{date});
 }
-for(const [key,indexes] of teamDates)if(indexes.length>1)warn('MULTIPLE_GAMES_SAME_DATE',`${key.split('|').slice(1).join('|')} appears in ${indexes.length} games on ${key.split('|')[0]}.`,{indexes});
+for(const [key,indexes] of teamDates)if(indexes.length>1)error('MULTIPLE_GAMES_SAME_DATE',`${key.split('|').slice(1).join('|')} appears in ${indexes.length} games on ${key.split('|')[0]}.`,{indexes});
 
 const standingRows=[];
 for(const [cls,rows] of Object.entries(standings?.byClassification||{}))for(const row of Array.isArray(rows)?rows:[])standingRows.push({...row,_class:cls});
