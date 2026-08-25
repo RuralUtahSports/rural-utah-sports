@@ -31,27 +31,34 @@ jobs:
           const weekly=read('weekly-simulation.json'),rankings=read('rankings-current-2026.json'),elo=read('elo-summary.json'),teams=read('teams-data.json');
           const season=Number(rankings.season)||2026;
           const rawGames=(weekly.games||[]).filter(g=>String(g.date||'').includes(String(season))&&g.awayTeam&&g.homeTeam);
-          const weekKey=g=>{
-            const s=String(g.date||'').trim();
-            const slash=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-            const iso=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-            let y,mo,d;
-            if(slash){mo=Number(slash[1]);d=Number(slash[2]);y=Number(slash[3]);}
-            else if(iso){y=Number(iso[1]);mo=Number(iso[2]);d=Number(iso[3]);}
-            else return '';
-            const x=new Date(Date.UTC(y,mo-1,d));
+          const weekKeyFromParts=(y,mo,d)=>{
+            const x=new Date(Date.UTC(Number(y),Number(mo)-1,Number(d)));
+            if(!Number.isFinite(x.getTime()))return '';
             const day=x.getUTCDay(),diff=day===0?-6:1-day;
             x.setUTCDate(x.getUTCDate()+diff);
             return `${x.getUTCFullYear()}-${String(x.getUTCMonth()+1).padStart(2,'0')}-${String(x.getUTCDate()).padStart(2,'0')}`;
           };
-          const newestWeek=rawGames.map(weekKey).filter(Boolean).sort().at(-1)||'';
-          const games=newestWeek?rawGames.filter(g=>weekKey(g)===newestWeek):rawGames;
+          const weekKey=g=>{
+            const s=String(g.date||'').trim();
+            const slash=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+            const iso=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+            if(slash)return weekKeyFromParts(slash[3],slash[1],slash[2]);
+            if(iso)return weekKeyFromParts(iso[1],iso[2],iso[3]);
+            return '';
+          };
+          const availableWeeks=[...new Set(rawGames.map(weekKey).filter(Boolean))].sort();
+          const now=new Date();
+          const currentWeek=weekKeyFromParts(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate());
+          const selectedWeek=availableWeeks.includes(currentWeek)
+            ? currentWeek
+            : (availableWeeks.find(k=>k>currentWeek)||availableWeeks.at(-1)||'');
+          const games=selectedWeek?rawGames.filter(g=>weekKey(g)===selectedWeek):rawGames;
           const wanted=new Set();for(const g of games){wanted.add(norm(g.awayTeam));wanted.add(norm(g.homeTeam));}
           const teamData=teams.filter(t=>wanted.has(norm(t.team))).map(t=>({team:t.team,classification:t.classification||'',region:t.region||'',backgroundColor:t.backgroundColor||'',textColor:t.textColor||''}));
           const eloLite={};for(const name of wanted){const key=Object.keys(elo).find(k=>norm(k)===name);if(key&&elo[key])eloLite[name]={currentElo:elo[key].currentElo};}
-          const payload={updatedAt:new Date().toISOString(),season,weekKey:newestWeek,games,rankings:rankings.classifications||{},elo:eloLite,teams:teamData};
+          const payload={updatedAt:new Date().toISOString(),season,weekKey:selectedWeek,games,rankings:rankings.classifications||{},elo:eloLite,teams:teamData};
           fs.writeFileSync('home-week-data.json',JSON.stringify(payload));
-          console.log(`Homepage payload: ${games.length} games from ${newestWeek||'latest available data'}, ${teamData.length} teams`);
+          console.log(`Homepage payload: ${games.length} games from ${selectedWeek||'latest available data'}, ${teamData.length} teams`);
           NODE
       - name: Commit compact payload
         run: |
