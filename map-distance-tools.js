@@ -1,13 +1,183 @@
 (()=>{
 'use strict';
 if((location.pathname.split('/').pop()||'').toLowerCase()!=='map.html')return;
-const ORANGE='#F14D07';let line=null;
-const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');const norm=v=>String(v??'').trim().toUpperCase();const safe=(v,f)=>/^#[0-9a-f]{6}$/i.test(String(v||''))?v:f;
-function miles(a,b){const R=3958.7613,toRad=d=>d*Math.PI/180,lat1=toRad(+a.location.lat),lat2=toRad(+b.location.lat),dLat=lat2-lat1,dLon=toRad(+b.location.lon-(+a.location.lon)),h=Math.sin(dLat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(h))}function fmt(v){return `${v<10?v.toFixed(1):Math.round(v).toLocaleString()} mi`}function pairStats(list){let near=null,far=null;for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++){const d=miles(list[i],list[j]),p={a:list[i],b:list[j],d};if(!near||d<near.d)near=p;if(!far||d>far.d)far=p}return{near,far}}function nearestFrom(t,list){const rows=list.filter(x=>norm(x.team)!==norm(t.team)).map(x=>({team:x,d:miles(t,x)})).sort((a,b)=>a.d-b.d);return{near:rows[0]||null,far:rows[rows.length-1]||null}}
-function addStyles(){if(document.getElementById('rus-distance-style'))return;const s=document.createElement('style');s.id='rus-distance-style';s.textContent=`.rus-distance{background:#000;border:1px solid #333;border-top:4px solid ${ORANGE};border-radius:8px;padding:14px;margin-bottom:14px}.rus-distance h3{font-size:17px;text-transform:uppercase;margin-bottom:4px}.rus-distance>p{font-size:10px;color:#777;margin-bottom:12px;line-height:1.45}.rus-distance-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:9px;align-items:end}.rus-distance label{display:block;color:#888;font-size:9px;font-weight:900;text-transform:uppercase}.rus-distance select,.rus-distance button{margin-top:6px;width:100%;height:42px;border-radius:5px;border:1px solid #444;background:#191919;color:#fff;padding:0 10px;font-weight:800}.rus-distance button{background:${ORANGE};border-color:${ORANGE};color:#000;cursor:pointer;font-weight:900;text-transform:uppercase;min-width:120px}.rus-distance-result{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}.rus-distance-card,.rus-pair{background:linear-gradient(135deg,color-mix(in srgb,var(--school-color,#333) 22%,#151515),#0d0d0d 65%);border:1px solid color-mix(in srgb,var(--school-color,#333) 60%,#333);border-left:5px solid var(--school-color,#333);border-radius:7px;padding:12px}.rus-distance-card span{display:block;color:#777;font-size:8px;text-transform:uppercase;font-weight:900}.rus-distance-card strong{display:block;font-size:17px;margin-top:4px}.rus-distance-card small{display:block;color:#aaa;font-size:10px;margin-top:4px;line-height:1.4}.rus-distance-card a,.rus-pair a{color:#fff;text-decoration:none}.rus-distance-card a:hover,.rus-pair a:hover{color:${ORANGE}}.rus-pair-head{font-size:12px;text-transform:uppercase;margin:18px 0 8px;color:#bbb}.rus-pairs{display:grid;grid-template-columns:1fr 1fr;gap:9px}.rus-pair b{color:${ORANGE};font-size:9px;text-transform:uppercase}.rus-pair strong{display:block;margin-top:7px}.rus-pair span{display:block;color:#888;font-size:10px;margin-top:4px;line-height:1.4}.rus-school-badge{display:inline-flex;align-items:center;gap:7px;margin:5px 8px 2px 0;vertical-align:middle}.rus-school-badge img{width:30px;height:30px;object-fit:contain;background:color-mix(in srgb,var(--school-color,#333) 28%,#111);border:1px solid color-mix(in srgb,var(--school-color,#333) 65%,#444);border-radius:50%;padding:3px}.rus-school-badge em{font-style:normal;font-weight:900;color:#fff}.rus-pair-schools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:5px}.rus-arrow{color:#777;font-weight:900}@media(max-width:760px){.rus-distance-grid{grid-template-columns:1fr}.rus-distance-result{grid-template-columns:1fr}.rus-pairs{grid-template-columns:1fr}}`;document.head.appendChild(s)}
-function optionHTML(list){return `<option value="">Choose school</option>${list.map(t=>`<option value="${esc(t.team)}">${esc(t.team)} (${esc(t.classification||'')})</option>`).join('')}`}
-function teamColor(t){return safe(t?.backgroundColor||t?.primaryColor,'#444444')}function teamLogo(t){return window.RUSSchoolAssets?.logoUrl?RUSSchoolAssets.logoUrl(t.team,t.location):''}function badge(t){const c=teamColor(t),l=teamLogo(t);return `<span class="rus-school-badge" style="--school-color:${c}">${l?`<img src="${esc(l)}" alt="${esc(t.team)} logo" onerror="this.style.display='none'">`:''}<em>${esc(t.team)}</em></span>`}function teamLink(t){return `<a href="team.html?team=${encodeURIComponent(t.team)}">${badge(t)}</a>`}
-function draw(a,b){if(typeof L==='undefined'||typeof map==='undefined')return;if(line){try{map.removeLayer(line)}catch{}line=null}line=L.polyline([[+a.location.lat,+a.location.lon],[+b.location.lat,+b.location.lon]],{color:ORANGE,weight:4,opacity:.9,dashArray:'8 7'}).addTo(map);map.fitBounds(line.getBounds(),{padding:[60,60],maxZoom:10})}
-function pairCard(label,p){if(!p)return'';return `<div class="rus-pair" style="--school-color:${teamColor(p.a)}"><b>${label}</b><div class="rus-pair-schools">${teamLink(p.a)}<span class="rus-arrow">↔</span>${teamLink(p.b)}</div><span>${fmt(p.d)} apart</span></div>`}
-function install(){if(typeof teams==='undefined'||!Array.isArray(teams)||!teams.length||!document.querySelector('.toolbar')||typeof map==='undefined'){setTimeout(install,150);return}if(document.getElementById('rusDistanceTools'))return;addStyles();const host=document.createElement('section');host.className='rus-distance';host.id='rusDistanceTools';host.innerHTML=`<h3>School Distance Calculator</h3><p>Choose two football schools to compare campus-to-campus straight-line distance. This is geographic distance, not driving mileage.</p><div class="rus-distance-grid"><label>School A<select id="rusFrom">${optionHTML(teams)}</select></label><label>School B<select id="rusTo">${optionHTML(teams)}</select></label><button type="button" id="rusCalc">Calculate</button></div><div id="rusDistanceResult"></div><div class="rus-pair-head">Statewide Distance Extremes</div><div class="rus-pairs" id="rusPairs"></div>`;document.querySelector('.toolbar').insertAdjacentElement('afterend',host);const pairs=pairStats(teams);document.getElementById('rusPairs').innerHTML=pairCard('Closest Schools',pairs.near)+pairCard('Farthest Schools',pairs.far);const from=document.getElementById('rusFrom'),to=document.getElementById('rusTo');function calculate(){const a=teams.find(t=>norm(t.team)===norm(from.value)),b=teams.find(t=>norm(t.team)===norm(to.value)),out=document.getElementById('rusDistanceResult');if(!a||!b){out.innerHTML='<div class="rus-distance-card" style="margin-top:12px"><small>Choose two schools to calculate a distance.</small></div>';return}if(norm(a.team)===norm(b.team)){out.innerHTML='<div class="rus-distance-card" style="margin-top:12px"><small>Choose two different schools.</small></div>';return}const d=miles(a,b),fs=nearestFrom(a,teams);out.innerHTML=`<div class="rus-distance-result"><div class="rus-distance-card" style="--school-color:${teamColor(a)}"><span>Distance</span><strong>${fmt(d)}</strong><small>${teamLink(a)} to ${teamLink(b)}</small></div><div class="rus-distance-card" style="--school-color:${teamColor(fs.near?.team)}"><span>Closest to ${esc(a.team)}</span><strong>${fs.near?fmt(fs.near.d):'—'}</strong><small>${fs.near?teamLink(fs.near.team):'—'}</small></div><div class="rus-distance-card" style="--school-color:${teamColor(fs.far?.team)}"><span>Farthest from ${esc(a.team)}</span><strong>${fs.far?fmt(fs.far.d):'—'}</strong><small>${fs.far?teamLink(fs.far.team):'—'}</small></div></div>`;draw(a,b)}document.getElementById('rusCalc').addEventListener('click',calculate);from.addEventListener('change',()=>{if(to.value)calculate()});to.addEventListener('change',()=>{if(from.value)calculate()});const wanted=new URLSearchParams(location.search).get('team');if(wanted&&teams.some(t=>norm(t.team)===norm(wanted)))from.value=teams.find(t=>norm(t.team)===norm(wanted)).team}install();
+
+const ORANGE='#F14D07';
+const norm=v=>String(v??'').trim().toUpperCase();
+const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+const state={active:false,selected:[],layers:[],popupState:new Map(),installed:false};
+
+function miles(a,b){
+  const R=3958.7613,toRad=d=>d*Math.PI/180;
+  const lat1=toRad(+a.location.lat),lat2=toRad(+b.location.lat);
+  const dLat=lat2-lat1,dLon=toRad(+b.location.lon-(+a.location.lon));
+  const h=Math.sin(dLat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.min(1,Math.sqrt(h)));
+}
+function fmt(v){return `${v<10?v.toFixed(1):Math.round(v).toLocaleString()} mi`}
+function api(){return window.RUSFootballMap||null}
+function teamByName(name){return api()?.teams?.find(t=>norm(t.team)===norm(name))||null}
+
+function addStyles(){
+  if(document.getElementById('rus-measure-style'))return;
+  const style=document.createElement('style');
+  style.id='rus-measure-style';
+  style.textContent=`
+.rus-measure{background:#000;border:1px solid #333;border-top:4px solid ${ORANGE};border-radius:8px;padding:11px 12px;margin-bottom:14px}
+.rus-measure-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rus-measure-copy{min-width:0}.rus-measure-copy strong{display:block;font-size:14px;text-transform:uppercase}.rus-measure-copy span{display:block;color:#888;font-size:9px;line-height:1.4;margin-top:3px}
+.rus-measure-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.rus-measure button{min-height:38px;border-radius:5px;border:1px solid #444;background:#191919;color:#fff;padding:0 11px;font-size:9px;font-weight:900;text-transform:uppercase;cursor:pointer}.rus-measure-toggle{background:${ORANGE}!important;border-color:${ORANGE}!important;color:#000!important}.rus-measure-toggle.active{background:#fff!important;border-color:#fff!important}.rus-measure button:disabled{opacity:.45;cursor:not-allowed}
+.rus-measure-summary{display:grid;grid-template-columns:minmax(180px,.62fr) minmax(0,1.38fr);gap:9px;margin-top:10px}.rus-measure-total,.rus-measure-route{background:#121212;border:1px solid #2f2f2f;border-radius:7px;padding:10px}.rus-measure-total span{display:block;color:#777;font-size:8px;font-weight:900;text-transform:uppercase}.rus-measure-total strong{display:block;color:${ORANGE};font-size:25px;line-height:1;margin-top:5px}.rus-measure-total small{display:block;color:#888;font-size:9px;line-height:1.35;margin-top:5px}
+.rus-measure-schools{display:flex;gap:6px;flex-wrap:wrap}.rus-measure-chip{display:inline-flex!important;align-items:center;gap:5px;min-height:28px!important;height:auto!important;border-color:#3b3b3b!important;border-radius:999px!important;padding:5px 8px!important;background:#1a1a1a!important;text-transform:none!important;font-size:9px!important}.rus-measure-chip b{color:${ORANGE}}.rus-measure-chip span{color:#fff}.rus-measure-chip em{font-style:normal;color:#777;font-size:11px}.rus-measure-chip:hover{border-color:${ORANGE}!important}.rus-measure-legs{margin-top:8px;border-top:1px solid #2d2d2d;padding-top:7px;display:grid;gap:5px}.rus-measure-leg{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;font-size:9px;color:#aaa}.rus-measure-leg b{color:#fff;font-size:9px}.rus-measure-leg strong{color:${ORANGE};white-space:nowrap}.rus-measure-empty{color:#888;font-size:9px;line-height:1.4}
+.rus-measure-pin-selected .rus-pin{box-shadow:0 0 0 3px #fff,0 0 0 6px ${ORANGE},0 2px 7px rgba(0,0,0,.5)}.school.rus-measure-school-selected{background:#202020;box-shadow:inset 0 0 0 1px ${ORANGE}}
+.rus-measure-label{background:transparent!important;border:0!important}.rus-measure-label span{display:block;background:#050505;color:#fff;border:1px solid ${ORANGE};border-radius:999px;padding:3px 6px;font:900 9px Arial,Helvetica,sans-serif;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.55)}
+@media(max-width:650px){.rus-measure{padding:9px}.rus-measure-head{align-items:flex-start;flex-direction:column}.rus-measure-actions{width:100%;display:grid;grid-template-columns:1fr auto}.rus-measure button{min-height:42px}.rus-measure-summary{grid-template-columns:1fr}.rus-measure-total strong{font-size:22px}}
+`;
+  document.head.appendChild(style);
+}
+
+function hostHTML(){
+  return `<div class="rus-measure-head"><div class="rus-measure-copy"><strong>Straight-Line Distance</strong><span id="rusMeasureStatus">Tap Measure Distance, then select schools on the map or school list.</span></div><div class="rus-measure-actions"><button type="button" class="rus-measure-toggle" id="rusMeasureToggle">Measure Distance</button><button type="button" id="rusMeasureClear" disabled>Clear</button></div></div><div id="rusMeasureSummary"></div>`;
+}
+
+function clearLayers(){
+  const m=api()?.map;
+  if(m)state.layers.forEach(layer=>{try{m.removeLayer(layer)}catch{}});
+  state.layers=[];
+}
+
+function restorePopups(){
+  const data=api();
+  if(!data)return;
+  data.markers.forEach((marker,key)=>{
+    const saved=state.popupState.get(key);
+    if(saved&&!marker.getPopup())marker.bindPopup(saved.content,saved.options);
+  });
+  state.popupState.clear();
+}
+
+function suppressPopups(){
+  const data=api();
+  if(!data)return;
+  data.map.closePopup();
+  data.markers.forEach((marker,key)=>{
+    const popup=marker.getPopup();
+    if(!popup||state.popupState.has(key))return;
+    state.popupState.set(key,{content:popup.getContent(),options:{...popup.options}});
+    marker.unbindPopup();
+  });
+}
+
+function setActive(on){
+  state.active=!!on;
+  const toggle=document.getElementById('rusMeasureToggle');
+  if(toggle){toggle.classList.toggle('active',state.active);toggle.textContent=state.active?'Done Measuring':'Measure Distance';toggle.setAttribute('aria-pressed',String(state.active))}
+  if(state.active)suppressPopups();else restorePopups();
+  updateStatus();
+}
+
+function updateStatus(message=''){
+  const el=document.getElementById('rusMeasureStatus');
+  if(!el)return;
+  if(message){el.textContent=message;return}
+  if(state.active)el.textContent=state.selected.length?'Select another school to add the next straight-line segment.':'Select the first school on the map or school list.';
+  else if(state.selected.length>=2)el.textContent='Measurement complete. Turn Measure Distance back on to add more schools.';
+  else el.textContent='Tap Measure Distance, then select schools on the map or school list.';
+}
+
+function refreshHighlights(){
+  const data=api();if(!data)return;
+  const selected=new Set(state.selected.map(t=>norm(t.team)));
+  data.markers.forEach((marker,key)=>marker.getElement()?.classList.toggle('rus-measure-pin-selected',selected.has(key)));
+  document.querySelectorAll('.school[data-team]').forEach(el=>el.classList.toggle('rus-measure-school-selected',selected.has(norm(el.dataset.team))));
+}
+
+function drawRoute(){
+  clearLayers();
+  const data=api();
+  if(!data||state.selected.length<2)return;
+  const pts=state.selected.map(t=>[+t.location.lat,+t.location.lon]);
+  for(let i=1;i<state.selected.length;i++){
+    const a=state.selected[i-1],b=state.selected[i],latlngs=[[+a.location.lat,+a.location.lon],[+b.location.lat,+b.location.lon]];
+    const casing=L.polyline(latlngs,{color:'#fff',weight:7,opacity:.72,interactive:false}).addTo(data.map);
+    const line=L.polyline(latlngs,{color:ORANGE,weight:4,opacity:1,interactive:false}).addTo(data.map);
+    const mid=[(+a.location.lat + +b.location.lat)/2,(+a.location.lon + +b.location.lon)/2];
+    const label=L.marker(mid,{interactive:false,keyboard:false,icon:L.divIcon({className:'rus-measure-label',html:`<span>${fmt(miles(a,b))}</span>`,iconSize:null})}).addTo(data.map);
+    state.layers.push(casing,line,label);
+  }
+  data.map.fitBounds(L.latLngBounds(pts),{padding:[55,55],maxZoom:10});
+}
+
+function renderSummary(){
+  const out=document.getElementById('rusMeasureSummary'),clear=document.getElementById('rusMeasureClear');
+  if(!out)return;
+  if(clear)clear.disabled=!state.selected.length;
+  if(!state.selected.length){out.innerHTML='';refreshHighlights();return}
+  let total=0,legs='';
+  for(let i=1;i<state.selected.length;i++){
+    const d=miles(state.selected[i-1],state.selected[i]);total+=d;
+    legs+=`<div class="rus-measure-leg"><div><b>${esc(state.selected[i-1].team)}</b> → <b>${esc(state.selected[i].team)}</b></div><strong>${fmt(d)}</strong></div>`;
+  }
+  const chips=state.selected.map((t,i)=>`<button type="button" class="rus-measure-chip" data-remove="${esc(t.team)}" title="Remove ${esc(t.team)}"><b>${i+1}</b><span>${esc(t.team)}</span><em>×</em></button>`).join('');
+  out.innerHTML=`<div class="rus-measure-summary"><div class="rus-measure-total"><span>${state.selected.length>=2?'Total Straight-Line Distance':'Starting School'}</span><strong>${state.selected.length>=2?fmt(total):esc(state.selected[0].team)}</strong><small>${state.selected.length>=2?`${state.selected.length} schools • ${state.selected.length-1} segment${state.selected.length===2?'':'s'}`:'Select another school to calculate distance.'}</small></div><div class="rus-measure-route"><div class="rus-measure-schools">${chips}</div>${legs?`<div class="rus-measure-legs">${legs}</div>`:'<div class="rus-measure-empty" style="margin-top:7px">Your selected schools will connect in the order you tap them.</div>'}</div></div>`;
+  out.querySelectorAll('[data-remove]').forEach(btn=>btn.addEventListener('click',()=>removeSchool(btn.dataset.remove)));
+  refreshHighlights();
+}
+
+function addSchool(name){
+  const t=teamByName(name);if(!t)return;
+  if(state.selected.some(x=>norm(x.team)===norm(t.team))){updateStatus(`${t.team} is already in this measurement.`);return}
+  state.selected.push(t);
+  renderSummary();drawRoute();
+  if(state.selected.length===1)api()?.map?.panTo([+t.location.lat,+t.location.lon]);
+  updateStatus();
+}
+
+function removeSchool(name){
+  state.selected=state.selected.filter(t=>norm(t.team)!==norm(name));
+  renderSummary();drawRoute();updateStatus();
+}
+
+function clearAll(){
+  state.selected=[];clearLayers();renderSummary();updateStatus();
+}
+
+function bindMarkerClicks(){
+  const data=api();if(!data)return;
+  data.markers.forEach((marker,key)=>{
+    if(marker.__rusMeasureBound)return;
+    marker.__rusMeasureBound=true;
+    marker.on('click',()=>{if(!state.active)return;addSchool(key);data.map.closePopup()});
+  });
+}
+
+function bindSchoolList(){
+  const list=document.getElementById('schoolList');if(!list||list.__rusMeasureBound)return;
+  list.__rusMeasureBound=true;
+  list.addEventListener('click',e=>{
+    if(!state.active)return;
+    const row=e.target.closest('.school[data-team]');if(!row||!list.contains(row))return;
+    e.preventDefault();e.stopImmediatePropagation();addSchool(row.dataset.team);
+  },true);
+  const observer=new MutationObserver(()=>refreshHighlights());
+  observer.observe(list,{childList:true,subtree:true});
+}
+
+function install(){
+  const data=api(),toolbar=document.querySelector('.toolbar');
+  if(!data?.map||!data?.teams?.length||!data?.markers||!toolbar)return false;
+  if(state.installed)return true;
+  state.installed=true;addStyles();
+  const host=document.createElement('section');host.className='rus-measure';host.id='rusMeasureTools';host.innerHTML=hostHTML();toolbar.insertAdjacentElement('afterend',host);
+  document.getElementById('rusMeasureToggle').addEventListener('click',()=>setActive(!state.active));
+  document.getElementById('rusMeasureClear').addEventListener('click',clearAll);
+  bindMarkerClicks();bindSchoolList();renderSummary();updateStatus();
+  window.RUSMapDistance={clear:clearAll,start:()=>setActive(true),stop:()=>setActive(false),getSelected:()=>state.selected.map(t=>t.team)};
+  return true;
+}
+
+if(!install()){
+  window.addEventListener('rus-football-map-ready',install,{once:true});
+  let tries=0;const timer=setInterval(()=>{tries++;if(install()||tries>80)clearInterval(timer)},125);
+}
 })();
