@@ -1,81 +1,29 @@
 name: Build ELO Summary
 
+# Compatibility launcher only. The verified clean-ELO workflow is the sole owner
+# of elo-summary.json, elo-live-summary.json, team-elo-history.json and ELO fields
+# inside team-page-data. Keeping this workflow manual preserves the old Actions
+# entry point without allowing a legacy calculation to overwrite verified data.
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'team-elo-history.json'
-      - '.github/workflows/build-elo-summary.yml'
 
 permissions:
-  contents: write
+  actions: write
+  contents: read
 
 concurrency:
-  group: elo-summary-sync
+  group: elo-summary-compat
   cancel-in-progress: true
 
 jobs:
-  build:
+  dispatch-clean-elo:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build compact ELO summary
+      - name: Dispatch verified clean ELO rebuild
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const history = JSON.parse(fs.readFileSync('team-elo-history.json', 'utf8'));
-          const summary = {};
-
-          for (const [team, rowsRaw] of Object.entries(history)) {
-            const rows = Array.isArray(rowsRaw) ? rowsRaw.filter(r => Number.isFinite(Number(r?.eloAfter))) : [];
-            if (!rows.length) continue;
-
-            const latest = rows[rows.length - 1];
-            const previous = rows.length > 1 ? rows[rows.length - 2] : null;
-            const latestElo = Number(latest.eloAfter);
-            const before = Number.isFinite(Number(latest.eloBefore))
-              ? Number(latest.eloBefore)
-              : previous && Number.isFinite(Number(previous.eloAfter))
-                ? Number(previous.eloAfter)
-                : latestElo;
-            const change = Number.isFinite(Number(latest.change))
-              ? Number(latest.change)
-              : latestElo - before;
-            let peak = rows[0];
-            for (const row of rows) {
-              if (Number(row.eloAfter) > Number(peak.eloAfter)) peak = row;
-            }
-
-            summary[team] = {
-              currentElo: latestElo,
-              currentChange: change,
-              currentEloBefore: before,
-              currentDate: latest.date || '',
-              currentOpponent: latest.opponent || '',
-              currentResult: latest.result || '',
-              peakElo: Number(peak.eloAfter),
-              peakDate: peak.date || '',
-              peakSeason: Number(peak.season) || null,
-              peakOpponent: peak.opponent || '',
-              peakResult: peak.result || ''
-            };
-          }
-
-          fs.writeFileSync('elo-summary.json', JSON.stringify(summary));
-          console.log(`ELO summaries generated: ${Object.keys(summary).length}`);
-          if (!Object.keys(summary).length) throw new Error('No ELO summary rows generated.');
-          NODE
-
-      - name: Commit ELO summary
-        run: |
-          git config user.name "RuralUtahSports"
-          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add elo-summary.json
-          if git diff --cached --quiet; then
-            echo "ELO summary is already current."
-          else
-            git commit -m "Auto-sync ELO summary"
-            git push
-          fi
+          gh api --method POST \
+            repos/${{ github.repository }}/actions/workflows/build-clean-elo-v2.yml/dispatches \
+            -f ref=main
+          echo "Build Clean Live ELO dispatched; legacy summary writer is disabled."
