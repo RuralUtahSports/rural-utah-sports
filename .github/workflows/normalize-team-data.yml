@@ -2,12 +2,11 @@ name: Normalize Team Data
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '20 * * * *'
+  workflow_run:
+    workflows: ["Sync Website Data From Google Sheet"]
+    types: [completed]
   push:
     paths:
-      - 'team-schedules.json'
-      - 'team-elo-history.json'
       - 'scripts/normalize_team_data.py'
       - '.github/workflows/normalize-team-data.yml'
 
@@ -16,13 +15,17 @@ permissions:
 
 concurrency:
   group: normalize-team-data
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   normalize:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Remove duplicate generated games
         run: python scripts/normalize_team_data.py
       - name: Verify Wasatch Academy and duplicate cleanup
@@ -41,20 +44,20 @@ jobs:
             seen.add(k)
           print('North Sanpete schedule aliases and duplicates verified')
           PY
-      - name: Commit normalized data
+      - name: Commit normalized schedule data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add team-schedules.json team-record-breakdowns.json team-elo-history.json team-page-data duplicate-cleanup-report.json
+          git add team-schedules.json team-record-breakdowns.json team-page-data duplicate-cleanup-report.json
           if git diff --cached --quiet; then
-            echo "Generated team data is already normalized."
+            echo "Generated schedule data is already normalized."
             exit 0
           fi
-          git commit -m "Normalize and deduplicate generated team data"
+          git commit -m "Normalize and deduplicate generated schedule data"
           ok=0
           for attempt in 1 2 3 4; do
             echo "Push attempt $attempt"
             if git pull --rebase origin main && git push; then ok=1; break; fi
             sleep 10
           done
-          if [ "$ok" -ne 1 ]; then echo "Unable to push normalized data after retries"; exit 1; fi
+          if [ "$ok" -ne 1 ]; then echo "Unable to push normalized schedule data after retries"; exit 1; fi
