@@ -1,44 +1,28 @@
 name: Build Live ELO Summary
 
+# Compatibility launcher only. Build Clean Live ELO is the sole writer for the
+# current ELO outputs. This prevents the older summary path from overwriting
+# verified 2026 ELO after another workflow changes team-elo-history.json.
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'team-elo-history.json'
-      - '.github/workflows/build-elo-live-summary.yml'
 
 permissions:
-  contents: write
+  actions: write
+  contents: read
 
 concurrency:
-  group: live-elo-summary
+  group: live-elo-summary-compat
   cancel-in-progress: true
 
 jobs:
-  build:
+  dispatch-clean-elo:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build compact current ELO data
+      - name: Dispatch verified clean ELO rebuild
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          node <<'NODE'
-          const fs=require('fs');
-          const h=JSON.parse(fs.readFileSync('team-elo-history.json','utf8'));
-          const out={updatedAt:new Date().toISOString(),teams:{}};
-          for(const [team,rows] of Object.entries(h||{})){
-            if(!Array.isArray(rows)||!rows.length)continue;
-            const r=rows[rows.length-1];
-            out.teams[team]={currentElo:r.eloAfter,eloBefore:r.eloBefore,change:r.change,date:r.date,opponent:r.opponent,result:r.result};
-          }
-          fs.writeFileSync('elo-live-summary.json',JSON.stringify(out));
-          console.log(`Live ELO rows: ${Object.keys(out.teams).length}`);
-          NODE
-      - name: Commit compact ELO data
-        run: |
-          git config user.name "RuralUtahSports"
-          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add elo-live-summary.json
-          if git diff --cached --quiet; then echo "Live ELO summary current."; exit 0; fi
-          git commit -m "Update lightweight live ELO summary"
-          git pull --rebase origin main
-          git push
+          gh api --method POST \
+            repos/${{ github.repository }}/actions/workflows/build-clean-elo-v2.yml/dispatches \
+            -f ref=main
+          echo "Build Clean Live ELO dispatched; legacy live-summary writer is disabled."
