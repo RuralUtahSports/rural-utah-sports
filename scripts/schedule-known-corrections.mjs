@@ -229,6 +229,13 @@ const forfeitGames = new Set([
   'KANAB|GRAND|10/17/2025'
 ]);
 
+// Verified games missing entirely from the Clean Games sheet. Keep these in
+// the correction layer so the hourly sheet sync cannot erase them again.
+const ensuredGames = [
+  { team: 'ALA', season: '2025', date: '10/24/2025', opponent: 'SOUTH SUMMIT', teamScore: 20, opponentScore: 55, result: 'L', playoff: true },
+  { team: 'SOUTH SUMMIT', season: '2025', date: '10/24/2025', opponent: 'ALA', teamScore: 55, opponentScore: 20, result: 'W', playoff: true }
+];
+
 if (!fs.existsSync(FILE)) throw new Error(`${FILE} not found`);
 const schedules = JSON.parse(fs.readFileSync(FILE, 'utf8'));
 
@@ -237,6 +244,7 @@ let datesFixed = 0;
 let scoresFixed = 0;
 let dropped = 0;
 let forfeitsMarked = 0;
+let gamesEnsured = 0;
 let changed = false;
 const affectedTeams = new Set();
 
@@ -318,6 +326,32 @@ for (const [rawTeam, seasons] of Object.entries(schedules)) {
   }
 }
 
+for (const source of ensuredGames) {
+  const team = canonical(source.team);
+  const season = String(source.season);
+  const games = schedules[team]?.[season];
+  if (!Array.isArray(games)) continue;
+  const exists = games.some(game =>
+    canonical(game.opponent) === canonical(source.opponent) &&
+    clean(game.date) === source.date &&
+    Number(game.teamScore) === source.teamScore &&
+    Number(game.opponentScore) === source.opponentScore
+  );
+  if (exists) continue;
+  games.push({
+    date: source.date,
+    opponent: canonical(source.opponent),
+    teamScore: source.teamScore,
+    opponentScore: source.opponentScore,
+    result: source.result,
+    playoff: source.playoff
+  });
+  games.sort((a, b) => dateValue(a.date) - dateValue(b.date));
+  gamesEnsured++;
+  changed = true;
+  affectedTeams.add(team);
+}
+
 if (changed) fs.writeFileSync(FILE, JSON.stringify(schedules) + '\n');
 
 console.log('Known schedule correction layer complete.');
@@ -326,5 +360,6 @@ console.log(`Verified dates corrected: ${datesFixed}`);
 console.log(`Verified scores corrected: ${scoresFixed}`);
 console.log(`Known bad rows removed: ${dropped}`);
 console.log(`Forfeit notes applied: ${forfeitsMarked}`);
+console.log(`Verified missing games restored: ${gamesEnsured}`);
 console.log(`Teams affected: ${affectedTeams.size}`);
 if (affectedTeams.size) console.log([...affectedTeams].sort().join(', '));

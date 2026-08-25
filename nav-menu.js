@@ -242,7 +242,7 @@
     }
     if (path === "records.html") {
       addScript(
-        "record-watch-filter.js?v=20260815a",
+        "record-watch-filter.js?v=20260825-dedupe1",
         "rusRecordWatchFilter",
         true,
       );
@@ -298,7 +298,7 @@
         true,
       );
       addScript(
-        "record-watch-filter.js?v=20260815a",
+        "record-watch-filter.js?v=20260825-dedupe1",
         "rusRecordWatchFilter",
         true,
       );

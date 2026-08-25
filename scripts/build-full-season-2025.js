@@ -66,6 +66,12 @@ games=games.filter((_,i)=>!remove.has(i)).map(g=>{
   return {...g,regionGame};
 });
 
+// This 2A playoff final is absent from both the source score archive and the
+// bracket import, so preserve it explicitly in the complete 2025 results.
+const alaSouthSummitPlayoff={date:'10/24/2025',teamA:'SOUTH SUMMIT',teamB:'ALA',actualScoreA:55,actualScoreB:20,regionGame:false,playoff:true};
+if(!games.some(g=>exactKey(g.teamA,g.teamB,g.actualScoreA,g.actualScoreB)===exactKey(alaSouthSummitPlayoff.teamA,alaSouthSummitPlayoff.teamB,alaSouthSummitPlayoff.actualScoreA,alaSouthSummitPlayoff.actualScoreB)))games.push(alaSouthSummitPlayoff);
+games.sort((a,b)=>timeOf(a.date)-timeOf(b.date)||a.teamA.localeCompare(b.teamA));
+
 const out={season:YEAR,generatedAt:new Date().toISOString(),teams:[...aligned].sort(),games};
 fs.writeFileSync('full-season-2025.json',JSON.stringify(out));
 console.log(`Built ${games.length} regular-season games for ${aligned.size} aligned programs.`);

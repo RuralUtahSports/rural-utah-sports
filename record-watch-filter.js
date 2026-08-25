@@ -43,7 +43,7 @@
     };
 
     function currentWinStreak(team,base){
-      const t=norm(team),games=seasonGames.filter(g=>norm(g.awayTeam)===t||norm(g.homeTeam)===t).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+      const t=norm(team),through=Date.parse(String(base?.currentWinStreak?.endDate||'')),games=seasonGames.filter(g=>(norm(g.awayTeam)===t||norm(g.homeTeam)===t)&&(!Number.isFinite(through)||Date.parse(String(g.date||''))>through)).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
       if(!games.length)return Number(base?.currentWinStreak?.length)||0;
       let current=Number(base?.currentWinStreak?.length)||0;
       for(const g of games){
