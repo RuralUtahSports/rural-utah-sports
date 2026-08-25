@@ -23,7 +23,16 @@ function atLeast(value,minimum){
   return Number.isFinite(current)&&current>=minimum?clean(value):String(minimum);
 }
 
+function matchesWhenValue(value,correction){
+  if(!Object.prototype.hasOwnProperty.call(correction,'whenValue'))return true;
+  const current=clean(value),expected=clean(correction.whenValue);
+  const currentNumber=Number(current),expectedNumber=Number(expected);
+  if(current!==''&&expected!==''&&Number.isFinite(currentNumber)&&Number.isFinite(expectedNumber))return currentNumber===expectedNumber;
+  return current===expected;
+}
+
 function correctedValue(value,correction){
+  if(!matchesWhenValue(value,correction))return clean(value);
   if(Object.prototype.hasOwnProperty.call(correction,'exactValue'))return String(correction.exactValue);
   return atLeast(value,Number(correction.minimumValue)||0);
 }
