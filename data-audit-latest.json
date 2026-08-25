@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-25T19:24:17.602Z",
+  "generatedAt": "2026-08-25T19:39:55.020Z",
   "summary": {
-    "errors": 1,
+    "errors": 0,
     "warnings": 12,
     "info": 1
   },
@@ -103,23 +103,12 @@
       }
     },
     {
-      "severity": "error",
-      "code": "MULTIPLE_GAMES_SAME_DATE",
-      "message": "ROY appears in 2 games on 10/07/2026.",
-      "context": {
-        "indexes": [
-          366,
-          367
-        ]
-      }
-    },
-    {
       "severity": "info",
       "code": "AUDIT_COUNTS",
       "message": "Audit input counts.",
       "context": {
         "teams": 118,
-        "games": 604,
+        "games": 603,
         "standings": 118,
         "rankedTeams": 68,
         "playerIds": 6396

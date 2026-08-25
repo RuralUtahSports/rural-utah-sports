@@ -1,12 +1,8 @@
 # RUS Football Data Audit
 
-Generated: 2026-08-25T19:24:17.602Z
+Generated: 2026-08-25T19:39:55.020Z
 
-**1 errors • 12 warnings**
-
-## Errors (1)
-
-- **MULTIPLE_GAMES_SAME_DATE** — ROY appears in 2 games on 10/07/2026. `{"indexes":[366,367]}`
+**0 errors • 12 warnings**
 
 ## Warnings (12)
 
@@ -25,5 +21,5 @@ Generated: 2026-08-25T19:24:17.602Z
 
 ## Infos (1)
 
-- **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":604,"standings":118,"rankedTeams":68,"playerIds":6396}`
+- **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":603,"standings":118,"rankedTeams":68,"playerIds":6396}`
 
