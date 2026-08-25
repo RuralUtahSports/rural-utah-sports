@@ -6,7 +6,6 @@ on:
     - cron: '*/15 * * * *'
   push:
     paths:
-      - 'team-elo-history.json'
       - 'scripts/update-alltime-team-records.mjs'
       - '.github/workflows/update-alltime-team-records.yml'
 
@@ -15,7 +14,7 @@ permissions:
 
 concurrency:
   group: alltime-team-records
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   update:
