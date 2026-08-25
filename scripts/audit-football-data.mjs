@@ -8,6 +8,8 @@ const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
 const num=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
 const ALIASES={'MONUMENT VAL':'MONUMENT VALLEY'};
 const canonical=v=>ALIASES[norm(v)]||norm(v);
+const isJuniorVarsity=v=>/(^|\s)J\.?V\.?(\s|$)|JUNIOR\s+VARSITY/i.test(norm(v));
+const isOutOfState=v=>/,[ ]?[A-Z]{2}$/.test(norm(v))||/AMERICAN SAMOA|CANADA/i.test(norm(v));
 const parseJSON=file=>{try{return JSON.parse(fs.readFileSync(file,'utf8'))}catch(e){error('INVALID_JSON',`${file} could not be parsed: ${e.message}`);return null}};
 const exists=file=>fs.existsSync(file);
 const required=['teams-data.json','weekly-simulation.json','standings-2026.json','rankings-current-2026.json','elo-summary.json','deseret-rosters-stats-2026.json'];
@@ -56,7 +58,7 @@ for(const [i,g] of games.entries()){
     if(g?.actualWinner&&norm(g.actualWinner)!==winner)warn('FINAL_WINNER_MISMATCH',`actualWinner does not match the final score for ${away} vs ${home}.`,{date,stored:g.actualWinner,calculated:winner});
     addRec(away,aa===ah?'T':aa>ah?'W':'L');addRec(home,aa===ah?'T':ah>aa?'W':'L');
   }
-  for(const team of [away,home])if(team&&!teamSet.has(team)&&!/,[ ]?[A-Z]{2,}$/.test(team)&&!/AMERICAN SAMOA|CANADA/i.test(team))warn('UNKNOWN_TEAM',`Game uses a team not found in teams-data.json: ${team}`,{date});
+  for(const team of [away,home])if(team&&!teamSet.has(team)&&!isOutOfState(team)&&!isJuniorVarsity(team))warn('UNKNOWN_TEAM',`Game uses a team not found in teams-data.json: ${team}`,{date});
 }
 for(const [key,indexes] of teamDates)if(indexes.length>1)error('MULTIPLE_GAMES_SAME_DATE',`${key.split('|').slice(1).join('|')} appears in ${indexes.length} games on ${key.split('|')[0]}.`,{indexes});
 
