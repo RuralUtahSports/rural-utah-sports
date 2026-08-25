@@ -12,11 +12,20 @@ function wpParseDate(value){
   return{y:d.getFullYear(),m:d.getMonth()+1,d:d.getDate()};
 }
 function wpYmdKey(p){return p?p.y*10000+p.m*100+p.d:0}
-function wpMondayKey(p){
+function wpDateKey(d){return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`}
+function wpCurrentFootballWeekKey(p){
   if(!p)return'';
-  const d=new Date(Date.UTC(p.y,p.m-1,p.d)),day=d.getUTCDay(),diff=day===0?-6:1-day;
-  d.setUTCDate(d.getUTCDate()+diff);
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+  const d=new Date(Date.UTC(p.y,p.m-1,p.d)),day=d.getUTCDay();
+  if(day>=1&&day<=3)d.setUTCDate(d.getUTCDate()+(4-day));
+  else d.setUTCDate(d.getUTCDate()-(day===0?3:day-4));
+  return wpDateKey(d);
+}
+function wpGameFootballWeekKey(p){
+  if(!p)return'';
+  const d=new Date(Date.UTC(p.y,p.m-1,p.d)),day=d.getUTCDay();
+  if(day===3)d.setUTCDate(d.getUTCDate()+1);
+  else d.setUTCDate(d.getUTCDate()-((day+3)%7));
+  return wpDateKey(d);
 }
 function wpMountainParts(){
   const parts=new Intl.DateTimeFormat('en-US',{timeZone:WP_TZ,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()),o={};
@@ -39,10 +48,10 @@ function wpActualWinner(g){
   return Number.isFinite(a)&&Number.isFinite(h)&&a!==h?(a>h?g.awayTeam:g.homeTeam):'';
 }
 function wpBuildCurrentWeek(){
-  const today=wpMountainParts(),currentKey=wpMondayKey(today),games=[];
+  const today=wpMountainParts(),currentKey=wpCurrentFootballWeekKey(today),games=[];
   let firstDate=null,lastDate=null;
   for(const g of weekly||[]){
-    const p=wpParseDate(g.date);if(!p||wpMondayKey(p)!==currentKey)continue;
+    const p=wpParseDate(g.date);if(!p||wpGameFootballWeekKey(p)!==currentKey)continue;
     games.push(g);
     if(!firstDate||wpYmdKey(p)<wpYmdKey(firstDate))firstDate=p;
     if(!lastDate||wpYmdKey(p)>wpYmdKey(lastDate))lastDate=p;
