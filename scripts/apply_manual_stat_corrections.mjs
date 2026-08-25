@@ -5,6 +5,7 @@ const CONFIG='manual-stat-corrections-2026.json';
 const clean=value=>String(value??'').trim();
 const compact=value=>clean(value).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const same=(a,b)=>compact(a)===compact(b);
+const sameCategory=(a,b)=>same(a,b)||(/^DEFENSE/.test(compact(a))&&/^DEFENSE/.test(compact(b)));
 
 function loadCorrections(){
   if(!fs.existsSync(CONFIG))return[];
@@ -51,7 +52,7 @@ export function applyGameDetailCorrections(games){
     const game=games?.[correction.gameKey];if(!game)continue;
     if(Array.isArray(game.scoringPlays))game.scoringPlays=game.scoringPlays.map(play=>{const next=replaceText(play,correction.scoringPlayFrom,correction.scoringPlayTo);if(next!==play)changes++;return next});
     for(const table of game.stats||[]){
-      if(!same(table.category,correction.category)||!same(table.team,correction.team))continue;
+      if(!sameCategory(table.category,correction.category)||!same(table.team,correction.team))continue;
       const headers=(table.headers||[]).map(clean),nameIndex=headers.findIndex(header=>same(header,'PLAYER')||compact(header).includes('PLAYERNAME')),statIndex=headers.findIndex(header=>same(header,correction.stat));if(nameIndex<0||statIndex<0)continue;
       let target=(table.rows||[]).find(row=>Array.isArray(row)&&same(row[nameIndex],correction.targetPlayer));const source=(table.rows||[]).find(row=>Array.isArray(row)&&same(row[nameIndex],correction.sourcePlayer));
       if(!target&&source){target=[...source];target[nameIndex]=correction.targetPlayer;if(correction.targetNumber){const numberIndex=headers.findIndex(header=>same(header,'NO')||same(header,'NUMBER')||header==='#');if(numberIndex>=0)target[numberIndex]=correction.targetNumber}table.rows.push(target);changes++}

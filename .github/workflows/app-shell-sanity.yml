@@ -7,6 +7,7 @@ on:
     paths:
       - 'index.html'
       - 'scoreboard.html'
+      - 'stat-leaders.html'
       - 'game-week.html'
       - 'game-week-live.js'
       - 'nav-menu.js'
@@ -61,11 +62,15 @@ on:
       - 'scripts/check-home-scorigami.mjs'
       - 'scripts/apply_manual_stat_corrections.mjs'
       - 'scripts/check-current-week-and-stat-corrections.mjs'
+      - 'manual-stat-corrections-2026.json'
+      - 'player-game-stats-2026.json'
+      - 'weekly-awards-2026.json'
       - '.github/workflows/app-shell-sanity.yml'
   pull_request:
     paths:
       - 'index.html'
       - 'scoreboard.html'
+      - 'stat-leaders.html'
       - 'game-week.html'
       - 'game-week-live.js'
       - 'nav-menu.js'
@@ -120,6 +125,9 @@ on:
       - 'scripts/check-home-scorigami.mjs'
       - 'scripts/apply_manual_stat_corrections.mjs'
       - 'scripts/check-current-week-and-stat-corrections.mjs'
+      - 'manual-stat-corrections-2026.json'
+      - 'player-game-stats-2026.json'
+      - 'weekly-awards-2026.json'
       - '.github/workflows/app-shell-sanity.yml'
 
 permissions:

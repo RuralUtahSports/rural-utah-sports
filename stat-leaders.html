@@ -53,8 +53,9 @@ function dayStamp(v){
 function weekStart(v){const t=dayStamp(v);if(!Number.isFinite(t))return NaN;return t-((new Date(t).getUTCDay()+6)%7)*DAY}
 function shortDate(t){return new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric',timeZone:'UTC'})}
 function weekRange(start){const end=start+6*DAY,a=new Date(start),b=new Date(end);return a.getUTCMonth()===b.getUTCMonth()?`${a.toLocaleDateString(undefined,{month:'short',timeZone:'UTC'})} ${a.getUTCDate()}–${b.getUTCDate()}`:`${shortDate(start)}–${shortDate(end)}`}
-function buildWeeks(data){
+function buildWeeks(data,schedule=[]){
  const starts=new Set(),gameKeys=new Map();
+ for(const g of schedule||[]){const start=weekStart(g.date);if(!Number.isFinite(start))continue;starts.add(start);if(!gameKeys.has(start))gameKeys.set(start,new Set());const pair=[canon(g.awayTeam),canon(g.homeTeam)].sort().join('|');gameKeys.get(start).add(g.gameKey||`${g.date}|${pair}`)}
  for(const [teamName,t] of Object.entries(data?.teams||{}))for(const g of t.games||[]){
   const start=weekStart(g.date);if(!Number.isFinite(start))continue;starts.add(start);
   if(!gameKeys.has(start))gameKeys.set(start,new Set());
@@ -162,7 +163,7 @@ function buildPastMeta(alignment){teamMeta.clear();for(const r of alignment?.reg
 function setupWeekSelect(){
  const select=document.getElementById('leaderWeek');
  select.innerHTML=`<option value="season">Season totals</option>${weeks.map(w=>`<option value="${w.value}">Week ${w.number} — ${esc(w.label)}</option>`).join('')}`;
- const wanted=weeks.find(w=>w.number===requestedWeek);timeframe=wanted?wanted.value:'season';select.value=timeframe;select.disabled=!weeks.length;
+ const today=weekStart(new Date().toISOString().slice(0,10)),wanted=weeks.find(w=>w.number===requestedWeek),current=weeks.find(w=>w.start===today);timeframe=(wanted||current)?.value||'season';select.value=timeframe;select.disabled=!weeks.length;
  select.onchange=()=>{timeframe=select.value;metric='';visibleCount=5;updateScopeCopy();const u=new URL(location.href),wk=activeWeek();if(wk)u.searchParams.set('week',String(wk.number));else u.searchParams.delete('week');history.replaceState(null,'',u);render()};
 }
 async function load(){
@@ -170,13 +171,13 @@ async function load(){
   const stamp=Date.now();document.title=`${season} Stat Leaders | Rural Utah Sports`;document.getElementById('heroYear').textContent=season;document.getElementById('seasonBadge').textContent=season===2026?'Current season':'Completed season';
   const statUrl=`deseret-rosters-stats-${season}.json?v=${stamp}`,gameStatUrl=`player-game-stats-${season}.json?v=${stamp}`;
   if(season===2026){
-   const [s,g,t,d]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)]);
-   if(!s.ok||!t.ok)throw new Error('Unable to load current stat data');allStats=await s.json();playerGames=g?.ok?await g.json():null;teamMeta.clear();for(const x of await t.json())teamMeta.set(canon(x.team),x);if(d?.ok)loadLongFieldGoals(await d.json());
+   const [s,g,t,d,w]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)]);
+   if(!s.ok||!t.ok)throw new Error('Unable to load current stat data');allStats=await s.json();playerGames=g?.ok?await g.json():null;allStats.weeklySchedule=w?.ok?(await w.json()).games||[]:[];teamMeta.clear();for(const x of await t.json())teamMeta.set(canon(x.team),x);if(d?.ok)loadLongFieldGoals(await d.json());
   }else{
    const [s,g,a]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`full-season-alignment-${season}.json?v=${stamp}`,{cache:'no-store'})]);
    if(!s.ok||!a.ok)throw new Error(`Archived ${season} stat data is not available`);allStats=await s.json();playerGames=g?.ok?await g.json():null;longFgMap=new Map();buildPastMeta(await a.json());
   }
-  weeks=buildWeeks(playerGames);rowCache.clear();setupWeekSelect();updateScopeCopy();
+  weeks=buildWeeks(playerGames,allStats.weeklySchedule||[]);rowCache.clear();setupWeekSelect();updateScopeCopy();
   const d=new Date(allStats.updatedAt);document.getElementById('updated').textContent=season===2026?`Last stat sync: ${Number.isFinite(d.getTime())?d.toLocaleString():'recently'} • ${allStats.summary?.teamsWithStats||0} teams currently reporting stats`:`${allStats.summary?.teamsWithStats||0} teams with reported stats in the ${season} archive`;render();
  }catch(e){console.error(e);document.getElementById('updated').textContent=`${season} stat archive unavailable`;document.getElementById('results').innerHTML=`<div class="empty">The ${season} stat leader archive could not be loaded.</div>`}
 }
