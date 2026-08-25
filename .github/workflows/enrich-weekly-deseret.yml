@@ -80,6 +80,9 @@ jobs:
           for (const example of examples) console.log(`  ${example}`);
           NODE
 
+      - name: Validate enriched weekly data before publish
+        run: node scripts/audit-football-data.mjs
+
       - name: Commit Deseret data
         run: |
           git config user.name "RuralUtahSports"
