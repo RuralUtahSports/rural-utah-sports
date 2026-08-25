@@ -24,6 +24,9 @@ function atLeast(value,minimum){
 }
 
 function matchesWhenValue(value,correction){
+  if(Array.isArray(correction.whenValues)){
+    return correction.whenValues.some(expected=>matchesWhenValue(value,{whenValue:expected}));
+  }
   if(!Object.prototype.hasOwnProperty.call(correction,'whenValue'))return true;
   const current=clean(value),expected=clean(correction.whenValue);
   const currentNumber=Number(current),expectedNumber=Number(expected);

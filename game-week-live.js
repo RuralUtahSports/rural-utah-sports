@@ -8,6 +8,9 @@ const num=v=>{if(v===null||v===undefined||String(v).trim()==='')return null;cons
 const get=async(name,fallback=null)=>{try{const r=await fetch(`${name}?v=${Date.now()}`,{cache:'no-store'});return r.ok?await r.json():fallback}catch{return fallback}};
 const final=g=>num(g?.actualAway)!==null&&num(g?.actualHome)!==null;
 const dateNum=d=>{const n=Date.parse(String(d||''));return Number.isFinite(n)?n:0};
+const startDay=v=>{const d=new Date(v);d.setHours(0,0,0,0);return d};
+const footballWeekStart=v=>{const d=startDay(v),day=d.getDay();if(day>=1&&day<=3)d.setDate(d.getDate()+(4-day));else d.setDate(d.getDate()-((day+3)%7));return d.getTime()};
+const gamesForCurrentWeek=games=>{const rows=(games||[]).filter(g=>g?.awayTeam&&g?.homeTeam&&dateNum(g.date));if(!rows.length)return[];const current=footballWeekStart(Date.now()),weeks=[...new Set(rows.map(g=>footballWeekStart(dateNum(g.date))))].sort((a,b)=>a-b),selected=weeks.includes(current)?current:(weeks.find(x=>x>current)??weeks.at(-1));return rows.filter(g=>footballWeekStart(dateNum(g.date))===selected)};
 const fmtDate=d=>{const n=dateNum(d);return n?new Date(n).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}):String(d||'')};
 const favKey='rus-favorite-teams-v1';
 const favorites=()=>{try{const a=JSON.parse(localStorage.getItem(favKey)||'[]');return new Set((Array.isArray(a)?a:[]).map(norm))}catch{return new Set()}};
@@ -25,8 +28,9 @@ function card(g,map,rankMap=null,showRanks=false){const isFinal=final(g),pa=num(
 function section(title,games,map,rankMap=null,showRanks=false){return `<h2 class="section-title">${esc(title)}</h2>${games.length?`<div class="rus-week-grid">${games.map(g=>card(g,map,rankMap,showRanks)).join('')}</div>`:'<div class="rus-week-empty">No games to show here yet.</div>'}`}
 async function run(){
  root.innerHTML='<div class="loading">Loading the newest game week…</div>';
- const [week,teams,rankings]=await Promise.all([get('home-week-data.json',{}),get('teams-data.json',[]),get('rankings-current-2026.json',{})]);
- const games=(week?.games||[]).slice().sort((a,b)=>dateNum(a.date)-dateNum(b.date)||String(a.awayTeam).localeCompare(String(b.awayTeam)));
+ const [week,weekly,teams,rankings]=await Promise.all([get('home-week-data.json',{}),get('weekly-simulation.json',{}),get('teams-data.json',[]),get('rankings-current-2026.json',{})]);
+ const currentGames=gamesForCurrentWeek(weekly?.games),homeGames=gamesForCurrentWeek(week?.games);
+ const games=(currentGames.length?currentGames:homeGames).slice().sort((a,b)=>dateNum(a.date)-dateNum(b.date)||String(a.awayTeam).localeCompare(String(b.awayTeam)));
  const map=new Map((teams||week?.teams||[]).map(t=>[norm(t.team),t]));
  const fav=favorites();
  const favGames=games.filter(g=>fav.has(norm(g.awayTeam))||fav.has(norm(g.homeTeam)));

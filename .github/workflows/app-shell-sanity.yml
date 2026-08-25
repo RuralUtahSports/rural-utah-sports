@@ -6,6 +6,9 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'scoreboard.html'
+      - 'game-week.html'
+      - 'game-week-live.js'
       - 'nav-menu.js'
       - 'back-to-top.js'
       - 'rus-fetch-cache.js'
@@ -56,10 +59,15 @@ on:
       - 'scripts/check-performance-shell.mjs'
       - 'scripts/check-payload-size.mjs'
       - 'scripts/check-home-scorigami.mjs'
+      - 'scripts/apply_manual_stat_corrections.mjs'
+      - 'scripts/check-current-week-and-stat-corrections.mjs'
       - '.github/workflows/app-shell-sanity.yml'
   pull_request:
     paths:
       - 'index.html'
+      - 'scoreboard.html'
+      - 'game-week.html'
+      - 'game-week-live.js'
       - 'nav-menu.js'
       - 'back-to-top.js'
       - 'rus-fetch-cache.js'
@@ -110,6 +118,8 @@ on:
       - 'scripts/check-performance-shell.mjs'
       - 'scripts/check-payload-size.mjs'
       - 'scripts/check-home-scorigami.mjs'
+      - 'scripts/apply_manual_stat_corrections.mjs'
+      - 'scripts/check-current-week-and-stat-corrections.mjs'
       - '.github/workflows/app-shell-sanity.yml'
 
 permissions:
@@ -163,6 +173,8 @@ jobs:
           node --check scripts/check-performance-shell.mjs
           node --check scripts/check-payload-size.mjs
           node --check scripts/check-home-scorigami.mjs
+          node --check scripts/apply_manual_stat_corrections.mjs
+          node --check scripts/check-current-week-and-stat-corrections.mjs
 
       - name: Build compact stat payload
         run: node scripts/build_deseret_stat_metrics.mjs
@@ -187,3 +199,6 @@ jobs:
 
       - name: Verify My Teams dashboard
         run: node scripts/check-my-teams.mjs
+
+      - name: Verify current-week and conditional stat fixes
+        run: node scripts/check-current-week-and-stat-corrections.mjs
