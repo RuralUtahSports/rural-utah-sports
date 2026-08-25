@@ -1,23 +1,8 @@
 # RUS Football Data Audit
 
-Generated: 2026-08-25T23:30:14.940Z
+Generated: 2026-08-25T23:44:03.080Z
 
-**0 errors • 12 warnings**
-
-## Warnings (12)
-
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: UTAH MILITARY HILLFIELD `{"date":"09/04/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: PIEDRA VISTA NM `{"date":"09/04/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: EASTWOOD TEXAS `{"date":"09/11/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: UTAH MILITARY HILLFIELD `{"date":"09/11/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: RANCHO BERNARDO CALIF `{"date":"09/11/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: CHAPARRAL CA `{"date":"09/18/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: UTAH MILITARY HILLFIELD `{"date":"09/18/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: UMA HILLFIELD `{"date":"09/25/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: MONTICELLO JV `{"date":"10/08/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: UMA HILLFIELD `{"date":"10/09/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: MATER ACADEMY NV `{"date":"10/16/2026"}`
-- **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: UMA HILLFIELD `{"date":"10/16/2026"}`
+**0 errors • 0 warnings**
 
 ## Infos (1)
 
