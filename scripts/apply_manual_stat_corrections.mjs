@@ -23,6 +23,11 @@ function atLeast(value,minimum){
   return Number.isFinite(current)&&current>=minimum?clean(value):String(minimum);
 }
 
+function correctedValue(value,correction){
+  if(Object.prototype.hasOwnProperty.call(correction,'exactValue'))return String(correction.exactValue);
+  return atLeast(value,Number(correction.minimumValue)||0);
+}
+
 function replaceText(value,from,to){
   if(!from||!to)return clean(value);
   return clean(value).split(from).join(to);
@@ -38,7 +43,7 @@ export function applyGameDetailCorrections(games){
       const headers=(table.headers||[]).map(clean),nameIndex=headers.findIndex(header=>same(header,'PLAYER')||compact(header).includes('PLAYERNAME')),statIndex=headers.findIndex(header=>same(header,correction.stat));if(nameIndex<0||statIndex<0)continue;
       let target=(table.rows||[]).find(row=>Array.isArray(row)&&same(row[nameIndex],correction.targetPlayer));const source=(table.rows||[]).find(row=>Array.isArray(row)&&same(row[nameIndex],correction.sourcePlayer));
       if(!target&&source){target=[...source];target[nameIndex]=correction.targetPlayer;if(correction.targetNumber){const numberIndex=headers.findIndex(header=>same(header,'NO')||same(header,'NUMBER')||header==='#');if(numberIndex>=0)target[numberIndex]=correction.targetNumber}table.rows.push(target);changes++}
-      if(target){const next=atLeast(target[statIndex],Number(correction.minimumValue)||0);if(next!==clean(target[statIndex])){target[statIndex]=next;changes++}}
+      if(target){const next=correctedValue(target[statIndex],correction);if(next!==clean(target[statIndex])){target[statIndex]=next;changes++}}
       if(correction.removeSourceFromGame){const before=table.rows.length;table.rows=table.rows.filter(row=>!Array.isArray(row)||!same(row[nameIndex],correction.sourcePlayer));changes+=before-table.rows.length}
     }
     changes+=correctionTag(game,correction);
@@ -50,7 +55,7 @@ export function applyRosterStatCorrections(output){
   let changes=0;
   for(const correction of loadCorrections()){
     const team=Object.values(output?.teams||{}).find(entry=>same(entry.team,correction.team));if(!team)continue;const section=(team.stats||[]).find(item=>same(item.category,correction.category));if(!section)continue;
-    const target=(section.rows||[]).find(row=>same(row.name,correction.targetPlayer));if(target){const statKey=Object.keys(target.values||{}).find(key=>same(key,correction.stat))||correction.stat,next=atLeast(target.values?.[statKey],Number(correction.minimumValue)||0);if(next!==clean(target.values?.[statKey])){target.values={...(target.values||{}),[statKey]:next};changes++}}
+    const target=(section.rows||[]).find(row=>same(row.name,correction.targetPlayer));if(target){const statKey=Object.keys(target.values||{}).find(key=>same(key,correction.stat))||correction.stat,next=correctedValue(target.values?.[statKey],correction);if(next!==clean(target.values?.[statKey])){target.values={...(target.values||{}),[statKey]:next};changes++}}
     if(correction.removeSourceSeasonRowWhenOnlyCorrection){const before=section.rows.length;section.rows=section.rows.filter(row=>{if(!same(row.name,correction.sourcePlayer))return true;const populated=Object.entries(row.values||{}).filter(([,value])=>clean(value)!=='');return !(populated.length===1&&same(populated[0][0],correction.stat)&&Number(populated[0][1])===Number(correction.minimumValue))});changes+=before-section.rows.length}
     changes+=correctionTag(team,correction);
   }
