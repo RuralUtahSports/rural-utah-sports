@@ -88,38 +88,22 @@ def build_breakdowns(schedules):
         out[team]=b
     return out
 
-def normalize_elo(raw):
-    out={}; removed=0; conflicts=0
-    for team,rows in (raw or {}).items():
-        t=canonical(team); out.setdefault(t,[]); seen={}
-        for r in rows or []:
-            x=dict(r); x['opponent']=canonical(x.get('opponent'))
-            key=(str(x.get('date','')).strip(),x['opponent'])
-            sig=(x.get('eloBefore'),x.get('change'),x.get('eloAfter'),x.get('result'))
-            if key in seen:
-                removed+=1
-                if seen[key]!=sig: conflicts+=1
-                continue
-            seen[key]=sig; out[t].append(x)
-    return out,removed,conflicts
-
-schedules_path=Path('team-schedules.json'); elo_path=Path('team-elo-history.json')
-if not schedules_path.exists() or not elo_path.exists(): raise SystemExit('Required team data missing')
+# Schedule normalization owns schedule-derived data only. Verified ELO is owned by
+# scripts/build_verified_elo_2026.mjs / Build Clean Live ELO and must not be rewritten here.
+schedules_path=Path('team-schedules.json')
+if not schedules_path.exists(): raise SystemExit('Required team schedule data missing')
 schedules,game_exact_removed,game_near_removed,game_conflicts=normalize_schedules(json.loads(schedules_path.read_text()))
 breakdowns=build_breakdowns(schedules)
-elo,elo_removed,elo_conflicts=normalize_elo(json.loads(elo_path.read_text()))
 schedules_path.write_text(json.dumps(schedules,separators=(',',':')))
 Path('team-record-breakdowns.json').write_text(json.dumps(breakdowns,separators=(',',':')))
-elo_path.write_text(json.dumps(elo,separators=(',',':')))
 
 page_dir=Path('team-page-data')
-for team in set(schedules)|set(elo):
+for team in schedules:
     p=page_dir/f'{slug(team)}.json'
     if not p.exists(): continue
     data=json.loads(p.read_text())
     data['schedules']=schedules.get(team,{})
     data['breakdown']=breakdowns.get(team,{'decades':{},'opponents':{}})
-    data['eloHistory']=elo.get(team,[])
     p.write_text(json.dumps(data,separators=(',',':')))
 
 Path('duplicate-cleanup-report.json').write_text(json.dumps({
@@ -127,8 +111,10 @@ Path('duplicate-cleanup-report.json').write_text(json.dumps({
     'scheduleExactDuplicatesRemoved':game_exact_removed,
     'scheduleNearDateDuplicatesRemoved':game_near_removed,
     'scheduleConflictingDuplicates':game_conflicts,
-    'eloDuplicatesRemoved':elo_removed,'eloConflictingDuplicates':elo_conflicts,
+    'eloDuplicatesRemoved':0,
+    'eloConflictingDuplicates':0,
+    'eloOwner':'Build Clean Live ELO',
     'canonicalAliases':{'WASATCH ACAD':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH'}
 },indent=2)+'\n')
 print(f'Schedule duplicates removed: {game_exact_removed+game_near_removed} ({game_exact_removed} exact, {game_near_removed} near-date); conflicts: {game_conflicts}')
-print(f'ELO duplicate rows removed before clean rebuild: {elo_removed}; conflicts: {elo_conflicts}')
+print('ELO normalization skipped: verified ELO is owned by Build Clean Live ELO')
