@@ -2,6 +2,14 @@ name: RUS Data Audit
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "Build Simulator Data"
+      - "Enrich Weekly Deseret Links"
+      - "Build 2026 Standings"
+      - "Update Live Scoreboard"
+      - "Build Clean Live ELO"
+    types: [completed]
   schedule:
     - cron: '23 12 * * *'
   push:
@@ -20,12 +28,18 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: rus-data-audit
+  cancel-in-progress: true
+
 jobs:
   audit:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
