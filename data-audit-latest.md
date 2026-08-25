@@ -1,10 +1,14 @@
 # RUS Football Data Audit
 
-Generated: 2026-08-25T13:24:40.716Z
+Generated: 2026-08-25T19:24:17.602Z
 
-**0 errors • 13 warnings**
+**1 errors • 12 warnings**
 
-## Warnings (13)
+## Errors (1)
+
+- **MULTIPLE_GAMES_SAME_DATE** — ROY appears in 2 games on 10/07/2026. `{"indexes":[366,367]}`
+
+## Warnings (12)
 
 - **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: UTAH MILITARY HILLFIELD `{"date":"09/04/2026"}`
 - **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: PIEDRA VISTA NM `{"date":"09/04/2026"}`
@@ -18,9 +22,8 @@ Generated: 2026-08-25T13:24:40.716Z
 - **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: UMA HILLFIELD `{"date":"10/09/2026"}`
 - **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: MATER ACADEMY NV `{"date":"10/16/2026"}`
 - **UNKNOWN_TEAM** — Game uses a team not found in teams-data.json: UMA HILLFIELD `{"date":"10/16/2026"}`
-- **MULTIPLE_GAMES_SAME_DATE** — ROY appears in 2 games on 10/07/2026. `{"indexes":[366,367]}`
 
 ## Infos (1)
 
-- **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":604,"standings":118,"rankedTeams":68,"playerIds":6397}`
+- **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":604,"standings":118,"rankedTeams":68,"playerIds":6396}`
 
