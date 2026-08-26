@@ -1,7 +1,15 @@
 import assert from 'node:assert/strict';
 
 process.env.PLAYER_RECORDS_SKIP_MAIN='1';
-const {parseGame}=await import('./build_player_single_game_records.mjs');
+const {gameLinks,parseGame}=await import('./build_player_single_game_records.mjs');
+
+const scheduleLinks=gameLinks(`
+  <a href="/high-school/football/game/2012-10-26/viewmont-football-vs-syracuse-football/110951">current game</a>
+  <a href="/high-school/football/game/1996-09-20/skyline-football-vs-bountiful-football/77779">bad historical cross-link</a>
+`,'2012-10-26');
+assert.deepEqual(scheduleLinks,[
+  'https://sports.deseret.com/high-school/football/game/2012-10-26/viewmont-football-vs-syracuse-football/110951'
+]);
 
 const modernHtml=`
   <title>Viewmont vs Woods Cross - Football Game</title>
