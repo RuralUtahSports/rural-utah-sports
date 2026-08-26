@@ -123,6 +123,11 @@ validateCategories(statewide.categories, 100, null, true);
 assert(/2009 to present/.test(clean(statewide.coverageNote)) && /2001.2008/.test(clean(statewide.coverageNote)), 'Coverage note does not explain the 2001–2008 cumulative-table exclusion');
 const passing = statewide.categories.find(category => category.key === 'passingYards');
 assert(passing.entries.some(entry => entry.player === 'Brad Leggat' && clean(entry.team).toUpperCase() === 'HILLCREST' && Number(entry.value) >= 538), 'Verified Brad Leggat 538-yard game is missing');
+assert(passing.entries.some(entry => entry.player === 'Cooper Legas' && clean(entry.team).toUpperCase() === 'OREM' && Number(entry.value) === 438 && entry.gameId === '168535'), 'Verified Cooper Legas 438-yard game is missing');
+const receiving = statewide.categories.find(category => category.key === 'receivingYards');
+assert(receiving.entries.some(entry => entry.player === 'Puka Nacua' && clean(entry.team).toUpperCase() === 'OREM' && Number(entry.value) === 321 && entry.gameId === '168535'), 'Verified Puka Nacua 321-yard game is missing');
+const totalOffense = statewide.categories.find(category => category.key === 'totalOffenseYards');
+assert(totalOffense.entries.some(entry => entry.player === 'Cooper Legas' && clean(entry.team).toUpperCase() === 'OREM' && Number(entry.value) === 628 && entry.gameId === '168535'), 'Verified Cooper Legas 628-yard total-offense game is missing');
 
 for (const team of teams) {
   const payload = readJson(path.join(BY_TEAM, `${slug(team)}.json`));
@@ -139,5 +144,9 @@ console.log({
   teamsWithPerformances: index.teamsWithPerformances,
   categories: index.categories,
   teamFiles: actualFiles.length,
-  verifiedRecord: 'Brad Leggat, Hillcrest, 538 passing yards'
+  verifiedRecords: [
+    'Brad Leggat, Hillcrest, 538 passing yards',
+    'Puka Nacua, Orem, 321 receiving yards',
+    'Cooper Legas, Orem, 628 total-offense yards'
+  ]
 });

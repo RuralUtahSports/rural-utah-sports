@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 process.env.PLAYER_RECORDS_SKIP_MAIN='1';
-const {gameLinks,parseGame}=await import('./build_player_single_game_records.mjs');
+const {gameLinks,MANUAL,mergeManual,parseGame}=await import('./build_player_single_game_records.mjs');
 
 const scheduleLinks=gameLinks(`
   <a href="/high-school/football/game/2012-10-26/viewmont-football-vs-syracuse-football/110951">current game</a>
@@ -113,4 +113,16 @@ const langi=legacy.find(record=>record.player==='Harvey Langi');
 const soffe=legacy.find(record=>record.player==='Jake Soffe');
 assert.deepEqual(langi.stats,{rushingTouchdowns:1});
 assert.deepEqual(soffe.stats,{passingTouchdowns:1});
+
+const manuallyVerified=mergeManual([]);
+const puka=manuallyVerified.find(record=>record.player==='Puka Nacua');
+const cooper=manuallyVerified.find(record=>record.player==='Cooper Legas');
+assert.equal(MANUAL.length,3);
+assert.equal(puka.team,'OREM');
+assert.equal(puka.gameId,'168535');
+assert.deepEqual(puka.stats,{receivingYards:321,receptions:16,receivingTouchdowns:3});
+assert.equal(cooper.team,'OREM');
+assert.equal(cooper.teamScore,51);
+assert.equal(cooper.opponentScore,46);
+assert.deepEqual(cooper.stats,{passingYards:438,passingTouchdowns:4,completions:24,passAttempts:37,rushingYards:190,rushingTouchdowns:1,carries:16,totalOffenseYards:628});
 console.log('Player single-game record parser regression tests passed.');
