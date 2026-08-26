@@ -9,6 +9,7 @@ on:
     paths:
       - 'scripts/build_player_single_game_records.mjs'
       - 'scripts/test_player_single_game_records_parser.mjs'
+      - 'scripts/validate_player_single_game_records.mjs'
       - '.github/workflows/build-player-single-game-records.yml'
       - 'teams-data.json'
 
@@ -34,19 +35,8 @@ jobs:
         run: node scripts/test_player_single_game_records_parser.mjs
       - name: Build 2001-present player single-game records
         run: node scripts/build_player_single_game_records.mjs
-      - name: Verify output
-        run: |
-          node - <<'NODE'
-          const fs=require('fs');
-          const index=JSON.parse(fs.readFileSync('player-single-game-records/index.json','utf8'));
-          const state=JSON.parse(fs.readFileSync('player-single-game-records/statewide.json','utf8'));
-          if(index.uniqueGamePages<5000) throw new Error(`Too few games: ${index.uniqueGamePages}`);
-          if(index.performances<10000) throw new Error(`Too few performances: ${index.performances}`);
-          if(!Array.isArray(state.categories)||state.categories.length<8) throw new Error('Statewide categories incomplete');
-          const passing=state.categories.find(c=>c.key==='passingYards');
-          if(!passing?.entries?.some(e=>e.player==='Brad Leggat'&&String(e.team).toUpperCase()==='HILLCREST'&&Number(e.value)>=538)) throw new Error('Verified Brad Leggat 538-yard game missing');
-          console.log(index);
-          NODE
+      - name: Validate generated dataset before publishing
+        run: node scripts/validate_player_single_game_records.mjs
       - name: Commit record data
         run: |
           git config user.name "RuralUtahSports"
@@ -61,4 +51,4 @@ jobs:
           done
           if [ "$ok" -ne 1 ]; then exit 1; fi
 
-# Trigger initial historical backfill after promoting the feature branch to main.
+# Trigger the historical backfill after parser or validation changes reach main.
