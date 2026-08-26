@@ -1,24 +1,20 @@
 import fs from 'node:fs';
-import path from 'node:path';
 
-const SOURCE_DIR='player-single-game-records/by-team';
-const OUT_DIR='team-single-game-records';
-const TEAM_LIMIT=15;
-const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
-const slug=v=>clean(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-
-export const TEAM_RECORD_CATEGORY_ORDER=['totalOffenseYards','passingYards','rushingYards','firstDowns','passingTouchdowns','rushingTouchdowns','sacks','tacklesForLoss','interceptions','fumbleRecoveries','takeaways'];
-export const TEAM_RECORD_CATEGORIES={
- totalOffenseYards:{label:'Total Offense',unit:'yards'},passingYards:{label:'Passing Yards',unit:'yards'},rushingYards:{label:'Rushing Yards',unit:'yards'},
- firstDowns:{label:'First Downs',unit:'first downs'},passingTouchdowns:{label:'Passing Touchdowns',unit:'TD'},rushingTouchdowns:{label:'Rushing Touchdowns',unit:'TD'},
- sacks:{label:'Sacks',unit:'sacks'},tacklesForLoss:{label:'Tackles for Loss',unit:'TFL'},interceptions:{label:'Interceptions',unit:'INT'},
- fumbleRecoveries:{label:'Fumble Recoveries',unit:'FR'},takeaways:{label:'Takeaways',unit:'takeaways'}
-};
-const PLAUSIBLE_MAX={totalOffenseYards:1000,passingYards:800,rushingYards:800,firstDowns:60,passingTouchdowns:12,rushingTouchdowns:12,sacks:20,tacklesForLoss:35,interceptions:10,fumbleRecoveries:10,takeaways:15};
-function add(obj,key,value){if(!TEAM_RECORD_CATEGORIES[key]||!Number.isFinite(value)||value<0||value>PLAUSIBLE_MAX[key])return;obj[key]=(obj[key]||0)+value}
-function loadPlayerTeamFiles(){if(!fs.existsSync(SOURCE_DIR))throw new Error(`Missing ${SOURCE_DIR}; run player single-game records build first.`);return fs.readdirSync(SOURCE_DIR).filter(f=>f.endsWith('.json')).map(f=>JSON.parse(fs.readFileSync(path.join(SOURCE_DIR,f),'utf8')))}
-function performancesFromPlayerRecords(doc){const games=new Map();for(const key of ['passingYards','rushingYards','passingTouchdowns','rushingTouchdowns','sacks','interceptions']){for(const p of doc?.records?.[key]||[]){const id=String(p.gameId||`${p.date}|${p.opponent}`);let g=games.get(id);if(!g){g={team:doc.team,season:p.season,date:p.date,opponent:p.opponent,teamScore:p.teamScore,opponentScore:p.opponentScore,gameId:p.gameId,gameUrl:p.gameUrl,source:'Deseret News game stats',stats:{}};games.set(id,g)}add(g.stats,key,Number(p.value))}}
-for(const g of games.values()){const total=(g.stats.passingYards||0)+(g.stats.rushingYards||0);if(total)g.stats.totalOffenseYards=total}return [...games.values()]}
-function rank(perfs,key){return perfs.filter(p=>Number.isFinite(p.stats?.[key])).sort((a,b)=>b.stats[key]-a.stats[key]||String(a.date).localeCompare(String(b.date))).slice(0,TEAM_LIMIT).map((p,i)=>({...p,rank:i+1,value:p.stats[key]}))}
-function main(){const docs=loadPlayerTeamFiles();fs.rmSync(OUT_DIR,{recursive:true,force:true});fs.mkdirSync(path.join(OUT_DIR,'by-team'),{recursive:true});const index={generatedAt:new Date().toISOString(),source:'Deseret News game stats',method:'Team totals reconstructed from available individual game-stat tables; categories unavailable in source data are omitted.',categoryOrder:TEAM_RECORD_CATEGORY_ORDER,categories:TEAM_RECORD_CATEGORIES,teams:[]};for(const doc of docs){const perfs=performancesFromPlayerRecords(doc),records={};for(const key of TEAM_RECORD_CATEGORY_ORDER){const rows=rank(perfs,key);if(rows.length)records[key]=rows}const out={team:doc.team,generatedAt:index.generatedAt,source:index.source,coverageNote:'Based on available Deseret News individual game statistics. This is not an official UHSAA all-time record book and historical coverage may be incomplete.',categoryOrder:TEAM_RECORD_CATEGORY_ORDER,categories:TEAM_RECORD_CATEGORIES,records};const file=`${slug(doc.team)}.json`;fs.writeFileSync(path.join(OUT_DIR,'by-team',file),JSON.stringify(out,null,2)+'\n');index.teams.push({team:doc.team,file:`by-team/${file}`,games:perfs.length,categories:Object.keys(records).length})}index.teams.sort((a,b)=>a.team.localeCompare(b.team));fs.writeFileSync(path.join(OUT_DIR,'index.json'),JSON.stringify(index,null,2)+'\n');console.log(`Built team single-game records for ${index.teams.length} teams`)}
-main();
+const SCORIGAMI_FILE = 'scorigami.json';
+const TEAMS_FILE = 'teams-data.json';
+const OUTPUT_FILE = 'team-single-game-records.json';
+const clean = value => String(value ?? '').trim().replace(/\s+/g, ' ');
+const key = value => clean(value).toUpperCase().replace(/[^A-Z0-9]/g, '');
+const score = value => { if (value === null || value === undefined || clean(value) === '') return null; const number = Number(value); return Number.isFinite(number) && number >= 0 ? number : null; };
+const dateValue = value => { const parsed = Date.parse(clean(value)); return Number.isFinite(parsed) ? parsed : 0; };
+const aliases = new Map(Object.entries({AMERICANLEADERSHIP:'ALA',AMERICANLEADERSHIPACADEMY:'ALA',CEDAR:'CEDAR CITY',DESERETHILLS:'DESERT HILLS',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISON VALLEY',MAPLEMTN:'MAPLE MOUNTAIN',MONUMENTVAL:'MONUMENT VAL',MONUMENTVALLEY:'MONUMENT VAL',STJOSEPH:'SAINT JOSEPH',UMACAMPWILLIAMS:'UMA-LEHI',UTAHMILITARYACADEMYCAMPWILLIAMS:'UMA-LEHI',UMAHILLFIELD:'UMA-HILLFIELD',UTAHMILITARYACADEMYHILLFIELD:'UMA-HILLFIELD',WASATCHACAD:'WASATCH ACADEMY'}));
+if (!fs.existsSync(SCORIGAMI_FILE)) throw new Error(`${SCORIGAMI_FILE} not found`);
+if (!fs.existsSync(TEAMS_FILE)) throw new Error(`${TEAMS_FILE} not found`);
+const scorigami=JSON.parse(fs.readFileSync(SCORIGAMI_FILE,'utf8')); const teams=JSON.parse(fs.readFileSync(TEAMS_FILE,'utf8'));
+const activeByKey=new Map(teams.map(team=>[key(team.team),clean(team.team)])); const records=new Map(teams.map(team=>[clean(team.team),{team:clean(team.team),classification:clean(team.classification),region:clean(team.region),mostPointsScored:null,mostPointsAllowed:null}]));
+const activeTeam=rawName=>{const rawKey=key(rawName);const alias=aliases.get(rawKey);return activeByKey.get(key(alias||rawName))||null};
+function resultFor(teamScore,opponentScore){return teamScore>opponentScore?'W':teamScore<opponentScore?'L':'T'}
+function consider(current,points,game){if(!current||points>current.points)return{points,occurrences:1,...game};if(points!==current.points)return current;const occurrences=current.occurrences+1;if(dateValue(game.date)>dateValue(current.date))return{points,occurrences,...game};return{...current,occurrences}}
+let gamesReviewed=0,activeTeamPerspectives=0;
+for(const scoreGroup of scorigami.scores||[])for(const game of Array.isArray(scoreGroup.games)?scoreGroup.games:[]){const team1Score=score(game.score1),team2Score=score(game.score2),gameDate=clean(game.date);if(!gameDate||!dateValue(gameDate)||dateValue(gameDate)>Date.now()||team1Score===null||team2Score===null)continue;const team1=activeTeam(game.team1),team2=activeTeam(game.team2);gamesReviewed++;for(const perspective of [{team:team1,opponent:clean(game.team2),teamScore:team1Score,opponentScore:team2Score},{team:team2,opponent:clean(game.team1),teamScore:team2Score,opponentScore:team1Score}]){if(!perspective.team)continue;const row=records.get(perspective.team);const detail={opponent:perspective.opponent,teamScore:perspective.teamScore,opponentScore:perspective.opponentScore,result:resultFor(perspective.teamScore,perspective.opponentScore),date:gameDate,year:Number(game.year)||null};row.mostPointsScored=consider(row.mostPointsScored,perspective.teamScore,detail);row.mostPointsAllowed=consider(row.mostPointsAllowed,perspective.opponentScore,detail);activeTeamPerspectives++}}
+const outputRecords=[...records.values()].filter(record=>record.mostPointsScored||record.mostPointsAllowed).sort((a,b)=>a.team.localeCompare(b.team));const payload={summary:{activePrograms:outputRecords.length,gamesReviewed,activeTeamPerspectives},records:outputRecords};fs.writeFileSync(OUTPUT_FILE,`${JSON.stringify(payload)}\n`);console.log(`Built ${OUTPUT_FILE} for ${outputRecords.length} active programs from ${gamesReviewed} completed games.`);
