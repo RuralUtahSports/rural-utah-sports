@@ -57,3 +57,5 @@ jobs:
             sleep 10
           done
           if [ "$ok" -ne 1 ]; then exit 1; fi
+
+# Trigger initial historical backfill after promoting the feature branch to main.
