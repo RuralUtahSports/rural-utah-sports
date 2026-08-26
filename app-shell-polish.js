@@ -23,7 +23,7 @@ nav{background:rgba(5,5,5,.98)!important;border-bottom:1px solid #2a2a2a!importa
   header{box-shadow:none}
   :where(.card,.summary,.summary-card,.team-card,.record-card,.story,.game,.game-card,.section,.champ,.notable,.stat-card,.metric-card,.tool-card,.sim-card,.result-card,.matchup-card,.rank-card,.group){border-radius:10px!important}
   :where(.filters,.controls,.toolbar,.control-panel,.filter-panel,.picker,.lookup){border-radius:10px!important}
-  :where(.table-wrap,.table-scroll,.history-wrap,.record-wrap,.board-wrap,.games-scroll){border-radius:10px!important}
+  :where(.table-wrap,.table-scroll,.history-wrap,.record-wrap,.board-wrap,.games-scroll){border-radius:10px!important;border-color:var(--rus-line)!important}
   .section-title{margin-top:24px!important}
   main>.page-title:first-child{margin-top:0!important}
   :where(.summary,.summary-card) strong{font-variant-numeric:tabular-nums}
@@ -35,4 +35,5 @@ if(!document.querySelector('script[data-rus-growth-features]')){const g=document
 if(!document.querySelector('script[data-rus-share-previews]')){const p=document.createElement('script');p.src='share-preview-links.js?v=20260818-share1';p.defer=true;p.dataset.rusSharePreviews='1';document.body.appendChild(p)}
 const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
 if(['index.html','team.html','game-week.html'].includes(page)&&!document.querySelector('script[data-rus-record-watch-everywhere]')){const r=document.createElement('script');r.src='record-watch-everywhere.js?v=20260818-rw1';r.defer=true;r.dataset.rusRecordWatchEverywhere='1';document.body.appendChild(r)}
+if(page==='records.html'&&!document.querySelector('script[data-rus-player-single-game-records]')){const r=document.createElement('script');r.src='records-player-single-game.js?v=20260826-records1';r.defer=true;r.dataset.rusPlayerSingleGameRecords='1';document.body.appendChild(r)}
 })();
