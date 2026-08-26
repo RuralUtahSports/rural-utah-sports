@@ -1,9 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Team | Rural Utah Sports</title></head><body><script>
-fetch('team-page-content.html?v=20260826-team-records2',{cache:'no-store'})
+fetch('team-page-content.html?v=20260826-team-records3',{cache:'no-store'})
   .then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text()})
   .then(html=>{
-    html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20260826-team-records2');
+    html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20260826-team-records3');
+    html=html.replace('</body>','<script src="team-tabs.js?v=20260826-record-tabs2" data-rus-team-tabs="1"><\/script></body>');
     document.open();document.write(html);document.close();
   })
   .catch(e=>{console.error('Team page loader:',e);document.body.innerHTML='<main style="font-family:Arial,sans-serif;padding:40px;color:#fff;background:#111;min-height:100vh"><h1>Unable to load team page</h1><p>Please refresh this page.</p></main>'});
