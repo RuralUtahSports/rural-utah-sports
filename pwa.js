@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const head=document.head;
-const VERSION='20260819-sponsor2';
+const VERSION='20260826-team-records-fresh1';
 const ICON='RUSlogoNew.png?v=20260817-iosicon2';
 function meta(name,content){let m=document.querySelector(`meta[name="${name}"]`);if(!m){m=document.createElement('meta');m.name=name;head.appendChild(m)}m.content=content}
 function script(src,id){if(document.getElementById(id)||document.querySelector(`script[src^="${src.split('?')[0]}"]`))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.body.appendChild(s)}
@@ -10,5 +10,5 @@ let touch=document.querySelector('link[rel="apple-touch-icon"]');if(!touch){touc
 meta('theme-color','#F14D07');meta('apple-mobile-web-app-capable','yes');meta('apple-mobile-web-app-status-bar-style','black-translucent');meta('apple-mobile-web-app-title','Rural Utah Sports');
 script(`site-credibility.js?v=${VERSION}`,'rusCredibilityLoader');
 script(`seo-structured-data.js?v=${VERSION}`,'rusSeoLoader');
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register(`./sw.js?v=${VERSION}`).catch(err=>console.warn('RUS service worker registration failed',err)),{once:true})}
+if('serviceWorker' in navigator){window.addEventListener('load',async()=>{try{const reg=await navigator.serviceWorker.register(`./sw.js?v=${VERSION}`,{updateViaCache:'none'});await reg.update()}catch(err){console.warn('RUS service worker registration failed',err)}},{once:true})}
 })();
