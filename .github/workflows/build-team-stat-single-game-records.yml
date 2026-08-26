@@ -1,0 +1,55 @@
+name: Build Team Stat Single-Game Records
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_team_stat_single_game_records.mjs'
+      - 'scripts/validate_team_stat_single_game_records.mjs'
+      - 'scripts/build_player_single_game_records.mjs'
+      - 'team-stat-records.js'
+      - 'team-enhancements-runtime.js'
+      - 'team-enhancements.js'
+      - '.github/workflows/build-team-stat-single-game-records.yml'
+      - 'teams-data.json'
+  workflow_run:
+    workflows: ["Build Player Single-Game Records"]
+    types: [completed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: team-stat-single-game-records
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build 2009-present team statistical records
+        run: node scripts/build_team_stat_single_game_records.mjs
+      - name: Validate generated team statistical records
+        run: node scripts/validate_team_stat_single_game_records.mjs
+      - name: Publish team statistical records
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add team-stat-single-game-records
+          if git diff --cached --quiet; then echo "Team statistical records already current."; exit 0; fi
+          git commit -m "Auto-sync 2009-present team statistical records"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
