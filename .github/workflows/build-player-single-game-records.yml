@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_player_single_game_records.mjs'
+      - 'scripts/test_player_single_game_records_parser.mjs'
       - '.github/workflows/build-player-single-game-records.yml'
       - 'teams-data.json'
 
@@ -29,17 +30,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Use browser identity for Deseret News fetches
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p = Path('scripts/build_player_single_game_records.mjs')
-          s = p.read_text()
-          old = 'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.com/)'
-          new = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
-          if old in s:
-              p.write_text(s.replace(old, new))
-          PY
+      - name: Test player record parser
+        run: node scripts/test_player_single_game_records_parser.mjs
       - name: Build 2001-present player single-game records
         run: node scripts/build_player_single_game_records.mjs
       - name: Verify output
@@ -52,14 +44,14 @@ jobs:
           if(index.performances<10000) throw new Error(`Too few performances: ${index.performances}`);
           if(!Array.isArray(state.categories)||state.categories.length<8) throw new Error('Statewide categories incomplete');
           const passing=state.categories.find(c=>c.key==='passingYards');
-          if(!passing?.entries?.some(e=>e.player==='Brad Leggat'&&e.team==='Hillcrest'&&Number(e.value)>=538)) throw new Error('Verified Brad Leggat 538-yard game missing');
+          if(!passing?.entries?.some(e=>e.player==='Brad Leggat'&&String(e.team).toUpperCase()==='HILLCREST'&&Number(e.value)>=538)) throw new Error('Verified Brad Leggat 538-yard game missing');
           console.log(index);
           NODE
       - name: Commit record data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add scripts/build_player_single_game_records.mjs player-single-game-records
+          git add player-single-game-records
           if git diff --cached --quiet; then echo "Player single-game records already current."; exit 0; fi
           git commit -m "Auto-sync 2001-present player single-game records"
           ok=0
