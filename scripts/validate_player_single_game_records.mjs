@@ -102,6 +102,7 @@ const expectedFiles = teams.map(team => `${slug(team)}.json`).sort();
 const actualFiles = fs.readdirSync(BY_TEAM).filter(file => file.endsWith('.json')).sort();
 
 assert(index.startSeason === START_SEASON, `Expected start season ${START_SEASON}, got ${index.startSeason}`);
+assert(index.structuredSingleGameStartSeason === 2009, `Expected structured single-game data to start in 2009, got ${index.structuredSingleGameStartSeason}`);
 assert(Number(index.endSeason) >= START_SEASON, `Invalid end season ${index.endSeason}`);
 assert(Number(index.uniqueGamePages) >= 14000, `Historical discovery incomplete: ${index.uniqueGamePages} games`);
 assert(Number(index.performances) >= 10000, `Player performance output incomplete: ${index.performances}`);
@@ -119,6 +120,7 @@ for (let season = START_SEASON; season <= Number(index.endSeason); season += 1) 
 }
 
 validateCategories(statewide.categories, 100, null, true);
+assert(/2009 to present/.test(clean(statewide.coverageNote)) && /2001.2008/.test(clean(statewide.coverageNote)), 'Coverage note does not explain the 2001–2008 cumulative-table exclusion');
 const passing = statewide.categories.find(category => category.key === 'passingYards');
 assert(passing.entries.some(entry => entry.player === 'Brad Leggat' && clean(entry.team).toUpperCase() === 'HILLCREST' && Number(entry.value) >= 538), 'Verified Brad Leggat 538-yard game is missing');
 
