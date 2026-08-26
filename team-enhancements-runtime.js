@@ -14,6 +14,7 @@ function install(){if(typeof window.render!=='function'){setTimeout(install,0);r
 function loadCurrentSeason(){if(document.querySelector('script[data-rus-current-season]'))return;const s=document.createElement('script');s.src='team-current-season.js?v=20260822-weekly-supplement1';s.defer=true;s.dataset.rusCurrentSeason='1';document.head.appendChild(s)}
 function loadRosterStats(){if(document.querySelector('script[data-rus-roster-stats]'))return;const s=document.createElement('script');s.src='team-roster-stats.js?v=20260818-perf1';s.defer=true;s.dataset.rusRosterStats='1';document.head.appendChild(s)}
 function loadPlayerRecords(){if(document.querySelector('script[data-rus-player-records]'))return;const s=document.createElement('script');s.src='team-player-records.js?v=20260826-records2';s.defer=true;s.dataset.rusPlayerRecords='1';document.head.appendChild(s)}
+function loadTeamStatRecords(){if(document.querySelector('script[data-rus-team-stat-records]'))return;const s=document.createElement('script');s.src='team-stat-records.js?v=20260826-teamstats1';s.defer=true;s.dataset.rusTeamStatRecords='1';document.head.appendChild(s)}
 function loadOverviewCleanup(){if(document.querySelector('script[data-rus-overview-cleanup]'))return;const s=document.createElement('script');s.src='team-overview-cleanup.js?v=20260821-teamstats-dedupe1';s.defer=true;s.dataset.rusOverviewCleanup='1';document.head.appendChild(s)}
-install();loadSeasonDropdown();load2025ArchiveIfNeeded();loadCurrentSeason();loadRosterStats();loadPlayerRecords();loadOverviewCleanup();
+install();loadSeasonDropdown();load2025ArchiveIfNeeded();loadCurrentSeason();loadRosterStats();loadPlayerRecords();loadTeamStatRecords();loadOverviewCleanup();
 })();
