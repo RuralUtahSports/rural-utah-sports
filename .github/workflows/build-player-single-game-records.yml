@@ -1,0 +1,59 @@
+name: Build Player Single-Game Records
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 11 * * 2'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_player_single_game_records.mjs'
+      - '.github/workflows/build-player-single-game-records.yml'
+      - 'teams-data.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: player-single-game-records
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build 2001-present player single-game records
+        run: node scripts/build_player_single_game_records.mjs
+      - name: Verify output
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const index=JSON.parse(fs.readFileSync('player-single-game-records/index.json','utf8'));
+          const state=JSON.parse(fs.readFileSync('player-single-game-records/statewide.json','utf8'));
+          if(index.uniqueGamePages<5000) throw new Error(`Too few games: ${index.uniqueGamePages}`);
+          if(index.performances<10000) throw new Error(`Too few performances: ${index.performances}`);
+          if(!Array.isArray(state.categories)||state.categories.length<8) throw new Error('Statewide categories incomplete');
+          const passing=state.categories.find(c=>c.key==='passingYards');
+          if(!passing?.entries?.some(e=>e.player==='Brad Leggat'&&e.team==='Hillcrest'&&Number(e.value)>=538)) throw new Error('Verified Brad Leggat 538-yard game missing');
+          console.log(index);
+          NODE
+      - name: Commit record data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add player-single-game-records
+          if git diff --cached --quiet; then echo "Player single-game records already current."; exit 0; fi
+          git commit -m "Auto-sync 2001-present player single-game records"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
