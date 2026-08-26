@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 if((location.pathname.split('/').pop()||'').toLowerCase()!=='team.html')return;
-const tabs=[['overview','Overview'],['seasons','Seasons'],['playoffs','Playoffs'],['games','Games'],['elo','ELO'],['history','History']];
+const tabs=[['overview','Overview'],['seasons','Seasons'],['playoffs','Playoffs'],['games','Games'],['elo','ELO'],['player-records','Player Records'],['history','History']];
 const sectionMap={'team information':'overview','greatest seasons':'seasons','season-by-season history':'seasons','championship history':'playoffs','schedule by year':'games','elo history':'elo','historical records':'history'};
 const clean=v=>String(v??'').trim();
 const BRACKET_TEAM_ALIASES={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY'};

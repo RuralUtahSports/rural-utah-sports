@@ -1,0 +1,49 @@
+name: Build Deseret Team Records
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '25 10 * * *'
+  push:
+    paths:
+      - 'teams-data.json'
+      - 'scripts/build_deseret_team_records.mjs'
+      - '.github/workflows/build-deseret-team-records.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deseret-team-records
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Build Deseret team player records
+        run: node scripts/build_deseret_team_records.mjs
+      - name: Verify record data
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const d=JSON.parse(fs.readFileSync('team-player-records/index.json','utf8'));
+          if(d.teams<100||d.teamsWithRecords<80||d.entries<5000) throw new Error(`Team-record output incomplete: ${JSON.stringify(d)}`);
+          console.log(d);
+          NODE
+      - name: Commit record data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add team-player-records
+          if git diff --cached --quiet; then echo "Team records already current."; exit 0; fi
+          git commit -m "Auto-sync Deseret team player records"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
