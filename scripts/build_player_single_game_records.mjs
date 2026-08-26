@@ -43,11 +43,11 @@ const CATEGORY_DEFS={
 const STRUCTURED_SINGLE_GAME_START_SEASON=2009;
 const LEGACY_GAME_ONLY_KEYS=new Set(['rushingTouchdowns','passingTouchdowns','receivingTouchdowns','defensiveTouchdowns','fieldGoals','extraPoints','returnTouchdowns']);
 const PLAUSIBLE_MAX={
-  passingYards:1000,passingTouchdowns:15,completions:100,passAttempts:120,
-  rushingYards:1000,rushingTouchdowns:15,carries:100,
-  receivingYards:1000,receptions:50,receivingTouchdowns:10,
-  totalOffenseYards:1500,tackles:100,sacks:20,interceptions:10,
-  defensiveTouchdowns:10,fieldGoals:10,extraPoints:30,returnTouchdowns:10
+  passingYards:800,passingTouchdowns:12,completions:60,passAttempts:90,
+  rushingYards:600,rushingTouchdowns:12,carries:60,
+  receivingYards:500,receptions:20,receivingTouchdowns:8,
+  totalOffenseYards:1000,tackles:40,sacks:7.5,interceptions:5,
+  defensiveTouchdowns:4,fieldGoals:8,extraPoints:20,returnTouchdowns:4
 };
 
 const HEADER_MAP={
@@ -85,7 +85,7 @@ function sectionBefore(html,index){const prior=String(html||'').slice(Math.max(0
 function tableTeam(tableHtml,pageTeamNames){const firstRow=String(tableHtml||'').match(/<tr\b[^>]*>([\s\S]*?)<\/tr>/i)?.[1]||'',heading=clean(cells(firstRow)[0]||text(String(tableHtml||'').slice(0,1800))),headingNorm=normalize(heading);const direct=[...pageTeamNames].sort((a,b)=>normalize(b).length-normalize(a).length).find(team=>headingNorm.startsWith(normalize(team)));if(direct)return direct;const headingTeam=canonicalTeam(heading.replace(/\s+(?:Rushing|Passing|Receiving|Defense|Special Teams)\s*$/i,''));return pageTeamNames.find(team=>canonicalTeam(team)===headingTeam)||null}
 function add(perf,key,value){if(!CATEGORY_DEFS[key]||!Number.isFinite(value)||value<=0||value>PLAUSIBLE_MAX[key])return;const prev=perf.stats[key];if(prev==null||value>prev)perf.stats[key]=value}
 function parseGame(html,url,season){const titleTeams=pageTeams(html),canonTitle=titleTeams.map(canonicalTeam),date=pageDate(html,url),scores=pageScore(html,titleTeams),game=gameId(url),performances=new Map();const tables=[...String(html||'').matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)];for(const tm of tables){const section=sectionBefore(html,tm.index||0);if(!HEADER_MAP[section])continue;const rawTeam=tableTeam(tm[1],titleTeams),team=canonicalTeam(rawTeam);if(!team)continue;const opponentIndex=canonTitle.findIndex(t=>t===team)===0?1:0,opponent=titleTeams[opponentIndex]||titleTeams.find(t=>canonicalTeam(t)!==team)||'';const rows=[...tm[1].matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(x=>cells(x[1])).filter(r=>r.some(Boolean));if(rows.length<2)continue;const headerIndex=rows.findIndex(r=>r.some(c=>normalize(c)==='PLAYER'));if(headerIndex<0)continue;const headers=rows[headerIndex].map(normalize),playerCol=headers.findIndex(h=>h==='PLAYER');if(playerCol<0)continue;for(const row of rows.slice(headerIndex+1)){const player=clean(row[playerCol]).replace(/^[-.\s]+/,'');if(!player||normalize(player)==='PLAYER')continue;const pkey=`${normalize(team)}|${normalize(player)}`;let perf=performances.get(pkey);if(!perf){const teamScore=scores[titleTeams.find(t=>canonicalTeam(t)===team)]??null,opponentScore=scores[opponent]??null;perf={player,team,season,date,opponent,teamScore,opponentScore,gameId:game,gameUrl:url,source:'Deseret News game stats',stats:{}};performances.set(pkey,perf)}if(section==='PASSING'&&season>=STRUCTURED_SINGLE_GAME_START_SEASON){const ca=headers.findIndex(h=>h==='COMPATT');if(ca>=0&&row[ca]){const m=clean(row[ca]).match(/(\d+)\s*[-/]\s*(\d+)/);if(m){add(perf,'completions',Number(m[1]));add(perf,'passAttempts',Number(m[2]))}}}for(let i=0;i<headers.length;i++){const key=HEADER_MAP[section]?.[headers[i]];if(!key||(season<STRUCTURED_SINGLE_GAME_START_SEASON&&!LEGACY_GAME_ONLY_KEYS.has(key)))continue;const value=num(row[i]);if(value!==null)add(perf,key,value)}}}
-for(const perf of performances.values()){const total=(perf.stats.passingYards||0)+(perf.stats.rushingYards||0);if(total>0)add(perf,'totalOffenseYards',total)}return[...performances.values()].filter(perf=>Object.keys(perf.stats).length)}
+for(const perf of performances.values()){const stats=perf.stats;if(stats.carries>=40&&(!Number.isFinite(stats.rushingYards)||stats.rushingYards<stats.carries))delete stats.carries;if(stats.receptions>=15&&(!Number.isFinite(stats.receivingYards)||stats.receivingYards<stats.receptions*2))delete stats.receptions;const total=(stats.passingYards||0)+(stats.rushingYards||0);if(total>0)add(perf,'totalOffenseYards',total)}return[...performances.values()].filter(perf=>Object.keys(perf.stats).length)}
 
 const MANUAL=[
   {player:'Brad Leggat',team:'Hillcrest',season:2001,date:'2001-08-31',opponent:'Layton',teamScore:26,opponentScore:46,gameId:'60618',gameUrl:'https://sports.deseret.com/high-school/football/game/2001-08-31/hillcrest-football-vs-layton-football/60618',source:'Deseret News roundup / prep record book',stats:{passingYards:538,totalOffenseYards:538,completions:30,passAttempts:49,passingTouchdowns:3}}

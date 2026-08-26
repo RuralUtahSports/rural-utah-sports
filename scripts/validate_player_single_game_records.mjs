@@ -25,24 +25,24 @@ const EXPECTED_CATEGORIES = [
   'returnTouchdowns'
 ];
 const PLAUSIBLE_MAX = {
-  passingYards: 1000,
-  passingTouchdowns: 15,
-  completions: 100,
-  passAttempts: 120,
-  rushingYards: 1000,
-  rushingTouchdowns: 15,
-  carries: 100,
-  receivingYards: 1000,
-  receptions: 50,
-  receivingTouchdowns: 10,
-  totalOffenseYards: 1500,
-  tackles: 100,
-  sacks: 20,
-  interceptions: 10,
-  defensiveTouchdowns: 10,
-  fieldGoals: 10,
-  extraPoints: 30,
-  returnTouchdowns: 10
+  passingYards: 800,
+  passingTouchdowns: 12,
+  completions: 60,
+  passAttempts: 90,
+  rushingYards: 600,
+  rushingTouchdowns: 12,
+  carries: 60,
+  receivingYards: 500,
+  receptions: 20,
+  receivingTouchdowns: 8,
+  totalOffenseYards: 1000,
+  tackles: 40,
+  sacks: 7.5,
+  interceptions: 5,
+  defensiveTouchdowns: 4,
+  fieldGoals: 8,
+  extraPoints: 20,
+  returnTouchdowns: 4
 };
 
 const clean = value => String(value ?? '').trim();

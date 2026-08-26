@@ -24,6 +24,8 @@ const modernHtml=`
     <tr><th>NO</th><th>PLAYER</th><th>Carries</th><th>Yards</th><th>TD</th></tr>
     <tr><td>1</td><td><span class="d-inline d-md-none">D.</span><span class="d-none d-md-inline">Dax</span> Nielsen</td><td>8</td><td>34</td><td></td></tr>
     <tr><td>7</td><td><span class="d-inline d-md-none">T.</span><span class="d-none d-md-inline">Titan</span> Longson</td><td>311</td><td></td><td></td></tr>
+    <tr><td>18</td><td>Chase Birchell</td><td>57</td><td></td><td>1</td></tr>
+    <tr><td>4</td><td>Skyler Armenta</td><td>54</td><td>16</td><td>1</td></tr>
   </table>
   <table>
     <tr><th colspan="5">Woods Cross Rushing</th></tr>
@@ -36,6 +38,19 @@ const modernHtml=`
     <tr><th>NO</th><th>PLAYER</th><th>Comp-Att</th><th>Comp %</th><th>Yards</th><th>TD</th><th>Int</th></tr>
     <tr><td>7</td><td>Titan Longson</td><td>4-9</td><td>44%</td><td>2</td><td></td><td></td></tr>
   </table>
+  <h2>Receiving</h2>
+  <table>
+    <tr><th colspan="5">Viewmont Receiving</th></tr>
+    <tr><th>NO</th><th>PLAYER</th><th>Receptions</th><th>Yards</th><th>TD</th></tr>
+    <tr><td>8</td><td>Gareth Anderson</td><td>19</td><td></td><td></td></tr>
+    <tr><td>2</td><td>Seth Kaelin</td><td>23</td><td>183</td><td>2</td></tr>
+  </table>
+  <h2>Defense</h2>
+  <table>
+    <tr><th colspan="6">Viewmont Defense</th></tr>
+    <tr><th>NO</th><th>PLAYER</th><th>Tackles</th><th>Sacks</th><th>Pass Int</th><th>TD</th></tr>
+    <tr><td>3</td><td>Source Outlier</td><td>41</td><td>8</td><td>6</td><td></td></tr>
+  </table>
 `;
 
 const modern=parseGame(
@@ -46,6 +61,11 @@ const modern=parseGame(
 const dax=modern.find(record=>record.player==='Dax Nielsen');
 const cash=modern.find(record=>record.player==='Cash Henderson');
 const titan=modern.find(record=>record.player==='Titan Longson');
+const chase=modern.find(record=>record.player==='Chase Birchell');
+const skyler=modern.find(record=>record.player==='Skyler Armenta');
+const gareth=modern.find(record=>record.player==='Gareth Anderson');
+const seth=modern.find(record=>record.player==='Seth Kaelin');
+const outlier=modern.find(record=>record.player==='Source Outlier');
 assert.equal(dax.team,'VIEWMONT');
 assert.equal(dax.teamScore,7);
 assert.equal(dax.opponentScore,47);
@@ -57,6 +77,11 @@ assert.equal(cash.opponentScore,7);
 assert.equal(cash.stats.rushingYards,136);
 assert.equal(titan.stats.carries,undefined);
 assert.equal(titan.stats.passingYards,2);
+assert.deepEqual(chase.stats,{rushingTouchdowns:1});
+assert.deepEqual(skyler.stats,{rushingYards:16,rushingTouchdowns:1,totalOffenseYards:16});
+assert.equal(gareth,undefined);
+assert.deepEqual(seth.stats,{receivingYards:183,receivingTouchdowns:2});
+assert.equal(outlier,undefined);
 
 const legacyHtml=`
   <title>Alta vs Bingham - Football Game</title>
