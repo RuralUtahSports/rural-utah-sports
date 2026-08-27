@@ -17,7 +17,11 @@ function weekStart(t){const d=new Date(t);d.setHours(0,0,0,0);d.setDate(d.getDat
 function latestWeekWindow(alerts){const newest=Math.max(0,...alerts.map(a=>dayValue(a.date)));if(!newest)return null;const start=weekStart(newest),end=start+7*86400000,expires=start+11*86400000;return{start,end,expires}}
 function weekLabel(all,window){const dated=all.map(a=>dayValue(a.date)).filter(Boolean);if(!dated.length)return'Record Alerts';const first=weekStart(Math.min(...dated));const n=Math.max(1,Math.round((window.start-first)/(7*86400000))+1);return`Week ${n} Record Alerts`}
 function orderedAlerts(alerts){return alerts.map((a,i)=>({a,i,rank:a&&a.recordType==='player'?0:a&&a.recordType==='team'?1:2})).sort((x,y)=>x.rank-y.rank||x.i-y.i).map(x=>x.a)}
-function styles(){if(document.getElementById('rus-record-alert-style'))return;const s=document.createElement('style');s.id='rus-record-alert-style';s.textContent=`
+function styles(){
+  if(document.getElementById('rus-record-alert-style'))return;
+  const s=document.createElement('style');
+  s.id='rus-record-alert-style';
+  s.textContent=`
 .rus-record-alert{background:#050505;border:1px solid #3a3a3a;border-left:6px solid #F14D07;border-radius:9px;margin-bottom:12px;overflow:hidden;order:-9999}
 .rus-record-alert-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px 7px;border-bottom:1px solid #252525}
 .rus-record-alert-heading{font-size:10px;font-weight:1000;letter-spacing:.8px;text-transform:uppercase;color:#fff}
@@ -28,18 +32,105 @@ function styles(){if(document.getElementById('rus-record-alert-style'))return;co
 .rus-record-alert-card{flex:0 0 100%;min-width:100%;scroll-snap-align:start;scroll-snap-stop:always;box-sizing:border-box;box-shadow:inset 5px 0 0 var(--rus-team-bg,#F14D07)}
 .rus-record-alert-wrap{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:11px 12px 11px 16px}
 .rus-record-alert-kicker{font-size:9px;font-weight:1000;letter-spacing:.8px;text-transform:uppercase;color:var(--rus-team-fg,#fff);background:var(--rus-team-bg,#F14D07);border-radius:4px;padding:5px 7px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-.rus-record-alert-main{min-width:0}.rus-record-alert-title{font-size:14px;font-weight:1000;line-height:1.25}.rus-record-alert-title strong{color:var(--rus-team-accent,#F14D07)}.rus-record-alert-sub{color:#999;font-size:9px;line-height:1.35;margin-top:3px}.rus-record-alert-opponent{color:#fff;font-size:9px;font-weight:900;margin-top:4px;text-transform:uppercase}.rus-record-alert-opponent span{color:var(--rus-team-accent,#F14D07)}
-.rus-record-alert-actions{display:flex;gap:5px;align-items:center}.rus-record-alert-link,.rus-record-alert-share{display:inline-block;background:#171717;border:1px solid #444;color:#fff;text-decoration:none;font-size:8px;font-weight:900;text-transform:uppercase;padding:7px 9px;border-radius:5px;white-space:nowrap;cursor:pointer}.rus-record-alert-link:hover,.rus-record-alert-share:hover{border-color:var(--rus-team-bg,#F14D07)}
-.rus-record-alert-nav{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 10px 8px;border-top:1px solid #202020}.rus-record-alert-counter{font-size:8px;font-weight:1000;color:#aaa;min-width:34px}.rus-record-alert-dots{display:flex;gap:5px;justify-content:center;overflow-x:auto;scrollbar-width:none;padding:2px}.rus-record-alert-dots::-webkit-scrollbar{display:none}.rus-record-alert-dot{flex:0 0 auto;width:6px;height:6px;border-radius:50%;border:0;background:#555;padding:0;cursor:pointer}.rus-record-alert-dot.active{background:#F14D07}.rus-record-alert-arrows{display:flex;gap:4px}.rus-record-alert-arrow{width:27px;height:25px;border-radius:5px;border:1px solid #444;background:#151515;color:#fff;font-weight:1000;cursor:pointer}.rus-record-alert-arrow:disabled{opacity:.35}
+.rus-record-alert-main{min-width:0}
+.rus-record-alert-title{font-size:14px;font-weight:1000;line-height:1.25;color:#fff}
+.rus-record-alert-player{color:#fff;font-weight:1000}
+.rus-record-alert-team,.rus-record-alert-value{color:var(--rus-team-accent,#F14D07);font-weight:1000}
+.rus-record-alert-sub{color:#999;font-size:9px;line-height:1.35;margin-top:3px}
+.rus-record-alert-opponent{color:#fff;font-size:9px;font-weight:900;margin-top:4px;text-transform:uppercase}
+.rus-record-alert-opponent span{color:var(--rus-team-accent,#F14D07)}
+.rus-record-alert-actions{display:flex;gap:5px;align-items:center}
+.rus-record-alert-link,.rus-record-alert-share{display:inline-block;background:#171717;border:1px solid #444;color:#fff;text-decoration:none;font-size:8px;font-weight:900;text-transform:uppercase;padding:7px 9px;border-radius:5px;white-space:nowrap;cursor:pointer}
+.rus-record-alert-link:hover,.rus-record-alert-share:hover{border-color:var(--rus-team-bg,#F14D07)}
+.rus-record-alert-nav{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 10px 8px;border-top:1px solid #202020}
+.rus-record-alert-counter{font-size:8px;font-weight:1000;color:#aaa;min-width:34px}
+.rus-record-alert-dots{display:flex;gap:5px;justify-content:center;overflow-x:auto;scrollbar-width:none;padding:2px}
+.rus-record-alert-dots::-webkit-scrollbar{display:none}
+.rus-record-alert-dot{flex:0 0 auto;width:6px;height:6px;border-radius:50%;border:0;background:#555;padding:0;cursor:pointer}
+.rus-record-alert-dot.active{background:#F14D07}
+.rus-record-alert-arrows{display:flex;gap:4px}
+.rus-record-alert-arrow{width:27px;height:25px;border-radius:5px;border:1px solid #444;background:#151515;color:#fff;font-weight:1000;cursor:pointer}
+.rus-record-alert-arrow:disabled{opacity:.35}
 @media(max-width:600px){.rus-record-alert-head{padding:8px 9px 6px}.rus-record-alert-heading{font-size:9px}.rus-record-alert-shareall{font-size:7px;padding:6px 7px}.rus-record-alert-wrap{grid-template-columns:1fr;gap:7px;padding:10px 10px 10px 14px}.rus-record-alert-kicker{width:max-content;font-size:7px;padding:4px 6px}.rus-record-alert-title{font-size:12px}.rus-record-alert-sub,.rus-record-alert-opponent{font-size:8px}.rus-record-alert-actions{width:100%}.rus-record-alert-link,.rus-record-alert-share{flex:1;text-align:center;font-size:7px;padding:7px 6px}.rus-record-alert-nav{padding:6px 9px 8px}}
-`;document.head.appendChild(s)}
+`;
+  document.head.appendChild(s);
+}
 function teamLink(a){const tab=a.recordType==='player'?'player-records':'team-records';return`team.html?team=${encodeURIComponent(a.team||'')}&tab=${tab}`}
 function unitText(a){return a.unit?` ${String(a.unit)}`:''}
-function describe(a){const who=a.recordType==='player'?`<strong>${esc(a.player||'Player')}</strong> (${esc(a.team)})`:`<strong>${esc(a.team)}</strong>`;const scope=a.scope==='statewide'?'STATEWIDE':'SCHOOL';const unit=a.unit?` ${esc(a.unit)}`:'';return{kicker:`${scope} ${a.recordType==='player'?'PLAYER':'TEAM'} RECORD`,title:`${who} set a new single-game ${esc(a.category)} record: <strong>${fmt(a.value)}${unit}</strong>`,sub:`Previous record: ${fmt(a.previousValue)}${unit}${a.date?` • ${esc(a.date)}`:''}`,opponent:a.opponent?`Against <span>${esc(a.opponent)}</span>`:''}}
-function plain(a){return{kicker:`${a.scope==='statewide'?'STATEWIDE':'SCHOOL'} ${a.recordType==='player'?'PLAYER':'TEAM'} RECORD`,who:a.recordType==='player'?`${a.player||'Player'} • ${a.team||''}`:`${a.team||''}`,category:`Single-Game ${a.category||'Record'}`,value:`${fmt(a.value)}${unitText(a)}`,previous:`Previous: ${fmt(a.previousValue)}${unitText(a)}`,opponent:a.opponent?`VS ${a.opponent}`:'',date:a.date||''}}
+function describe(a){
+  const teamHtml=`<span class="rus-record-alert-team">${esc(a.team||'')}</span>`;
+  const who=a.recordType==='player'?`<span class="rus-record-alert-player">${esc(a.player||'Player')}</span> (${teamHtml})`:teamHtml;
+  const scope=a.scope==='statewide'?'STATEWIDE':'SCHOOL';
+  const unit=a.unit?` ${esc(a.unit)}`:'';
+  return{
+    kicker:`${scope} ${a.recordType==='player'?'PLAYER':'TEAM'} RECORD`,
+    title:`${who} set a new single-game ${esc(a.category)} record: <span class="rus-record-alert-value">${fmt(a.value)}${unit}</span>`,
+    sub:`Previous record: ${fmt(a.previousValue)}${unit}${a.date?` • ${esc(a.date)}`:''}`,
+    opponent:a.opponent?`Against <span>${esc(a.opponent)}</span>`:''
+  };
+}
+function plain(a){return{
+  kicker:`${a.scope==='statewide'?'STATEWIDE':'SCHOOL'} ${a.recordType==='player'?'PLAYER':'TEAM'} RECORD`,
+  who:a.recordType==='player'?`${a.player||'Player'} • ${a.team||''}`:`${a.team||''}`,
+  player:a.player||'Player',
+  team:a.team||'',
+  category:`Single-Game ${a.category||'Record'}`,
+  value:`${fmt(a.value)}${unitText(a)}`,
+  previous:`Previous: ${fmt(a.previousValue)}${unitText(a)}`,
+  opponent:a.opponent?`VS ${a.opponent}`:'',
+  date:a.date||''
+}}
 function roundRect(ctx,x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
 function wrap(ctx,text,x,y,maxWidth,lineHeight,maxLines=3){const words=String(text||'').split(/\s+/);let line='',lines=[];for(const word of words){const test=line?`${line} ${word}`:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);lines=lines.slice(0,maxLines);lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lineHeight));return y+lines.length*lineHeight}
-function graphicCanvas(alerts,label,page=1,total=1){const c=document.createElement('canvas');c.width=1080;c.height=1350;const ctx=c.getContext('2d');ctx.fillStyle=BLACK;ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle=ORANGE;ctx.fillRect(0,0,26,c.height);ctx.fillStyle=WHITE;ctx.font='900 34px Arial, sans-serif';ctx.fillText('RURAL UTAH SPORTS',70,76);ctx.fillStyle=ORANGE;ctx.font='1000 64px Arial, sans-serif';ctx.fillText(String(label||'RECORD ALERTS').toUpperCase(),70,154);ctx.fillStyle=MUTED;ctx.font='700 24px Arial, sans-serif';ctx.fillText('SINGLE-GAME RECORDS BROKEN THIS WEEK',72,198);if(total>1){ctx.textAlign='right';ctx.fillStyle=WHITE;ctx.font='900 25px Arial, sans-serif';ctx.fillText(`${page} / ${total}`,1010,76);ctx.textAlign='left'}const top=242,bottom=124,gap=16,count=Math.max(1,alerts.length),available=1350-top-bottom-gap*(count-1),rowH=Math.min(174,Math.floor(available/count));alerts.forEach((a,i)=>{const d=plain(a),theme=themeFor(a.team),y=top+i*(rowH+gap);roundRect(ctx,70,y,940,rowH,18,'#101010','#333333');ctx.fillStyle=theme.bg;ctx.fillRect(70,y,10,rowH);roundRect(ctx,88,y+17,245,34,8,theme.bg,null);ctx.fillStyle=theme.fg;ctx.font='1000 17px Arial, sans-serif';ctx.fillText(d.kicker,101,y+40);ctx.fillStyle=WHITE;ctx.font='1000 29px Arial, sans-serif';const nameEnd=wrap(ctx,d.who,90,y+83,580,31,2);ctx.fillStyle='#BDBDBD';ctx.font='800 19px Arial, sans-serif';const catY=Math.min(y+rowH-45,nameEnd+16);ctx.fillText(d.category,90,catY);if(d.opponent){ctx.fillStyle=theme.accent;ctx.font='1000 18px Arial, sans-serif';ctx.fillText(d.opponent.toUpperCase(),90,Math.min(y+rowH-16,catY+29))}ctx.textAlign='right';ctx.fillStyle=theme.accent;ctx.font='1000 45px Arial, sans-serif';ctx.fillText(d.value,985,y+86);ctx.fillStyle=WHITE;ctx.font='800 18px Arial, sans-serif';ctx.fillText(d.previous,985,y+117);if(d.date){ctx.fillStyle=MUTED;ctx.font='700 17px Arial, sans-serif';ctx.fillText(d.date,985,Math.min(y+rowH-14,y+145))}ctx.textAlign='left'});ctx.fillStyle='#8D8D8D';ctx.font='700 18px Arial, sans-serif';ctx.fillText('Reported records based on Rural Utah Sports / Deseret News-derived single-game data.',70,1282);ctx.fillStyle=WHITE;ctx.font='900 20px Arial, sans-serif';ctx.fillText('ruralutahsports.com',70,1318);return c}
+function drawWho(ctx,a,theme,x,y,maxWidth,lineHeight){
+  ctx.font='1000 29px Arial, sans-serif';
+  if(a.recordType!=='player'){
+    ctx.fillStyle=theme.accent;
+    return wrap(ctx,a.team||'',x,y,maxWidth,lineHeight,2);
+  }
+  const player=String(a.player||'Player'),team=String(a.team||''),sep=' • ';
+  const playerW=ctx.measureText(player).width,sepW=ctx.measureText(sep).width,teamW=ctx.measureText(team).width;
+  if(playerW+sepW+teamW<=maxWidth){
+    ctx.fillStyle=WHITE;ctx.fillText(player,x,y);
+    ctx.fillStyle='#BDBDBD';ctx.fillText(sep,x+playerW,y);
+    ctx.fillStyle=theme.accent;ctx.fillText(team,x+playerW+sepW,y);
+    return y+lineHeight;
+  }
+  ctx.fillStyle=WHITE;
+  const afterPlayer=wrap(ctx,player,x,y,maxWidth,lineHeight,1);
+  ctx.fillStyle=theme.accent;
+  ctx.fillText(team,x,afterPlayer);
+  return afterPlayer+lineHeight;
+}
+function graphicCanvas(alerts,label,page=1,total=1){
+  const c=document.createElement('canvas');c.width=1080;c.height=1350;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle=BLACK;ctx.fillRect(0,0,c.width,c.height);
+  ctx.fillStyle=ORANGE;ctx.fillRect(0,0,26,c.height);
+  ctx.fillStyle=WHITE;ctx.font='900 34px Arial, sans-serif';ctx.fillText('RURAL UTAH SPORTS',70,76);
+  ctx.fillStyle=ORANGE;ctx.font='1000 64px Arial, sans-serif';ctx.fillText(String(label||'RECORD ALERTS').toUpperCase(),70,154);
+  ctx.fillStyle=MUTED;ctx.font='700 24px Arial, sans-serif';ctx.fillText('SINGLE-GAME RECORDS BROKEN THIS WEEK',72,198);
+  if(total>1){ctx.textAlign='right';ctx.fillStyle=WHITE;ctx.font='900 25px Arial, sans-serif';ctx.fillText(`${page} / ${total}`,1010,76);ctx.textAlign='left'}
+  const top=242,bottom=124,gap=16,count=Math.max(1,alerts.length),available=1350-top-bottom-gap*(count-1),rowH=Math.min(174,Math.floor(available/count));
+  alerts.forEach((a,i)=>{
+    const d=plain(a),theme=themeFor(a.team),y=top+i*(rowH+gap);
+    roundRect(ctx,70,y,940,rowH,18,'#101010','#333333');
+    ctx.fillStyle=theme.bg;ctx.fillRect(70,y,10,rowH);
+    roundRect(ctx,88,y+17,245,34,8,theme.bg,null);
+    ctx.fillStyle=theme.fg;ctx.font='1000 17px Arial, sans-serif';ctx.fillText(d.kicker,101,y+40);
+    const nameEnd=drawWho(ctx,a,theme,90,y+83,580,31);
+    ctx.fillStyle='#BDBDBD';ctx.font='800 19px Arial, sans-serif';
+    const catY=Math.min(y+rowH-45,nameEnd+16);ctx.fillText(d.category,90,catY);
+    if(d.opponent){ctx.fillStyle=theme.accent;ctx.font='1000 18px Arial, sans-serif';ctx.fillText(d.opponent.toUpperCase(),90,Math.min(y+rowH-16,catY+29))}
+    ctx.textAlign='right';ctx.fillStyle=theme.accent;ctx.font='1000 45px Arial, sans-serif';ctx.fillText(d.value,985,y+86);
+    ctx.fillStyle=WHITE;ctx.font='800 18px Arial, sans-serif';ctx.fillText(d.previous,985,y+117);
+    if(d.date){ctx.fillStyle=MUTED;ctx.font='700 17px Arial, sans-serif';ctx.fillText(d.date,985,Math.min(y+rowH-14,y+145))}
+    ctx.textAlign='left';
+  });
+  ctx.fillStyle='#8D8D8D';ctx.font='700 18px Arial, sans-serif';ctx.fillText('Reported records based on Rural Utah Sports / Deseret News-derived single-game data.',70,1282);
+  ctx.fillStyle=WHITE;ctx.font='900 20px Arial, sans-serif';ctx.fillText('ruralutahsports.com',70,1318);
+  return c;
+}
 function fileFromCanvas(canvas,name){const url=canvas.toDataURL('image/png');const parts=url.split(','),bin=atob(parts[1]),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return{file:new File([bytes],name,{type:'image/png'}),url}}
 function safeName(v){return String(v||'record-alert').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'record-alert'}
 function shareFiles(files,title){if(navigator.share&&navigator.canShare&&navigator.canShare({files:files.map(x=>x.file)})){navigator.share({title,files:files.map(x=>x.file)}).catch(e=>{if(e&&e.name!=='AbortError')downloadFiles(files)});return}downloadFiles(files)}
@@ -47,6 +138,34 @@ function downloadFiles(files){files.forEach((x,i)=>setTimeout(()=>{const a=docum
 function shareOne(a,label){const d=plain(a),canvas=graphicCanvas([a],label),name=`${safeName(label)}-${safeName(a.team)}-${safeName(a.category)}.png`;shareFiles([fileFromCanvas(canvas,name)],`${label}: ${d.who}`)}
 function shareAll(alerts,label){const perPage=6,pages=[];for(let i=0;i<alerts.length;i+=perPage)pages.push(alerts.slice(i,i+perPage));const total=pages.length,files=pages.map((rows,i)=>fileFromCanvas(graphicCanvas(rows,label,i+1,total),`${safeName(label)}-${i+1}-of-${total}.png`));shareFiles(files,label)}
 function keepAtTop(box,main){if(box.parentNode===main&&main.firstElementChild!==box)main.insertBefore(box,main.firstElementChild)}
-async function install(){styles();const main=document.querySelector('main.container')||document.querySelector('main');if(!main)return;try{const [r]=await Promise.all([fetch(`record-alerts.json?v=${Date.now()}`,{cache:'no-store'}),loadTeamMeta()]);if(!r.ok)return;const data=await r.json(),all=Array.isArray(data.alerts)?data.alerts:[],window=latestWeekWindow(all);if(!window||Date.now()>=window.expires)return;const alerts=orderedAlerts(all.filter(a=>{const t=dayValue(a.date);return t>=window.start&&t<window.end}));if(!alerts.length)return;const label=weekLabel(all,window),box=document.createElement('section');box.className='rus-record-alert';box.setAttribute('aria-label',label);box.innerHTML=`<div class="rus-record-alert-head"><div class="rus-record-alert-heading"><strong>Record Alert</strong> • ${esc(label)}</div><button class="rus-record-alert-shareall" type="button">Share All (${alerts.length})</button></div><div class="rus-record-alert-scroller">${alerts.map((a,n)=>{const d=describe(a),theme=themeFor(a.team);return`<article class="rus-record-alert-card" data-alert-index="${n}" style="--rus-team-bg:${theme.bg};--rus-team-fg:${theme.fg};--rus-team-accent:${theme.accent}"><div class="rus-record-alert-wrap"><div class="rus-record-alert-kicker">${d.kicker}</div><div class="rus-record-alert-main"><div class="rus-record-alert-title">${d.title}</div><div class="rus-record-alert-sub">${d.sub}</div>${d.opponent?`<div class="rus-record-alert-opponent">${d.opponent}</div>`:''}</div><div class="rus-record-alert-actions"><a class="rus-record-alert-link" href="${teamLink(a)}">View Record →</a><button class="rus-record-alert-share" type="button" data-share="${n}">Share</button></div></div></article>`}).join('')}</div><div class="rus-record-alert-nav"><div class="rus-record-alert-counter">1 / ${alerts.length}</div><div class="rus-record-alert-dots">${alerts.map((_,n)=>`<button class="rus-record-alert-dot${n===0?' active':''}" type="button" data-i="${n}" aria-label="Record alert ${n+1}"></button>`).join('')}</div><div class="rus-record-alert-arrows"><button class="rus-record-alert-arrow" type="button" data-dir="-1" aria-label="Previous record alert">‹</button><button class="rus-record-alert-arrow" type="button" data-dir="1" aria-label="Next record alert">›</button></div></div>`;main.insertBefore(box,main.firstElementChild);const topObserver=new MutationObserver(()=>keepAtTop(box,main));topObserver.observe(main,{childList:true});setTimeout(()=>topObserver.disconnect(),5000);const scroller=box.querySelector('.rus-record-alert-scroller'),cards=[...box.querySelectorAll('.rus-record-alert-card')],counter=box.querySelector('.rus-record-alert-counter'),dots=[...box.querySelectorAll('.rus-record-alert-dot')],arrows=[...box.querySelectorAll('.rus-record-alert-arrow')];let active=0,timer=null;function go(n,behavior='smooth'){n=Math.max(0,Math.min(cards.length-1,n));const left=cards[n].offsetLeft-scroller.offsetLeft;scroller.scrollTo({left,behavior})}function sync(n){active=Math.max(0,Math.min(cards.length-1,n));counter.textContent=`${active+1} / ${alerts.length}`;dots.forEach((d,i)=>d.classList.toggle('active',i===active));arrows[0].disabled=active===0;arrows[1].disabled=active===cards.length-1;const dot=dots[active];if(dot)dot.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})}function nearest(){const x=scroller.scrollLeft;let best=0,dist=Infinity;cards.forEach((c,i)=>{const d=Math.abs((c.offsetLeft-scroller.offsetLeft)-x);if(d<dist){dist=d;best=i}});sync(best)}scroller.addEventListener('scroll',()=>{clearTimeout(timer);timer=setTimeout(nearest,80)},{passive:true});dots.forEach(b=>b.addEventListener('click',()=>go(Number(b.dataset.i)||0)));arrows.forEach(b=>b.addEventListener('click',()=>go(active+Number(b.dataset.dir||0))));box.querySelectorAll('[data-share]').forEach(b=>b.addEventListener('click',()=>shareOne(alerts[Number(b.dataset.share)||0],label)));box.querySelector('.rus-record-alert-shareall').addEventListener('click',()=>shareAll(alerts,label));sync(0)}catch(e){console.warn('Record alerts:',e)}}
+async function install(){
+  styles();
+  const main=document.querySelector('main.container')||document.querySelector('main');
+  if(!main)return;
+  try{
+    const [r]=await Promise.all([fetch(`record-alerts.json?v=${Date.now()}`,{cache:'no-store'}),loadTeamMeta()]);
+    if(!r.ok)return;
+    const data=await r.json(),all=Array.isArray(data.alerts)?data.alerts:[],window=latestWeekWindow(all);
+    if(!window||Date.now()>=window.expires)return;
+    const alerts=orderedAlerts(all.filter(a=>{const t=dayValue(a.date);return t>=window.start&&t<window.end}));
+    if(!alerts.length)return;
+    const label=weekLabel(all,window),box=document.createElement('section');
+    box.className='rus-record-alert';box.setAttribute('aria-label',label);
+    box.innerHTML=`<div class="rus-record-alert-head"><div class="rus-record-alert-heading"><strong>Record Alert</strong> • ${esc(label)}</div><button class="rus-record-alert-shareall" type="button">Share All (${alerts.length})</button></div><div class="rus-record-alert-scroller">${alerts.map((a,n)=>{const d=describe(a),theme=themeFor(a.team);return`<article class="rus-record-alert-card" data-alert-index="${n}" style="--rus-team-bg:${theme.bg};--rus-team-fg:${theme.fg};--rus-team-accent:${theme.accent}"><div class="rus-record-alert-wrap"><div class="rus-record-alert-kicker">${d.kicker}</div><div class="rus-record-alert-main"><div class="rus-record-alert-title">${d.title}</div><div class="rus-record-alert-sub">${d.sub}</div>${d.opponent?`<div class="rus-record-alert-opponent">${d.opponent}</div>`:''}</div><div class="rus-record-alert-actions"><a class="rus-record-alert-link" href="${teamLink(a)}">View Record →</a><button class="rus-record-alert-share" type="button" data-share="${n}">Share</button></div></div></article>`}).join('')}</div><div class="rus-record-alert-nav"><div class="rus-record-alert-counter">1 / ${alerts.length}</div><div class="rus-record-alert-dots">${alerts.map((_,n)=>`<button class="rus-record-alert-dot${n===0?' active':''}" type="button" data-i="${n}" aria-label="Record alert ${n+1}"></button>`).join('')}</div><div class="rus-record-alert-arrows"><button class="rus-record-alert-arrow" type="button" data-dir="-1" aria-label="Previous record alert">‹</button><button class="rus-record-alert-arrow" type="button" data-dir="1" aria-label="Next record alert">›</button></div></div>`;
+    main.insertBefore(box,main.firstElementChild);
+    const topObserver=new MutationObserver(()=>keepAtTop(box,main));topObserver.observe(main,{childList:true});setTimeout(()=>topObserver.disconnect(),5000);
+    const scroller=box.querySelector('.rus-record-alert-scroller'),cards=[...box.querySelectorAll('.rus-record-alert-card')],counter=box.querySelector('.rus-record-alert-counter'),dots=[...box.querySelectorAll('.rus-record-alert-dot')],arrows=[...box.querySelectorAll('.rus-record-alert-arrow')];
+    let active=0,timer=null;
+    function go(n,behavior='smooth'){n=Math.max(0,Math.min(cards.length-1,n));const left=cards[n].offsetLeft-scroller.offsetLeft;scroller.scrollTo({left,behavior})}
+    function sync(n){active=Math.max(0,Math.min(cards.length-1,n));counter.textContent=`${active+1} / ${alerts.length}`;dots.forEach((d,i)=>d.classList.toggle('active',i===active));arrows[0].disabled=active===0;arrows[1].disabled=active===cards.length-1;const dot=dots[active];if(dot)dot.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'})}
+    function nearest(){const x=scroller.scrollLeft;let best=0,dist=Infinity;cards.forEach((c,i)=>{const d=Math.abs((c.offsetLeft-scroller.offsetLeft)-x);if(d<dist){dist=d;best=i}});sync(best)}
+    scroller.addEventListener('scroll',()=>{clearTimeout(timer);timer=setTimeout(nearest,80)},{passive:true});
+    dots.forEach(b=>b.addEventListener('click',()=>go(Number(b.dataset.i)||0)));
+    arrows.forEach(b=>b.addEventListener('click',()=>go(active+Number(b.dataset.dir||0))));
+    box.querySelectorAll('[data-share]').forEach(b=>b.addEventListener('click',()=>shareOne(alerts[Number(b.dataset.share)||0],label)));
+    box.querySelector('.rus-record-alert-shareall').addEventListener('click',()=>shareAll(alerts,label));
+    sync(0);
+  }catch(e){console.warn('Record alerts:',e)}
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
 })();
