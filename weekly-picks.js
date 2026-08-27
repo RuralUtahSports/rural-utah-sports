@@ -1,6 +1,6 @@
 const WP_TZ='America/Denver';
 const WP_RELEASE_HOUR=16;
-let wpWeek=null,wpMode='mypicks';
+let wpWeek=null,wpWeeks=[],wpWeekKey='',wpMode='mypicks';
 
 function wpParseDate(value){
   const s=String(value??'').trim();
@@ -58,7 +58,10 @@ function wpBuildCurrentWeek(){
   }
   games.sort((a,b)=>wpYmdKey(wpParseDate(a.date))-wpYmdKey(wpParseDate(b.date))||String(a.awayTeam).localeCompare(String(b.awayTeam)));
   wpWeek=games.length?{key:currentKey,games,firstDate,lastDate}:null;
+  wpWeeks=wpWeek?[wpWeek]:[];
+  wpWeekKey=wpWeek?.key||'';
 }
+function wpCurrentWeek(){return wpWeek}
 function wpSummary(w,picks){let picked=0,completed=0,correct=0;for(const g of w.games){const p=picks[wpGameKey(g)],actual=wpActualWinner(g);if(p)picked++;if(actual&&p){completed++;if(actual===p)correct++;}}return{picked,completed,correct,accuracy:completed?correct/completed*100:null}}
 function wpMini(value,label){return `<div class="mini"><div class="mini-value">${value}</div><div class="mini-label">${label}</div></div>`}
 function wpPickCard(g,picks,locked){
@@ -84,5 +87,5 @@ function wpRenderShell(){
   const current=document.querySelector('.wp-current-week');if(current){current.style.cssText='min-height:42px;display:flex;align-items:center;background:#171717;border:1px solid #444;border-radius:5px;padding:0 12px;color:#fff;font-weight:900'}
   document.getElementById('wpReset').onclick=wpReset;document.querySelectorAll('.wp-mode').forEach(b=>b.onclick=()=>wpSwitchMode(b.dataset.mode));wpRenderBody();
 }
-function wpInit(){try{if(typeof weekly==='undefined'||!Array.isArray(weekly)||!weekly.length)return false;wpBuildCurrentWeek();wpRenderShell();return true}catch(e){console.error(e);return false}}
+function wpInit(){try{if(typeof weekly==='undefined'||!Array.isArray(weekly)||!weekly.length)return false;wpBuildCurrentWeek();const tab=document.querySelector('.tab[data-tab="weekly"]');if(tab)tab.textContent="Weekly Pick'em";wpRenderShell();if((location.hash==='#weekly'||location.hash==='#pickem')&&typeof showTab==='function')showTab('weekly');return true}catch(e){console.error(e);return false}}
 (function wpWait(){let tries=0;const timer=setInterval(()=>{tries++;if(wpInit()||tries>100)clearInterval(timer)},100)})();
