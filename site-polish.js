@@ -24,8 +24,13 @@ function discoveryCard(title,desc,links){return `<article class="rus-discovery-c
 function setupHomeDiscovery(){
   if(path!=='index.html'||document.getElementById('rusExplore'))return;
   const hero=document.querySelector('main .hero'),week=document.querySelector('main .this-week');if(!hero&&!week)return;
-  const section=document.createElement('section');section.id='rusExplore';section.className='rus-discovery';section.innerHTML=`<div class="rus-discovery-head"><div><h2>Explore Rural Utah Sports</h2><p>Jump straight to what you came for — this week's football, team and player data, or more than a century of Utah football history.</p></div></div><div class="rus-discovery-grid">${discoveryCard('Follow This Week','Scores, polls and the races happening right now.',[['Game Week','game-week.html'],['Scoreboard','scoreboard.html'],['Rankings','rankings.html'],['Standings','standings.html']])}${discoveryCard('Teams & Players','Find a program, compare teams and explore current stats.',[['Teams','teams.html'],['Stat Leaders','stat-leaders.html'],['Team Stats','team-stats.html'],['Fantasy Football','fantasy-football.html']])}${discoveryCard('Explore History','Go season by season or dig into the record book.',[['Past Season Rankings','historical-rankings.html'],['Season Explorer','season.html'],['Records','records.html'],['Scorigami','scorigami.html']])}</div>`;
+  const section=document.createElement('section');section.id='rusExplore';section.className='rus-discovery';section.innerHTML=`<div class="rus-discovery-head"><div><h2>Explore Rural Utah Sports</h2><p>Jump straight to what you came for — this week's football, team and player data, or more than a century of Utah football history.</p></div></div><div class="rus-discovery-grid">${discoveryCard('Follow This Week','Scores, polls and the races happening right now.',[['Weekly Pick’em','simulators.html#weekly'],['Game Week','game-week.html'],['Scoreboard','scoreboard.html'],['Rankings','rankings.html'],['Standings','standings.html']])}${discoveryCard('Teams & Players','Find a program, compare teams and explore current stats.',[['Teams','teams.html'],['Stat Leaders','stat-leaders.html'],['Team Stats','team-stats.html'],['Fantasy Football','fantasy-football.html']])}${discoveryCard('Explore History','Go season by season or dig into the record book.',[['Past Season Rankings','historical-rankings.html'],['Season Explorer','season.html'],['Records','records.html'],['Scorigami','scorigami.html']])}</div>`;
   if(hero)hero.insertAdjacentElement('afterend',section);else week.insertAdjacentElement('beforebegin',section);
+}
+function setupPickemNav(){
+  const details=[...document.querySelectorAll('.rus-nav details')].find(d=>/^Simulators\b/i.test((d.querySelector('summary')?.textContent||'').trim()));
+  const drop=details?.querySelector('.drop');if(!drop||drop.querySelector('a[href="simulators.html#weekly"]'))return;
+  const a=document.createElement('a');a.href='simulators.html#weekly';a.textContent='Weekly Pick’em';drop.appendChild(a);
 }
 function setupHistoricalHelp(){
   if(path!=='historical-rankings.html')return;
@@ -43,6 +48,6 @@ function labelScrollableTables(){
   const apply=()=>document.querySelectorAll('.table-wrap,.table-scroll').forEach(w=>{if(w.dataset.rusPolishScroll)return;w.dataset.rusPolishScroll='1';w.setAttribute('tabindex','0');if(!w.getAttribute('aria-label'))w.setAttribute('aria-label','Scrollable data table')});
   apply();setTimeout(apply,600);setTimeout(apply,1800);
 }
-function init(){addStyles();setupHomeDiscovery();setupHistoricalHelp();labelScrollableTables()}
+function init(){addStyles();setupHomeDiscovery();setupPickemNav();setupHistoricalHelp();labelScrollableTables()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
