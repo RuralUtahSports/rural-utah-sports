@@ -1,0 +1,57 @@
+name: Build Record Alerts
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'player-single-game-records/**'
+      - 'team-stat-single-game-records/**'
+      - 'scripts/build_record_alerts.mjs'
+      - '.github/workflows/build-record-alerts.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-record-alerts
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build current-season record alerts
+        run: node scripts/build_record_alerts.mjs
+      - name: Validate alert payload
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const d=JSON.parse(fs.readFileSync('record-alerts.json','utf8'));
+          if(!Array.isArray(d.alerts)) throw new Error('record-alerts.json missing alerts array');
+          for(const a of d.alerts){
+            if(!['player','team'].includes(a.recordType)) throw new Error('Bad recordType');
+            if(!['school','statewide'].includes(a.scope)) throw new Error('Bad scope');
+            if(!(Number(a.value)>Number(a.previousValue))) throw new Error('Alert does not beat previous record');
+          }
+          console.log(`Validated ${d.alerts.length} record alerts`);
+          NODE
+      - name: Publish alert data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add record-alerts.json
+          if git diff --cached --quiet; then echo "Record alerts already current."; exit 0; fi
+          git commit -m "Auto-sync home record alerts"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push origin HEAD:main; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
