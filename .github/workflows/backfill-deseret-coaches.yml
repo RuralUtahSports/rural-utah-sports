@@ -1,0 +1,44 @@
+name: Backfill Deseret Coaches
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - scripts/backfill-deseret-coaches.py
+      - .github/workflows/backfill-deseret-coaches.yml
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install scraper dependencies
+        run: python -m pip install --disable-pip-version-check requests beautifulsoup4
+
+      - name: Backfill 2023-2025 coaches from Deseret News
+        run: python scripts/backfill-deseret-coaches.py
+
+      - name: Commit verified coaching history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add coach-history-index.json coach-history-1.json coach-history-2.json coach-history-3.json coach-history-4.json coach-history-deseret-2023-2025.json coaches.html
+          if git diff --cached --quiet; then
+            echo "No coaching-history changes to commit."
+            exit 0
+          fi
+          git commit -m "Backfill 2023-2025 coaches from Deseret News"
+          git pull --rebase origin main
+          git push origin HEAD:main
