@@ -42,6 +42,24 @@ jobs:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
         run: python scripts/enrich_playoff_notes.py
 
+      - name: Verify ALA historical playoff record
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data=json.loads(Path('team-page-data/ala.json').read_text(encoding='utf-8'))
+          games=[g for year in (data.get('schedules') or {}).values() for g in year if g.get('playoff') is True]
+          wins=sum(1 for g in games if str(g.get('result','')).upper()=='W')
+          losses=sum(1 for g in games if str(g.get('result','')).upper()=='L')
+          ties=sum(1 for g in games if str(g.get('result','')).upper()=='T')
+          print(f'ALA playoff record: {wins}-{losses}-{ties} ({len(games)} games)')
+          assert (wins,losses,ties,len(games)) == (3,16,0,19), (
+              'ALA playoff regression: expected 3-16 in 19 games, got '
+              f'{wins}-{losses}-{ties} in {len(games)} games'
+          )
+          PY
+
       - name: Commit enriched team page data
         run: |
           git config user.name "RuralUtahSports"
