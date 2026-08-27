@@ -1,0 +1,75 @@
+name: Restore Weekly Pickem
+
+on:
+  push:
+    paths:
+      - '.github/workflows/restore-weekly-pickem.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore Weekly Pickem entry points
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          text = index.read_text()
+          old = text
+          text = text.replace('simulators.html#weekly', 'simulators.html?tab=weekly')
+          if text == old:
+              print('index.html: no stale #weekly links found')
+          else:
+              index.write_text(text)
+              print('index.html: restored working Weekly Pickem links')
+
+          sim = Path('simulators.html')
+          text = sim.read_text()
+          old = text
+          text = text.replace('>Weekly Simulation</button>', ">Weekly Pick'em</button>")
+          text = text.replace(
+              'Run a detailed current matchup, browse the weekly simulation slate, or pit any two historical Greatest Seasons against each other.',
+              "Run a detailed current matchup, make your Weekly Pick'em selections, or pit any two historical Greatest Seasons against each other."
+          )
+          text = text.replace(
+              "const initialTab=new URLSearchParams(location.search).get('tab');if(initialTab==='weekly'||initialTab==='greatest')showTab(initialTab)",
+              "const initialTab=new URLSearchParams(location.search).get('tab')||location.hash.replace('#','');if(initialTab==='weekly'||initialTab==='greatest')showTab(initialTab)"
+          )
+          if "weekly-picks.js" not in text:
+              text = text.replace('<script src="greatest-season-simulator.js"></script>', '<script src="greatest-season-simulator.js"></script>\n<script src="weekly-picks.js"></script>')
+          if text == old:
+              print('simulators.html: no changes needed')
+          else:
+              sim.write_text(text)
+              print('simulators.html: Weekly Pickem restored and legacy hash supported')
+          PY
+
+      - name: Validate Pickem wiring
+        run: |
+          grep -q 'simulators.html?tab=weekly' index.html
+          grep -q "Weekly Pick'em" simulators.html
+          grep -q 'weekly-picks.js' simulators.html
+          grep -q "location.hash.replace('#','')" simulators.html
+          test -f weekly-picks.js
+
+      - name: Remove one-time workflow and commit
+        run: |
+          rm -f .github/workflows/restore-weekly-pickem.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html simulators.html .github/workflows/restore-weekly-pickem.yml
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Restore Weekly Pickem access"
+          git push
