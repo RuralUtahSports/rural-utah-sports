@@ -133,6 +133,18 @@
       s.dataset.rusHomeGotw = "preview2";
       document.body.appendChild(s);
     },
+    loadHomeRecordAlerts = () => {
+      if (
+        !/^(?:|index\.html)$/i.test(page()) ||
+        document.querySelector("script[data-rus-home-record-alerts]")
+      )
+        return;
+      const s = document.createElement("script");
+      s.src = "home-record-alerts.js?v=20260826-record-alert1";
+      s.defer = true;
+      s.dataset.rusHomeRecordAlerts = "record-alert1";
+      document.body.appendChild(s);
+    },
     loadState25Direct = () => {
       if (
         !/rankings\.html$/i.test(page()) ||
@@ -171,6 +183,7 @@
       loadDynasty();
       loadSeasonRecords();
       loadHomeGotw();
+      loadHomeRecordAlerts();
       loadState25Direct();
       loadClassDirect();
     };
