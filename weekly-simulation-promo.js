@@ -140,9 +140,9 @@
       )
         return;
       const s = document.createElement("script");
-      s.src = "home-record-alerts.js?v=20260826-record-alert1";
+      s.src = "home-record-alerts.js?v=20260826-record-alert2";
       s.defer = true;
-      s.dataset.rusHomeRecordAlerts = "record-alert1";
+      s.dataset.rusHomeRecordAlerts = "record-alert2";
       document.body.appendChild(s);
     },
     loadState25Direct = () => {
