@@ -1,0 +1,58 @@
+name: Repair ALA Single-Game Records
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/repair_ala_single_game_records.mjs'
+      - '.github/workflows/repair-ala-single-game-records.yml'
+  workflow_run:
+    workflows: ['Build Team Single-Game Records']
+    types: [completed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repair-ala-single-game-records
+  cancel-in-progress: true
+
+jobs:
+  repair:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Rebuild ALA single-game records
+        run: node scripts/repair_ala_single_game_records.mjs
+      - name: Validate ALA outputs
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          for(const file of ['player-single-game-records/by-team/ala.json','team-stat-single-game-records/by-team/ala.json']){
+            const d=JSON.parse(fs.readFileSync(file,'utf8'));
+            if(!Array.isArray(d.categories)||!d.categories.length) throw new Error(`${file}: no categories`);
+          }
+          console.log('ALA single-game outputs contain records');
+          NODE
+      - name: Publish repaired datasets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add player-single-game-records team-stat-single-game-records
+          if git diff --cached --quiet; then
+            echo "No ALA record changes"
+            exit 0
+          fi
+          git commit -m "Auto-repair ALA single-game records"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "Push attempt $attempt failed; retrying"
+            sleep $((attempt * 5))
+          done
+          exit 1
