@@ -43,15 +43,21 @@
 
   function coachStats(t,pageData){
     let wins=0,losses=0,ties=0,pw=0,pl=0,pt=0;
-    for(const s of Array.isArray(pageData?.seasonHistory)?pageData.seasonHistory:[]){
-      if(!inTenure(s.year,t)) continue;
-      wins+=Number(s.wins||0); losses+=Number(s.losses||0); ties+=Number(s.ties||0);
-    }
-    for(const [year,games] of Object.entries(pageData?.schedules||{})){
-      if(!inTenure(year,t)) continue;
-      for(const g of Array.isArray(games)?games:[]){
-        if(!g.playoff) continue;
-        if(g.result==='W')pw++; else if(g.result==='L')pl++; else if(g.result==='T')pt++;
+    const schedules=pageData?.schedules||{};
+    const seasonHistory=Array.isArray(pageData?.seasonHistory)?pageData.seasonHistory:[];
+    for(let year=t.start;year<=t.end;year++){
+      const games=Array.isArray(schedules[String(year)])?schedules[String(year)]:[];
+      if(games.length){
+        for(const g of games){
+          const r=clean(g.result).toUpperCase();
+          if(r==='W')wins++; else if(r==='L')losses++; else if(r==='T')ties++;
+          if(g.playoff===true){
+            if(r==='W')pw++; else if(r==='L')pl++; else if(r==='T')pt++;
+          }
+        }
+      }else{
+        const s=seasonHistory.find(x=>Number(x.year)===year);
+        if(s){wins+=Number(s.wins||0);losses+=Number(s.losses||0);ties+=Number(s.ties||0)}
       }
     }
     let appearances=0,titles=0;
@@ -88,7 +94,7 @@
       </div>
       <div class="rus-coach-wrap"><table><thead><tr><th>Season(s)</th><th>Head Coach</th><th>W-L-T</th><th>Win %</th><th>Playoffs</th><th>Title Games</th><th>Titles</th></tr></thead><tbody>${rows || '<tr><td colspan="7">No verified coaching history is available yet.</td></tr>'}</tbody></table></div>
       ${notes}
-      <p class="rus-coach-coverage">Coach records are calculated from RUS season/game history for the seasons assigned to each coach. Playoff record uses games marked as playoffs, and title totals use the Championship Log. Seasons with an unresolved coach are not credited to anyone. <a class="rus-coach-link" href="coaches.html?team=${encodeURIComponent(team.team)}">Open statewide coaching history →</a></p>`;
+      <p class="rus-coach-coverage">Coach records are calculated from RUS game schedules for the seasons assigned to each coach, with season summaries used only when individual schedule data is unavailable. Playoff record uses verified playoff-marked games, and title totals use the Championship Log. Seasons with an unresolved coach are not credited to anyone. <a class="rus-coach-link" href="coaches.html?team=${encodeURIComponent(team.team)}">Open statewide coaching history →</a></p>`;
     return section;
   }
 
@@ -98,15 +104,15 @@
     const title = page.querySelector('.team-title');
     if (!title) return;
     try{
-      const index = await fetch(`coach-history-index.json?v=20260827-coaches5`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()});
-      const parts = await Promise.all((index.shards||[]).map(name=>fetch(`${name}?v=20260827-coaches5`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()})));
+      const index = await fetch(`coach-history-index.json?v=20260827-coaches9`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()});
+      const parts = await Promise.all((index.shards||[]).map(name=>fetch(`${name}?v=20260827-coaches9`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()})));
       const data = unpackData(index,parts);
       const wanted = currentTeamName() || clean(title.textContent).toUpperCase();
       const team = findTeam(data,wanted) || findTeam(data,title.textContent);
       if (!team) return;
       let pageData={};
       try{
-        const r=await fetch(`team-page-data/${teamSlug(clean(title.textContent))}.json?v=20260827-coaches5`,{cache:'no-store'});
+        const r=await fetch(`team-page-data/${teamSlug(clean(title.textContent))}.json?v=20260827-coaches9`,{cache:'no-store'});
         if(r.ok) pageData=await r.json();
       }catch(e){console.warn('Coach record data:',e)}
       const section = buildSection(team,data,pageData);
