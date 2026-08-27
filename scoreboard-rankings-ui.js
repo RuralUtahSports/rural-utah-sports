@@ -52,7 +52,7 @@
       const stamp=Date.now();
       const [classResponse,stateResponse]=await Promise.all([
         fetch('rankings-history-2026.json?v='+stamp).catch(()=>null),
-        fetch('state-rankings-2026.json?v='+stamp).catch(()=>null)
+        fetch('state-top25-history-2026.json?v='+stamp).catch(()=>null)
       ]);
       const classData=classResponse&&classResponse.ok?await classResponse.json():null;
       const stateData=stateResponse&&stateResponse.ok?await stateResponse.json():null;
@@ -61,7 +61,14 @@
       for(const[classification,list]of Object.entries(latest?.classifications||{})){
         (list||[]).forEach((team,index)=>classRanks.set(canon(team),{rank:index+1,classification}));
       }
-      for(const row of stateData?.rankings||[])if(row?.team)stateRanks.set(canon(row.team),row);
+      const stateSnapshots=stateData?.snapshots||[],label=String(latest?.label||'').trim();
+      const matching=stateSnapshots.find(s=>String(s?.label||'').trim()===label);
+      const dated=[...stateSnapshots].sort((a,b)=>Date.parse(a?.date||0)-Date.parse(b?.date||0));
+      const currentState=matching||dated.at(-1)||stateData;
+      (currentState?.teams||currentState?.rankings||[]).forEach((row,index)=>{
+        const name=typeof row==='string'?row:row?.team;
+        if(name)stateRanks.set(canon(name),{rank:Number(row?.rank)||index+1});
+      });
       if(typeof teamBlock!=='function')return;
       teamBlock=function(name,score,pred){
         const t=teamInfo(name),bg=safeHex(t?.backgroundColor,'#222'),fg=safeHex(t?.textColor,'#fff'),cr=classRanks.get(canon(name)),sr=stateRanks.get(canon(name)),parts=[];

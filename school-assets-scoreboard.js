@@ -25,7 +25,6 @@ const rankingAliases={
   'CEDAR CITY':'CEDAR','GRAND COUNTY':'GRAND','MONUMENT VAL':'MONUMENT VALLEY','UMA LEHI':'UMA-LEHI',
   'UTAH MILITARY ACADEMY - CAMP WILLIAMS':'UMA-LEHI','LAYTON CHRISTIAN ACADEMY':'LAYTON CHRISTIAN'
 };
-const state25=['CORNER CANYON','SKYRIDGE','LONE PEAK','DAVIS','MOUNTAIN RIDGE','OREM','AMERICAN FORK','RIDGELINE','HERRIMAN','SPRINGVILLE','WEST','CRIMSON CLIFFS','TIMPVIEW','SYRACUSE','LEHI','BINGHAM','BOUNTIFUL','OLYMPUS','FARMINGTON','MORGAN','FREMONT','PROVO','WOODS CROSS','SKY VIEW','PARK CITY'];
 const rankKey=team=>rankingAliases[norm(team)]||norm(team);
 const compact=v=>norm(v).replace(/[^A-Z0-9]/g,'');
 const isoDate=d=>{
@@ -38,7 +37,7 @@ const isoDate=d=>{
 const detailKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
 const pairKey=(a,b)=>[rankKey(a),rankKey(b)].sort().join('|');
 let rankMap=new Map();
-const stateRankMap=new Map(state25.map((team,i)=>[rankKey(team),i+1]));
+let stateRankMap=new Map();
 let recordMap=new Map(),eloPairMap=new Map(),mercyCount=null;
 let refreshQueued=false,refreshDelayTimer=null;
 
@@ -121,10 +120,22 @@ function watchScoreboard(){
   observer.observe(root,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class']});
 }
 
-fetch(`rankings-history-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{
-  const snap=data?.snapshots?.at(-1);if(!snap)return;const next=new Map();
-  for(const [cls,teams] of Object.entries(snap.classifications||{}))(teams||[]).forEach((team,i)=>next.set(rankKey(team),{rank:i+1,cls}));
-  rankMap=next;queueRefresh(30);
+Promise.all([
+  fetch(`rankings-history-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null),
+  fetch(`state-top25-history-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null)
+]).then(([classData,stateData])=>{
+  const classSnapshots=classData?.snapshots||[],classSnap=classSnapshots.at(-1);
+  const stateSnapshots=stateData?.snapshots||[],label=String(classSnap?.label||'').trim();
+  const matching=stateSnapshots.find(s=>String(s?.label||'').trim()===label);
+  const dated=[...stateSnapshots].sort((a,b)=>Date.parse(a?.date||0)-Date.parse(b?.date||0));
+  const stateSnap=matching||dated.at(-1);
+  if(!classSnap&&!stateSnap)return;
+  const nextClass=new Map(),nextState=new Map();
+  for(const [cls,teams] of Object.entries(classSnap?.classifications||{}))(teams||[]).forEach((team,i)=>nextClass.set(rankKey(team),{rank:i+1,cls}));
+  (stateSnap?.teams||stateSnap?.rankings||[]).forEach((team,i)=>{
+    const name=typeof team==='string'?team:team?.team;if(name)nextState.set(rankKey(name),Number(team?.rank)||i+1);
+  });
+  rankMap=nextClass;stateRankMap=nextState;queueRefresh(30);
 }).catch(()=>{});
 fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{
   const next=new Map();for(const teams of Object.values(data?.byClassification||{}))for(const row of teams||[])if(row?.team)next.set(rankKey(row.team),recordText(row));
