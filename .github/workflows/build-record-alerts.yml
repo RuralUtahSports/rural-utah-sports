@@ -7,6 +7,7 @@ on:
     paths:
       - 'player-single-game-records/**'
       - 'team-stat-single-game-records/**'
+      - 'data/uhsaa-football-single-game-records.json'
       - 'scripts/build_record_alerts.mjs'
       - '.github/workflows/build-record-alerts.yml'
 
@@ -37,10 +38,14 @@ jobs:
           if(!Array.isArray(d.alerts)) throw new Error('record-alerts.json missing alerts array');
           for(const a of d.alerts){
             if(!['player','team'].includes(a.recordType)) throw new Error('Bad recordType');
-            if(!['school','statewide'].includes(a.scope)) throw new Error('Bad scope');
+            if(!['school','statewide','uhsaa'].includes(a.scope)) throw new Error('Bad scope');
             if(!(Number(a.value)>Number(a.previousValue))) throw new Error('Alert does not beat previous record');
+            if(a.uhsaaWatch){
+              if(!(Number(a.value)>Number(a.uhsaaListedValue))) throw new Error('UHSAA watch does not exceed listed mark');
+              if(!a.uhsaaSourceUrl) throw new Error('UHSAA watch missing source URL');
+            }
           }
-          console.log(`Validated ${d.alerts.length} record alerts`);
+          console.log(`Validated ${d.alerts.length} record alerts (${d.alerts.filter(a=>a.uhsaaWatch).length} UHSAA watches)`);
           NODE
       - name: Publish alert data
         run: |

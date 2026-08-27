@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260826-record-alerts2';
+const CACHE='rus-site-20260826-record-alerts-uhsaa1';
 const CORE=[
   './',
   './index.html',
