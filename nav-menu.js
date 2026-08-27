@@ -96,6 +96,7 @@
       ["Past Award Winners", "awards-2025.html"],
     ],
     simulators: [
+      ["Weekly Pick'em", "simulators.html?tab=weekly"],
       ["Simulators Hub", "simulators.html"],
       ["Promotion / Relegation", "promotion-relegation.html"],
     ],
@@ -438,6 +439,7 @@
         link("Scoreboard", "scoreboard.html"),
         link("Rankings", "rankings.html"),
         link("Standings", "standings.html"),
+        link("Pick'em", "simulators.html?tab=weekly"),
         dropdown("Stats", "stats"),
         link("Storylines", "storylines.html"),
         dropdown("History", "history"),
