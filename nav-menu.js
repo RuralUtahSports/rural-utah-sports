@@ -146,7 +146,7 @@
   }
   async function loadExtras() {
     await fetchCacheReady;
-    addScript("pwa.js?v=20260827-week3-pickem1", "rusPwa", true);
+    addScript("pwa.js?v=20260827-mobile-nav-restore1", "rusPwa", true);
     addScript("site-search.js?v=20260817-player2", "rusSiteSearch", true);
     addScript(
       "optimization-polish.js?v=20260819-lcp1",
@@ -164,7 +164,6 @@
       "rusMobileOptimizations",
       true,
     );
-    addScript("mobile-shell.js?v=20260818-back2", "rusMobileShell", true);
     addScript(
       "desktop-optimizations.js?v=20260818-tableheaderfix",
       "rusDesktopOptimizations",
@@ -455,6 +454,15 @@
           });
         }),
       );
+
+      // Mobile navigation is part of the critical shell. Load it as soon as
+      // the canonical nav exists instead of waiting for window.load and an
+      // idle callback, either of which can be delayed by a slow page asset.
+      addScript(
+        "mobile-shell.js?v=20260827-mobile-nav-restore1",
+        "rusMobileShell",
+        true,
+      );
     }
     const logo = document.querySelector("header .logo");
     if (logo && !logo.closest("a")) {
@@ -476,7 +484,10 @@
     afterFirstPaint(loadExtras, 900);
     afterFirstPaint(setupAnalytics, 1800);
   }
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", setup);
+  // Most pages include this script after their nav markup. Initialize at once
+  // in that case so the mobile shell does not sit behind earlier defer scripts.
+  if (document.querySelector("nav .nav-content")) setup();
+  else if (document.readyState === "loading")
+    document.addEventListener("DOMContentLoaded", setup, { once: true });
   else setup();
 })();

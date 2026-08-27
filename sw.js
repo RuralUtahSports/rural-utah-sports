@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260827-week3-pickem1';
+const CACHE='rus-site-20260827-mobile-nav-restore1';
 const CORE=[
   './',
   './index.html',

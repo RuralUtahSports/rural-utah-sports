@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const head=document.head;
-const VERSION='20260827-week3-pickem1';
+const VERSION='20260827-mobile-nav-restore1';
 const ICON='RUSlogoNew.png?v=20260817-iosicon2';
 function meta(name,content){let m=document.querySelector(`meta[name="${name}"]`);if(!m){m=document.createElement('meta');m.name=name;head.appendChild(m)}m.content=content}
 function script(src,id){if(document.getElementById(id)||document.querySelector(`script[src^="${src.split('?')[0]}"]`))return;const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;document.body.appendChild(s)}

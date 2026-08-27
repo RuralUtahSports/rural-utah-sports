@@ -172,5 +172,7 @@ function teardown(){
   document.querySelector('.rus-mobile-bottom-nav')?.remove();document.querySelector('.rus-mobile-menu-layer')?.remove();document.querySelector('.rus-app-backbar')?.remove();shell=null;moreButton=null;backBar=null;
 }
 function install(){addStyles();if(mq.matches)buildShell();mq.addEventListener?.('change',e=>e.matches?buildShell():teardown())}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+if(document.querySelector('nav .rus-nav'))install();
+else if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});
+else install();
 })();

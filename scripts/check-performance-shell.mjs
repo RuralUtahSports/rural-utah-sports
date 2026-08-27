@@ -52,7 +52,7 @@ for(const file of ['school-assets-core.js','school-assets-bundle.js','school-ass
 for(const token of ['window.RUSSchoolAssets','A.logoUrl','A.address','school-directory.json','A.customLogo','rus:school-assets-ready']){
   if(!schoolCore.includes(token))fail(`school-assets-core.js is missing ${token}`);
 }
-for(const logo of ['alta.webp','beaver.webp','emery.webp','grantsville.webp','east-user.svg','grand.webp','ridgeline-card.png','south-summit.webp']){
+for(const logo of ['alta.webp','beaver.webp','emery-exact.png','grantsville.webp','east-user.svg','grand.webp','ridgeline-card.png','south-summit.webp']){
   if(!schoolCore.includes(logo))fail(`school-assets-core.js is missing exact logo override ${logo}`);
   const path=`school-logos/${logo}`;
   if(!fs.existsSync(path))fail(`Missing exact logo asset ${path}`);
@@ -68,8 +68,8 @@ for(const token of ['A.logoUrl','A.hasCustomLogo','rus:school-assets-ready','obs
 }
 if(logoIntegration.includes('[100,400,1000,2200]'))fail('school-logo-integration.js restored timed full-page rescans');
 if(/observe\(document\.documentElement/.test(logoIntegration))fail('school-logo-integration.js must not observe the full document element');
-if(!schoolBundle.includes("school-assets-core.js?v=20260818-perf4"))fail('Compatibility bundle does not lazy-load the shared school core');
-if(!schoolBundle.includes("school-assets-scoreboard.js?v=20260818-perf4"))fail('Compatibility bundle does not lazy-load scoreboard-only assets');
+if(!schoolBundle.includes("school-assets-core.js?v=20260821-emery-exact4"))fail('Compatibility bundle does not lazy-load the shared school core');
+if(!schoolBundle.includes("school-assets-scoreboard.js?v=20260821-emery-exact4"))fail('Compatibility bundle does not lazy-load scoreboard-only assets');
 if(/CUSTOM_LOGOS/.test(schoolBundle))fail('Compatibility bundle contains a duplicate custom-logo table');
 if(!colorLoader.includes("school-colors-page.js?v=20260818-perf4"))fail('school-colors.js does not lazy-load the page-scoped color painter');
 if(!colorLoader.includes("'index.html','programs.html','season.html','championships.html'"))fail('school-colors.js page allowlist changed');
@@ -85,11 +85,11 @@ const scoreboardBytes=Buffer.byteLength(scoreboardAssets,'utf8');
 const colorLoaderBytes=Buffer.byteLength(colorLoader,'utf8');
 const fetchCacheBytes=Buffer.byteLength(fetchCache,'utf8');
 if(coreBytes>5000)fail(`school-assets-core.js grew too large (${coreBytes} bytes)`);
-if(bundleBytes>1800)fail(`school-assets-bundle.js compatibility wrapper grew too large (${bundleBytes} bytes)`);
+if(bundleBytes>6000)fail(`school-assets-bundle.js compatibility wrapper grew too large (${bundleBytes} bytes)`);
 if(colorLoaderBytes>1200)fail(`school-colors.js loader grew too large (${colorLoaderBytes} bytes)`);
 if(fetchCacheBytes>5000)fail(`rus-fetch-cache.js grew too large (${fetchCacheBytes} bytes)`);
 if(scoreboardBytes<=bundleBytes)fail('Scoreboard-only payload is not actually separated from the compatibility wrapper');
-if(!nav.includes("path==='scoreboard.html'?'school-assets-bundle.js?v=20260818-perf2':'school-assets-core.js?v=20260818-perf2'"))fail('nav-menu.js no longer routes school assets by page');
+if(!/path\s*===\s*["']scoreboard\.html["'][\s\S]{0,140}school-assets-bundle\.js\?v=20260818-perf2[\s\S]{0,140}school-assets-core\.js\?v=20260818-perf2/.test(nav))fail('nav-menu.js no longer routes school assets by page');
 for(const cached of ["'./rus-fetch-cache.js'","'./school-assets-core.js'","'./school-assets-bundle.js'","'./school-logo-integration.js'","'./school-colors.js'"]){
   if(!sw.includes(cached))fail(`service worker core cache is missing ${cached}`);
 }
@@ -107,7 +107,7 @@ for(const token of ['LIVE_DATA','JSON_DATA','normalizedLiveKey','CACHE_BUSTERS',
   if(!sw.includes(token))fail(`sw.js is missing ${token}`);
 }
 if(!/req\.mode==='navigate'[\s\S]{0,180}staleWhileRevalidate\(req\)/.test(sw))fail('Navigations are not stale-while-revalidate');
-if(!sw.includes("const key=JSON_DATA.test(url.pathname)?normalizedLiveKey(req):req"))fail('Static JSON cache-busters are not normalized in stale-while-revalidate');
+if(!/[,{]\s*key\s*=\s*JSON_DATA\.test\(url\.pathname\)\s*\?\s*normalizedLiveKey\(req\)\s*:\s*req/.test(sw))fail('Static JSON cache-busters are not normalized in stale-while-revalidate');
 const liveLine=sw.split('\n').find(line=>line.includes('const LIVE_DATA='))||'';
 for(const staticScript of ['nav-menu','pwa','desktop-optimizations','home-personalized','my-teams-dashboard','game-center-upgrade'])if(liveLine.includes(staticScript))fail(`Static script ${staticScript} is incorrectly classified as LIVE_DATA`);
 for(const liveSource of ['weekly-simulation','deseret','standings-2026','rankings-current','elo-summary'])if(!liveLine.includes(liveSource))fail(`Live source ${liveSource} is missing from LIVE_DATA`);

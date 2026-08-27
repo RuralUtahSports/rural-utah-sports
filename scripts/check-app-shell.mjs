@@ -53,6 +53,7 @@ if (manifest) {
 
 const pwa = fs.readFileSync('pwa.js', 'utf8');
 const nav = fs.readFileSync('nav-menu.js', 'utf8');
+const mobile = fs.readFileSync('mobile-shell.js', 'utf8');
 const desktop = fs.readFileSync('desktop-optimizations.js', 'utf8');
 const search = fs.readFileSync('site-search.js', 'utf8');
 const sw = fs.readFileSync('sw.js', 'utf8');
@@ -63,6 +64,31 @@ for (const needle of ['manifest.webmanifest', 'apple-touch-icon', 'sw.js']) {
 
 for (const needle of ['pwa.js', 'site-search.js', 'mobile-shell.js', 'desktop-optimizations.js', 'recently-viewed.js', 'home-personalized.js', 'my-teams-dashboard.js', 'rus-lines-dashboard.js', 'game-center-upgrade.js']) {
   if (!nav.includes(needle)) fail(`nav-menu.js no longer loads ${needle}.`);
+}
+
+const setupStart = nav.indexOf('function setup()');
+const mobileLoad = nav.indexOf('mobile-shell.js?v=20260827-mobile-nav-restore1', setupStart);
+const deferredExtras = nav.indexOf('afterFirstPaint(loadExtras', setupStart);
+if (setupStart < 0 || mobileLoad < setupStart || deferredExtras < 0 || mobileLoad > deferredExtras) {
+  fail('Mobile navigation must load during critical setup before deferred extras.');
+}
+if (!nav.includes('if (document.querySelector("nav .nav-content")) setup();')) {
+  fail('Navigation no longer initializes immediately when its markup is already parsed.');
+}
+
+for (const needle of ["navLink('home','Home'", "navLink('scores','Scores'", "navLink('teams','Teams'", "navLink('rankings','Rankings'", 'rus-mobile-more-button']) {
+  if (!mobile.includes(needle)) fail(`mobile-shell.js is missing bottom-navigation item: ${needle}`);
+}
+if (!mobile.includes("if(document.querySelector('nav .rus-nav'))install();")) {
+  fail('Mobile navigation no longer installs immediately after the canonical nav is ready.');
+}
+
+for (const file of fs.readdirSync('.').filter(name => name.endsWith('.html'))) {
+  const html = fs.readFileSync(file, 'utf8');
+  for (const match of html.matchAll(/<script\b[^>]*\bsrc=["']nav-menu\.js\?v=([^"']+)["'][^>]*>/gi)) {
+    if (match[1] !== '20260827-mobile-nav-restore1') fail(`${file} uses stale nav-menu version ${match[1]}.`);
+    if (/\bdefer\b/i.test(match[0])) fail(`${file} defers the critical navigation script.`);
+  }
 }
 
 if (!desktop.includes('desktop-v2.js')) fail('desktop-optimizations.js no longer loads desktop-v2.js.');

@@ -11,7 +11,7 @@ const data=JSON.parse(fs.readFileSync('scorigami-latest.json','utf8'));
 
 for(const token of [
   'nextTuesdayReset',
-  "text.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$/)",
+  "s.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$/)",
   'd.getDay()',
   'now<nextTuesdayReset(a._ts)',
   'if(!alerts.length){alertEl.remove();return}',
@@ -21,7 +21,7 @@ for(const token of [
   if(!js.includes(token))fail(`home-scorigami-carousel.js is missing ${token}`);
 }
 
-if(!html.includes('home-scorigami-carousel.js?v=20260818-expiry1'))fail('Homepage is not loading the freshness-aware Scorigami script');
+if(!html.includes('home-scorigami-carousel.js?v=20260822-share3'))fail('Homepage is not loading the freshness-aware Scorigami script');
 if(html.includes('school-assets-bundle.js'))fail('Homepage still directly loads the full school assets bundle');
 if(!html.includes('school-assets-core.js?v=20260818-perf2'))fail('Homepage is not directly loading the lightweight school assets core');
 
