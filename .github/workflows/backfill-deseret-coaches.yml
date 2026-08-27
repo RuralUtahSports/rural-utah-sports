@@ -43,7 +43,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add coach-history-index.json coach-history-1.json coach-history-2.json coach-history-3.json coach-history-4.json coach-history-deseret-2023-2025.json coaches.html
+          git add --sparse coach-history-index.json coach-history-1.json coach-history-2.json coach-history-3.json coach-history-4.json coach-history-deseret-2023-2025.json coaches.html
           if git diff --cached --quiet; then
             echo "No coaching-history changes to commit."
             exit 0
