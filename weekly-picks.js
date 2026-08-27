@@ -37,6 +37,13 @@ function wpReleaseKey(week){const p=week.firstDate;return Number(`${p.y}${String
 function wpReleased(week){return wpMountainNowKey()>=wpReleaseKey(week)}
 function wpDateLabel(p){return p?new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(p.y,p.m-1,p.d))):''}
 function wpWeekLabel(w){const a=wpDateLabel(w.firstDate),b=wpDateLabel(w.lastDate);return a===b?a:`${a} – ${b}`}
+function wpWeekNumber(key){
+  const season=String(key||'').slice(0,4);
+  const keys=[...new Set((weekly||[]).map(g=>wpGameFootballWeekKey(wpParseDate(g.date))).filter(k=>k&&k.startsWith(`${season}-`)))].sort();
+  const index=keys.indexOf(key);
+  return index>=0?index+1:null;
+}
+function wpWeekTitle(w){return w?.weekNumber?`Week ${w.weekNumber}`:'Current Football Week'}
 function wpReleaseLabel(w){return `${wpDateLabel(w.firstDate)} at 4:00 PM Mountain Time`}
 function wpGameKey(g){return `${g.date}|${g.awayTeam}|${g.homeTeam}`}
 function wpStorageKey(key){return `rus-weekly-picks-${key}`}
@@ -57,8 +64,9 @@ function wpBuildCurrentWeek(){
     if(!lastDate||wpYmdKey(p)>wpYmdKey(lastDate))lastDate=p;
   }
   games.sort((a,b)=>wpYmdKey(wpParseDate(a.date))-wpYmdKey(wpParseDate(b.date))||String(a.awayTeam).localeCompare(String(b.awayTeam)));
-  wpWeek=games.length?{key:currentKey,games,firstDate,lastDate}:null;
+  wpWeek=games.length?{key:currentKey,games,firstDate,lastDate,weekNumber:wpWeekNumber(currentKey)}:null;
 }
+function wpCurrentWeek(){return wpWeek}
 function wpSummary(w,picks){let picked=0,completed=0,correct=0;for(const g of w.games){const p=picks[wpGameKey(g)],actual=wpActualWinner(g);if(p)picked++;if(actual&&p){completed++;if(actual===p)correct++;}}return{picked,completed,correct,accuracy:completed?correct/completed*100:null}}
 function wpMini(value,label){return `<div class="mini"><div class="mini-value">${value}</div><div class="mini-label">${label}</div></div>`}
 function wpPickCard(g,picks,locked){
@@ -80,9 +88,9 @@ function wpRenderShell(){
   const root=document.getElementById('weeklyContent');if(!root)return;
   root.className='';
   if(!wpWeek){root.innerHTML='<div class="wp-lock"><strong>No current-week games are available yet.</strong><div class="wp-small">The picker will populate automatically when this week\'s schedule is in the Weekly Simulation data.</div></div>';return}
-  root.innerHTML=`<div class="wp-week-controls"><div class="field"><label>Current Football Week</label><div class="wp-current-week">${esc(wpWeekLabel(wpWeek))} • ${wpWeek.games.length} game${wpWeek.games.length===1?'':'s'}</div></div><button class="wp-reset" id="wpReset">Reset My Picks</button></div><div class="wp-mode-tabs"><button class="wp-mode active" data-mode="mypicks">My Picks</button><button class="wp-mode" data-mode="rus">RUS Predictions</button><button class="wp-mode" data-mode="results">Results</button></div><div class="wp-lock" id="wpRelease"></div><div id="wpBody"></div>`;
+  root.innerHTML=`<div class="wp-week-controls"><div class="field"><label>Weekly Pick'em</label><div class="wp-current-week">${esc(wpWeekTitle(wpWeek))} • ${esc(wpWeekLabel(wpWeek))} • ${wpWeek.games.length} game${wpWeek.games.length===1?'':'s'}</div></div><button class="wp-reset" id="wpReset">Reset My Picks</button></div><div class="wp-mode-tabs"><button class="wp-mode active" data-mode="mypicks">My Picks</button><button class="wp-mode" data-mode="rus">RUS Predictions</button><button class="wp-mode" data-mode="results">Results</button></div><div class="wp-lock" id="wpRelease"></div><div id="wpBody"></div>`;
   const current=document.querySelector('.wp-current-week');if(current){current.style.cssText='min-height:42px;display:flex;align-items:center;background:#171717;border:1px solid #444;border-radius:5px;padding:0 12px;color:#fff;font-weight:900'}
   document.getElementById('wpReset').onclick=wpReset;document.querySelectorAll('.wp-mode').forEach(b=>b.onclick=()=>wpSwitchMode(b.dataset.mode));wpRenderBody();
 }
 function wpInit(){try{if(typeof weekly==='undefined'||!Array.isArray(weekly)||!weekly.length)return false;wpBuildCurrentWeek();wpRenderShell();return true}catch(e){console.error(e);return false}}
-(function wpWait(){let tries=0;const timer=setInterval(()=>{tries++;if(wpInit()||tries>100)clearInterval(timer)},100)})();
+(function wpWait(){let tries=0;const timer=setInterval(()=>{tries++;if(wpInit()){clearInterval(timer);return}if(tries<=100)return;clearInterval(timer);const root=document.getElementById('weeklyContent');if(root){root.className='';root.innerHTML='<div class="error">Weekly Pick\'em could not be loaded. Please refresh and try again.</div>'}},100)})();

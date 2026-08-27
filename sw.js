@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260826-record-alerts-uhsaa1';
+const CACHE='rus-site-20260827-week3-pickem1';
 const CORE=[
   './',
   './index.html',
@@ -29,8 +29,8 @@ const LIVE_DATA=/(weekly-simulation|deseret|live-|record-alerts|standings-2026|r
 const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
-const FRESH_HTML=/\/(?:rankings|scoreboard|game|team|team-page-content)\.html$/i;
-const FRESH_JS=/(?:pwa|weekly-simulation-promo|home-record-alerts|home-game-of-week|home-feature-share|game-center-upgrade|game-center-color-layout|rankings-sponsor-removal|school-assets-bundle|rus-lines-dashboard|scoreboard-refresh|scoreboard-share-layout|scoreboard-share-layout-core|share-graphic|mobile-shell|nav-menu|team-tabs|team-record-tabs-repair|team-player-records|team-stat-records|team-enhancements|team-enhancements-runtime)\.js$/i;
+const FRESH_HTML=/\/(?:rankings|scoreboard|game|team|team-page-content|simulators)\.html$/i;
+const FRESH_JS=/(?:pwa|weekly-picks|weekly-picks-enhanced|weekly-picks-backend|weekly-simulation-promo|home-record-alerts|home-game-of-week|home-feature-share|game-center-upgrade|game-center-color-layout|rankings-sponsor-removal|school-assets-bundle|rus-lines-dashboard|scoreboard-refresh|scoreboard-share-layout|scoreboard-share-layout-core|share-graphic|mobile-shell|nav-menu|team-tabs|team-record-tabs-repair|team-player-records|team-stat-records|team-enhancements|team-enhancements-runtime)\.js$/i;
 const CACHE_BUSTERS=new Set(['v','ver','version','t','ts','timestamp','_']);
 const NETWORK_INFLIGHT=new Map();
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>Promise.allSettled(CORE.map(x=>cache.add(x)))).then(()=>self.skipWaiting()))});

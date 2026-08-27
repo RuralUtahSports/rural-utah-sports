@@ -146,7 +146,7 @@
   }
   async function loadExtras() {
     await fetchCacheReady;
-    addScript("pwa.js?v=20260819-lcp1", "rusPwa", true);
+    addScript("pwa.js?v=20260827-week3-pickem1", "rusPwa", true);
     addScript("site-search.js?v=20260817-player2", "rusSiteSearch", true);
     addScript(
       "optimization-polish.js?v=20260819-lcp1",
