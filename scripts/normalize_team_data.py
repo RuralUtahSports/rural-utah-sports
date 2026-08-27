@@ -75,6 +75,42 @@ def normalize_schedules(raw):
             out[team][year]=[x for i,x in enumerate(first_pass) if i not in drop]
     return out,exact_removed,near_removed,conflicts
 
+def preserve_schedule_metadata(fresh, existing):
+    """Keep trusted enrichment fields when normalized schedules are rewritten.
+
+    The Google-sheet sync owns the canonical game/result list in team-schedules.json.
+    scripts/enrich_playoff_notes.py adds notes/playoff metadata to team-page-data.
+    Normalization must not erase that enrichment when it copies the canonical
+    schedule back onto a team page.
+    """
+    prior={}
+    for year,games in (existing or {}).items():
+        for g in games if isinstance(games,list) else []:
+            key=(str(year),str(g.get('date','')).strip(),canonical(g.get('opponent')))
+            prior[key]=g
+
+    preserved_playoffs=0
+    preserved_notes=0
+    for year,games in (fresh or {}).items():
+        for g in games if isinstance(games,list) else []:
+            key=(str(year),str(g.get('date','')).strip(),canonical(g.get('opponent')))
+            old=prior.get(key)
+            if not old:
+                continue
+            old_note=str(old.get('notes') or '').strip()
+            new_note=str(g.get('notes') or '').strip()
+            if old_note and len(old_note)>len(new_note):
+                g['notes']=old_note
+                preserved_notes+=1
+            if old.get('playoff') is True:
+                g['playoff']=True
+                preserved_playoffs+=1
+            elif 'playoff' in old and 'playoff' not in g:
+                # Preserve explicit false values too (for example verified forfeits
+                # that occur near the postseason but are not playoff games).
+                g['playoff']=bool(old.get('playoff'))
+    return fresh,preserved_playoffs,preserved_notes
+
 def build_breakdowns(schedules):
     out={}
     for team,years in schedules.items():
@@ -98,11 +134,17 @@ schedules_path.write_text(json.dumps(schedules,separators=(',',':')))
 Path('team-record-breakdowns.json').write_text(json.dumps(breakdowns,separators=(',',':')))
 
 page_dir=Path('team-page-data')
+preserved_playoffs=0
+preserved_notes=0
 for team in schedules:
     p=page_dir/f'{slug(team)}.json'
     if not p.exists(): continue
     data=json.loads(p.read_text())
-    data['schedules']=schedules.get(team,{})
+    team_schedule={str(y):[dict(g) for g in games] for y,games in schedules.get(team,{}).items()}
+    team_schedule,kept_playoffs,kept_notes=preserve_schedule_metadata(team_schedule,data.get('schedules') or {})
+    preserved_playoffs+=kept_playoffs
+    preserved_notes+=kept_notes
+    data['schedules']=team_schedule
     data['breakdown']=breakdowns.get(team,{'decades':{},'opponents':{}})
     p.write_text(json.dumps(data,separators=(',',':')))
 
@@ -111,10 +153,13 @@ Path('duplicate-cleanup-report.json').write_text(json.dumps({
     'scheduleExactDuplicatesRemoved':game_exact_removed,
     'scheduleNearDateDuplicatesRemoved':game_near_removed,
     'scheduleConflictingDuplicates':game_conflicts,
+    'playoffFlagsPreserved':preserved_playoffs,
+    'scheduleNotesPreserved':preserved_notes,
     'eloDuplicatesRemoved':0,
     'eloConflictingDuplicates':0,
     'eloOwner':'Build Clean Live ELO',
     'canonicalAliases':{'WASATCH ACAD':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH'}
 },indent=2)+'\n')
 print(f'Schedule duplicates removed: {game_exact_removed+game_near_removed} ({game_exact_removed} exact, {game_near_removed} near-date); conflicts: {game_conflicts}')
+print(f'Enriched metadata preserved: {preserved_playoffs} playoff flags, {preserved_notes} notes')
 print('ELO normalization skipped: verified ELO is owned by Build Clean Live ELO')
