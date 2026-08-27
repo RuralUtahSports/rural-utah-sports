@@ -67,12 +67,15 @@ def coach_from_roster(team_url,end_year):
     for table in soup.find_all("table"):
         txt=" ".join(table.stripped_strings).upper()
         if "COACH NAME" not in txt or "CAREER WINS" not in txt:continue
-        for tr in table.find_all("tr")[1:]:
-            cells=tr.find_all(["td","th"])
+        for tr in table.find_all("tr"):
+            # Deseret places a header row inside the coaching table body. Only
+            # accept a real data row with td cells and a linked coach name.
+            cells=tr.find_all("td")
             if not cells:continue
-            link=tr.find("a")
-            coach=(link.get_text(" ",strip=True) if link else cells[0].get_text(" ",strip=True)).strip()
-            if not coach:continue
+            link=tr.find("a",href=True)
+            if not link:continue
+            coach=link.get_text(" ",strip=True).strip()
+            if not coach or norm(coach) in {"COACHNAME","YEARS","CAREERWINS","CAREERLOSSES"}:continue
             vals=[c.get_text(" ",strip=True) for c in cells]
             return {"school":school,"coach":coach,"years":vals[1] if len(vals)>1 else "",
                     "careerWins":vals[2] if len(vals)>2 else "","careerLosses":vals[3] if len(vals)>3 else "",
@@ -129,8 +132,10 @@ def main():
     (ROOT/"coach-history-deseret-2023-2025.json").write_text(json.dumps(audit,indent=2,ensure_ascii=False)+"\n")
     page=ROOT/"coaches.html"
     text=page.read_text()
-    text=text.replace("<th>Known Seasons</th><th>Earliest</th><th>Latest</th>","<th>Seasons Tracked</th><th>Coverage Start</th><th>Coverage End</th>")
-    text=text.replace("Coverage is intentionally conservative. The historical workbook is strong through 2022, partial in 2023–24, and 2025 is being backfilled from Deseret News and other reliable sources. Conflicting seasons are left unresolved.","Seasons Tracked is the number of school seasons with a known head coach, not the current coach's tenure. 2023–25 coaching rows are backfilled from Deseret News season-specific roster pages; unresolved seasons stay blank.")
+    text=text.replace("<th>Known Seasons</th><th>Earliest</th><th>Latest</th>","<th>School Seasons Tracked</th><th>Coverage Start</th><th>Coverage End</th>")
+    text=text.replace("<th>Seasons Tracked</th><th>Coverage Start</th><th>Coverage End</th>","<th>School Seasons Tracked</th><th>Coverage Start</th><th>Coverage End</th>")
+    text=text.replace("Seasons Tracked is the number of school seasons with a known head coach, not the current coach's tenure.","School Seasons Tracked is the number of seasons with a known head coach for that program, not the current coach's tenure.")
+    text=text.replace("Coverage is intentionally conservative. The historical workbook is strong through 2022, partial in 2023–24, and 2025 is being backfilled from Deseret News and other reliable sources. Conflicting seasons are left unresolved.","School Seasons Tracked is the number of seasons with a known head coach for that program, not the current coach's tenure. 2023–25 coaching rows are backfilled from Deseret News season-specific roster pages; unresolved seasons stay blank.")
     page.write_text(text)
     print(f"matched {sum(bool(r['rusTeam']) for r in audit['rows'])}, unmatched {len(audit['unmatched'])}, errors {len(audit['errors'])}, changed {changed}")
 
