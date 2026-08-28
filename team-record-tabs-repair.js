@@ -97,6 +97,8 @@ function install(){
     bar.addEventListener('click',e=>{
       const b=e.target.closest('.rus-team-tab');
       if(!b)return;
+      // Streaks owns its own renderer/click handler. Let that handler run.
+      if(b.dataset.tab==='streaks')return;
       e.preventDefault();
       e.stopImmediatePropagation();
       show(shell,b.dataset.tab,true);
@@ -104,11 +106,13 @@ function install(){
     bar.addEventListener('keydown',e=>{
       const b=e.target.closest('.rus-team-tab');
       if(!b||!['ArrowLeft','ArrowRight'].includes(e.key))return;
-      e.preventDefault();
-      e.stopImmediatePropagation();
       const buttons=[...bar.querySelectorAll('.rus-team-tab')];
       const i=buttons.indexOf(b),step=e.key==='ArrowRight'?1:-1;
       const next=buttons[(i+step+buttons.length)%buttons.length];
+      // Let the Streaks tab handler own keyboard transitions into/out of Streaks.
+      if(b.dataset.tab==='streaks'||next?.dataset.tab==='streaks')return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
       next.focus();
       show(shell,next.dataset.tab,true);
     },true);
