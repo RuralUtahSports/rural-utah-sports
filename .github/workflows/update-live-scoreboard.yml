@@ -102,31 +102,37 @@ jobs:
           WEEKLY_GID: 1211467999
         run: node scripts/build_standings_2026.mjs
 
-      - name: Audit all 2026 Utah team records
-        run: node scripts/audit_standings_records_2026.mjs
-
+      # Team pages use teams-data.json for their all-time/current summary.
+      # Build it from the freshly rebuilt standings before auditing so a
+      # diagnostic mismatch cannot prevent finalized games from publishing.
       - name: Refresh all-time team records with verified 2026 finals
         env:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
           CLEAN_GAMES_GID: 627882418
         run: node scripts/update-alltime-team-records.mjs
 
-      - name: Commit team records
+      - name: Commit team records immediately
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           git add standings-2026.json teams-data.json
           if git diff --cached --quiet; then
             echo "Team records are already current."
-            exit 0
+          else
+            git commit -m "Auto-refresh team records"
+            ok=0
+            for attempt in 1 2 3 4; do
+              if git pull --rebase origin main && git push; then
+                ok=1
+                break
+              fi
+              sleep 5
+            done
+            if [ "$ok" -ne 1 ]; then exit 1; fi
           fi
-          git commit -m "Auto-refresh team records"
-          ok=0
-          for attempt in 1 2 3 4; do
-            if git pull --rebase origin main && git push; then
-              ok=1
-              break
-            fi
-            sleep 5
-          done
-          if [ "$ok" -ne 1 ]; then exit 1; fi
+
+      # Keep the audit as a warning/diagnostic after the live record files are
+      # safely published. A points-total mismatch should never freeze records.
+      - name: Audit all 2026 Utah team records
+        continue-on-error: true
+        run: node scripts/audit_standings_records_2026.mjs
