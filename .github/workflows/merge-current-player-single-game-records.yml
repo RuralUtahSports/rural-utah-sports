@@ -1,0 +1,56 @@
+name: Merge Current Player Single-Game Records
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'player-game-stats-2026.json'
+      - 'manual-player-single-game-records-2026.json'
+      - 'scripts/merge_current_player_single_game_records.mjs'
+      - '.github/workflows/merge-current-player-single-game-records.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: current-player-single-game-records
+  cancel-in-progress: true
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Merge current-season qualifying performances
+        run: node scripts/merge_current_player_single_game_records.mjs
+      - name: Verify generated JSON
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const juab=JSON.parse(fs.readFileSync('player-single-game-records/by-team/juab.json','utf8'));
+          const tackles=juab.categories.find(c=>c.key==='tackles')?.entries||[];
+          if(tackles.length>15) throw new Error(`Juab tackle leaderboard exceeded limit: ${tackles.length}`);
+          for(const row of tackles){if(!Number.isFinite(Number(row.value))||Number(row.value)<=0) throw new Error('Invalid Juab tackle record');}
+          JSON.parse(fs.readFileSync('player-single-game-records/statewide.json','utf8'));
+          console.log(`Juab tackles verified: ${tackles.length} entries; cutoff ${tackles.at(-1)?.value ?? 'n/a'}`);
+          NODE
+      - name: Commit updated current-season records
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add player-single-game-records
+          if git diff --cached --quiet; then echo "Current player single-game records already current."; exit 0; fi
+          git commit -m "Merge current 2026 player single-game records"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
