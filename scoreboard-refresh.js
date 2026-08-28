@@ -1,8 +1,9 @@
 (() => {
   const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20260824-wednesday1';
-  const LIVE_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
+  const LIVE_DETAILS = 'deseret-live-details-2026.json';
+  const FULL_DETAILS = 'deseret-game-details.json';
   const WEEKLY_FEED = 'weekly-simulation.json';
-  const OUT_OF_STATE_FEED = 'out-of-state.json';
+  const OUT_OF_STATE_FEED = 'out-of-state-live.json';
   const REFRESH_MS = 15000;
   const WEEKLY_REFRESH_MS = 60000;
   const STALE_GAME_KEYS = new Set(['2026-08-21|DOLORESCO|GRAND']);
