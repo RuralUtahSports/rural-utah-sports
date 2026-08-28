@@ -48,6 +48,7 @@ for (const [key, detail] of Object.entries(details.games || {})) {
     final: detail.final,
     clock: detail.clock,
     period: detail.period,
+    kickoffTime: detail.kickoffTime || '',
     boxScore: detail.boxScore,
     scoringPlays: detail.scoringPlays || [],
     stats: detail.stats || [],

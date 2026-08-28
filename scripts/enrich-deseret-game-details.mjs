@@ -67,6 +67,18 @@ function cellText(html) {
   return htmlText(html).replace(/\s+/g, ' ').trim();
 }
 
+function extractKickoffTime(html) {
+  const raw = String(html || '');
+  const text = htmlText(raw.slice(0, Math.min(raw.length, 140000)));
+  const match = text.match(/\b(?:Upcoming|Scheduled)\b[\s\S]{0,260}?@\s*(\d{1,2}):(\d{2})\s*([AP]M)\b/i)
+    || text.match(/\b[A-Z][a-z]{2}\s+\d{1,2},\s+\d{4}\s+@\s*(\d{1,2}):(\d{2})\s*([AP]M)\b/i);
+  if (!match) return '';
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  if (!Number.isInteger(hour) || hour < 1 || hour > 12 || !Number.isInteger(minute) || minute < 0 || minute > 59) return '';
+  return `${hour}:${String(minute).padStart(2, '0')} ${String(match[3]).toUpperCase()}`;
+}
+
 function extractTables(html) {
   const out = [];
   const re = /<table\b[^>]*>([\s\S]*?)<\/table>/gi;
@@ -334,6 +346,7 @@ function parseGameDetails(html, game) {
   const stats = extractStats(tables, game, scoringPlays);
   const statsInfo = statsAvailability(stats);
   const clockInfo = extractClock(html, game);
+  const kickoffTime = extractKickoffTime(html);
   const state = extractStatus(html, boxScore, scoringPlays, clockInfo);
   return {
     url: game.deseretUrl,
@@ -341,6 +354,7 @@ function parseGameDetails(html, game) {
     final: state.final,
     clock: state.final ? '' : clockInfo.clock,
     period: state.final ? '' : clockInfo.period,
+    kickoffTime,
     boxScore,
     scoringPlays,
     stats,
@@ -415,6 +429,7 @@ for (const game of games) {
   try {
     const html = await fetchHtml(game.deseretUrl);
     const parsed = parseGameDetails(html, game);
+    if (!parsed.kickoffTime && prior?.kickoffTime) parsed.kickoffTime = prior.kickoffTime;
     if (parsed.final) parsed.finalRefreshCount = prior?.final ? Number(prior.finalRefreshCount || 0) + 1 : 1;
 
     // Never replace richer previously captured stats with a temporarily emptier response.
