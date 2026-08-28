@@ -3,7 +3,7 @@
   const esc = value => clean(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
   let data = null;
   let page = 1;
-  const pageSize = 50;
+  const pageSize = 25;
 
   function record(w, l, t) { return `${w || 0}-${l || 0}${t ? `-${t}` : ''}`; }
   function link(name) { return `<a class="team-link" href="coaches.html?coach=${encodeURIComponent(name)}">${esc(name)}</a>`; }
@@ -28,7 +28,7 @@
     page = Math.min(Math.max(1, page), pages);
     const start = (page - 1) * pageSize;
     const visible = rows.slice(start, start + pageSize);
-    root.querySelector('tbody').innerHTML = visible.map((row, index) => `<tr><td>${start + index + 1}</td><td class="left">${link(row.name)}<span class="career-school">${esc((row.schools || []).join(' • '))}</span></td><td><strong>${row.wins}</strong></td><td>${row.games}</td><td>${record(row.wins, row.losses, row.ties)}</td><td><strong>${row.playoffWins}</strong></td><td>${record(row.playoffWins, row.playoffLosses, row.playoffTies)}</td><td class="title-total">${row.championships}</td><td>${row.appearances}</td><td>${row.seasons}</td></tr>`).join('') || '<tr><td colspan="10">No coaches match this search.</td></tr>';
+    root.querySelector('tbody').innerHTML = visible.map((row, index) => `<tr><td>${start + index + 1}</td><td class="left">${link(row.name)}<span class="career-school" style="display:block;margin-top:6px;color:#999;font-size:11px;font-weight:400;line-height:1.4">${esc((row.schools || []).join(' • '))}</span></td><td><strong>${row.wins}</strong></td><td>${row.games}</td><td>${record(row.wins, row.losses, row.ties)}</td><td><strong>${row.playoffWins}</strong></td><td>${record(row.playoffWins, row.playoffLosses, row.playoffTies)}</td><td class="title-total">${row.championships}</td><td>${row.appearances}</td><td>${row.seasons}</td></tr>`).join('') || '<tr><td colspan="10">No coaches match this search.</td></tr>';
     root.querySelector('.coach-leader-count').textContent = rows.length ? `Showing ${start + 1}–${Math.min(start + pageSize, rows.length)} of ${rows.length.toLocaleString()} coaches` : '0 coaches';
     root.querySelector('.coach-leader-page').textContent = `Page ${page} of ${pages}`;
     root.querySelector('[data-page="prev"]').disabled = page <= 1;
