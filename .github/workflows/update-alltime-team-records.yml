@@ -6,6 +6,7 @@ on:
     - cron: '*/15 * * * *'
   push:
     paths:
+      - 'standings-2026.json'
       - 'scripts/update-alltime-team-records.mjs'
       - '.github/workflows/update-alltime-team-records.yml'
 
@@ -23,7 +24,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Rebuild all-time records from Clean Games
+      - name: Rebuild all-time records from Clean Games and 2026 finals
         env:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
           CLEAN_GAMES_GID: 627882418
