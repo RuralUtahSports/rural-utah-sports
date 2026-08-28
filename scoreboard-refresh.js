@@ -335,6 +335,40 @@
     }
   }
 
+  const loadedFullDetails = new Map();
+
+  let fullDetailsPromise = null;
+  async function loadFullDetails() {
+    if (!fullDetailsPromise) {
+      fullDetailsPromise = fetch(`${FULL_DETAILS}?v=${Date.now()}`, { cache: 'no-store' })
+        .then(response => response.ok ? response.json() : { games: {} })
+        .catch(() => ({ games: {} }));
+    }
+    return fullDetailsPromise;
+  }
+
+  function installFullDetailLoading() {
+    document.querySelectorAll('details.game-details').forEach(element => {
+      if (element.dataset.fullDetailsBound) return;
+      element.dataset.fullDetailsBound = '1';
+      element.addEventListener('toggle', async () => {
+        if (!element.open) return;
+        const key = element.dataset.detailKey || '';
+        if (!key || detailMap.has(key)) return;
+        const payload = await loadFullDetails();
+        const detail = payload?.games?.[key];
+        if (!detail) return;
+        loadedFullDetails.set(key, detail);
+        detailMap.set(key, detail);
+        const body = element.querySelector('.detail-body');
+        if (body && typeof boxHtml === 'function') {
+          const content = (boxHtml(detail) || '') + (scoringHtml(detail) || '') + (statsHtml(detail) || '');
+          body.innerHTML = content || '<div class="detail-empty">No additional game details were reported.</div>';
+        }
+      });
+    });
+  }
+
   let regionRenderInstalled = false;
   function installRegionAwareRender() {
     if (regionRenderInstalled || typeof render !== 'function') return;
@@ -343,6 +377,7 @@
       removeKnownStaleGames();
       const result = baseRender.apply(this, args);
       applyRegionFilter();
+      installFullDetailLoading();
       return result;
     };
     regionRenderInstalled = true;
@@ -381,6 +416,7 @@
       if (typeof detailMap !== 'undefined' && detailMap?.clear) {
         detailMap.clear();
         for (const [key, value] of Object.entries(payload.games)) detailMap.set(key, value);
+        for (const [key, value] of loadedFullDetails) detailMap.set(key, value);
       }
       if (typeof render === 'function') render();
 

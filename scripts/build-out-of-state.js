@@ -4,6 +4,7 @@ const SHEET_ID = process.env.SHEET_ID;
 const OOS_GID = process.env.OOS_GID;
 const SIM_FILE = process.env.SIM_FILE || 'weekly-simulation.json';
 const OUT_FILE = process.env.OUT_FILE || 'out-of-state.json';
+const LIVE_FILE = process.env.LIVE_FILE || 'out-of-state-live.json';
 if (!SHEET_ID || !OOS_GID) throw new Error('SHEET_ID and OOS_GID are required');
 
 const clean = v => String(v ?? '').trim();
@@ -142,6 +143,7 @@ function finish(r) { return {...r,winPct:r.games?(r.wins+r.ties*.5)/r.games:0,av
   const sourceRows=sheetSourceRows+carried.length+current.length;
   const payload={summary:{sourceRows,sheetSourceRows,liveSourceRows:current.length,carriedForwardRows:carried.length,sheetMaxYear,uniqueGames:games.length,duplicatesRemoved,conflicts,...totals},states,teams,stateRecords,yearlyRecords,teamStateRecords,games};
   fs.writeFileSync(OUT_FILE,JSON.stringify(payload));
+  fs.writeFileSync(LIVE_FILE,JSON.stringify({games:games.filter(g=>Number(g.year)===2026)}));
   console.log(`Out-of-state rows: ${sourceRows}; unique: ${games.length}; latest season: ${yearlyRecords[0]?.year ?? 'none'}; live rows: ${current.length}; duplicates removed: ${duplicatesRemoved}`);
   if (!games.length) throw new Error('No out-of-state games generated');
 })().catch(e=>{console.error(e);process.exit(1)});
