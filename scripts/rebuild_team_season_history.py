@@ -8,13 +8,49 @@ seasons or advanced metrics while making every real season already present in
 the repository visible on team pages.
 """
 
-# Rebuild version 1: schedule-backed seasons for every team page.
+# Rebuild version 2: schedule-backed seasons plus verified missing 2025 fixes.
 
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TEAM_DIR = ROOT / "team-page-data"
+
+# Verified from the Deseret News 2025 football score/schedule pages. Keeping
+# these here makes the correction durable: if another generator recreates a
+# team-page file without 2025, this rebuild puts the season back automatically.
+VERIFIED_SCHEDULE_FIXES = {
+    "copper-hills.json": {
+        "2025": [
+            {"date": "8/15/2025", "opponent": "NORTHRIDGE", "teamScore": 21, "opponentScore": 14, "result": "W", "playoff": False, "notes": ""},
+            {"date": "8/22/2025", "opponent": "WEST JORDAN", "teamScore": 27, "opponentScore": 29, "result": "L", "playoff": False, "notes": ""},
+            {"date": "8/29/2025", "opponent": "HUNTER", "teamScore": 43, "opponentScore": 13, "result": "W", "playoff": False, "notes": ""},
+            {"date": "9/5/2025", "opponent": "LAYTON", "teamScore": 29, "opponentScore": 22, "result": "W", "playoff": False, "notes": ""},
+            {"date": "9/12/2025", "opponent": "MOUNTAIN RIDGE", "teamScore": 15, "opponentScore": 49, "result": "L", "playoff": False, "notes": ""},
+            {"date": "9/19/2025", "opponent": "CEDAR VALLEY", "teamScore": 24, "opponentScore": 27, "result": "L", "playoff": False, "notes": ""},
+            {"date": "9/26/2025", "opponent": "WESTLAKE", "teamScore": 21, "opponentScore": 35, "result": "L", "playoff": False, "notes": ""},
+            {"date": "10/3/2025", "opponent": "BINGHAM", "teamScore": 10, "opponentScore": 34, "result": "L", "playoff": False, "notes": ""},
+            {"date": "10/10/2025", "opponent": "HERRIMAN", "teamScore": 13, "opponentScore": 42, "result": "L", "playoff": False, "notes": ""},
+            {"date": "10/17/2025", "opponent": "RIVERTON", "teamScore": 14, "opponentScore": 47, "result": "L", "playoff": False, "notes": ""},
+            {"date": "10/31/2025", "opponent": "SKYRIDGE", "teamScore": 3, "opponentScore": 63, "result": "L", "playoff": True, "notes": "6A SECOND ROUND"},
+        ]
+    },
+    "clearfield.json": {
+        "2025": [
+            {"date": "8/15/2025", "opponent": "CYPRUS", "teamScore": 6, "opponentScore": 9, "result": "L", "playoff": False, "notes": ""},
+            {"date": "8/22/2025", "opponent": "KEARNS", "teamScore": 34, "opponentScore": 7, "result": "W", "playoff": False, "notes": ""},
+            {"date": "8/29/2025", "opponent": "JORDAN", "teamScore": 23, "opponentScore": 7, "result": "W", "playoff": False, "notes": ""},
+            {"date": "9/5/2025", "opponent": "OGDEN", "teamScore": 7, "opponentScore": 24, "result": "L", "playoff": False, "notes": ""},
+            {"date": "9/12/2025", "opponent": "FREMONT", "teamScore": 6, "opponentScore": 63, "result": "L", "playoff": False, "notes": ""},
+            {"date": "9/19/2025", "opponent": "WEST FIELD", "teamScore": 7, "opponentScore": 34, "result": "L", "playoff": False, "notes": ""},
+            {"date": "9/26/2025", "opponent": "ROY", "teamScore": 21, "opponentScore": 28, "result": "L", "playoff": False, "notes": ""},
+            {"date": "10/4/2025", "opponent": "BONNEVILLE", "teamScore": 35, "opponentScore": 19, "result": "W", "playoff": False, "notes": ""},
+            {"date": "10/9/2025", "opponent": "BOX ELDER", "teamScore": 7, "opponentScore": 24, "result": "L", "playoff": False, "notes": ""},
+            {"date": "10/15/2025", "opponent": "NORTHRIDGE", "teamScore": 20, "opponentScore": 24, "result": "L", "playoff": False, "notes": ""},
+            {"date": "10/24/2025", "opponent": "BOUNTIFUL", "teamScore": 6, "opponentScore": 56, "result": "L", "playoff": True, "notes": "5A FIRST ROUND"},
+        ]
+    },
+}
 
 
 def number(value):
@@ -98,6 +134,14 @@ def rebuild_file(path):
     data = json.loads(path.read_text(encoding="utf-8"))
     schedules = data.get("schedules") or {}
     existing = data.get("seasonHistory") or []
+    schedule_changed = False
+
+    for year, games in VERIFIED_SCHEDULE_FIXES.get(path.name, {}).items():
+        if schedules.get(year) != games:
+            schedules[year] = games
+            schedule_changed = True
+    if schedule_changed:
+        data["schedules"] = schedules
 
     # Preserve every existing row so advanced metrics are never lost.
     rows_by_year = {}
@@ -123,7 +167,7 @@ def rebuild_file(path):
     rebuilt = [rows_by_year[year] for year in sorted(rows_by_year, reverse=True)]
     rebuilt.extend(passthrough)
 
-    if rebuilt == existing:
+    if rebuilt == existing and not schedule_changed:
         return False, added_years, len(rebuilt)
 
     data["seasonHistory"] = rebuilt
