@@ -43,7 +43,9 @@ const stateNames = {
   OR: ['Ore.', 'Oregon'],
   WA: ['Wash.', 'Washington'],
   TX: ['Texas'],
-  HI: ['Hawaii']
+  HI: ['Hawaii'],
+  NJ: ['N.J.', 'New Jersey'],
+  VA: ['Va.', 'Virginia']
 };
 
 function isoDate(value) {
@@ -129,6 +131,7 @@ function parseStatusLine(value) {
   const line = clean(value);
   if (!line) return null;
   if (/\bFinal\b/i.test(line)) return { status: 'Final', clock: '', period: '' };
+  if (/\b(?:Upcoming|Scheduled)\b/i.test(line)) return { status: 'Scheduled', clock: '', period: '' };
   if (/\b(?:Live\s+)?Halftime\b/i.test(line)) return { status: 'HALFTIME', clock: '', period: 'HALFTIME' };
   if (/\b(?:Live\s+)?OT\b/i.test(line)) return { status: 'OT', clock: '', period: 'OT' };
 
@@ -155,6 +158,36 @@ function parseStatusLine(value) {
   // game's link cannot make an unstarted out-of-state game look live.
   if (/^Live(?:\s|$)/i.test(line)) return { status: 'Live', clock: '', period: '' };
   return null;
+}
+
+function parseKickoffTime(value) {
+  const line = clean(value);
+  if (!line) return '';
+  const match = line.match(/@\s*(\d{1,2})(?::(\d{2}))?\s*([AP]M)\b/i)
+    || line.match(/\b(\d{1,2}):(\d{2})\s*([AP]M)\b/i);
+  if (!match) return '';
+  const hour = Number(match[1]);
+  const minute = Number(match[2] || '00');
+  if (!Number.isInteger(hour) || hour < 1 || hour > 12 || !Number.isInteger(minute) || minute < 0 || minute > 59) return '';
+  return `${hour}:${String(minute).padStart(2, '0')} ${String(match[3]).toUpperCase()}`;
+}
+
+function kickoffForPair(lines, pair) {
+  if (!pair) return '';
+  const first = Math.min(pair.a, pair.h);
+  const last = Math.max(pair.a, pair.h);
+  const candidates = [];
+  for (let i = Math.max(0, first - 8); i <= Math.min(lines.length - 1, last + 2); i++) {
+    const kickoffTime = parseKickoffTime(lines[i]);
+    if (!kickoffTime) continue;
+    candidates.push({
+      kickoffTime,
+      beforePair: i < first,
+      distance: i < first ? first - i : i - last
+    });
+  }
+  candidates.sort((a, b) => Number(b.beforePair) - Number(a.beforePair) || a.distance - b.distance);
+  return candidates[0]?.kickoffTime || '';
 }
 
 function parseLiveDetailLine(value) {
@@ -262,6 +295,7 @@ function ensureDetail(details, game) {
       final: false,
       clock: '',
       period: '',
+      kickoffTime: '',
       boxScore: null,
       scoringPlays: [],
       stats: []
@@ -324,6 +358,15 @@ if (process.argv.includes('--self-test')) {
   }
   const madison = bestLinePair(lines, { awayTeam: 'MADISON, ID', homeTeam: 'RIVERTON' });
   if (stateForPair(lines, madison).status) throw new Error('Neighboring Live link leaked into matchup status');
+
+  const upcomingLines = [
+    'Upcoming', 'Aug 28, 2026 @ 08:15 PM', 'Box Elder Bees',
+    'vs Highland, Idaho Rams', 'Stats'
+  ];
+  const upcoming = bestLinePair(upcomingLines, { awayTeam: 'BOX ELDER', homeTeam: 'HIGHLAND, ID' });
+  const upcomingState = stateForPair(upcomingLines, upcoming);
+  if (upcomingState.status !== 'Scheduled') throw new Error('Upcoming status parsing failed');
+  if (kickoffForPair(upcomingLines, upcoming) !== '8:15 PM') throw new Error('Upcoming kickoff parsing failed');
   console.log('Unlinked scoreboard parser self-test passed.');
   process.exit(0);
 }
@@ -362,6 +405,7 @@ for (const date of dates) {
     const storedScore = currentScore(existing);
     const score = scoreForPair(lines, pair);
     let state = stateForPair(lines, pair);
+    const kickoffTime = kickoffForPair(lines, pair);
 
     if (!state.status && score && (score.away > 0 || score.home > 0)) {
       state = { status: 'Live', clock: '', period: '' };
@@ -370,7 +414,11 @@ for (const date of dates) {
       state = { status: 'Live', clock: '', period: '' };
     }
 
-    if (!state.status && !score) {
+    if (!state.status && kickoffTime) {
+      state = { status: 'Scheduled', clock: '', period: '' };
+    }
+
+    if (!state.status && !score && !kickoffTime) {
       console.warn(`Unlinked no live status or score: ${key}`);
       continue;
     }
@@ -401,8 +449,13 @@ for (const date of dates) {
     }
 
     if (applyScore(detail, game, score)) updated++;
+    if (kickoffTime && clean(detail.kickoffTime) !== kickoffTime) {
+      detail.kickoffTime = kickoffTime;
+      detail.kickoffSource = 'deseret-day-scoreboard-unlinked';
+      updated++;
+    }
     if (state.status) detail.statusSource = 'deseret-day-scoreboard-unlinked';
-    console.log(`Unlinked live match: ${key} -> ${detail.status}${score ? ` ${score.away}-${score.home}` : ''}`);
+    console.log(`Unlinked Deseret match: ${key} -> ${detail.status}${kickoffTime ? ` @ ${kickoffTime}` : ''}${score ? ` ${score.away}-${score.home}` : ''}`);
   }
 }
 

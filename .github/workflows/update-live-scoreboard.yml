@@ -82,6 +82,12 @@ jobs:
       - name: Apply verified manual scoreboard corrections
         run: node scripts/apply-manual-scoreboard-corrections.mjs
 
+      # Out-of-state kickoff times are discovered during daily-scoreboard
+      # reconciliation, so rebuild the compact feed after every reconciliation
+      # and correction step before publishing it.
+      - name: Rebuild compact current-window scoreboard details
+        run: node scripts/build_live_scoreboard_details.mjs
+
       # Publish the scoreboard before the slower record-building work below.
       # That way a later audit failure or job timeout cannot hold live scores hostage.
       - name: Commit live scoreboard immediately
