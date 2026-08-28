@@ -98,23 +98,32 @@
     return section;
   }
 
+  function pruneCoachSections(page){
+    const sections = [...page.querySelectorAll('.rus-coach-history')];
+    for(let i=1;i<sections.length;i++) sections[i].remove();
+  }
+
   async function mount(){
     const page = document.getElementById('page');
-    if (!page || page.dataset.rusCoachMounted === '1') return;
+    if (!page) return;
+    pruneCoachSections(page);
+    if (page.dataset.rusCoachMounted === '1' || page.dataset.rusCoachMounting === '1') return;
     const title = page.querySelector('.team-title');
     if (!title) return;
+    page.dataset.rusCoachMounting='1';
     try{
-      const index = await fetch(`coach-history-index.json?v=20260827-coaches9`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()});
-      const parts = await Promise.all((index.shards||[]).map(name=>fetch(`${name}?v=20260827-coaches9`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()})));
+      const index = await fetch(`coach-history-index.json?v=20260827-coaches10`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()});
+      const parts = await Promise.all((index.shards||[]).map(name=>fetch(`${name}?v=20260827-coaches10`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()})));
       const data = unpackData(index,parts);
       const wanted = currentTeamName() || clean(title.textContent).toUpperCase();
       const team = findTeam(data,wanted) || findTeam(data,title.textContent);
       if (!team) return;
       let pageData={};
       try{
-        const r=await fetch(`team-page-data/${teamSlug(clean(title.textContent))}.json?v=20260827-coaches9`,{cache:'no-store'});
+        const r=await fetch(`team-page-data/${teamSlug(clean(title.textContent))}.json?v=20260827-coaches10`,{cache:'no-store'});
         if(r.ok) pageData=await r.json();
       }catch(e){console.warn('Coach record data:',e)}
+      for(const oldSection of [...page.querySelectorAll('.rus-coach-history')]) oldSection.remove();
       const section = buildSection(team,data,pageData);
       const headings = [...page.querySelectorAll('h2.section-title')];
       const greatest = headings.find(h => /greatest seasons/i.test(h.textContent));
@@ -122,6 +131,10 @@
       else page.appendChild(section);
       page.dataset.rusCoachMounted='1';
     }catch(e){console.warn('Coaching history:',e)}
+    finally{
+      delete page.dataset.rusCoachMounting;
+      pruneCoachSections(page);
+    }
   }
   const obs = new MutationObserver(()=>mount());
   if (document.getElementById('page')) obs.observe(document.getElementById('page'),{childList:true,subtree:true});
