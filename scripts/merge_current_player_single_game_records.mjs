@@ -43,7 +43,7 @@ function statsFromPlayer(player){
       addStat(out,'receivingYards',number(findValue(v,'Yards')));
       addStat(out,'receivingTouchdowns',number(findValue(v,'TD')));
     }else if(cat==='DEFENSE'){
-      addStat(out,'tackles',number(findValue(v,'Tackles','Tot Tackles')));
+      addStat(out,'tackles',number(findValue(v,'Tackles','Tot Tackles','Total Tackles','Tkl','TKL')));
       addStat(out,'sacks',number(findValue(v,'Sacks')));
       addStat(out,'interceptions',number(findValue(v,'Pass Int.','Pass Int','Interceptions')));
       addStat(out,'defensiveTouchdowns',number(findValue(v,'TD')));

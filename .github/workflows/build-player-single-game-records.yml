@@ -12,6 +12,11 @@ on:
       - 'scripts/validate_player_single_game_records.mjs'
       - '.github/workflows/build-player-single-game-records.yml'
       - 'teams-data.json'
+      - 'deseret-game-details.json'
+      - 'deseret-rosters-stats-2026.json'
+      - 'deseret-stat-metrics-2026.json'
+      - 'player-game-stats-2026.json'
+      - 'manual-player-single-game-records-2026.json'
 
 permissions:
   contents: write
