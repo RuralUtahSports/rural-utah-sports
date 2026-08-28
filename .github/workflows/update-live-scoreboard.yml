@@ -25,6 +25,8 @@ on:
       - 'scripts/fill-boxscore-from-scoring-plays.mjs'
       - 'scripts/repair-live-status-anomalies.mjs'
       - 'scripts/apply-kickoff-live-fallback.mjs'
+      - 'scripts/apply-manual-scoreboard-corrections.mjs'
+      - 'manual-scoreboard-corrections-2026.json'
       - 'scripts/build_standings_2026.mjs'
       - 'scripts/audit_standings_records_2026.mjs'
       - 'scripts/update-alltime-team-records.mjs'
@@ -68,6 +70,9 @@ jobs:
 
       - name: Mark overdue scheduled games live after kickoff grace period
         run: node scripts/apply-kickoff-live-fallback.mjs
+
+      - name: Apply verified manual scoreboard corrections
+        run: node scripts/apply-manual-scoreboard-corrections.mjs
 
       # Publish the scoreboard before the slower record-building work below.
       # That way a later audit failure or job timeout cannot hold live scores hostage.
