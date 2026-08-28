@@ -94,7 +94,8 @@ function historicalScore(team,date,opponent){
     const candidate=scoreOpponent(row.opponent);
     return candidate===target||candidate.includes(target)||target.includes(candidate);
   });
-  if(sameOpponent.length===1)return scoreValue(sameOpponent[0]);
+  const sameSeason=sameOpponent.filter(row=>isoDate(row.date).slice(0,4)===targetDate.slice(0,4));
+  if(sameSeason.length===1)return scoreValue(sameSeason[0]);
   if(dated.length===1)return scoreValue(dated[0]);
   return{};
 }
