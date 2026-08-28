@@ -11,7 +11,80 @@ function watchMount(section,key,label){let tries=0;const t=setInterval(()=>{if(!
 function statPriority(nameValue){const name=String(nameValue||'').toLowerCase();let group=99,within=99;if(name.includes('passing')||name.includes('pass '))group=0;else if(name.includes('rushing')||name.includes('rush'))group=1;else if(name.includes('receiving')||name.includes('reception'))group=2;else if(name.includes('defense')||name.includes('tackle')||name.includes('sack')||name.includes('interception'))group=3;else if(name.includes('kicking')||name.includes('field goal')||name.includes('pat')||name.includes('extra point')||name.includes('return'))group=4;else if(name.includes('total offense'))group=5;if(group<=2){if(name.includes('yards'))within=0;else if(name.includes('touchdown'))within=1;else if(name.includes('completion'))within=2;else if(name.includes('attempt')||name.includes('carr'))within=3;else if(name.includes('reception'))within=4}else if(group===3){if(name.includes('tackle'))within=0;else if(name.includes('sack'))within=1;else if(name.includes('interception'))within=2;else if(name.includes('touchdown'))within=3}else if(group===4){if(name.includes('field goal'))within=0;else if(name.includes('pat')||name.includes('extra point'))within=1;else if(name.includes('return'))within=2}else if(group===5)within=0;return group*100+within}
 function seasonTable(c){return `<article class="rus-player-record-card"><h3>${esc(c.category)}</h3><div class="rus-player-record-wrap"><table><thead><tr><th>#</th><th>Player</th><th>Season</th><th>${esc(c.valueLabel)}</th></tr></thead><tbody>${c.entries.map((r,i)=>`<tr><td class="rus-player-record-rank">${i+1}</td><td>${esc(r.player)}</td><td>${esc(r.season)}</td><td class="rus-player-record-value">${typeof r.value==='number'?r.value.toLocaleString():esc(r.value)}</td></tr>`).join('')}</tbody></table></div></article>`}
 function gameTable(c){return `<article class="rus-player-record-card"><h3>${esc(c.label)}</h3><div class="rus-player-record-wrap"><table><thead><tr><th>#</th><th>Player</th><th>${esc(c.unit||'Record')}</th><th>Game</th></tr></thead><tbody>${c.entries.map(r=>{const score=Number.isFinite(Number(r.teamScore))&&Number.isFinite(Number(r.opponentScore))?`${r.teamScore}–${r.opponentScore}`:'Score unavailable',game=`${esc(r.date||r.season)} • vs ${esc(r.opponent||'—')} • ${esc(score)}`;return `<tr><td class="rus-player-record-rank">${esc(r.rank)}</td><td>${esc(r.player)}</td><td class="rus-player-record-value">${Number(r.value).toLocaleString()}</td><td class="rus-player-record-game">${r.gameUrl?`<a href="${esc(r.gameUrl)}" target="_blank" rel="noopener">${game}</a>`:game}</td></tr>`}).join('')}</tbody></table></div></article>`}
-function mergeUhsaa(team,baseCats,parts){const wanted=slug(team),out=baseCats.map(c=>({...c,entries:[...(c.entries||[])]}));for(const c of parts.flatMap(x=>x.categories||[])){if(!/game/i.test(c.title||''))continue;const rows=(c.entries||[]).filter(e=>slug(e.school)===wanted);if(!rows.length)continue;const base=(c.title||'').replace(/\s*[-–]\s*Game\s*$/i,'').trim();const target=out.find(x=>slug(x.label||'')===slug(base)||slug(x.key||'')===slug(base));if(!target)continue;for(const e of rows)target.entries.push({rank:0,player:e.name,value:e.value,date:e.detail,opponent:'UHSAA record book',teamScore:null,opponentScore:null,gameUrl:'',source:'UHSAA record book'});}for(const c of out){c.entries.sort((a,b)=>Number(b.value)-Number(a.value));c.entries.forEach((e,i)=>e.rank=i+1)}return out}
-async function install(){styles();let tries=0,team='';while(!(team=document.querySelector('.team-title')?.textContent?.trim())&&tries++<300)await new Promise(r=>setTimeout(r,100));if(!team||document.getElementById('rusPlayerRecords'))return;const section=document.createElement('section');section.id='rusPlayerRecords';section.className='rus-player-records-section';section.innerHTML='<div class="rus-player-records-empty">Loading player records…</div>';if(!mount(section,'player-records','Player Records')){const headings=[...document.querySelectorAll('#page .section-title')],target=headings.find(h=>h.textContent.trim()==='ELO History')||headings.find(h=>h.textContent.trim()==='Historical Records');if(target)target.insertAdjacentElement('beforebegin',section);else document.getElementById('page')?.appendChild(section);watchMount(section,'player-records','Player Records')}const stamp=Date.now();const [singleRes,seasonRes]=await Promise.allSettled([fetch(`player-single-game-records/by-team/${slug(team)}.json?v=${stamp}`,{cache:'no-store'}),fetch(`team-player-records/${slug(team)}.json?v=${stamp}`,{cache:'no-store'})]);let single=null,season=null;try{if(singleRes.status==='fulfilled'&&singleRes.value.ok)single=await singleRes.value.json()}catch(e){console.warn('Single-game player records:',e)}try{if(seasonRes.status==='fulfilled'&&seasonRes.value.ok)season=await seasonRes.value.json()}catch(e){console.warn('Single-season player records:',e)}let singleCats=Array.isArray(single?.categories)?single.categories.filter(c=>c.entries?.length).sort((a,b)=>statPriority(a.label||a.key)-statPriority(b.label||b.key)):[];try{const m=await fetch(`uhsaa-records-expanded.json?v=${Date.now()}`,{cache:'no-store'}),manifest=m.ok?await m.json():{},files=Array.isArray(manifest.parts)?manifest.parts:[],responses=await Promise.all(files.map(file=>fetch(`${file}?v=${Date.now()}`,{cache:'no-store'}))),parts=await Promise.all(responses.map(r=>r.ok?r.json():{}));singleCats=mergeUhsaa(team,singleCats,parts);}catch(e){console.warn('UHSAA player records:',e)}const seasonCats=Array.isArray(season?.categories)?season.categories.filter(c=>c.entries?.length).sort((a,b)=>statPriority(a.category)-statPriority(b.category)):[];mount(section,'player-records','Player Records');if(!singleCats.length&&!seasonCats.length){section.innerHTML='<div class="rus-player-records-empty">No reported historical player records are currently available for this team.</div>';return}section.innerHTML=`<div class="rus-player-records-head"><h2>Player Records</h2><p>${esc(team)} historical player leaderboards. Single-game records use reported structured game statistics from 2009 to present; earlier seasons are not treated as single-game data when only cumulative tables are available.</p></div>${singleCats.length?`<h3 class="rus-player-records-subhead">Single-Game Records — 2009 to Present</h3><div class="rus-player-records-grid">${singleCats.map(gameTable).join('')}</div><div class="rus-player-records-source">Source: Deseret News game statistics. ${esc(single.coverageNote||'Historical reporting may be incomplete.')}</div>`:''}${seasonCats.length?`<h3 class="rus-player-records-subhead">Single-Season Records</h3><div class="rus-player-records-grid">${seasonCats.map(seasonTable).join('')}</div><div class="rus-player-records-source">Source: ${season.sourceUrl?`<a href="${esc(season.sourceUrl)}" target="_blank" rel="noopener">Deseret News team records</a>`:'Deseret News team records'}. ${esc(season.coverageNote||'Historical coverage may be incomplete.')}</div>`:''}`}
+const UHSAA_GAME_CATEGORY_MAP={
+  PASSINGYARDS:'passingYards',PASSINGTOUCHDOWNS:'passingTouchdowns',
+  PASSINGCOMPLETIONS:'completions',PASSINGATTEMPTS:'passAttempts',
+  RUSHINGYARDS:'rushingYards',RUSHINGTOUCHDOWNS:'rushingTouchdowns',
+  RUSHINGATTEMPTS:'carries',RECEIVINGYARDS:'receivingYards',RECEPTIONS:'receptions',
+  RECEIVINGTOUCHDOWNS:'receivingTouchdowns',TOTALOFFENSE:'totalOffenseYards',
+  TACKLES:'tackles',SACKS:'sacks',INTERCEPTIONS:'interceptions',
+  DEFENSIVETOUCHDOWNS:'defensiveTouchdowns',FIELDGOALS:'fieldGoals',
+  EXTRAPOINTS:'extraPoints',PATMADE:'extraPoints'
+};
+UHSAA_GAME_CATEGORY_MAP['KICKOFF'+'RETURNTOUCHDOWNS']='returnTouchdowns';
+UHSAA_GAME_CATEGORY_MAP['PUNT'+'RETURNTOUCHDOWNS']='returnTouchdowns';
+UHSAA_GAME_CATEGORY_MAP['RETURNTOUCHDOWNS']='returnTouchdowns';
+const UHSAA_SCHOOL_ALIASES={
+  'american-leadership-academy':'ala','american-leadership':'ala',
+  cedar:'cedar-city','cedar-reds':'cedar-city','grand-county':'grand',
+  gunnison:'gunnison-valley','maple-mtn':'maple-mountain',
+  monument-val:'monument-valley','juan-diego-catholic':'juan-diego',
+  layton-christian-academy':'layton-christian','saint-joseph':'st-joseph',
+  'utah-military-hillfield':'utah-military-hillfield',
+  'utah-military-camp-williams':'utah-military-camp-williams'
+};
+function uhsaaSchoolKey(value){const s=slug(value);return UHSAA_SCHOOL_ALIASES[s]||s}
+function uhsaaCategoryKey(title){
+  const base=String(title||'').replace(/\s*[-–—]\s*Game\s*$/i,'').replace(/\s+GAME$/i,'')
+    .toUpperCase().replace(/[^A-Z0-9]/g,'');
+  return UHSAA_GAME_CATEGORY_MAP[base]||null;
+}
+function uhsaaGameDetail(detail){
+  const raw=String(detail||''),m=raw.match(/(\d{1,2})[-/](\d{1,2})-(\d{4})/);
+  const date=m?m[3]+'-'+String(m[1]).padStart(2,'0')+'-'+String(m[2]).padStart(2,'0'):'';
+  const opponent=raw.replace(m?.[0]||'','').replace(/^\s*(?:vs?\.?|at)\s*/i,'')
+    .replace(/,?\s*(?:OT|2OT|3OT|quarterfinal|semifinal|final)\s*$/i,'').trim();
+  return {date,opponent};
+}
+function uhsaaRecordKey(row){
+  return [String(row.player||'').toUpperCase().replace(/[^A-Z0-9]/g,''),String(row.date||''),String(row.value)].join('|');
+}
+function mergeUhsaa(team,baseCats,parts){
+  const wanted=uhsaaSchoolKey(team),out=baseCats.map(c=>({...c,entries:[...(c.entries||[])]}));
+  const byKey=new Map(out.map(c=>[c.key,c]));
+  for(const c of parts.flatMap(x=>x.categories||[])){
+    if(!/game/i.test(c.title||''))continue;
+    const key=uhsaaCategoryKey(c.title);if(!key)continue;
+    const rows=(c.entries||[]).filter(e=>uhsaaSchoolKey(e.school)===wanted);
+    if(!rows.length)continue;
+    let target=byKey.get(key);
+    if(!target){
+      const labels={passingYards:['Passing Yards','yards'],passingTouchdowns:['Passing Touchdowns','TD'],
+        completions:['Pass Completions','completions'],passAttempts:['Pass Attempts','attempts'],
+        rushingYards:['Rushing Yards','yards'],rushingTouchdowns:['Rushing Touchdowns','TD'],
+        carries:['Rushing Attempts','carries'],receivingYards:['Receiving Yards','yards'],
+        receptions:['Receptions','receptions'],receivingTouchdowns:['Receiving Touchdowns','TD'],
+        totalOffenseYards:['Total Offense','yards'],tackles:['Tackles','tackles'],
+        sacks:['Sacks','sacks'],interceptions:['Interceptions','INT'],
+        defensiveTouchdowns:['Defensive Touchdowns','TD'],fieldGoals:['Field Goals','FG'],
+        extraPoints:['PAT Made','PAT'],returnTouchdowns:['Return Touchdowns','TD']}[key]||[key,''];
+      target={key,label:labels[0],unit:labels[1],entries:[]};out.push(target);byKey.set(key,target);
+    }
+    for(const e of rows){
+      const detail=uhsaaGameDetail(e.detail),candidate={
+        rank:0,player:e.name,value:e.value,date:detail.date||e.detail,
+        opponent:detail.opponent||'UHSAA record book',teamScore:null,opponentScore:null,
+        gameUrl:'',source:'UHSAA record book'
+      };
+      if(!target.entries.some(x=>uhsaaRecordKey(x)===uhsaaRecordKey(candidate)))target.entries.push(candidate);
+    }
+  }
+  for(const c of out){
+    c.entries.sort((a,b)=>Number(b.value)-Number(a.value)||String(a.date||'').localeCompare(String(b.date||'')));
+    let last=null,rank=0;c.entries.forEach((e,i)=>{if(e.value!==last){rank=i+1;last=e.value}e.rank=rank});
+  }
+  return out.filter(c=>c.entries.length);
+}
+async function install(){styles();let tries=0,team='';while(!(team=document.querySelector('.team-title')?.textContent?.trim())&&tries++<300)await new Promise(r=>setTimeout(r,100));if(!team||document.getElementById('rusPlayerRecords'))return;const section=document.createElement('section');section.id='rusPlayerRecords';section.className='rus-player-records-section';section.innerHTML='<div class="rus-player-records-empty">Loading player records…</div>';if(!mount(section,'player-records','Player Records')){const headings=[...document.querySelectorAll('#page .section-title')],target=headings.find(h=>h.textContent.trim()==='ELO History')||headings.find(h=>h.textContent.trim()==='Historical Records');if(target)target.insertAdjacentElement('beforebegin',section);else document.getElementById('page')?.appendChild(section);watchMount(section,'player-records','Player Records')}const stamp=Date.now();const [singleRes,seasonRes]=await Promise.allSettled([fetch(`player-single-game-records/by-team/${slug(team)}.json?v=${stamp}`,{cache:'no-store'}),fetch(`team-player-records/${slug(team)}.json?v=${stamp}`,{cache:'no-store'})]);let single=null,season=null;try{if(singleRes.status==='fulfilled'&&singleRes.value.ok)single=await singleRes.value.json()}catch(e){console.warn('Single-game player records:',e)}try{if(seasonRes.status==='fulfilled'&&seasonRes.value.ok)season=await seasonRes.value.json()}catch(e){console.warn('Single-season player records:',e)}let singleCats=Array.isArray(single?.categories)?single.categories.filter(c=>c.entries?.length).sort((a,b)=>statPriority(a.label||a.key)-statPriority(b.label||b.key)):[];try{const m=await fetch(`uhsaa-football-records-expanded.json?v=${Date.now()}`,{cache:'no-store'}),manifest=m.ok?await m.json():{},files=Array.isArray(manifest.parts)?manifest.parts:[],responses=await Promise.all(files.map(file=>fetch(`${file}?v=${Date.now()}`,{cache:'no-store'}))),parts=await Promise.all(responses.map(r=>r.ok?r.json():{}));singleCats=mergeUhsaa(team,singleCats,parts);}catch(e){console.warn('UHSAA player records:',e)}const seasonCats=Array.isArray(season?.categories)?season.categories.filter(c=>c.entries?.length).sort((a,b)=>statPriority(a.category)-statPriority(b.category)):[];mount(section,'player-records','Player Records');if(!singleCats.length&&!seasonCats.length){section.innerHTML='<div class="rus-player-records-empty">No reported historical player records are currently available for this team.</div>';return}section.innerHTML=`<div class="rus-player-records-head"><h2>Player Records</h2><p>${esc(team)} historical player leaderboards. Single-game records use reported structured game statistics from 2009 to present; earlier seasons are not treated as single-game data when only cumulative tables are available.</p></div>${singleCats.length?`<h3 class="rus-player-records-subhead">Single-Game Records — 2009 to Present</h3><div class="rus-player-records-grid">${singleCats.map(gameTable).join('')}</div><div class="rus-player-records-source">Source: Deseret News game statistics. ${esc(single.coverageNote||'Historical reporting may be incomplete.')}</div>`:''}${seasonCats.length?`<h3 class="rus-player-records-subhead">Single-Season Records</h3><div class="rus-player-records-grid">${seasonCats.map(seasonTable).join('')}</div><div class="rus-player-records-source">Source: ${season.sourceUrl?`<a href="${esc(season.sourceUrl)}" target="_blank" rel="noopener">Deseret News team records</a>`:'Deseret News team records'}. ${esc(season.coverageNote||'Historical coverage may be incomplete.')}</div>`:''}`}
 install();
 })();
