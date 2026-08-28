@@ -150,7 +150,10 @@ function parseStatusLine(value) {
     return { status: period, clock: '', period };
   }
 
-  if (/\bLive\b/i.test(line)) return { status: 'Live', clock: '', period: '' };
+  // Deseret also puts links such as "Rocky Mo... Live" beside a matchup.
+  // Treat only an actual status badge as the generic Live state so a nearby
+  // game's link cannot make an unstarted out-of-state game look live.
+  if (/^Live(?:\s|$)/i.test(line)) return { status: 'Live', clock: '', period: '' };
   return null;
 }
 
@@ -159,7 +162,9 @@ function stateForPair(lines, pair) {
   const first = Math.min(pair.a, pair.h);
   const last = Math.max(pair.a, pair.h);
   const candidates = [];
-  for (let i = Math.max(0, first - 10); i <= Math.min(lines.length - 1, last + 3); i++) {
+  // Status normally precedes the team rows. Only inspect one line after the
+  // pair; looking farther ahead can capture the next matchup's Live badge.
+  for (let i = Math.max(0, first - 6); i <= Math.min(lines.length - 1, last + 1); i++) {
     const parsed = parseStatusLine(lines[i]);
     if (!parsed) continue;
     const distance = i < first ? first - i : i > last ? i - last : 0;
@@ -180,10 +185,30 @@ function scoreFromLine(line) {
   return numbers.length ? numbers[numbers.length - 1] : null;
 }
 
+function scoreNearTeam(lines, index) {
+  // The current Deseret day page renders each team name and its score on
+  // separate lines (for example "Thunder Ridge, Idaho Titans" then "35").
+  // Older markup sometimes kept the score on the team line, so support both.
+  const sameLine = scoreFromLine(lines[index]);
+  if (Number.isInteger(sameLine)) return sameLine;
+  for (let offset = 1; offset <= 2; offset++) {
+    const candidate = clean(lines[index + offset]);
+    if (!candidate) continue;
+    const exact = candidate.match(/^(\d{1,3})$/);
+    if (exact) {
+      const score = Number(exact[1]);
+      if (score <= 199) return score;
+    }
+    // Stop before crossing into the other team's row or a different matchup.
+    if (/^(?:vs\b|@\b|Live\b|Final\b|Stats\b|Previous\b)/i.test(candidate)) break;
+  }
+  return null;
+}
+
 function scoreForPair(lines, pair) {
   if (!pair) return null;
-  const away = scoreFromLine(lines[pair.a]);
-  const home = scoreFromLine(lines[pair.h]);
+  const away = scoreNearTeam(lines, pair.a);
+  const home = scoreNearTeam(lines, pair.h);
   return Number.isInteger(away) && Number.isInteger(home) ? { away, home } : null;
 }
 
@@ -253,6 +278,21 @@ async function fetchHtml(url) {
   });
   if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
   return response.text();
+}
+
+if (process.argv.includes('--self-test')) {
+  const lines = [
+    'Football', 'Live', '1:54 3rd Quarter', 'Thunder Ridge, Idaho Titans', '35',
+    'vs Bear River Bears', '42', 'Stats', 'Rocky Mo... Live', 'Madison, Idaho Bobcats',
+    'vs Riverton Silverwolves', 'Stats Previous Matchup', 'Live', '12:00 2nd Quarter'
+  ];
+  const thunder = bestLinePair(lines, { awayTeam: 'THUNDER RIDGE, ID', homeTeam: 'BEAR RIVER' });
+  const thunderScore = scoreForPair(lines, thunder);
+  if (thunderScore?.away !== 35 || thunderScore?.home !== 42) throw new Error('Split-line score parsing failed');
+  const madison = bestLinePair(lines, { awayTeam: 'MADISON, ID', homeTeam: 'RIVERTON' });
+  if (stateForPair(lines, madison).status) throw new Error('Neighboring Live link leaked into matchup status');
+  console.log('Unlinked scoreboard parser self-test passed.');
+  process.exit(0);
 }
 
 if (!fs.existsSync(WEEKLY) || !fs.existsSync(DETAILS)) process.exit(0);
