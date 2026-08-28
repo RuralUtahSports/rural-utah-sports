@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '45 11 * * 2'
+  workflow_run:
+    workflows:
+      - "Build Deseret Team Data"
+      - "Build Deseret Rosters and Stats"
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -34,6 +39,7 @@ concurrency:
 
 jobs:
   build:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
