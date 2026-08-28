@@ -157,6 +157,26 @@ function parseStatusLine(value) {
   return null;
 }
 
+function parseLiveDetailLine(value) {
+  const line = clean(value);
+  if (!line) return null;
+  if (/^Halftime$/i.test(line)) return { status: 'HALFTIME', clock: '', period: 'HALFTIME' };
+  if (/^OT$/i.test(line)) return { status: 'OT', clock: '', period: 'OT' };
+
+  let match = line.match(/^(\d{1,2}:\d{2}(?:\.\d+)?)\s+(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+Quarter)?)$/i);
+  if (match) {
+    const period = `Q${match[2] || match[3] || match[4]}`;
+    return { status: period, clock: match[1], period };
+  }
+
+  match = line.match(/^(?:End\s+)?(?:of\s+)?(?:the\s+)?(?:Q\s*([1-4])|([1-4])\s*Q|([1-4])(?:st|nd|rd|th)(?:\s+Quarter)?)$/i);
+  if (match) {
+    const period = `Q${match[1] || match[2] || match[3]}`;
+    return { status: period, clock: '', period };
+  }
+  return null;
+}
+
 function stateForPair(lines, pair) {
   if (!pair) return { status: '', clock: '', period: '' };
   const first = Math.min(pair.a, pair.h);
@@ -165,8 +185,17 @@ function stateForPair(lines, pair) {
   // Status normally precedes the team rows. Only inspect one line after the
   // pair; looking farther ahead can capture the next matchup's Live badge.
   for (let i = Math.max(0, first - 6); i <= Math.min(lines.length - 1, last + 1); i++) {
-    const parsed = parseStatusLine(lines[i]);
+    let parsed = parseStatusLine(lines[i]);
     if (!parsed) continue;
+
+    // Deseret's day scoreboard can render the badge and live detail on two
+    // adjacent lines: "Live" followed by "1:54 3rd Quarter". Only join that
+    // detail when both lines precede this matchup, so a later game's clock
+    // cannot leak backward into the current one.
+    if (parsed.status === 'Live' && /^Live\s*$/i.test(clean(lines[i])) && i + 1 < first) {
+      parsed = parseLiveDetailLine(lines[i + 1]) || parsed;
+    }
+
     const distance = i < first ? first - i : i > last ? i - last : 0;
     candidates.push({ parsed, distance, index: i });
   }
@@ -289,6 +318,10 @@ if (process.argv.includes('--self-test')) {
   const thunder = bestLinePair(lines, { awayTeam: 'THUNDER RIDGE, ID', homeTeam: 'BEAR RIVER' });
   const thunderScore = scoreForPair(lines, thunder);
   if (thunderScore?.away !== 35 || thunderScore?.home !== 42) throw new Error('Split-line score parsing failed');
+  const thunderState = stateForPair(lines, thunder);
+  if (thunderState.status !== 'Q3' || thunderState.clock !== '1:54' || thunderState.period !== 'Q3') {
+    throw new Error('Split-line live status parsing failed');
+  }
   const madison = bestLinePair(lines, { awayTeam: 'MADISON, ID', homeTeam: 'RIVERTON' });
   if (stateForPair(lines, madison).status) throw new Error('Neighboring Live link leaked into matchup status');
   console.log('Unlinked scoreboard parser self-test passed.');
