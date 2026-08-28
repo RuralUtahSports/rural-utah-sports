@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-27T22:42:28.605Z",
+  "updatedAt": "2026-08-28T01:31:12.558Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -48307,11 +48307,40 @@
     },
     "2026-08-27|DAVIS|MOUNTAINRIDGE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-27/davis-football-vs-mountain-ridge-football/273727",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
-      "boxScore": null,
+      "clock": "12:00",
+      "period": "Q1",
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Davis Darts (1-1)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "Mountain Ridge Sentinels (2-0)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -48321,25 +48350,181 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:51.725Z"
+      "fetchedAt": "2026-08-28T01:30:44.233Z"
     },
     "2026-08-27|HUNTER|COPPERHILLS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-27/hunter-football-vs-copper-hills-football/273556",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
-      "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+      "clock": "1:34",
+      "period": "Q1",
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Hunter Wolverines (0-2)",
+            "quarters": [
+              3,
+              null,
+              null,
+              null
+            ],
+            "total": 3
+          },
+          {
+            "team": "Copper Hills Grizzlies (2-0)",
+            "quarters": [
+              20,
+              null,
+              null,
+              null
+            ],
+            "total": 20
+          }
+        ]
       },
-      "fetchedAt": "2026-08-27T22:41:52.253Z"
+      "scoringPlays": [
+        "Copper Hills — ( 11:28 1Q ) James Gleed , 16-yard pass from Grayson Hill ( kick from Lincoln Anderson )",
+        "Hunter — ( 7:01 1Q ) Ashton Arpero , 22-yard FG",
+        "Copper Hills — ( 4:41 1Q ) Ryder Mitchell , 1-yard run ( kick from Lincoln Anderson )",
+        "Copper Hills — ( 1:34 1Q ) Logan Beck , 9-yard pass from Ethan Hill ( kick failed )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "COPPER HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "28",
+              "Ryder Mitchell",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "COPPER HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "14",
+              "Ethan Hill",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ],
+            [
+              "80",
+              "Grayson Hill",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "COPPER HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "10",
+              "Logan Beck",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "11",
+              "James Gleed",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "COPPER HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "32",
+              "Lincoln Anderson",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "HUNTER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "24",
+              "Ashton Arpero",
+              "1",
+              "",
+              ""
+            ]
+          ]
+        }
+      ],
+      "statsAvailability": {
+        "status": "partial",
+        "blocks": 5,
+        "rows": 7,
+        "coreCells": 14,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 3
+      },
+      "fetchedAt": "2026-08-28T01:30:44.953Z"
     },
     "2026-08-28|ALTA|GRANGER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/alta-football-vs-granger-football/274388",
@@ -48357,7 +48542,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:52.788Z"
+      "fetchedAt": "2026-08-28T01:30:45.451Z"
     },
     "2026-08-28|AMERICANFORK|TIMPVIEW": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/american-fork-football-vs-timpview-football/273534",
@@ -48375,7 +48560,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:53.313Z"
+      "fetchedAt": "2026-08-28T01:30:46.005Z"
     },
     "2026-08-28|BEAVER|EMERY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/beaver-football-vs-emery-football/273347",
@@ -48393,7 +48578,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:53.843Z"
+      "fetchedAt": "2026-08-28T01:30:46.494Z"
     },
     "2026-08-28|BOUNTIFUL|SYRACUSE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/bountiful-football-vs-syracuse-football/274365",
@@ -48411,7 +48596,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:54.535Z"
+      "fetchedAt": "2026-08-28T01:30:47.003Z"
     },
     "2026-08-28|BRIGHTON|RIDGELINE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/brighton-football-vs-ridgeline-football/273623",
@@ -48429,7 +48614,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:55.131Z"
+      "fetchedAt": "2026-08-28T01:30:47.522Z"
     },
     "2026-08-28|CANYONVIEW|SOUTHSEVIER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/canyon-view-football-vs-south-sevier-football/273407",
@@ -48447,7 +48632,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:55.666Z"
+      "fetchedAt": "2026-08-28T01:30:48.046Z"
     },
     "2026-08-28|CEDARVALLEY|CRIMSONCLIFFS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/cedar-valley-football-vs-crimson-cliffs-football/273491",
@@ -48465,7 +48650,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:56.302Z"
+      "fetchedAt": "2026-08-28T01:30:48.768Z"
     },
     "2026-08-28|CLEARFIELD|LAYTON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/clearfield-football-vs-layton-football/273582",
@@ -48483,7 +48668,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:56.859Z"
+      "fetchedAt": "2026-08-28T01:30:49.296Z"
     },
     "2026-08-28|CYPRUS|TOOELE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/cyprus-football-vs-tooele-football/273606",
@@ -48501,7 +48686,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:57.397Z"
+      "fetchedAt": "2026-08-28T01:30:49.995Z"
     },
     "2026-08-28|DEERCREEK|JORDAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/deer-creek-football-football-vs-jordan-football/273339",
@@ -48519,7 +48704,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:58.062Z"
+      "fetchedAt": "2026-08-28T01:30:50.516Z"
     },
     "2026-08-28|DELTA|NORTHSANPETE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/delta-football-vs-north-sanpete-football/273330",
@@ -48537,7 +48722,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:58.689Z"
+      "fetchedAt": "2026-08-28T01:30:51.187Z"
     },
     "2026-08-28|DESERETPEAK|RICHFIELD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/deseret-peak-football-football-vs-richfield-football/273299",
@@ -48555,7 +48740,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:59.268Z"
+      "fetchedAt": "2026-08-28T01:30:51.682Z"
     },
     "2026-08-28|DESERTHILLS|SALEMHILLS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/desert-hills-football-vs-salem-hills-football/273430",
@@ -48573,7 +48758,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:41:59.809Z"
+      "fetchedAt": "2026-08-28T01:30:52.204Z"
     },
     "2026-08-28|DIXIE|NORTHRIDGE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/dixie-football-vs-northridge-football/273531",
@@ -48591,7 +48776,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:00.375Z"
+      "fetchedAt": "2026-08-28T01:30:52.699Z"
     },
     "2026-08-28|ENTERPRISE|MILFORD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/enterprise-football-vs-milford-football/273373",
@@ -48609,7 +48794,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:00.911Z"
+      "fetchedAt": "2026-08-28T01:30:53.228Z"
     },
     "2026-08-28|FREMONT|CORNERCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/fremont-football-vs-corner-canyon-football/273477",
@@ -48627,7 +48812,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:01.609Z"
+      "fetchedAt": "2026-08-28T01:30:53.717Z"
     },
     "2026-08-28|GRAND|GUNNISONVALLEY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/grand-football-vs-gunnison-valley-football/273679",
@@ -48645,7 +48830,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:02.350Z"
+      "fetchedAt": "2026-08-28T01:30:54.502Z"
     },
     "2026-08-28|GRANTSVILLE|MANTI": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/grantsville-football-vs-manti-football/273753",
@@ -48663,7 +48848,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:02.886Z"
+      "fetchedAt": "2026-08-28T01:30:55.230Z"
     },
     "2026-08-28|HERRIMAN|WESTJORDAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/herriman-football-vs-west-jordan-football/273550",
@@ -48681,7 +48866,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:03.376Z"
+      "fetchedAt": "2026-08-28T01:30:55.749Z"
     },
     "2026-08-28|HILLCREST|COTTONWOOD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/hillcrest-football-vs-cottonwood-football/273625",
@@ -48699,7 +48884,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:03.923Z"
+      "fetchedAt": "2026-08-28T01:30:56.350Z"
     },
     "2026-08-28|JUANDIEGO|CARBON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/juan-diego-football-vs-carbon-football/273686",
@@ -48717,7 +48902,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:04.633Z"
+      "fetchedAt": "2026-08-28T01:30:57.023Z"
     },
     "2026-08-28|JUDGEMEMORIAL|NORTHSEVIER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/judge-memorial-football-vs-north-sevier-football/273910",
@@ -48735,7 +48920,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:05.173Z"
+      "fetchedAt": "2026-08-28T01:30:57.517Z"
     },
     "2026-08-28|KEARNS|PAYSON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/kearns-football-vs-payson-football/274385",
@@ -48753,7 +48938,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:05.717Z"
+      "fetchedAt": "2026-08-28T01:30:58.094Z"
     },
     "2026-08-28|LONEPEAK|SKYLINE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/lone-peak-football-vs-skyline-football/273471",
@@ -48771,7 +48956,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:06.388Z"
+      "fetchedAt": "2026-08-28T01:30:58.609Z"
     },
     "2026-08-28|MILLARD|PAROWAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/millard-football-vs-parowan-football/273663",
@@ -48789,7 +48974,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:06.881Z"
+      "fetchedAt": "2026-08-28T01:30:59.171Z"
     },
     "2026-08-28|MONTICELLO|WATERCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/monticello-football-vs-water-canyon-football-football/274416",
@@ -48807,7 +48992,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:07.402Z"
+      "fetchedAt": "2026-08-28T01:31:00.119Z"
     },
     "2026-08-28|MORGAN|PARKCITY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/morgan-football-vs-park-city-football/273289",
@@ -48825,7 +49010,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:08.071Z"
+      "fetchedAt": "2026-08-28T01:31:00.722Z"
     },
     "2026-08-28|MOUNTAINCREST|LOGAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/mountain-crest-football-vs-logan-football/273421",
@@ -48843,7 +49028,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:08.593Z"
+      "fetchedAt": "2026-08-28T01:31:01.249Z"
     },
     "2026-08-28|MOUNTAINVIEW|UNION": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/mountain-view-football-vs-union-football/273393",
@@ -48861,7 +49046,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:09.261Z"
+      "fetchedAt": "2026-08-28T01:31:01.850Z"
     },
     "2026-08-28|MURRAY|HURRICANE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/murray-football-vs-hurricane-football/273718",
@@ -48879,7 +49064,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:09.765Z"
+      "fetchedAt": "2026-08-28T01:31:02.395Z"
     },
     "2026-08-28|NORTHSUMMIT|RICH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/north-summit-football-vs-rich-football/273361",
@@ -48897,7 +49082,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:10.297Z"
+      "fetchedAt": "2026-08-28T01:31:03.025Z"
     },
     "2026-08-28|OGDEN|WESTFIELD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/ogden-football-vs-west-field-football-football/273460",
@@ -48915,7 +49100,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:10.838Z"
+      "fetchedAt": "2026-08-28T01:31:03.549Z"
     },
     "2026-08-28|OLYMPUS|WESTLAKE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/olympus-football-vs-westlake-football/273589",
@@ -48933,7 +49118,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:11.410Z"
+      "fetchedAt": "2026-08-28T01:31:04.076Z"
     },
     "2026-08-28|PANGUITCH|MONUMENTVAL": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/panguitch-football-vs-monument-valley-football/273638",
@@ -48951,7 +49136,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:11.965Z"
+      "fetchedAt": "2026-08-28T01:31:04.588Z"
     },
     "2026-08-28|PLEASANTGROVE|GREENCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/pleasant-grove-football-vs-green-canyon-football/274340",
@@ -48969,7 +49154,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:12.469Z"
+      "fetchedAt": "2026-08-28T01:31:05.085Z"
     },
     "2026-08-28|PROVO|SPRINGVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/provo-football-vs-springville-football/273673",
@@ -48987,7 +49172,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:13.021Z"
+      "fetchedAt": "2026-08-28T01:31:05.764Z"
     },
     "2026-08-28|SANJUAN|KANAB": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/san-juan-football-vs-kanab-football/273323",
@@ -49005,7 +49190,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:13.549Z"
+      "fetchedAt": "2026-08-28T01:31:06.249Z"
     },
     "2026-08-28|SKYVIEW|SPANISHFORK": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/sky-view-football-vs-spanish-fork-football/273615",
@@ -49023,7 +49208,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:14.035Z"
+      "fetchedAt": "2026-08-28T01:31:06.753Z"
     },
     "2026-08-28|SNOWCANYON|CEDARCITY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/snow-canyon-football-vs-cedar-city-football/273436",
@@ -49041,7 +49226,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:14.632Z"
+      "fetchedAt": "2026-08-28T01:31:07.432Z"
     },
     "2026-08-28|SOUTHSUMMIT|JUAB": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/south-summit-football-vs-juab-football/273410",
@@ -49059,7 +49244,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:15.285Z"
+      "fetchedAt": "2026-08-28T01:31:07.941Z"
     },
     "2026-08-28|STANSBURY|WOODSCROSS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/stansbury-football-vs-woods-cross-football/273705",
@@ -49077,7 +49262,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:15.766Z"
+      "fetchedAt": "2026-08-28T01:31:08.536Z"
     },
     "2026-08-28|TIMPANOGOS|BINGHAM": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/timpanogos-football-vs-bingham-football/273365",
@@ -49095,7 +49280,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:16.425Z"
+      "fetchedAt": "2026-08-28T01:31:09.035Z"
     },
     "2026-08-28|UINTAH|TAYLORSVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/uintah-football-vs-taylorsville-football/273309",
@@ -49113,7 +49298,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:16.989Z"
+      "fetchedAt": "2026-08-28T01:31:09.598Z"
     },
     "2026-08-28|UMALEHI|SAINTJOSEPH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/utah-military-camp-williams-football-football-vs-st-joseph-football-football/274429",
@@ -49131,7 +49316,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:17.502Z"
+      "fetchedAt": "2026-08-28T01:31:10.232Z"
     },
     "2026-08-28|VIEWMONT|HIGHLAND": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/viewmont-football-vs-highland-football/273597",
@@ -49149,7 +49334,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:18.029Z"
+      "fetchedAt": "2026-08-28T01:31:10.899Z"
     },
     "2026-08-28|WASATCH|BONNEVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/wasatch-football-vs-bonneville-football/273391",
@@ -49167,25 +49352,164 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-27T22:42:18.581Z"
+      "fetchedAt": "2026-08-28T01:31:11.538Z"
     },
     "2026-08-28|WEBER|ROY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/weber-football-vs-roy-football/274368",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
-      "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+      "clock": "6:21",
+      "period": "Q1",
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Weber Warriors (1-1)",
+            "quarters": [
+              14,
+              null,
+              null,
+              null
+            ],
+            "total": 14
+          },
+          {
+            "team": "Roy Royals (1-1)",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
       },
-      "fetchedAt": "2026-08-27T22:42:19.085Z"
+      "scoringPlays": [
+        "Weber — ( 10:01 1Q ) Creed Devries , 50-yard pass from Carter Payne ( kick failed )",
+        "Roy — ( 8:54 1Q ) Gunner Pearson , 15-yard run ( kick from Luke Pebley )",
+        "Weber — ( 6:21 1Q ) Carter Payne , 5-yard run ( pass from Carter Payne )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "WEBER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "Gunner Pearson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "WEBER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "Carter Payne",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "WEBER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "Carter Payne",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "WEBER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "4",
+              "Creed Devries",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "Luke Pebley",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
+      "statsAvailability": {
+        "status": "partial",
+        "blocks": 5,
+        "rows": 5,
+        "coreCells": 10,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 4
+      },
+      "fetchedAt": "2026-08-28T01:31:12.457Z"
     }
   }
 }
