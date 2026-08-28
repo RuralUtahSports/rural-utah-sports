@@ -9,6 +9,7 @@ if (!fs.existsSync(DETAILS) || !fs.existsSync(CORRECTIONS)) process.exit(0);
 
 const details = JSON.parse(fs.readFileSync(DETAILS, 'utf8'));
 const corrections = JSON.parse(fs.readFileSync(CORRECTIONS, 'utf8'));
+details.games ||= {};
 let updated = 0;
 
 function ensureRows(detail, awayKey, homeKey) {
@@ -31,15 +32,51 @@ function num(value) {
   return Number.isFinite(n) ? n : 0;
 }
 
+function createMissingFinal(correction, date, awayKeys, homeKeys) {
+  if (!correction.finalScore) return null;
+  const awayKey = [...awayKeys][0];
+  const homeKey = [...homeKeys][0];
+  if (!awayKey || !homeKey) return null;
+
+  const key = `${date}|${awayKey}|${homeKey}`;
+  const detail = {
+    date,
+    awayTeam: awayKey,
+    homeTeam: homeKey,
+    deseretUrl: '',
+    status: 'Scheduled',
+    final: false,
+    clock: '',
+    period: '',
+    boxScore: null,
+    scoringPlays: [],
+    stats: [],
+    statsAvailability: {
+      status: 'unavailable',
+      blocks: 0,
+      rows: 0,
+      coreCells: 0,
+      filledCoreCells: 0,
+      emptyCoreBlocks: 0
+    }
+  };
+  details.games[key] = detail;
+  updated++;
+  console.log(`Created missing manual scoreboard entry: ${key}`);
+  return [key, detail];
+}
+
 for (const correction of corrections) {
   const date = clean(correction.date);
   const awayKeys = new Set((correction.awayKeys || []).map(compact));
   const homeKeys = new Set((correction.homeKeys || []).map(compact));
 
-  const match = Object.entries(details.games || {}).find(([key]) => {
+  let match = Object.entries(details.games).find(([key]) => {
     const [gameDate, away, home] = key.split('|');
     return gameDate === date && awayKeys.has(compact(away)) && homeKeys.has(compact(home));
   });
+
+  if (!match) match = createMissingFinal(correction, date, awayKeys, homeKeys);
 
   if (!match) {
     console.warn(`Manual scoreboard correction did not find ${date} ${[...awayKeys].join('/')} vs ${[...homeKeys].join('/')}`);
