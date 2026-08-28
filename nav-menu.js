@@ -67,6 +67,7 @@
       ["Season Explorer", "season.html"],
       ["Past Season Rankings", "historical-rankings.html"],
       ["Program Leaderboard", "programs.html"],
+      ["Coaches", "coaches.html"],
       ["Active Streaks", "streaks.html"],
       ["Milestone Watch", "milestones.html"],
       ["Rivalry Hub", "rivalry.html"],
