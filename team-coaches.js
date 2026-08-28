@@ -37,6 +37,7 @@
     return Object.values(data.teams || {}).find(t => norm(t.team) === n) || null;
   }
   function tenureLabel(t){ return t.start === t.end ? String(t.start) : `${t.start}–${t.end}`; }
+  function coachHref(name){ return `coaches.html?coach=${encodeURIComponent(clean(name))}`; }
   function record(w,l,t){ return `${Number(w||0)}-${Number(l||0)}-${Number(t||0)}`; }
   function pct(w,l,t){ const g=Number(w||0)+Number(l||0)+Number(t||0); return g?(((Number(w||0)+Number(t||0)*.5)/g)*100).toFixed(1)+'%':'—'; }
   function inTenure(year,t){ const y=Number(year); return Number.isFinite(y)&&y>=t.start&&y<=t.end; }
@@ -77,7 +78,7 @@
     const current = clean(team.currentCoach || team.seasons?.['2026']?.coach);
     const rows = tenures.map(t => {
       const s=coachStats(t,pageData);
-      return `<tr><td>${esc(tenureLabel(t))}</td><td class="rus-coach-name">${esc(t.coach)}</td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.wins,s.losses,s.ties)}</td><td>${record(s.pw,s.pl,s.pt)}</td><td>${s.appearances}</td><td class="rus-coach-title-total">${s.titles}</td></tr>`;
+      return `<tr><td>${esc(tenureLabel(t))}</td><td class="rus-coach-name"><a class="rus-coach-link" href="${coachHref(t.coach)}">${esc(t.coach)}</a></td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.wins,s.losses,s.ties)}</td><td>${record(s.pw,s.pl,s.pt)}</td><td>${s.appearances}</td><td class="rus-coach-title-total">${s.titles}</td></tr>`;
     }).join('');
     const notes = (team.notes || []).map(n=>`<p class="rus-coach-note">${esc(n)}</p>`).join('');
     const coverage = first ? `${first}–${last || first}` : 'No historical seasons verified yet';
@@ -89,7 +90,7 @@
       </style>
       <h2 class="section-title">Coaching History</h2>
       <div class="rus-coach-current">
-        <div class="rus-coach-card"><div class="rus-coach-kicker">2026 Head Coach</div><div class="rus-coach-value">${esc(current || 'Unresolved')}</div><div class="rus-coach-sub">Current active-program directory</div></div>
+        <div class="rus-coach-card"><div class="rus-coach-kicker">2026 Head Coach</div><div class="rus-coach-value">${current ? `<a class="rus-coach-link" href="${coachHref(current)}">${esc(current)}</a>` : 'Unresolved'}</div><div class="rus-coach-sub">Current active-program directory</div></div>
         <div class="rus-coach-card"><div class="rus-coach-kicker">Known Coach Coverage</div><div class="rus-coach-value">${esc(coverage)}</div><div class="rus-coach-sub">Records use the same historical game data as the team page</div></div>
       </div>
       <div class="rus-coach-wrap"><table><thead><tr><th>Season(s)</th><th>Head Coach</th><th>W-L-T</th><th>Win %</th><th>Playoffs</th><th>Title Games</th><th>Titles</th></tr></thead><tbody>${rows || '<tr><td colspan="7">No verified coaching history is available yet.</td></tr>'}</tbody></table></div>
