@@ -59,14 +59,20 @@ function currentCard(row){
   return `<article class="rus-streak-card primary"><div class="rus-streak-label">Current Streak</div><div class="rus-streak-value ${kind}">${esc(text)}</div><div class="rus-streak-detail">${active?spanDetail(active):'<span>No active winning or losing streak.</span>'}</div></article>`;
 }
 
+function getTeamName(){
+  const title=clean(document.querySelector('.team-title')?.textContent);
+  if(title)return title.toUpperCase();
+  return clean(new URLSearchParams(location.search).get('team')).toUpperCase();
+}
+
 async function render(panel){
-  if(!panel||panel.dataset.rusStreaksLoaded==='1')return;
-  panel.dataset.rusStreaksLoaded='1';
+  if(!panel||panel.dataset.rusStreaksLoaded==='1'||panel.dataset.rusStreaksLoading==='1')return;
+  panel.dataset.rusStreaksLoading='1';
   panel.innerHTML='<div class="rus-streaks"><div class="rus-streak-empty">Loading streak records...</div></div>';
   try{
-    const title=clean(document.querySelector('.team-title')?.textContent).toUpperCase();
+    const title=getTeamName();
     const key=ALIASES[title]||title;
-    const payload=await fetch('streak-records.json?v=20260827-team-streaks1',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()});
+    const payload=await fetch('streak-records.json?v=20260827-team-streaks2',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()});
     let row=payload[key];
     if(!row){
       const wanted=norm(key);
@@ -75,7 +81,7 @@ async function render(panel){
     }
     if(!row)throw new Error(`No streak record found for ${title||'team'}`);
     panel.innerHTML=`<section class="rus-streaks">
-      <div class="rus-streaks-head"><div><h2>Streaks</h2><p>Winning and losing streak history for ${esc(title)} from the Rural Utah Sports historical schedule database.</p></div></div>
+      <div class="rus-streaks-head"><div><h2>Streaks</h2><p>Winning and losing streak history for ${esc(title)}.</p></div></div>
       <div class="rus-streak-grid">
         ${currentCard(row)}
         ${recordCard('Longest Winning Streak',row.longestWinStreak,'win',true)}
@@ -87,11 +93,14 @@ async function render(panel){
         ${recordCard('Current Consecutive Games Scored In',row.currentScoringStreak)}
         ${recordCard('Longest Consecutive Shutout Streak',row.longestShutoutStreak)}
       </div>
-      <p class="rus-streak-note">Ties break winning and losing streaks. These records reflect games currently available in the historical schedule database.</p>
+      <p class="rus-streak-note">Ties break winning and losing streaks.</p>
     </section>`;
+    panel.dataset.rusStreaksLoaded='1';
   }catch(err){
     console.warn('Team streaks:',err);
     panel.innerHTML='<div class="rus-streaks"><div class="rus-streak-empty">Streak records are not available for this team yet.</div></div>';
+  }finally{
+    delete panel.dataset.rusStreaksLoading;
   }
 }
 
@@ -157,25 +166,13 @@ function install(){
     if(before)panelsWrap.insertBefore(panel,before);else panelsWrap.appendChild(panel);
   }
 
+  // Preload the content as soon as the tab exists so the panel can never open blank.
+  render(panel);
+
   if(!button.dataset.rusStreakBound){
     button.dataset.rusStreakBound='1';
     button.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();showStreaks(shell,true)},true);
     button.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopImmediatePropagation();showStreaks(shell,true)}},true);
-  }
-  if(!tabBar.dataset.rusStreakArrowBound){
-    tabBar.dataset.rusStreakArrowBound='1';
-    tabBar.addEventListener('keydown',e=>{
-      if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
-      const target=e.target.closest('.rus-team-tab');
-      if(!target)return;
-      const buttons=[...tabBar.querySelectorAll('.rus-team-tab')];
-      const i=buttons.indexOf(target),step=e.key==='ArrowRight'?1:-1;
-      const next=buttons[(i+step+buttons.length)%buttons.length];
-      if(target.dataset.tab!=='streaks'&&next.dataset.tab!=='streaks')return;
-      e.preventDefault();e.stopImmediatePropagation();next.focus();
-      if(next.dataset.tab==='streaks')showStreaks(shell,true);
-      else if(window.RUSTeamTabs?.show)window.RUSTeamTabs.show(next.dataset.tab);
-    },true);
   }
   if(new URLSearchParams(location.search).get('tab')==='streaks')showStreaks(shell,false);
   document.body.dataset.rusStreaksTab='1';
