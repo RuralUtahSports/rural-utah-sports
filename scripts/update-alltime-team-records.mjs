@@ -27,33 +27,40 @@ const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&
 const res=await fetch(url);if(!res.ok)throw new Error(`Clean Games download failed: ${res.status}`);
 const rows=parseCSV(await res.text());
 const stats={};for(const t of website)stats[t]={wins:0,losses:0,ties:0,games:0,pointsFor:0,pointsAgainst:0,seasons:new Set()};
-const seen=new Set();let used=0,dupes=0,currentTeams=0;
+const seen=new Set();let used=0,dupes=0;
+
+const apply=(t,pf,pa,year)=>{const s=stats[t];if(!s)return;s.games++;s.pointsFor+=pf;s.pointsAgainst+=pa;s.seasons.add(year);if(pf>pa)s.wins++;else if(pf<pa)s.losses++;else s.ties++};
 
 // Historical source of truth: Clean Games through the end of 2025.
-// Current 2026 results are added below from the verified standings build so
-// all-time records update immediately when a game becomes Final and are never
-// double-counted if Clean Games later receives the same 2026 rows.
+// Current-season rows are deliberately excluded here so a 2026 game can never
+// be counted twice after it is later copied into Clean Games.
 for(const r of rows.slice(1)){
   const date=clean(r[0]),a=teamName(r[1]),b=teamName(r[2]),sa=num(r[3]),sb=num(r[4]),year=yearOf(date);
   if(!date||!a||!b||a===b||sa===null||sb===null||!year||year>=CURRENT_SEASON)continue;
   const pair=[a,b].sort().join('|'),key=`${date}|${pair}`;
   if(seen.has(key)){dupes++;continue}seen.add(key);used++;
-  const apply=(t,pf,pa)=>{const s=stats[t];if(!s)return;s.games++;s.pointsFor+=pf;s.pointsAgainst+=pa;s.seasons.add(year);if(pf>pa)s.wins++;else if(pf<pa)s.losses++;else s.ties++};
-  apply(a,sa,sb);apply(b,sb,sa);
+  apply(a,sa,sb,year);apply(b,sb,sa,year);
 }
 
-// Add the current season from standings-2026.json. That file is independently
-// rebuilt and audited from finalized Sheet/site/Deseret scores every refresh.
-const currentRows=[];
-for(const group of Object.values(standings.byClassification||{}))for(const row of group||[])currentRows.push(row);
-const currentByTeam=new Map(currentRows.map(r=>[teamName(r.team),r]));
-for(const [name,s] of Object.entries(stats)){
-  const cur=currentByTeam.get(name);if(!cur)continue;
-  const w=Number(cur.wins||0),l=Number(cur.losses||0),t=Number(cur.ties||0),g=w+l+t;
-  const pf=Number(cur.pointsFor||0),pa=Number(cur.pointsAgainst||0);
-  if(!Number.isFinite(w)||!Number.isFinite(l)||!Number.isFinite(t)||!Number.isFinite(pf)||!Number.isFinite(pa))throw new Error(`Invalid 2026 standings row for ${name}`);
-  if(!g)continue;
-  s.wins+=w;s.losses+=l;s.ties+=t;s.games+=g;s.pointsFor+=pf;s.pointsAgainst+=pa;s.seasons.add(CURRENT_SEASON);currentTeams++;
+// Count 2026 directly from the finalized game list. This is the most durable
+// current-season source because it does not depend on a classification/region
+// summary being present or on a team being placed in the correct group first.
+const currentSeen=new Set();
+const current={};
+let currentGames=0,currentDupes=0;
+const applyCurrent=(t,pf,pa)=>{
+  if(!stats[t])return;
+  apply(t,pf,pa,CURRENT_SEASON);
+  const s=current[t]||(current[t]={wins:0,losses:0,ties:0,games:0,pointsFor:0,pointsAgainst:0});
+  s.games++;s.pointsFor+=pf;s.pointsAgainst+=pa;
+  if(pf>pa)s.wins++;else if(pf<pa)s.losses++;else s.ties++;
+};
+for(const game of standings.games||[]){
+  const date=clean(game.date),a=teamName(game.awayTeam),h=teamName(game.homeTeam),sa=num(game.actualAway),sh=num(game.actualHome);
+  if(!date||!a||!h||a===h||sa===null||sh===null)continue;
+  const pair=[a,h].sort().join('|'),key=`${date}|${pair}`;
+  if(currentSeen.has(key)){currentDupes++;continue}currentSeen.add(key);currentGames++;
+  applyCurrent(a,sa,sh);applyCurrent(h,sh,sa);
 }
 
 let changed=0;
@@ -70,13 +77,13 @@ for(const team of teams){
   Object.assign(team,next);if(different)changed++;
 }
 
-// Guard the specific first-year program that exposed the stale all-time issue.
+// Sanity check the first-year program that originally exposed this stale-record
+// failure. Once it has a 2026 final, its all-time game count must exceed 2025's 10.
 const deseretPeak=teams.find(t=>teamName(t.team)==='DESERET PEAK');
-const dp2026=currentByTeam.get('DESERET PEAK');
-if(deseretPeak&&dp2026){
-  const currentGames=Number(dp2026.wins||0)+Number(dp2026.losses||0)+Number(dp2026.ties||0);
-  if(currentGames>0&&Number(deseretPeak.games)<11)throw new Error(`DESERET PEAK all-time record did not absorb 2026 result: ${deseretPeak.wins}-${deseretPeak.losses}-${deseretPeak.ties}`);
+const dp2026=current['DESERET PEAK'];
+if(deseretPeak&&dp2026&&dp2026.games>0&&Number(deseretPeak.games)<10+dp2026.games){
+  throw new Error(`DESERET PEAK all-time record did not absorb 2026 results: ${deseretPeak.wins}-${deseretPeak.losses}-${deseretPeak.ties}`);
 }
 
 fs.writeFileSync('teams-data.json',JSON.stringify(teams));
-console.log(`All-time records rebuilt from ${used} unique pre-${CURRENT_SEASON} Clean Games + verified ${CURRENT_SEASON} standings for ${currentTeams} teams; ${dupes} duplicate historical rows skipped; ${changed} team summaries changed.`);
+console.log(`All-time records rebuilt from ${used} unique pre-${CURRENT_SEASON} Clean Games + ${currentGames} finalized ${CURRENT_SEASON} games for ${Object.keys(current).length} site teams; ${dupes} historical and ${currentDupes} current duplicates skipped; ${changed} team summaries changed.`);
