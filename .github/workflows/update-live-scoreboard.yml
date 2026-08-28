@@ -54,6 +54,9 @@ jobs:
       - name: Reconcile Final/Live status from Deseret daily scoreboard
         run: node scripts/reconcile-deseret-day-status.mjs
 
+      - name: Verify out-of-state scoreboard parser
+        run: node scripts/reconcile-deseret-unlinked-games.mjs --self-test
+
       - name: Reconcile out-of-state games without direct Deseret URLs
         run: node scripts/reconcile-deseret-unlinked-games.mjs
 
