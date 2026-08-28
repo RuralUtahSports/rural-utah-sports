@@ -28,8 +28,8 @@ const UHSAA_SCHOOL_ALIASES={
   'american-leadership-academy':'ala','american-leadership':'ala',
   cedar:'cedar-city','cedar-reds':'cedar-city','grand-county':'grand',
   gunnison:'gunnison-valley','maple-mtn':'maple-mountain',
-  monument-val:'monument-valley','juan-diego-catholic':'juan-diego',
-  layton-christian-academy':'layton-christian','saint-joseph':'st-joseph',
+  'monument-val':'monument-valley','juan-diego-catholic':'juan-diego',
+  'layton-christian-academy':'layton-christian','saint-joseph':'st-joseph',
   'utah-military-hillfield':'utah-military-hillfield',
   'utah-military-camp-williams':'utah-military-camp-williams'
 };
