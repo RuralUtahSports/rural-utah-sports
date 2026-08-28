@@ -69,7 +69,35 @@ const teams=JSON.parse(fs.readFileSync('teams-data.json','utf8')).map(t=>clean(t
 const canonical=new Map(teams.map(t=>[normalize(t),t]));
 for(const [a,t] of Object.entries(ALIASES))if(canonical.has(normalize(t)))canonical.set(a,canonical.get(normalize(t)));
 function canonicalTeam(v){return canonical.get(normalize(v))||null}
-function historicalScore(team,date,opponent){const file=path.join('team-page-data',slug(team)+'.json');if(!fs.existsSync(file))return{};let data;try{data=JSON.parse(fs.readFileSync(file,'utf8'))}catch{return{}}const targetDate=isoDate(date),target=normalize(opponent).replace(/WY|ID|NV|CO|AZ|CA|HI|NM/g,'');for(const rows of Object.values(data.schedules||{})){for(const row of rows||[]){if(isoDate(row.date)!==targetDate)continue;const candidate=normalize(row.opponent).replace(/WY|ID|NV|CO|AZ|CA|HI|NM/g,'');if(candidate===target||candidate.includes(target)||target.includes(candidate))return{teamScore:Number(row.teamScore),opponentScore:Number(row.opponentScore)}}}return{}}
+function scoreOpponent(value){
+  return normalize(value).replace(/FOOTBALL|HIGHSCHOOL|WY|ID|NV|CO|AZ|CA|HI|NM/g,'');
+}
+function scoreValue(row){
+  const teamScore=Number(row.teamScore),opponentScore=Number(row.opponentScore);
+  return Number.isFinite(teamScore)&&Number.isFinite(opponentScore)?{teamScore,opponentScore}:{};
+}
+function historicalScore(team,date,opponent){
+  const file=path.join('team-page-data',slug(team)+'.json');
+  if(!fs.existsSync(file))return{};
+  let data;
+  try{data=JSON.parse(fs.readFileSync(file,'utf8'))}catch{return{}}
+  const rows=Object.values(data.schedules||{}).flatMap(value=>Array.isArray(value)?value:[]);
+  const targetDate=isoDate(date),target=scoreOpponent(opponent);
+  if(!targetDate||!target)return{};
+  const dated=rows.filter(row=>isoDate(row.date)===targetDate);
+  const exact=dated.filter(row=>{
+    const candidate=scoreOpponent(row.opponent);
+    return candidate===target||candidate.includes(target)||target.includes(candidate);
+  });
+  if(exact.length===1)return scoreValue(exact[0]);
+  const sameOpponent=rows.filter(row=>{
+    const candidate=scoreOpponent(row.opponent);
+    return candidate===target||candidate.includes(target)||target.includes(candidate);
+  });
+  if(sameOpponent.length===1)return scoreValue(sameOpponent[0]);
+  if(dated.length===1)return scoreValue(dated[0]);
+  return{};
+}
 
 async function fetchHtml(url,tries=3){let last;for(let attempt=1;attempt<=tries;attempt++){try{const r=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'},redirect:'follow',signal:AbortSignal.timeout(25000)});if(r.status===404)return null;if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);return await r.text()}catch(e){last=e;if(attempt<tries)await sleep(300*attempt)}}throw last}
 
