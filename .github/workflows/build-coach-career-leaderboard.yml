@@ -1,0 +1,37 @@
+name: Build Coach Career Leaderboard
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "25 13 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: coach-career-leaderboard
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build leaderboard
+        run: python scripts/build-coach-career-leaderboard.py
+      - name: Publish changed data
+        run: |
+          if git diff --quiet -- coach-career-leaderboard.json; then
+            echo "Coach leaderboard is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add coach-career-leaderboard.json
+          git commit -m "Refresh coach career leaderboard"
+          git push
