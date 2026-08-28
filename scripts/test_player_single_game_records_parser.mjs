@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 
 process.env.PLAYER_RECORDS_SKIP_MAIN='1';
-const {gameLinks,MANUAL,mergeManual,parseGame}=await import('./build_player_single_game_records.mjs');
+const {gameLinks,MANUAL,mergeManual,parseGame,loadUhsaaSingleGameEntries}=await import('./build_player_single_game_records.mjs');
 
 const scheduleLinks=gameLinks(`
   <a href="/high-school/football/game/2012-10-26/viewmont-football-vs-syracuse-football/110951">current game</a>
@@ -125,4 +125,8 @@ assert.equal(cooper.team,'OREM');
 assert.equal(cooper.teamScore,51);
 assert.equal(cooper.opponentScore,46);
 assert.deepEqual(cooper.stats,{passingYards:438,passingTouchdowns:4,completions:24,passAttempts:37,rushingYards:190,rushingTouchdowns:1,carries:16,totalOffenseYards:628});
+const uhsaa=loadUhsaaSingleGameEntries();
+assert(uhsaa.length>=132, `Expected at least 132 official UHSAA game entries, got ${uhsaa.length}`);
+assert.equal(uhsaa.filter(entry=>entry.key==='tackles').length,9);
+assert(uhsaa.some(entry=>entry.team==='MORGAN'&&entry.player==='Kenny Adams'&&entry.value===36));
 console.log('Player single-game record parser regression tests passed.');

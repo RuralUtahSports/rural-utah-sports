@@ -70,10 +70,16 @@ function validateRankedEntries(category, entries, limit, expectedTeam = null) {
     assert(Number.isInteger(entry.rank) && entry.rank >= 1, `${category}: ${entry.player} has invalid rank ${entry.rank}`);
     const expectedRank = value === previousRankValue ? previousRank : index + 1;
     assert(entry.rank === expectedRank, `${category}: ${entry.player} has rank ${entry.rank}, expected ${expectedRank}`);
-    assert(Number.isInteger(Number(entry.season)) && Number(entry.season) >= START_SEASON, `${category}: ${entry.player} has invalid season ${entry.season}`);
+    const officialUhsaa = clean(entry?.source).toLowerCase().includes('uhsaa record book');
+    if (officialUhsaa) {
+      assert(Number.isInteger(Number(entry.season)) && Number(entry.season) >= 1, `${category}: ${entry.player} has invalid official season ${entry.season}`);
+      assert(!clean(entry.gameUrl) || /^https:\/\/sports\.deseret\.com\/high-school\/football\/game\//.test(clean(entry.gameUrl)), `${category}: ${entry.player} has invalid official game URL ${entry.gameUrl}`);
+    } else {
+      assert(Number.isInteger(Number(entry.season)) && Number(entry.season) >= START_SEASON, `${category}: ${entry.player} has invalid season ${entry.season}`);
+      assert(/^https:\/\/sports\.deseret\.com\/high-school\/football\/game\//.test(clean(entry.gameUrl)), `${category}: ${entry.player} has invalid game URL`);
+    }
     assert(/^\d{4}-\d{2}-\d{2}$/.test(clean(entry.date)), `${category}: ${entry.player} has invalid date ${entry.date}`);
     assert(clean(entry.gameId), `${category}: ${entry.player} has no game ID`);
-    assert(/^https:\/\/sports\.deseret\.com\/high-school\/football\/game\//.test(clean(entry.gameUrl)), `${category}: ${entry.player} has invalid game URL`);
     const key = `${entry.gameId}|${entry.team}|${entry.player}`;
     assert(!seen.has(key), `${category}: duplicate entry ${key}`);
     seen.add(key);
