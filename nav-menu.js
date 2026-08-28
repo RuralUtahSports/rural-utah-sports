@@ -147,7 +147,7 @@
   }
   async function loadExtras() {
     await fetchCacheReady;
-    addScript("pwa.js?v=20260827-mobile-nav-restore1", "rusPwa", true);
+    addScript("pwa.js?v=20260828-unique-featured1", "rusPwa", true);
     addScript("site-search.js?v=20260817-player2", "rusSiteSearch", true);
     addScript(
       "optimization-polish.js?v=20260819-lcp1",
@@ -158,7 +158,7 @@
     addScript("site-extras.js", "rusExtras", true);
     addScript("site-polish.js?v=20260818-nav1", "rusSitePolish", true);
     addScript("app-shell-polish.js?v=20260817-app3", "rusAppShellPolish", true);
-    addScript("site-share.js", "rusShare", true);
+    addScript("site-share.js?v=20260828-mobile-flow1", "rusShare", true);
     addScript("favorites.js?v=20260817-header3", "rusFavorites", true);
     addScript(
       "mobile-optimizations.js?v=20260817-mobile2",
