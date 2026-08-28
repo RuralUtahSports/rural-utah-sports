@@ -17,6 +17,7 @@ on:
       - 'scripts/sanitize-team-schedules.mjs'
       - 'scripts/rebuild-team-summaries-from-schedules.mjs'
       - 'scripts/build_verified_elo_2026.mjs'
+      - 'scripts/enrich_playoff_notes.py'
       - '.github/workflows/rebuild-team-summaries-after-dedupe.yml'
 
 permissions:
@@ -36,10 +37,13 @@ jobs:
         with:
           ref: main
 
-      - name: Correct schedules, rebuild summaries and ELO, and commit
+      - name: Correct schedules, rebuild summaries and ELO, restore playoff flags, and commit
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python -m pip install --quiet openpyxl
           ok=0
           for attempt in 1 2 3 4; do
             git fetch origin main
@@ -51,9 +55,26 @@ jobs:
             node scripts/sanitize-team-schedules.mjs
             node scripts/rebuild-team-summaries-from-schedules.mjs
             node scripts/build_verified_elo_2026.mjs
+            # The sanitizer intentionally synchronizes team-page schedules from the
+            # canonical schedule file. Restore workbook-derived playoff notes/flags
+            # after that synchronization so coach playoff records are not erased.
+            python scripts/enrich_playoff_notes.py
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('team-page-data/ala.json').read_text(encoding='utf-8'))
+          games=[g for season in (data.get('schedules') or {}).values() for g in season if g.get('playoff') is True]
+          wins=sum(1 for g in games if str(g.get('result','')).upper()=='W')
+          losses=sum(1 for g in games if str(g.get('result','')).upper()=='L')
+          ties=sum(1 for g in games if str(g.get('result','')).upper()=='T')
+          print(f'ALA playoff record after rebuild: {wins}-{losses}-{ties} ({len(games)} games)')
+          assert (wins,losses,ties,len(games)) == (3,16,0,19), (
+              f'Playoff flags were lost during rebuild: {wins}-{losses}-{ties} in {len(games)} games'
+          )
+          PY
             git add team-schedules.json team-record-breakdowns.json season-history.json team-page-data teams-data.json team-elo-history.json elo-summary.json elo-live-summary.json elo-game-changes-2026.json elo-cleanup-report.json
             if git diff --cached --quiet; then
-              echo "Team schedules, summaries, and ELO are already clean."
+              echo "Team schedules, summaries, ELO, and playoff flags are already clean."
               ok=1
               break
             fi
