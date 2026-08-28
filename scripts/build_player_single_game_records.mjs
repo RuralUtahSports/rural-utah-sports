@@ -128,7 +128,7 @@ function uhsaaSingleGameKey(title){
 }
 function parseUhsaaGameDetail(detail){
   const raw=clean(detail),match=raw.match(/(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
-  const date=match?\`\${match[3]}-\${String(match[1]).padStart(2,'0')}-\${String(match[2]).padStart(2,'0')}\`:'';
+  const date=match?match[3]+'-'+String(match[1]).padStart(2,'0')+'-'+String(match[2]).padStart(2,'0'):'';
   const opponent=raw.replace(match?.[0]||'','').replace(/^\s*(?:vs?\.?|at)\s*/i,'').replace(/,?\s*(?:OT|2OT|3OT|quarterfinal|semifinal|final)\s*$/i,'').trim();
   return {date,opponent};
 }
@@ -157,7 +157,7 @@ function loadUhsaaSingleGameEntries(){
           key,team,player:e.name,season:Number(year)||null,date:parsed.date,
           opponent:parsed.opponent,teamScore:score.teamScore??null,
           opponentScore:score.opponentScore??null,value:Number(e.value),
-          gameId:\`uhsaa-\${slug(team)}-\${slug(e.name)}-\${parsed.date||year}-\${key}\`,
+          gameId:'uhsaa-'+slug(team)+'-'+slug(e.name)+'-'+(parsed.date||year)+'-'+key,
           gameUrl:'',source:'UHSAA record book'
         });
       }
