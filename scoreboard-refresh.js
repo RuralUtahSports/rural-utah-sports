@@ -2,7 +2,9 @@
   const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20260824-wednesday1';
   const LIVE_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
   const WEEKLY_FEED = 'weekly-simulation.json';
+  const OUT_OF_STATE_FEED = 'out-of-state.json';
   const REFRESH_MS = 15000;
+  const WEEKLY_REFRESH_MS = 60000;
   const STALE_GAME_KEYS = new Set(['2026-08-21|DOLORESCO|GRAND']);
   const VERIFIED_FINALS = new Map([
     ['2026-08-21|GRAND|DOLORESCO', { away: 12, home: 6 }],
@@ -137,6 +139,94 @@
       }
     } catch (error) {
       console.warn('Could not recover full weekly scoreboard feed', error);
+    }
+  }
+
+  function applyOutOfStateResults(feedGames, rows) {
+    if (!Array.isArray(feedGames) || !Array.isArray(rows)) return;
+    const finals = rows.filter(row => Number(row.year) === 2026 &&
+      Number.isFinite(Number(row.pf)) && Number.isFinite(Number(row.pa)) &&
+      clean(row.team) && clean(row.opponent) && clean(row.date));
+
+    for (const game of feedGames) {
+      if (yearOf(game.date) !== 2026) continue;
+      if (game.actualAway !== null && game.actualAway !== undefined &&
+          game.actualHome !== null && game.actualHome !== undefined) continue;
+
+      const date = isoDate(game.date);
+      const away = compact(game.awayTeam);
+      const home = compact(game.homeTeam);
+      const row = finals.find(candidate => {
+        if (isoDate(candidate.date) !== date) return false;
+        const team = compact(candidate.team);
+        const opponent = compact(candidate.opponent);
+        const opponentWithState = compact(`${candidate.opponent}, ${candidate.state || ''}`);
+        const awayOpponent = opponent === home || opponentWithState === home;
+        const homeOpponent = opponent === away || opponentWithState === away;
+        return (team === away && awayOpponent) || (team === home && homeOpponent);
+      });
+      if (!row) continue;
+
+      const rowTeam = compact(row.team);
+      const teamScore = Number(row.pf);
+      const opponentScore = Number(row.pa);
+      if (rowTeam === away) {
+        game.actualAway = teamScore;
+        game.actualHome = opponentScore;
+      } else {
+        game.actualAway = opponentScore;
+        game.actualHome = teamScore;
+      }
+      game.actualWinner = game.actualAway === game.actualHome
+        ? 'TIE'
+        : game.actualAway > game.actualHome ? game.awayTeam : game.homeTeam;
+      game.wl = game.actualAway === game.actualHome
+        ? 'T'
+        : game.actualWinner === game.awayTeam ? 'W' : 'L';
+      game.outOfStateSource = 'out-of-state.json';
+    }
+  }
+
+  let lastWeeklyRefresh = 0;
+  async function refreshWeeklyFeed(force = false) {
+    const now = Date.now();
+    if (!force && now - lastWeeklyRefresh < WEEKLY_REFRESH_MS) return false;
+
+    try {
+      const response = await fetch(`${WEEKLY_FEED}?v=${now}`, { cache: 'no-store' });
+      if (!response.ok) return false;
+      const payload = await response.json();
+      const fresh = (payload?.games || []).filter(g =>
+        g?.awayTeam && g?.homeTeam && yearOf(g.date) === 2026
+      );
+      if (!fresh.length) return false;
+
+      let outOfStateRows = [];
+      try {
+        const outResponse = await fetch(`${OUT_OF_STATE_FEED}?v=${now}`, { cache: 'no-store' });
+        if (outResponse.ok) {
+          const outPayload = await outResponse.json();
+          outOfStateRows = outPayload?.games || [];
+        }
+      } catch (error) {
+        console.warn('Could not refresh out-of-state scoreboard feed', error);
+      }
+
+      applyOutOfStateResults(fresh, outOfStateRows);
+      allGames = fresh.sort((a, b) =>
+        dateVal(a.date) - dateVal(b.date) ||
+        String(a.awayTeam).localeCompare(String(b.awayTeam))
+      );
+
+      const selected = Number(document.getElementById('scoreboardWeekSelect')?.value);
+      games = Number.isInteger(selected)
+        ? allGames.filter(g => gameWeekNumber(g) === selected)
+        : allGames.slice();
+      lastWeeklyRefresh = now;
+      return true;
+    } catch (error) {
+      console.warn('Could not refresh weekly scoreboard feed', error);
+      return false;
     }
   }
 
@@ -282,6 +372,7 @@
     if (syncing) return;
     syncing = true;
     try {
+      await refreshWeeklyFeed();
       const response = await fetch(`${LIVE_DETAILS}?v=${Date.now()}`, { cache: 'no-store' });
       if (!response.ok) throw new Error(`live details ${response.status}`);
       const payload = await response.json();
@@ -309,6 +400,7 @@
 
   (async () => {
     await ensureFullWeeklyFeed();
+    await refreshWeeklyFeed(true);
     await loadLegacyHelper();
     installAuthoritativeScoreState();
     installRegionAwareRender();
