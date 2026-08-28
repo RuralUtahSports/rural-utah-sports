@@ -3,6 +3,7 @@
   const esc = value => clean(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
   const norm = value => clean(value).toUpperCase();
   const teamKey = value => norm(value).replace(/[^A-Z0-9]/g, '');
+  const teamSlug = value => clean(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   const coach = clean(new URLSearchParams(location.search).get('coach'));
   const sourceCode = { h: 'historical-workbook', d: '2026-directory', n: 'deseret-news' };
 
@@ -72,10 +73,6 @@
     return rows.sort((a, b) => b.year - a.year || a.team.localeCompare(b.team));
   }
 
-  function sourceBadges(data, sources) {
-    return (sources || []).map(key => `<span class="source">${esc(data.sourceLabels?.[key] || key)}</span>`).join(' ');
-  }
-
   async function showCareer() {
     addStyles();
     const app = document.getElementById('app');
@@ -101,8 +98,15 @@
         return;
       }
       const games = flattenGames(await gameResponse.json());
+      const teamPages = new Map();
+      await Promise.all([...new Set(assignments.map(row => row.team))].map(async team => {
+        try {
+          const response = await fetch(`team-page-data/${teamSlug(team)}.json?v=20260828-coach-careers2`, { cache: 'no-store' });
+          if (response.ok) teamPages.set(teamKey(team), await response.json());
+        } catch (error) { console.warn('Coach playoff/title data:', team, error); }
+      }));
       const records = assignments.map(assignment => {
-        const record = { ...assignment, w: 0, l: 0, t: 0, games: 0, pf: 0, pa: 0 };
+        const record = { ...assignment, w: 0, l: 0, t: 0, games: 0, pf: 0, pa: 0, pw: 0, pl: 0, pt: 0, appearances: 0, championships: 0 };
         for (const game of games) {
           if (game.year !== assignment.year) continue;
           const key = teamKey(assignment.team), first = teamKey(game.team1) === key, second = teamKey(game.team2) === key;
@@ -114,14 +118,27 @@
           else if (first) record.w++;
           else record.l++;
         }
+        const page = teamPages.get(teamKey(assignment.team)) || {};
+        for (const game of page.schedules?.[String(assignment.year)] || []) {
+          if (game.playoff !== true) continue;
+          const result = clean(game.result).toUpperCase();
+          if (result === 'W') record.pw++;
+          else if (result === 'L') record.pl++;
+          else if (result === 'T') record.pt++;
+        }
+        for (const title of Array.isArray(page.championshipHistory) ? page.championshipHistory : []) {
+          if (Number(title.year) !== assignment.year) continue;
+          record.appearances++;
+          const role = clean(title.role).toLowerCase();
+          if (role === 'champion' || role === 'co-champion') record.championships++;
+        }
         return record;
       });
-      const total = records.reduce((sum, row) => ({ w: sum.w + row.w, l: sum.l + row.l, t: sum.t + row.t, games: sum.games + row.games }), { w: 0, l: 0, t: 0, games: 0 });
-      const schools = [...new Set(records.map(row => row.team))], percentage = total.games ? ((total.w + total.t * .5) / total.games * 100).toFixed(1) : '—';
+      const total = records.reduce((sum, row) => ({ w: sum.w + row.w, l: sum.l + row.l, t: sum.t + row.t, games: sum.games + row.games, pw: sum.pw + row.pw, pl: sum.pl + row.pl, pt: sum.pt + row.pt, appearances: sum.appearances + row.appearances, championships: sum.championships + row.championships }), { w: 0, l: 0, t: 0, games: 0, pw: 0, pl: 0, pt: 0, appearances: 0, championships: 0 });
       const displayName = Object.values(data.teams).flatMap(team => team.tenures || []).find(row => norm(row.coach) === norm(coach))?.coach || coach;
       document.title = `${displayName} Coaching Record | Rural Utah Sports`;
       app.className = '';
-      app.innerHTML = `<div class="career-head"><div><h2>${esc(displayName)}</h2><p>Utah high school football head coaching career</p></div><a class="back-link" href="coaches.html">← All coaches</a></div><div class="summary"><div class="card"><div class="num">${total.w}-${total.l}${total.t ? `-${total.t}` : ''}</div><div class="lab">Career Record</div></div><div class="card"><div class="num">${percentage}${percentage === '—' ? '' : '%'}</div><div class="lab">Winning Percentage</div></div><div class="card"><div class="num">${records.length}</div><div class="lab">Verified Seasons</div></div><div class="card"><div class="num">${schools.length}</div><div class="lab">Schools Coached</div></div></div><div class="table-wrap"><table><thead><tr><th>Season</th><th>School</th><th>Record</th><th>Win %</th><th>Points For</th><th>Points Against</th><th>Source</th></tr></thead><tbody>${records.map(row => { const pct = row.games ? ((row.w + row.t * .5) / row.games * 100).toFixed(1) + '%' : '—'; return `<tr><td><a class="team-link" href="season.html?year=${row.year}">${row.year}</a></td><td class="left"><a class="team-link" href="team.html?team=${encodeURIComponent(row.team)}">${esc(row.team)}</a><span class="career-school">${esc(row.school)}</span></td><td class="career-record ${row.w > row.l ? 'win' : row.w < row.l ? 'loss' : ''}">${row.games ? `${row.w}-${row.l}${row.t ? `-${row.t}` : ''}` : '—'}</td><td>${pct}</td><td>${row.games ? row.pf : '—'}</td><td>${row.games ? row.pa : '—'}</td><td>${sourceBadges(data, row.sources)}</td></tr>`; }).join('')}</tbody></table></div><p class="note">Career totals include only seasons with a verified coach assignment and games currently recorded in the Rural Utah Sports database. The coaching workbook is strongest through 2022, partial in 2023–24, and 2025 gaps are still being verified. Current-season records update as final scores are added.</p>`;
+      app.innerHTML = `<div class="career-head"><div><h2>${esc(displayName)}</h2><p>Utah high school football head coaching career</p></div><a class="back-link" href="coaches.html">← All coaches</a></div><div class="summary"><div class="card"><div class="num">${total.w}-${total.l}${total.t ? `-${total.t}` : ''}</div><div class="lab">Career Record</div></div><div class="card"><div class="num">${total.pw}-${total.pl}${total.pt ? `-${total.pt}` : ''}</div><div class="lab">Playoff Record</div></div><div class="card"><div class="num">${total.championships}</div><div class="lab">State Championships</div></div><div class="card"><div class="num">${total.appearances}</div><div class="lab">Championship Appearances</div></div></div><div class="table-wrap"><table><thead><tr><th>Season</th><th>School</th><th>Record</th><th>Win %</th><th>Playoff Record</th><th>Championship Appearance</th><th>State Championship</th></tr></thead><tbody>${records.map(row => { const pct = row.games ? ((row.w + row.t * .5) / row.games * 100).toFixed(1) + '%' : '—'; return `<tr><td><a class="team-link" href="season.html?year=${row.year}">${row.year}</a></td><td class="left"><a class="team-link" href="team.html?team=${encodeURIComponent(row.team)}">${esc(row.team)}</a><span class="career-school">${esc(row.school)}</span></td><td class="career-record ${row.w > row.l ? 'win' : row.w < row.l ? 'loss' : ''}">${row.games ? `${row.w}-${row.l}${row.t ? `-${row.t}` : ''}` : '—'}</td><td>${pct}</td><td>${row.pw || row.pl || row.pt ? `${row.pw}-${row.pl}${row.pt ? `-${row.pt}` : ''}` : '—'}</td><td>${row.appearances ? 'Yes' : '—'}</td><td>${row.championships ? 'Champion' : '—'}</td></tr>`; }).join('')}</tbody></table></div><p class="note">Career totals include only seasons with a verified coach assignment and games currently recorded in the Rural Utah Sports database. Playoff records use verified playoff-marked games, and championship appearances and titles use the RUS Championship Log. Current-season records update as final scores are added.</p>`;
     } catch (error) {
       console.error('Coach career profile:', error);
       app.className = '';
