@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-28T00:52:28.241Z",
+  "updatedAt": "2026-08-28T01:11:11.536Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,14 +8,14 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67841,
+    "scheduleRowsAudited": 67839,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 204,
-    "reciprocalMismatches": 1007,
+    "seasonSummaryMismatches": 206,
+    "reciprocalMismatches": 1005,
     "likelyOpponentTypos": 3,
     "recent2025PlusIssues": 233
   },
@@ -171,6 +171,29 @@
       ]
     },
     {
+      "type": "season-summary-mismatch",
+      "team": "JUAB",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 13,
+          "actual": 12
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 433,
+          "actual": 417
+        },
+        "pointsAgainst": {
+          "expected": 313,
+          "actual": 283
+        }
+      }
+    },
+    {
       "type": "same-day-multiple-opponents",
       "team": "JUAN DIEGO",
       "season": "2025",
@@ -265,6 +288,29 @@
         "CANYON VIEW",
         "CEDAR CITY"
       ]
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "PANGUITCH",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 1,
+          "actual": 0
+        },
+        "pointsFor": {
+          "expected": 180,
+          "actual": 132
+        },
+        "pointsAgainst": {
+          "expected": 482,
+          "actual": 476
+        }
+      }
     },
     {
       "type": "suspicious-repeat",
@@ -1841,26 +1887,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "JUAB",
-      "teamB": "NORTH SANPETE",
-      "date": "10/17/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "JUAB",
-          "opponent": "NORTH SANPETE",
-          "date": "10/17/2025",
-          "teamScore": 16,
-          "opponentScore": 30,
-          "result": "L",
-          "season": "2025",
-          "index": 9
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -1875,7 +1901,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 10
+          "index": 9
         }
       ]
     },
@@ -2923,26 +2949,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "PANGUITCH",
-      "date": "9/19/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "PANGUITCH",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/19/2025",
-          "teamScore": 48,
-          "opponentScore": 6,
-          "result": "W",
-          "season": "2025",
-          "index": 5
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -2957,7 +2963,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 7
         }
       ]
     },
@@ -2976,7 +2982,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 9
+          "index": 8
         }
       ],
       "sideB": []
@@ -6090,6 +6096,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "JUAB",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 13,
+          "actual": 12
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 433,
+          "actual": 417
+        },
+        "pointsAgainst": {
+          "expected": 313,
+          "actual": 283
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "JUAN DIEGO",
       "season": "2022",
       "mismatches": {
@@ -6869,6 +6898,29 @@
         "pointsAgainst": {
           "expected": 463,
           "actual": 416
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "PANGUITCH",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 1,
+          "actual": 0
+        },
+        "pointsFor": {
+          "expected": 180,
+          "actual": 132
+        },
+        "pointsAgainst": {
+          "expected": 482,
+          "actual": 476
         }
       }
     },
@@ -17404,26 +17456,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "JUAB",
-      "teamB": "NORTH SANPETE",
-      "date": "10/17/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "JUAB",
-          "opponent": "NORTH SANPETE",
-          "date": "10/17/2025",
-          "teamScore": 16,
-          "opponentScore": 30,
-          "result": "L",
-          "season": "2025",
-          "index": 9
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -17438,7 +17470,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 10
+          "index": 9
         }
       ]
     },
@@ -23132,26 +23164,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "PANGUITCH",
-      "date": "9/19/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "PANGUITCH",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/19/2025",
-          "teamScore": 48,
-          "opponentScore": 6,
-          "result": "W",
-          "season": "2025",
-          "index": 5
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -23166,7 +23178,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 7
         }
       ]
     },
@@ -23185,7 +23197,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 9
+          "index": 8
         }
       ],
       "sideB": []
@@ -30711,7 +30723,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 72,
-      "totalGames": 720
+      "totalGames": 719
     },
     {
       "team": "JUAN DIEGO",
@@ -30879,7 +30891,7 @@
       "team": "PANGUITCH",
       "file": "panguitch.json",
       "seasons": 8,
-      "totalGames": 67
+      "totalGames": 66
     },
     {
       "team": "PARK CITY",
