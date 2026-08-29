@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: sync-live-finals-to-weekly
@@ -73,15 +74,20 @@ jobs:
           git add weekly-simulation.json
           if git diff --cached --quiet; then
             echo "Weekly final scores are already current."
-            exit 0
+          else
+            git commit -m "Sync live finals into weekly simulation"
+            ok=0
+            for attempt in 1 2 3 4; do
+              if git pull --rebase origin main && git push; then
+                ok=1
+                break
+              fi
+              sleep 5
+            done
+            if [ "$ok" -ne 1 ]; then exit 1; fi
           fi
-          git commit -m "Sync live finals into weekly simulation"
-          ok=0
-          for attempt in 1 2 3 4; do
-            if git pull --rebase origin main && git push; then
-              ok=1
-              break
-            fi
-            sleep 5
-          done
-          if [ "$ok" -ne 1 ]; then exit 1; fi
+
+      - name: Rebuild Scorigami from synced finals
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run build-scorigami.yml --ref main
