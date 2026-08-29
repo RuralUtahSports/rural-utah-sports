@@ -158,10 +158,15 @@ jobs:
       # publishing the compact feed every minute for the next four hours.
       - name: Keep game-night scoreboard current
         if: github.event_name == 'push'
+        env:
+          SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
+          WEEKLY_GID: 1211467999
+          CLEAN_GAMES_GID: 627882418
         run: |
           for iteration in $(seq 1 240); do
             sleep 60
             git pull --rebase origin main
+            before_finals=$(jq -c '[.games | to_entries[] | select(.value.final == true) | {key: .key, away: .value.boxScore.rows[0].total, home: .value.boxScore.rows[1].total}] | sort_by(.key)' deseret-game-details.json | sha256sum)
             node scripts/enrich-deseret-game-details.mjs
             node scripts/reconcile-deseret-day-status.mjs
             node scripts/reconcile-deseret-unlinked-games.mjs
@@ -170,9 +175,14 @@ jobs:
             node scripts/apply-kickoff-live-fallback.mjs
             node scripts/apply-manual-scoreboard-corrections.mjs
             node scripts/build_live_scoreboard_details.mjs
-            git add deseret-game-details.json deseret-live-details-2026.json
+            after_finals=$(jq -c '[.games | to_entries[] | select(.value.final == true) | {key: .key, away: .value.boxScore.rows[0].total, home: .value.boxScore.rows[1].total}] | sort_by(.key)' deseret-game-details.json | sha256sum)
+            if [ "$before_finals" != "$after_finals" ]; then
+              node scripts/build_standings_2026.mjs
+              node scripts/update-alltime-team-records.mjs
+            fi
+            git add deseret-game-details.json deseret-live-details-2026.json standings-2026.json teams-data.json
             if ! git diff --cached --quiet; then
-              git commit -m "Auto-refresh live scoreboard"
+              git commit -m "Auto-refresh live scoreboard and team records"
               git pull --rebase origin main
               git push
             fi
