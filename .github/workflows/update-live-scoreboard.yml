@@ -45,7 +45,7 @@ concurrency:
   group: live-scoreboard
   # A new five-minute tick must not kill a refresh that is already publishing.
   # Let the next tick wait so the live feed cannot get stuck before kickoff.
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   refresh-live-details:
@@ -155,12 +155,12 @@ jobs:
 
       # GitHub scheduled events are not firing reliably during tonight's games.
       # A workflow-file push starts one bounded game-night watcher that keeps
-      # publishing the compact feed every two minutes for the next four hours.
+      # publishing the compact feed every minute for the next four hours.
       - name: Keep game-night scoreboard current
         if: github.event_name == 'push'
         run: |
-          for iteration in $(seq 1 120); do
-            sleep 120
+          for iteration in $(seq 1 240); do
+            sleep 60
             git pull --rebase origin main
             node scripts/enrich-deseret-game-details.mjs
             node scripts/reconcile-deseret-day-status.mjs
