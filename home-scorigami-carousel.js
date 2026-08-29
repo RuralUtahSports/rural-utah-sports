@@ -58,5 +58,82 @@ async function shareGraphic(a,wi,wc,button){const old=button?.textContent||'Shar
 function openMultiPicker(alerts,button){document.querySelector('.rus-scorigami-picker')?.remove();const o=document.createElement('div');o.className='rus-scorigami-picker';o.innerHTML=`<div class="rus-scorigami-picker-panel"><div class="rus-scorigami-picker-head"><div><h3>Select Scorigamis</h3><p>Choose up to 4. Quarter scores are included when available.</p></div><button class="rus-scorigami-picker-close" type="button">×</button></div><div class="rus-scorigami-picker-list">${alerts.map((a,i)=>{const s=alertScores(a);return`<label class="rus-scorigami-pick"><input type="checkbox" value="${i}" ${i<Math.min(4,alerts.length)?'checked':''}><span><b>${esc(a.awayTeam||a.winner)} vs ${esc(a.homeTeam||a.loser)}</b><small>${esc(displayDate(a.date))}</small></span><span class="rus-scorigami-pick-score">${s.away}–${s.home}</span></label>`}).join('')}</div><div class="rus-scorigami-picker-actions"><span class="rus-scorigami-picker-status"></span><button class="rus-scorigami-picker-cancel" type="button">Cancel</button><button class="rus-scorigami-picker-share" type="button">Share Selected</button></div></div>`;document.body.appendChild(o);const boxes=[...o.querySelectorAll('input')],share=o.querySelector('.rus-scorigami-picker-share'),status=o.querySelector('.rus-scorigami-picker-status'),update=()=>{const n=boxes.filter(b=>b.checked).length;status.textContent=`${n} selected • max 4`;share.disabled=n<1};update();boxes.forEach(b=>b.addEventListener('change',()=>{if(boxes.filter(x=>x.checked).length>4){b.checked=false;alert('Choose up to 4 Scorigamis per graphic.')}update()}));const close=()=>o.remove();o.querySelector('.rus-scorigami-picker-close').onclick=close;o.querySelector('.rus-scorigami-picker-cancel').onclick=close;o.onclick=e=>{if(e.target===o)close()};share.onclick=async()=>{const selected=boxes.filter(b=>b.checked).map(b=>alerts[+b.value]).filter(Boolean).slice(0,4);if(!selected.length)return;share.disabled=true;share.textContent='Creating…';if(button)button.disabled=true;try{const c=await buildMultiGraphic(selected);await shareCanvas(c,`rus-scorigami-selected-${selected.length}.png`,'Rural Utah Sports Scorigami Alerts',`${selected.length} Scorigami${selected.length===1?'':'s'} from Rural Utah Sports`);close()}catch(e){if(e?.name!=='AbortError'){console.warn(e);alert('Unable to create the selected Scorigami graphic right now.')}}finally{if(document.body.contains(share)){share.disabled=false;share.textContent='Share Selected'}if(button)button.disabled=false}}}
 async function upgrade(alertEl){if(!alertEl||alertEl.dataset.carouselReady==='1')return;alertEl.dataset.carouselReady='1';try{const alerts=await loadAlerts();if(!alerts.length){alertEl.remove();return}addStyles();const wrap=alertEl.querySelector('.rus-scorigami-wrap');if(!wrap)return;const nav=alerts.length>1?`<div class="rus-scorigami-nav"><button class="rus-scorigami-arrow rus-scorigami-prev">‹</button><div class="rus-scorigami-nav-center"><span class="rus-scorigami-position">1 of ${alerts.length}</span><div class="rus-scorigami-dots">${alerts.map((_,i)=>`<button class="rus-scorigami-dot${i===0?' active':''}" data-index="${i}"></button>`).join('')}</div></div><button class="rus-scorigami-arrow rus-scorigami-next">›</button></div>`:'';wrap.innerHTML=`<div class="rus-scorigami-burst">🚨</div><div class="rus-scorigami-carousel"><div class="rus-scorigami-kicker">🚨 ${alerts.length} SCORIGAMI${alerts.length===1?'':'S'} THIS WEEK 🚨</div>${alerts.map((a,i)=>`<div class="rus-scorigami-slide${i===0?' active':''}"><div class="rus-scorigami-main">${resultHTML(a)}</div><div class="rus-scorigami-sub">First time this final score has appeared in the RUS database.</div></div>`).join('')}${nav}</div><div class="rus-scorigami-actions"><a class="rus-scorigami-link" href="scorigami.html?score=${encodeURIComponent(alerts[0].score)}">Explore →</a><button class="rus-scorigami-share-button">Share Graphic</button>${alerts.length>1?'<button class="rus-scorigami-multi-button">Select Multiple</button>':''}</div>`;let current=0;const slides=[...wrap.querySelectorAll('.rus-scorigami-slide')],dots=[...wrap.querySelectorAll('.rus-scorigami-dot')],pos=wrap.querySelector('.rus-scorigami-position'),link=wrap.querySelector('.rus-scorigami-link'),share=wrap.querySelector('.rus-scorigami-share-button'),multi=wrap.querySelector('.rus-scorigami-multi-button'),show=i=>{current=(i+alerts.length)%alerts.length;slides.forEach((e,n)=>e.classList.toggle('active',n===current));dots.forEach((e,n)=>e.classList.toggle('active',n===current));if(pos)pos.textContent=`${current+1} of ${alerts.length}`;link.href=`scorigami.html?score=${encodeURIComponent(alerts[current].score)}`};wrap.querySelector('.rus-scorigami-prev')?.addEventListener('click',()=>show(current-1));wrap.querySelector('.rus-scorigami-next')?.addEventListener('click',()=>show(current+1));dots.forEach(d=>d.addEventListener('click',()=>show(+d.dataset.index)));share?.addEventListener('click',()=>shareGraphic(alerts[current],current,alerts.length,share));multi?.addEventListener('click',()=>openMultiPicker(alerts,multi));}catch(e){alertEl.dataset.carouselReady='0';console.warn('Scorigami carousel unavailable',e)}}
 async function refresh(){try{const a=await loadAlerts();syncPersonalized(a);const el=document.querySelector('.rus-scorigami-alert');if(el)upgrade(el)}catch(e){console.warn('Scorigami freshness unavailable',e)}}
+
+function enableScorigamiScroll(){
+  if(document.documentElement.dataset.rusScorigamiScroll==='1')return;
+  document.documentElement.dataset.rusScorigamiScroll='1';
+  const enhance=()=>document.querySelectorAll('.rus-scorigami-alert').forEach(alertEl=>{
+    const carousel=alertEl.querySelector('.rus-scorigami-carousel');
+    if(!carousel||carousel.dataset.scrollReady==='1')return;
+    const slides=[...carousel.querySelectorAll('.rus-scorigami-slide')];
+    if(slides.length<2)return;
+    const track=document.createElement('div');
+    track.className='rus-scorigami-slide-track';
+    track.setAttribute('tabindex','0');
+    track.setAttribute('role','region');
+    track.setAttribute('aria-label','Scorigami alerts');
+    slides.forEach(slide=>track.appendChild(slide));
+    const nav=carousel.querySelector('.rus-scorigami-nav');
+    carousel.insertBefore(track,nav||null);
+    carousel.dataset.scrollReady='1';
+    const dots=[...carousel.querySelectorAll('.rus-scorigami-dot')];
+    const position=carousel.querySelector('.rus-scorigami-position');
+    const link=alertEl.querySelector('.rus-scorigami-link');
+    const scoreFor=slide=>String(slide.querySelector('.rus-scorigami-score')?.textContent||'').replace(/[^0-9–-]/g,'').replace(/–/g,'-');
+    const nearestIndex=()=>{let best=0,distance=Infinity;slides.forEach((slide,index)=>{const d=Math.abs(slide.offsetLeft-track.scrollLeft);if(d<distance){distance=d;best=index}});return best};
+    const updateIndicators=index=>{
+      dots.forEach((dot,n)=>dot.classList.toggle('active',n===index));
+      if(position)position.textContent=`${index+1} of ${slides.length}`;
+      const score=scoreFor(slides[index]);
+      if(link&&score)link.href=`scorigami.html?score=${encodeURIComponent(score)}`;
+    };
+    const currentIndex=()=>slides.findIndex(slide=>slide.classList.contains('active'));
+    let framePending=false;
+    let settleTimer=0;
+    const settle=()=>{
+      const index=nearestIndex();
+      if(currentIndex()!==index&&dots[index]){
+        track.dataset.syncing='1';
+        dots[index].click();
+        delete track.dataset.syncing;
+      }else{
+        updateIndicators(index);
+      }
+    };
+    const onScroll=()=>{
+      if(!framePending){framePending=true;requestAnimationFrame(()=>{framePending=false;updateIndicators(nearestIndex())})}
+      clearTimeout(settleTimer);
+      settleTimer=setTimeout(settle,140);
+    };
+    track.addEventListener('scroll',onScroll,{passive:true});
+    track.addEventListener('wheel',event=>{
+      const max=track.scrollWidth-track.clientWidth;
+      if(max<=0||Math.abs(event.deltaX)>=Math.abs(event.deltaY)||Math.abs(event.deltaY)<1)return;
+      const next=Math.max(0,Math.min(max,track.scrollLeft+event.deltaY));
+      if(next===track.scrollLeft)return;
+      event.preventDefault();
+      track.scrollLeft=next;
+    },{passive:false});
+    track.addEventListener('keydown',event=>{
+      if(!['ArrowLeft','ArrowRight','PageUp','PageDown'].includes(event.key))return;
+      event.preventDefault();
+      const direction=event.key==='ArrowLeft'||event.key==='PageUp'?-1:1;
+      const index=Math.max(0,Math.min(slides.length-1,nearestIndex()+direction));
+      track.scrollTo({left:slides[index].offsetLeft,behavior:'smooth'});
+    });
+    const scrollToActive=()=>{
+      if(track.dataset.syncing==='1')return;
+      const active=carousel.querySelector('.rus-scorigami-slide.active');
+      if(active)track.scrollTo({left:active.offsetLeft,behavior:'smooth'});
+    };
+    carousel.querySelectorAll('.rus-scorigami-arrow,.rus-scorigami-dot').forEach(control=>control.addEventListener('click',()=>requestAnimationFrame(scrollToActive)));
+    updateIndicators(0);
+  });
+  const observer=new MutationObserver(enhance);
+  observer.observe(document.documentElement,{childList:true,subtree:true});
+  enhance();
+}
+
+enableScorigamiScroll();
 refresh();const observer=new MutationObserver(()=>{if(recentAlerts)syncPersonalized(recentAlerts);const el=document.querySelector('.rus-scorigami-alert');if(el)upgrade(el)});observer.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),10000);
 })();
