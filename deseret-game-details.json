@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-29T04:05:20.521Z",
+  "updatedAt": "2026-08-29T04:06:31.629Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -50486,12 +50486,42 @@
     },
     "2026-08-28|PANGUITCH|MONUMENTVAL": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/panguitch-football-vs-monument-valley-football/273638",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
-      "kickoffTime": "8:15 PM",
-      "boxScore": null,
+      "kickoffTime": "7:00 PM",
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "PANGUITCH",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 46
+          },
+          {
+            "team": "MONUMENT VAL",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 14
+          }
+        ],
+        "source": "deseret-day-scoreboard-unlinked"
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -50503,8 +50533,10 @@
       },
       "fetchedAt": "2026-08-28T21:59:09.382Z",
       "kickoffSource": "deseret-day-scoreboard-unlinked",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T04:05:20.456Z"
+      "statusSource": "deseret-day-scoreboard-unlinked",
+      "kickoffFallbackAt": "2026-08-29T04:05:20.456Z",
+      "finalSource": "deseret-day-scoreboard-unlinked",
+      "scoreSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-08-28|PLEASANTGROVE|GREENCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/pleasant-grove-football-vs-green-canyon-football/274340",
@@ -50998,7 +51030,7 @@
       },
       "fetchedAt": "2026-08-28T21:59:15.482Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T04:05:20.457Z"
+      "kickoffFallbackAt": "2026-08-29T04:06:31.573Z"
     },
     "2026-08-28|VIEWMONT|HIGHLAND": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/viewmont-football-vs-highland-football/273597",
@@ -51615,13 +51647,13 @@
       "final": false,
       "clock": "",
       "period": "",
-      "kickoffTime": "7:00 PM",
+      "kickoffTime": "5:30 PM",
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T04:05:20.457Z"
+      "kickoffFallbackAt": "2026-08-29T04:06:31.573Z"
     },
     "2026-08-28|ARCHBISHOPRIORDANCA|WEST": {
       "date": "8/28/2026",
@@ -51777,7 +51809,7 @@
       "final": false,
       "clock": "2:44",
       "period": "Q4",
-      "kickoffTime": "7:30 PM",
+      "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
           "Q1",
@@ -51804,7 +51836,7 @@
               null,
               null
             ],
-            "total": 20
+            "total": 27
           }
         ],
         "source": "deseret-day-scoreboard-unlinked"
@@ -51830,7 +51862,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T04:05:20.457Z"
+      "kickoffFallbackAt": "2026-08-29T04:06:31.573Z"
     },
     "2026-08-28|IGNACIOCO|DUCHESNE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/ignacio-colo-football-vs-duchesne-football/275602",
