@@ -99,6 +99,19 @@ for (const correction of corrections) {
     detail.manualScoreNote = correction.note || '';
   }
 
+  if (correction.status && !correction.finalScore) {
+    const nextStatus = clean(correction.status);
+    const nextClock = clean(correction.clock);
+    const nextPeriod = clean(correction.period) || nextStatus;
+    if (detail.final || detail.status !== nextStatus || clean(detail.clock) !== nextClock || clean(detail.period) !== nextPeriod) updated++;
+    detail.final = false;
+    detail.status = nextStatus;
+    detail.clock = nextClock;
+    detail.period = nextPeriod;
+    detail.statusSource = 'verified-manual';
+    detail.manualScoreNote = correction.note || '';
+  }
+
   if (correction.finalScore) {
     const nextAway = num(correction.finalScore.away);
     const nextHome = num(correction.finalScore.home);
