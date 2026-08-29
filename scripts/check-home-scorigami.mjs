@@ -16,12 +16,20 @@ for(const token of [
   'now<nextTuesdayReset(a._ts)',
   'if(!alerts.length){alertEl.remove();return}',
   'syncPersonalized(alerts)',
+  'enableScorigamiScroll',
+  'rus-scorigami-slide-track',
+  "track.addEventListener('wheel'",
+  "track.addEventListener('keydown'",
   'No new Scorigami alerts loaded.'
 ]){
   if(!js.includes(token))fail(`home-scorigami-carousel.js is missing ${token}`);
 }
 
-if(!html.includes('home-scorigami-carousel.js?v=20260822-share3'))fail('Homepage is not loading the freshness-aware Scorigami script');
+if(!html.includes('home-scorigami-carousel.js?v=20260829-scroll2'))fail('Homepage is not loading the scroll-enabled Scorigami script');
+if(!html.includes('rus-scorigami-mobile-navigation'))fail('Homepage is missing the mobile Scorigami navigation styles');
+if(!html.includes('.rus-scorigami-alert .rus-scorigami-nav{display:flex!important'))fail('Mobile Scorigami navigation controls are not visible');
+if(!html.includes('.rus-scorigami-alert .rus-scorigami-slide-track .rus-scorigami-slide'))fail('Scorigami alert slides are not configured as a scrollable track');
+if(!html.includes('scroll-snap-type:x mandatory'))fail('Scorigami alert track is missing scroll snapping');
 if(html.includes('school-assets-bundle.js'))fail('Homepage still directly loads the full school assets bundle');
 if(!html.includes('school-assets-core.js?v=20260818-perf2'))fail('Homepage is not directly loading the lightweight school assets core');
 
