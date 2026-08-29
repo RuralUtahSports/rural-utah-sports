@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import {applyGameDetailCorrections} from './apply_manual_stat_corrections.mjs';
 
 const SOURCE = 'weekly-simulation.json';
+const LINKS = 'deseret-game-links.json';
 const OUTPUT = 'deseret-game-details.json';
 const clean = v => String(v ?? '').trim();
 const compact = v => clean(v).toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -395,6 +396,13 @@ if (!fs.existsSync(SOURCE)) {
 
 const weekly = JSON.parse(fs.readFileSync(SOURCE, 'utf8'));
 const games = Array.isArray(weekly.games) ? weekly.games : [];
+let linkIndex = {};
+if (fs.existsSync(LINKS)) {
+  try {
+    const linked = JSON.parse(fs.readFileSync(LINKS, 'utf8'));
+    linkIndex = linked?.links && typeof linked.links === 'object' ? linked.links : {};
+  } catch {}
+}
 let previous = { games: {} };
 if (fs.existsSync(OUTPUT)) {
   try { previous = JSON.parse(fs.readFileSync(OUTPUT, 'utf8')); } catch {}
@@ -404,7 +412,7 @@ const details = { ...(previous.games || {}) };
 let fetched = 0, reusedFinal = 0, deferredStats = 0, skippedFuture = 0, failures = 0;
 for (const game of games) {
   const key = gameKey(game);
-  const directUrl = clean(game.deseretUrl) || DIRECT_URL_OVERRIDES.get(key) || '';
+  const directUrl = clean(game.deseretUrl) || clean(linkIndex[key]) || DIRECT_URL_OVERRIDES.get(key) || '';
   if (!directUrl) continue;
   const linkedGame = directUrl === game.deseretUrl ? game : { ...game, deseretUrl: directUrl };
   const prior = details[key] || null;
