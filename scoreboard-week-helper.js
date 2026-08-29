@@ -233,8 +233,10 @@
     prevWeekBtn.type = 'button';
     prevWeekBtn.textContent = '← Previous';
 
-    weekSelect = document.createElement('select');
+    weekSelect = document.getElementById('scoreboardWeekSelect') || document.createElement('select');
     weekSelect.id = 'scoreboardWeekSelect';
+    weekSelect.hidden = false;
+    weekSelect.removeAttribute('aria-hidden');
     weekSelect.className = 'scoreboard-week-select';
     weekSelect.setAttribute('aria-label', 'Choose football week');
 
