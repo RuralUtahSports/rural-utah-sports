@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-29T01:21:21.988Z",
+  "updatedAt": "2026-08-29T01:21:51.081Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -48912,7 +48912,7 @@
       },
       "fetchedAt": "2026-08-28T21:58:51.483Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.915Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.011Z"
     },
     "2026-08-28|BRIGHTON|RIDGELINE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/brighton-football-vs-ridgeline-football/273623",
@@ -49188,7 +49188,7 @@
       },
       "fetchedAt": "2026-08-28T21:58:54.884Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.915Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.011Z"
     },
     "2026-08-28|DELTA|NORTHSANPETE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/delta-football-vs-north-sanpete-football/273330",
@@ -49311,7 +49311,7 @@
       },
       "fetchedAt": "2026-08-28T21:58:56.919Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.011Z"
     },
     "2026-08-28|DIXIE|NORTHRIDGE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/dixie-football-vs-northridge-football/273531",
@@ -49332,7 +49332,7 @@
       },
       "fetchedAt": "2026-08-28T21:58:57.553Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.011Z"
     },
     "2026-08-28|ENTERPRISE|MILFORD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/enterprise-football-vs-milford-football/273373",
@@ -49404,7 +49404,7 @@
       },
       "fetchedAt": "2026-08-28T21:58:58.762Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.011Z"
     },
     "2026-08-28|GRAND|GUNNISONVALLEY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/grand-football-vs-gunnison-valley-football/273679",
@@ -49425,7 +49425,7 @@
       },
       "fetchedAt": "2026-08-28T21:58:59.339Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.011Z"
     },
     "2026-08-28|GRANTSVILLE|MANTI": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/grantsville-football-vs-manti-football/273753",
@@ -49599,7 +49599,7 @@
       },
       "fetchedAt": "2026-08-28T21:59:01.672Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.011Z"
     },
     "2026-08-28|JUDGEMEMORIAL|NORTHSEVIER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/judge-memorial-football-vs-north-sevier-football/273910",
@@ -49705,12 +49705,42 @@
     },
     "2026-08-28|LONEPEAK|SKYLINE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/lone-peak-football-vs-skyline-football/273471",
-      "status": "Live",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "3:55",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "LONE PEAK",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "SKYLINE",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 3
+          }
+        ],
+        "source": "deseret-day-scoreboard-unlinked"
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -49721,8 +49751,9 @@
         "emptyCoreBlocks": 0
       },
       "fetchedAt": "2026-08-28T21:59:03.618Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "statusSource": "deseret-day-scoreboard-unlinked",
+      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z",
+      "scoreSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-08-28|MILLARD|PAROWAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/millard-football-vs-parowan-football/273663",
@@ -49777,11 +49808,11 @@
     },
     "2026-08-28|MONTICELLO|WATERCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/monticello-football-vs-water-canyon-football-football/274416",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
-      "kickoffTime": "7:00 PM",
+      "kickoffTime": "8:15 PM",
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
@@ -49793,8 +49824,7 @@
         "emptyCoreBlocks": 0
       },
       "fetchedAt": "2026-08-28T21:59:04.717Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-08-28|MORGAN|PARKCITY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/morgan-football-vs-park-city-football/273289",
@@ -49968,7 +49998,7 @@
       },
       "fetchedAt": "2026-08-28T21:59:06.962Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.011Z"
     },
     "2026-08-28|NORTHSUMMIT|RICH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/north-summit-football-vs-rich-football/273361",
@@ -49989,7 +50019,7 @@
       },
       "fetchedAt": "2026-08-28T21:59:07.753Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|OGDEN|WESTFIELD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/ogden-football-vs-west-field-football-football/273460",
@@ -50031,7 +50061,7 @@
       },
       "fetchedAt": "2026-08-28T21:59:08.871Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|PANGUITCH|MONUMENTVAL": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/panguitch-football-vs-monument-valley-football/273638",
@@ -50174,7 +50204,7 @@
       },
       "fetchedAt": "2026-08-28T21:59:11.307Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|SKYVIEW|SPANISHFORK": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/sky-view-football-vs-spanish-fork-football/273615",
@@ -50195,7 +50225,7 @@
       },
       "fetchedAt": "2026-08-28T21:59:11.838Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|SNOWCANYON|CEDARCITY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/snow-canyon-football-vs-cedar-city-football/273436",
@@ -50216,7 +50246,7 @@
       },
       "fetchedAt": "2026-08-28T21:59:12.533Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|SOUTHSUMMIT|JUAB": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/south-summit-football-vs-juab-football/273410",
@@ -50339,7 +50369,7 @@
       },
       "fetchedAt": "2026-08-28T21:59:14.400Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|UINTAH|TAYLORSVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/uintah-football-vs-taylorsville-football/273309",
@@ -50411,13 +50441,13 @@
       },
       "fetchedAt": "2026-08-28T21:59:15.482Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|VIEWMONT|HIGHLAND": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/viewmont-football-vs-highland-football/273597",
       "status": "Q1",
       "final": false,
-      "clock": "8:04",
+      "clock": "4:01",
       "period": "Q1",
       "kickoffTime": "7:00 PM",
       "boxScore": {
@@ -50983,7 +51013,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|ALTAMONT|RANGELYCO": {
       "date": "8/28/2026",
@@ -51000,7 +51030,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|ARCHBISHOPRIORDANCA|WEST": {
       "date": "8/28/2026",
@@ -51017,7 +51047,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|BOXELDER|HIGHLANDID": {
       "date": "8/28/2026",
@@ -51113,7 +51143,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|IGNACIOCO|DUCHESNE": {
       "date": "8/28/2026",
@@ -51122,7 +51152,7 @@
       "deseretUrl": "",
       "status": "Q1",
       "final": false,
-      "clock": "8:18",
+      "clock": "5:56",
       "period": "Q1",
       "kickoffTime": "7:00 PM",
       "boxScore": {
@@ -51151,7 +51181,7 @@
               null,
               null
             ],
-            "total": 15
+            "total": 22
           }
         ],
         "source": "deseret-day-scoreboard-unlinked"
@@ -51177,7 +51207,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-28|RIGBYID|FARMINGTON": {
       "date": "8/28/2026",
@@ -51241,7 +51271,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-29T01:21:21.916Z"
+      "kickoffFallbackAt": "2026-08-29T01:21:51.012Z"
     },
     "2026-08-29|HUNNJ|SKYRIDGE": {
       "date": "8/29/2026",
