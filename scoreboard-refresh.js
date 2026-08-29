@@ -74,6 +74,21 @@
         return { done: true, away: Number(verified.away), home: Number(verified.home), status: 'Final', live: false, sheetDone: false, hasDes: false };
       }
 
+      // The weekly feed only receives actualAway/actualHome after a result is
+      // complete. A stale game-detail badge must never turn that verified
+      // final back into a live game.
+      if (hasReportedActual(game)) {
+        return {
+          done: true,
+          away: Number(game.actualAway),
+          home: Number(game.actualHome),
+          status: 'Final',
+          live: false,
+          sheetDone: true,
+          hasDes: false
+        };
+      }
+
       let detail = null;
       try {
         if (typeof detailMap !== 'undefined' && detailMap?.get) detail = detailMap.get(keyFor(game)) || null;

@@ -62,6 +62,47 @@ for(const [key,g] of Object.entries({...data.games||{}})){
   console.log(`Moved rescheduled game detail: ${key} -> ${expected.key}`);
 }
 
+// weekly-simulation.json stores actual scores only after a result has been
+// reported as complete. Use those values as a final-status backstop when a
+// Deseret page or day-board badge remains stuck on Live/Halftime.
+for(const g of weekly.games||[]){
+  const key=expectedKey(g);
+  const day=isoDate(g?.date);
+  const d=data.games?.[key];
+  const hasAway=g?.actualAway!==null&&g?.actualAway!==undefined&&clean(g.actualAway)!=='';
+  const hasHome=g?.actualHome!==null&&g?.actualHome!==undefined&&clean(g.actualHome)!=='';
+  const hasFinalMarker=!!clean(g?.actualWinner)||!!clean(g?.wl);
+  const away=Number(g?.actualAway),home=Number(g?.actualHome);
+  if(!d||!day||day>utahDate||!hasAway||!hasHome||!hasFinalMarker||!Number.isFinite(away)||!Number.isFinite(home))continue;
+
+  // Never replace an already-authoritative final merely because a simulator
+  // sheet value disagrees. This fallback is only for records still stuck in a
+  // live/upcoming state.
+  if(d.final===true&&d.status==='Final')continue;
+
+  if(!d.boxScore||!Array.isArray(d.boxScore.rows)||d.boxScore.rows.length<2){
+    const [,awayKey,homeKey]=key.split('|');
+    d.boxScore={periods:['Q1','Q2','Q3','Q4'],rows:[
+      {team:awayKey,quarters:[null,null,null,null],total:away},
+      {team:homeKey,quarters:[null,null,null,null],total:home}
+    ],source:'weekly-simulation-final'};
+  }else{
+    d.boxScore.rows[0].total=away;
+    d.boxScore.rows[1].total=home;
+  }
+
+  d.final=true;
+  d.status='Final';
+  d.clock='';
+  d.period='';
+  d.finalSource='weekly-simulation-final';
+  d.statusSource='weekly-simulation-final';
+  d.scoreSource='weekly-simulation-final';
+  delete d.kickoffFallbackAt;
+  fixed++;
+  console.log(`Reconciled reported weekly Final: ${key} -> ${away}-${home}`);
+}
+
 // A game dated after today in Utah cannot legitimately be in Q1-Q4, halftime,
 // OT, live or final. Clear any leaked game-page/day-board evidence until its
 // scheduled local date arrives. This also prevents stale scores from a prior

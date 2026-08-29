@@ -99,7 +99,9 @@ for (const correction of corrections) {
     detail.manualScoreNote = correction.note || '';
   }
 
-  if (correction.status && !correction.finalScore) {
+  // A temporary in-game override must expire once an authoritative final has
+  // been established by a later refresh.
+  if (correction.status && !correction.finalScore && detail.final !== true) {
     const nextStatus = clean(correction.status);
     const nextClock = clean(correction.clock);
     const nextPeriod = clean(correction.period) || nextStatus;
@@ -110,6 +112,8 @@ for (const correction of corrections) {
     detail.period = nextPeriod;
     detail.statusSource = 'verified-manual';
     detail.manualScoreNote = correction.note || '';
+  } else if (correction.status && !correction.finalScore && detail.final === true) {
+    console.log(`Skipped expired live correction for finalized game: ${key}`);
   }
 
   if (correction.finalScore) {
