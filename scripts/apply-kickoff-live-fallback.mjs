@@ -89,6 +89,16 @@ function kickoffMinutes(seg){
   return hour*60+minute;
 }
 
+function listedKickoffMinutes(value){
+  const m=clean(value).match(/^(\d{1,2}):(\d{2})\s*([AP]M)$/i);
+  if(!m)return null;
+  let hour=Number(m[1]);
+  const minute=Number(m[2]);
+  if(hour===12)hour=0;
+  if(m[3].toUpperCase()==='PM')hour+=12;
+  return hour>=0&&hour<=23&&minute>=0&&minute<=59?hour*60+minute:null;
+}
+
 function hasRealGameEvidence(d){
   if(clean(d?.clock)||clean(d?.period))return true;
   if(Array.isArray(d?.scoringPlays)&&d.scoringPlays.length)return true;
@@ -116,7 +126,10 @@ if(!fs.existsSync(WEEKLY)||!fs.existsSync(DETAILS))process.exit(0);
 const weekly=JSON.parse(fs.readFileSync(WEEKLY,'utf8'));
 const details=JSON.parse(fs.readFileSync(DETAILS,'utf8'));
 const now=utahNow();
-const games=(weekly.games||[]).filter(g=>isoDate(g.date)===now.date&&clean(g.deseretUrl));
+// Most current-week games are linked to Deseret by the day-scoreboard
+// reconciler rather than by a direct game URL. Do not exclude those games:
+// their reconciled detail row already contains the listed kickoff time.
+const games=(weekly.games||[]).filter(g=>isoDate(g.date)===now.date);
 
 if(!games.length){
   console.log('Kickoff fallback: no games today.');
@@ -143,9 +156,12 @@ for(const g of games){
   let kickoff=overrideKickoff;
 
   if(kickoff===undefined){
-    const seg=segmentForGame(text,g);
-    if(!seg)continue;
-    kickoff=kickoffMinutes(seg);
+    kickoff=listedKickoffMinutes(d.kickoffTime);
+    if(kickoff===null){
+      const seg=segmentForGame(text,g);
+      if(!seg)continue;
+      kickoff=kickoffMinutes(seg);
+    }
     if(kickoff===null)continue;
   }
 
