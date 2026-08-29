@@ -18,6 +18,7 @@
   const safeHex=(v,fallback='#222222')=>/^#[0-9a-f]{6}$/i.test(String(v||'').trim())?String(v).trim():fallback;
   const asNumber=v=>v===null||v===undefined||v===''?null:(Number.isFinite(Number(v))?Number(v):null);
   const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+  const withTimeout=(promise,ms,message)=>Promise.race([promise,new Promise((_,reject)=>setTimeout(()=>reject(new Error(message)),ms))]);
 
   function dateParts(value){
     const text=String(value||'').trim();
@@ -199,11 +200,12 @@
     if(canvasPromise)return canvasPromise;
     canvasPromise=new Promise((resolve,reject)=>{
       const script=document.createElement('script');
-      script.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
-      script.onload=resolve;
+      script.src='html2canvas.min.js?v=1.4.1';
+      script.onload=()=>window.html2canvas?resolve():reject(new Error('The graphic renderer did not initialize.'));
       script.onerror=()=>reject(new Error('The graphic renderer could not be loaded.'));
       document.head.appendChild(script);
-    }).catch(error=>{canvasPromise=null;throw error});
+    });
+    canvasPromise=withTimeout(canvasPromise,12000,'The graphic renderer took too long to load.').catch(error=>{canvasPromise=null;throw error});
     return canvasPromise;
   }
 
@@ -222,7 +224,7 @@
     const {board,width,height}=buildBoard(format,data);
     try{
       await waitForImages(board);
-      const canvas=await window.html2canvas(board,{backgroundColor:'#101010',scale:1,useCORS:true,allowTaint:false,logging:false,width,height,windowWidth:width,windowHeight:height});
+      const canvas=await withTimeout(window.html2canvas(board,{backgroundColor:'#101010',scale:1,useCORS:true,allowTaint:false,logging:false,imageTimeout:8000,width,height,windowWidth:width,windowHeight:height}),20000,'The game graphic took too long to render.');
       const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
       if(!blob)throw new Error('The PNG could not be created.');
       const filename=`rural-utah-sports-${safeFilename(data.away)}-at-${safeFilename(data.home)}-${isoDate(data.date)||'game'}.png`;
