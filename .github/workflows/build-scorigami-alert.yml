@@ -65,6 +65,24 @@ jobs:
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           git add scorigami-latest.json
           if git diff --cached --quiet; then echo "Scorigami alert feed current."; exit 0; fi
-          git commit -m "Update current Scorigami alerts"
-          git pull --rebase origin main
-          git push
+          cp scorigami-latest.json /tmp/scorigami-latest.json
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/scorigami-latest.json scorigami-latest.json
+            git add scorigami-latest.json
+            if git diff --cached --quiet; then
+              echo "Scorigami alert feed current."
+              exit 0
+            fi
+            git commit -m "Update current Scorigami alerts"
+            if git push origin HEAD:main; then
+              echo "Scorigami alert feed published on attempt ${attempt}."
+              exit 0
+            fi
+            echo "Push raced with another update; retrying (${attempt}/5)."
+            git reset --hard origin/main
+            sleep 5
+          done
+          echo "Unable to publish Scorigami alert feed after 5 attempts." >&2
+          exit 1
