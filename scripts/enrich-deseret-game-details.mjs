@@ -6,6 +6,10 @@ const OUTPUT = 'deseret-game-details.json';
 const clean = v => String(v ?? '').trim();
 const compact = v => clean(v).toUpperCase().replace(/[^A-Z0-9]/g, '');
 
+const DIRECT_URL_OVERRIDES = new Map([
+  ['2026-08-28|IGNACIOCO|DUCHESNE', 'https://sports.deseret.com/high-school/football/game/2026-08-28/ignacio-colo-football-vs-duchesne-football/275602']
+]);
+
 const KEY_ALIASES = {
   ALA: ['AMERICANLEADERSHIP'],
   AMERICANLEADERSHIPACADEMY: ['AMERICANLEADERSHIP'],
@@ -399,8 +403,10 @@ const details = { ...(previous.games || {}) };
 
 let fetched = 0, reusedFinal = 0, deferredStats = 0, skippedFuture = 0, failures = 0;
 for (const game of games) {
-  if (!clean(game.deseretUrl)) continue;
   const key = gameKey(game);
+  const directUrl = clean(game.deseretUrl) || DIRECT_URL_OVERRIDES.get(key) || '';
+  if (!directUrl) continue;
+  const linkedGame = directUrl === game.deseretUrl ? game : { ...game, deseretUrl: directUrl };
   const prior = details[key] || null;
   const priorStats = prior?.statsAvailability || statsAvailability(prior?.stats || []);
   const delta = daysFromNow(isoDate(game.date));
@@ -427,8 +433,8 @@ for (const game of games) {
   }
 
   try {
-    const html = await fetchHtml(game.deseretUrl);
-    const parsed = parseGameDetails(html, game);
+    const html = await fetchHtml(directUrl);
+    const parsed = parseGameDetails(html, linkedGame);
     if (!parsed.kickoffTime && prior?.kickoffTime) parsed.kickoffTime = prior.kickoffTime;
     if (parsed.final) parsed.finalRefreshCount = prior?.final ? Number(prior.finalRefreshCount || 0) + 1 : 1;
 
