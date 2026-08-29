@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-29T14:01:57.351Z",
+  "updatedAt": "2026-08-29T14:34:57.408Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -51646,17 +51646,49 @@
       "awayTeam": "ALTAMONT",
       "homeTeam": "RANGELY, CO",
       "deseretUrl": "",
-      "status": "Scheduled",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "ALTAMONT",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 14
+          },
+          {
+            "team": "RANGELY, CO",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 60
+          }
+        ],
+        "source": "deseret-day-scoreboard-unlinked"
+      },
       "scoringPlays": [],
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked",
-      "kickoffFallbackAt": "2026-08-29T05:06:29.844Z"
+      "kickoffFallbackAt": "2026-08-29T05:06:29.844Z",
+      "finalSource": "deseret-day-scoreboard-unlinked",
+      "scoreSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-08-28|ARCHBISHOPRIORDANCA|WEST": {
       "date": "8/28/2026",
