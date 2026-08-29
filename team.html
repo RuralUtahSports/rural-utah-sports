@@ -29,15 +29,13 @@
     .then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text()})
     .then(async html=>{
       html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20260827-coaches5');
-      html=html.replace(/<script src="nav-menu\\.js\\?v=[^"]+"(?: defer)?><\\/script>/,'<script src="nav-menu.js?v=20260827-mobile-nav-restore1"><\\/script>');
-      html=html.replace('</body>','<script src="team-tabs.js?v='+VERSION+'" data-rus-team-tabs="1"><\\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\\/script><script src="team-player-records.js?v='+VERSION+'" data-rus-player-records="1"><\\/script><script src="player-records-mode-toggle.js?v=20260826-record-order2"><\\/script><script src="team-stat-records.js?v='+VERSION+'" data-rus-team-stat-records="1"><\\/script><script src="team-coaches.js?v='+VERSION+'" data-rus-team-coaches="1"><\\/script><script src="team-coaches-tab.js?v='+VERSION+'" data-rus-team-coaches-tab="1"><\\/script><script src="team-streaks-tab.js?v='+VERSION+'" data-rus-team-streaks-tab="1"><\\/script></body>');
+      html=html.replace(/<script src="nav-menu\.js\?v=[^"]+"(?: defer)?><\/script>/,'<script src="nav-menu.js?v=20260827-mobile-nav-restore1"><\/script>');
+      html=html.replace('</body>','<script src="team-tabs.js?v='+VERSION+'" data-rus-team-tabs="1"><\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\/script><script src="team-player-records.js?v='+VERSION+'" data-rus-player-records="1"><\/script><script src="player-records-mode-toggle.js?v=20260826-record-order2"><\/script><script src="team-stat-records.js?v='+VERSION+'" data-rus-team-stat-records="1"><\/script><script src="team-coaches.js?v='+VERSION+'" data-rus-team-coaches="1"><\/script><script src="team-coaches-tab.js?v='+VERSION+'" data-rus-team-coaches-tab="1"><\/script><script src="team-streaks-tab.js?v='+VERSION+'" data-rus-team-streaks-tab="1"><\/script></body>');
 
       const parsed=new DOMParser().parseFromString(html,'text/html');
-      const headHTML=parsed.head.innerHTML;
-      const bodyHTML=parsed.body.innerHTML;
       document.documentElement.lang=parsed.documentElement.lang||'en';
-      document.head.innerHTML=headHTML;
-      document.body.innerHTML=bodyHTML;
+      document.head.innerHTML=parsed.head.innerHTML;
+      document.body.innerHTML=parsed.body.innerHTML;
 
       // innerHTML deliberately leaves scripts inert. Re-create them in document order so
       // the page initializes without document.open/document.write, which is unstable in
