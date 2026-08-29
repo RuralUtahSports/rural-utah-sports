@@ -1,12 +1,54 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Team | Rural Utah Sports</title></head><body><script>
-fetch('team-page-content.html?v=20260829-mobile-schedule1',{cache:'no-store'})
-  .then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text()})
-  .then(html=>{
-    html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20260827-coaches5');
-    html=html.replace(/<script src="nav-menu\.js\?v=[^"]+"(?: defer)?><\/script>/,'<script src="nav-menu.js?v=20260827-mobile-nav-restore1"><\/script>');
-    html=html.replace('</body>','<script src="team-tabs.js?v=20260829-mobile-schedule1" data-rus-team-tabs="1"><\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\/script><script src="team-player-records.js?v=20260829-mobile-schedule1" data-rus-player-records="1"><\/script><script src="player-records-mode-toggle.js?v=20260826-record-order2"><\/script><script src="team-stat-records.js?v=20260829-mobile-schedule1" data-rus-team-stat-records="1"><\/script><script src="team-coaches.js?v=20260829-mobile-schedule1" data-rus-team-coaches="1"><\/script><script src="team-coaches-tab.js?v=20260829-mobile-schedule1" data-rus-team-coaches-tab="1"><\/script><script src="team-streaks-tab.js?v=20260829-mobile-schedule1" data-rus-team-streaks-tab="1"><\/script></body>');
-    document.open();document.write(html);document.close();
-  })
-  .catch(e=>{console.error('Team page loader:',e);document.body.innerHTML='<main style="font-family:Arial,sans-serif;padding:40px;color:#fff;background:#111;min-height:100vh"><h1>Unable to load team page</h1><p>Please refresh this page.</p></main>'});
-</script></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Team | Rural Utah Sports</title>
+<style>html,body{margin:0;min-height:100%;background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif}.rus-team-loader{min-height:100vh;display:grid;place-items:center;padding:32px;text-align:center;color:#aaa}</style>
+</head>
+<body>
+<div class="rus-team-loader">Loading team…</div>
+<script>
+(()=>{
+  'use strict';
+  const VERSION='20260829-mobile-stability2';
+  const copyScript=old=>new Promise(resolve=>{
+    const s=document.createElement('script');
+    for(const a of old.attributes)s.setAttribute(a.name,a.value);
+    if(old.src){
+      s.onload=resolve;
+      s.onerror=()=>{console.warn('Team page script failed:',old.src);resolve()};
+      old.replaceWith(s);
+    }else{
+      s.textContent=old.textContent||'';
+      old.replaceWith(s);
+      resolve();
+    }
+  });
+  fetch(`team-page-content.html?v=${VERSION}`)
+    .then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text()})
+    .then(async html=>{
+      html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20260827-coaches5');
+      html=html.replace(/<script src="nav-menu\\.js\\?v=[^"]+"(?: defer)?><\\/script>/,'<script src="nav-menu.js?v=20260827-mobile-nav-restore1"><\\/script>');
+      html=html.replace('</body>','<script src="team-tabs.js?v='+VERSION+'" data-rus-team-tabs="1"><\\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\\/script><script src="team-player-records.js?v='+VERSION+'" data-rus-player-records="1"><\\/script><script src="player-records-mode-toggle.js?v=20260826-record-order2"><\\/script><script src="team-stat-records.js?v='+VERSION+'" data-rus-team-stat-records="1"><\\/script><script src="team-coaches.js?v='+VERSION+'" data-rus-team-coaches="1"><\\/script><script src="team-coaches-tab.js?v='+VERSION+'" data-rus-team-coaches-tab="1"><\\/script><script src="team-streaks-tab.js?v='+VERSION+'" data-rus-team-streaks-tab="1"><\\/script></body>');
+
+      const parsed=new DOMParser().parseFromString(html,'text/html');
+      const headHTML=parsed.head.innerHTML;
+      const bodyHTML=parsed.body.innerHTML;
+      document.documentElement.lang=parsed.documentElement.lang||'en';
+      document.head.innerHTML=headHTML;
+      document.body.innerHTML=bodyHTML;
+
+      // innerHTML deliberately leaves scripts inert. Re-create them in document order so
+      // the page initializes without document.open/document.write, which is unstable in
+      // iOS embedded browsers on this large team page.
+      for(const old of [...document.querySelectorAll('script')])await copyScript(old);
+    })
+    .catch(e=>{
+      console.error('Team page loader:',e);
+      document.body.innerHTML='<main style="font-family:Arial,sans-serif;padding:40px;color:#fff;background:#111;min-height:100vh"><h1>Unable to load team page</h1><p>Please refresh this page.</p><p><a href="teams.html" style="color:#F14D07">Back to Teams</a></p></main>';
+    });
+})();
+</script>
+</body>
+</html>
