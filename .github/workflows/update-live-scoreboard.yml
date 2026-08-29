@@ -51,7 +51,7 @@ jobs:
   refresh-live-details:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 330
     steps:
       - name: Checkout latest main
         uses: actions/checkout@v4
@@ -152,3 +152,28 @@ jobs:
       - name: Audit all 2026 Utah team records
         continue-on-error: true
         run: node scripts/audit_standings_records_2026.mjs
+
+      # GitHub scheduled events are not firing reliably during tonight's games.
+      # A workflow-file push starts one bounded game-night watcher that keeps
+      # publishing the compact feed every two minutes for the next four hours.
+      - name: Keep game-night scoreboard current
+        if: github.event_name == 'push' && contains(github.event.head_commit.modified, '.github/workflows/update-live-scoreboard.yml')
+        run: |
+          for iteration in $(seq 1 120); do
+            sleep 120
+            git pull --rebase origin main
+            node scripts/enrich-deseret-game-details.mjs
+            node scripts/reconcile-deseret-day-status.mjs
+            node scripts/reconcile-deseret-unlinked-games.mjs
+            node scripts/fill-boxscore-from-scoring-plays.mjs
+            node scripts/repair-live-status-anomalies.mjs
+            node scripts/apply-kickoff-live-fallback.mjs
+            node scripts/apply-manual-scoreboard-corrections.mjs
+            node scripts/build_live_scoreboard_details.mjs
+            git add deseret-game-details.json deseret-live-details-2026.json
+            if ! git diff --cached --quiet; then
+              git commit -m "Auto-refresh live scoreboard"
+              git pull --rebase origin main
+              git push
+            fi
+          done
