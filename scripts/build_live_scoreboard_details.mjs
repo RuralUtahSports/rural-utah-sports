@@ -56,5 +56,5 @@ for (const [key, detail] of Object.entries(details.games || {})) {
   };
 }
 
-fs.writeFileSync(OUTPUT, JSON.stringify({ games }, null, 2) + '\n');
+fs.writeFileSync(OUTPUT, JSON.stringify({ updatedAt: new Date().toISOString(), games }, null, 2) + '\n');
 console.log(`Built ${OUTPUT}: ${Object.keys(games).length} active-window game details.`);
