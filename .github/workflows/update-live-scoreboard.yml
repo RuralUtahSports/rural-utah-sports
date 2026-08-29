@@ -157,7 +157,7 @@ jobs:
       # A workflow-file push starts one bounded game-night watcher that keeps
       # publishing the compact feed every two minutes for the next four hours.
       - name: Keep game-night scoreboard current
-        if: github.event_name == 'push' && contains(github.event.head_commit.modified, '.github/workflows/update-live-scoreboard.yml')
+        if: github.event_name == 'push'
         run: |
           for iteration in $(seq 1 120); do
             sleep 120
