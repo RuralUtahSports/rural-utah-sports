@@ -305,8 +305,13 @@
 
   // Keep every loaded season game available, but render one football week at a time.
   render = function () {
-    if (!seasonGames && Array.isArray(games) && games.length) {
-      seasonGames = games.slice();
+    if (!seasonGames) {
+      const fullSeasonSource = (typeof allGames !== 'undefined' && Array.isArray(allGames) && allGames.length)
+        ? allGames
+        : (Array.isArray(games) ? games : []);
+      if (fullSeasonSource.length) seasonGames = fullSeasonSource.slice();
+    }
+    if (seasonGames && !weekBuckets.length) {
       applyPredictions(seasonGames);
       buildWeekBuckets();
       selectedWeekNumber = chooseInitialWeek();
