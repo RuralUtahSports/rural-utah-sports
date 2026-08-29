@@ -125,8 +125,11 @@ jobs:
           const res=await fetch(csvUrl(process.env.WEEKLY_GID,'A1:K1000'),{cache:'no-store'});if(!res.ok)throw new Error(`Weekly Simulation download failed: ${res.status}`);const rows=parseCSV(await res.text()),weekly=[];
           for(const r of rows.slice(1)){if(!clean(r[1])||!clean(r[2]))continue;weekly.push({date:clean(r[0]),awayTeam:clean(r[1]),homeTeam:clean(r[2]),awayScore:n(r[3]),homeScore:n(r[4]),winner:clean(r[5]),actualAway:n(r[7]),actualHome:n(r[8]),actualWinner:clean(r[9]),wl:clean(r[10])})}
           const normalized=normalizeWeeklyGames(weekly);
-          // Verified schedule change: Weber at Roy moved from Aug. 28 to Aug. 27.
-          for(const g of weekly){if(clean(g.awayTeam).toUpperCase()==='WEBER'&&clean(g.homeTeam).toUpperCase()==='ROY'&&clean(g.date)==='8/28/2026')g.date='8/27/2026'}
+          // Verified schedule changes that must survive every sheet rebuild.
+          for(const g of weekly){
+            if(clean(g.awayTeam).toUpperCase()==='WEBER'&&clean(g.homeTeam).toUpperCase()==='ROY'&&clean(g.date)==='8/28/2026')g.date='8/27/2026';
+            if(clean(g.awayTeam).toUpperCase()==='UMA-LEHI'&&clean(g.homeTeam).toUpperCase()==='SAINT JOSEPH'&&clean(g.date)==='8/28/2026')g.date='8/31/2026';
+          }
           fs.writeFileSync('weekly-simulation.json',JSON.stringify({games:weekly}));console.log(`Weekly simulation games: ${weekly.length}; normalized team fields: ${normalized}`);
           NODE
 
