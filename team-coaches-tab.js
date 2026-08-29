@@ -33,7 +33,7 @@ function install(){
   const tabBar=shell?.querySelector('.rus-team-tabs');
   const panelsWrap=shell?.querySelector('.rus-team-panels');
   const coachSection=document.querySelector('.rus-coach-history');
-  if(!shell||!tabBar||!panelsWrap||!coachSection)return false;
+  if(!shell||!tabBar||!panelsWrap)return false;
 
   let button=shell.querySelector('#rus-tab-coaches');
   let panel=shell.querySelector('#rus-panel-coaches');
@@ -63,7 +63,7 @@ function install(){
     if(before)panelsWrap.insertBefore(panel,before); else panelsWrap.appendChild(panel);
   }
 
-  if(coachSection.parentElement!==panel)panel.appendChild(coachSection);
+  if(coachSection&&coachSection.parentElement!==panel)panel.appendChild(coachSection);
   if(!button.dataset.rusCoachBound){
     button.dataset.rusCoachBound='1';
     button.addEventListener('click',e=>{

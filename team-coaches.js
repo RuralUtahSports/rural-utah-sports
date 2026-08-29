@@ -137,8 +137,13 @@
       pruneCoachSections(page);
     }
   }
-  const obs = new MutationObserver(()=>mount());
-  if (document.getElementById('page')) obs.observe(document.getElementById('page'),{childList:true,subtree:true});
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',mount,{once:true}); else mount();
-  setTimeout(mount,600); setTimeout(mount,1800);
+  let started=false;
+  function startForCoaches(event){
+    const requested=event?.detail?.key||new URLSearchParams(location.search).get('tab');
+    if(requested!=='coaches'||started)return;
+    started=true;
+    mount();
+  }
+  document.addEventListener('rus-team-tab-shown',startForCoaches);
+  startForCoaches();
 })();

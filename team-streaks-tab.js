@@ -166,9 +166,6 @@ function install(){
     if(before)panelsWrap.insertBefore(panel,before);else panelsWrap.appendChild(panel);
   }
 
-  // Preload the content as soon as the tab exists so the panel can never open blank.
-  render(panel);
-
   if(!button.dataset.rusStreakBound){
     button.dataset.rusStreakBound='1';
     button.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();showStreaks(shell,true)},true);

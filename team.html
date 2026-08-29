@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Team | Rural Utah Sports</title></head><body><script>
-fetch('team-page-content.html?v=20260828-player-records4',{cache:'no-store'})
+fetch('team-page-content.html?v=20260829-mobile-schedule1',{cache:'no-store'})
   .then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text()})
   .then(html=>{
     html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20260827-coaches5');
     html=html.replace(/<script src="nav-menu\.js\?v=[^"]+"(?: defer)?><\/script>/,'<script src="nav-menu.js?v=20260827-mobile-nav-restore1"><\/script>');
-    html=html.replace('</body>','<script src="team-tabs.js?v=20260826-record-order2" data-rus-team-tabs="1"><\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\/script><script src="team-player-records.js?v=20260828-uhsaa-records4" data-rus-player-records="1"><\/script><script src="player-records-mode-toggle.js?v=20260826-record-order2"><\/script><script src="team-stat-records.js?v=20260828-uhsaa-records3" data-rus-team-stat-records="1"><\/script><script src="team-coaches.js?v=20260828-coach-careers1" data-rus-team-coaches="1"><\/script><script src="team-coaches-tab.js?v=20260827-coaches5" data-rus-team-coaches-tab="1"><\/script><script src="team-streaks-tab.js?v=20260827-team-streaks2" data-rus-team-streaks-tab="1"><\/script></body>');
+    html=html.replace('</body>','<script src="team-tabs.js?v=20260829-mobile-schedule1" data-rus-team-tabs="1"><\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\/script><script src="team-player-records.js?v=20260829-mobile-schedule1" data-rus-player-records="1"><\/script><script src="player-records-mode-toggle.js?v=20260826-record-order2"><\/script><script src="team-stat-records.js?v=20260829-mobile-schedule1" data-rus-team-stat-records="1"><\/script><script src="team-coaches.js?v=20260829-mobile-schedule1" data-rus-team-coaches="1"><\/script><script src="team-coaches-tab.js?v=20260829-mobile-schedule1" data-rus-team-coaches-tab="1"><\/script><script src="team-streaks-tab.js?v=20260829-mobile-schedule1" data-rus-team-streaks-tab="1"><\/script></body>');
     document.open();document.write(html);document.close();
   })
   .catch(e=>{console.error('Team page loader:',e);document.body.innerHTML='<main style="font-family:Arial,sans-serif;padding:40px;color:#fff;background:#111;min-height:100vh"><h1>Unable to load team page</h1><p>Please refresh this page.</p></main>'});
