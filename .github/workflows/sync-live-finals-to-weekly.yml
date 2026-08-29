@@ -1,0 +1,87 @@
+name: Sync Live Finals to Weekly Feed
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'deseret-live-details-2026.json'
+      - '.github/workflows/sync-live-finals-to-weekly.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-live-finals-to-weekly
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Copy verified finals into weekly simulation
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const clean = v => String(v ?? '').trim();
+          const compact = v => clean(v).toUpperCase().replace(/[^A-Z0-9]/g, '');
+          const isoDate = value => {
+            const s = clean(value);
+            let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+            if (m) return `${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;
+            m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+            if (m) return `${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
+            return '';
+          };
+          const keyFor = g => `${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
+
+          const weekly = JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));
+          const live = JSON.parse(fs.readFileSync('deseret-live-details-2026.json','utf8'));
+          let changed = 0;
+
+          for (const g of weekly.games || []) {
+            const detail = live.games?.[keyFor(g)];
+            if (!detail || detail.final !== true) continue;
+            const rows = detail.boxScore?.rows;
+            if (!Array.isArray(rows) || rows.length < 2) continue;
+            const away = Number(rows[0]?.total);
+            const home = Number(rows[1]?.total);
+            if (!Number.isFinite(away) || !Number.isFinite(home) || away < 0 || home < 0) continue;
+
+            const winner = away === home ? 'TIE' : away > home ? g.awayTeam : g.homeTeam;
+            const wl = away === home ? 'T' : winner === g.awayTeam ? 'W' : 'L';
+            if (g.actualAway === away && g.actualHome === home && g.actualWinner === winner && g.wl === wl) continue;
+            g.actualAway = away;
+            g.actualHome = home;
+            g.actualWinner = winner;
+            g.wl = wl;
+            changed++;
+          }
+
+          if (changed) fs.writeFileSync('weekly-simulation.json', JSON.stringify(weekly));
+          console.log(`Live finals synced into weekly feed: ${changed}`);
+          NODE
+
+      - name: Commit synced finals
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add weekly-simulation.json
+          if git diff --cached --quiet; then
+            echo "Weekly final scores are already current."
+            exit 0
+          fi
+          git commit -m "Sync live finals into weekly simulation"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then
+              ok=1
+              break
+            fi
+            sleep 5
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
