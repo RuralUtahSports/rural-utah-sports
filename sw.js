@@ -25,7 +25,7 @@ const CORE=[
   './school-logo-integration.js',
   './school-colors.js'
 ];
-const LIVE_DATA=/(weekly-simulation|deseret|live-|record-alerts|standings-2026|rankings-current|rankings-history-2026|elo-summary|playoff-picture|game-preview-overrides|scoreboard.*\.json|2026\.json)/i;
+const LIVE_DATA=/(weekly-simulation|deseret|live-|record-alerts|standings-2026|rankings-current|rankings-history-2026|state-top25-history-2026|elo-summary|playoff-picture|game-preview-overrides|scoreboard.*\.json|2026\.json)/i;
 const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
