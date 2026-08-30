@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-30T03:11:12.522Z",
+  "updatedAt": "2026-08-30T03:37:02.059Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -51240,8 +51240,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-08-30T01:27:01.519Z",
-      "finalRefreshCount": 3,
+      "fetchedAt": "2026-08-30T03:36:55.101Z",
+      "finalRefreshCount": 4,
       "finalSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
@@ -58642,8 +58642,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 6
       },
-      "fetchedAt": "2026-08-30T01:27:02.516Z",
-      "finalRefreshCount": 3,
+      "fetchedAt": "2026-08-30T03:36:55.969Z",
+      "finalRefreshCount": 4,
       "scoreSource": "weekly-simulation-final",
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "weekly-simulation-final",
@@ -60708,8 +60708,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-08-30T01:27:03.212Z",
-      "finalRefreshCount": 10,
+      "fetchedAt": "2026-08-30T03:36:56.540Z",
+      "finalRefreshCount": 11,
       "finalSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
@@ -60864,17 +60864,49 @@
       "awayTeam": "HUN, NJ",
       "homeTeam": "SKYRIDGE",
       "deseretUrl": "",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "11:00 AM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "HUN, NJ",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 24
+          },
+          {
+            "team": "SKYRIDGE",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 31
+          }
+        ],
+        "source": "deseret-day-scoreboard-unlinked"
+      },
       "scoringPlays": [],
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-30T03:11:12.522Z"
+      "statusSource": "deseret-day-scoreboard-unlinked",
+      "kickoffFallbackAt": "2026-08-30T03:11:12.522Z",
+      "finalSource": "deseret-day-scoreboard-unlinked",
+      "scoreSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-08-29|MATERDEICA|OREM": {
       "date": "8/29/2026",
@@ -60891,7 +60923,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-30T03:11:12.522Z"
+      "kickoffFallbackAt": "2026-08-30T03:37:02.059Z"
     },
     "2026-08-29|PROVIDENCEHALL|LAKEMEADCHRISTIANACADEMYNV": {
       "date": "8/29/2026",
@@ -60908,7 +60940,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-30T03:11:12.522Z"
+      "kickoffFallbackAt": "2026-08-30T03:37:02.059Z"
     },
     "2026-08-29|STJAMESPERFORMANCEACADEMYVA|LEHI": {
       "date": "8/29/2026",
@@ -60925,7 +60957,7 @@
       "stats": [],
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-08-30T03:11:12.522Z"
+      "kickoffFallbackAt": "2026-08-30T03:37:02.059Z"
     }
   }
 }
