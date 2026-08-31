@@ -13,7 +13,7 @@ function standingsMap(s){const m=new Map();for(const rows of Object.values(s?.by
 function rankMap(r){const m=new Map();for(const [cls,arr] of Object.entries(r?.classifications||{}))(arr||[]).forEach((t,i)=>m.set(norm(typeof t==='string'?t:t.team),{rank:i+1,cls}));return m}
 function eloChance(a,h){if(a===null||h===null)return null;const hp=1/(1+Math.pow(10,(a-h)/400));return{away:1-hp,home:hp}}
 let dataPromise;
-async function get(name,fallback){try{const r=await fetch(name);return r.ok?await r.json():fallback}catch{return fallback}}
+async function get(name,fallback){try{const url=`${name}${name.includes('?')?'&':'?'}v=${Date.now()}`;const r=await fetch(url,{cache:'no-store'});return r.ok?await r.json():fallback}catch{return fallback}}
 function loadData(){return dataPromise||(dataPromise=Promise.all([
  get('teams-data.json',[]),get('standings-2026.json',{}),get('rankings-current-2026.json',{}),get('elo-summary.json',{}),get('weekly-simulation.json',{})
 ]).then(([teams,standings,rankings,elo,weekly])=>({teams,teamMap:new Map((teams||[]).map(t=>[norm(t.team),t])),standings:standingsMap(standings),rankings:rankMap(rankings),elo,weekly,games:weekly?.games||[]})))}
