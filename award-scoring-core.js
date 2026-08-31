@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='2026-08-31-v6';
+  const VERSION='2026-08-31-v7';
   const DEFENSE_SCALE=2.5;
   const TEAM_CONTEXT_RECORD_WEIGHT=.50;
   const TEAM_CONTEXT_SOS_WEIGHT=.30;
@@ -13,7 +13,9 @@
   const QUALITY_WIN_RECORD_WEIGHT=.85;
   const QUALITY_WIN_TOP25_WEIGHT=.15;
   const TEAM_CONTEXT_FULL_GAMES=5;
+  const WEAK_SOS_NEUTRAL_PERCENTILE=.40;
   const TEAM_CONTEXT_CAPS=Object.freeze({mvp:.10,allUtah:.07,allRural:.05,allState:.05,allRegion:.02});
+  const WEAK_SOS_PENALTY_CAPS=Object.freeze({mvp:.05,allUtah:.05,allRural:.04,allState:.04,allRegion:.02});
   const clean=v=>String(v??'').trim();
   const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
   const n=v=>{const m=String(v??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0};
@@ -164,7 +166,7 @@
   }
 
   function neutralTeamContext(team=''){
-    return {team:clean(team),wins:0,losses:0,ties:0,games:0,winPct:.5,sos:.5,sosPercentile:.5,qualityWinScore:0,qualityWinCount:0,top25Wins:0,quality:.5,reliability:0,bonusStrength:0};
+    return {team:clean(team),wins:0,losses:0,ties:0,games:0,winPct:.5,sos:.5,sosPercentile:.5,qualityWinScore:0,qualityWinCount:0,top25Wins:0,quality:.5,reliability:0,bonusStrength:0,weakSosStrength:0};
   }
 
   function buildTeamContexts(standings,rankings){
@@ -197,7 +199,8 @@
       const quality=clamp(row.winPct*TEAM_CONTEXT_RECORD_WEIGHT+sosPercentile*TEAM_CONTEXT_SOS_WEIGHT+row.qualityWinScore*TEAM_CONTEXT_QUALITY_WIN_WEIGHT);
       const reliability=clamp(row.games/TEAM_CONTEXT_FULL_GAMES);
       const bonusStrength=clamp((quality-.5)/.5)*reliability;
-      contexts.set(row.key,{team:row.team,wins:row.wins,losses:row.losses,ties:row.ties,games:row.games,winPct:row.winPct,sos:row.sos,sosPercentile,qualityWinScore:row.qualityWinScore,qualityWinCount:row.qualityWinCount,top25Wins:row.top25Wins,quality,reliability,bonusStrength});
+      const weakSosStrength=sosPercentile>=WEAK_SOS_NEUTRAL_PERCENTILE?0:clamp((WEAK_SOS_NEUTRAL_PERCENTILE-sosPercentile)/WEAK_SOS_NEUTRAL_PERCENTILE)*reliability;
+      contexts.set(row.key,{team:row.team,wins:row.wins,losses:row.losses,ties:row.ties,games:row.games,winPct:row.winPct,sos:row.sos,sosPercentile,qualityWinScore:row.qualityWinScore,qualityWinCount:row.qualityWinCount,top25Wins:row.top25Wins,quality,reliability,bonusStrength,weakSosStrength});
     }
     return contexts;
   }
@@ -217,9 +220,18 @@
     return TEAM_CONTEXT_CAPS.mvp;
   }
 
+  function weakSosPenaltyCap(award='mvp'){
+    const key=compact(award);
+    if(key==='ALLUTAH')return WEAK_SOS_PENALTY_CAPS.allUtah;
+    if(key==='ALLRURAL')return WEAK_SOS_PENALTY_CAPS.allRural;
+    if(key==='ALLSTATE')return WEAK_SOS_PENALTY_CAPS.allState;
+    if(key==='ALLREGION')return WEAK_SOS_PENALTY_CAPS.allRegion;
+    return WEAK_SOS_PENALTY_CAPS.mvp;
+  }
+
   function applyTeamContext(score,context,award='mvp'){
-    const base=Math.max(0,Number(score)||0),strength=clamp(context?.bonusStrength),cap=teamContextCap(award);
-    return base*(1+cap*strength);
+    const base=Math.max(0,Number(score)||0),bonusStrength=clamp(context?.bonusStrength),weakSosStrength=clamp(context?.weakSosStrength),bonusCap=teamContextCap(award),penaltyCap=weakSosPenaltyCap(award);
+    return Math.max(0,base*(1+bonusCap*bonusStrength-penaltyCap*weakSosStrength));
   }
 
   function teamContextBonus(score,context,award='mvp'){
@@ -227,5 +239,5 @@
     return applyTeamContext(base,context,award)-base;
   }
 
-  return {VERSION,DEFENSE_SCALE,TEAM_CONTEXT_RECORD_WEIGHT,TEAM_CONTEXT_SOS_WEIGHT,TEAM_CONTEXT_QUALITY_WIN_WEIGHT,QUALITY_WIN_RECORD_WEIGHT,QUALITY_WIN_TOP25_WEIGHT,TEAM_CONTEXT_FULL_GAMES,TEAM_CONTEXT_CAPS,compact,n,clamp,teamKey,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore,top25Rows,buildTop25Ranks,top25RankValue,qualityWinOpponentStrength,neutralTeamContext,buildTeamContexts,teamContextFor,teamContextCap,applyTeamContext,teamContextBonus};
+  return {VERSION,DEFENSE_SCALE,TEAM_CONTEXT_RECORD_WEIGHT,TEAM_CONTEXT_SOS_WEIGHT,TEAM_CONTEXT_QUALITY_WIN_WEIGHT,QUALITY_WIN_RECORD_WEIGHT,QUALITY_WIN_TOP25_WEIGHT,TEAM_CONTEXT_FULL_GAMES,WEAK_SOS_NEUTRAL_PERCENTILE,TEAM_CONTEXT_CAPS,WEAK_SOS_PENALTY_CAPS,compact,n,clamp,teamKey,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore,top25Rows,buildTop25Ranks,top25RankValue,qualityWinOpponentStrength,neutralTeamContext,buildTeamContexts,teamContextFor,teamContextCap,weakSosPenaltyCap,applyTeamContext,teamContextBonus};
 });
