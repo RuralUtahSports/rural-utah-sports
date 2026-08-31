@@ -365,12 +365,12 @@
       ].includes(path)
     ) {
       addScript(
-        "award-scoring-core.js?v=20260831-team-context1",
+        "award-scoring-core.js?v=20260831-quality-wins1",
         "rusAwardScoringCore",
         false,
       );
       addScript(
-        "player-awards-integration.js?v=20260831-team-context1",
+        "player-awards-integration.js?v=20260831-quality-wins1",
         "rusPlayerAwards",
         false,
       );
@@ -384,7 +384,7 @@
       ].includes(path)
     )
       addScript(
-        "award-school-branding.js?v=20260831-team-context1",
+        "award-school-branding.js?v=20260831-quality-wins1",
         "rusAwardSchoolBranding",
         true,
       );
