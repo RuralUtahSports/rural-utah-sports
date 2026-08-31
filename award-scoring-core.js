@@ -5,8 +5,9 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='2026-08-31-v8';
+  const VERSION='2026-08-31-v9';
   const DEFENSE_SCALE=2.5;
+  const QB_RUSHING_SCALE=.55;
   const TEAM_CONTEXT_RECORD_WEIGHT=.50;
   const TEAM_CONTEXT_SOS_WEIGHT=.30;
   const TEAM_CONTEXT_QUALITY_WIN_WEIGHT=.20;
@@ -70,7 +71,7 @@
     const ypc=carries?yards/carries:listedYpc;
     let score=yards*.05+td*6;
     if(carries>=5&&ypc>6)score+=Math.min(4,(ypc-6)*.35);
-    return Math.max(0,score);
+    return Math.max(0,score*QB_RUSHING_SCALE);
   }
 
   function receivingScore(values){
@@ -244,5 +245,5 @@
     return applyTeamContext(base,context,award)-base;
   }
 
-  return {VERSION,DEFENSE_SCALE,TEAM_CONTEXT_RECORD_WEIGHT,TEAM_CONTEXT_SOS_WEIGHT,TEAM_CONTEXT_QUALITY_WIN_WEIGHT,QUALITY_WIN_RECORD_WEIGHT,QUALITY_WIN_TOP25_WEIGHT,TEAM_CONTEXT_FULL_GAMES,WEAK_SOS_NEUTRAL_PERCENTILE,TEAM_CONTEXT_CAPS,WEAK_SOS_PENALTY_CAPS,compact,n,clamp,teamKey,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore,top25Rows,buildTop25Ranks,top25RankValue,qualityWinOpponentStrength,neutralTeamContext,buildTeamContexts,teamContextFor,teamContextCap,weakSosPenaltyCap,applyTeamContext,teamContextBonus};
+  return {VERSION,DEFENSE_SCALE,QB_RUSHING_SCALE,TEAM_CONTEXT_RECORD_WEIGHT,TEAM_CONTEXT_SOS_WEIGHT,TEAM_CONTEXT_QUALITY_WIN_WEIGHT,QUALITY_WIN_RECORD_WEIGHT,QUALITY_WIN_TOP25_WEIGHT,TEAM_CONTEXT_FULL_GAMES,WEAK_SOS_NEUTRAL_PERCENTILE,TEAM_CONTEXT_CAPS,WEAK_SOS_PENALTY_CAPS,compact,n,clamp,teamKey,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore,top25Rows,buildTop25Ranks,top25RankValue,qualityWinOpponentStrength,neutralTeamContext,buildTeamContexts,teamContextFor,teamContextCap,weakSosPenaltyCap,applyTeamContext,teamContextBonus};
 });
