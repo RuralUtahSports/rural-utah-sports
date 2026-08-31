@@ -378,7 +378,7 @@
       ].includes(path)
     )
       addScript(
-        "award-school-branding.js?v=20260831-multipos1",
+        "award-school-branding.js?v=20260831-multipos2",
         "rusAwardSchoolBranding",
         true,
       );
