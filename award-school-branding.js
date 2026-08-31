@@ -2,7 +2,7 @@
 'use strict';
 const path=(location.pathname.split('/').pop()||'').toLowerCase();
 if(!['all-utah.html','all-state-watch.html','mvp-race.html','awards-2025.html'].includes(path))return;
-if(path==='all-utah.html'&&!document.querySelector('script[data-rus-all-utah-class-layout]')){const s=document.createElement('script');s.src='all-utah-classification-layout.js?v=20260831-multipos2';s.async=false;s.dataset.rusAllUtahClassLayout='1';document.body.appendChild(s)}
+if(path==='all-utah.html'&&!document.querySelector('script[data-rus-all-utah-class-layout]')){const s=document.createElement('script');s.src='all-utah-classification-layout.js?v=20260831-team-context1';s.async=false;s.dataset.rusAllUtahClassLayout='1';document.body.appendChild(s)}
 const compact=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
 const aliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN'};
 const canon=v=>aliases[compact(v)]||compact(v);

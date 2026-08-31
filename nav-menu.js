@@ -363,12 +363,18 @@
         "all-state-watch.html",
         "all-utah.html",
       ].includes(path)
-    )
+    ) {
       addScript(
-        "player-awards-integration.js?v=20260814a",
-        "rusPlayerAwards",
-        true,
+        "award-scoring-core.js?v=20260831-team-context1",
+        "rusAwardScoringCore",
+        false,
       );
+      addScript(
+        "player-awards-integration.js?v=20260831-team-context1",
+        "rusPlayerAwards",
+        false,
+      );
+    }
     if (
       [
         "mvp-race.html",
@@ -378,7 +384,7 @@
       ].includes(path)
     )
       addScript(
-        "award-school-branding.js?v=20260831-multipos2",
+        "award-school-branding.js?v=20260831-team-context1",
         "rusAwardSchoolBranding",
         true,
       );
@@ -413,11 +419,6 @@
         true,
       );
     if (path === "all-state-watch.html") {
-      addScript(
-        "award-scoring-core.js?v=20260818-defense25",
-        "rusAwardScoringCore",
-        false,
-      );
       addScript(
         "all-state-region-order.js?v=20260817-layout",
         "rusAllStateRegionOrder",

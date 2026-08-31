@@ -5,11 +5,18 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='2026-08-18-v4';
+  const VERSION='2026-08-31-v5';
   const DEFENSE_SCALE=2.5;
+  const TEAM_CONTEXT_RECORD_WEIGHT=.65;
+  const TEAM_CONTEXT_SOS_WEIGHT=.35;
+  const TEAM_CONTEXT_FULL_GAMES=5;
+  const TEAM_CONTEXT_CAPS=Object.freeze({mvp:.10,allUtah:.07,allRural:.05,allState:.05,allRegion:.02});
   const clean=v=>String(v??'').trim();
   const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
   const n=v=>{const m=String(v??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0};
+  const clamp=(v,min=0,max=1)=>Math.max(min,Math.min(max,Number(v)||0));
+  const teamAliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN'};
+  const teamKey=v=>teamAliases[compact(v)]||compact(v);
 
   function statValue(values,...wanted){
     const entries=Object.entries(values||{});
@@ -111,5 +118,73 @@
     return Math.max(0,total);
   }
 
-  return {VERSION,DEFENSE_SCALE,compact,n,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore};
+  function standingsRows(standings){
+    const rows=[];
+    for(const group of Object.values(standings?.byClassification||{}))if(Array.isArray(group))rows.push(...group);
+    if(!rows.length&&Array.isArray(standings?.teams))rows.push(...standings.teams);
+    return rows;
+  }
+
+  function neutralTeamContext(team=''){
+    return {team:clean(team),wins:0,losses:0,ties:0,games:0,winPct:.5,sos:.5,sosPercentile:.5,quality:.5,reliability:0,bonusStrength:0};
+  }
+
+  function buildTeamContexts(standings){
+    const records=new Map();
+    for(const row of standingsRows(standings)){
+      const key=teamKey(row?.team);
+      if(!key)continue;
+      const wins=Math.max(0,n(row.wins)),losses=Math.max(0,n(row.losses)),ties=Math.max(0,n(row.ties)),games=wins+losses+ties;
+      records.set(key,{team:clean(row.team),wins,losses,ties,games,winPct:games?(wins+ties*.5)/games:.5});
+    }
+    const opponents=new Map([...records.keys()].map(key=>[key,[]]));
+    for(const game of standings?.games||[]){
+      const away=teamKey(game?.awayTeam),home=teamKey(game?.homeTeam),awayRaw=game?.actualAway,homeRaw=game?.actualHome,awayScore=Number(awayRaw),homeScore=Number(homeRaw);
+      if(!away||!home||clean(awayRaw)===''||clean(homeRaw)===''||!Number.isFinite(awayScore)||!Number.isFinite(homeScore))continue;
+      if(opponents.has(away))opponents.get(away).push(home);
+      if(opponents.has(home))opponents.get(home).push(away);
+    }
+    const raw=[...records.entries()].map(([key,record])=>{
+      const played=opponents.get(key)||[];
+      const sos=played.length?played.reduce((sum,opponent)=>sum+(records.get(opponent)?.winPct??.5),0)/played.length:.5;
+      return {key,...record,sos};
+    });
+    const ordered=raw.map(row=>row.sos).sort((a,b)=>a-b),denominator=Math.max(1,ordered.length-1),contexts=new Map();
+    for(const row of raw){
+      const lower=ordered.filter(value=>value<row.sos).length,equal=ordered.filter(value=>value===row.sos).length;
+      const sosPercentile=ordered.length<=1?.5:(lower+Math.max(0,equal-1)/2)/denominator;
+      const quality=clamp(row.winPct*TEAM_CONTEXT_RECORD_WEIGHT+sosPercentile*TEAM_CONTEXT_SOS_WEIGHT);
+      const reliability=clamp(row.games/TEAM_CONTEXT_FULL_GAMES);
+      const bonusStrength=clamp((quality-.5)/.5)*reliability;
+      contexts.set(row.key,{team:row.team,wins:row.wins,losses:row.losses,ties:row.ties,games:row.games,winPct:row.winPct,sos:row.sos,sosPercentile,quality,reliability,bonusStrength});
+    }
+    return contexts;
+  }
+
+  function teamContextFor(contexts,team){
+    const key=teamKey(team);
+    if(contexts instanceof Map)return contexts.get(key)||neutralTeamContext(team);
+    return contexts?.[key]||neutralTeamContext(team);
+  }
+
+  function teamContextCap(award='mvp'){
+    const key=compact(award);
+    if(key==='ALLUTAH')return TEAM_CONTEXT_CAPS.allUtah;
+    if(key==='ALLRURAL')return TEAM_CONTEXT_CAPS.allRural;
+    if(key==='ALLSTATE')return TEAM_CONTEXT_CAPS.allState;
+    if(key==='ALLREGION')return TEAM_CONTEXT_CAPS.allRegion;
+    return TEAM_CONTEXT_CAPS.mvp;
+  }
+
+  function applyTeamContext(score,context,award='mvp'){
+    const base=Math.max(0,Number(score)||0),strength=clamp(context?.bonusStrength),cap=teamContextCap(award);
+    return base*(1+cap*strength);
+  }
+
+  function teamContextBonus(score,context,award='mvp'){
+    const base=Math.max(0,Number(score)||0);
+    return applyTeamContext(base,context,award)-base;
+  }
+
+  return {VERSION,DEFENSE_SCALE,TEAM_CONTEXT_RECORD_WEIGHT,TEAM_CONTEXT_SOS_WEIGHT,TEAM_CONTEXT_FULL_GAMES,TEAM_CONTEXT_CAPS,compact,n,clamp,teamKey,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore,neutralTeamContext,buildTeamContexts,teamContextFor,teamContextCap,applyTeamContext,teamContextBonus};
 });
