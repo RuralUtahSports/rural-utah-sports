@@ -2,7 +2,7 @@
 'use strict';
 if(!matchMedia('(min-width:901px)').matches||window.__RUS_DESKTOP_V2__)return;window.__RUS_DESKTOP_V2__=true;
 const path=(location.pathname.split('/').pop()||'index.html').toLowerCase(),HOME_FIELD_POINTS=3;
-const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' '),num=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
+const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' '),num=v=>{if(v===null||v===undefined||String(v).trim()==='')return null;const n=Number(v);return Number.isFinite(n)?n:null};
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const dateVal=v=>{const t=Date.parse(String(v||''));return Number.isFinite(t)?t:0};
 const fmtDate=v=>{const t=dateVal(v);return t?new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric'}):String(v||'TBA')};
