@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='2026-08-31-v7';
+  const VERSION='2026-08-31-v8';
   const DEFENSE_SCALE=2.5;
   const TEAM_CONTEXT_RECORD_WEIGHT=.50;
   const TEAM_CONTEXT_SOS_WEIGHT=.30;
