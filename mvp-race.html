@@ -20,7 +20,7 @@
 </head><body>
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header><nav><div class="nav-content"></div></nav>
 <main class="container"><section class="hero"><h2>2026 <span>MVP Race</span></h2><p>A live, stat-based MVP watch using reported production plus team success. Rural players remain fully eligible for the statewide MVP race while also competing for the Rural MVP.</p><div id="updated" class="updated">Loading latest data…</div></section>
-<section class="controls"><div class="buttons" id="typeButtons"></div></section>
+<section class="controls"><div class="buttons" id="typeButtons"></div><button class="filter" id="shareMvpRace" type="button">Share MVP Race</button></section>
 <div class="method"><strong>MVP groups:</strong> Statewide, Offensive and Defensive include every classification. <strong>Rural MVP</strong> includes 3A, 2A, 1A and 8-Player. <strong>Big School MVP</strong> includes 6A, 5A and 4A. A player can appear in both the statewide race and the appropriate school-size race. Missing stats are never estimated.</div>
 <div id="results"><div class="empty">Loading MVP candidates…</div></div><div class="note">Source: player statistics reported to Deseret News; team records from Rural Utah Sports. Players on teams without reported stats may not appear yet.</div></main>
 <footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
@@ -44,5 +44,6 @@ async function init(){const stamp=Date.now();const [a,b]=await Promise.all([fetc
 <script src="school-assets-bundle.js?v=20260818-perf1"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
 <script src="award-school-branding.js?v=20260818-contrast2"></script>
+<script src="mvp-race-share.js?v=20260831-1"></script>
 <script src="nav-menu.js?v=20260827-mobile-nav-restore1"></script>
 </body></html>
