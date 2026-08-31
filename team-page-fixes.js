@@ -49,7 +49,7 @@ function ensureDesktop(){
   if(!matchMedia('(min-width:901px)').matches)return;
   document.body?.setAttribute('data-rus-desktop','1');
   if(window.__RUS_DESKTOP_V2__||document.querySelector('script[data-rus-desktop-v2]'))return;
-  const script=document.createElement('script');script.src='desktop-v2.js?v=20260831-sidebar-nullfix1';script.async=true;script.dataset.rusDesktopV2='1';document.body.appendChild(script);
+  const script=document.createElement('script');script.src='desktop-v2.js?v=20260831-sidebar-currentdata1';script.async=true;script.dataset.rusDesktopV2='1';document.body.appendChild(script);
 }
 function boot(){
   addStyles();ensureDesktop();clean();installLossMarginSort();
