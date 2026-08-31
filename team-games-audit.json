@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-31T15:11:33.092Z",
+  "updatedAt": "2026-08-31T15:15:06.077Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,16 +8,16 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67974,
+    "scheduleRowsAudited": 67979,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 32,
-    "suspiciousRepeatGames": 9,
+    "sameDayMultipleOpponents": 35,
+    "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 207,
-    "reciprocalMismatches": 984,
+    "seasonSummaryMismatches": 205,
+    "reciprocalMismatches": 986,
     "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 206
+    "recent2025PlusIssues": 211
   },
   "recent2025PlusIssues": [
     {
@@ -90,6 +90,16 @@
       }
     },
     {
+      "type": "same-day-multiple-opponents",
+      "team": "DUCHESNE",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "COTTONWOOD",
+        "IGNACIO, CO"
+      ]
+    },
+    {
       "type": "season-summary-mismatch",
       "team": "FREMONT",
       "season": "2025",
@@ -136,29 +146,6 @@
         "CEDAR CITY",
         "GRANTSVILLE"
       ]
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
-        }
-      }
     },
     {
       "type": "same-day-multiple-opponents",
@@ -211,6 +198,31 @@
       ]
     },
     {
+      "type": "suspicious-repeat",
+      "team": "MILLARD",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "PAROWAN",
+      "teamScore": 14,
+      "opponentScore": 10,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "MILLARD",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "DELTA",
+        "PAROWAN"
+      ]
+    },
+    {
       "type": "season-summary-mismatch",
       "team": "NORTH SEVIER",
       "season": "2025",
@@ -232,27 +244,29 @@
       ]
     },
     {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
-        }
-      }
+      "type": "suspicious-repeat",
+      "team": "PAROWAN",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "MILLARD",
+      "teamScore": 10,
+      "opponentScore": 14,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "PAROWAN",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "ALA",
+        "MILLARD"
+      ]
     },
     {
       "type": "season-summary-mismatch",
@@ -1624,6 +1638,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -1638,7 +1672,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -2546,6 +2580,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -2560,7 +2614,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -2579,7 +2633,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -4181,6 +4235,16 @@
     },
     {
       "type": "same-day-multiple-opponents",
+      "team": "DUCHESNE",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "COTTONWOOD",
+        "IGNACIO, CO"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "GRANTSVILLE",
       "season": "2008",
       "date": "10/28/2008",
@@ -4237,6 +4301,16 @@
       "opponents": [
         "CEDAR CITY",
         "MORGAN"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "MILLARD",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "DELTA",
+        "PAROWAN"
       ]
     },
     {
@@ -4307,6 +4381,16 @@
       "opponents": [
         "CANYON VIEW",
         "CEDAR CITY"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "PAROWAN",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "ALA",
+        "MILLARD"
       ]
     },
     {
@@ -4458,6 +4542,21 @@
     },
     {
       "type": "suspicious-repeat",
+      "team": "MILLARD",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "PAROWAN",
+      "teamScore": 14,
+      "opponentScore": 10,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
+    },
+    {
+      "type": "suspicious-repeat",
       "team": "NORTH SEVIER",
       "season": "1981",
       "index": 6,
@@ -4500,6 +4599,21 @@
       "notes": "",
       "otherDate": "10/2/1981",
       "daysApart": 5
+    },
+    {
+      "type": "suspicious-repeat",
+      "team": "PAROWAN",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "MILLARD",
+      "teamScore": 10,
+      "opponentScore": 14,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
     },
     {
       "type": "suspicious-repeat",
@@ -5533,29 +5647,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "JUAN DIEGO",
       "season": "2022",
       "mismatches": {
@@ -6370,29 +6461,6 @@
         "pointsAgainst": {
           "expected": 463,
           "actual": 416
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
         }
       }
     },
@@ -16748,6 +16816,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -16762,7 +16850,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -22316,6 +22404,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -22330,7 +22438,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -22349,7 +22457,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -29673,7 +29781,7 @@
       "team": "DUCHESNE",
       "file": "duchesne.json",
       "seasons": 57,
-      "totalGames": 565
+      "totalGames": 566
     },
     {
       "team": "EAST",
@@ -29775,7 +29883,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 72,
-      "totalGames": 720
+      "totalGames": 721
     },
     {
       "team": "JUAN DIEGO",
@@ -29853,7 +29961,7 @@
       "team": "MILLARD",
       "file": "millard.json",
       "seasons": 101,
-      "totalGames": 954
+      "totalGames": 955
     },
     {
       "team": "MONTICELLO",
@@ -29943,7 +30051,7 @@
       "team": "PANGUITCH",
       "file": "panguitch.json",
       "seasons": 8,
-      "totalGames": 67
+      "totalGames": 68
     },
     {
       "team": "PARK CITY",
@@ -29955,7 +30063,7 @@
       "team": "PAROWAN",
       "file": "parowan.json",
       "seasons": 78,
-      "totalGames": 693
+      "totalGames": 694
     },
     {
       "team": "PAYSON",
