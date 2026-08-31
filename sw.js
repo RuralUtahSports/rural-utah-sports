@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260828-unique-featured1';
+const CACHE='rus-site-20260831-week4-rankings1';
 const CORE=[
   './',
   './index.html',
