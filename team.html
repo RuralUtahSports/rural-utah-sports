@@ -11,7 +11,7 @@
 <script>
 (()=>{
   'use strict';
-  const VERSION='20260829-mobile-stability2';
+  const VERSION='20260831-sidebar-currentdata1';
   const copyScript=old=>new Promise(resolve=>{
     const s=document.createElement('script');
     for(const a of old.attributes)s.setAttribute(a.name,a.value);
@@ -28,7 +28,7 @@
   fetch(`team-page-content.html?v=${VERSION}`)
     .then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text()})
     .then(async html=>{
-      html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20260827-coaches5');
+      html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20260831-sidebar-currentdata1');
       html=html.replace(/<script src="nav-menu\.js\?v=[^"]+"(?: defer)?><\/script>/,'<script src="nav-menu.js?v=20260827-mobile-nav-restore1"><\/script>');
       html=html.replace('</body>','<script src="team-tabs.js?v='+VERSION+'" data-rus-team-tabs="1"><\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\/script><script src="team-player-records.js?v='+VERSION+'" data-rus-player-records="1"><\/script><script src="player-records-mode-toggle.js?v=20260826-record-order2"><\/script><script src="team-stat-records.js?v='+VERSION+'" data-rus-team-stat-records="1"><\/script><script src="team-coaches.js?v='+VERSION+'" data-rus-team-coaches="1"><\/script><script src="team-coaches-tab.js?v='+VERSION+'" data-rus-team-coaches-tab="1"><\/script><script src="team-streaks-tab.js?v='+VERSION+'" data-rus-team-streaks-tab="1"><\/script></body>');
 
