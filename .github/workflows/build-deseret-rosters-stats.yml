@@ -15,6 +15,7 @@ on:
       - 'weekly-awards-stat-status.json'
       - 'manual-stat-corrections-2026.json'
       - 'scripts/build_deseret_rosters_stats.mjs'
+      - 'scripts/merge_deseret_stats_endpoints.mjs'
       - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/build_player_game_stats.mjs'
       - 'scripts/build_weekly_awards.mjs'
@@ -33,12 +34,21 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout latest main
+        uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - name: Build rosters and season player stats
-        run: node scripts/build_deseret_rosters_stats.mjs
+        run: |
+          node scripts/build_deseret_rosters_stats.mjs
+          node scripts/merge_deseret_stats_endpoints.mjs
       - name: Build compact shared stat metrics
         run: node scripts/build_deseret_stat_metrics.mjs
       - name: Connect roster players to individual game box scores
@@ -53,6 +63,9 @@ jobs:
           const fs=require('fs');
           const d=JSON.parse(fs.readFileSync('deseret-rosters-stats-2026.json','utf8'));
           if(!d.summary||d.summary.teams<100) throw new Error('Roster/stat output incomplete');
+          const merge=d.summary.statsEndpointMerge;
+          if(!merge||merge.checked<100) throw new Error('Both Deseret stats endpoints were not checked for enough teams');
+          if((merge.bothSucceeded||0)+(merge.oneSucceeded||0)<100) throw new Error('Too many Deseret stats endpoint failures');
           console.log(d.summary);
           const metrics=JSON.parse(fs.readFileSync('deseret-stat-metrics-2026.json','utf8'));
           const fullBytes=fs.statSync('deseret-rosters-stats-2026.json').size;
@@ -70,14 +83,18 @@ jobs:
           NODE
       - name: Commit roster/stat data
         run: |
-          git config user.name "RuralUtahSports"
-          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
           if git diff --cached --quiet; then echo "Roster/stat data already current."; exit 0; fi
           git commit -m "Auto-sync Deseret rosters and stats"
-          ok=0
           for attempt in 1 2 3 4; do
-            if git pull --rebase origin main && git push; then ok=1; break; fi
-            sleep 10
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push attempt $attempt failed; retrying against latest main."
+            git rebase --abort || true
+            sleep $((attempt * 5))
           done
-          if [ "$ok" -ne 1 ]; then exit 1; fi
+          echo "Failed to push generated Deseret data after retries."
+          exit 1
