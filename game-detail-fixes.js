@@ -319,7 +319,84 @@
     }
   }
 
-  function apply() {
+  function isoDate(value) {
+    const s = String(value || '').trim();
+    let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (m) return `${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;
+    m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (m) return `${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
+    return '';
+  }
+
+  async function enforceVerifiedFinalStatus() {
+    if (!/(^|\/)game\.html$/.test(location.pathname)) return;
+    const q = new URLSearchParams(location.search);
+    const requestedAway = q.get('away') || q.get('team1') || '';
+    const requestedHome = q.get('home') || q.get('team2') || '';
+    const requestedDate = q.get('date') || '';
+    if (!requestedAway || !requestedHome || !requestedDate) return;
+
+    try {
+      const response = await fetch(`weekly-simulation.json?v=${Date.now()}`, { cache:'no-store' });
+      if (!response.ok) return;
+      const payload = await response.json();
+      const game = (payload?.games || []).find(g => {
+        if (isoDate(g?.date) !== isoDate(requestedDate)) return false;
+        const a = compact(g?.awayTeam), h = compact(g?.homeTeam);
+        const ra = compact(requestedAway), rh = compact(requestedHome);
+        return (a === ra && h === rh) || (a === rh && h === ra);
+      });
+      if (!game) return;
+
+      const awayScore = Number(game.actualAway);
+      const homeScore = Number(game.actualHome);
+      if (game.actualAway === null || game.actualAway === undefined || game.actualHome === null || game.actualHome === undefined || !Number.isFinite(awayScore) || !Number.isFinite(homeScore)) return;
+
+      const heroNames = [...document.querySelectorAll('#page .matchup > .team .team-name')].map(el => el.textContent.trim());
+      let heroScores = [awayScore, homeScore];
+      if (heroNames.length === 2 && compact(heroNames[0]) === compact(game.homeTeam) && compact(heroNames[1]) === compact(game.awayTeam)) heroScores = [homeScore, awayScore];
+
+      const status = document.querySelector('#page .score-center .status');
+      if (status) {
+        status.textContent = 'Final';
+        status.classList.remove('live');
+        status.classList.add('final');
+      }
+
+      const centerScore = document.querySelector('#page .score-center .score');
+      if (centerScore) {
+        centerScore.textContent = `${heroScores[0]}–${heroScores[1]}`;
+        centerScore.classList.remove('upcoming');
+      }
+
+      const summaries = [...document.querySelectorAll('#page .summary')];
+      for (const cell of summaries) {
+        const label = cell.querySelector('span');
+        const value = cell.querySelector('strong');
+        if (!label || !value) continue;
+        if (/^status$/i.test(label.textContent.trim())) value.textContent = 'Final';
+        if (/final margin/i.test(label.textContent)) value.textContent = String(Math.abs(awayScore - homeScore));
+      }
+
+      const result = document.querySelector('#page .result-label');
+      if (result) {
+        const winner = awayScore === homeScore ? 'Tie' : awayScore > homeScore ? game.awayTeam : game.homeTeam;
+        result.textContent = winner === 'Tie' ? 'Tie' : `${winner} wins`;
+      }
+
+      const matchup = document.querySelector('#page .matchup');
+      if (matchup) {
+        matchup.dataset.scoreFixed = '';
+        matchup.classList.remove('score-attached');
+        matchup.querySelectorAll('.game-team-score').forEach(node => node.remove());
+      }
+    } catch (error) {
+      console.warn('Could not enforce verified final status', error);
+    }
+  }
+
+  async function apply() {
+    await enforceVerifiedFinalStatus();
     attachScores();
     inferStatLabels();
     orderStatBlocks();
