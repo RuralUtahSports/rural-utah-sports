@@ -1,0 +1,50 @@
+name: Install Game Final Status Reconcile
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/install-game-final-status-reconcile.yml'
+      - 'game-final-status-reconcile.js'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Install authoritative final-status reconciler
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const path = 'game.html';
+          let html = fs.readFileSync(path, 'utf8');
+          const tag = '<script src="game-final-status-reconcile.js?v=20260901-final-status1"></script>';
+          if (html.includes('game-final-status-reconcile.js')) {
+            html = html.replace(/<script src="game-final-status-reconcile\.js[^>]*><\/script>/, tag);
+          } else {
+            const anchor = '<script src="back-to-top.js" defer></script>';
+            if (html.includes(anchor)) html = html.replace(anchor, `${tag}\n${anchor}`);
+            else html = html.replace('</body>', `${tag}\n</body>`);
+          }
+          fs.writeFileSync(path, html);
+          NODE
+
+      - name: Commit Game Center status fix
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add game.html
+          if git diff --cached --quiet; then
+            echo "Game Center final-status reconciler is already installed."
+            exit 0
+          fi
+          git commit -m "Fix Game Center stale Upcoming statuses"
+          git pull --rebase origin main
+          git push
