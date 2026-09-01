@@ -33,19 +33,61 @@ jobs:
           const isoDate = value => {
             const s = clean(value);
             let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-            if (m) return `${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;
+            if (m) return m[3] + '-' + String(m[1]).padStart(2, '0') + '-' + String(m[2]).padStart(2, '0');
             m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-            if (m) return `${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;
-            return '';
+            return m ? m[1] + '-' + String(m[2]).padStart(2, '0') + '-' + String(m[3]).padStart(2, '0') : '';
           };
-          const keyFor = g => `${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
+          const keyFor = g => isoDate(g.date) + '|' + compact(g.awayTeam) + '|' + compact(g.homeTeam);
+          const aliases = new Map([
+            ['UMALEHI', 'UMALEHI'],
+            ['UMACAMPWILLIAMS', 'UMALEHI'],
+            ['UTAHMILITARYCAMPWILLIAMS', 'UMALEHI'],
+            ['UTAHMILITARYACADEMYCAMPWILLIAMS', 'UMALEHI'],
+            ['SAINTJOSEPH', 'SAINTJOSEPH'],
+            ['STJOSEPH', 'SAINTJOSEPH']
+          ]);
+          const canonical = value => aliases.get(compact(value)) || compact(value);
+          const dayNumber = value => {
+            const normalized = isoDate(value);
+            const time = normalized ? Date.parse(normalized + 'T12:00:00Z') : NaN;
+            return Number.isFinite(time) ? time / 86400000 : null;
+          };
+          const statusRank = detail => {
+            if (detail?.final === true || /^final$/i.test(clean(detail?.status))) return 0;
+            if (/^(?:live|q[1-4]|halftime|half|ot)$/i.test(clean(detail?.status)) || clean(detail?.clock)) return 1;
+            return 2;
+          };
+          const findDetailForGame = (game, payload) => {
+            const targetDay = dayNumber(game.date);
+            if (targetDay === null) return null;
+            const targetAway = canonical(game.awayTeam);
+            const targetHome = canonical(game.homeTeam);
+            const candidates = Object.entries(payload.games || {}).flatMap(([key, detail]) => {
+              const parts = String(key).split('|');
+              const candidateDay = dayNumber(detail?.date || parts[0]);
+              if (candidateDay === null) return [];
+              const distance = Math.abs(candidateDay - targetDay);
+              if (distance > 3) return [];
+              const away = canonical(detail?.awayTeam || parts[1]);
+              const home = canonical(detail?.homeTeam || parts[2]);
+              if (away !== targetAway || home !== targetHome) return [];
+              return [{ detail, distance, rank: statusRank(detail) }];
+            });
+            if (!candidates.length) return null;
+            const finals = candidates.filter(candidate => candidate.rank === 0);
+            const exact = candidates.filter(candidate => candidate.distance === 0);
+            const pool = finals.length ? finals : exact.length ? exact : candidates;
+            const bestDistance = Math.min(...pool.map(candidate => candidate.distance));
+            const nearest = pool.filter(candidate => candidate.distance === bestDistance);
+            return nearest.length === 1 ? nearest[0].detail : null;
+          };
 
           const weekly = JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));
           const live = JSON.parse(fs.readFileSync('deseret-live-details-2026.json','utf8'));
           let changed = 0;
 
           for (const g of weekly.games || []) {
-            const detail = live.games?.[keyFor(g)];
+            const detail = findDetailForGame(g, live);
             if (!detail || detail.final !== true) continue;
             const rows = detail.boxScore?.rows;
             if (!Array.isArray(rows) || rows.length < 2) continue;
