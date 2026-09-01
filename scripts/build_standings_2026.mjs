@@ -29,16 +29,64 @@ const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&
 const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw new Error(`Weekly Simulation download failed: ${res.status}`);
 const sheetRows=parseCSV(await res.text()).slice(1).filter(r=>clean(r[1])&&clean(r[2]));
 
-// Use the Sheet as the primary schedule, but include any site game that the Sheet export omitted.
-const rows=[...sheetRows];
-const rowKeys=new Set(rows.map(r=>gameKey(r[0],r[1],r[2])));
-for(const g of weeklyGames){
-  const key=gameKey(g.date,g.awayTeam,g.homeTeam);
-  if(!key||rowKeys.has(key))continue;
-  rows.push([g.date,g.awayTeam,g.homeTeam,'','','','','','','','']);
-  rowKeys.add(key);
+// Use the Sheet as the primary schedule, but merge in any site game that
+// the Sheet export omitted. A moved game may exist under two dates; treat
+// the same home/away matchup within three days as one game and prefer the
+// row carrying an authoritative result.
+const teamAliases = new Map([
+  ['UMALEHI', 'UMALEHI'],
+  ['UMACAMPWILLIAMS', 'UMALEHI'],
+  ['UTAHMILITARYCAMPWILLIAMS', 'UMALEHI'],
+  ['UTAHMILITARYACADEMYCAMPWILLIAMS', 'UMALEHI'],
+  ['SAINTJOSEPH', 'SAINTJOSEPH'],
+  ['STJOSEPH', 'SAINTJOSEPH']
+]);
+const canonicalTeam = value => teamAliases.get(norm(value)) || norm(value);
+const dayNumber = value => {
+  const normalized = isoDate(value);
+  const time = normalized ? Date.parse(normalized + 'T12:00:00Z') : NaN;
+  return Number.isFinite(time) ? time / 86400000 : null;
+};
+const sameMovedMatchup = (left, right) => {
+  const leftDay = dayNumber(left[0]), rightDay = dayNumber(right[0]);
+  return leftDay !== null && rightDay !== null &&
+    Math.abs(leftDay - rightDay) <= 3 &&
+    canonicalTeam(left[1]) === canonicalTeam(right[1]) &&
+    canonicalTeam(left[2]) === canonicalTeam(right[2]);
+};
+const hasRowScore = row => n(row[7]) !== null && n(row[8]) !== null;
+const rows = [];
+const addMergedRow = row => {
+  const duplicateIndex = rows.findIndex(existing => sameMovedMatchup(existing, row));
+  if (duplicateIndex < 0) {
+    rows.push(row);
+    return;
+  }
+  const existing = rows[duplicateIndex];
+  if (hasRowScore(row) && !hasRowScore(existing)) {
+    rows[duplicateIndex] = row;
+    return;
+  }
+  if (!hasRowScore(existing) && dateStamp(row[0]) > dateStamp(existing[0])) {
+    rows[duplicateIndex] = row;
+  }
+};
+for (const row of sheetRows) addMergedRow(row);
+for (const g of weeklyGames) {
+  addMergedRow([
+    g.date,
+    g.awayTeam,
+    g.homeTeam,
+    '',
+    '',
+    '',
+    '',
+    g.actualAway ?? '',
+    g.actualHome ?? '',
+    g.actualWinner ?? '',
+    g.wl ?? ''
+  ]);
 }
-
 // Include every current Utah team immediately, even before that school appears on the weekly sheet.
 const st={};
 for(const t of teams){
