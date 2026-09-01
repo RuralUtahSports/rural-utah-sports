@@ -32,13 +32,57 @@ function num(value) {
   return Number.isFinite(n) ? n : 0;
 }
 
+function dayNumber(value) {
+  const s = clean(value);
+  let m = s.match(/^(\d{4}-\d{2}-\d{2})$/);
+  if (!m) m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  const normalized = m ? (m.length === 2 ? m[1] : m[3] + '-' + String(m[1]).padStart(2, '0') + '-' + String(m[2]).padStart(2, '0')) : '';
+  const time = normalized ? Date.parse(normalized + 'T12:00:00Z') : NaN;
+  return Number.isFinite(time) ? time / 86400000 : null;
+}
+
+function statusRank(detail) {
+  if (detail?.final === true || /^final$/i.test(clean(detail?.status))) return 0;
+  if (/^(?:live|q[1-4]|halftime|half|ot)$/i.test(clean(detail?.status)) || clean(detail?.clock)) return 1;
+  return 2;
+}
+
+function findMatch(correction, date, awayKeys, homeKeys) {
+  const targetDay = dayNumber(date);
+  if (targetDay === null) return null;
+  const candidates = Object.entries(details.games).flatMap(([key, detail]) => {
+    const parts = String(key).split('|');
+    const gameDate = clean(parts[0]);
+    const detailDate = clean(detail?.date) || gameDate;
+    const candidateDay = dayNumber(detailDate);
+    if (candidateDay === null) return [];
+    const distance = Math.abs(candidateDay - targetDay);
+    if (distance > 3) return [];
+    const away = compact(detail?.awayTeam || parts[1]);
+    const home = compact(detail?.homeTeam || parts[2]);
+    if (!awayKeys.has(away) || !homeKeys.has(home)) return [];
+    return [{ key, detail, distance, rank: statusRank(detail) }];
+  });
+  if (!candidates.length) return null;
+
+  // Prefer a verified Final over a stale Scheduled/Upcoming entry, then use
+  // the closest dated matchup. Never choose between equally good candidates.
+  const finals = candidates.filter(candidate => candidate.rank === 0);
+  const exact = candidates.filter(candidate => candidate.distance === 0);
+  const pool = finals.length ? finals : exact.length ? exact : candidates;
+  const bestDistance = Math.min(...pool.map(candidate => candidate.distance));
+  const nearest = pool.filter(candidate => candidate.distance === bestDistance);
+  if (nearest.length !== 1) return null;
+  return [nearest[0].key, nearest[0].detail];
+}
+
 function createMissingFinal(correction, date, awayKeys, homeKeys) {
   if (!correction.finalScore) return null;
   const awayKey = [...awayKeys][0];
   const homeKey = [...homeKeys][0];
   if (!awayKey || !homeKey) return null;
 
-  const key = `${date}|${awayKey}|${homeKey}`;
+  const key = date + '|' + awayKey + '|' + homeKey;
   const detail = {
     date,
     awayTeam: awayKey,
@@ -62,19 +106,15 @@ function createMissingFinal(correction, date, awayKeys, homeKeys) {
   };
   details.games[key] = detail;
   updated++;
-  console.log(`Created missing manual scoreboard entry: ${key}`);
+  console.log('Created missing manual scoreboard entry: ' + key);
   return [key, detail];
 }
-
 for (const correction of corrections) {
   const date = clean(correction.date);
   const awayKeys = new Set((correction.awayKeys || []).map(compact));
   const homeKeys = new Set((correction.homeKeys || []).map(compact));
 
-  let match = Object.entries(details.games).find(([key]) => {
-    const [gameDate, away, home] = key.split('|');
-    return gameDate === date && awayKeys.has(compact(away)) && homeKeys.has(compact(home));
-  });
+  let match = findMatch(correction, date, awayKeys, homeKeys);
 
   if (!match) match = createMissingFinal(correction, date, awayKeys, homeKeys);
 
