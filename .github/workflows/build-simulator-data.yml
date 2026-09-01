@@ -130,6 +130,39 @@ jobs:
             if(clean(g.awayTeam).toUpperCase()==='WEBER'&&clean(g.homeTeam).toUpperCase()==='ROY'&&clean(g.date)==='8/28/2026')g.date='8/27/2026';
             if(clean(g.awayTeam).toUpperCase()==='UMA-LEHI'&&clean(g.homeTeam).toUpperCase()==='SAINT JOSEPH'&&clean(g.date)==='8/28/2026')g.date='8/31/2026';
           }
+          const manualCorrections = JSON.parse(fs.readFileSync('manual-scoreboard-corrections-2026.json','utf8'));
+          const dateKey = value => {
+            const s = clean(value);
+            let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+            if (m) return m[3] + '-' + String(m[1]).padStart(2, '0') + '-' + String(m[2]).padStart(2, '0');
+            m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+            return m ? m[1] + '-' + String(m[2]).padStart(2, '0') + '-' + String(m[3]).padStart(2, '0') : s;
+          };
+          for (const correction of manualCorrections) {
+            if (!correction.finalScore) continue;
+            const targetDate = dateKey(correction.scheduledDate || correction.date);
+            const awayKeys = new Set((correction.awayKeys || []).map(norm));
+            const homeKeys = new Set((correction.homeKeys || []).map(norm));
+            const matches = weekly.filter(g =>
+              dateKey(g.date) === targetDate &&
+              awayKeys.has(norm(g.awayTeam)) &&
+              homeKeys.has(norm(g.homeTeam))
+            );
+            if (matches.length !== 1) {
+              if (matches.length > 1) console.warn('Skipped ambiguous manual weekly final: ' + targetDate);
+              continue;
+            }
+            const g = matches[0];
+            const away = Number(correction.finalScore.away);
+            const home = Number(correction.finalScore.home);
+            if (!Number.isFinite(away) || !Number.isFinite(home)) continue;
+            g.actualAway = away;
+            g.actualHome = home;
+            g.actualWinner = away === home ? 'TIE' : away > home ? g.awayTeam : g.homeTeam;
+            g.wl = away === home ? 'T' : g.actualWinner === g.awayTeam ? 'W' : 'L';
+            console.log('Applied manual weekly final: ' + g.awayTeam + ' ' + away + '-' + home + ' ' + g.homeTeam);
+          }
+
           fs.writeFileSync('weekly-simulation.json',JSON.stringify({games:weekly}));console.log(`Weekly simulation games: ${weekly.length}; normalized team fields: ${normalized}`);
           NODE
 
