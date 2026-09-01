@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-01T01:55:54.467Z",
+  "updatedAt": "2026-09-01T03:35:33.399Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -48928,7 +48928,11 @@
         "emptyCoreBlocks": 0
       },
       "fetchedAt": "2026-08-31T14:46:54.475Z",
-      "finalRefreshCount": 13
+      "finalRefreshCount": 13,
+      "finalSource": "verified-manual",
+      "statusSource": "verified-manual",
+      "scoreSource": "verified-manual",
+      "manualScoreNote": "Verified final from Deseret News: Mountain Ridge 42-7 Davis"
     },
     "2026-08-27|HUNTER|COPPERHILLS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-27/hunter-football-vs-copper-hills-football/273556",
@@ -50161,8 +50165,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 7
       },
-      "fetchedAt": "2026-08-31T20:53:39.783Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:34:50.186Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|BEAVER|EMERY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/beaver-football-vs-emery-football/273347",
@@ -51261,8 +51265,8 @@
         "filledCoreCells": 46,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:41.076Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:34:51.955Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|BRIGHTON|RIDGELINE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/brighton-football-vs-ridgeline-football/273623",
@@ -51711,8 +51715,8 @@
         "filledCoreCells": 41,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:42.537Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:34:55.155Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|CANYONVIEW|SOUTHSEVIER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/canyon-view-football-vs-south-sevier-football/273407",
@@ -51777,22 +51781,29 @@
             [
               "1",
               "R . Rayce Freeman",
-              "",
-              "",
+              "20",
+              "150",
+              "1"
+            ],
+            [
+              "4",
+              "T . Trapper Farnsworth",
+              "14",
+              "72",
+              ""
+            ],
+            [
+              "2",
+              "C . Cooper Castle",
+              "9",
+              "22",
               "1"
             ],
             [
               "5",
               "D . Daxton Lovell",
-              "",
-              "",
-              "1"
-            ],
-            [
               "2",
-              "C . Cooper Castle",
-              "",
-              "",
+              "4",
               "1"
             ]
           ]
@@ -51833,6 +51844,30 @@
         },
         {
           "category": "Passing",
+          "team": "SOUTH SEVIER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "5",
+              "D . Daxton Lovell",
+              "2-6",
+              "33%",
+              "39",
+              "",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
           "team": "CANYON VIEW",
           "headers": [
             "NO",
@@ -51851,6 +51886,33 @@
               "",
               "",
               "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SOUTH SEVIER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "C . Cooper Castle",
+              "1",
+              "33",
+              ""
+            ],
+            [
+              "1",
+              "R . Rayce Freeman",
+              "1",
+              "6",
               ""
             ]
           ]
@@ -51901,18 +51963,128 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Defense",
+          "team": "SOUTH SEVIER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "R . Rayce Freeman",
+              "8",
+              "",
+              "",
+              ""
+            ],
+            [
+              "4",
+              "T . Trapper Farnsworth",
+              "7",
+              "",
+              "",
+              ""
+            ],
+            [
+              "0",
+              "K . Krew Redd",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "11",
+              "C . Connor Castle",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "8",
+              "T . Ty Nielson",
+              "5",
+              "",
+              "1",
+              ""
+            ],
+            [
+              "13",
+              "T . Tayton Anderson",
+              "5",
+              "",
+              "",
+              ""
+            ],
+            [
+              "56",
+              "K . Kaleb Anderson",
+              "5",
+              "",
+              "",
+              ""
+            ],
+            [
+              "5",
+              "D . Daxton Lovell",
+              "5",
+              "",
+              "",
+              ""
+            ],
+            [
+              "78",
+              "C . Cooper Knight",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "75",
+              "H . Haedyn Newby",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "10",
+              "K . Kace Mills",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "55",
+              "C . Cash Carter",
+              "1",
+              "",
+              "",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 5,
-        "rows": 10,
-        "coreCells": 18,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
+        "blocks": 8,
+        "rows": 26,
+        "coreCells": 64,
+        "filledCoreCells": 28,
+        "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:43.390Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:34:56.081Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|CEDARVALLEY|CRIMSONCLIFFS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/cedar-valley-football-vs-crimson-cliffs-football/273491",
@@ -52101,8 +52273,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-08-31T20:53:44.029Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:34:56.822Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|CLEARFIELD|LAYTON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/clearfield-football-vs-layton-football/273582",
@@ -53374,8 +53546,12 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-08-31T20:53:44.705Z",
-      "finalRefreshCount": 11
+      "fetchedAt": "2026-09-01T03:34:57.845Z",
+      "finalRefreshCount": 12,
+      "finalSource": "verified-manual",
+      "statusSource": "verified-manual",
+      "scoreSource": "verified-manual",
+      "manualScoreNote": "Verified final from Deseret News: Jordan 13-10 Deer Creek"
     },
     "2026-08-28|DELTA|NORTHSANPETE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/delta-football-vs-north-sanpete-football/273330",
@@ -54157,8 +54333,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:45.397Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:34:58.497Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|DESERTHILLS|SALEMHILLS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/desert-hills-football-vs-salem-hills-football/273430",
@@ -54348,8 +54524,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-08-31T20:53:46.117Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:34:59.456Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|DIXIE|NORTHRIDGE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/dixie-football-vs-northridge-football/273531",
@@ -54569,8 +54745,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-08-31T20:53:46.846Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:00.952Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|ENTERPRISE|MILFORD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/enterprise-football-vs-milford-football/273373",
@@ -54965,8 +55141,8 @@
         "filledCoreCells": 36,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:47.761Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:01.838Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|FREMONT|CORNERCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/fremont-football-vs-corner-canyon-football/273477",
@@ -55354,8 +55530,8 @@
         "filledCoreCells": 31,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:48.978Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:03.120Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|GRAND|GUNNISONVALLEY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/grand-football-vs-gunnison-valley-football/273679",
@@ -55563,8 +55739,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-08-31T20:53:49.573Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:03.937Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|GRANTSVILLE|MANTI": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/grantsville-football-vs-manti-football/273753",
@@ -55979,8 +56155,8 @@
         "filledCoreCells": 47,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:51.192Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:05.075Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|HERRIMAN|WESTJORDAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/herriman-football-vs-west-jordan-football/273550",
@@ -57436,8 +57612,8 @@
         "filledCoreCells": 38,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-08-31T20:53:52.138Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:06.779Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|JUDGEMEMORIAL|NORTHSEVIER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/judge-memorial-football-vs-north-sevier-football/273910",
@@ -57792,8 +57968,8 @@
         "filledCoreCells": 40,
         "emptyCoreBlocks": 1
       },
-      "fetchedAt": "2026-08-31T20:53:52.970Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:08.206Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|KEARNS|PAYSON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/kearns-football-vs-payson-football/274385",
@@ -57975,8 +58151,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:53.595Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:09.101Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|LONEPEAK|SKYLINE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/lone-peak-football-vs-skyline-football/273471",
@@ -58637,8 +58813,8 @@
         "filledCoreCells": 46,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:54.472Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:10.155Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|MONTICELLO|WATERCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/monticello-football-vs-water-canyon-football-football/274416",
@@ -58686,8 +58862,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-31T20:53:54.977Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:10.731Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|MORGAN|PARKCITY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/morgan-football-vs-park-city-football/273289",
@@ -59704,6 +59880,40 @@
           ]
         },
         {
+          "category": "Rushing",
+          "team": "MOUNTAIN VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "C . Carter Vance",
+              "14",
+              "86",
+              ""
+            ],
+            [
+              "8",
+              "H . Hyrum Stafford",
+              "6",
+              "15",
+              ""
+            ],
+            [
+              "7",
+              "B . Brigham Moses",
+              "1",
+              "-3",
+              ""
+            ]
+          ]
+        },
+        {
           "category": "Passing",
           "team": "MOUNTAIN VIEW",
           "headers": [
@@ -59719,9 +59929,9 @@
             [
               "8",
               "H . Hyrum Stafford",
-              "",
-              "",
-              "",
+              "12-21",
+              "57%",
+              "187",
               "3",
               ""
             ]
@@ -59739,18 +59949,32 @@
           ],
           "rows": [
             [
+              "7",
+              "B . Brigham Moses",
+              "7",
+              "93",
+              "2"
+            ],
+            [
               "9",
               "K . Koa Giles",
-              "",
-              "",
+              "2",
+              "81",
               "1"
             ],
             [
+              "1",
+              "B . Brawley Tuitupou",
+              "1",
               "7",
-              "B . Brigham Moses",
-              "",
-              "",
-              "2"
+              ""
+            ],
+            [
+              "11",
+              "E . Easton Pace",
+              "2",
+              "6",
+              ""
             ]
           ]
         },
@@ -59793,18 +60017,176 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Defense",
+          "team": "MOUNTAIN VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "43",
+              "R . Ratu Malungahu",
+              "17",
+              "",
+              "",
+              ""
+            ],
+            [
+              "19",
+              "M . Mitch Yeates",
+              "15",
+              "",
+              "2",
+              ""
+            ],
+            [
+              "30",
+              "T . Tafeta (TJ) Siaki",
+              "15",
+              "",
+              "",
+              ""
+            ],
+            [
+              "52",
+              "S . Sesi Nelson",
+              "14",
+              "",
+              "",
+              ""
+            ],
+            [
+              "5",
+              "J . Jrae Fua",
+              "13",
+              "",
+              "",
+              ""
+            ],
+            [
+              "53",
+              "M . MaTai Vakaafi",
+              "11",
+              "",
+              "",
+              ""
+            ],
+            [
+              "10",
+              "N . Neftali (Tali) Zeledon",
+              "10",
+              "",
+              "",
+              ""
+            ],
+            [
+              "9",
+              "K . Koa Giles",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "44",
+              "S . Siakale Lehauli",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "35",
+              "K . Karltrick Hausia",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "17",
+              "D . Dash Christensen",
+              "3",
+              "",
+              "",
+              ""
+            ],
+            [
+              "18",
+              "J . Jaxton Lawson",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "-",
+              "I . Isaac Alcazar",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "8",
+              "H . Hyrum Stafford",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "3",
+              "C . Carter Vance",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "42",
+              "R . Robert Thompson",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "15",
+              "M . Marley Griffing",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "28",
+              "L . Landon Pace",
+              "1",
+              "",
+              "",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 5,
-        "rows": 7,
-        "coreCells": 12,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "blocks": 7,
+        "rows": 30,
+        "coreCells": 76,
+        "filledCoreCells": 36,
+        "emptyCoreBlocks": 1
       },
-      "fetchedAt": "2026-08-31T20:53:55.599Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:12.163Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|MURRAY|HURRICANE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/murray-football-vs-hurricane-football/273718",
@@ -59911,9 +60293,23 @@
             [
               "2",
               "D . Dru Reuss",
-              "",
-              "",
+              "6",
+              "13",
               "1"
+            ],
+            [
+              "14",
+              "A . Anthony Guerra",
+              "1",
+              "7",
+              ""
+            ],
+            [
+              "80",
+              "M . Mckade Eardley",
+              "8",
+              "6",
+              ""
             ]
           ]
         },
@@ -59957,10 +60353,19 @@
             [
               "2",
               "D . Dru Reuss",
-              "",
-              "",
-              "",
+              "28-44",
+              "64%",
+              "283",
               "2",
+              "1"
+            ],
+            [
+              "16",
+              "S . Soren Cota",
+              "0-1",
+              "0%",
+              "",
+              "",
               ""
             ]
           ]
@@ -59997,18 +60402,53 @@
           ],
           "rows": [
             [
-              "21",
-              "J . Jagger Karr",
-              "",
-              "",
+              "1",
+              "J . Jersey Alvillar",
+              "12",
+              "151",
               "1"
             ],
             [
-              "1",
-              "J . Jersey Alvillar",
-              "",
-              "",
+              "21",
+              "J . Jagger Karr",
+              "8",
+              "76",
               "1"
+            ],
+            [
+              "23",
+              "K . King Yom",
+              "2",
+              "32",
+              ""
+            ],
+            [
+              "3",
+              "C . Chase Mower",
+              "2",
+              "19",
+              ""
+            ],
+            [
+              "9",
+              "C . Cruz Gardner",
+              "2",
+              "12",
+              ""
+            ],
+            [
+              "27",
+              "T . Tony Rogers",
+              "1",
+              "2",
+              ""
+            ],
+            [
+              "80",
+              "M . Mckade Eardley",
+              "2",
+              "2",
+              ""
             ]
           ]
         },
@@ -60051,18 +60491,160 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Defense",
+          "team": "",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "23",
+              "K . King Yom",
+              "8",
+              "",
+              "",
+              ""
+            ],
+            [
+              "26",
+              "J . Jaxon McNaughtan",
+              "7",
+              "2",
+              "",
+              ""
+            ],
+            [
+              "33",
+              "N . Nash Turner",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "20",
+              "P . Peyton Pili",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "12",
+              "A . Amari Jama",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "32",
+              "R . Ropati Atuaia",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "5",
+              "W . Wyatt Lindquist",
+              "5",
+              "",
+              "",
+              ""
+            ],
+            [
+              "7",
+              "M . McCoy Ash",
+              "5",
+              "",
+              "",
+              ""
+            ],
+            [
+              "24",
+              "B . Brady Sofonia",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "88",
+              "J . Jake Jr",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "18",
+              "E . Elliott Cockle",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "17",
+              "C . Carson Pender",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "56",
+              "A . Andrew Miller-Gaitan",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "27",
+              "T . Tony Rogers",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "55",
+              "J . Jacob Lopez",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "71",
+              "N . Nephi Eteaki",
+              "1",
+              "",
+              "",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 8,
-        "rows": 12,
-        "coreCells": 24,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 6
+        "blocks": 9,
+        "rows": 36,
+        "coreCells": 90,
+        "filledCoreCells": 43,
+        "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:53:56.374Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:13.627Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|NORTHSUMMIT|RICH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/north-summit-football-vs-rich-football/273361",
@@ -60251,8 +60833,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-08-31T20:53:56.987Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:14.342Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|OGDEN|WESTFIELD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/ogden-football-vs-west-field-football-football/273460",
@@ -60314,18 +60896,288 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Rushing",
+          "team": "OGDEN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "4",
+              "A . Anderson Curry",
+              "16",
+              "49",
+              ""
+            ],
+            [
+              "6",
+              "B . Blake Weston",
+              "3",
+              "11",
+              ""
+            ],
+            [
+              "10",
+              "R . Ryker Rice",
+              "5",
+              "2",
+              ""
+            ],
+            [
+              "7",
+              "K . Kos Crowther",
+              "1",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "13",
+              "E . Emmett Rector",
+              "11-25",
+              "44%",
+              "112",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "J . Jack Thompson",
+              "3",
+              "57",
+              ""
+            ],
+            [
+              "6",
+              "B . Blake Weston",
+              "3",
+              "43",
+              ""
+            ],
+            [
+              "4",
+              "A . Anderson Curry",
+              "1",
+              "6",
+              ""
+            ],
+            [
+              "7",
+              "K . Kos Crowther",
+              "1",
+              "3",
+              ""
+            ],
+            [
+              "9",
+              "N . Nash Bockwoldt",
+              "1",
+              "3",
+              ""
+            ],
+            [
+              "10",
+              "R . Ryker Rice",
+              "1",
+              "0",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "B . Blake Weston",
+              "11",
+              "",
+              "",
+              ""
+            ],
+            [
+              "19",
+              "J . Julius Salgado",
+              "9",
+              "",
+              "",
+              ""
+            ],
+            [
+              "4",
+              "A . Anderson Curry",
+              "8",
+              "",
+              "",
+              ""
+            ],
+            [
+              "44",
+              "E . Ethan Wardell",
+              "7",
+              "",
+              "",
+              ""
+            ],
+            [
+              "8",
+              "A . Angus Macinnes",
+              "7",
+              "",
+              "",
+              ""
+            ],
+            [
+              "2",
+              "J . Jack Thompson",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "57",
+              "R . Ryan Kirkland",
+              "6",
+              "1",
+              "",
+              ""
+            ],
+            [
+              "7",
+              "K . Kos Crowther",
+              "5",
+              "",
+              "",
+              ""
+            ],
+            [
+              "11",
+              "J . Julian Ramos",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "64",
+              "S . Soren Munoz",
+              "3",
+              "",
+              "",
+              ""
+            ],
+            [
+              "58",
+              "C . Christian Zarate",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "16",
+              "T . Trayven Olivieri",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "27",
+              "C . Charlie Spendlove",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "10",
+              "R . Ryker Rice",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "21",
+              "C . Colton Rasmussen",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "99",
+              "M . Moises Palamares",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "0",
+              "A . Aaron Boehm",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 2,
-        "filledCoreCells": 0,
+        "blocks": 5,
+        "rows": 29,
+        "coreCells": 77,
+        "filledCoreCells": 42,
         "emptyCoreBlocks": 1
       },
-      "fetchedAt": "2026-08-31T20:53:57.762Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:15.910Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|OLYMPUS|WESTLAKE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/olympus-football-vs-westlake-football/273589",
@@ -60431,10 +61283,38 @@
           ],
           "rows": [
             [
+              "20",
+              "E . Easton Zito",
+              "13",
+              "50",
+              ""
+            ],
+            [
+              "2",
+              "P . Preston Ferran",
+              "9",
+              "38",
+              ""
+            ],
+            [
+              "4",
+              "B . Beckham Allred",
+              "3",
+              "8",
+              ""
+            ],
+            [
+              "0",
+              "H . Haloti Ngata",
+              "2",
+              "6",
+              ""
+            ],
+            [
               "16",
               "K . Kempton Rice",
-              "",
-              "",
+              "2",
+              "4",
               "1"
             ]
           ]
@@ -60479,9 +61359,9 @@
             [
               "2",
               "P . Preston Ferran",
-              "",
-              "",
-              "",
+              "11-20",
+              "55%",
+              "148",
               "1",
               ""
             ]
@@ -60533,11 +61413,46 @@
           ],
           "rows": [
             [
+              "20",
+              "E . Easton Zito",
+              "1",
+              "50",
+              ""
+            ],
+            [
+              "16",
+              "K . Kempton Rice",
+              "1",
+              "39",
+              ""
+            ],
+            [
+              "0",
+              "H . Haloti Ngata",
+              "4",
+              "36",
+              ""
+            ],
+            [
               "18",
               "W . Will Farnsworth",
-              "",
-              "",
+              "3",
+              "9",
               "1"
+            ],
+            [
+              "14",
+              "E . Eli Rhees",
+              "1",
+              "7",
+              ""
+            ],
+            [
+              "17",
+              "S . Spencer Arveseth",
+              "1",
+              "7",
+              ""
             ]
           ]
         },
@@ -60762,18 +61677,136 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Defense",
+          "team": "OLYMPUS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "S . Sam Ngata",
+              "11",
+              "",
+              "",
+              ""
+            ],
+            [
+              "11",
+              "W . Wyatt Fuhriman",
+              "9",
+              "",
+              "",
+              ""
+            ],
+            [
+              "7",
+              "C . Cooper Christensen",
+              "8",
+              "",
+              "",
+              ""
+            ],
+            [
+              "21",
+              "W . Will Cutler",
+              "7",
+              "",
+              "",
+              ""
+            ],
+            [
+              "6",
+              "O . Oliver Ferguson",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "5",
+              "S . Sam Brown",
+              "6",
+              "",
+              "",
+              ""
+            ],
+            [
+              "0",
+              "H . Haloti Ngata",
+              "5",
+              "",
+              "",
+              ""
+            ],
+            [
+              "4",
+              "B . Beckham Allred",
+              "5",
+              "1",
+              "",
+              ""
+            ],
+            [
+              "34",
+              "D . Dylan Landies",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "27",
+              "S . Sam Smith",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "23",
+              "K . Kirabo Nadauld",
+              "2",
+              "",
+              "1",
+              ""
+            ],
+            [
+              "10",
+              "T . Tennessee Taylor",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "16",
+              "K . Kempton Rice",
+              "1",
+              "",
+              "1",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
-        "status": "partial",
-        "blocks": 9,
-        "rows": 35,
-        "coreCells": 91,
-        "filledCoreCells": 46,
-        "emptyCoreBlocks": 3
+        "status": "full",
+        "blocks": 10,
+        "rows": 57,
+        "coreCells": 148,
+        "filledCoreCells": 87,
+        "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-31T20:53:59.111Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:18.484Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|PANGUITCH|MONUMENTVAL": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/panguitch-football-vs-monument-valley-football/273638",
@@ -60821,8 +61854,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-31T20:53:59.651Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:19.099Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|PLEASANTGROVE|GREENCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/pleasant-grove-football-vs-green-canyon-football/274340",
@@ -61233,8 +62266,8 @@
         "filledCoreCells": 35,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:54:00.871Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:20.447Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|PROVO|SPRINGVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/provo-football-vs-springville-football/273673",
@@ -61422,8 +62455,8 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-08-31T20:54:01.526Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:21.525Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|SANJUAN|KANAB": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/san-juan-football-vs-kanab-football/273323",
@@ -62472,8 +63505,8 @@
         "filledCoreCells": 39,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:54:02.535Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:22.927Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|SNOWCANYON|CEDARCITY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/snow-canyon-football-vs-cedar-city-football/273436",
@@ -62838,8 +63871,8 @@
         "filledCoreCells": 41,
         "emptyCoreBlocks": 2
       },
-      "fetchedAt": "2026-08-31T20:54:03.569Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:24.046Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|SOUTHSUMMIT|JUAB": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/south-summit-football-vs-juab-football/273410",
@@ -62927,11 +63960,25 @@
           ],
           "rows": [
             [
+              "6",
+              "S . Steele Woodward",
+              "3",
+              "2",
+              ""
+            ],
+            [
               "8",
               "B . Brody Larsen",
-              "",
-              "",
+              "4",
+              "-7",
               "1"
+            ],
+            [
+              "2",
+              "J . Jesse Clegg",
+              "2",
+              "-3",
+              ""
             ]
           ]
         },
@@ -62975,9 +64022,9 @@
             [
               "3",
               "I . Ian Mair",
-              "",
-              "",
-              "",
+              "8-18",
+              "44%",
+              "88",
               "1",
               ""
             ]
@@ -63024,9 +64071,30 @@
             [
               "16",
               "G . Gage Wolstehulme",
-              "",
-              "",
+              "5",
+              "64",
               "1"
+            ],
+            [
+              "10",
+              "T . Tuff Thornton",
+              "2",
+              "11",
+              ""
+            ],
+            [
+              "8",
+              "B . Brody Larsen",
+              "2",
+              "9",
+              ""
+            ],
+            [
+              "11",
+              "C . Cash Rockhill",
+              "1",
+              "4",
+              ""
             ]
           ]
         },
@@ -63056,18 +64124,152 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Defense",
+          "team": "SOUTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "28",
+              "S . Seth Andruschenko",
+              "14",
+              "",
+              "",
+              ""
+            ],
+            [
+              "6",
+              "S . Steele Woodward",
+              "13",
+              "",
+              "",
+              ""
+            ],
+            [
+              "16",
+              "G . Gage Wolstehulme",
+              "10",
+              "",
+              "",
+              ""
+            ],
+            [
+              "56",
+              "B . Barrett Schweitzer",
+              "8",
+              "",
+              "",
+              ""
+            ],
+            [
+              "0",
+              "N . Nash Harline",
+              "8",
+              "",
+              "",
+              ""
+            ],
+            [
+              "58",
+              "I . Iann Andruschenko",
+              "5",
+              "",
+              "",
+              ""
+            ],
+            [
+              "8",
+              "B . Brody Larsen",
+              "5",
+              "",
+              "",
+              ""
+            ],
+            [
+              "68",
+              "D . Dylan Villalpando",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "10",
+              "T . Tuff Thornton",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "11",
+              "C . Cash Rockhill",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "4",
+              "K . Kash Atkinson",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "50",
+              "C . Carter McReynolds",
+              "3",
+              "",
+              "",
+              ""
+            ],
+            [
+              "5",
+              "B . Brock Jackson",
+              "3",
+              "",
+              "",
+              ""
+            ],
+            [
+              "2",
+              "J . Jesse Clegg",
+              "3",
+              "",
+              "",
+              ""
+            ],
+            [
+              "7",
+              "B . Bracken Osguthorpe",
+              "2",
+              "",
+              "",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 7,
-        "rows": 10,
-        "coreCells": 20,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 6
+        "blocks": 8,
+        "rows": 30,
+        "coreCells": 75,
+        "filledCoreCells": 32,
+        "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:54:04.826Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:25.122Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|STANSBURY|WOODSCROSS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/stansbury-football-vs-woods-cross-football/273705",
@@ -63465,8 +64667,12 @@
         "filledCoreCells": 37,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:54:06.076Z",
-      "finalRefreshCount": 11
+      "fetchedAt": "2026-09-01T03:35:26.389Z",
+      "finalRefreshCount": 12,
+      "finalSource": "verified-manual",
+      "statusSource": "verified-manual",
+      "scoreSource": "verified-manual",
+      "manualScoreNote": "Verified final from Deseret News: Stansbury 45-28 Woods Cross"
     },
     "2026-08-28|TIMPANOGOS|BINGHAM": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/timpanogos-football-vs-bingham-football/273365",
@@ -64036,17 +65242,47 @@
         "filledCoreCells": 43,
         "emptyCoreBlocks": 1
       },
-      "fetchedAt": "2026-08-31T20:54:07.041Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:27.461Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|UMALEHI|SAINTJOSEPH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/utah-military-camp-williams-football-football-vs-st-joseph-football-football/274429",
-      "status": "Scheduled",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "6:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "UMALEHI",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 28
+          },
+          {
+            "team": "SAINTJOSEPH",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 47
+          }
+        ],
+        "source": "manual-scoreboard-correction"
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -64056,7 +65292,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-08-28T21:59:15.482Z"
+      "fetchedAt": "2026-08-28T21:59:15.482Z",
+      "finalSource": "verified-manual",
+      "statusSource": "verified-manual",
+      "scoreSource": "verified-manual",
+      "manualScoreNote": "Verified final from MaxPreps: Saint Joseph 47-28 UMA-Lehi"
     },
     "2026-08-28|VIEWMONT|HIGHLAND": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/viewmont-football-vs-highland-football/273597",
@@ -64537,8 +65777,8 @@
         "filledCoreCells": 43,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:54:08.138Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:28.764Z",
+      "finalRefreshCount": 13
     },
     "2026-08-28|WASATCH|BONNEVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-28/wasatch-football-vs-bonneville-football/273391",
@@ -64625,6 +65865,34 @@
           ],
           "rows": [
             [
+              "13",
+              "A . Aksel Wheeler",
+              "20",
+              "78",
+              ""
+            ],
+            [
+              "16",
+              "G . Grady Coombs",
+              "1",
+              "26",
+              ""
+            ],
+            [
+              "5",
+              "B . Brody Harr",
+              "11",
+              "21",
+              ""
+            ],
+            [
+              "12",
+              "C . Carter Pitts",
+              "2",
+              "18",
+              ""
+            ],
+            [
               "3",
               "B . Bryce Harr",
               "",
@@ -64671,6 +65939,15 @@
           ],
           "rows": [
             [
+              "5",
+              "B . Brody Harr",
+              "17-26",
+              "65%",
+              "120",
+              "",
+              ""
+            ],
+            [
               "3",
               "B . Bryce Harr",
               "",
@@ -64713,10 +65990,38 @@
           ],
           "rows": [
             [
+              "19",
+              "S . Seth Kelson",
+              "8",
+              "61",
+              ""
+            ],
+            [
+              "7",
+              "C . Cole Moore",
+              "4",
+              "29",
+              ""
+            ],
+            [
+              "16",
+              "G . Grady Coombs",
+              "2",
+              "16",
+              ""
+            ],
+            [
+              "26",
+              "K . Kendricks Tobler",
+              "1",
+              "7",
+              ""
+            ],
+            [
               "4",
               "W . Wyatt Washburn",
-              "",
-              "",
+              "2",
+              "7",
               "1"
             ]
           ]
@@ -64760,18 +66065,128 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Defense",
+          "team": "",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "E . Easton Colby",
+              "7",
+              "1",
+              "",
+              ""
+            ],
+            [
+              "18",
+              "J . Jack Wells",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "9",
+              "R . Riley McPhie",
+              "4",
+              "",
+              "",
+              ""
+            ],
+            [
+              "11",
+              "B . Burke Seiter",
+              "3",
+              "",
+              "",
+              ""
+            ],
+            [
+              "8",
+              "A . Andrew Hola",
+              "3",
+              "",
+              "",
+              ""
+            ],
+            [
+              "52",
+              "R . Ryne Ball",
+              "3",
+              "",
+              "",
+              ""
+            ],
+            [
+              "5",
+              "B . Brody Harr",
+              "2",
+              "",
+              "",
+              ""
+            ],
+            [
+              "17",
+              "P . Peyton Morris",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "53",
+              "L . Luke Morden",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "70",
+              "T . Tukai Malani",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "77",
+              "S . Stran Kelley",
+              "1",
+              "",
+              "",
+              ""
+            ],
+            [
+              "16",
+              "G . Grady Coombs",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 8,
-        "rows": 9,
-        "coreCells": 18,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 6
+        "blocks": 9,
+        "rows": 30,
+        "coreCells": 74,
+        "filledCoreCells": 34,
+        "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-08-31T20:54:08.895Z",
-      "finalRefreshCount": 12
+      "fetchedAt": "2026-09-01T03:35:30.343Z",
+      "finalRefreshCount": 13
     },
     "2026-08-27|THUNDERRIDGEID|BEARRIVER": {
       "date": "8/27/2026",
