@@ -23,6 +23,11 @@ function dayNumber(value) {
   return Number.isFinite(time) ? time / 86400000 : null;
 }
 
+function inActiveWindow(value, todayNumber) {
+  const number = dayNumber(isoDate(value));
+  return !!number && todayNumber !== null && Math.abs(number - todayNumber) <= 3;
+}
+
 if (!fs.existsSync(WEEKLY) || !fs.existsSync(DETAILS)) process.exit(0);
 const weekly = JSON.parse(fs.readFileSync(WEEKLY, 'utf8'));
 const details = JSON.parse(fs.readFileSync(DETAILS, 'utf8'));
@@ -30,15 +35,22 @@ const todayNumber = dayNumber(today);
 const activeKeys = new Set();
 
 for (const game of weekly.games || []) {
-  const date = isoDate(game.date);
-  const number = dayNumber(date);
-  if (!number || todayNumber === null || Math.abs(number - todayNumber) > 3) continue;
+  if (!inActiveWindow(game.date, todayNumber)) continue;
   activeKeys.add(gameKey(game));
 }
 
 const games = {};
 for (const [key, detail] of Object.entries(details.games || {})) {
-  if (!activeKeys.has(key)) continue;
+  const keyDate = key.split('|')[0];
+  const detailDate = detail.date || keyDate;
+  const isInWindow = inActiveWindow(detailDate, todayNumber);
+  const isLiveOrFinal = detail.final === true || /^(live|final)/i.test(clean(detail.status));
+
+  // Prefer exact Weekly Simulation matches, but do not drop a verified live/final
+  // game just because the school name differs between sources (for example,
+  // UMA-Lehi vs Utah Military Academy-Camp Williams).
+  if (!activeKeys.has(key) && !(isInWindow && isLiveOrFinal)) continue;
+
   games[key] = {
     date: detail.date,
     awayTeam: detail.awayTeam,
