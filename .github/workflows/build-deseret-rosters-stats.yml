@@ -18,8 +18,10 @@ on:
       - 'scripts/merge_deseret_stats_endpoints.mjs'
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
       - 'maxpreps-stats-fallback-2026.json'
+      - 'maxpreps-player-game-stats-2026.json'
       - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/build_player_game_stats.mjs'
+      - 'scripts/merge_maxpreps_game_logs.mjs'
       - 'scripts/build_weekly_awards.mjs'
       - 'scripts/apply_manual_stat_corrections.mjs'
       - 'award-scoring-core.js'
@@ -55,7 +57,9 @@ jobs:
       - name: Build compact shared stat metrics
         run: node scripts/build_deseret_stat_metrics.mjs
       - name: Connect roster players to individual game box scores
-        run: node scripts/build_player_game_stats.mjs
+        run: |
+          node scripts/build_player_game_stats.mjs
+          node scripts/merge_maxpreps_game_logs.mjs
       - name: Build automatic weekly awards
         run: node scripts/build_weekly_awards.mjs
       - name: Build compact per-team payloads

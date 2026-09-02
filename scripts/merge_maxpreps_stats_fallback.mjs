@@ -2,6 +2,7 @@ import fs from 'node:fs';
 
 const FILE='deseret-rosters-stats-2026.json';
 const CACHE='maxpreps-stats-fallback-2026.json';
+const GAME_CACHE='maxpreps-player-game-stats-2026.json';
 const SEASON_LABEL='26-27';
 const clean=v=>String(v??'').trim();
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -9,7 +10,7 @@ const slug=v=>clean(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$
 const decode=s=>String(s||'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&quot;/gi,'"').replace(/&#39;|&apos;/gi,"'").replace(/&lt;/gi,'<').replace(/&gt;/gi,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/&#x([0-9a-f]+);/gi,(_,n)=>String.fromCodePoint(parseInt(n,16)));
 const text=html=>decode(String(html||'')).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
 const nonEmpty=v=>v!==null&&v!==undefined&&clean(v)!=='';
-const number=v=>{const s=clean(v).replace(/,/g,'');return /^-?\d+(?:\.\d+)?$/.test(s)?s:''};
+const number=v=>{const s=clean(v).replace(/,/g,'');return /^-?(?:\d+(?:\.\d+)?|\.\d+)$/.test(s)?s:''};
 
 const NAME_ALIASES={
   ALA:['American Leadership Academy','American Leadership'],
@@ -76,7 +77,8 @@ function cells(row){
   const out=[];
   for(const match of String(row).matchAll(/<(th|td)\b([^>]*)>([\s\S]*?)<\/\1>/gi)){
     const title=match[3].match(/<a\b[^>]*\btitle=["']([^"']+)["']/i)?.[1];
-    out.push({value:text(match[3]),title:title?decode(title):''});
+    const href=match[3].match(/<a\b[^>]*\bhref=["']([^"']+)["']/i)?.[1];
+    out.push({value:text(match[3]),title:title?decode(title):'',href:href?decode(href):''});
   }
   return out;
 }
@@ -110,10 +112,36 @@ function parsePrintStats(html){
         if(target==='__COMP')comp=value;else if(target==='__ATT')att=value;else if(nonEmpty(values[target])&&target.endsWith('TD'))values[target]=String(Number(values[target])+Number(value));else values[target]=value;
       }
       if(comp&&att)values['COMP-ATT']=`${comp}-${att}`;
-      if(Object.keys(values).length)parsed.push({category:config.category,number:no,name,values});
+      if(Object.keys(values).length)parsed.push({category:config.category,number:no,name,athleteUrl:row[1]?.href||'',values});
     }
   }
   return parsed;
+}
+const GAME_FIELD_MAP={
+  Passing:{PassingComp:'__COMP',PassingAtt:'__ATT',PassingYards:'YARDS',CompletionPercentage:'COMP%',YdsPerCompletion:'YARDS/COMP.',PassingTD:'TD',PassingInt:'Int'},
+  Rushing:{RushingNum:'CARRIES',RushingYards:'YARDS',YardsPerCarry:'YARDS/CARRY',RushingTDNum:'TD'},
+  Receiving:{ReceivingNum:'RECEPTIONS',ReceivingYards:'YARDS',YardsPerReception:'YARDS/RECEP.',ReceivingTDNum:'TD'},
+  Tackles:{TotalTackles:'TACKLES'},
+  Sacks:{Sacks:'SACKS'},
+  'Defensive Statistics':{Interceptions:'PASS INT.',DefensiveTDNum:'DEFENSE TD'},
+  Touchdowns:{FumbleRecoveryTDNum:'DEFENSE TD',InterceptionTDNum:'DEFENSE TD',PuntReturnTDNum:'RETURN TD',KickoffReturnTDNum:'RETURN TD'},
+  'PATs and Field Goals':{PATMade:'PAT',FieldGoalsMade:'FG',KickingPoints:'Pts'}
+};
+function parsePlayerGameLogs(html,player){
+  const logs=nextData(html)?.props?.pageProps?.statsCardProps?.careerGameLogs?.groups||[],games=new Map();
+  for(const group of logs)for(const subgroup of group.subgroups||[]){
+    const fieldMap=GAME_FIELD_MAP[subgroup.name];if(!fieldMap)continue;
+    for(const entry of subgroup.stats||[]){
+      const date=clean(entry.stamp).slice(0,10);if(!/^2026-\d{2}-\d{2}$/.test(date))continue;
+      const key=`${date}|${compact(entry.opponentSchoolName)}`,game=games.get(key)||{date,opponent:clean(entry.opponentSchoolName),score:clean(entry.score),result:clean(entry.result),url:clean(entry.contestUrl),playerId:player.playerId,number:player.number,name:player.name,statLines:[]};
+      let line=game.statLines.find(x=>x.category===subgroup.name);if(!line){line={category:subgroup.name,values:{},statSources:{}};game.statLines.push(line)}
+      let comp='',att='';
+      for(const stat of entry.stats||[]){const target=fieldMap[stat.name],value=number(stat.value);if(!target||!value)continue;if(target==='__COMP')comp=value;else if(target==='__ATT')att=value;else line.values[target]=value,line.statSources[target]='MaxPreps'}
+      if(comp&&att){line.values['COMP-ATT']=`${comp}-${att}`;line.statSources['COMP-ATT']='MaxPreps'}
+      games.set(key,game);
+    }
+  }
+  return [...games.values()].filter(g=>g.statLines.some(line=>Object.keys(line.values).length));
 }
 function rosterMatch(team,row){
   const roster=team.roster||[],byName=roster.filter(p=>compact(p.name)===compact(row.name));
@@ -177,8 +205,20 @@ async function one(team){
 }
 async function worker(){while(true){const i=next++;if(i>=entries.length)return;await one(entries[i]);await new Promise(resolve=>setTimeout(resolve,120))}}
 await Promise.all(Array.from({length:Math.min(5,entries.length)},()=>worker()));
+const gameCache={season:data.season||2026,updatedAt:'',teams:{}},playerTasks=[];
+for(const team of entries){
+  const saved=cache.teams?.[team.team],seen=new Set();
+  for(const row of saved?.rows||[]){
+    const player=rosterMatch(team,row),athleteUrl=clean(row.athleteUrl);if(!player||!athleteUrl||seen.has(player.playerId))continue;
+    seen.add(player.playerId);playerTasks.push({team,player,url:new URL(athleteUrl,'https://www.maxpreps.com').href});
+  }
+}
+let gameNext=0,gamePlayersFetched=0,gamePlayersFailed=0,gameRows=0;
+async function gameWorker(){while(true){const i=gameNext++;if(i>=playerTasks.length)return;const task=playerTasks[i];try{const html=await fetchHtml(task.url),games=parsePlayerGameLogs(html,task.player);if(games.length){const bucket=gameCache.teams[task.team.team]||(gameCache.teams[task.team.team]={team:task.team.team,games:[]});bucket.games.push(...games);gameRows+=games.length}gamePlayersFetched++}catch(error){gamePlayersFailed++;console.warn(`${task.team.team} ${task.player.name} game logs: ${error.message}`)}await new Promise(resolve=>setTimeout(resolve,80))}}
+await Promise.all(Array.from({length:Math.min(8,playerTasks.length)},()=>gameWorker()));
 data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,unmatchedRows,failures,policy:'fill blank fields and missing roster-matched rows only'}};
 fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
 cache.updatedAt=new Date().toISOString();fs.writeFileSync(CACHE,JSON.stringify(cache,null,2)+'\n');
-console.log(`MaxPreps fallback: checked ${checked} teams; ${available} pages available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped; ${failures} failures.`);
+gameCache.updatedAt=new Date().toISOString();gameCache.summary={playersQueued:playerTasks.length,playersFetched:gamePlayersFetched,playersFailed:gamePlayersFailed,playerGames:gameRows};fs.writeFileSync(GAME_CACHE,JSON.stringify(gameCache,null,2)+'\n');
+console.log(`MaxPreps fallback: checked ${checked} teams; ${available} pages available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped; ${failures} failures. Game logs: ${gamePlayersFetched}/${playerTasks.length} players fetched, ${gameRows} player-games, ${gamePlayersFailed} failures.`);
 if(checked<Math.max(20,Math.floor(entries.length*.5)))throw new Error(`Too few MaxPreps teams checked: ${checked}/${entries.length}`);

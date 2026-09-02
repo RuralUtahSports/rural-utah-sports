@@ -32,7 +32,9 @@ jobs:
         with:
           node-version: 20
       - name: Verify fallback parser and merge rules
-        run: node scripts/merge_maxpreps_stats_fallback.mjs --self-test
+        run: |
+          node scripts/merge_maxpreps_stats_fallback.mjs --self-test
+          node scripts/merge_maxpreps_game_logs.mjs --self-test
       - name: Fill missing Deseret player stats from MaxPreps
         run: node scripts/merge_maxpreps_stats_fallback.mjs
       - name: Rebuild stats-dependent data
@@ -40,6 +42,7 @@ jobs:
           node scripts/apply_manual_stat_corrections.mjs
           node scripts/build_deseret_stat_metrics.mjs
           node scripts/build_player_game_stats.mjs
+          node scripts/merge_maxpreps_game_logs.mjs
           node scripts/build_weekly_awards.mjs
           node scripts/build_team_current_shards.mjs
       - name: Verify fallback output
@@ -57,7 +60,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add maxpreps-stats-fallback-2026.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
+          git add maxpreps-stats-fallback-2026.json maxpreps-player-game-stats-2026.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
           if git diff --cached --quiet; then echo "MaxPreps fallback data already current."; exit 0; fi
           git commit -m "Auto-fill missing player stats from MaxPreps"
           for attempt in 1 2 3 4; do
