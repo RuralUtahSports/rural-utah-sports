@@ -108,7 +108,7 @@ export function reconcileSeasonStats(rosters,games,sources={}){
 }
 
 function selfTest(){
-  const makeRoster=yards='725'=>({teams:{MANTI:{stats:[{category:'Passing',headers:['COMP-ATT','COMP%','YARDS','YARDS/COMP.','TD','Int'],rows:[{playerId:'wright',name:'Kingston Wright',number:'1',values:{'COMP-ATT':'52-70','COMP%':'74.29',YARDS:yards,'YARDS/COMP.':'13.94',TD:'12',Int:'3'}}]}]}}});
+  const makeRoster=(yards='725')=>({teams:{MANTI:{stats:[{category:'Passing',headers:['COMP-ATT','COMP%','YARDS','YARDS/COMP.','TD','Int'],rows:[{playerId:'wright',name:'Kingston Wright',number:'1',values:{'COMP-ATT':'52-70','COMP%':'74.29',YARDS:yards,'YARDS/COMP.':'13.94',TD:'12',Int:'3'}}]}]}}});
   const rows=[['2026-08-14','PINE VIEW','41-56',525,3,3],['2026-08-21','RICHFIELD','11-14',200,4,0],['2026-08-28','GRANTSVILLE','22-37',466,5,1]];
   const makeGame=([date,opponent,attempts,yards,td,int])=>({date,opponent,status:'Final',final:true,players:[{playerId:'wright',name:'Kingston Wright',number:'1',statLines:[{category:'Passing',values:{'Comp-Att':attempts,Yards:String(yards),TD:String(td),Int:String(int)}}]}]});
   const rosters=makeRoster(),games={teams:{MANTI:{games:rows.map(makeGame)}}},result=reconcileSeasonStats(rosters,games),values=rosters.teams.MANTI.stats[0].rows[0].values;
