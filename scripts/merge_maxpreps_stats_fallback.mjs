@@ -48,7 +48,7 @@ function candidateSchoolUrls(html){
   return [...found];
 }
 async function discover(team){
-  const query=encodeURIComponent(`${team} Utah high school football`),search=await fetchHtml(`https://www.maxpreps.com/search/?q=${query}`);
+  const query=encodeURIComponent(`${team} Utah`),search=await fetchHtml(`https://www.maxpreps.com/search/?q=${query}`);
   for(const schoolUrl of candidateSchoolUrls(search)){
     const statsUrl=`${schoolUrl}football/stats/`;
     try{
