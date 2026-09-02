@@ -16,6 +16,8 @@ on:
       - 'manual-stat-corrections-2026.json'
       - 'scripts/build_deseret_rosters_stats.mjs'
       - 'scripts/merge_deseret_stats_endpoints.mjs'
+      - 'scripts/merge_maxpreps_stats_fallback.mjs'
+      - 'maxpreps-stats-fallback-2026.json'
       - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/build_player_game_stats.mjs'
       - 'scripts/build_weekly_awards.mjs'
@@ -49,6 +51,7 @@ jobs:
         run: |
           node scripts/build_deseret_rosters_stats.mjs
           node scripts/merge_deseret_stats_endpoints.mjs
+          if [ -f maxpreps-stats-fallback-2026.json ]; then node scripts/merge_maxpreps_stats_fallback.mjs --apply-cache; fi
       - name: Build compact shared stat metrics
         run: node scripts/build_deseret_stat_metrics.mjs
       - name: Connect roster players to individual game box scores
