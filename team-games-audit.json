@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-02T22:43:22.143Z",
+  "updatedAt": "2026-09-02T22:45:34.549Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,16 +8,16 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 67976,
+    "scheduleRowsAudited": 67979,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
     "seasonSummaryMismatches": 205,
-    "reciprocalMismatches": 989,
+    "reciprocalMismatches": 986,
     "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 214
+    "recent2025PlusIssues": 211
   },
   "recent2025PlusIssues": [
     {
@@ -1538,26 +1538,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "HILLCREST",
-      "date": "8/21/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "HILLCREST",
-          "opponent": "DEER CREEK",
-          "date": "8/21/2026",
-          "teamScore": 53,
-          "opponentScore": 7,
-          "result": "W",
-          "season": "2026",
-          "index": 1
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "HIGHLAND",
       "teamB": "HUNTER",
       "date": "8/22/2025",
@@ -1653,26 +1633,6 @@
           "result": "L",
           "season": "2025",
           "index": 8
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "JORDAN",
-      "date": "8/28/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "JORDAN",
-          "opponent": "DEER CREEK",
-          "date": "8/28/2026",
-          "teamScore": 13,
-          "opponentScore": 10,
-          "result": "W",
-          "season": "2026",
-          "index": 2
         }
       ]
     },
@@ -2164,26 +2124,6 @@
           "result": "W",
           "season": "2025",
           "index": 6
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "MOUNTAIN CREST",
-      "date": "8/14/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "MOUNTAIN CREST",
-          "opponent": "DEER CREEK",
-          "date": "8/14/2026",
-          "teamScore": 49,
-          "opponentScore": 0,
-          "result": "W",
-          "season": "2026",
-          "index": 0
         }
       ]
     },
@@ -16332,26 +16272,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "HILLCREST",
-      "date": "8/21/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "HILLCREST",
-          "opponent": "DEER CREEK",
-          "date": "8/21/2026",
-          "teamScore": 53,
-          "opponentScore": 7,
-          "result": "W",
-          "season": "2026",
-          "index": 1
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "HUNTER",
       "teamB": "KEARNS",
       "date": "10/9/1999",
@@ -16800,26 +16720,6 @@
           "result": "L",
           "season": "2025",
           "index": 8
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "JORDAN",
-      "date": "8/28/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "JORDAN",
-          "opponent": "DEER CREEK",
-          "date": "8/28/2026",
-          "teamScore": 13,
-          "opponentScore": 10,
-          "result": "W",
-          "season": "2026",
-          "index": 2
         }
       ]
     },
@@ -20447,26 +20347,6 @@
         }
       ],
       "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "MOUNTAIN CREST",
-      "date": "8/14/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "MOUNTAIN CREST",
-          "opponent": "DEER CREEK",
-          "date": "8/14/2026",
-          "teamScore": 49,
-          "opponentScore": 0,
-          "result": "W",
-          "season": "2026",
-          "index": 0
-        }
-      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -29870,8 +29750,8 @@
     {
       "team": "DEER CREEK",
       "file": "deer-creek.json",
-      "seasons": 0,
-      "totalGames": 0
+      "seasons": 1,
+      "totalGames": 3
     },
     {
       "team": "DELTA",
