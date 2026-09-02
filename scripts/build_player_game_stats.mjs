@@ -4,6 +4,7 @@ import {applyGameDetailCorrections} from './apply_manual_stat_corrections.mjs';
 const DETAILS='deseret-game-details.json';
 const ROSTERS='deseret-rosters-stats-2026.json';
 const WEEKLY='weekly-simulation.json';
+const TEAM_DATA='deseret-team-data-2026.json';
 const OUT='player-game-stats-2026.json';
 const clean=v=>String(v??'').trim();
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -21,12 +22,20 @@ function teamLabelMatches(label,team){const l=compact(label),t=canon(team);retur
 function statRows(table){const headers=(table.headers||[]).map(clean);const hu=headers.map(compact);let noI=hu.findIndex(x=>x==='NO'||x==='NUMBER'||x==='#');let nameI=hu.findIndex(x=>x==='PLAYER'||x.includes('PLAYERNAME'));if(noI<0)noI=0;if(nameI<0)nameI=1;const out=[];for(const raw of table.rows||[]){const row=Array.isArray(raw)?raw.map(clean):[];if(!row.length)continue;const no=clean(row[noI]||''),rawName=cleanGameName(row[nameI]||'');if(!rawName||compact(rawName)==='PLAYER')continue;const values={};for(let i=0;i<headers.length;i++){if(i===noI||i===nameI)continue;values[headers[i]||`Stat ${i+1}`]=clean(row[i]||'')}out.push({number:no,rawName,category:clean(table.category)||'Stats',values})}return out}
 function playMatchesPlayer(play,p){const txt=compact(play),b=nameBits(p.name);if(!b.last||b.last.length<3||!txt.includes(b.last))return false;if(b.first&&txt.includes(b.first+b.last))return true;if(b.initial&&txt.includes(b.initial+b.last))return true;return txt.includes(b.last)}
 function scoreValue(...values){for(const value of values){if(value===null||value===undefined||clean(value)==='')continue;const n=Number(value);if(Number.isFinite(n))return n}return null}
+const hasScore=value=>value!==null&&value!==undefined&&value!==''&&Number.isFinite(Number(value));
+function scheduleFinal(game){const status=clean(game?.rusStatus).toUpperCase(),result=clean(game?.result).toUpperCase();return status.includes('FINAL')||(hasScore(game?.teamScore)&&hasScore(game?.opponentScore))||['W','L','T'].includes(result)}
+function scheduleTeam(scheduleData,teamName){return Object.values(scheduleData?.teams||{}).find(team=>canon(team?.team)===canon(teamName))||null}
+function expectedScheduleGame(scheduleData,teamName,game){const team=scheduleTeam(scheduleData,teamName);if(!team)return null;const candidates=(team.schedule||[]).filter(row=>scheduleFinal(row)&&isoDate(row.date)===isoDate(game.date));if(!candidates.length)return null;return candidates.find(row=>canon(row.opponent)===canon(game.opponent))||(candidates.length===1?candidates[0]:null)}
+function statCellCount(game){let count=0;for(const player of game?.players||[])for(const line of player.statLines||[])for(const value of Object.values(line.values||{}))if(clean(value)!=='')count++;return count}
+function normalizedPreservedGame(teamName,oldGame,schedule){const isAway=canon(schedule.awayTeam)===canon(teamName)||clean(schedule.site).toLowerCase()==='away';return{...oldGame,date:isoDate(schedule.date||oldGame.date),opponent:clean(schedule.opponent)||oldGame.opponent,location:isAway?'Away':'Home',status:'Final',final:true,teamScore:hasScore(schedule.teamScore)?Number(schedule.teamScore):oldGame.teamScore,opponentScore:hasScore(schedule.opponentScore)?Number(schedule.opponentScore):oldGame.opponentScore,url:clean(schedule.gameUrl)||oldGame.url||'',preservedFromPrior:true}}
 
 if(!fs.existsSync(DETAILS)||!fs.existsSync(ROSTERS)||!fs.existsSync(WEEKLY)){console.log('Player game stat inputs missing; skipping.');process.exit(0)}
 const details=JSON.parse(fs.readFileSync(DETAILS,'utf8')).games||{};
 applyGameDetailCorrections(details);
 const rosterData=JSON.parse(fs.readFileSync(ROSTERS,'utf8')).teams||{};
 const weekly=JSON.parse(fs.readFileSync(WEEKLY,'utf8')).games||[];
+const scheduleData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null;
+let prior={teams:{}};if(fs.existsSync(OUT)){try{prior=JSON.parse(fs.readFileSync(OUT,'utf8'))}catch{}}
 const byKey=new Map(weekly.map(g=>[gameKey(g),g]));
 const rosterKeys=Object.keys(rosterData),teams={};let gameCount=0,rowCount=0,matched=0;
 for(const [key,d] of Object.entries(details)){
@@ -56,7 +65,20 @@ for(const [key,d] of Object.entries(details)){
     teams[team].games.push({gameKey:key,date:gameDate,opponent,location:isAway?'Away':'Home',status,final,teamScore:ownScore,opponentScore:oppScore,url:d.url||g.deseretUrl||'',players:Object.values(players),scoringPlays:(d.scoringPlays||[]).filter(play=>teamLabelMatches(play.split('—')[0],team))});gameCount++;
   }
 }
+let preservedFinalGames=0,replacedEmptyFinalGames=0;
+for(const [priorName,priorTeam] of Object.entries(prior.teams||{})){
+  for(const oldGame of priorTeam.games||[]){
+    if(!(oldGame.final===true||clean(oldGame.status).toUpperCase().includes('FINAL'))||statCellCount(oldGame)===0)continue;
+    const expected=expectedScheduleGame(scheduleData,priorName,oldGame);if(!expected)continue;
+    let targetKey=Object.keys(teams).find(name=>canon(name)===canon(priorName));
+    if(!targetKey){targetKey=priorName;teams[targetKey]={team:priorTeam.team||priorName,games:[]}}
+    const target=teams[targetKey],index=(target.games||[]).findIndex(game=>isoDate(game.date)===isoDate(oldGame.date)&&canon(game.opponent)===canon(oldGame.opponent)),restored=normalizedPreservedGame(priorName,oldGame,expected);
+    if(index<0){target.games.push(restored);preservedFinalGames++}
+    else if(statCellCount(target.games[index])===0){target.games[index]=restored;replacedEmptyFinalGames++}
+  }
+}
 for(const t of Object.values(teams))t.games.sort((a,b)=>a.date.localeCompare(b.date));
-const out={season:2026,updatedAt:new Date().toISOString(),summary:{teams:Object.keys(teams).length,teamGames:gameCount,statRows:rowCount,rosterMatchedRows:matched},teams};
+gameCount=Object.values(teams).reduce((sum,team)=>sum+(team.games||[]).length,0);
+const out={season:2026,updatedAt:new Date().toISOString(),summary:{teams:Object.keys(teams).length,teamGames:gameCount,statRows:rowCount,rosterMatchedRows:matched,preservedFinalGames,replacedEmptyFinalGames},teams};
 fs.writeFileSync(OUT,JSON.stringify(out,null,2)+'\n');
-console.log(`Player game stats: ${out.summary.teams} teams, ${gameCount} team-games, ${rowCount} stat rows, ${matched} roster-matched.`);
+console.log(`Player game stats: ${out.summary.teams} teams, ${gameCount} team-games, ${rowCount} stat rows, ${matched} roster-matched; ${preservedFinalGames} prior final game(s) preserved and ${replacedEmptyFinalGames} empty final game(s) restored.`);
