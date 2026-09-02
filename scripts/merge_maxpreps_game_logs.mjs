@@ -18,7 +18,7 @@ export function mergeMaxPrepsGameLogs(output,cache){
       if(!player){player={playerId:incoming.playerId,number:incoming.number,name:incoming.name,position:'',rosterMatched:true,statLines:[],scoringPlays:[]};(game.players||(game.players=[])).push(player);playersAdded++}
       for(const incomingLine of incoming.statLines||[]){
         let line=(player.statLines||[]).find(x=>compact(x.category)===compact(incomingLine.category));if(!line){line={category:incomingLine.category,values:{},statSources:{}};(player.statLines||(player.statLines=[])).push(line);linesAdded++}
-        for(const [header,value] of Object.entries(incomingLine.values||{})){if(nonEmpty(line.values?.[header]))continue;line.values||(line.values={});line.values[header]=value;line.statSources||(line.statSources={});line.statSources[header]='MaxPreps';fieldsFilled++}
+        for(const [header,value] of Object.entries(incomingLine.values||{})){line.values||(line.values={});const targetHeader=Object.keys(line.values).find(existing=>compact(existing)===compact(header))||header;if(nonEmpty(line.values[targetHeader]))continue;line.values[targetHeader]=value;line.statSources||(line.statSources={});line.statSources[targetHeader]='MaxPreps';fieldsFilled++}
       }
       if(!game.maxprepsUrl&&incoming.url)game.maxprepsUrl=incoming.url;
     }
@@ -27,10 +27,10 @@ export function mergeMaxPrepsGameLogs(output,cache){
 }
 
 function selfTest(){
-  const output={teams:{MANTI:{games:[{date:'2026-08-14',opponent:'PINE VIEW',players:[{playerId:'wright',number:'1',name:'Kingston Wright',statLines:[{category:'Passing',values:{TD:'3'}}]}]}]}}};
+  const output={teams:{MANTI:{games:[{date:'2026-08-14',opponent:'PINE VIEW',players:[{playerId:'wright',number:'1',name:'Kingston Wright',statLines:[{category:'Passing',values:{Yards:'',TD:'3'}}]}]}]}}};
   const cache={teams:{MANTI:{games:[{date:'2026-08-14',opponent:'Pine View',playerId:'wright',number:'1',name:'Kingston Wright',statLines:[{category:'Passing',values:{'COMP-ATT':'41-56',YARDS:'525',TD:'3',Int:'3'}}]}]}}};
   const result=mergeMaxPrepsGameLogs(output,cache),line=output.teams.MANTI.games[0].players[0].statLines[0];
-  if(result.fieldsFilled!==3||line.values.TD!=='3'||line.values.YARDS!=='525')throw new Error('MaxPreps game-log merge self-test failed');
+  if(result.fieldsFilled!==3||line.values.TD!=='3'||line.values.Yards!=='525'||Object.hasOwn(line.values,'YARDS'))throw new Error('MaxPreps game-log merge self-test failed');
   console.log('MaxPreps game-log merge self-test passed.');
 }
 if(process.argv.includes('--self-test')){selfTest();process.exit(0)}

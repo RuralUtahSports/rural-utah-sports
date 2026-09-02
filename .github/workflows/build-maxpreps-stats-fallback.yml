@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
+      - 'scripts/merge_maxpreps_game_logs.mjs'
       - '.github/workflows/build-maxpreps-stats-fallback.yml'
   schedule:
     # Tuesday at 8:00 a.m. Mountain Daylight Time (2:00 p.m. UTC).
@@ -14,7 +15,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: deseret-rosters-stats
+  group: maxpreps-stats-fallback
   cancel-in-progress: false
 
 jobs:
