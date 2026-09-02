@@ -6,6 +6,7 @@ on:
     paths:
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
+      - 'scripts/reconcile_season_stats_from_game_logs.mjs'
       - '.github/workflows/build-maxpreps-stats-fallback.yml'
   schedule:
     # Tuesday at 8:00 a.m. Mountain Daylight Time (2:00 p.m. UTC).
@@ -36,14 +37,16 @@ jobs:
         run: |
           node scripts/merge_maxpreps_stats_fallback.mjs --self-test
           node scripts/merge_maxpreps_game_logs.mjs --self-test
+          node scripts/reconcile_season_stats_from_game_logs.mjs --self-test
       - name: Fill missing Deseret player stats from MaxPreps
         run: node scripts/merge_maxpreps_stats_fallback.mjs
       - name: Rebuild stats-dependent data
         run: |
           node scripts/apply_manual_stat_corrections.mjs
-          node scripts/build_deseret_stat_metrics.mjs
           node scripts/build_player_game_stats.mjs
           node scripts/merge_maxpreps_game_logs.mjs
+          node scripts/reconcile_season_stats_from_game_logs.mjs
+          node scripts/build_deseret_stat_metrics.mjs
       - name: Verify fallback output
         run: |
           node - <<'NODE'
