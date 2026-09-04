@@ -228,20 +228,21 @@
       const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
       if(!blob)throw new Error('The PNG could not be created.');
       const filename=`rural-utah-sports-${safeFilename(data.away)}-at-${safeFilename(data.home)}-${isoDate(data.date)||'game'}.png`;
-      if(typeof File==='function'&&navigator.share&&navigator.canShare){
-        const file=new File([blob],filename,{type:'image/png'});
-        if(navigator.canShare({files:[file]})){
-          try{
+      if(typeof File==='function'&&navigator.share){
+        try{
+          const file=new File([blob],filename,{type:'image/png'});
+          const canShareFiles=typeof navigator.canShare!=='function'||navigator.canShare({files:[file]});
+          if(canShareFiles){
             await withTimeout(
               navigator.share({files:[file],title:`${data.away} at ${data.home} | Rural Utah Sports`,text:`${data.away} at ${data.home} — ${formatDate(data.date)}`}),
               12000,
               'The share sheet did not open.'
             );
             return;
-          }catch(error){
-            if(error?.name==='AbortError')return;
-            console.warn('Native sharing was unavailable; saving the PNG instead.',error);
           }
+        }catch(error){
+          if(error?.name==='AbortError')return;
+          console.warn('Native sharing was unavailable; saving the PNG instead.',error);
         }
       }
       const url=URL.createObjectURL(blob);
