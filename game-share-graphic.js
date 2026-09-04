@@ -62,6 +62,35 @@
   function teamMeta(info){return[info?.classification,info?.region?`Region ${info.region}`:''].filter(Boolean).join(' • ')}
   function safeFilename(value){return String(value||'game').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 
+
+  function finalBox(detail,away,home,totals){
+    const box=detail?.boxScore;
+    if(!Array.isArray(box?.rows)||box.rows.length!==2)return null;
+    let periods=(box.periods?.length?box.periods:['Q1','Q2','Q3','Q4']).map(p=>String(p).toUpperCase());
+    const rows=[away,home].map(name=>box.rows.find(r=>canon(r.team)===canon(name)));
+    if(rows.some(r=>!r))return null;
+    const values=rows.map(r=>(r.quarters||[]).map(asNumber));
+    if(values.some((v,i)=>v.length<4||v.some(n=>n===null||n<0)||v.reduce((a,b)=>a+b,0)!==totals[i]))return null;
+    const count=Math.max(...values.map(v=>v.length));
+    if(values.some(v=>v.length!==count))return null;
+    while(periods.length<count)periods.push(periods.length<4?'Q'+(periods.length+1):periods.length===4?'OT':(periods.length-3)+' OT');
+    if(periods.length!==count)return null;
+    return{periods,rows:values};
+  }
+  function drawFinalBox(ctx,data,x,y,w,s){
+    const box=data.quarterScores;
+    rounded(ctx,x,y,w,130*s,16*s,'#050505','#444');
+    ctx.textAlign='left';ctx.fillStyle=ORANGE;ctx.font=`900 ${16*s}px Arial`;ctx.fillText('QUARTER-BY-QUARTER',x+24*s,y+26*s);
+    if(!box){ctx.fillStyle='#aaa';ctx.font=`900 ${17*s}px Arial`;ctx.fillText('Quarter scores not reported',x+24*s,y+78*s);return}
+    const nameW=w*.36,cellW=(w-nameW-24*s)/(box.periods.length+1);
+    [...box.periods,'FINAL'].forEach((label,i)=>{ctx.textAlign='center';ctx.fillStyle='#aaa';ctx.font=`900 ${14*s}px Arial`;ctx.fillText(label,x+nameW+cellW*(i+.5),y+49*s)});
+    [data.away,data.home].forEach((name,i)=>{
+      const ry=y+(80+i*30)*s;
+      ctx.textAlign='left';ctx.fillStyle='#fff';fitText(ctx,name,nameW-32*s,18*s,12*s);ctx.fillText(name,x+24*s,ry);
+      [...box.rows[i],i?data.actualHome:data.actualAway].forEach((n,j)=>{ctx.textAlign='center';ctx.fillStyle=j===box.periods.length?ORANGE:'#fff';ctx.font=`900 ${19*s}px Arial`;ctx.fillText(String(n),x+nameW+cellW*(j+.5),ry)});
+    });
+  }
+
   let dataPromise=null;
   async function loadGameData(){
     if(dataPromise)return dataPromise;
@@ -122,6 +151,7 @@
 
       return{
         away,home,date,year:gameYear,final,live,
+        quarterScores:final?finalBox(detail,away,home,[actualAway,actualHome]):null,
         status:final?'FINAL':live?String(detail?.status||'LIVE').toUpperCase():'UPCOMING',
         actualAway,actualHome,predictedAway,predictedHome,projectedTotal,projectedMargin,line,
         awayChance,homeChance,
@@ -264,16 +294,18 @@
     ctx.textAlign='center';ctx.fillStyle='#777';ctx.font=`1000 ${38*s}px Arial`;ctx.fillText(data.final?`${data.actualAway} – ${data.actualHome}`:'AT',width/2,top+logoSize/2+20*s);
     ctx.fillStyle=data.final?ORANGE:'#aaa';ctx.font=`900 ${16*s}px Arial`;ctx.fillText(data.status,width/2,top+logoSize/2+50*s);
 
-    const statsY=(format==='story'?610:format==='x'?470:505)*s;
+    const statsY=(format==='story'?610:format==='x'?365:505)*s;
     const gap=20*s,colW=(width-84*s-gap)/2;
     drawLeaderColumn(ctx,32*s,statsY,colW,data.away,safeHex(data.awayInfo?.backgroundColor,'#b00000'),data.awayLeaders,s);
     drawLeaderColumn(ctx,32*s+colW+gap,statsY,colW,data.home,safeHex(data.homeInfo?.backgroundColor,'#b22200'),data.homeLeaders,s);
 
     const lineY=statsY+332*s;
+    if(data.final){drawFinalBox(ctx,data,32*s,lineY,width-64*s,s)}else{
     rounded(ctx,32*s,lineY,width-64*s,100*s,16*s,'#050505','#444');
     ctx.textAlign='left';ctx.fillStyle=ORANGE;ctx.font=`900 ${16*s}px Arial`;ctx.fillText('RUS PROJECTED LINE',58*s,lineY+34*s);
     ctx.fillStyle='#888';ctx.font=`800 ${14*s}px Arial`;ctx.fillText('Model projection • not a sportsbook line',58*s,lineY+67*s);
     ctx.textAlign='right';ctx.fillStyle='#fff';fitText(ctx,data.line,420*s,40*s,22*s);ctx.fillText(data.line,width-58*s,lineY+62*s);
+    }
     ctx.fillStyle='#050505';ctx.fillRect(0,height-54*s,width,54*s);ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font=`900 ${14*s}px Arial`;ctx.fillText('ruralutahsports.com',42*s,height-22*s);
     ctx.textAlign='right';ctx.fillStyle='#777';ctx.fillText('Season leaders from reported Deseret statistics',width-42*s,height-22*s);
     return canvas;
