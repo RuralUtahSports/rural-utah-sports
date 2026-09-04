@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T22:02:46.351Z",
+  "updatedAt": "2026-09-04T23:07:30.608Z",
   "games": {
     "2026-09-03|BOUNTIFUL|MORGAN": {
       "date": "09/03/2026",
@@ -1511,7 +1511,7 @@
       "awayTeam": "SAINT JOSEPH",
       "homeTeam": "PANGUITCH",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/st-joseph-football-football-vs-panguitch-football/273635",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -1819,14 +1819,45 @@
       "awayTeam": "RICH",
       "homeTeam": "MOUNTAIN VIEW, WY",
       "url": "",
-      "status": "Scheduled",
+      "status": "Q4",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "6:24",
+      "period": "Q4",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "RICH",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 13
+          },
+          {
+            "team": "MOUNTAIN VIEW, WY",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 14
+          }
+        ],
+        "source": "deseret-day-scoreboard-unlinked"
+      },
       "scoringPlays": [],
-      "stats": []
+      "stats": [],
+      "scoreSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|SKYRIDGE|LIBERTYNV": {
       "date": "09/04/2026",
