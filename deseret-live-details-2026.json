@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T04:19:58.584Z",
+  "updatedAt": "2026-09-04T04:21:17.401Z",
   "games": {
     "2026-08-31|UMALEHI|SAINTJOSEPH": {
       "date": "8/31/2026",
@@ -502,36 +502,36 @@
       "awayTeam": "PROVO",
       "homeTeam": "SALEM HILLS",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-03/provo-football-vs-salem-hills-football/273428",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
-          "Q1",
           "Q2",
           "Q3",
-          "Q4"
+          "Q4",
+          "OT"
         ],
         "rows": [
           {
-            "team": "Provo Bulldogs (0-3)",
+            "team": "Provo Bulldogs (0-3) 7",
             "quarters": [
-              7,
               14,
               0,
-              7
+              7,
+              6
             ],
-            "total": 28
+            "total": 34
           },
           {
-            "team": "Salem Hills SkyHawks (2-1)",
+            "team": "Salem Hills SkyHawks (2-1) 7",
             "quarters": [
-              7,
               14,
               0,
-              7
+              7,
+              0
             ],
             "total": 28
           }
@@ -545,7 +545,8 @@
         "Provo — ( 6:16 2Q ) Brexton Hunter , 8-yard pass ( kick from Cannon Brinley )",
         "Salem Hills — ( 2:59 2Q ) Peyton Higginson , 5-yard pass from Cash Hollingshead ( kick from Jack Nelson )",
         "Salem Hills — ( 7:40 4Q ) Reggie Smith , 1-yard run ( kick from Jack Nelson )",
-        "Provo — ( 0:12 4Q ) Kellen Jarvis , 4-yard pass from Kellen Jarvis ( kick from Cannon Brinley )"
+        "Provo — ( 0:12 4Q ) Kellen Jarvis , 4-yard pass from Kellen Jarvis ( kick from Cannon Brinley )",
+        "Provo — ( OT ) Amilale Albert , 10-yard run"
       ],
       "stats": [
         {
@@ -565,6 +566,26 @@
               "",
               "",
               "2"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "PROVO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "26",
+              "A . Amilale Albert",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -713,12 +734,13 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 7,
-        "rows": 9,
-        "coreCells": 16,
+        "blocks": 8,
+        "rows": 10,
+        "coreCells": 18,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 5
-      }
+        "emptyCoreBlocks": 6
+      },
+      "finalSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|BENLOMOND|ALA": {
       "date": "09/04/2026",
