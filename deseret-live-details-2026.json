@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T01:28:34.427Z",
+  "updatedAt": "2026-09-04T01:29:52.197Z",
   "games": {
     "2026-08-31|UMALEHI|SAINTJOSEPH": {
       "date": "8/31/2026",
@@ -359,9 +359,9 @@
         ],
         "rows": [
           {
-            "team": "PROVO",
+            "team": "Provo Bulldogs (0-3)",
             "quarters": [
-              null,
+              7,
               null,
               null,
               null
@@ -369,28 +369,70 @@
             "total": 7
           },
           {
-            "team": "SALEM HILLS",
+            "team": "Salem Hills SkyHawks (2-1)",
             "quarters": [
-              null,
+              7,
               null,
               null,
               null
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-day-scoreboard-unlinked"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Salem Hills — ( 4:40 1Q ) Reggie Smith , 15-yard run ( kick from Jack Nelson )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "SALEM HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "R . Reggie Smith",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SALEM HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "44",
+              "J . Jack Nelson",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 1
+      }
     },
     "2026-09-04|BENLOMOND|ALA": {
       "date": "09/04/2026",
