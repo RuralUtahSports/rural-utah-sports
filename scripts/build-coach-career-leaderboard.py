@@ -11,6 +11,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# The record book occasionally uses a formal name where the verified tenure
+# index uses a nickname (or vice versa).
+PLAYOFF_BASELINE_ALIASES = {
+    "BOBBURNS": "ROBERTBURNS",
+    "JAMESDURRANTJR": "JIMDURRANT",
+    "PRESSUMMERHAYS": "PRESTONLPRESSUMMERHAYS",
+    "UDALLWESTOVER": "UDELLWESTOVER",
+}
+
 
 def load(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
@@ -39,6 +48,12 @@ def result_totals(games):
 
 def main() -> None:
     index = load(ROOT / "coach-history-index.json")
+    playoff_baseline = load(ROOT / "coach-playoff-baseline.json")
+    playoff_baseline_year = int(playoff_baseline["throughYear"])
+    playoff_baseline_by_key = {
+        PLAYOFF_BASELINE_ALIASES.get(coach_key(name), coach_key(name)): totals
+        for name, totals in playoff_baseline.get("records", {}).items()
+    }
     rows = []
     for shard in index.get("shards", []):
         rows.extend(load(ROOT / shard).get("rows", []))
@@ -47,6 +62,7 @@ def main() -> None:
         "name": "", "wins": 0, "losses": 0, "ties": 0,
         "playoffWins": 0, "playoffLosses": 0, "playoffTies": 0,
         "championships": 0, "appearances": 0, "seasons": 0, "schools": set(),
+        "playoffByYear": defaultdict(lambda: {"wins": 0, "losses": 0, "ties": 0}),
     })
 
     for row in rows:
@@ -79,6 +95,8 @@ def main() -> None:
                     coach["playoffWins"] += playoff["wins"]
                     coach["playoffLosses"] += playoff["losses"]
                     coach["playoffTies"] += playoff["ties"]
+                    for result_name in ("wins", "losses", "ties"):
+                        coach["playoffByYear"][year][result_name] += playoff[result_name]
                 elif year in history:
                     season = history[year]
                     coach["wins"] += int(season.get("wins", 0) or 0)
@@ -91,14 +109,42 @@ def main() -> None:
                         coach["championships"] += 1
 
     output = []
-    for coach in coaches.values():
+    baseline_matches = 0
+    for key, coach in coaches.items():
+        baseline = playoff_baseline_by_key.get(key)
+        if baseline:
+            # Historical schedule notes are inconsistent, especially before the
+            # modern bracket era. Anchor those years to the published record-book
+            # totals, then add verified playoff games from later seasons.
+            later = {
+                result_name: sum(
+                    totals[result_name]
+                    for year, totals in coach["playoffByYear"].items()
+                    if year > playoff_baseline_year
+                )
+                for result_name in ("wins", "losses", "ties")
+            }
+            coach["playoffWins"] = int(baseline["wins"]) + later["wins"]
+            coach["playoffLosses"] = int(baseline["losses"]) + later["losses"]
+            coach["playoffTies"] = int(baseline.get("ties", 0)) + later["ties"]
+            baseline_matches += 1
         coach["schools"] = sorted(coach["schools"])
+        del coach["playoffByYear"]
         coach["games"] = coach["wins"] + coach["losses"] + coach["ties"]
         output.append(coach)
     output.sort(key=lambda x: (-x["wins"], -x["games"], x["name"]))
 
+    if baseline_matches < 150:
+        raise RuntimeError(
+            f"Only {baseline_matches} published playoff records matched coach tenures; "
+            "refusing to publish a likely name-mapping regression."
+        )
+
     payload = {
-        "source": "RUS verified coach assignments and team-page game records",
+        "source": (
+            "Published Utah playoff coaching records through 2024, plus RUS "
+            "verified coach assignments and team-page playoff results since 2025"
+        ),
         "coaches": output,
     }
     (ROOT / "coach-career-leaderboard.json").write_text(
@@ -106,6 +152,7 @@ def main() -> None:
         encoding="utf-8",
     )
     print(f"Built {len(output)} coach career rows")
+    print(f"Applied published playoff baselines to {baseline_matches} coaches")
 
 
 if __name__ == "__main__":
