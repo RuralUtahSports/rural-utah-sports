@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T01:26:46.357Z",
+  "updatedAt": "2026-09-04T01:28:34.427Z",
   "games": {
     "2026-08-31|UMALEHI|SAINTJOSEPH": {
       "date": "8/31/2026",
@@ -345,12 +345,42 @@
       "awayTeam": "PROVO",
       "homeTeam": "SALEM HILLS",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-03/provo-football-vs-salem-hills-football/273428",
-      "status": "Live",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "4:26",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "PROVO",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "SALEM HILLS",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ],
+        "source": "deseret-day-scoreboard-unlinked"
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -359,7 +389,8 @@
         "rows": 0,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
-      }
+      },
+      "scoreSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|BENLOMOND|ALA": {
       "date": "09/04/2026",
