@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T01:17:10.664Z",
+  "updatedAt": "2026-09-04T01:18:28.609Z",
   "games": {
     "2026-08-31|UMALEHI|SAINTJOSEPH": {
       "date": "8/31/2026",
@@ -60,20 +60,117 @@
       "awayTeam": "BOUNTIFUL",
       "homeTeam": "MORGAN",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-03/bountiful-football-vs-morgan-football/273290",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "9:21",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Bountiful Redhawks (2-1)",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "Morgan Trojans (2-1)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Bountiful — ( 9:31 1Q ) Easton Lowe , 10-yard pass from Hudson Malmrose ( kick from Parker Hoffman )"
+      ],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "BOUNTIFUL",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "H . Hudson Malmrose",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "BOUNTIFUL",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "15",
+              "E . Easton Lowe",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "BOUNTIFUL",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "34",
+              "P . Parker Hoffman",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 3,
+        "rows": 3,
+        "coreCells": 6,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 2
       }
     },
     "2026-09-03|JORDAN|MURRAY": {

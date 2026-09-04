@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T01:17:09.557Z",
+  "updatedAt": "2026-09-04T01:18:27.237Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -69731,22 +69731,120 @@
     },
     "2026-09-03|BOUNTIFUL|MORGAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-03/bountiful-football-vs-morgan-football/273290",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "9:21",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
-      "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Bountiful Redhawks (2-1)",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "Morgan Trojans (2-1)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
       },
-      "fetchedAt": "2026-09-04T01:16:24.229Z"
+      "scoringPlays": [
+        "Bountiful — ( 9:31 1Q ) Easton Lowe , 10-yard pass from Hudson Malmrose ( kick from Parker Hoffman )"
+      ],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "BOUNTIFUL",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "H . Hudson Malmrose",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "BOUNTIFUL",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "15",
+              "E . Easton Lowe",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "BOUNTIFUL",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "34",
+              "P . Parker Hoffman",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
+      "statsAvailability": {
+        "status": "partial",
+        "blocks": 3,
+        "rows": 3,
+        "coreCells": 6,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 2
+      },
+      "fetchedAt": "2026-09-04T01:18:13.830Z",
+      "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-03|JORDAN|MURRAY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-03/jordan-football-vs-murray-football/273915",
@@ -69862,7 +69960,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
       },
-      "fetchedAt": "2026-09-04T01:16:24.358Z",
+      "fetchedAt": "2026-09-04T01:18:13.965Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-03|PROVO|SALEMHILLS": {
@@ -69882,7 +69980,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:25.076Z"
+      "fetchedAt": "2026-09-04T01:18:14.096Z"
     },
     "2026-09-04|BENLOMOND|ALA": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/ben-lomond-football-vs-american-leadership-football/274334",
@@ -69901,7 +69999,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:25.868Z",
+      "fetchedAt": "2026-09-04T01:18:14.233Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|ALTAMONT|UMALEHI": {
@@ -69921,7 +70019,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:26.631Z",
+      "fetchedAt": "2026-09-04T01:18:14.363Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|DAVIS|ALTA": {
@@ -69941,7 +70039,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:27.447Z",
+      "fetchedAt": "2026-09-04T01:18:14.496Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|BINGHAM|WESTLAKE": {
@@ -69961,7 +70059,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:28.275Z",
+      "fetchedAt": "2026-09-04T01:18:14.637Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|DUCHESNE|BEAVER": {
@@ -69981,7 +70079,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:29.108Z",
+      "fetchedAt": "2026-09-04T01:18:14.774Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|BEARRIVER|SKYVIEW": {
@@ -70001,7 +70099,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:29.845Z",
+      "fetchedAt": "2026-09-04T01:18:14.914Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|FARMINGTON|AMERICANFORK": {
@@ -70021,7 +70119,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:30.591Z",
+      "fetchedAt": "2026-09-04T01:18:15.043Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|CEDARVALLEY|MOUNTAINRIDGE": {
@@ -70041,7 +70139,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:31.388Z",
+      "fetchedAt": "2026-09-04T01:18:15.171Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|FREMONT|BONNEVILLE": {
@@ -70061,7 +70159,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:32.149Z",
+      "fetchedAt": "2026-09-04T01:18:15.307Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|CARBON|CANYONVIEW": {
@@ -70081,7 +70179,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:32.763Z",
+      "fetchedAt": "2026-09-04T01:18:15.435Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|CRIMSONCLIFFS|BRIGHTON": {
@@ -70101,7 +70199,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:33.624Z",
+      "fetchedAt": "2026-09-04T01:18:15.562Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|BOXELDER|NORTHRIDGE": {
@@ -70121,7 +70219,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:34.366Z",
+      "fetchedAt": "2026-09-04T01:18:15.692Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|DIXIE|CEDARCITY": {
@@ -70141,7 +70239,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:35.127Z",
+      "fetchedAt": "2026-09-04T01:18:15.820Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|OGDEN|CLEARFIELD": {
@@ -70161,7 +70259,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:35.980Z",
+      "fetchedAt": "2026-09-04T01:18:15.954Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|LAYTON|COPPERHILLS": {
@@ -70181,7 +70279,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:36.777Z",
+      "fetchedAt": "2026-09-04T01:18:16.088Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|COTTONWOOD|HIGHLAND": {
@@ -70201,7 +70299,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:37.505Z",
+      "fetchedAt": "2026-09-04T01:18:16.225Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|KEARNS|CYPRUS": {
@@ -70221,7 +70319,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:38.073Z",
+      "fetchedAt": "2026-09-04T01:18:16.354Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|DELTA|PROVIDENCEHALL": {
@@ -70241,7 +70339,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:38.908Z",
+      "fetchedAt": "2026-09-04T01:18:16.486Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|DESERETPEAK|TOOELE": {
@@ -70261,7 +70359,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:39.529Z",
+      "fetchedAt": "2026-09-04T01:18:16.614Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|DESERTHILLS|SPANISHFORK": {
@@ -70281,7 +70379,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:40.250Z",
+      "fetchedAt": "2026-09-04T01:18:16.747Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|LAYTONCHRISTIAN|EAST": {
@@ -70301,7 +70399,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:40.816Z",
+      "fetchedAt": "2026-09-04T01:18:16.874Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|NORTHSEVIER|ENTERPRISE": {
@@ -70321,7 +70419,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:41.479Z",
+      "fetchedAt": "2026-09-04T01:18:17.000Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|EMERY|JUDGEMEMORIAL": {
@@ -70341,7 +70439,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:42.097Z",
+      "fetchedAt": "2026-09-04T01:18:17.136Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|GRANTSVILLE|HURRICANE": {
@@ -70361,7 +70459,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:42.865Z",
+      "fetchedAt": "2026-09-04T01:18:17.267Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|GRANGER|HILLCREST": {
@@ -70381,7 +70479,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:43.454Z",
+      "fetchedAt": "2026-09-04T01:18:17.394Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|GREENCANYON|STANSBURY": {
@@ -70401,7 +70499,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:44.154Z",
+      "fetchedAt": "2026-09-04T01:18:17.524Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|MILFORD|GUNNISONVALLEY": {
@@ -70421,7 +70519,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:44.998Z",
+      "fetchedAt": "2026-09-04T01:18:17.655Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|HERRIMAN|RIVERTON": {
@@ -70441,7 +70539,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:45.596Z",
+      "fetchedAt": "2026-09-04T01:18:17.783Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|WEST|HUNTER": {
@@ -70461,7 +70559,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:46.539Z",
+      "fetchedAt": "2026-09-04T01:18:17.909Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|MANTI|JUAB": {
@@ -70481,7 +70579,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:47.476Z",
+      "fetchedAt": "2026-09-04T01:18:18.039Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|SKYLINE|JUANDIEGO": {
@@ -70501,7 +70599,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:48.074Z",
+      "fetchedAt": "2026-09-04T01:18:18.170Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|KANAB|MILLARD": {
@@ -70521,7 +70619,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:48.836Z",
+      "fetchedAt": "2026-09-04T01:18:18.302Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|PINEVIEW|LOGAN": {
@@ -70541,7 +70639,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:49.624Z",
+      "fetchedAt": "2026-09-04T01:18:18.657Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|PLEASANTGROVE|MAPLEMOUNTAIN": {
@@ -70561,7 +70659,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:50.376Z",
+      "fetchedAt": "2026-09-04T01:18:18.795Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|RIDGELINE|MOUNTAINCREST": {
@@ -70581,7 +70679,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:51.093Z",
+      "fetchedAt": "2026-09-04T01:18:18.922Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|NORTHSANPETE|RICHFIELD": {
@@ -70601,7 +70699,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:51.790Z",
+      "fetchedAt": "2026-09-04T01:18:19.059Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|PARKCITY|MOUNTAINVIEW": {
@@ -70621,7 +70719,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:52.359Z",
+      "fetchedAt": "2026-09-04T01:18:19.193Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|PAROWAN|NORTHSUMMIT": {
@@ -70641,7 +70739,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:53.108Z",
+      "fetchedAt": "2026-09-04T01:18:19.323Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|OREM|SPRINGVILLE": {
@@ -70661,7 +70759,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:53.903Z",
+      "fetchedAt": "2026-09-04T01:18:19.462Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|SAINTJOSEPH|PANGUITCH": {
@@ -70681,7 +70779,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:54.959Z"
+      "fetchedAt": "2026-09-04T01:18:19.591Z"
     },
     "2026-09-04|TIMPVIEW|PAYSON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/timpview-football-vs-payson-football/273773",
@@ -70700,7 +70798,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:55.644Z",
+      "fetchedAt": "2026-09-04T01:18:19.722Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|WESTFIELD|ROY": {
@@ -70720,7 +70818,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:56.368Z",
+      "fetchedAt": "2026-09-04T01:18:19.856Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|SUMMITACADEMY|SANJUAN": {
@@ -70740,7 +70838,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:57.083Z",
+      "fetchedAt": "2026-09-04T01:18:19.989Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|WOODSCROSS|SNOWCANYON": {
@@ -70760,7 +70858,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:57.940Z",
+      "fetchedAt": "2026-09-04T01:18:20.117Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|SOUTHSEVIER|SOUTHSUMMIT": {
@@ -70780,7 +70878,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:58.527Z",
+      "fetchedAt": "2026-09-04T01:18:20.251Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|TAYLORSVILLE|WESTJORDAN": {
@@ -70800,7 +70898,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:59.155Z",
+      "fetchedAt": "2026-09-04T01:18:20.387Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|TIMPANOGOS|UINTAH": {
@@ -70820,7 +70918,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:16:59.722Z",
+      "fetchedAt": "2026-09-04T01:18:20.518Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|WEBER|VIEWMONT": {
@@ -70840,7 +70938,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:17:00.436Z",
+      "fetchedAt": "2026-09-04T01:18:20.648Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|WASATCH|DEERCREEK": {
@@ -70860,7 +70958,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:17:01.151Z",
+      "fetchedAt": "2026-09-04T01:18:20.781Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|WHITEHORSE|WATERCANYON": {
@@ -70880,7 +70978,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:17:01.884Z",
+      "fetchedAt": "2026-09-04T01:18:20.911Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|PIEDRAVISTANM|OLYMPUS": {
@@ -70900,7 +70998,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-04T01:17:02.640Z",
+      "fetchedAt": "2026-09-04T01:18:21.043Z",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|CORNERCANYON|LIBERTYAZ": {
