@@ -5,7 +5,11 @@ if((location.pathname.split('/').pop()||'').toLowerCase()!=='scoreboard.html')re
 const HOME_FIELD_POINTS=3;
 const DAY=86400000;
 const WEEK=7*DAY;
-const num=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
+const num=v=>{
+  if(v===null||v===undefined||String(v).trim()==='')return null;
+  const n=Number(v);
+  return Number.isFinite(n)?n:null;
+};
 const norm=v=>String(v??'').trim().toUpperCase();
 const compact=v=>norm(v).replace(/[^A-Z0-9]/g,'');
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
