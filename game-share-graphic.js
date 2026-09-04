@@ -59,6 +59,11 @@
   }
   function logoFor(name,logos){return absoluteAsset(logos[norm(name)]||logos[canon(name)]||window.RUSSchoolAssets?.logoUrl?.(name)||'')}
   function teamInfo(map,name){return map.get(canon(name))||map.get(norm(name))||null}
+  function graphicTeamInfo(info,name){
+    return /^MOUNTAINVIEW(?:WY|WYOMING)$/.test(compact(name))
+      ? {...info,backgroundColor:'#7A2F89',textColor:'#FFFFFF'}
+      : info;
+  }
   function teamMeta(info){return[info?.classification,info?.region?`Region ${info.region}`:''].filter(Boolean).join(' • ')}
   function safeFilename(value){return String(value||'game').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 
@@ -139,8 +144,8 @@
       const gameYear=dateParts(date)?.year||null;
       const standingsYear=asNumber(standings?.season);
       const useStandings=!standingsYear||!gameYear||standingsYear===gameYear;
-      const awayInfo=teamInfo(teamMap,away)||standingMap.get(norm(away))||{};
-      const homeInfo=teamInfo(teamMap,home)||standingMap.get(norm(home))||{};
+      const awayInfo=graphicTeamInfo(teamInfo(teamMap,away)||standingMap.get(norm(away))||{},away);
+      const homeInfo=graphicTeamInfo(teamInfo(teamMap,home)||standingMap.get(norm(home))||{},home);
       const awayStanding=useStandings?standingMap.get(norm(away)):null;
       const homeStanding=useStandings?standingMap.get(norm(home)):null;
 
