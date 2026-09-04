@@ -67,9 +67,9 @@
     if(dataPromise)return dataPromise;
     dataPromise=(async()=>{
       const stamp=Date.now();
-      const files=['weekly-simulation.json','teams-data.json','standings-2026.json','elo-summary.json','school-logo-cache.json','deseret-game-details.json'];
+      const files=['weekly-simulation.json','teams-data.json','standings-2026.json','elo-summary.json','school-logo-cache.json','deseret-game-details.json','deseret-rosters-stats-2026.json'];
       const values=await Promise.all(files.map(file=>fetch(`${file}?v=${stamp}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)));
-      const [weekly,teams,standings,elo,logosRaw,details]=values;
+      const [weekly,teams,standings,elo,logosRaw,details,seasonStats]=values;
       const logos=logosRaw||{};
       try{
         const svg=await fetch(`school-logos/rich-user.svg?v=${stamp}`,{cache:'no-store'}).then(r=>r.ok?r.text():'');
@@ -127,7 +127,9 @@
         awayChance,homeChance,
         awayInfo,homeInfo,
         awayRecord:recordText(awayStanding),homeRecord:recordText(homeStanding),
-        awayLogo:logoFor(away,logos),homeLogo:logoFor(home,logos)
+        awayLogo:logoFor(away,logos),homeLogo:logoFor(home,logos),
+        awayLeaders:teamStatLeaders(seasonStats,away),
+        homeLeaders:teamStatLeaders(seasonStats,home)
       };
     })().catch(error=>{dataPromise=null;throw error});
     return dataPromise;
@@ -169,6 +171,135 @@
   }
 
   function metric(value,label){return`<div class="rus-gs-metric"><strong>${esc(value??'—')}</strong><span>${esc(label)}</span></div>`}
+
+
+  function statNumber(value){
+    const match=String(value??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);
+    return match?Number(match[0]):null;
+  }
+  function teamStatLeaders(stats,team){
+    const teams=stats?.teams||{};
+    const entry=teams[team]||teams[norm(team)]||Object.entries(teams).find(([name])=>canon(name)===canon(team))?.[1];
+    const wants=[
+      {label:'PASSING',category:'passing',metrics:['Yards'],suffix:'pass yds'},
+      {label:'RUSHING',category:'rushing',metrics:['Yards'],suffix:'rush yds'},
+      {label:'RECEIVING',category:'receiv',metrics:['Yards'],suffix:'rec yds'},
+      {label:'DEFENSE',category:'defense',metrics:['Tackles','Sacks','Pass Int','Interceptions'],suffix:''}
+    ];
+    return wants.map(want=>{
+      const section=(entry?.stats||[]).find(s=>String(s?.category||'').toLowerCase().startsWith(want.category));
+      if(!section)return{label:want.label,name:'No reported leader',stat:''};
+      let metricName='';
+      for(const preferred of want.metrics){
+        metricName=(section.headers||[]).find(h=>compact(h)===compact(preferred)||compact(h).includes(compact(preferred)))||'';
+        if(metricName)break;
+      }
+      let best=null;
+      for(const row of section.rows||[]){
+        const value=statNumber(row?.values?.[metricName]);
+        if(value!==null&&(!best||value>best.value))best={name:row.name||'Unknown',value,display:row.values?.[metricName]};
+      }
+      const suffix=want.suffix||String(metricName||'stat').toLowerCase();
+      return best?{label:want.label,name:best.name,stat:`${best.display} ${suffix}`.trim()}:{label:want.label,name:'No reported leader',stat:''};
+    });
+  }
+
+  function rounded(ctx,x,y,w,h,r,fill,stroke){
+    ctx.beginPath();ctx.roundRect(x,y,w,h,r);
+    if(fill){ctx.fillStyle=fill;ctx.fill()}
+    if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}
+  }
+  function fitText(ctx,text,maxWidth,startSize,minSize=18){
+    let size=startSize;ctx.font=`900 ${size}px Arial`;
+    while(size>minSize&&ctx.measureText(String(text)).width>maxWidth){size-=2;ctx.font=`900 ${size}px Arial`}
+    return size;
+  }
+  function loadDrawImage(src){
+    if(!src)return Promise.resolve(null);
+    return new Promise(resolve=>{
+      const img=new Image();img.crossOrigin='anonymous';img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src=src;
+      setTimeout(()=>resolve(null),6000);
+    });
+  }
+  function drawContain(ctx,img,x,y,w,h){
+    if(!img)return;
+    const ratio=Math.min(w/img.naturalWidth,h/img.naturalHeight),dw=img.naturalWidth*ratio,dh=img.naturalHeight*ratio;
+    ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);
+  }
+  function drawLeaderColumn(ctx,x,y,w,title,color,leaders,scale){
+    rounded(ctx,x,y,w,310*scale,18*scale,'#080808','#383838');
+    ctx.fillStyle=color;ctx.fillRect(x,y,8*scale,310*scale);
+    ctx.fillStyle='#fff';fitText(ctx,title,w-42*scale,27*scale,17*scale);ctx.textAlign='left';ctx.fillText(title,x+24*scale,y+37*scale);
+    (leaders||[]).forEach((leader,index)=>{
+      const rowY=y+(72+58*index)*scale;
+      ctx.fillStyle='#777';ctx.font=`900 ${12*scale}px Arial`;ctx.fillText(leader.label,x+24*scale,rowY);
+      ctx.fillStyle='#fff';fitText(ctx,leader.name,w-190*scale,18*scale,12*scale);ctx.fillText(leader.name,x+24*scale,rowY+23*scale);
+      ctx.fillStyle=color;ctx.font=`900 ${15*scale}px Arial`;ctx.textAlign='right';ctx.fillText(leader.stat||'—',x+w-20*scale,rowY+23*scale);ctx.textAlign='left';
+      if(index<3){ctx.fillStyle='#242424';ctx.fillRect(x+20*scale,rowY+35*scale,w-40*scale,1)}
+    });
+  }
+  async function renderDirectCanvas(format,data){
+    const dims=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
+    const [width,height]=dims,canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
+    const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas is not available on this browser.');
+    const s=format==='x'?1:width/1080;
+    const [brand,awayLogo,homeLogo]=await Promise.all([loadDrawImage(absoluteAsset('RUSlogoNew.png')),loadDrawImage(data.awayLogo),loadDrawImage(data.homeLogo)]);
+    ctx.fillStyle='#101010';ctx.fillRect(0,0,width,height);ctx.fillStyle=ORANGE;ctx.fillRect(0,0,width,14*s);
+    ctx.fillStyle='#050505';ctx.fillRect(0,14*s,width,112*s);
+    drawContain(ctx,brand,42*s,28*s,78*s,78*s);
+    ctx.fillStyle='#fff';ctx.font=`1000 ${31*s}px Arial`;ctx.textAlign='left';ctx.fillText('RURAL UTAH SPORTS',138*s,67*s);
+    ctx.fillStyle=ORANGE;ctx.font=`900 ${15*s}px Arial`;ctx.fillText(data.final?'GAME RESULT':'GAME PREVIEW',138*s,92*s);
+    ctx.fillStyle='#aaa';ctx.font=`900 ${15*s}px Arial`;ctx.textAlign='right';ctx.fillText(formatDate(data.date),width-42*s,68*s);ctx.fillText(`${data.year||''} SEASON`,width-42*s,92*s);
+
+    const top=150*s,logoSize=(format==='story'?250:format==='x'?170:190)*s;
+    const leftCenter=format==='x'?330*s:270*s,rightCenter=format==='x'?1270*s:810*s;
+    const drawTeam=(name,info,logo,cx,side)=>{
+      const color=safeHex(info?.backgroundColor,side==='away'?'#b00000':'#b22200');
+      drawContain(ctx,logo,cx-logoSize/2,top,logoSize,logoSize);
+      ctx.fillStyle=color;rounded(ctx,cx-205*s,top+logoSize+10*s,410*s,58*s,12*s,color);
+      ctx.fillStyle=safeHex(info?.textColor,'#fff');ctx.textAlign='center';fitText(ctx,name,370*s,31*s,18*s);ctx.fillText(name,cx,top+logoSize+49*s);
+      ctx.fillStyle='#aaa';ctx.font=`900 ${17*s}px Arial`;ctx.fillText(teamMeta(info)||'Utah High School Football',cx,top+logoSize+82*s);
+    };
+    drawTeam(data.away,data.awayInfo,awayLogo,leftCenter,'away');drawTeam(data.home,data.homeInfo,homeLogo,rightCenter,'home');
+    ctx.textAlign='center';ctx.fillStyle='#777';ctx.font=`1000 ${38*s}px Arial`;ctx.fillText(data.final?`${data.actualAway} – ${data.actualHome}`:'AT',width/2,top+logoSize/2+20*s);
+    ctx.fillStyle=data.final?ORANGE:'#aaa';ctx.font=`900 ${16*s}px Arial`;ctx.fillText(data.status,width/2,top+logoSize/2+50*s);
+
+    const statsY=(format==='story'?610:format==='x'?470:505)*s;
+    const gap=20*s,colW=(width-84*s-gap)/2;
+    drawLeaderColumn(ctx,32*s,statsY,colW,data.away,safeHex(data.awayInfo?.backgroundColor,'#b00000'),data.awayLeaders,s);
+    drawLeaderColumn(ctx,32*s+colW+gap,statsY,colW,data.home,safeHex(data.homeInfo?.backgroundColor,'#b22200'),data.homeLeaders,s);
+
+    const lineY=statsY+332*s;
+    rounded(ctx,32*s,lineY,width-64*s,100*s,16*s,'#050505','#444');
+    ctx.textAlign='left';ctx.fillStyle=ORANGE;ctx.font=`900 ${16*s}px Arial`;ctx.fillText('RUS PROJECTED LINE',58*s,lineY+34*s);
+    ctx.fillStyle='#888';ctx.font=`800 ${14*s}px Arial`;ctx.fillText('Model projection • not a sportsbook line',58*s,lineY+67*s);
+    ctx.textAlign='right';ctx.fillStyle='#fff';fitText(ctx,data.line,420*s,40*s,22*s);ctx.fillText(data.line,width-58*s,lineY+62*s);
+    ctx.fillStyle='#050505';ctx.fillRect(0,height-54*s,width,54*s);ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font=`900 ${14*s}px Arial`;ctx.fillText('ruralutahsports.com',42*s,height-22*s);
+    ctx.textAlign='right';ctx.fillStyle='#777';ctx.fillText('Season leaders from reported Deseret statistics',width-42*s,height-22*s);
+    return canvas;
+  }
+  function canvasBlob(canvas){
+    return new Promise((resolve,reject)=>{
+      if(typeof canvas.toBlob==='function')canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('The PNG could not be created.')),'image/png',1);
+      else{try{fetch(canvas.toDataURL('image/png')).then(r=>r.blob()).then(resolve,reject)}catch(error){reject(error)}}
+    });
+  }
+  function showGraphicPreview(blob,filename,data){
+    document.querySelector('.rus-gs-preview')?.remove();
+    const url=URL.createObjectURL(blob),overlay=document.createElement('div');overlay.className='rus-gs-modal rus-gs-preview';
+    overlay.innerHTML=`<div class="rus-gs-sheet"><h2>Graphic Ready</h2><p>Press and hold the image to save it, or use one of the buttons below.</p><img src="${url}" alt="${esc(data.away)} at ${esc(data.home)} graphic" style="display:block;width:100%;max-height:58vh;object-fit:contain;background:#000;border:1px solid #333;border-radius:10px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px"><button type="button" class="rus-gs-option rus-gs-share-now" style="min-height:58px"><strong>Share PNG</strong></button><a class="rus-gs-option" href="${url}" download="${esc(filename)}" target="_blank" style="min-height:58px;text-decoration:none"><strong>Save / Open PNG</strong></a></div><button type="button" class="rus-gs-close">Close</button></div>`;
+    document.body.appendChild(overlay);
+    const close=()=>{overlay.remove();document.body.style.overflow='';setTimeout(()=>URL.revokeObjectURL(url),1000)};
+    overlay.querySelector('.rus-gs-close').onclick=close;
+    overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
+    overlay.querySelector('.rus-gs-share-now').onclick=async()=>{
+      try{
+        const file=new File([blob],filename,{type:'image/png'});
+        if(!navigator.share)throw new Error('Use Save / Open PNG on this browser.');
+        await navigator.share({files:[file],title:`${data.away} at ${data.home} | Rural Utah Sports`});
+      }catch(error){if(error?.name!=='AbortError')alert(error?.message||'Use Save / Open PNG instead.')}
+    };
+  }
 
   function buildBoard(format,data){
     const [width,height]=format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
@@ -220,37 +351,10 @@
 
   async function createGraphic(format){
     const data=await loadGameData();
-    await loadCanvas();
-    const {board,width,height}=buildBoard(format,data);
-    try{
-      await waitForImages(board);
-      const canvas=await withTimeout(window.html2canvas(board,{backgroundColor:'#101010',scale:1,useCORS:true,allowTaint:false,logging:false,imageTimeout:8000,width,height,windowWidth:width,windowHeight:height}),20000,'The game graphic took too long to render.');
-      const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png',1));
-      if(!blob)throw new Error('The PNG could not be created.');
-      const filename=`rural-utah-sports-${safeFilename(data.away)}-at-${safeFilename(data.home)}-${isoDate(data.date)||'game'}.png`;
-      if(typeof File==='function'&&navigator.share){
-        try{
-          const file=new File([blob],filename,{type:'image/png'});
-          const canShareFiles=typeof navigator.canShare!=='function'||navigator.canShare({files:[file]});
-          if(canShareFiles){
-            await withTimeout(
-              navigator.share({files:[file],title:`${data.away} at ${data.home} | Rural Utah Sports`,text:`${data.away} at ${data.home} — ${formatDate(data.date)}`}),
-              12000,
-              'The share sheet did not open.'
-            );
-            return;
-          }
-        }catch(error){
-          if(error?.name==='AbortError')return;
-          console.warn('Native sharing was unavailable; saving the PNG instead.',error);
-        }
-      }
-      const url=URL.createObjectURL(blob);
-      const link=document.createElement('a');
-      link.href=url;link.download=filename;link.style.display='none';
-      document.body.appendChild(link);link.click();link.remove();
-      setTimeout(()=>URL.revokeObjectURL(url),2000);
-    }finally{board.remove()}
+    const canvas=await renderDirectCanvas(format,data);
+    const blob=await canvasBlob(canvas);
+    const filename=`rural-utah-sports-${safeFilename(data.away)}-at-${safeFilename(data.home)}-${isoDate(data.date)||'game'}.png`;
+    showGraphicPreview(blob,filename,data);
   }
 
   function openModal(){
