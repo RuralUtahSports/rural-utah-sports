@@ -231,8 +231,17 @@
       if(typeof File==='function'&&navigator.share&&navigator.canShare){
         const file=new File([blob],filename,{type:'image/png'});
         if(navigator.canShare({files:[file]})){
-          try{await navigator.share({files:[file],title:`${data.away} at ${data.home} | Rural Utah Sports`,text:`${data.away} at ${data.home} — ${formatDate(data.date)}`});return}
-          catch(error){if(error?.name==='AbortError')return}
+          try{
+            await withTimeout(
+              navigator.share({files:[file],title:`${data.away} at ${data.home} | Rural Utah Sports`,text:`${data.away} at ${data.home} — ${formatDate(data.date)}`}),
+              12000,
+              'The share sheet did not open.'
+            );
+            return;
+          }catch(error){
+            if(error?.name==='AbortError')return;
+            console.warn('Native sharing was unavailable; saving the PNG instead.',error);
+          }
         }
       }
       const url=URL.createObjectURL(blob);
@@ -263,8 +272,8 @@
       const original=button.innerHTML;
       modal.querySelectorAll('button').forEach(item=>item.disabled=true);
       button.textContent='Creating…';
-      try{await createGraphic(button.dataset.format);close()}
-      catch(error){console.error(error);modal.querySelectorAll('button').forEach(item=>item.disabled=false);button.innerHTML=original;alert('Could not create the game graphic. Please check your connection and try again.')}
+      try{await withTimeout(createGraphic(button.dataset.format),45000,'The game graphic took too long to create.');close()}
+      catch(error){console.error(error);modal.querySelectorAll('button').forEach(item=>item.disabled=false);button.innerHTML=original;alert(error?.message||'Could not create the game graphic. Please check your connection and try again.')}
     }));
     modal.querySelector('[data-format]')?.focus();
   }
