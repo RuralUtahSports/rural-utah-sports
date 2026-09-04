@@ -281,7 +281,7 @@
     ctx.fillStyle=ORANGE;ctx.font=`900 ${15*s}px Arial`;ctx.fillText(data.final?'GAME RESULT':'GAME PREVIEW',138*s,92*s);
     ctx.fillStyle='#aaa';ctx.font=`900 ${15*s}px Arial`;ctx.textAlign='right';ctx.fillText(formatDate(data.date),width-42*s,68*s);ctx.fillText(`${data.year||''} SEASON`,width-42*s,92*s);
 
-    const top=150*s,logoSize=(format==='story'?250:format==='x'?170:190)*s;
+    const top=150*s,logoSize=(format==='story'?250:format==='x'?120:190)*s;
     const leftCenter=format==='x'?330*s:270*s,rightCenter=format==='x'?1270*s:810*s;
     const drawTeam=(name,info,logo,cx,side)=>{
       const color=safeHex(info?.backgroundColor,side==='away'?'#b00000':'#b22200');
