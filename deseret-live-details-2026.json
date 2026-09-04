@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T01:57:13.222Z",
+  "updatedAt": "2026-09-04T01:58:31.055Z",
   "games": {
     "2026-08-31|UMALEHI|SAINTJOSEPH": {
       "date": "8/31/2026",
@@ -404,33 +404,34 @@
             "team": "Provo Bulldogs (0-3)",
             "quarters": [
               7,
-              7,
-              null,
-              null
-            ],
-            "total": 14
-          },
-          {
-            "team": "Salem Hills SkyHawks (2-1)",
-            "quarters": [
-              7,
               14,
               null,
               null
             ],
             "total": 21
+          },
+          {
+            "team": "Salem Hills SkyHawks (2-1)",
+            "quarters": [
+              7,
+              7,
+              null,
+              null
+            ],
+            "total": 14
           }
         ]
       },
       "scoringPlays": [
         "Salem Hills — ( 4:40 1Q ) Reggie Smith , 15-yard run ( kick from Jack Nelson )",
         "Provo — ( 4:26 1Q ) Brexton Hunter , 95-yard kick return ( kick from Cannon Brinley )",
-        "Salem Hills — ( 11:06 2Q ) Peyton Higginson , 8-yard pass from Cash Hollingshead ( kick from Jack Nelson )"
+        "Salem Hills — ( 11:06 2Q ) Peyton Higginson , 8-yard pass from Cash Hollingshead ( kick from Jack Nelson )",
+        "Provo — ( 7:01 2Q ) Brexton Hunter , 41-yard pass from Kellen Jarvis ( kick from Cannon Brinley )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "SALEM HILLS",
+          "team": "PROVO",
           "headers": [
             "NO",
             "PLAYER",
@@ -473,6 +474,30 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "PROVO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "14",
+              "K . Kellen Jarvis",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
           "category": "Receiving",
           "team": "SALEM HILLS",
           "headers": [
@@ -486,6 +511,26 @@
             [
               "4",
               "P . Peyton Higginson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "PROVO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "B . Brexton Hunter",
               "",
               "",
               "1"
@@ -527,7 +572,7 @@
               "35",
               "C . Cannon Brinley",
               "",
-              "1",
+              "2",
               ""
             ],
             [
@@ -542,11 +587,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 5,
-        "rows": 6,
-        "coreCells": 8,
+        "blocks": 7,
+        "rows": 8,
+        "coreCells": 14,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 5
       }
     },
     "2026-09-04|BENLOMOND|ALA": {
