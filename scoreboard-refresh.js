@@ -11,7 +11,8 @@
     ['2026-08-21|GRAND|DOLORESCO', { away: 12, home: 6 }],
     ['2026-08-21|BEAVERDAMAZ|WATERCANYON', { away: 34, home: 50 }],
     ['2026-08-22|OREM|SKYRIDGE', { away: 14, home: 21 }],
-    ['2026-08-31|UMALEHI|SAINTJOSEPH', { away: 28, home: 47 }]
+    ['2026-08-31|UMALEHI|SAINTJOSEPH', { away: 28, home: 47 }],
+    ['2026-09-03|BOUNTIFUL|MORGAN', { away: 14, home: 37 }]
   ]);
 
   const clean = value => String(value ?? '').trim();
