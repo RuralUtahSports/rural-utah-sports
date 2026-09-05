@@ -2,6 +2,13 @@ name: Build Record Alerts
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '20 * * * *'
+  workflow_run:
+    workflows:
+      - "Build Player Single-Game Records"
+      - "Build Team Stat Single-Game Records"
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -20,6 +27,7 @@ concurrency:
 
 jobs:
   build:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
