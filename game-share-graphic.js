@@ -101,9 +101,9 @@
     if(dataPromise)return dataPromise;
     dataPromise=(async()=>{
       const stamp=Date.now();
-      const files=['weekly-simulation.json','teams-data.json','standings-2026.json','elo-summary.json','school-logo-cache.json','deseret-game-details.json','deseret-rosters-stats-2026.json'];
+      const files=['weekly-simulation.json','teams-data.json','standings-2026.json','elo-summary.json','school-logo-cache.json','deseret-game-details.json','deseret-rosters-stats-2026.json','oos-graphic-rankings.json'];
       const values=await Promise.all(files.map(file=>fetch(`${file}?v=${stamp}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)));
-      const [weekly,teams,standings,elo,logosRaw,details,seasonStats]=values;
+      const [weekly,teams,standings,elo,logosRaw,details,seasonStats,oosRanks]=values;
       const logos=logosRaw||{};
       try{
         const svg=await fetch(`school-logos/rich-user.svg?v=${stamp}`,{cache:'no-store'}).then(r=>r.ok?r.text():'');
@@ -146,6 +146,15 @@
       const useStandings=!standingsYear||!gameYear||standingsYear===gameYear;
       const awayInfo=graphicTeamInfo(teamInfo(teamMap,away)||standingMap.get(norm(away))||{},away);
       const homeInfo=graphicTeamInfo(teamInfo(teamMap,home)||standingMap.get(norm(home))||{},home);
+      for(const [name,info] of [[away,awayInfo],[home,homeInfo]]){
+        const ranking=(oosRanks?.rankings||[]).find(r=>r.season===gameYear&&[r.team,...(r.aliases||[])].some(n=>compact(n)===compact(name)));
+        if(ranking){
+          const labels=[];
+          if(Number.isInteger(ranking.stateRank)&&ranking.stateRank>0)labels.push(`${ranking.state} #${ranking.stateRank}`);
+          if(Number.isInteger(ranking.nationalRank)&&ranking.nationalRank>0)labels.push(`National #${ranking.nationalRank}`);
+          if(labels.length){info.graphicRanking=labels.join(' • ');info.graphicRankingSource=`${ranking.source} • ${ranking.asOf}`;}
+        }
+      }
       const awayStanding=useStandings?standingMap.get(norm(away)):null;
       const homeStanding=useStandings?standingMap.get(norm(home)):null;
 
@@ -302,7 +311,8 @@
       drawContain(ctx,logo,cx-logoSize/2,top+(winner?16*s:0),logoSize,logoSize-(winner?16*s:0));
       ctx.fillStyle=color;rounded(ctx,cx-205*s,top+logoSize+10*s,410*s,58*s,12*s,color);
       ctx.fillStyle=safeHex(info?.textColor,'#fff');ctx.textAlign='center';fitText(ctx,name,370*s,31*s,18*s);ctx.fillText(name,cx,top+logoSize+49*s);
-      ctx.fillStyle='#aaa';ctx.font=`900 ${17*s}px Arial`;ctx.fillText(teamMeta(info)||'Utah High School Football',cx,top+logoSize+82*s);
+      ctx.fillStyle='#aaa';ctx.font=`900 ${17*s}px Arial`;ctx.fillText(info.graphicRanking||teamMeta(info)||'High School Football',cx,top+logoSize+82*s);
+      if(info.graphicRankingSource){ctx.fillStyle='#888';ctx.font=`800 ${12*s}px Arial`;ctx.fillText(info.graphicRankingSource,cx,top+logoSize+101*s);}
     };
     drawTeam(data.away,data.awayInfo,awayLogo,leftCenter,'away');drawTeam(data.home,data.homeInfo,homeLogo,rightCenter,'home');
     ctx.textAlign='center';
