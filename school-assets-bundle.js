@@ -46,7 +46,7 @@ if((scorePage||gamePage)&&!window.__RUS_SUPABASE_LIVE_FETCH__){
 
 const loadScoreboard=()=>{
   if(!scorePage||document.querySelector('script[data-rus-scoreboard-school-assets]'))return;
-  const s=document.createElement('script');s.src='school-assets-scoreboard.js?v=20260827-week3-ranks1';s.async=true;s.dataset.rusScoreboardSchoolAssets='1';document.body.appendChild(s);
+  const s=document.createElement('script');s.src='school-assets-scoreboard.js?v=20260905-oos-ranks1';s.async=true;s.dataset.rusScoreboardSchoolAssets='1';document.body.appendChild(s);
 };
 const loadScoreboardLiveClock=()=>{
   if(!scorePage||document.querySelector('script[data-rus-scoreboard-live-clock]'))return;
