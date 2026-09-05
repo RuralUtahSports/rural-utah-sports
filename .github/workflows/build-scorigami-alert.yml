@@ -9,6 +9,7 @@ on:
     paths:
       - 'scorigami.json'
       - 'weekly-simulation.json'
+      - 'deseret-live-details-2026.json'
       - '.github/workflows/build-scorigami-alert.yml'
 
 permissions:
@@ -35,29 +36,66 @@ jobs:
           const day=v=>{const t=Date.parse(clean(v));return Number.isFinite(t)?t:0};
           const scoreKey=(a,b)=>`${Math.max(Number(a),Number(b))}-${Math.min(Number(a),Number(b))}`;
           const gameId=g=>`${clean(g.date)}|${norm(g.awayTeam)}|${norm(g.homeTeam)}|${Number(g.actualAway)}-${Number(g.actualHome)}`;
+          const hasScore=g=>g.actualAway!==null&&g.actualAway!==undefined&&g.actualHome!==null&&g.actualHome!==undefined&&Number.isFinite(Number(g.actualAway))&&Number.isFinite(Number(g.actualHome));
           const out={updatedAt:new Date().toISOString(),alerts:[]};
-          if(!fs.existsSync('scorigami.json')||!fs.existsSync('weekly-simulation.json')){
+          if(!fs.existsSync('scorigami.json')){
             fs.writeFileSync('scorigami-latest.json',JSON.stringify(out));process.exit(0);
           }
           const sc=JSON.parse(fs.readFileSync('scorigami.json','utf8'));
-          const weekly=JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));
           const byScore=new Map((sc.scores||[]).map(x=>[`${x.winner}-${x.loser}`,x]));
-          const finals=(weekly.games||[]).filter(g=>g.actualAway!==null&&g.actualAway!==undefined&&g.actualHome!==null&&g.actualHome!==undefined&&Number.isFinite(Number(g.actualAway))&&Number.isFinite(Number(g.actualHome)));
-          const alerts=[];
+          const finals=[];
+
+          // Keep Weekly Simulation finals for backward compatibility.
+          if(fs.existsSync('weekly-simulation.json')){
+            try{
+              const weekly=JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));
+              for(const g of (weekly.games||[])) if(hasScore(g)) finals.push({...g,source:'weekly'});
+            }catch(e){console.warn('Weekly Simulation alerts skipped:',e.message)}
+          }
+
+          // Also read the verified live-scoreboard feed directly. This makes
+          // Scorigami alerts work even when Weekly Simulation is still on the
+          // previous week or does not contain the current matchup yet.
+          if(fs.existsSync('deseret-live-details-2026.json')){
+            try{
+              const live=JSON.parse(fs.readFileSync('deseret-live-details-2026.json','utf8'));
+              for(const [key,d] of Object.entries(live.games||{})){
+                const isFinal=d?.final===true||/^final$/i.test(clean(d?.status));
+                const rows=d?.boxScore?.rows;
+                if(!isFinal||!Array.isArray(rows)||rows.length<2) continue;
+                const a=Number(rows[0]?.total),h=Number(rows[1]?.total);
+                if(!Number.isFinite(a)||!Number.isFinite(h)||a<0||h<0) continue;
+                const parts=String(key).split('|');
+                const g={date:clean(d?.date||parts[0]),awayTeam:clean(d?.awayTeam||parts[1]),homeTeam:clean(d?.homeTeam||parts[2]),actualAway:a,actualHome:h,deseretUrl:clean(d?.url),source:'live'};
+                if(g.date&&g.awayTeam&&g.homeTeam) finals.push(g);
+              }
+            }catch(e){console.warn('Live scoreboard alerts skipped:',e.message)}
+          }
+
+          // Prefer the live copy when the same final is present in both feeds.
+          const deduped=new Map();
           for(const g of finals){
+            const key=`${day(g.date)}|${[norm(g.awayTeam),norm(g.homeTeam)].sort().join('|')}|${scoreKey(g.actualAway,g.actualHome)}`;
+            const prior=deduped.get(key);
+            if(!prior||g.source==='live') deduped.set(key,g);
+          }
+
+          const alerts=[];
+          for(const g of deduped.values()){
             const k=scoreKey(g.actualAway,g.actualHome),entry=byScore.get(k);
             if(!entry||Number(entry.count)!==1)continue;
             const a=Number(g.actualAway),h=Number(g.actualHome),tie=a===h;
             const winner=tie?g.awayTeam:(a>h?g.awayTeam:g.homeTeam),loser=tie?g.homeTeam:(a>h?g.homeTeam:g.awayTeam);
             const winnerScore=Math.max(a,h),loserScore=Math.min(a,h);
-            const exact=(entry.games||[]).some(x=>clean(x.date)===clean(g.date)&&new Set([norm(x.team1||x.winner),norm(x.team2||x.loser)]).has(norm(g.awayTeam))&&new Set([norm(x.team1||x.winner),norm(x.team2||x.loser)]).has(norm(g.homeTeam)));
+            const targetDay=day(g.date);
+            const exact=(entry.games||[]).some(x=>day(x.date)===targetDay&&new Set([norm(x.team1||x.winner),norm(x.team2||x.loser)]).has(norm(g.awayTeam))&&new Set([norm(x.team1||x.winner),norm(x.team2||x.loser)]).has(norm(g.homeTeam)));
             if(!exact)continue;
             alerts.push({id:gameId(g),date:g.date,awayTeam:g.awayTeam,homeTeam:g.homeTeam,awayScore:a,homeScore:h,winner,loser,winnerScore,loserScore,score:k,tie,deseretUrl:g.deseretUrl||''});
           }
           alerts.sort((a,b)=>day(b.date)-day(a.date)||a.id.localeCompare(b.id));
           out.alerts=alerts.slice(0,5);
           fs.writeFileSync('scorigami-latest.json',JSON.stringify(out));
-          console.log(`Current weekly Scorigami alerts: ${out.alerts.length}`);
+          console.log(`Current Scorigami alerts: ${out.alerts.length}`);
           NODE
       - name: Commit alert feed
         run: |
