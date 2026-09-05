@@ -22,6 +22,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: fast-live-scoreboard
@@ -82,3 +83,11 @@ jobs:
           node scripts/apply-manual-scoreboard-corrections.mjs
           node scripts/build_live_scoreboard_details.mjs
           publish_once
+
+      # Commits made with a workflow's GITHUB_TOKEN do not reliably trigger
+      # another workflow from a push event. Dispatch the existing final-score
+      # sync explicitly so weekly-simulation.json and Scorigami stay current.
+      - name: Sync live finals into weekly Scorigami feed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run sync-live-finals-to-weekly.yml --ref main
