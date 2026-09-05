@@ -36,6 +36,7 @@ const isoDate=d=>{
 };
 const detailKey=g=>`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`;
 const pairKey=(a,b)=>[rankKey(a),rankKey(b)].sort().join('|');
+let oosRankMap=new Map();
 let rankMap=new Map();
 let stateRankMap=new Map();
 let recordMap=new Map(),eloPairMap=new Map(),mercyCount=null;
@@ -62,6 +63,30 @@ function applyScoreboardRanks(){
     rank.innerHTML=[classPart,statePart].filter(Boolean).join(' &nbsp;•&nbsp; ');rank.title=[info?`${info.cls} rank: #${info.rank}`:'',stateRank?`State rank: #${stateRank}`:''].filter(Boolean).join(' • ');holder.insertBefore(rank,meta);
   });
 }
+function applyOosRanks(){
+  document.querySelectorAll('#board .team-row').forEach(row=>{
+    const link=row.querySelector('.team-name'),meta=row.querySelector('.team-meta');
+    if(!link||!meta||row.querySelector('.rus-oos-rank'))return;
+    const info=oosRankMap.get(compact(teamFromLink(link)));if(!info)return;
+    const parts=[];
+    if(Number.isInteger(info.stateRank)&&info.stateRank>0)parts.push(`${info.state} #${info.stateRank}`);
+    if(Number.isInteger(info.nationalRank)&&info.nationalRank>0)parts.push(`National #${info.nationalRank}`);
+    if(!parts.length)return;
+    const line=document.createElement('div');line.className='rus-oos-rank rus-rank-line';
+    line.textContent=parts.join(' • ');
+    const source=document.createElement('a');source.textContent=`${info.source} • ${info.asOf}`;
+    source.style.cssText='display:block;color:#aaa;font-size:9px;margin-top:3px';
+    try{const url=new URL(info.sourceUrl);if(url.protocol==='https:'){source.href=url.href;source.target='_blank';source.rel='noopener noreferrer'}}catch{}
+    line.appendChild(source);meta.insertAdjacentElement('afterend',line);
+  });
+}
+fetch(`oos-graphic-rankings.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{
+  for(const info of data?.rankings||[]){
+    if(info.season!==2026)continue;
+    for(const name of [info.team,...(info.aliases||[])])oosRankMap.set(compact(name),info);
+  }
+  queueRefresh(30);
+}).catch(()=>{});
 function applyFinalEloChanges(){
   if(!eloPairMap.size)return;
   document.querySelectorAll('.game.final-game').forEach(card=>{
@@ -102,7 +127,7 @@ function applyMercySummary(){
     const value=box.querySelector('strong'),next=String(mercyCount);if(value&&value.textContent!==next)value.textContent=next;
   });
 }
-function refreshScoreboardExtras(){applyTeamRecords();applyScoreboardRanks();applyFinalEloChanges();applyFinalBoxRecords();applyLiveMercyBadges();applyMercySummary()}
+function refreshScoreboardExtras(){applyOosRanks();applyTeamRecords();applyScoreboardRanks();applyFinalEloChanges();applyFinalBoxRecords();applyLiveMercyBadges();applyMercySummary()}
 function queueRefresh(delay=0){
   if(delay>0){clearTimeout(refreshDelayTimer);refreshDelayTimer=setTimeout(()=>queueRefresh(),delay);return}
   if(refreshQueued)return;refreshQueued=true;
