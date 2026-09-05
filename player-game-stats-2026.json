@@ -1,11 +1,11 @@
 {
   "season": 2026,
-  "updatedAt": "2026-09-05T05:31:00.151Z",
+  "updatedAt": "2026-09-05T09:18:35.498Z",
   "summary": {
     "teams": 124,
     "teamGames": 417,
-    "statRows": 5952,
-    "rosterMatchedRows": 5838,
+    "statRows": 5955,
+    "rosterMatchedRows": 5841,
     "preservedFinalGames": 0,
     "replacedEmptyFinalGames": 0,
     "maxprepsFallback": {
@@ -24260,8 +24260,8 @@
           "date": "2026-09-03",
           "opponent": "BOUNTIFUL",
           "location": "Home",
-          "status": "Scheduled",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 37,
           "opponentScore": 14,
           "url": "https://sports.deseret.com/high-school/football/game/2026-09-03/bountiful-football-vs-morgan-football/273290",
@@ -93459,8 +93459,8 @@
           "date": "2026-09-03",
           "opponent": "MORGAN",
           "location": "Away",
-          "status": "Scheduled",
-          "final": false,
+          "status": "Final",
+          "final": true,
           "teamScore": 14,
           "opponentScore": 37,
           "url": "https://sports.deseret.com/high-school/football/game/2026-09-03/bountiful-football-vs-morgan-football/273290",
@@ -111188,6 +111188,37 @@
           "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/park-city-football-vs-mountain-view-football/273916",
           "players": [
             {
+              "playerId": "park-city-1-josh-hofer",
+              "number": "1",
+              "name": "Josh Hofer",
+              "position": "QB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                },
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "",
+                    "Comp %": "",
+                    "Yards": "",
+                    "TD": "1",
+                    "Int": ""
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Park City — ( 1Q ) pass from Josh Hofer ( kick failed )",
+                "Park City — ( 2Q ) Josh Hofer , run ( kick failed )"
+              ]
+            },
+            {
               "playerId": "park-city-9-knox-groenenboom",
               "number": "9",
               "name": "Knox Groenenboom",
@@ -111198,17 +111229,23 @@
                   "category": "Special Teams",
                   "values": {
                     "FG": "",
-                    "PAT": "1",
+                    "PAT": "3",
                     "Return TD": ""
                   }
                 }
               ],
               "scoringPlays": [
+                "Park City — ( 1Q ) run ( kick from Knox Groenenboom )",
+                "Park City — ( 2Q ) 52-yard int. return ( kick from Knox Groenenboom )",
                 "Park City — ( 4:40 3Q ) 1-yard run ( kick from Knox Groenenboom )"
               ]
             }
           ],
           "scoringPlays": [
+            "Park City — ( 1Q ) pass from Josh Hofer ( kick failed )",
+            "Park City — ( 1Q ) run ( kick from Knox Groenenboom )",
+            "Park City — ( 2Q ) Josh Hofer , run ( kick failed )",
+            "Park City — ( 2Q ) 52-yard int. return ( kick from Knox Groenenboom )",
             "Park City — ( 4:40 3Q ) 1-yard run ( kick from Knox Groenenboom )"
           ]
         }
@@ -128833,6 +128870,26 @@
           "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/park-city-football-vs-mountain-view-football/273916",
           "players": [
             {
+              "playerId": "mountain-view-3-carter-vance",
+              "number": "3",
+              "name": "Carter Vance",
+              "position": "LB/RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "",
+                    "Yards": "",
+                    "TD": "1"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Mountain View — ( 1Q ) Carter Vance , 5-yard run ( kick failed )"
+              ]
+            },
+            {
               "playerId": "mountain-view-8-hyrum-stafford",
               "number": "8",
               "name": "Hyrum Stafford",
@@ -128845,12 +128902,13 @@
                     "Comp-Att": "",
                     "Comp %": "",
                     "Yards": "",
-                    "TD": "1",
+                    "TD": "2",
                     "Int": ""
                   }
                 }
               ],
               "scoringPlays": [
+                "Mountain View — ( 2Q ) Brigham Moses , 46-yard pass from Hyrum Stafford ( pass from Karltrick Hausia )",
                 "Mountain View — ( 2:00 3q ) Brigham Moses , 11-yard pass from Hyrum Stafford ( kick from Landon Pace )"
               ]
             },
@@ -128866,11 +128924,12 @@
                   "values": {
                     "Receptions": "",
                     "Yards": "",
-                    "TD": "1"
+                    "TD": "2"
                   }
                 }
               ],
               "scoringPlays": [
+                "Mountain View — ( 2Q ) Brigham Moses , 46-yard pass from Hyrum Stafford ( pass from Karltrick Hausia )",
                 "Mountain View — ( 2:00 3q ) Brigham Moses , 11-yard pass from Hyrum Stafford ( kick from Landon Pace )"
               ]
             },
@@ -128918,6 +128977,8 @@
             }
           ],
           "scoringPlays": [
+            "Mountain View — ( 1Q ) Carter Vance , 5-yard run ( kick failed )",
+            "Mountain View — ( 2Q ) Brigham Moses , 46-yard pass from Hyrum Stafford ( pass from Karltrick Hausia )",
             "Mountain View — ( 2:00 3q ) Brigham Moses , 11-yard pass from Hyrum Stafford ( kick from Landon Pace )",
             "Mountain View — ( 4:03 4Q ) Ratu Malungahu , 55-yard fumble recovery ( kick from Landon Pace )"
           ]
