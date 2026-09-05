@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-09-05T02:33:38.577Z",
+  "updatedAt": "2026-09-05T02:35:16.553Z",
   "games": {
     "2026-09-03|BOUNTIFUL|MORGAN": {
       "date": "09/03/2026",
       "awayTeam": "BOUNTIFUL",
       "homeTeam": "MORGAN",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-03/bountiful-football-vs-morgan-football/273290",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -692,10 +692,10 @@
       "awayTeam": "BEN LOMOND",
       "homeTeam": "ALA",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/ben-lomond-football-vs-american-leadership-football/274334",
-      "status": "Scheduled",
+      "status": "HALFTIME",
       "final": false,
       "clock": "",
-      "period": "",
+      "period": "HALFTIME",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -709,7 +709,7 @@
             "team": "Ben Lomond Scots (0-3)",
             "quarters": [
               7,
-              null,
+              6,
               null,
               null
             ],
@@ -718,8 +718,8 @@
           {
             "team": "American Leadership Eagles (3-0)",
             "quarters": [
-              0,
-              null,
+              7,
+              10,
               null,
               null
             ],
@@ -727,16 +727,129 @@
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Ben Lomond — ( 10:45 1Q ) DaShawn Gordan , run ( kick successful )",
+        "American Leadership — ( 7:47 1Q ) Dom Mendez , fumble recovery ( kick successful )",
+        "Ben Lomond — ( 5:39 2Q ) run",
+        "American Leadership — ( 3:06 2Q ) Asher Hernandez , 60-yard pass from Cooper DuPaix ( kick from Wesley Haston )",
+        "American Leadership — ( 0:09 2Q ) Wesley Haston , 43-yard FG"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "ALA",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "D . DaShawn Gordan",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "ALA",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "7",
+              "C . Cooper DuPaix",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "ALA",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "25",
+              "A . Asher Hernandez",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "ALA",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "W . Wesley Haston",
+              "1",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "ALA",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "D . Dom Mendez",
+              "",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 5,
+        "rows": 5,
+        "coreCells": 11,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|ALTAMONT|UMALEHI": {
       "date": "09/04/2026",
@@ -781,7 +894,7 @@
             "team": "Davis Darts (1-2)",
             "quarters": [
               3,
-              null,
+              17,
               null,
               null
             ],
@@ -790,8 +903,8 @@
           {
             "team": "Alta Hawks (3-0)",
             "quarters": [
+              3,
               0,
-              null,
               null,
               null
             ],
@@ -800,9 +913,97 @@
         ]
       },
       "scoringPlays": [
-        "Davis — ( 5:06 1Q ) Griffin Carmack , FG"
+        "Davis — ( 5:06 1Q ) Griffin Carmack , 21-yard FG",
+        "Alta — ( 1:02 1Q ) Madden McCallister , 31-yard FG",
+        "Davis — ( 7:01 2Q ) Griffin Carmack , 30-yard FG",
+        "Davis — ( 2:10 2Q ) Bode Sparrow , 20-yard pass from Paden Toula ( kick from Griffin Carmack )",
+        "Davis — ( 0:30 2Q ) Bode Sparrow , 2-yard run ( kick from Griffin Carmack )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "DAVIS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "B . Bode Sparrow",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "DAVIS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "17",
+              "P . Paden Toula",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "DAVIS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "B . Bode Sparrow",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "ALTA",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "15",
+              "M . Madden McCallister",
+              "1",
+              "",
+              ""
+            ]
+          ]
+        },
         {
           "category": "Special Teams",
           "team": "DAVIS",
@@ -817,8 +1018,8 @@
             [
               "30",
               "G . Griffin Carmack",
-              "1",
-              "",
+              "2",
+              "2",
               ""
             ]
           ]
@@ -826,13 +1027,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 0,
+        "blocks": 5,
+        "rows": 5,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|BINGHAM|WESTLAKE": {
       "date": "09/04/2026",
@@ -920,7 +1120,7 @@
       "final": false,
       "clock": "",
       "period": "HALFTIME",
-      "kickoffTime": "7:00 PM",
+      "kickoffTime": "3:00 PM",
       "boxScore": {
         "periods": [
           "Q1",
@@ -933,7 +1133,7 @@
             "team": "Duchesne Eagles (2-1)",
             "quarters": [
               6,
-              0,
+              12,
               null,
               null
             ],
@@ -943,7 +1143,7 @@
             "team": "Beaver Beavers (1-2)",
             "quarters": [
               0,
-              0,
+              15,
               null,
               null
             ],
@@ -952,9 +1152,33 @@
         ]
       },
       "scoringPlays": [
-        "Duchesne — ( 1:02 1Q ) Brex Robinson , 1-yard run ( kick failed )"
+        "Duchesne — ( 1:02 1Q ) Brex Robinson , 1-yard run ( kick failed )",
+        "Beaver — ( 7:31 2Q ) Emmet Lurth , 3-yard run ( kick from Emmet Lurth )",
+        "Duchesne — ( 3:38 2Q ) Brex Robinson , 55-yard run ( run failed )",
+        "Duchesne — ( 1:15 2Q ) Kyson Despain , 9-yard run ( kick failed )",
+        "Beaver — ( 0:10 2Q ) Takoda Boger , 5-yard pass from Drew Sorenson ( run from Zack Benson )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "BEAVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "87",
+              "E . Emmet Lurth",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Rushing",
           "team": "DUCHESNE",
@@ -967,24 +1191,94 @@
           ],
           "rows": [
             [
+              "15",
+              "K . Kyson Despain",
+              "",
+              "",
+              "1"
+            ],
+            [
               "3",
               "B . Brex Robinson",
               "",
               "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "BEAVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "17",
+              "D . Drew Sorenson",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "BEAVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "26",
+              "T . Takoda Boger",
+              "",
+              "",
               "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "BEAVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "87",
+              "E . Emmet Lurth",
+              "",
+              "1",
+              ""
             ]
           ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 2,
+        "blocks": 5,
+        "rows": 6,
+        "coreCells": 12,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|BEARRIVER|SKYVIEW": {
       "date": "09/04/2026",
@@ -1007,9 +1301,9 @@
           {
             "team": "Bear River Bears (2-1)",
             "quarters": [
-              0,
-              null,
-              null,
+              7,
+              7,
+              7,
               null
             ],
             "total": 21
@@ -1018,8 +1312,8 @@
             "team": "Sky View Bobcats (1-2)",
             "quarters": [
               7,
-              null,
-              null,
+              3,
+              0,
               null
             ],
             "total": 10
@@ -1027,12 +1321,16 @@
         ]
       },
       "scoringPlays": [
-        "Sky View — ( 8:52 1Q ) Rad Sparrow , 1-yard run ( kick from Jordan Hoyt )"
+        "Sky View — ( 8:52 1Q ) Rad Sparrow , 1-yard run ( kick from Jordan Hoyt )",
+        "Bear River — ( 1:02 1Q ) Eli Braegger , 46-yard pass from Preston Wilkinson ( kick from Gideon Nelson )",
+        "Sky View — ( 8:50 2Q ) Jordan Hoyt , 40-yard FG",
+        "Bear River — ( 0:22 2Q ) Glaiden Behrens , 14-yard pass from Preston Wilkinson ( kick from Gideon Nelson )",
+        "Bear River — ( 5:04 3Q ) Rigdon Vonk , 3-yard pass from Preston Wilkinson ( kick from Gideon Nelson )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "SKY VIEW",
+          "team": "BEAR RIVER",
           "headers": [
             "NO",
             "PLAYER",
@@ -1044,6 +1342,64 @@
             [
               "1",
               "R . Rad Sparrow",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "BEAR RIVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "16",
+              "P . Preston Wilkinson",
+              "",
+              "",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "BEAR RIVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "R . Rigdon Vonk",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "1",
+              "G . Glaiden Behrens",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "3",
+              "E . Eli Braegger",
               "",
               "",
               "1"
@@ -1064,8 +1420,28 @@
             [
               "25",
               "J . Jordan Hoyt",
-              "",
               "1",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "BEAR RIVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "37",
+              "G . Gideon Nelson",
+              "",
+              "3",
               ""
             ]
           ]
@@ -1073,13 +1449,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 5,
+        "rows": 7,
+        "coreCells": 12,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|FARMINGTON|AMERICANFORK": {
       "date": "09/04/2026",
@@ -1102,8 +1477,8 @@
           {
             "team": "Farmington Phoenix (1-2)",
             "quarters": [
+              6,
               0,
-              null,
               null,
               null
             ],
@@ -1112,8 +1487,8 @@
           {
             "team": "American Fork Cavemen (2-1)",
             "quarters": [
-              2,
-              null,
+              10,
+              7,
               null,
               null
             ],
@@ -1122,17 +1497,112 @@
         ]
       },
       "scoringPlays": [
-        "American Fork — ( 10:22 1Q ) safety"
+        "American Fork — ( 10:22 1Q ) safety",
+        "Farmington — ( 4:32 1Q ) Thayne Boyle , 1-yard run ( run failed )",
+        "American Fork — ( 2:38 1Q ) Noah Behm , 34-yard pass from Jake Matsen ( run from Jake Matsen )",
+        "American Fork — ( 0:18 2Q ) Cash Taiese , 17-yard pass from Jake Matsen ( kick from Jace Worthington )"
       ],
-      "stats": [],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "AMERICAN FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "14",
+              "T . Thayne Boyle",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "AMERICAN FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "14",
+              "J . Jake Matsen",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "AMERICAN FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "C . Cash Taiese",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "5",
+              "N . Noah Behm",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "AMERICAN FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "26",
+              "J . Jace Worthington",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 4,
+        "rows": 5,
+        "coreCells": 10,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|CEDARVALLEY|MOUNTAINRIDGE": {
       "date": "09/04/2026",
@@ -1156,7 +1626,7 @@
             "team": "Cedar Valley Aviators (1-2)",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -1165,8 +1635,8 @@
           {
             "team": "Mountain Ridge Sentinels (3-0)",
             "quarters": [
-              7,
-              null,
+              21,
+              35,
               null,
               null
             ],
@@ -1175,9 +1645,43 @@
         ]
       },
       "scoringPlays": [
-        "Mountain Ridge — ( 7:02 1Q ) Tytan DeJong , 20-yard pass from Jaxon Hunt ( kick from Will O'Neil )"
+        "Mountain Ridge — ( 7:02 1Q ) Tytan DeJong , 20-yard pass from Jaxon Hunt ( kick from Will O'Neil )",
+        "Mountain Ridge — ( 3:14 1Q ) Xander Thayer , 24-yard pass from Jaxon Hunt ( kick from Will O'Neil )",
+        "Mountain Ridge — ( 1:30 1Q ) Jordan Classenn , 16-yard pass from Brady Hunt ( kick from Will O'Neil )",
+        "Mountain Ridge — ( 10:01 2Q ) Marshall West , 1-yard pass from Jaxon Hunt ( kick from Will O'Neil )",
+        "Mountain Ridge — ( 7:50 2Q ) Will O'Neil , 23-yard run ( kick from Will O'Neil )",
+        "Mountain Ridge — ( 5:56 2Q ) Tagg Dejong , 9-yard pass from Brady Hunt ( kick from Will O'Neil )",
+        "Mountain Ridge — ( 3:04 2Q ) Marshall West , 16-yard pass from Brady Hunt ( kick from Will O'Neil )",
+        "Mountain Ridge — ( 1:08 2Q ) Marshall West , 2-yard run ( kick from Will O'Neil )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "MOUNTAIN RIDGE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "26",
+              "M . Marshall West",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "19",
+              "W . Will O'Neil",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "MOUNTAIN RIDGE",
@@ -1192,12 +1696,21 @@
           ],
           "rows": [
             [
+              "47",
+              "B . Brady Hunt",
+              "",
+              "",
+              "",
+              "3",
+              ""
+            ],
+            [
               "11",
               "J . Jaxon Hunt",
               "",
               "",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -1213,6 +1726,34 @@
             "TD"
           ],
           "rows": [
+            [
+              "85",
+              "T . Tagg Dejong",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "26",
+              "M . Marshall West",
+              "",
+              "",
+              "2"
+            ],
+            [
+              "5",
+              "J . Jordan Classenn",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "7",
+              "X . Xander Thayer",
+              "",
+              "",
+              "1"
+            ],
             [
               "1",
               "T . Tytan DeJong",
@@ -1237,7 +1778,7 @@
               "19",
               "W . Will O'Neil",
               "",
-              "1",
+              "8",
               ""
             ]
           ]
@@ -1245,13 +1786,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
-        "coreCells": 6,
+        "blocks": 4,
+        "rows": 10,
+        "coreCells": 22,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|FREMONT|BONNEVILLE": {
       "date": "09/04/2026",
@@ -1275,7 +1815,7 @@
             "team": "Fremont Silverwolves (1-2)",
             "quarters": [
               20,
-              null,
+              14,
               null,
               null
             ],
@@ -1285,7 +1825,7 @@
             "team": "Bonneville Lakers (1-2)",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -1296,7 +1836,9 @@
       "scoringPlays": [
         "Fremont — ( 11:04 1Q ) Breckon Phillips , 54-yard pass from Calvin Cooper ( kick failed )",
         "Fremont — ( 10:48 1Q ) Kason Dabb , 50-yard run ( kick from Breckon Phillips )",
-        "Fremont — ( 5:28 1Q ) Calvin Cooper , 4-yard run ( kick from Breckon Phillips )"
+        "Fremont — ( 5:28 1Q ) Calvin Cooper , 4-yard run ( kick from Breckon Phillips )",
+        "Fremont — ( 9:16 2Q ) Ky Majors , 46-yard pass from Calvin Cooper ( kick from Ben Delbridge )",
+        "Fremont — ( 5:53 2Q ) Ky Majors , 42-yard pass from Calvin Cooper ( kick from Ben Delbridge )"
       ],
       "stats": [
         {
@@ -1345,7 +1887,7 @@
               "",
               "",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -1361,6 +1903,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "11",
+              "K . Ky Majors",
+              "",
+              "",
+              "2"
+            ],
             [
               "14",
               ". Breckon Phillips",
@@ -1382,6 +1931,13 @@
           ],
           "rows": [
             [
+              "47",
+              "B . Ben Delbridge",
+              "",
+              "2",
+              ""
+            ],
+            [
               "14",
               ". Breckon Phillips",
               "",
@@ -1394,12 +1950,11 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 4,
-        "rows": 5,
-        "coreCells": 10,
+        "rows": 7,
+        "coreCells": 12,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+      }
     },
     "2026-09-04|CARBON|CANYONVIEW": {
       "date": "09/04/2026",
@@ -1423,8 +1978,8 @@
             "team": "Carbon Dinos (1-2)",
             "quarters": [
               7,
-              null,
-              null,
+              0,
+              0,
               null
             ],
             "total": 7
@@ -1433,24 +1988,165 @@
             "team": "Canyon View Falcons (3-0)",
             "quarters": [
               7,
-              null,
-              null,
+              20,
+              6,
               null
             ],
             "total": 33
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Carbon — ( 5:16 1Q ) Daxtyn Mower , 13-yard fumble recovery ( kick from Tayger Timothy )",
+        "Canyon View — ( 3:55 1Q ) Owen Williams , 59-yard run ( kick from Jackson Beckstrom )",
+        "Canyon View — ( 9:30 2Q ) Camden Sheridan , 27-yard run ( kick from Jackson Beckstrom )",
+        "Canyon View — ( 4:17 2Q ) Preston Higgins , 33-yard pass from Owen Williams ( kick failed )",
+        "Canyon View — ( 2:35 2Q ) Camden Sheridan , 21-yard run ( kick from Jackson Beckstrom )",
+        "Canyon View — ( 8:11 3Q ) Camden Sheridan , 24-yard run ( run failed )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "C . Camden Sheridan",
+              "",
+              "",
+              "3"
+            ],
+            [
+              "2",
+              "O . Owen Williams",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "O . Owen Williams",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "P . Preston Higgins",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "13",
+              "J . Jackson Beckstrom",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "CARBON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "28",
+              "T . Tayger Timothy",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "CARBON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "54",
+              "D . Daxtyn Mower",
+              "",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 6,
+        "rows": 7,
+        "coreCells": 13,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|CRIMSONCLIFFS|BRIGHTON": {
       "date": "09/04/2026",
@@ -1474,7 +2170,7 @@
             "team": "Crimson Cliffs Mustangs (2-1)",
             "quarters": [
               7,
-              null,
+              9,
               null,
               null
             ],
@@ -1484,7 +2180,7 @@
             "team": "Brighton Bengals (1-2)",
             "quarters": [
               0,
-              null,
+              13,
               null,
               null
             ],
@@ -1493,12 +2189,16 @@
         ]
       },
       "scoringPlays": [
-        "Crimson Cliffs — ( 5:58 1Q ) Ryder Tebbs , 15-yard run ( kick from Jacob Sparks )"
+        "Crimson Cliffs — ( 5:58 1Q ) Ryder Tebbs , 15-yard run ( kick from Jacob Sparks )",
+        "Brighton — ( 11:19 2Q ) Dax Matheson , 3-yard pass from Griffin Matsumori ( kick from Evan Price )",
+        "Crimson Cliffs — ( 7:32 2Q ) Hu Alisa , 16-yard run ( kick from Jacob Sparks )",
+        "Crimson Cliffs — ( 2:07 2Q ) safety",
+        "Brighton — ( 0:00 2Q ) Easton Gustafson , 51-yard pass from Griffin Matsumori ( kick failed )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "CRIMSON CLIFFS",
+          "team": "BRIGHTON",
           "headers": [
             "NO",
             "PLAYER",
@@ -1508,11 +2208,89 @@
           ],
           "rows": [
             [
+              "6",
+              "H . Hu Alisa",
+              "",
+              "",
+              "1"
+            ],
+            [
               "24",
               "R . Ryder Tebbs",
               "",
               "",
               "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "BRIGHTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "7",
+              "G . Griffin Matsumori",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "BRIGHTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "9",
+              "E . Easton Gustafson",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "-",
+              "D . Dax Matheson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "BRIGHTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "E . Evan Price",
+              "",
+              "1",
+              ""
             ]
           ]
         },
@@ -1531,7 +2309,7 @@
               "10",
               "J . Jacob Sparks",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -1539,13 +2317,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 5,
+        "rows": 7,
+        "coreCells": 12,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|BOXELDER|NORTHRIDGE": {
       "date": "09/04/2026",
@@ -1569,8 +2346,8 @@
             "team": "Box Elder Bees (3-0)",
             "quarters": [
               0,
+              10,
               7,
-              null,
               null
             ],
             "total": 17
@@ -1580,23 +2357,68 @@
             "quarters": [
               0,
               0,
-              null,
+              0,
               null
             ],
             "total": 0
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Box Elder — ( 9:52 1Q ) Judd Howells , 1-yard run ( kick from Tytan Hupp )",
+        "Box Elder — ( 0:01 2Q ) Tytan Hupp , 44-yard FG",
+        "Box Elder — ( 6:59 3Q ) Judd Howells , 23-yard run ( kick from Tytan Hupp )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "BOX ELDER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "J . Judd Howells",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "BOX ELDER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "19",
+              "T . Tytan Hupp",
+              "1",
+              "2",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 1
+      }
     },
     "2026-09-04|DIXIE|CEDARCITY": {
       "date": "09/04/2026",
@@ -1620,7 +2442,7 @@
             "team": "Dixie Flyers (0-3)",
             "quarters": [
               14,
-              null,
+              0,
               null,
               null
             ],
@@ -1630,7 +2452,7 @@
             "team": "Cedar City Reds (2-1)",
             "quarters": [
               7,
-              null,
+              7,
               null,
               null
             ],
@@ -1641,12 +2463,13 @@
       "scoringPlays": [
         "Cedar City — ( 7:23 1Q ) Jackson Mann , 30-yard run ( kick from Cody Stevenson )",
         "Dixie — ( 6:33 1Q ) Robbie Bennett , 59-yard run ( kick from Daecen Santos )",
-        "Dixie — ( 2:44 1Q ) Ricky Ruport , 51-yard pass from Riker Muhlestein ( kick from Daecen Santos )"
+        "Dixie — ( 2:44 1Q ) Ricky Ruport , 51-yard pass from Riker Muhlestein ( kick from Daecen Santos )",
+        "Cedar City — ( 9:03 2Q ) Braxton DeMille , 8-yard run ( kick from Cody Stevenson )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "DIXIE",
+          "team": "CEDAR CITY",
           "headers": [
             "NO",
             "PLAYER",
@@ -1655,6 +2478,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "35",
+              "B . Braxton DeMille",
+              "",
+              "",
+              "1"
+            ],
             [
               "5",
               "J . Jackson Mann",
@@ -1743,7 +2573,7 @@
               "30",
               "C . Cody Stevenson",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -1772,12 +2602,11 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 6,
-        "rows": 6,
-        "coreCells": 10,
+        "rows": 7,
+        "coreCells": 12,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+      }
     },
     "2026-09-04|OGDEN|CLEARFIELD": {
       "date": "09/04/2026",
@@ -1800,8 +2629,8 @@
           {
             "team": "Ogden Tigers (1-2)",
             "quarters": [
-              0,
-              null,
+              6,
+              21,
               null,
               null
             ],
@@ -1810,8 +2639,8 @@
           {
             "team": "Clearfield Falcons (2-1)",
             "quarters": [
-              7,
-              null,
+              13,
+              0,
               null,
               null
             ],
@@ -1820,9 +2649,41 @@
         ]
       },
       "scoringPlays": [
-        "Clearfield — ( 10:08 1Q ) Bryson Ridge , 30-yard pass from Brik Barlow ( kick from Daxton Johnson )"
+        "Clearfield — ( 10:08 1Q ) Bryson Ridge , 30-yard pass from Brik Barlow ( kick from Daxton Johnson )",
+        "Ogden — ( 4:02 1Q ) 1-yard run ( kick failed )",
+        "Clearfield — ( 3:03 1Q ) Bryson Ridge , 74-yard pass from Brik Barlow ( kick failed )",
+        "Ogden — ( 11:33 2Q ) Blake Weston , 37-yard run ( kick from Kael Thompson )",
+        "Ogden — ( 8:03 2Q ) Anderson Curry , 13-yard run ( kick from Colton Rasmussen )",
+        "Ogden — ( 4:15 2Q ) Blake Weston , 3-yard run ( kick from Colton Rasmussen )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "OGDEN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "4",
+              "A . Anderson Curry",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "6",
+              "B . Blake Weston",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "CLEARFIELD",
@@ -1842,7 +2703,7 @@
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -1863,7 +2724,7 @@
               "B . Bryson Ridge",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -1886,17 +2747,43 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "OGDEN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "21",
+              "C . Colton Rasmussen",
+              "",
+              "2",
+              ""
+            ],
+            [
+              "24",
+              "K . Kael Thompson",
+              "",
+              "1",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
-        "coreCells": 6,
+        "blocks": 5,
+        "rows": 7,
+        "coreCells": 10,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|LAYTON|COPPERHILLS": {
       "date": "09/04/2026",
@@ -1920,7 +2807,7 @@
             "team": "Layton Lancers (2-1)",
             "quarters": [
               0,
-              null,
+              21,
               null,
               null
             ],
@@ -1930,7 +2817,7 @@
             "team": "Copper Hills Grizzlies (3-0)",
             "quarters": [
               6,
-              null,
+              7,
               null,
               null
             ],
@@ -1939,9 +2826,117 @@
         ]
       },
       "scoringPlays": [
-        "Copper Hills — ( 6:45 1Q ) Junior Ehounou , 22-yard int. return ( kick failed )"
+        "Copper Hills — ( 6:45 1Q ) Junior Ehounou , 22-yard int. return ( kick failed )",
+        "Copper Hills — ( 8:39 2Q ) Landen Gerona , 32-yard int. return ( kick from Lincoln Anderson )",
+        "Layton — ( 8:24 2Q ) Carter Hughes , 70-yard pass from Tillman Thomas ( kick from Miles Neuteboom )",
+        "Layton — ( 4:19 2Q ) Luke Byers , 1-yard run ( kick from Miles Neuteboom )",
+        "Layton — ( 2:50 2Q ) Luke Byers , 1-yard run ( kick from Miles Neuteboom )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "LAYTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "L . Luke Byers",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "LAYTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "5",
+              "T . Tillman Thomas",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "LAYTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "C . Carter Hughes",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "COPPER HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "32",
+              "L . Lincoln Anderson",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "LAYTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "20",
+              "M . Miles Neuteboom",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        },
         {
           "category": "Defense",
           "team": "COPPER HILLS",
@@ -1955,6 +2950,14 @@
           ],
           "rows": [
             [
+              "24",
+              "L . Landen Gerona",
+              "",
+              "",
+              "",
+              "1"
+            ],
+            [
               "21",
               "J . Junior Ehounou",
               "",
@@ -1967,13 +2970,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 3,
+        "blocks": 6,
+        "rows": 7,
+        "coreCells": 14,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|COTTONWOOD|HIGHLAND": {
       "date": "09/04/2026",
@@ -2006,7 +3008,7 @@
           {
             "team": "Highland Rams (2-1)",
             "quarters": [
-              21,
+              41,
               null,
               null,
               null
@@ -2017,10 +3019,40 @@
       },
       "scoringPlays": [
         "Highland — ( 10:53 1Q ) Zamiri Vaughn , 45-yard pass from Will Bauman ( kick from Willem Miles )",
-        "Highland — ( )",
-        "Highland — ( ) run"
+        "Highland — ( 8:58 1Q ) Jacob Woodman , 18-yard run ( kick from Will Bauman )",
+        "Highland — ( 7:49 1Q ) Zamiri Vaughn , 55-yard pass from Will Bauman ( kick from Will Bauman )",
+        "Highland — ( 6:40 1Q ) Adriean King Boyd , 17-yard run ( kick from Will Bauman )",
+        "Highland — ( 5:30 1Q ) Andrew Greatorex , 45-yard pass from Will Bauman ( kick from Willem Miles )",
+        "Highland — ( 1:38 1Q ) Jacob Woodman , 13-yard pass from Will Bauman ( kick from Willem Miles )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "HIGHLAND",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "A . Adriean King Boyd",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "14",
+              "J . Jacob Woodman",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "HIGHLAND",
@@ -2040,7 +3072,7 @@
               "",
               "",
               "",
-              "1",
+              "4",
               ""
             ]
           ]
@@ -2057,11 +3089,25 @@
           ],
           "rows": [
             [
+              "13",
+              "A . Andrew Greatorex",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "14",
+              "J . Jacob Woodman",
+              "",
+              "",
+              "1"
+            ],
+            [
               "6",
               "Z . Zamiri Vaughn",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -2080,7 +3126,14 @@
               "21",
               "W . Willem Miles",
               "",
-              "1",
+              "3",
+              ""
+            ],
+            [
+              "16",
+              "W . Will Bauman",
+              "",
+              "3",
               ""
             ]
           ]
@@ -2088,13 +3141,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
-        "coreCells": 6,
+        "blocks": 4,
+        "rows": 8,
+        "coreCells": 14,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|KEARNS|CYPRUS": {
       "date": "09/04/2026",
@@ -2118,7 +3170,7 @@
             "team": "Kearns Cougars (0-2)",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -2127,8 +3179,8 @@
           {
             "team": "Cyprus Pirates (0-3)",
             "quarters": [
-              14,
-              null,
+              21,
+              6,
               null,
               null
             ],
@@ -2138,9 +3190,31 @@
       },
       "scoringPlays": [
         "Cyprus — ( 10:50 1Q ) Gunner Fredrickson , 6-yard pass from Sidney McElreathe ( kick from Larry Flores )",
-        "Cyprus — ( 5:06 1Q ) Hevani Kamai , 6-yard int. return ( kick from Larry Flores )"
+        "Cyprus — ( 5:06 1Q ) Hevani Kamai , 6-yard int. return ( kick from Larry Flores )",
+        "Cyprus — ( 1:14 1Q ) Losi J. Fano , 8-yard run ( kick from Larry Flores )",
+        "Cyprus — ( 8:00 2Q ) Gunner Fredrickson , 21-yard pass from Sidney McElreathe ( kick from Larry Flores )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "CYPRUS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "13",
+              "L . Losi J. Fano",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "CYPRUS",
@@ -2160,7 +3234,7 @@
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -2181,7 +3255,7 @@
               "G . Gunner Fredrickson",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -2200,7 +3274,7 @@
               "45",
               "L . Larry Flores",
               "",
-              "2",
+              "4",
               ""
             ]
           ]
@@ -2230,13 +3304,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 4,
-        "coreCells": 9,
+        "blocks": 5,
+        "rows": 5,
+        "coreCells": 11,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|DELTA|PROVIDENCEHALL": {
       "date": "09/04/2026",
@@ -2260,7 +3333,7 @@
             "team": "Delta Rabbits (2-1)",
             "quarters": [
               16,
-              null,
+              8,
               null,
               null
             ],
@@ -2270,7 +3343,7 @@
             "team": "Providence Hall Patriots (1-2)",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -2279,7 +3352,9 @@
         ]
       },
       "scoringPlays": [
-        "Delta — ( 9:30 1Q ) Bronx Hunt , 50-yard run ( run from Dayson Meinhardt )"
+        "Delta — ( 9:30 1Q ) Bronx Hunt , 50-yard run ( run from Dayson Meinhardt )",
+        "Delta — ( 4:47 1Q ) Bodey Shurtz , 4-yard run ( run from Drake Norman )",
+        "Delta — ( 6:15 2Q ) Dayson Meinhardt , 9-yard run ( pass from Bodey Shurtz )"
       ],
       "stats": [
         {
@@ -2294,6 +3369,20 @@
           ],
           "rows": [
             [
+              "5",
+              "B . Bodey Shurtz",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "8",
+              "D . Dayson Meinhardt",
+              "",
+              "",
+              "1"
+            ],
+            [
               "2",
               "B . Bronx Hunt",
               "",
@@ -2306,12 +3395,11 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 1,
-        "rows": 1,
-        "coreCells": 2,
+        "rows": 3,
+        "coreCells": 6,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+      }
     },
     "2026-09-04|DESERETPEAK|TOOELE": {
       "date": "09/04/2026",
@@ -2334,8 +3422,8 @@
           {
             "team": "Deseret Peak Golden Eagles (0-3)",
             "quarters": [
+              6,
               0,
-              null,
               null,
               null
             ],
@@ -2344,8 +3432,8 @@
           {
             "team": "Tooele Buffaloes (2-1)",
             "quarters": [
-              9,
-              null,
+              15,
+              7,
               null,
               null
             ],
@@ -2354,10 +3442,121 @@
         ]
       },
       "scoringPlays": [
-        "Tooele — ( 10:16 1Q ) Gus Pater , 34-yard int. return ( kick from Gus Pater )",
-        "Tooele — ( 8:23 1Q ) safety"
+        "Tooele — ( 10:16 1Q ) Gus Pater , 34-yard int. return ( kick from Davin Green )",
+        "Tooele — ( 8:23 1Q ) safety",
+        "Tooele — ( 1:17 1Q ) Kami Vaenuku , 10-yard pass from Trevan Rosser ( kick from Davin Green )",
+        "Deseret Peak — ( 0:49 1Q ) Eli Overman , 78-yard pass from Andrew Harris ( kick failed )",
+        "Tooele — ( 3:50 2Q ) Trevan Rosser , 2-yard run ( kick from Davin Green )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "TOOELE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "12",
+              "T . Trevan Rosser",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "TOOELE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "12",
+              "T . Trevan Rosser",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "DESERET PEAK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "1",
+              "A . Andrew Harris",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "TOOELE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "22",
+              "K . Kami Vaenuku",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "DESERET PEAK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "E . Eli Overman",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Special Teams",
           "team": "TOOELE",
@@ -2370,10 +3569,10 @@
           ],
           "rows": [
             [
-              "8",
-              "G . Gus Pater",
+              "27",
+              "D . Davin Green",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -2403,13 +3602,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 3,
+        "blocks": 7,
+        "rows": 7,
+        "coreCells": 17,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 6
+      }
     },
     "2026-09-04|DESERTHILLS|SPANISHFORK": {
       "date": "09/04/2026",
@@ -2433,7 +3631,7 @@
             "team": "Desert Hills Thunder (2-1)",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -2442,8 +3640,8 @@
           {
             "team": "Spanish Fork Dons (2-1)",
             "quarters": [
-              14,
-              null,
+              21,
+              2,
               null,
               null
             ],
@@ -2453,7 +3651,9 @@
       },
       "scoringPlays": [
         "Spanish Fork — ( 9:50 1Q ) Kohen Frost , 27-yard pass from Hawkin Rasmussen ( kick from Preston Jones )",
-        "Spanish Fork — ( 8:11 1Q ) Mason Snow , 42-yard pass from Hawkin Rasmussen ( kick from Preston Jones )"
+        "Spanish Fork — ( 8:11 1Q ) Mason Snow , 42-yard pass from Hawkin Rasmussen ( kick from Preston Jones )",
+        "Spanish Fork — ( 1;06 1Q ) Nixon Warren , 39-yard pass from Hawkin Rasmussen ( kick from Preston Jones )",
+        "Spanish Fork — ( 0:44 2Q ) safety"
       ],
       "stats": [
         {
@@ -2475,7 +3675,7 @@
               "",
               "",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -2491,6 +3691,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "8",
+              "N . Nixon Warren",
+              "",
+              "",
+              "1"
+            ],
             [
               "3",
               "M . Mason Snow",
@@ -2522,7 +3729,7 @@
               "34",
               "P . Preston Jones",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -2531,12 +3738,11 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 3,
-        "rows": 4,
-        "coreCells": 8,
+        "rows": 5,
+        "coreCells": 10,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+      }
     },
     "2026-09-04|LAYTONCHRISTIAN|EAST": {
       "date": "09/04/2026",
@@ -2580,8 +3786,8 @@
           {
             "team": "North Sevier Wolves (2-1)",
             "quarters": [
-              7,
-              null,
+              14,
+              0,
               null,
               null
             ],
@@ -2590,8 +3796,8 @@
           {
             "team": "Enterprise Wolves (2-1)",
             "quarters": [
-              7,
-              null,
+              28,
+              28,
               null,
               null
             ],
@@ -2601,7 +3807,15 @@
       },
       "scoringPlays": [
         "North Sevier — ( 11:45 1Q ) Davis Malmgren , 95-yard kick return ( kick from Cole Johnson )",
-        "Enterprise — ( 11;24 1Q ) Jake Christensen , 37-yard run ( kick from Dylan Liebetrau )"
+        "Enterprise — ( 11;24 1Q ) Jake Christensen , 37-yard run ( kick from Dylan Liebetrau )",
+        "Enterprise — ( 7:02 1Q ) Jake Christensen , run ( kick from Dylan Liebetrau )",
+        "North Sevier — ( 4:44 1Q ) Davis Malmgren , 10-yard pass from Houston Mickelsen ( kick from Cole Johnson )",
+        "Enterprise — ( 4:27 1Q ) Rigz Anzalone , 55-yard run ( kick from Dylan Liebetrau )",
+        "Enterprise — ( 0:17 2Q ) Jack Moyle , 1-yard run ( kick from Dylan Liebetrau )",
+        "Enterprise — ( 10:49 2Q ) Jake Christensen , 45-yard run ( kick from Dylan Liebetrau )",
+        "Enterprise — ( 7:00 2Q ) Rigz Anzalone , 25-yard run ( kick from Dylan Liebetrau )",
+        "Enterprise — ( 5:44 2Q ) Easton Hill , 32-yard pass from Jack Moyle ( kick from Dylan Liebetrau )",
+        "Enterprise — ( 2:11 2Q ) Brannoc Davidson , 68-yard run ( kick from Dylan Liebetrau )"
       ],
       "stats": [
         {
@@ -2616,8 +3830,117 @@
           ],
           "rows": [
             [
+              "24",
+              "B . Brannoc Davidson",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "12",
+              "J . Jack Moyle",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "0",
+              "R . Rigz Anzalone",
+              "",
+              "",
+              "2"
+            ],
+            [
               "1",
               "J . Jake Christensen",
+              "",
+              "",
+              "3"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "ENTERPRISE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "12",
+              "J . Jack Moyle",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "NORTH SEVIER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "H . Houston Mickelsen",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "ENTERPRISE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "5",
+              "E . Easton Hill",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "NORTH SEVIER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "D . Davis Malmgren",
               "",
               "",
               "1"
@@ -2639,7 +3962,7 @@
               "9",
               "D . Dylan Liebetrau",
               "",
-              "1",
+              "8",
               ""
             ]
           ]
@@ -2659,7 +3982,7 @@
               "13",
               "C . Cole Johnson",
               "",
-              "1",
+              "2",
               ""
             ],
             [
@@ -2674,13 +3997,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 4,
-        "coreCells": 2,
+        "blocks": 7,
+        "rows": 11,
+        "coreCells": 20,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 5
+      }
     },
     "2026-09-04|EMERY|JUDGEMEMORIAL": {
       "date": "09/04/2026",
@@ -2691,7 +4013,7 @@
       "final": false,
       "clock": "7:58",
       "period": "Q3",
-      "kickoffTime": "3:00 PM",
+      "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
           "Q1",
@@ -2704,8 +4026,8 @@
             "team": "Emery Spartans (1-2)",
             "quarters": [
               6,
-              0,
-              null,
+              22,
+              6,
               null
             ],
             "total": 34
@@ -2715,7 +4037,7 @@
             "quarters": [
               3,
               0,
-              null,
+              0,
               null
             ],
             "total": 3
@@ -2724,12 +4046,16 @@
       },
       "scoringPlays": [
         "Emery — ( 7:16 1Q ) Ajay Thomas , 3-yard run ( kick from Corbyn Ward )",
-        "Judge Memorial — ( 2:32 1Q ) Cash O'Brien , 25-yard FG"
+        "Judge Memorial — ( 2:32 1Q ) Cash O'Brien , 25-yard FG",
+        "Emery — ( 9:46 2Q ) Krae LeRoy , 11-yard pass from Ajay Thomas ( run failed )",
+        "Emery — ( 5:10 2Q ) Myles Mortensen , fumble recovery ( kick from Corbyn Ward )",
+        "Emery — ( 2:38 2Q ) Jess Larsen , 21-yard pass from Ajay Thomas ( kick from Corbyn Ward )",
+        "Emery — ( 7:58 3Q ) Kai Whitsel , 15-yard pass from Ajay Thomas ( kick failed )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "JUDGE MEMORIAL",
+          "team": "EMERY",
           "headers": [
             "NO",
             "PLAYER",
@@ -2741,6 +4067,64 @@
             [
               "13",
               "A . Ajay Thomas",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "EMERY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "13",
+              "A . Ajay Thomas",
+              "",
+              "",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "EMERY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "5",
+              "K . Kai Whitsel",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "20",
+              "J . Jess Larsen",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "11",
+              "K . Krae LeRoy",
               "",
               "",
               "1"
@@ -2782,21 +4166,42 @@
               "7",
               "C . Corbyn Ward",
               "",
-              "1",
+              "3",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "EMERY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "52",
+              "M . Myles Mortensen",
+              "",
+              "",
+              "",
+              "1"
             ]
           ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
-        "coreCells": 2,
+        "blocks": 6,
+        "rows": 8,
+        "coreCells": 15,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|GRANTSVILLE|HURRICANE": {
       "date": "09/04/2026",
@@ -2820,7 +4225,7 @@
             "team": "Grantsville Cowboys (3-0)",
             "quarters": [
               0,
-              0,
+              3,
               null,
               null
             ],
@@ -2830,17 +4235,21 @@
             "team": "Hurricane Tigers (3-0)",
             "quarters": [
               10,
-              0,
+              20,
               null,
               null
             ],
-            "total": 30
+            "total": 37
           }
         ]
       },
       "scoringPlays": [
         "Hurricane — ( 11:02 1Q ) Kannon Cowan , 57-yard run ( kick from Cameron Lemmon )",
-        "Hurricane — ( 5:50 1Q ) Cameron Lemmon , 16-yard FG"
+        "Hurricane — ( 5:50 1Q ) Cameron Lemmon , 16-yard FG",
+        "Grantsville — ( 11:55 2Q ) Cache Hammond , 24-yard FG",
+        "Hurricane — ( 9:38 2Q ) Kannon Cowan , 43-yard run ( kick from Cameron Lemmon )",
+        "Hurricane — ( 5:33 2Q ) Titan Borchardt , 19-yard pass from Kannon Cowan ( kick from Cameron Lemmon )",
+        "Hurricane — ( 0:07 2Q ) Calvin Rose , 1-yard pass from Kannon Cowan ( kick failed )"
       ],
       "stats": [
         {
@@ -2857,6 +4266,57 @@
             [
               "11",
               "K . Kannon Cowan",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "11",
+              "K . Kannon Cowan",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "23",
+              "C . Calvin Rose",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "1",
+              "T . Titan Borchardt",
               "",
               "",
               "1"
@@ -2878,7 +4338,27 @@
               "7",
               "C . Cameron Lemmon",
               "1",
+              "3",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "GRANTSVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "51",
+              "C . Cache Hammond",
               "1",
+              "",
               ""
             ]
           ]
@@ -2886,11 +4366,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 5,
+        "rows": 6,
+        "coreCells": 10,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 3
       },
       "scoreSource": "deseret-day-scoreboard-unlinked"
     },
@@ -2916,7 +4396,7 @@
             "team": "Granger Lancers (0-3)",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -2925,8 +4405,8 @@
           {
             "team": "Hillcrest Huskies (2-1)",
             "quarters": [
-              6,
-              null,
+              13,
+              24,
               null,
               null
             ],
@@ -2935,9 +4415,34 @@
         ]
       },
       "scoringPlays": [
-        "Hillcrest — ( 11:03 1Q ) Alani Latu , 7-yard pass from K'Von Houston ( kick from Weston Allen )"
+        "Hillcrest — ( 11:03 1Q ) Alani Latu , 7-yard pass from K'Von Houston ( kick failed )",
+        "Hillcrest — ( 2:11 1Q ) Levi Lavaka , 33-yard pass from K'Von Houston ( kick from Weston Allen )",
+        "Hillcrest — ( 11:54 2Q ) Alani Latu , 7-yard pass from K'Von Houston ( kick failed )",
+        "Hillcrest — ( 6:53 2Q ) Weston Allen , 26-yard FG",
+        "Hillcrest — ( 2:04 2Q ) K'Von Houston , 3-yard run ( kick from Weston Allen )",
+        "Hillcrest — ( 0:00 2Q ) Collin Ence , 56-yard fumble recovery ( run from Alani Latu )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "HILLCREST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "15",
+              "K . K'Von Houston",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "HILLCREST",
@@ -2957,7 +4462,7 @@
               "",
               "",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -2974,11 +4479,18 @@
           ],
           "rows": [
             [
+              "11",
+              "L . Levi Lavaka",
+              "",
+              "",
+              "1"
+            ],
+            [
               "5",
               "A . Alani Latu",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -2996,32 +4508,53 @@
             [
               "12",
               "W . Weston Allen",
-              "",
               "1",
+              "2",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "HILLCREST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "80",
+              "C . Collin Ence",
+              "",
+              "",
+              "",
+              "1"
             ]
           ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
-        "coreCells": 6,
+        "blocks": 5,
+        "rows": 6,
+        "coreCells": 13,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|GREENCANYON|STANSBURY": {
       "date": "09/04/2026",
       "awayTeam": "GREEN CANYON",
       "homeTeam": "STANSBURY",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/green-canyon-football-vs-stansbury-football/273706",
-      "status": "Scheduled",
+      "status": "HALFTIME",
       "final": false,
       "clock": "",
-      "period": "",
+      "period": "HALFTIME",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -3032,38 +4565,120 @@
         ],
         "rows": [
           {
-            "team": "GREEN CANYON",
+            "team": "Green Canyon Wolves (1-2)",
             "quarters": [
-              null,
-              null,
+              0,
+              0,
               null,
               null
             ],
             "total": 0
           },
           {
-            "team": "STANSBURY",
+            "team": "Stansbury Stallions (2-1)",
             "quarters": [
-              null,
-              null,
+              0,
+              21,
               null,
               null
             ],
             "total": 21
           }
-        ],
-        "source": "deseret-day-scoreboard-unlinked"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Stansbury — ( 9:04 2Q ) Junior Helu , 12-yard pass from Brighton Reutzel ( kick from Seth Wilcox )",
+        "Stansbury — ( 3:25 2Q ) Peti Vaka , 6-yard pass ( kick from Seth Wilcox )",
+        "Stansbury — ( 1:26 2Q ) Ladarius Rhodes , 40-yard pass from Brighton Reutzel ( kick from Seth Wilcox )"
+      ],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "B . Brighton Reutzel",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "L . Ladarius Rhodes",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "4",
+              "P . Peti Vaka",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "10",
+              "J . Junior Helu",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "S . Seth Wilcox",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 3,
+        "rows": 5,
+        "coreCells": 10,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 2
+      }
     },
     "2026-09-04|MILFORD|GUNNISONVALLEY": {
       "date": "09/04/2026",
@@ -3087,7 +4702,7 @@
             "team": "Milford Tigers (1-2)",
             "quarters": [
               7,
-              null,
+              0,
               null,
               null
             ],
@@ -3097,7 +4712,7 @@
             "team": "Gunnison Valley Bulldogs (2-1)",
             "quarters": [
               7,
-              null,
+              21,
               null,
               null
             ],
@@ -3107,7 +4722,10 @@
       },
       "scoringPlays": [
         "Milford — ( 5:45 1Q ) Kamdon Spaulding , 13-yard pass from Braxton Hansen ( kick from Maddix Alger )",
-        "Gunnison Valley — ( 1:31 1Q ) Dillon Dyreng , 4-yard run ( kick from Edrick Salas )"
+        "Gunnison Valley — ( 1:31 1Q ) Dillon Dyreng , 4-yard run ( kick from Edrick Salas )",
+        "Gunnison Valley — ( 7:43 2Q ) Chance Hammond , 38-yard int. return ( kick from Edrick Salas )",
+        "Gunnison Valley — ( 6:02 2Q ) Dillon Dyreng , 2-yard run ( kick from Edrick Salas )",
+        "Gunnison Valley — ( 3:30 2Q ) Chance Hammond , 40-yard run"
       ],
       "stats": [
         {
@@ -3122,11 +4740,18 @@
           ],
           "rows": [
             [
+              "20",
+              "C . Chance Hammond",
+              "",
+              "",
+              "1"
+            ],
+            [
               "12",
               "D . Dillon Dyreng",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -3189,7 +4814,7 @@
               "35",
               "E . Edrick Salas",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -3213,17 +4838,38 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Defense",
+          "team": "GUNNISON VALLEY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "20",
+              "C . Chance Hammond",
+              "",
+              "",
+              "",
+              "1"
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 5,
-        "rows": 5,
-        "coreCells": 8,
+        "blocks": 6,
+        "rows": 7,
+        "coreCells": 13,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|HERRIMAN|RIVERTON": {
       "date": "09/04/2026",
@@ -3246,8 +4892,8 @@
           {
             "team": "Herriman Mustangs (3-0)",
             "quarters": [
-              7,
-              null,
+              14,
+              19,
               null,
               null
             ],
@@ -3257,7 +4903,7 @@
             "team": "Riverton Silverwolves (1-2)",
             "quarters": [
               3,
-              null,
+              0,
               null,
               null
             ],
@@ -3267,9 +4913,64 @@
       },
       "scoringPlays": [
         "Herriman — ( 11:00 1Q ) Logan Gregory , 99-yard kick return ( kick from Brody Crayk )",
-        "Riverton — ( 4:00 1Q ) David Walker , 37-yard FG"
+        "Riverton — ( 4:00 1Q ) David Walker , 37-yard FG",
+        "Herriman — ( 0:30 1Q ) Hayes Priest , 8-yard pass from Bryson Sweeney ( kick from Brody Crayk )",
+        "Herriman — ( 6:00 2Q ) Aden Perea , 27-yard int. return ( kick from Brody Crayk )",
+        "Herriman — ( 4:00 2Q ) Max Wilson , 3-yard pass from Bryson Sweeney ( run successful )",
+        "Herriman — ( 1:00 2Q ) 17-yard pass from Bryson Sweeney"
       ],
       "stats": [
+        {
+          "category": "Passing",
+          "team": "HERRIMAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "1",
+              "B . Bryson Sweeney",
+              "",
+              "",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "HERRIMAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "M . Max Wilson",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "19",
+              "H . Hayes Priest",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Special Teams",
           "team": "RIVERTON",
@@ -3305,7 +5006,7 @@
               "39",
               "B . Brody Crayk",
               "",
-              "1",
+              "3",
               ""
             ],
             [
@@ -3316,17 +5017,38 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Defense",
+          "team": "HERRIMAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "23",
+              "A . Aden Perea",
+              "",
+              "",
+              "",
+              "1"
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 3,
-        "coreCells": 0,
+        "blocks": 5,
+        "rows": 7,
+        "coreCells": 11,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|WEST|HUNTER": {
       "date": "09/04/2026",
@@ -3349,8 +5071,8 @@
           {
             "team": "West Panthers (3-0)",
             "quarters": [
-              7,
-              null,
+              21,
+              21,
               null,
               null
             ],
@@ -3360,7 +5082,7 @@
             "team": "Hunter Wolverines (0-3)",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -3369,9 +5091,34 @@
         ]
       },
       "scoringPlays": [
-        "West — ( 10:15 1Q ) Mani Tu'uao , 26-yard pass from Kamden Lopati ( kick from Dominic Jones )"
+        "West — ( 10:15 1Q ) Mani Tu'uao , 26-yard pass from Kamden Lopati ( kick from Dominic Jones )",
+        "West — ( 6:19 1Q ) Naeata Hamilton , 3-yard run ( kick from Dominic Jones )",
+        "West — ( 3:03 1Q ) Lester Falatea , 50-yard punt return ( kick from Dominic Jones )",
+        "West — ( 11:54 2Q ) Pauatau Fonoti , 12-yard pass from Kamden Lopati ( kick from Dominic Jones )",
+        "West — ( 6:28 2Q ) Fui Pikula , 39-yard pass from Kamden Lopati ( kick from Dominic Jones )",
+        "West — ( 4:47 2Q ) Monson Vaenuku , 25-yard pass from Kamden Lopati ( kick from Dominic Jones )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "WEST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "22",
+              "N . Naeata Hamilton",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "WEST",
@@ -3391,7 +5138,7 @@
               "",
               "",
               "",
-              "1",
+              "4",
               ""
             ]
           ]
@@ -3407,6 +5154,27 @@
             "TD"
           ],
           "rows": [
+            [
+              "4",
+              "M . Monson Vaenuku",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "7",
+              "F . Fui Pikula",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "18",
+              "P . Pauatau Fonoti",
+              "",
+              "",
+              "1"
+            ],
             [
               "1",
               "M . Mani Tu'uao",
@@ -3431,21 +5199,27 @@
               "15",
               "D . Dominic Jones",
               "",
-              "1",
+              "6",
               ""
+            ],
+            [
+              "3",
+              "L . Lester Falatea",
+              "",
+              "",
+              "1"
             ]
           ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
-        "coreCells": 6,
+        "blocks": 4,
+        "rows": 8,
+        "coreCells": 14,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|MANTI|JUAB": {
       "date": "09/04/2026",
@@ -3469,8 +5243,8 @@
             "team": "Manti Templars (1-2)",
             "quarters": [
               7,
-              null,
-              null,
+              10,
+              0,
               null
             ],
             "total": 17
@@ -3479,8 +5253,8 @@
             "team": "Juab Wasps (2-1)",
             "quarters": [
               14,
-              null,
-              null,
+              21,
+              7,
               null
             ],
             "total": 42
@@ -3490,9 +5264,42 @@
       "scoringPlays": [
         "Manti — ( 6:46 1Q ) Isaiah Wright , 10-yard pass from Kingston Wright ( kick from Tyler Steinfeldt )",
         "Juab — ( 2:05 1Q ) Brady Gempeler , 32-yard pass from Price Armstrong ( kick from Price Armstrong )",
-        "Juab — ( 1:55 1Q ) Quentin Robinson , 27-yard pass from Price Armstrong ( kick from Price Armstrong )"
+        "Juab — ( 1:55 1Q ) Quentin Robinson , 27-yard pass from Price Armstrong ( kick from Price Armstrong )",
+        "Manti — ( 10:36 2Q ) Tyler Steinfeldt , 20-yard FG",
+        "Juab — ( 10:16 2Q ) Will Armstrong , 68-yard run ( kick from Price Armstrong )",
+        "Juab — ( 6:02 2Q ) Gage Vance , 34-yard pass from Price Armstrong ( kick from Price Armstrong )",
+        "Juab — ( 2:25 2Q ) Price Armstrong , 1-yard run ( kick from Price Armstrong )",
+        "Manti — ( 0:01 2Q ) Tyson Buchanan , 39-yard pass from Kingston Wright ( kick from Tyler Steinfeldt )",
+        "Juab — ( 10:44 3Q 3Q ) Quentin Robinson , 3-yard int. return ( kick from Price Armstrong )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "JUAB",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "W . Will Armstrong",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "8",
+              "P . Price Armstrong",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "JUAB",
@@ -3512,7 +5319,7 @@
               "",
               "",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -3536,7 +5343,7 @@
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -3552,6 +5359,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "10",
+              "G . Gage Vance",
+              "",
+              "",
+              "1"
+            ],
             [
               "1",
               "Q . Quentin Robinson",
@@ -3580,6 +5394,13 @@
           ],
           "rows": [
             [
+              "18",
+              "T . Tyson Buchanan",
+              "",
+              "",
+              "1"
+            ],
+            [
               "2",
               "I . Isaiah Wright",
               "",
@@ -3603,7 +5424,7 @@
               "8",
               "P . Price Armstrong",
               "",
-              "2",
+              "6",
               ""
             ]
           ]
@@ -3622,32 +5443,53 @@
             [
               "9",
               "T . Tyler Steinfeldt",
-              "",
               "1",
+              "2",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "JUAB",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "Q . Quentin Robinson",
+              "",
+              "",
+              "",
+              "1"
             ]
           ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 6,
-        "rows": 7,
-        "coreCells": 14,
+        "blocks": 8,
+        "rows": 12,
+        "coreCells": 25,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 6
+      }
     },
     "2026-09-04|SKYLINE|JUANDIEGO": {
       "date": "09/04/2026",
       "awayTeam": "SKYLINE",
       "homeTeam": "JUAN DIEGO",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/skyline-football-vs-juan-diego-football/273760",
-      "status": "Q2",
+      "status": "HALFTIME",
       "final": false,
-      "clock": "4:33",
-      "period": "Q2",
+      "clock": "",
+      "period": "HALFTIME",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -3660,8 +5502,8 @@
           {
             "team": "Skyline Eagles (1-2)",
             "quarters": [
-              7,
-              null,
+              42,
+              27,
               null,
               null
             ],
@@ -3670,8 +5512,8 @@
           {
             "team": "Juan Diego Soaring Eagle (0-3)",
             "quarters": [
+              7,
               0,
-              null,
               null,
               null
             ],
@@ -3680,7 +5522,17 @@
         ]
       },
       "scoringPlays": [
-        "Skyline — ( 9:26 1Q ) Jonah Mailei , 17-yard run"
+        "Skyline — ( 9:26 1Q ) Jonah Mailei , 17-yard run",
+        "Skyline — ( 5:30 1Q ) Judah Valle , 15-yard pass from Tate Johnson ( kick from Will Owens )",
+        "Juan Diego — ( 3:41 1Q ) K Rowland , 19-yard pass from Jacoby Ahlstrom ( kick from Nolan Jones )",
+        "Skyline — ( 3:29 1Q ) Judah Valle , 73-yard kick return ( kick from Will Owens )",
+        "Skyline — ( 1:40 1Q ) Judah Valle , 1-yard run ( kick from Will Owens )",
+        "Skyline — ( 1:32 1Q ) Nick Tueller , 19-yard int. return ( kick from Will Owens )",
+        "Skyline — ( 0:14 1Q ) Judah Valle , 13-yard run ( kick from Will Owens )",
+        "Skyline — ( 11:07 2Q ) Jonah Mailei , 3-yard run ( kick from Will Owens )",
+        "Skyline — ( 10:06 2Q ) Will Black , 7-yard pass from Tate Johnson ( kick from Matthew Payne )",
+        "Skyline — ( 8:00 2Q ) Judah Valle , 53-yard run ( kick failed )",
+        "Skyline — ( 4:33 2Q ) Liam Whitworth , 42-yard run ( kick from Charlie Arce-larreta )"
       ],
       "stats": [
         {
@@ -3695,8 +5547,200 @@
           ],
           "rows": [
             [
+              "0",
+              "L . Liam Whitworth",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "5",
+              "J . Judah Valle",
+              "",
+              "",
+              "3"
+            ],
+            [
               "2",
               "J . Jonah Mailei",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "JUAN DIEGO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "14",
+              "J . Jacoby Ahlstrom",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "SKYLINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "1",
+              "T . Tate Johnson",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "JUAN DIEGO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "-",
+              "K . K Rowland",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SKYLINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "W . Will Black",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "5",
+              "J . Judah Valle",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "JUAN DIEGO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "N . Nolan Jones",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SKYLINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "90",
+              "W . Will Owens",
+              "",
+              "6",
+              ""
+            ],
+            [
+              "36",
+              "C . Charlie Arce-larreta",
+              "",
+              "1",
+              ""
+            ],
+            [
+              "27",
+              "M . Matthew Payne",
+              "",
+              "1",
+              ""
+            ],
+            [
+              "5",
+              "J . Judah Valle",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "SKYLINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "20",
+              "N . Nick Tueller",
+              "",
               "",
               "",
               "1"
@@ -3706,13 +5750,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 2,
+        "blocks": 8,
+        "rows": 14,
+        "coreCells": 23,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 6
+      }
     },
     "2026-09-04|KANAB|MILLARD": {
       "date": "09/04/2026",
@@ -3736,7 +5779,7 @@
             "team": "Kanab Cowboys (2-1)",
             "quarters": [
               7,
-              null,
+              14,
               null,
               null
             ],
@@ -3746,7 +5789,7 @@
             "team": "Millard Eagles (2-1)",
             "quarters": [
               0,
-              null,
+              6,
               null,
               null
             ],
@@ -3755,7 +5798,10 @@
         ]
       },
       "scoringPlays": [
-        "Kanab — ( 5:56 1Q ) Grady Anderson , 14-yard run ( kick from Ray Capson )"
+        "Kanab — ( 5:56 1Q ) Grady Anderson , 14-yard run ( kick from Ray Capson )",
+        "Kanab — ( 11:28 2Q ) Degan Swapp , 3-yard run ( kick from Ray Capson )",
+        "Millard — ( 1:48 2Q ) Jensen Davies , 33-yard run ( run failed )",
+        "Kanab — ( 0:25 2Q ) Degan Swapp , 2-yard run ( kick from Ray Capson )"
       ],
       "stats": [
         {
@@ -3769,6 +5815,33 @@
             "TD"
           ],
           "rows": [
+            [
+              "32",
+              "J . Jensen Davies",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "KANAB",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "4",
+              "D . Degan Swapp",
+              "",
+              "",
+              "2"
+            ],
             [
               "3",
               "G . Grady Anderson",
@@ -3793,7 +5866,7 @@
               "20",
               "R . Ray Capson",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -3801,13 +5874,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 3,
+        "rows": 4,
+        "coreCells": 6,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 2
+      }
     },
     "2026-09-04|PINEVIEW|LOGAN": {
       "date": "09/04/2026",
@@ -3831,7 +5903,7 @@
             "team": "Pine View Panthers (2-1)",
             "quarters": [
               14,
-              null,
+              17,
               null,
               null
             ],
@@ -3840,8 +5912,8 @@
           {
             "team": "Logan Grizzlies (2-1)",
             "quarters": [
+              14,
               7,
-              null,
               null,
               null
             ],
@@ -3852,7 +5924,12 @@
       "scoringPlays": [
         "Pine View — ( 9:26 1Q ) Carter Buchanan , 32-yard pass from Coy Doman ( kick from Anthony Madsen )",
         "Logan — ( 6:54 1Q ) Easton Favero , 1-yard run ( kick from Mason Birch )",
-        "Pine View — ( 3:13 1Q ) Garrett Gwilliam , 9-yard pass from Coy Doman ( kick from Anthony Madsen )"
+        "Pine View — ( 3:13 1Q ) Garrett Gwilliam , 9-yard pass from Coy Doman ( kick from Anthony Madsen )",
+        "Logan — ( 0:07 1Q ) Easton Favero , 2-yard run ( kick from Mason Birch )",
+        "Pine View — ( 11:48 2Q ) Max Yocham , 60-yard pass from Coy Doman ( kick from Anthony Madsen )",
+        "Logan — ( 6:41 2Q ) Royce Sargent , 9-yard pass from Easton Favero ( kick from Mason Birch )",
+        "Pine View — ( 2:39 2Q ) Coy Doman , 9-yard run ( kick from Anthony Madsen )",
+        "Pine View — ( 0:00 2Q ) Anthony Madsen , 42-yard FG"
       ],
       "stats": [
         {
@@ -3871,7 +5948,51 @@
               "E . Easton Favero",
               "",
               "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "PINE VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "10",
+              "C . Coy Doman",
+              "",
+              "",
               "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "LOGAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "13",
+              "E . Easton Favero",
+              "",
+              "",
+              "",
+              "1",
+              ""
             ]
           ]
         },
@@ -3894,8 +6015,28 @@
               "",
               "",
               "",
-              "2",
+              "3",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "LOGAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "9",
+              "R . Royce Sargent",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -3910,6 +6051,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "3",
+              "M . Max Yocham",
+              "",
+              "",
+              "1"
+            ],
             [
               "8",
               "G . Garrett Gwilliam",
@@ -3941,7 +6089,7 @@
               "11",
               "M . Mason Birch",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -3960,8 +6108,8 @@
             [
               "0",
               "A . Anthony Madsen",
-              "",
-              "2",
+              "1",
+              "4",
               ""
             ]
           ]
@@ -3969,13 +6117,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 5,
-        "rows": 6,
-        "coreCells": 10,
+        "blocks": 8,
+        "rows": 10,
+        "coreCells": 20,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 6
+      }
     },
     "2026-09-04|PLEASANTGROVE|MAPLEMOUNTAIN": {
       "date": "09/04/2026",
@@ -3999,7 +6146,7 @@
             "team": "Pleasant Grove Vikings (2-1)",
             "quarters": [
               14,
-              null,
+              10,
               null,
               null
             ],
@@ -4008,8 +6155,8 @@
           {
             "team": "Maple Mountain Golden Eagles (2-1)",
             "quarters": [
+              7,
               0,
-              null,
               null,
               null
             ],
@@ -4019,9 +6166,120 @@
       },
       "scoringPlays": [
         "Pleasant Grove — ( 7:02 1Q ) Ethan Passey , 70-yard int. return ( kick successful )",
-        "Pleasant Grove — ( 6:09 1Q ) Davian Akwenye , 25-yard int. return ( kick successful )"
+        "Pleasant Grove — ( 6:09 1Q ) Davian Akwenye , 25-yard int. return ( kick successful )",
+        "Maple Mountain — ( 0:00 1Q ) Kyren Jones , 12-yard pass from Joey Imperial ( kick from Israel Vaenuku )",
+        "Pleasant Grove — ( 4:21 2Q ) Ryder Huntsman , 95-yard pass from Cannon Jacobson ( kick successful )",
+        "Pleasant Grove — ( 1:47 2Q ) 25-yard FG"
       ],
       "stats": [
+        {
+          "category": "Passing",
+          "team": "PLEASANT GROVE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "14",
+              "J . Joey Imperial",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "PLEASANT GROVE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "5",
+              "C . Cannon Jacobson",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "MAPLE MOUNTAIN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "K . Kyren Jones",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "PLEASANT GROVE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "24",
+              "R . Ryder Huntsman",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "MAPLE MOUNTAIN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "I . Israel Vaenuku",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
         {
           "category": "Defense",
           "team": "PLEASANT GROVE",
@@ -4055,13 +6313,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 2,
-        "coreCells": 6,
+        "blocks": 6,
+        "rows": 7,
+        "coreCells": 18,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 5
+      }
     },
     "2026-09-04|RIDGELINE|MOUNTAINCREST": {
       "date": "09/04/2026",
@@ -4085,7 +6342,7 @@
             "team": "Ridgeline RiverHawks (3-0)",
             "quarters": [
               15,
-              null,
+              13,
               null,
               null
             ],
@@ -4095,7 +6352,7 @@
             "team": "Mountain Crest Mustangs (3-0)",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -4104,10 +6361,32 @@
         ]
       },
       "scoringPlays": [
-        "Ridgeline — ( 10:16 1Q ) Noah Fiefia , 77-yard pass from Crew Cox ( run successful )",
-        "Ridgeline — ( 9:49 1Q ) Taeden Perry , 20-yard pass from Crew Cox ( kick from Hayden Miller )"
+        "Ridgeline — ( 10:16 1Q ) Noah Fiefia , 77-yard pass from Crew Cox ( run from Noah Fiefia )",
+        "Ridgeline — ( 9:49 1Q ) Taeden Perry , 20-yard pass from Crew Cox ( kick from Hayden Miller )",
+        "Ridgeline — ( 7:51 2Q ) Taeden Perry , 7-yard pass from Crew Cox ( pass failed )",
+        "Ridgeline — ( 4:44 2Q ) Noah Fiefia , 4-yard run ( kick from Hayden Miller )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "30",
+              "N . Noah Fiefia",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "RIDGELINE",
@@ -4127,7 +6406,7 @@
               "",
               "",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -4148,7 +6427,7 @@
               "T . Taeden Perry",
               "",
               "",
-              "1"
+              "2"
             ],
             [
               "30",
@@ -4174,7 +6453,7 @@
               "11",
               "H . Hayden Miller",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -4182,13 +6461,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 4,
-        "coreCells": 8,
+        "blocks": 4,
+        "rows": 5,
+        "coreCells": 10,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|NORTHSANPETE|RICHFIELD": {
       "date": "09/04/2026",
@@ -4212,8 +6490,8 @@
             "team": "North Sanpete Hawks (3-0)",
             "quarters": [
               0,
-              null,
-              null,
+              0,
+              0,
               null
             ],
             "total": 0
@@ -4222,8 +6500,8 @@
             "team": "Richfield Wildcats (2-1)",
             "quarters": [
               8,
-              null,
-              null,
+              7,
+              7,
               null
             ],
             "total": 15
@@ -4231,7 +6509,9 @@
         ]
       },
       "scoringPlays": [
-        "Richfield — ( 4:23 1Q ) Ngalu Taufatofua , 8-yard run ( run from Cordon White )"
+        "Richfield — ( 4:23 1Q ) Ngalu Taufatofua , 8-yard run ( run from Cordon White )",
+        "Richfield — ( 8:46 2Q ) Colton White , 88-yard run ( kick from Sam Gonzolez )",
+        "Richfield — ( 7:45 3Q ) Nash Spell , 5-yard pass from Porter White ( kick from Sam Gonzolez )"
       ],
       "stats": [
         {
@@ -4246,6 +6526,13 @@
           ],
           "rows": [
             [
+              "8",
+              "C . Colton White",
+              "",
+              "",
+              "1"
+            ],
+            [
               "14",
               "N . Ngalu Taufatofua",
               "",
@@ -4253,17 +6540,80 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Passing",
+          "team": "RICHFIELD",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "35",
+              "P . Porter White",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "RICHFIELD",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "84",
+              "N . Nash Spell",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "RICHFIELD",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "26",
+              "S . Sam Gonzolez",
+              "",
+              "2",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 2,
+        "blocks": 4,
+        "rows": 5,
+        "coreCells": 10,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|PARKCITY|MOUNTAINVIEW": {
       "date": "09/04/2026",
@@ -4308,7 +6658,7 @@
             "team": "Parowan Rams (0-3)",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -4318,7 +6668,7 @@
             "team": "North Summit Braves (2-1)",
             "quarters": [
               14,
-              null,
+              24,
               null,
               null
             ],
@@ -4328,7 +6678,11 @@
       },
       "scoringPlays": [
         "North Summit — ( 9:40 1Q ) Knox Woolstenhulme , 5-yard run ( kick from Jose Sanchez )",
-        "North Summit — ( 8:13 1Q ) Kason Richins , 5-yard run ( kick from Jose Sanchez )"
+        "North Summit — ( 8:13 1Q ) Kason Richins , 5-yard run ( kick from Jose Sanchez )",
+        "North Summit — ( 8:01 2Q ) Tayton Pace , 16-yard pass from Cru Richins ( kick from Jose Sanchez )",
+        "North Summit — ( 5:59 2Q ) Cru Richins , 19-yard pass from Tayton Pace ( kick from Jose Sanchez )",
+        "North Summit — ( 3:29 2Q ) Knox Woolstenhulme , 40-yard pass from Cru Richins ( kick from Jose Sanchez )",
+        "North Summit — ( 0:01 2Q ) Jose Sanchez , 24-yard FG"
       ],
       "stats": [
         {
@@ -4359,6 +6713,73 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "NORTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "11",
+              "C . Cru Richins",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ],
+            [
+              "3",
+              "T . Tayton Pace",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "NORTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "C . Cru Richins",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "3",
+              "T . Tayton Pace",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "23",
+              "K . Knox Woolstenhulme",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
           "category": "Special Teams",
           "team": "NORTH SUMMIT",
           "headers": [
@@ -4372,8 +6793,8 @@
             [
               "99",
               "J . Jose Sanchez",
-              "",
-              "2",
+              "1",
+              "5",
               ""
             ]
           ]
@@ -4381,13 +6802,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 3,
-        "coreCells": 4,
+        "blocks": 4,
+        "rows": 8,
+        "coreCells": 18,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|OREM|SPRINGVILLE": {
       "date": "09/04/2026",
@@ -4410,8 +6830,8 @@
           {
             "team": "Orem Tigers (1-2)",
             "quarters": [
-              0,
-              null,
+              7,
+              7,
               null,
               null
             ],
@@ -4421,7 +6841,7 @@
             "team": "Springville Red Devils (2-1)",
             "quarters": [
               7,
-              null,
+              7,
               null,
               null
             ],
@@ -4430,7 +6850,10 @@
         ]
       },
       "scoringPlays": [
-        "Springville — ( 11:48 1Q ) Treyton Harris , 80-yard run ( kick from Pheonix Marks )"
+        "Springville — ( 11:48 1Q ) Treyton Harris , 80-yard run ( kick from Pheonix Marks )",
+        "Orem — ( 8:19 1Q ) Hayden Jarvis , 35-yard run ( kick from Adrian Sanchez )",
+        "Orem — ( 4:42 2Q ) Beckham Curtis , 33-yard run ( kick from Adrian Sanchez )",
+        "Springville — ( 0:19 2Q ) Siaosi \"Leka\" Toki , 13-yard pass from Beckett Burton ( kick from Pheonix Marks )"
       ],
       "stats": [
         {
@@ -4454,6 +6877,77 @@
           ]
         },
         {
+          "category": "Rushing",
+          "team": "OREM",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "H . Hayden Jarvis",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "1",
+              "B . Beckham Curtis",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "SPRINGVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "15",
+              "B . Beckett Burton",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SPRINGVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "S . Siaosi \"Leka\" Toki",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
           "category": "Special Teams",
           "team": "SPRINGVILLE",
           "headers": [
@@ -4468,7 +6962,27 @@
               "16",
               "P . Pheonix Marks",
               "",
-              "1",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "OREM",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "25",
+              "A . Adrian Sanchez",
+              "",
+              "2",
               ""
             ]
           ]
@@ -4476,13 +6990,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 6,
+        "rows": 7,
+        "coreCells": 12,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|SAINTJOSEPH|PANGUITCH": {
       "date": "09/04/2026",
@@ -4503,7 +7016,7 @@
         ],
         "rows": [
           {
-            "team": "St. Joseph Jayhawks (1-2)",
+            "team": "St. Joseph Jayhawks (2-2)",
             "quarters": [
               null,
               null,
@@ -4513,7 +7026,7 @@
             "total": 35
           },
           {
-            "team": "Panguitch Bobcats (2-1)",
+            "team": "Panguitch Bobcats (2-2)",
             "quarters": [
               null,
               null,
@@ -4559,7 +7072,7 @@
             "team": "Timpview Thunderbirds (1-2)",
             "quarters": [
               7,
-              0,
+              21,
               null,
               null
             ],
@@ -4569,7 +7082,7 @@
             "team": "Payson Lions (2-1)",
             "quarters": [
               0,
-              0,
+              3,
               null,
               null
             ],
@@ -4578,7 +7091,11 @@
         ]
       },
       "scoringPlays": [
-        "Timpview — ( 3:23 1Q ) Lolua Moungaloa , 8-yard pass from Matthew Manuma ( kick from Easton Baird )"
+        "Timpview — ( 3:23 1Q ) Lolua Moungaloa , 8-yard pass from Matthew Manuma ( kick from Easton Baird )",
+        "Payson — ( 11:53 2Q ) Bronx Newbury , 22-yard FG",
+        "Timpview — ( 9:48 2Q ) Dennis Tua'one , 49-yard pass from Matthew Manuma ( kick from Easton Baird )",
+        "Timpview — ( 3:01 2Q ) Steel Richards , 6-yard pass from Matthew Manuma ( kick from Easton Baird )",
+        "Timpview — ( 0:01 2Q ) Rob Tuaone , 4-yard pass from Matthew Manuma ( kick from Easton Baird )"
       ],
       "stats": [
         {
@@ -4600,7 +7117,7 @@
               "",
               "",
               "",
-              "1",
+              "4",
               ""
             ]
           ]
@@ -4617,11 +7134,52 @@
           ],
           "rows": [
             [
+              "21",
+              "R . Rob Tuaone",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "1",
+              "S . Steel Richards",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "8",
+              "D . Dennis Tua'one",
+              "",
+              "",
+              "1"
+            ],
+            [
               "44",
               "L . Lolua Moungaloa",
               "",
               "",
               "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "PAYSON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "19",
+              "B . Bronx Newbury",
+              "1",
+              "",
+              ""
             ]
           ]
         },
@@ -4640,7 +7198,7 @@
               "27",
               "E . Easton Baird",
               "",
-              "1",
+              "4",
               ""
             ]
           ]
@@ -4648,23 +7206,22 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
-        "coreCells": 6,
+        "blocks": 4,
+        "rows": 7,
+        "coreCells": 12,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+      }
     },
     "2026-09-04|WESTFIELD|ROY": {
       "date": "09/04/2026",
       "awayTeam": "WEST FIELD",
       "homeTeam": "ROY",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/west-field-football-football-vs-roy-football/273525",
-      "status": "Q2",
+      "status": "Q3",
       "final": false,
-      "clock": "2:28",
-      "period": "Q2",
+      "clock": "5:30",
+      "period": "Q3",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -4675,38 +7232,105 @@
         ],
         "rows": [
           {
-            "team": "WEST FIELD",
+            "team": "West Field Longhorns (1-2)",
             "quarters": [
-              null,
-              null,
-              null,
+              0,
+              0,
+              6,
               null
             ],
-            "total": 0
+            "total": 6
           },
           {
-            "team": "ROY",
+            "team": "Roy Royals (1-2)",
             "quarters": [
-              null,
-              null,
-              null,
+              6,
+              6,
+              7,
               null
             ],
-            "total": 12
+            "total": 19
           }
-        ],
-        "source": "deseret-day-scoreboard-unlinked"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Roy — ( 3:28 1Q ) Gunner Pearson , 2-yard run ( kick failed )",
+        "Roy — ( 2:28 2Q ) Luke Pebley , 45-yard pass from Gunner Pearson ( run failed )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "G . Gunner Pearson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "7",
+              "G . Gunner Pearson",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "L . Luke Pebley",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 3,
+        "rows": 3,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|SUMMITACADEMY|SANJUAN": {
       "date": "09/04/2026",
@@ -4717,7 +7341,7 @@
       "final": false,
       "clock": "",
       "period": "HALFTIME",
-      "kickoffTime": "3:00 PM",
+      "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
           "Q1",
@@ -4730,7 +7354,7 @@
             "team": "Summit Academy Bears (2-1)",
             "quarters": [
               0,
-              null,
+              6,
               null,
               null
             ],
@@ -4740,7 +7364,7 @@
             "team": "San Juan Broncos (2-1)",
             "quarters": [
               13,
-              null,
+              6,
               null,
               null
             ],
@@ -4750,9 +7374,31 @@
       },
       "scoringPlays": [
         "San Juan — ( 11:46 1Q ) Brigg Palmer , 54-yard pass from Beau Yeomans ( kick from Luke Jeppesen )",
-        "San Juan — ( 8:39 1Q ) Miken Keith , 50-yard pass from Beau Yeomans ( kick from Luke Jeppesen )"
+        "San Juan — ( 8:39 1Q ) Miken Keith , 50-yard pass from Beau Yeomans ( kick from Luke Jeppesen )",
+        "Summit Academy — ( 7:37 2Q ) Beckham Meredith , 2-yard pass from Rigby Young ( kick failed )",
+        "San Juan — ( 2:52 2Q ) Beau Yeomans , 1-yard run ( pass failed )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "SAN JUAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "B . Beau Yeomans",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "SAN JUAN",
@@ -4773,6 +7419,30 @@
               "",
               "",
               "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "SUMMIT ACADEMY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "11",
+              "R . Rigby Young",
+              "",
+              "",
+              "",
+              "1",
               ""
             ]
           ]
@@ -4805,6 +7475,26 @@
           ]
         },
         {
+          "category": "Receiving",
+          "team": "SUMMIT ACADEMY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "B . Beckham Meredith",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
           "category": "Special Teams",
           "team": "SAN JUAN",
           "headers": [
@@ -4827,23 +7517,22 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 4,
-        "coreCells": 8,
+        "blocks": 6,
+        "rows": 7,
+        "coreCells": 16,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 5
+      }
     },
     "2026-09-04|WOODSCROSS|SNOWCANYON": {
       "date": "09/04/2026",
       "awayTeam": "WOODS CROSS",
       "homeTeam": "SNOW CANYON",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/woods-cross-football-vs-snow-canyon-football/273722",
-      "status": "Scheduled",
+      "status": "HALFTIME",
       "final": false,
       "clock": "",
-      "period": "",
+      "period": "HALFTIME",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -4854,38 +7543,147 @@
         ],
         "rows": [
           {
-            "team": "WOODS CROSS",
+            "team": "Woods Cross Wildcats (2-1)",
             "quarters": [
-              null,
-              null,
+              7,
+              7,
               null,
               null
             ],
             "total": 14
           },
           {
-            "team": "SNOW CANYON",
+            "team": "Snow Canyon Warriors (1-2)",
             "quarters": [
-              null,
-              null,
+              7,
+              7,
               null,
               null
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-day-scoreboard-unlinked"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Snow Canyon — ( 8:54 1Q ) Brett Bethers , 13-yard pass from Parker Olson ( kick from Slayden Penny )",
+        "Woods Cross — ( 0:31 1Q ) Sam Bahr , 2-yard run ( kick from Archer Gale )",
+        "Woods Cross — ( 5:49 2Q ) Sam Bahr , 2-yard run ( kick from Archer Gale )",
+        "Snow Canyon — ( 1:22 2Q ) Brett Bethers , 9-yard pass from Parker Olson"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "SNOW CANYON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "22",
+              "S . Sam Bahr",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "SNOW CANYON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "7",
+              "P . Parker Olson",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SNOW CANYON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "B . Brett Bethers",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SNOW CANYON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "83",
+              "S . Slayden Penny",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "WOODS CROSS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "64",
+              "A . Archer Gale",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 5,
+        "rows": 5,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|SOUTHSEVIER|SOUTHSUMMIT": {
       "date": "09/04/2026",
@@ -4906,38 +7704,165 @@
         ],
         "rows": [
           {
-            "team": "SOUTH SEVIER",
+            "team": "South Sevier Rams (0-3)",
             "quarters": [
-              null,
-              null,
-              null,
+              0,
+              0,
+              0,
               null
             ],
             "total": 0
           },
           {
-            "team": "SOUTH SUMMIT",
+            "team": "South Summit Wildcats (2-1)",
             "quarters": [
-              null,
-              null,
-              null,
+              13,
+              16,
+              7,
               null
             ],
             "total": 36
           }
-        ],
-        "source": "deseret-day-scoreboard-unlinked"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "South Summit — ( 3:59 1Q ) Gage Wolstehulme , 5-yard pass from Ian Mair ( kick from Smoot )",
+        "South Summit — ( 2:16 1Q ) Brody Larsen , 6-yard fumble recovery ( kick failed )",
+        "South Summit — ( 3:34 2Q ) safety",
+        "South Summit — ( 1:32 2Q ) Brody Larsen , 32-yard run ( kick from Smoot )",
+        "South Summit — ( 0:05 2Q ) Cash Rockhill , 28-yard pass from Ian Mair ( kick from Smoot )",
+        "South Summit — ( 7:24 3Q ) Gage Wolstehulme , 75-yard punt return ( kick from Smoot )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "SOUTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "B . Brody Larsen",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "SOUTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "I . Ian Mair",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SOUTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "C . Cash Rockhill",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "16",
+              "G . Gage Wolstehulme",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SOUTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "20",
+              ". Smoot",
+              "",
+              "4",
+              ""
+            ],
+            [
+              "16",
+              "G . Gage Wolstehulme",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "SOUTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "B . Brody Larsen",
+              "",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 5,
+        "rows": 7,
+        "coreCells": 13,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 4
+      }
     },
     "2026-09-04|TAYLORSVILLE|WESTJORDAN": {
       "date": "09/04/2026",
@@ -4958,9 +7883,9 @@
         ],
         "rows": [
           {
-            "team": "TAYLORSVILLE",
+            "team": "Taylorsville Warriors (0-3)",
             "quarters": [
-              null,
+              0,
               null,
               null,
               null
@@ -4968,17 +7893,16 @@
             "total": 7
           },
           {
-            "team": "WEST JORDAN",
+            "team": "West Jordan Jaguars (0-3)",
             "quarters": [
-              null,
+              14,
               null,
               null,
               null
             ],
             "total": 37
           }
-        ],
-        "source": "deseret-day-scoreboard-unlinked"
+        ]
       },
       "scoringPlays": [],
       "stats": [],
@@ -4988,8 +7912,7 @@
         "rows": 0,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+      }
     },
     "2026-09-04|TIMPANOGOS|UINTAH": {
       "date": "09/04/2026",
@@ -5012,7 +7935,7 @@
           {
             "team": "Timpanogos Timberwolves (1-2)",
             "quarters": [
-              0,
+              7,
               null,
               null,
               null
@@ -5032,12 +7955,13 @@
         ]
       },
       "scoringPlays": [
-        "Uintah — ( 7:40 1Q ) Landon Woods , 15-yard run ( kick from Colton Van Wagoner )"
+        "Uintah — ( 7:40 1Q ) Landon Woods , 15-yard run ( kick from Colton Van Wagoner )",
+        "Timpanogos — ( 4:32 1Q ) Zack McCann , 5-yard run ( kick successful )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "UINTAH",
+          "team": "TIMPANOGOS",
           "headers": [
             "NO",
             "PLAYER",
@@ -5049,6 +7973,26 @@
             [
               "18",
               "L . Landon Woods",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "TIMPANOGOS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "10",
+              ". Zack McCann",
               "",
               "",
               "1"
@@ -5078,23 +8022,22 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 3,
+        "rows": 3,
+        "coreCells": 4,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 2
+      }
     },
     "2026-09-04|WEBER|VIEWMONT": {
       "date": "09/04/2026",
       "awayTeam": "WEBER",
       "homeTeam": "VIEWMONT",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/weber-football-vs-viewmont-football/273599",
-      "status": "HALFTIME",
+      "status": "Q4",
       "final": false,
-      "clock": "",
-      "period": "HALFTIME",
+      "clock": "12:00",
+      "period": "Q4",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -5108,18 +8051,18 @@
             "team": "Weber Warriors (2-1)",
             "quarters": [
               0,
-              null,
-              null,
+              14,
+              7,
               null
             ],
-            "total": 14
+            "total": 21
           },
           {
             "team": "Viewmont Vikings (2-1)",
             "quarters": [
               7,
-              null,
-              null,
+              7,
+              0,
               null
             ],
             "total": 14
@@ -5127,9 +8070,33 @@
         ]
       },
       "scoringPlays": [
-        "Viewmont — ( 5:35 1Q ) 20-yard pass from Brett Tovey ( kick successful )"
+        "Viewmont — ( 5:35 1Q ) 20-yard pass from Brett Tovey ( kick successful )",
+        "Weber — ( 10:08 1Q ) Wyatt Neilson , 2-yard run ( kick from Zach Jenkins )",
+        "Viewmont — ( 3:50 2Q ) 6-yard pass from Brett Tovey ( kick from Logan Campbell )",
+        "Weber — ( 0:17 2Q ) Wyatt Neilson , 2-yard run ( kick from Zach Jenkins )",
+        "Weber — ( 3Q ) run"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "WEBER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "W . Wyatt Neilson",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "VIEWMONT",
@@ -5149,7 +8116,47 @@
               "",
               "",
               "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "VIEWMONT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "15",
+              "L . Logan Campbell",
+              "",
               "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "WEBER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "29",
+              "Z . Zach Jenkins",
+              "",
+              "2",
               ""
             ]
           ]
@@ -5157,13 +8164,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 4,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 6,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 2
+      }
     },
     "2026-09-04|WASATCH|DEERCREEK": {
       "date": "09/04/2026",
@@ -5187,7 +8193,7 @@
             "team": "Wasatch Wasps (0-3)",
             "quarters": [
               6,
-              null,
+              8,
               null,
               null
             ],
@@ -5197,7 +8203,7 @@
             "team": "Deer Creek Riverhawks (0-3)",
             "quarters": [
               0,
-              null,
+              14,
               null,
               null
             ],
@@ -5206,12 +8212,15 @@
         ]
       },
       "scoringPlays": [
-        "Wasatch — ( 2:12 1Q ) Braxton Sandoval , 6-yard run ( run failed )"
+        "Wasatch — ( 2:12 1Q ) Braxton Sandoval , 6-yard run ( run failed )",
+        "Wasatch — ( 9:46 2Q ) Grady Coombs , 32-yard pass from Aksel Wheeler ( run from Matt Bailey )",
+        "Deer Creek — ( 9:46 2Q ) Hank Simpson , 32-yard pass from Luke Wright ( run from Jackson Komaromy )",
+        "Deer Creek — ( 0:00 2Q ) Kai Betsinger , 39-yard pass from Kai Betsinger ( kick failed )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "WASATCH",
+          "team": "DEER CREEK",
           "headers": [
             "NO",
             "PLAYER",
@@ -5228,17 +8237,120 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Passing",
+          "team": "DEER CREEK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "1",
+              "K . Kai Betsinger",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ],
+            [
+              "13",
+              "L . Luke Wright",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "WASATCH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "13",
+              "A . Aksel Wheeler",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "DEER CREEK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "K . Kai Betsinger",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "16",
+              "H . Hank Simpson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "WASATCH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "16",
+              "G . Grady Coombs",
+              "",
+              "",
+              "1"
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 2,
+        "blocks": 5,
+        "rows": 7,
+        "coreCells": 20,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 5
+      }
     },
     "2026-09-04|WHITEHORSE|WATERCANYON": {
       "date": "09/04/2026",
@@ -5311,10 +8423,10 @@
       "awayTeam": "HAYDEN, CO",
       "homeTeam": "GRAND",
       "url": "",
-      "status": "Scheduled",
+      "status": "Q3",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "11:19",
+      "period": "Q3",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -5463,7 +8575,7 @@
             "team": "Piedra Vista, N.M.",
             "quarters": [
               0,
-              null,
+              7,
               null,
               null
             ],
@@ -5473,7 +8585,7 @@
             "team": "Olympus Titans (1-2)",
             "quarters": [
               3,
-              null,
+              10,
               null,
               null
             ],
@@ -5482,9 +8594,32 @@
         ]
       },
       "scoringPlays": [
-        "Olympus — ( 6:08 1Q ) Henry O'Neil , 30-yard FG"
+        "Olympus — ( 6:08 1Q ) Henry O'Neil , 30-yard FG",
+        "Piedra Vista, N.M. — ( 6:19 2Q ) 12-yard pass ( kick successful )",
+        "Olympus — ( 2:20 2Q ) Easton Zito , 2-yard run ( kick from Henry O'Neil )",
+        "Olympus — ( 0:42 2Q ) Henry O'Neil , 30-yard FG"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "OLYMPUS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "20",
+              "E . Easton Zito",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Special Teams",
           "team": "OLYMPUS",
@@ -5499,8 +8634,8 @@
             [
               "85",
               "H . Henry O'Neil",
+              "2",
               "1",
-              "",
               ""
             ]
           ]
@@ -5508,13 +8643,12 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 0,
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 1
+      }
     },
     "2026-09-04|RICH|MOUNTAINVIEWWY": {
       "date": "09/04/2026",
