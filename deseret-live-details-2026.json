@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-05T01:01:22.727Z",
+  "updatedAt": "2026-09-05T01:07:47.526Z",
   "games": {
     "2026-09-03|BOUNTIFUL|MORGAN": {
       "date": "09/03/2026",
@@ -713,11 +713,11 @@
       "awayTeam": "ALTAMONT",
       "homeTeam": "UMA-LEHI",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/altamont-football-vs-utah-military-camp-williams-football-football/274401",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
-      "kickoffTime": "7:00 PM",
+      "kickoffTime": "4:00 PM",
       "boxScore": null,
       "scoringPlays": [],
       "stats": [],
@@ -860,10 +860,10 @@
       "awayTeam": "FREMONT",
       "homeTeam": "BONNEVILLE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/fremont-football-vs-bonneville-football/273498",
-      "status": "Live",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "10:48",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -874,38 +874,125 @@
         ],
         "rows": [
           {
-            "team": "FREMONT",
+            "team": "Fremont Silverwolves (1-2)",
             "quarters": [
-              null,
+              13,
               null,
               null,
               null
             ],
-            "total": 6
+            "total": 13
           },
           {
-            "team": "BONNEVILLE",
+            "team": "Bonneville Lakers (1-2)",
             "quarters": [
-              null,
+              0,
               null,
               null,
               null
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-day-scoreboard-unlinked"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Fremont — ( 11:04 1Q ) Breckon Phillips , 54-yard pass from Calvin Cooper ( kick from Breckon Phillips )",
+        "Fremont — ( 10:48 1Q ) Kason Dabb , 50-yard run ( kick from Breckon Phillips )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "FREMONT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "62",
+              ". Kason Dabb",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "FREMONT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "9",
+              ". Calvin Cooper",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "FREMONT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "14",
+              ". Breckon Phillips",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "FREMONT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "14",
+              ". Breckon Phillips",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+        "emptyCoreBlocks": 3
+      }
     },
     "2026-09-04|CARBON|CANYONVIEW": {
       "date": "09/04/2026",
@@ -1038,12 +1125,41 @@
       "awayTeam": "COTTONWOOD",
       "homeTeam": "HIGHLAND",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/cottonwood-football-vs-highland-football/273632",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "12:00",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Cottonwood Colts (0-3)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "Highland Rams (2-1)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -1080,20 +1196,73 @@
       "awayTeam": "DELTA",
       "homeTeam": "PROVIDENCE HALL",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/delta-football-vs-providence-hall-football/273377",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "9:30",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Delta Rabbits (2-1)",
+            "quarters": [
+              8,
+              null,
+              null,
+              null
+            ],
+            "total": 8
+          },
+          {
+            "team": "Providence Hall Patriots (1-2)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Delta — ( 9:30 1Q ) Bronx Hunt , 50-yard run ( run from Dayson Meinhardt )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "DELTA",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "B . Bronx Hunt",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 1,
+        "rows": 1,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 1
       }
     },
     "2026-09-04|DESERETPEAK|TOOELE": {
@@ -1101,12 +1270,41 @@
       "awayTeam": "DESERET PEAK",
       "homeTeam": "TOOELE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/deseret-peak-football-football-vs-tooele-football/273671",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "12:00",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Deseret Peak Golden Eagles (0-3)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "Tooele Buffaloes (2-1)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -1164,18 +1362,71 @@
       "awayTeam": "NORTH SEVIER",
       "homeTeam": "ENTERPRISE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/north-sevier-football-vs-enterprise-football/273376",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "11:24",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "North Sevier Wolves (2-1)",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "Enterprise Wolves (2-1)",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "North Sevier — ( 11:45 1Q ) Davis Malmgren , 95-yard kick return ( kick successful )"
+      ],
+      "stats": [
+        {
+          "category": "Special Teams",
+          "team": "NORTH SEVIER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "D . Davis Malmgren",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 1,
+        "rows": 1,
+        "coreCells": 0,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       }
@@ -1290,12 +1541,41 @@
       "awayTeam": "HERRIMAN",
       "homeTeam": "RIVERTON",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/herriman-football-vs-riverton-football/273543",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Herriman Mustangs (3-0)",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "Riverton Silverwolves (1-2)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -1437,20 +1717,97 @@
       "awayTeam": "RIDGELINE",
       "homeTeam": "MOUNTAIN CREST",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/ridgeline-football-vs-mountain-crest-football/273619",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "10:16",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Ridgeline RiverHawks (3-0)",
+            "quarters": [
+              8,
+              null,
+              null,
+              null
+            ],
+            "total": 8
+          },
+          {
+            "team": "Mountain Crest Mustangs (3-0)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Ridgeline — ( 10:16 1Q ) Noah Fiefia , 77-yard pass from Crew Cox ( run successful )"
+      ],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "C . Crew Cox",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "30",
+              "N . Noah Fiefia",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 6,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 2
       }
     },
     "2026-09-04|NORTHSANPETE|RICHFIELD": {
@@ -1500,20 +1857,93 @@
       "awayTeam": "PAROWAN",
       "homeTeam": "NORTH SUMMIT",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/parowan-football-vs-north-summit-football/273362",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "9:40",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Parowan Rams (0-3)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "North Summit Braves (2-1)",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "North Summit — ( 9:40 1Q ) Knox Woolstenhulme , 5-yard run ( kick from Jose Sanchez )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "NORTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "23",
+              "K . Knox Woolstenhulme",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "NORTH SUMMIT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "99",
+              "J . Jose Sanchez",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 1
       }
     },
     "2026-09-04|OREM|SPRINGVILLE": {
@@ -1637,20 +2067,117 @@
       "awayTeam": "SUMMIT ACADEMY",
       "homeTeam": "SAN JUAN",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/summit-academy-football-vs-san-juan-football/273443",
-      "status": "Scheduled",
+      "status": "Q1",
       "final": false,
-      "clock": "",
-      "period": "",
+      "clock": "11:46",
+      "period": "Q1",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Summit Academy Bears (2-1)",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "San Juan Broncos (2-1)",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "San Juan — ( 11:46 1Q ) Brigg Palmer , 54-yard pass from Beau Yeomans ( kick from Luke Jeppesen )"
+      ],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "SAN JUAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "1",
+              "B . Beau Yeomans",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SAN JUAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "13",
+              "B . Brigg Palmer",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SAN JUAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "12",
+              "L . Luke Jeppesen",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 3,
+        "rows": 3,
+        "coreCells": 6,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 2
       }
     },
     "2026-09-04|WOODSCROSS|SNOWCANYON": {
