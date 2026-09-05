@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-05T20:45:28.504Z",
+  "updatedAt": "2026-09-05T20:47:47.642Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,16 +8,16 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68093,
+    "scheduleRowsAudited": 67983,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 32,
-    "suspiciousRepeatGames": 9,
+    "sameDayMultipleOpponents": 35,
+    "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 207,
-    "reciprocalMismatches": 984,
+    "seasonSummaryMismatches": 205,
+    "reciprocalMismatches": 987,
     "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 206
+    "recent2025PlusIssues": 212
   },
   "recent2025PlusIssues": [
     {
@@ -90,6 +90,16 @@
       }
     },
     {
+      "type": "same-day-multiple-opponents",
+      "team": "DUCHESNE",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "COTTONWOOD",
+        "IGNACIO, CO"
+      ]
+    },
+    {
       "type": "season-summary-mismatch",
       "team": "FREMONT",
       "season": "2025",
@@ -136,29 +146,6 @@
         "CEDAR CITY",
         "GRANTSVILLE"
       ]
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
-        }
-      }
     },
     {
       "type": "same-day-multiple-opponents",
@@ -211,6 +198,31 @@
       ]
     },
     {
+      "type": "suspicious-repeat",
+      "team": "MILLARD",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "PAROWAN",
+      "teamScore": 14,
+      "opponentScore": 10,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "MILLARD",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "DELTA",
+        "PAROWAN"
+      ]
+    },
+    {
       "type": "season-summary-mismatch",
       "team": "NORTH SEVIER",
       "season": "2025",
@@ -232,27 +244,29 @@
       ]
     },
     {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
-        }
-      }
+      "type": "suspicious-repeat",
+      "team": "PAROWAN",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "MILLARD",
+      "teamScore": 10,
+      "opponentScore": 14,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "PAROWAN",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "ALA",
+        "MILLARD"
+      ]
     },
     {
       "type": "season-summary-mismatch",
@@ -993,6 +1007,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "WASATCH",
+      "date": "9/4/2026",
+      "season": "2026",
+      "sideA": [
+        {
+          "team": "DEER CREEK",
+          "opponent": "WASATCH",
+          "date": "9/4/2026",
+          "teamScore": 9,
+          "opponentScore": 40,
+          "result": "L",
+          "season": "2026",
+          "index": 3
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "DELTA",
       "teamB": "SUMMIT ACADEMY",
       "date": "9/5/2025",
@@ -1624,6 +1658,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -1638,7 +1692,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -2546,6 +2600,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -2560,7 +2634,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -2579,7 +2653,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -4181,6 +4255,16 @@
     },
     {
       "type": "same-day-multiple-opponents",
+      "team": "DUCHESNE",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "COTTONWOOD",
+        "IGNACIO, CO"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "GRANTSVILLE",
       "season": "2008",
       "date": "10/28/2008",
@@ -4237,6 +4321,16 @@
       "opponents": [
         "CEDAR CITY",
         "MORGAN"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "MILLARD",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "DELTA",
+        "PAROWAN"
       ]
     },
     {
@@ -4307,6 +4401,16 @@
       "opponents": [
         "CANYON VIEW",
         "CEDAR CITY"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "PAROWAN",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "ALA",
+        "MILLARD"
       ]
     },
     {
@@ -4458,6 +4562,21 @@
     },
     {
       "type": "suspicious-repeat",
+      "team": "MILLARD",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "PAROWAN",
+      "teamScore": 14,
+      "opponentScore": 10,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
+    },
+    {
+      "type": "suspicious-repeat",
       "team": "NORTH SEVIER",
       "season": "1981",
       "index": 6,
@@ -4500,6 +4619,21 @@
       "notes": "",
       "otherDate": "10/2/1981",
       "daysApart": 5
+    },
+    {
+      "type": "suspicious-repeat",
+      "team": "PAROWAN",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "MILLARD",
+      "teamScore": 10,
+      "opponentScore": 14,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
     },
     {
       "type": "suspicious-repeat",
@@ -5533,29 +5667,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "JUAN DIEGO",
       "season": "2022",
       "mismatches": {
@@ -6370,29 +6481,6 @@
         "pointsAgainst": {
           "expected": 463,
           "actual": 416
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
         }
       }
     },
@@ -12826,6 +12914,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "WASATCH",
+      "date": "9/4/2026",
+      "season": "2026",
+      "sideA": [
+        {
+          "team": "DEER CREEK",
+          "opponent": "WASATCH",
+          "date": "9/4/2026",
+          "teamScore": 9,
+          "opponentScore": 40,
+          "result": "L",
+          "season": "2026",
+          "index": 3
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "DELTA",
       "teamB": "SAN JUAN",
       "date": "9/15/1976",
@@ -16748,6 +16856,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -16762,7 +16890,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -22316,6 +22444,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -22330,7 +22478,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -22349,7 +22497,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -29505,139 +29653,139 @@
       "team": "ALA",
       "file": "ala.json",
       "seasons": 21,
-      "totalGames": 211
+      "totalGames": 210
     },
     {
       "team": "ALTA",
       "file": "alta.json",
       "seasons": 49,
-      "totalGames": 537
+      "totalGames": 536
     },
     {
       "team": "ALTAMONT",
       "file": "altamont.json",
       "seasons": 53,
-      "totalGames": 496
+      "totalGames": 495
     },
     {
       "team": "AMERICAN FORK",
       "file": "american-fork.json",
       "seasons": 101,
-      "totalGames": 925
+      "totalGames": 924
     },
     {
       "team": "BEAR RIVER",
       "file": "bear-river.json",
       "seasons": 105,
-      "totalGames": 946
+      "totalGames": 945
     },
     {
       "team": "BEAVER",
       "file": "beaver.json",
       "seasons": 87,
-      "totalGames": 832
+      "totalGames": 831
     },
     {
       "team": "BEN LOMOND",
       "file": "ben-lomond.json",
       "seasons": 74,
-      "totalGames": 704
+      "totalGames": 703
     },
     {
       "team": "BINGHAM",
       "file": "bingham.json",
       "seasons": 103,
-      "totalGames": 992
+      "totalGames": 991
     },
     {
       "team": "BONNEVILLE",
       "file": "bonneville.json",
       "seasons": 67,
-      "totalGames": 691
+      "totalGames": 690
     },
     {
       "team": "BOUNTIFUL",
       "file": "bountiful.json",
       "seasons": 71,
-      "totalGames": 753
+      "totalGames": 752
     },
     {
       "team": "BOX ELDER",
       "file": "box-elder.json",
       "seasons": 110,
-      "totalGames": 1024
+      "totalGames": 1023
     },
     {
       "team": "BRIGHTON",
       "file": "brighton.json",
       "seasons": 58,
-      "totalGames": 624
+      "totalGames": 623
     },
     {
       "team": "CANYON VIEW",
       "file": "canyon-view.json",
       "seasons": 30,
-      "totalGames": 301
+      "totalGames": 300
     },
     {
       "team": "CARBON",
       "file": "carbon.json",
       "seasons": 108,
-      "totalGames": 944
+      "totalGames": 943
     },
     {
       "team": "CEDAR CITY",
       "file": "cedar-city.json",
       "seasons": 78,
-      "totalGames": 772
+      "totalGames": 771
     },
     {
       "team": "CEDAR VALLEY",
       "file": "cedar-valley.json",
       "seasons": 8,
-      "totalGames": 82
+      "totalGames": 81
     },
     {
       "team": "CLEARFIELD",
       "file": "clearfield.json",
       "seasons": 66,
-      "totalGames": 663
+      "totalGames": 662
     },
     {
       "team": "COPPER HILLS",
       "file": "copper-hills.json",
       "seasons": 32,
-      "totalGames": 315
+      "totalGames": 314
     },
     {
       "team": "CORNER CANYON",
       "file": "corner-canyon.json",
       "seasons": 14,
-      "totalGames": 173
+      "totalGames": 172
     },
     {
       "team": "COTTONWOOD",
       "file": "cottonwood.json",
       "seasons": 57,
-      "totalGames": 568
+      "totalGames": 567
     },
     {
       "team": "CRIMSON CLIFFS",
       "file": "crimson-cliffs.json",
       "seasons": 8,
-      "totalGames": 91
+      "totalGames": 90
     },
     {
       "team": "CYPRUS",
       "file": "cyprus.json",
       "seasons": 101,
-      "totalGames": 912
+      "totalGames": 911
     },
     {
       "team": "DAVIS",
       "file": "davis.json",
       "seasons": 111,
-      "totalGames": 1078
+      "totalGames": 1077
     },
     {
       "team": "DEER CREEK",
@@ -29649,25 +29797,25 @@
       "team": "DELTA",
       "file": "delta.json",
       "seasons": 104,
-      "totalGames": 958
+      "totalGames": 957
     },
     {
       "team": "DESERET PEAK",
       "file": "deseret-peak.json",
       "seasons": 2,
-      "totalGames": 14
+      "totalGames": 13
     },
     {
       "team": "DESERT HILLS",
       "file": "desert-hills.json",
       "seasons": 19,
-      "totalGames": 207
+      "totalGames": 206
     },
     {
       "team": "DIXIE",
       "file": "dixie.json",
       "seasons": 82,
-      "totalGames": 803
+      "totalGames": 802
     },
     {
       "team": "DUCHESNE",
@@ -29679,97 +29827,97 @@
       "team": "EAST",
       "file": "east.json",
       "seasons": 113,
-      "totalGames": 1061
+      "totalGames": 1060
     },
     {
       "team": "EMERY",
       "file": "emery.json",
       "seasons": 65,
-      "totalGames": 647
+      "totalGames": 646
     },
     {
       "team": "ENTERPRISE",
       "file": "enterprise.json",
       "seasons": 30,
-      "totalGames": 319
+      "totalGames": 318
     },
     {
       "team": "FARMINGTON",
       "file": "farmington.json",
       "seasons": 9,
-      "totalGames": 94
+      "totalGames": 93
     },
     {
       "team": "FREMONT",
       "file": "fremont.json",
       "seasons": 33,
-      "totalGames": 367
+      "totalGames": 366
     },
     {
       "team": "GRAND",
       "file": "grand.json",
       "seasons": 106,
-      "totalGames": 912
+      "totalGames": 911
     },
     {
       "team": "GRANGER",
       "file": "granger.json",
       "seasons": 69,
-      "totalGames": 682
+      "totalGames": 681
     },
     {
       "team": "GRANTSVILLE",
       "file": "grantsville.json",
       "seasons": 110,
-      "totalGames": 963
+      "totalGames": 962
     },
     {
       "team": "GREEN CANYON",
       "file": "green-canyon.json",
       "seasons": 10,
-      "totalGames": 107
+      "totalGames": 106
     },
     {
       "team": "GUNNISON VALLEY",
       "file": "gunnison-valley.json",
       "seasons": 37,
-      "totalGames": 355
+      "totalGames": 354
     },
     {
       "team": "HERRIMAN",
       "file": "herriman.json",
       "seasons": 17,
-      "totalGames": 189
+      "totalGames": 188
     },
     {
       "team": "HIGHLAND",
       "file": "highland.json",
       "seasons": 69,
-      "totalGames": 730
+      "totalGames": 729
     },
     {
       "team": "HILLCREST",
       "file": "hillcrest.json",
       "seasons": 64,
-      "totalGames": 623
+      "totalGames": 622
     },
     {
       "team": "HUNTER",
       "file": "hunter.json",
       "seasons": 37,
-      "totalGames": 398
+      "totalGames": 397
     },
     {
       "team": "HURRICANE",
       "file": "hurricane.json",
       "seasons": 78,
-      "totalGames": 760
+      "totalGames": 759
     },
     {
       "team": "JORDAN",
       "file": "jordan.json",
       "seasons": 117,
-      "totalGames": 1089
+      "totalGames": 1088
     },
     {
       "team": "JUAB",
@@ -29781,37 +29929,37 @@
       "team": "JUAN DIEGO",
       "file": "juan-diego.json",
       "seasons": 27,
-      "totalGames": 313
+      "totalGames": 312
     },
     {
       "team": "JUDGE MEMORIAL",
       "file": "judge-memorial.json",
       "seasons": 100,
-      "totalGames": 921
+      "totalGames": 920
     },
     {
       "team": "KANAB",
       "file": "kanab.json",
       "seasons": 77,
-      "totalGames": 771
+      "totalGames": 770
     },
     {
       "team": "KEARNS",
       "file": "kearns.json",
       "seasons": 61,
-      "totalGames": 603
+      "totalGames": 602
     },
     {
       "team": "LAYTON CHRISTIAN",
       "file": "layton-christian.json",
       "seasons": 23,
-      "totalGames": 233
+      "totalGames": 232
     },
     {
       "team": "LAYTON",
       "file": "layton.json",
       "seasons": 59,
-      "totalGames": 604
+      "totalGames": 603
     },
     {
       "team": "LEHI",
@@ -29823,31 +29971,31 @@
       "team": "LOGAN",
       "file": "logan.json",
       "seasons": 108,
-      "totalGames": 1000
+      "totalGames": 999
     },
     {
       "team": "LONE PEAK",
       "file": "lone-peak.json",
       "seasons": 30,
-      "totalGames": 360
+      "totalGames": 359
     },
     {
       "team": "MANTI",
       "file": "manti.json",
       "seasons": 59,
-      "totalGames": 589
+      "totalGames": 588
     },
     {
       "team": "MAPLE MOUNTAIN",
       "file": "maple-mountain.json",
       "seasons": 18,
-      "totalGames": 192
+      "totalGames": 191
     },
     {
       "team": "MILFORD",
       "file": "milford.json",
       "seasons": 85,
-      "totalGames": 742
+      "totalGames": 741
     },
     {
       "team": "MILLARD",
@@ -29859,7 +30007,7 @@
       "team": "MONTICELLO",
       "file": "monticello.json",
       "seasons": 74,
-      "totalGames": 727
+      "totalGames": 726
     },
     {
       "team": "MONUMENT VALLEY",
@@ -29871,73 +30019,73 @@
       "team": "MORGAN",
       "file": "morgan.json",
       "seasons": 99,
-      "totalGames": 923
+      "totalGames": 922
     },
     {
       "team": "MOUNTAIN CREST",
       "file": "mountain-crest.json",
       "seasons": 44,
-      "totalGames": 483
+      "totalGames": 482
     },
     {
       "team": "MOUNTAIN RIDGE",
       "file": "mountain-ridge.json",
       "seasons": 8,
-      "totalGames": 81
+      "totalGames": 80
     },
     {
       "team": "MOUNTAIN VIEW",
       "file": "mountain-view.json",
       "seasons": 47,
-      "totalGames": 469
+      "totalGames": 468
     },
     {
       "team": "MURRAY",
       "file": "murray.json",
       "seasons": 109,
-      "totalGames": 958
+      "totalGames": 957
     },
     {
       "team": "NORTH SANPETE",
       "file": "north-sanpete.json",
       "seasons": 111,
-      "totalGames": 869
+      "totalGames": 868
     },
     {
       "team": "NORTH SEVIER",
       "file": "north-sevier.json",
       "seasons": 68,
-      "totalGames": 585
+      "totalGames": 584
     },
     {
       "team": "NORTH SUMMIT",
       "file": "north-summit.json",
       "seasons": 101,
-      "totalGames": 935
+      "totalGames": 934
     },
     {
       "team": "NORTHRIDGE",
       "file": "northridge.json",
       "seasons": 35,
-      "totalGames": 367
+      "totalGames": 366
     },
     {
       "team": "OGDEN",
       "file": "ogden.json",
       "seasons": 128,
-      "totalGames": 1107
+      "totalGames": 1106
     },
     {
       "team": "OLYMPUS",
       "file": "olympus.json",
       "seasons": 74,
-      "totalGames": 752
+      "totalGames": 751
     },
     {
       "team": "OREM",
       "file": "orem.json",
       "seasons": 98,
-      "totalGames": 935
+      "totalGames": 934
     },
     {
       "team": "PANGUITCH",
@@ -29949,7 +30097,7 @@
       "team": "PARK CITY",
       "file": "park-city.json",
       "seasons": 119,
-      "totalGames": 983
+      "totalGames": 982
     },
     {
       "team": "PAROWAN",
@@ -29961,175 +30109,175 @@
       "team": "PAYSON",
       "file": "payson.json",
       "seasons": 116,
-      "totalGames": 975
+      "totalGames": 974
     },
     {
       "team": "PINE VIEW",
       "file": "pine-view.json",
       "seasons": 44,
-      "totalGames": 455
+      "totalGames": 454
     },
     {
       "team": "PLEASANT GROVE",
       "file": "pleasant-grove.json",
       "seasons": 99,
-      "totalGames": 880
+      "totalGames": 879
     },
     {
       "team": "PROVIDENCE HALL",
       "file": "providence-hall.json",
       "seasons": 8,
-      "totalGames": 80
+      "totalGames": 79
     },
     {
       "team": "PROVO",
       "file": "provo.json",
       "seasons": 112,
-      "totalGames": 1005
+      "totalGames": 1004
     },
     {
       "team": "RICH",
       "file": "rich.json",
       "seasons": 42,
-      "totalGames": 443
+      "totalGames": 442
     },
     {
       "team": "RICHFIELD",
       "file": "richfield.json",
       "seasons": 97,
-      "totalGames": 851
+      "totalGames": 850
     },
     {
       "team": "RIDGELINE",
       "file": "ridgeline.json",
       "seasons": 11,
-      "totalGames": 127
+      "totalGames": 126
     },
     {
       "team": "RIVERTON",
       "file": "riverton.json",
       "seasons": 28,
-      "totalGames": 297
+      "totalGames": 296
     },
     {
       "team": "ROY",
       "file": "roy.json",
       "seasons": 62,
-      "totalGames": 625
+      "totalGames": 624
     },
     {
       "team": "SAINT JOSEPH",
       "file": "saint-joseph.json",
       "seasons": 4,
-      "totalGames": 34
+      "totalGames": 32
     },
     {
       "team": "SALEM HILLS",
       "file": "salem-hills.json",
       "seasons": 19,
-      "totalGames": 202
+      "totalGames": 201
     },
     {
       "team": "SAN JUAN",
       "file": "san-juan.json",
       "seasons": 71,
-      "totalGames": 746
+      "totalGames": 745
     },
     {
       "team": "SKY VIEW",
       "file": "sky-view.json",
       "seasons": 63,
-      "totalGames": 635
+      "totalGames": 634
     },
     {
       "team": "SKYLINE",
       "file": "skyline.json",
       "seasons": 65,
-      "totalGames": 731
+      "totalGames": 730
     },
     {
       "team": "SKYRIDGE",
       "file": "skyridge.json",
       "seasons": 11,
-      "totalGames": 131
+      "totalGames": 130
     },
     {
       "team": "SNOW CANYON",
       "file": "snow-canyon.json",
       "seasons": 33,
-      "totalGames": 342
+      "totalGames": 341
     },
     {
       "team": "SOUTH SEVIER",
       "file": "south-sevier.json",
       "seasons": 72,
-      "totalGames": 627
+      "totalGames": 626
     },
     {
       "team": "SOUTH SUMMIT",
       "file": "south-summit.json",
       "seasons": 89,
-      "totalGames": 820
+      "totalGames": 819
     },
     {
       "team": "SPANISH FORK",
       "file": "spanish-fork.json",
       "seasons": 107,
-      "totalGames": 933
+      "totalGames": 932
     },
     {
       "team": "SPRINGVILLE",
       "file": "springville.json",
       "seasons": 110,
-      "totalGames": 965
+      "totalGames": 964
     },
     {
       "team": "STANSBURY",
       "file": "stansbury.json",
       "seasons": 18,
-      "totalGames": 199
+      "totalGames": 198
     },
     {
       "team": "SUMMIT ACADEMY",
       "file": "summit-academy.json",
       "seasons": 15,
-      "totalGames": 165
+      "totalGames": 164
     },
     {
       "team": "SYRACUSE",
       "file": "syracuse.json",
       "seasons": 20,
-      "totalGames": 212
+      "totalGames": 211
     },
     {
       "team": "TAYLORSVILLE",
       "file": "taylorsville.json",
       "seasons": 46,
-      "totalGames": 450
+      "totalGames": 449
     },
     {
       "team": "TIMPANOGOS",
       "file": "timpanogos.json",
       "seasons": 31,
-      "totalGames": 314
+      "totalGames": 313
     },
     {
       "team": "TIMPVIEW",
       "file": "timpview.json",
       "seasons": 50,
-      "totalGames": 569
+      "totalGames": 568
     },
     {
       "team": "TOOELE",
       "file": "tooele.json",
       "seasons": 111,
-      "totalGames": 984
+      "totalGames": 983
     },
     {
       "team": "UINTAH",
       "file": "uintah.json",
       "seasons": 82,
-      "totalGames": 721
+      "totalGames": 720
     },
     {
       "team": "UMA-HILLFIELD",
@@ -30141,7 +30289,7 @@
       "team": "UMA-LEHI",
       "file": "uma-lehi.json",
       "seasons": 3,
-      "totalGames": 23
+      "totalGames": 21
     },
     {
       "team": "UNION",
@@ -30153,61 +30301,61 @@
       "team": "VIEWMONT",
       "file": "viewmont.json",
       "seasons": 63,
-      "totalGames": 634
+      "totalGames": 633
     },
     {
       "team": "WASATCH",
       "file": "wasatch.json",
       "seasons": 103,
-      "totalGames": 943
+      "totalGames": 942
     },
     {
       "team": "WATER CANYON",
       "file": "water-canyon.json",
       "seasons": 5,
-      "totalGames": 49
+      "totalGames": 48
     },
     {
       "team": "WEBER",
       "file": "weber.json",
       "seasons": 101,
-      "totalGames": 908
+      "totalGames": 907
     },
     {
       "team": "WEST FIELD",
       "file": "west-field.json",
       "seasons": 3,
-      "totalGames": 27
+      "totalGames": 26
     },
     {
       "team": "WEST JORDAN",
       "file": "west-jordan.json",
       "seasons": 46,
-      "totalGames": 458
+      "totalGames": 457
     },
     {
       "team": "WEST",
       "file": "west.json",
       "seasons": 128,
-      "totalGames": 1094
+      "totalGames": 1093
     },
     {
       "team": "WESTLAKE",
       "file": "westlake.json",
       "seasons": 18,
-      "totalGames": 185
+      "totalGames": 184
     },
     {
       "team": "WHITEHORSE",
       "file": "whitehorse.json",
       "seasons": 43,
-      "totalGames": 356
+      "totalGames": 355
     },
     {
       "team": "WOODS CROSS",
       "file": "woods-cross.json",
       "seasons": 50,
-      "totalGames": 505
+      "totalGames": 504
     }
   ]
 }
