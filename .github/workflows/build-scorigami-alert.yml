@@ -33,9 +33,11 @@ jobs:
           const fs=require('fs');
           const clean=v=>String(v??'').trim();
           const norm=v=>clean(v).toUpperCase().replace(/\s+/g,' ');
+          const aliases={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY','SUMMIT':'SUMMIT ACADEMY','WASATCH ACAD':'WASATCH ACADEMY','WASATCH ACAD.':'WASATCH ACADEMY','HINKLEY':'HINCKLEY','BY HIGH':'BYH','BRIGHAM YOUNG':'BYH','UTAH SCH DEAF':'USDB','AMRICAN FORK':'AMERICAN FORK','DESERET HILLS':'DESERT HILLS','MOUNUMENT VALLEY':'MONUMENT VALLEY','MONTUMENT VALLEY':'MONUMENT VALLEY','MOAPA VALLEY(NV)':'MOAPA VALLEY (NV)','VIRGIN VAL (NV)':'VIRGIN VALLEY (NV)','VIRGIN VALLEY (NV))':'VIRGIN VALLEY (NV)','BOULDER CITY(NV)':'BOULDER CITY (NV)','HIGHLAND, ID':'HIGHLAND (ID)','MARSH VALLEY(ID)':'MARSH VALLEY (ID)','ONEIDA ACAD.(ID)':'ONEIDA ACADEMY (ID)','RAYMOND, ALBERTA':'RAYMOND (ALBERTA)','ST LOUIS (HI)':'ST. LOUIS (HI)','CROWNPOINT (NM)':'CROWN POINT (NM)','KIRKLAND (NM)':'KIRTLAND (NM)','MTN CREST JV':'MOUNTAIN CREST JV','EAST HIGH 2ND TEAM':'EAST 2ND TEAM','WEST HIGH 2ND TEAM':'WEST 2ND TEAM','MTN. VIEW CHRISTIAN (NV)':'MTN VIEW CHRISTIAN (NV)','MONUMENT VAL (AZ) JV':'MONUMENT VALLEY (AZ) JV','BLOOMFIELD(NM)JV':'BLOOMFIELD (NM) JV'};
+          const team=v=>{const n=norm(v).replace(/\.+$/,'').trim();if(n.startsWith('WASATCH ACAD'))return'WASATCH ACADEMY';return aliases[n]||n};
           const day=v=>{const t=Date.parse(clean(v));return Number.isFinite(t)?t:0};
           const scoreKey=(a,b)=>`${Math.max(Number(a),Number(b))}-${Math.min(Number(a),Number(b))}`;
-          const gameId=g=>`${clean(g.date)}|${norm(g.awayTeam)}|${norm(g.homeTeam)}|${Number(g.actualAway)}-${Number(g.actualHome)}`;
+          const gameId=g=>`${clean(g.date)}|${team(g.awayTeam)}|${team(g.homeTeam)}|${Number(g.actualAway)}-${Number(g.actualHome)}`;
           const hasScore=g=>g.actualAway!==null&&g.actualAway!==undefined&&g.actualHome!==null&&g.actualHome!==undefined&&Number.isFinite(Number(g.actualAway))&&Number.isFinite(Number(g.actualHome));
           const out={updatedAt:new Date().toISOString(),alerts:[]};
           if(!fs.existsSync('scorigami.json')){
@@ -45,7 +47,6 @@ jobs:
           const byScore=new Map((sc.scores||[]).map(x=>[`${x.winner}-${x.loser}`,x]));
           const finals=[];
 
-          // Keep Weekly Simulation finals for backward compatibility.
           if(fs.existsSync('weekly-simulation.json')){
             try{
               const weekly=JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));
@@ -53,9 +54,6 @@ jobs:
             }catch(e){console.warn('Weekly Simulation alerts skipped:',e.message)}
           }
 
-          // Also read the verified live-scoreboard feed directly. This makes
-          // Scorigami alerts work even when Weekly Simulation is still on the
-          // previous week or does not contain the current matchup yet.
           if(fs.existsSync('deseret-live-details-2026.json')){
             try{
               const live=JSON.parse(fs.readFileSync('deseret-live-details-2026.json','utf8'));
@@ -72,13 +70,17 @@ jobs:
             }catch(e){console.warn('Live scoreboard alerts skipped:',e.message)}
           }
 
-          // Prefer the live copy when the same final is present in both feeds.
           const deduped=new Map();
           for(const g of finals){
-            const key=`${day(g.date)}|${[norm(g.awayTeam),norm(g.homeTeam)].sort().join('|')}|${scoreKey(g.actualAway,g.actualHome)}`;
+            const key=`${day(g.date)}|${[team(g.awayTeam),team(g.homeTeam)].sort().join('|')}|${scoreKey(g.actualAway,g.actualHome)}`;
             const prior=deduped.get(key);
             if(!prior||g.source==='live') deduped.set(key,g);
           }
+
+          const exactFor=(entry,g)=>{
+            const targetDay=day(g.date),away=team(g.awayTeam),home=team(g.homeTeam);
+            return (entry?.games||[]).some(x=>day(x.date)===targetDay&&new Set([team(x.team1||x.winner),team(x.team2||x.loser)]).has(away)&&new Set([team(x.team1||x.winner),team(x.team2||x.loser)]).has(home));
+          };
 
           const alerts=[];
           for(const g of deduped.values()){
@@ -87,28 +89,37 @@ jobs:
             const a=Number(g.actualAway),h=Number(g.actualHome),tie=a===h;
             const winner=tie?g.awayTeam:(a>h?g.awayTeam:g.homeTeam),loser=tie?g.homeTeam:(a>h?g.homeTeam:g.awayTeam);
             const winnerScore=Math.max(a,h),loserScore=Math.min(a,h);
-            const targetDay=day(g.date);
-            const exact=(entry.games||[]).some(x=>day(x.date)===targetDay&&new Set([norm(x.team1||x.winner),norm(x.team2||x.loser)]).has(norm(g.awayTeam))&&new Set([norm(x.team1||x.winner),norm(x.team2||x.loser)]).has(norm(g.homeTeam)));
-            if(!exact)continue;
+            if(!exactFor(entry,g))continue;
             alerts.push({id:gameId(g),date:g.date,awayTeam:g.awayTeam,homeTeam:g.homeTeam,awayScore:a,homeScore:h,winner,loser,winnerScore,loserScore,score:k,tie,deseretUrl:g.deseretUrl||''});
           }
           alerts.sort((a,b)=>day(b.date)-day(a.date)||a.id.localeCompare(b.id));
           out.alerts=alerts.slice(0,5);
           fs.writeFileSync('scorigami-latest.json',JSON.stringify(out));
-          console.log(`Current Scorigami alerts: ${out.alerts.length}`);
+
+          const liveFinals=[...deduped.values()].filter(g=>g.source==='live'&&day(g.date)>0);
+          const latestDay=liveFinals.length?Math.max(...liveFinals.map(g=>day(g.date))):0;
+          const checks=liveFinals.filter(g=>day(g.date)===latestDay).map(g=>{
+            const score=scoreKey(g.actualAway,g.actualHome),entry=byScore.get(score);
+            return {date:g.date,awayTeam:g.awayTeam,homeTeam:g.homeTeam,awayScore:Number(g.actualAway),homeScore:Number(g.actualHome),score,count:entry?Number(entry.count):0,exact:!!entry&&exactFor(entry,g),scorigami:!!entry&&Number(entry.count)===1&&exactFor(entry,g)};
+          }).sort((a,b)=>a.awayTeam.localeCompare(b.awayTeam)||a.homeTeam.localeCompare(b.homeTeam));
+          const diagnostics={updatedAt:new Date().toISOString(),latestDay:latestDay?new Date(latestDay).toISOString():null,liveFinalsChecked:checks.length,checks};
+          fs.writeFileSync('scorigami-checks.json',JSON.stringify(diagnostics,null,2));
+          console.log(`Current Scorigami alerts: ${out.alerts.length}; latest live finals checked: ${checks.length}; Scorigamis: ${checks.filter(x=>x.scorigami).length}`);
           NODE
       - name: Commit alert feed
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add scorigami-latest.json
+          git add scorigami-latest.json scorigami-checks.json
           if git diff --cached --quiet; then echo "Scorigami alert feed current."; exit 0; fi
           cp scorigami-latest.json /tmp/scorigami-latest.json
+          cp scorigami-checks.json /tmp/scorigami-checks.json
           for attempt in 1 2 3 4 5; do
             git fetch origin main
             git reset --hard origin/main
             cp /tmp/scorigami-latest.json scorigami-latest.json
-            git add scorigami-latest.json
+            cp /tmp/scorigami-checks.json scorigami-checks.json
+            git add scorigami-latest.json scorigami-checks.json
             if git diff --cached --quiet; then
               echo "Scorigami alert feed current."
               exit 0
