@@ -1,20 +1,20 @@
 {
   "season": 2026,
-  "updatedAt": "2026-09-05T15:58:38.353Z",
+  "updatedAt": "2026-09-05T18:09:47.070Z",
   "summary": {
     "teams": 124,
     "teamGames": 417,
-    "statRows": 5955,
-    "rosterMatchedRows": 5841,
+    "statRows": 5962,
+    "rosterMatchedRows": 5848,
     "preservedFinalGames": 0,
     "replacedEmptyFinalGames": 0,
     "maxprepsFallback": {
       "teamsMatched": 106,
       "gamesMatched": 5376,
       "gamesAdded": 23,
-      "playersAdded": 2127,
-      "linesAdded": 7750,
-      "fieldsFilled": 9802,
+      "playersAdded": 2122,
+      "linesAdded": 7744,
+      "fieldsFilled": 9785,
       "correctedFields": 13,
       "unmatchedGames": 0
     }
@@ -55047,9 +55047,17 @@
                 {
                   "category": "Rushing",
                   "values": {
-                    "Carries": "",
-                    "Yards": "",
+                    "Carries": "14",
+                    "Yards": "71",
                     "TD": "2"
+                  }
+                },
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "9",
+                    "Yards": "171",
+                    "TD": ""
                   }
                 }
               ],
@@ -55066,33 +55074,29 @@
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Passing",
-                  "values": {
-                    "Comp-Att": "27-39",
-                    "Comp %": ".692",
-                    "Yards": "337",
-                    "TD": "2",
-                    "Int": "",
-                    "YARDS/COMP.": "12.5"
-                  },
-                  "statSources": {
-                    "Yards": "MaxPreps",
-                    "Comp %": "MaxPreps",
-                    "YARDS/COMP.": "MaxPreps",
-                    "Comp-Att": "MaxPreps"
-                  }
-                },
-                {
                   "category": "Rushing",
                   "values": {
-                    "CARRIES": "13",
-                    "YARDS": "22",
+                    "Carries": "13",
+                    "Yards": "22",
+                    "TD": "",
                     "YARDS/CARRY": "1.7"
                   },
                   "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
                     "YARDS/CARRY": "MaxPreps"
+                  }
+                },
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "27-39",
+                    "Comp %": "69%",
+                    "Yards": "337",
+                    "TD": "2",
+                    "Int": "0",
+                    "YARDS/COMP.": "12.5"
+                  },
+                  "statSources": {
+                    "YARDS/COMP.": "MaxPreps"
                   }
                 }
               ],
@@ -55114,10 +55118,6 @@
                     "Receptions": "5",
                     "Yards": "76",
                     "TD": "2"
-                  },
-                  "statSources": {
-                    "Receptions": "MaxPreps",
-                    "Yards": "MaxPreps"
                   }
                 },
                 {
@@ -55144,6 +55144,156 @@
                 "Salem Hills — ( 11:06 2Q ) Peyton Higginson , 8-yard pass from Cash Hollingshead ( kick from Jack Nelson )",
                 "Salem Hills — ( 2:59 2Q ) Peyton Higginson , 5-yard pass from Cash Hollingshead ( kick from Jack Nelson )"
               ]
+            },
+            {
+              "playerId": "salem-hills-14-gordon-wilson",
+              "number": "14",
+              "name": "Gordon Wilson",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "5",
+                    "Yards": "37",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Tackles",
+                  "values": {
+                    "TACKLES": "1"
+                  },
+                  "statSources": {
+                    "TACKLES": "MaxPreps"
+                  }
+                },
+                {
+                  "category": "Defensive Statistics",
+                  "values": {},
+                  "statSources": {}
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "salem-hills-9-logan-carrick",
+              "number": "9",
+              "name": "Logan Carrick",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "2",
+                    "Yards": "25",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Tackles",
+                  "values": {
+                    "TACKLES": "2"
+                  },
+                  "statSources": {
+                    "TACKLES": "MaxPreps"
+                  }
+                },
+                {
+                  "category": "Defensive Statistics",
+                  "values": {},
+                  "statSources": {}
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "salem-hills-10-lj-mcbride",
+              "number": "10",
+              "name": "LJ McBride",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "2",
+                    "Yards": "17",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Tackles",
+                  "values": {
+                    "TACKLES": "8"
+                  },
+                  "statSources": {
+                    "TACKLES": "MaxPreps"
+                  }
+                },
+                {
+                  "category": "Sacks",
+                  "values": {},
+                  "statSources": {}
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "salem-hills-22-lincoln-lewis",
+              "number": "22",
+              "name": "Lincoln Lewis",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "1",
+                    "Yards": "3",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Tackles",
+                  "values": {
+                    "TACKLES": "1"
+                  },
+                  "statSources": {
+                    "TACKLES": "MaxPreps"
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "salem-hills-1-joe-hughes",
+              "number": "1",
+              "name": "Joe Hughes",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "3",
+                    "Yards": "0",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Tackles",
+                  "values": {
+                    "TACKLES": "3"
+                  },
+                  "statSources": {
+                    "TACKLES": "MaxPreps"
+                  }
+                }
+              ],
+              "scoringPlays": []
             },
             {
               "playerId": "salem-hills-44-jack-nelson",
@@ -55175,171 +55325,6 @@
               "position": "",
               "rosterMatched": true,
               "statLines": [
-                {
-                  "category": "Tackles",
-                  "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Defensive Statistics",
-                  "values": {},
-                  "statSources": {}
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "salem-hills-1-joe-hughes",
-              "number": "1",
-              "name": "Joe Hughes",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Receiving",
-                  "values": {
-                    "RECEPTIONS": "3",
-                    "YARDS": "0"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Tackles",
-                  "values": {
-                    "TACKLES": "3"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "salem-hills-9-logan-carrick",
-              "number": "9",
-              "name": "Logan Carrick",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Receiving",
-                  "values": {
-                    "RECEPTIONS": "2",
-                    "YARDS": "25"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Tackles",
-                  "values": {
-                    "TACKLES": "2"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Defensive Statistics",
-                  "values": {},
-                  "statSources": {}
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "salem-hills-10-lj-mcbride",
-              "number": "10",
-              "name": "LJ McBride",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Receiving",
-                  "values": {
-                    "RECEPTIONS": "2",
-                    "YARDS": "17"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Tackles",
-                  "values": {
-                    "TACKLES": "8"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Sacks",
-                  "values": {},
-                  "statSources": {}
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "salem-hills-22-lincoln-lewis",
-              "number": "22",
-              "name": "Lincoln Lewis",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Receiving",
-                  "values": {
-                    "RECEPTIONS": "1",
-                    "YARDS": "3"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Tackles",
-                  "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "salem-hills-14-gordon-wilson",
-              "number": "14",
-              "name": "Gordon Wilson",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Receiving",
-                  "values": {
-                    "RECEPTIONS": "5",
-                    "YARDS": "37"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
-                  }
-                },
                 {
                   "category": "Tackles",
                   "values": {
