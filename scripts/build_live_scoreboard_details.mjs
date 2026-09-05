@@ -9,7 +9,8 @@ const compact = value => clean(value).toUpperCase().replace(/[^A-Z0-9]/g, '');
 
 const aliasGroups = [
   ['UMALEHI', 'UMACAMPWILLIAMS', 'UTAHMILITARYCAMPWILLIAMS', 'UTAHMILITARYACADEMYCAMPWILLIAMS'],
-  ['SAINTJOSEPH', 'STJOSEPH']
+  ['SAINTJOSEPH', 'STJOSEPH'],
+  ['ALAQUEENCREEKAZ', 'ALAQUEENSCREEKAZ', 'AMERICANLEADERSHIPACADEMYQUEENCREEKAZ']
 ];
 const aliases = new Map();
 for (const group of aliasGroups) {
@@ -33,6 +34,7 @@ const dayNumber = value => {
   return Number.isFinite(time) ? time / 86400000 : null;
 };
 const gameKey = game => isoDate(game.date) + '|' + canonicalName(game.awayTeam) + '|' + canonicalName(game.homeTeam);
+const literalGameKey = game => isoDate(game.date) + '|' + compact(game.awayTeam) + '|' + compact(game.homeTeam);
 
 function inActiveWindow(value, todayNumber) {
   const number = dayNumber(value);
@@ -122,7 +124,12 @@ for (const game of weekly.games || []) {
   const match = findDetailForGame(game, details);
   if (!match) continue;
   usedSourceKeys.add(match.key);
-  games[gameKey(game)] = compactDetail(game, match.detail);
+  const compactGame = compactDetail(game, match.detail);
+  games[gameKey(game)] = compactGame;
+  // Also publish the literal Weekly Simulation key. The browser scoreboard
+  // currently keys cards from the raw team text, so aliases such as
+  // ALA QUEENS CREEK vs ALA QUEEN CREEK must resolve to the same final.
+  games[literalGameKey(game)] = compactGame;
 }
 
 // Preserve active-window live/final games that do not yet have a matching
