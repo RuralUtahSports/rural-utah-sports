@@ -1,38 +1,23 @@
 name: Fix scoreboard refresh cache
 
 on:
-  push:
-    paths:
-      - '.github/workflows/fix-scoreboard-refresh-cache.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  fix:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Bump scoreboard refresh cache key
+      - name: Verify current scoreboard refresh cache key
         run: |
           python - <<'PY'
           from pathlib import Path
-          p = Path('scoreboard.html')
-          s = p.read_text()
-          old = 'scoreboard-refresh.js?v=20260901-uma-final1'
-          new = 'scoreboard-refresh.js?v=20260904-live-refresh-fix1'
-          if old not in s:
-              raise SystemExit('old cache key not found')
-          p.write_text(s.replace(old, new, 1))
+          s = Path('scoreboard.html').read_text()
+          expected = 'scoreboard-refresh.js?v=20260904-live-refresh-fix1'
+          if expected not in s:
+              raise SystemExit('current scoreboard refresh cache key missing')
+          print('scoreboard refresh cache key is current')
           PY
-      - name: Commit fix
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add scoreboard.html
-          git diff --cached --quiet && exit 0
-          git commit -m 'Force current scoreboard refresh script'
-          git push
-
-# Trigger the one-time fix after this workflow already exists on main.
