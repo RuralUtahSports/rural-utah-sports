@@ -44,21 +44,17 @@ jobs:
           function scoreSig(a,sa,b,sb){return [[a,sa],[b,sb]].sort((x,y)=>x[0].localeCompare(y[0])).map(x=>`${x[0]}:${x[1]}`).join('|')}
           function correctedDate(date,a,b,sa,sb){
             const pair=pairKey(a,b),sig=scoreSig(a,sa,b,sb);
-            // 2025 3A championship: Cedar City 41, Manti 35 on Nov. 15.
             if(date==='11/7/2025'&&pair==='CEDAR CITY|MANTI'&&sig==='CEDAR CITY:41|MANTI:35')return'11/15/2025';
             return date;
           }
           function isKnownBadDuplicate(date,a,b,sa,sb){
             const pair=pairKey(a,b),sig=scoreSig(a,sa,b,sb);
             if(date==='9/19/2025'&&pair==='MONUMENT VALLEY|PANGUITCH')return true;
-            // The real 2024 Westlake-Copper Hills playoff game was 10/25/2024, 41-26.
-            // A second copy dated 10/18/2024 exists in the historical source and is not a real game.
             if(date==='10/18/2024'&&pair==='COPPER HILLS|WESTLAKE'&&sig==='COPPER HILLS:26|WESTLAKE:41')return true;
             return false;
           }
           (async()=>{const res=await fetch(url);if(!res.ok)throw new Error(`Sheet download failed ${res.status}`);const rows=parseCSV(await res.text()),scoreMap=new Map(),candidates=[];let skippedRows=0,sourceRows=0,weeklyFinalsAdded=0,liveFinalsAdded=0,exactDuplicatesRemoved=0,nearDuplicatesRemoved=0,conflictingDuplicates=0,knownCorrectionsRemoved=0,maxWinningScore=0,maxLosingScore=0;
             for(let i=1;i<rows.length;i++){const r=rows[i],team1=team(r[1]),team2=team(r[2]),score1=num(r[3]),score2=num(r[4]),date=correctedDate(clean(r[0]),team1,team2,score1,score2),ts=stamp(date);if(!date||!ts||ts>Date.now()||!team1||!team2||team1===team2||score1===null||score2===null||score1<0||score2<0){if(r.some(v=>clean(v)))skippedRows++;continue}if(isKnownBadDuplicate(date,team1,team2,score1,score2)){knownCorrectionsRemoved++;continue}sourceRows++;candidates.push({date,team1,team2,score1,score2,ts,index:i,pair:pairKey(team1,team2),sig:scoreSig(team1,score1,team2,score2),source:'clean'})}
-            // Merge finalized Weekly Simulation games so Scorigami updates as soon as a final reaches that feed.
             if(fs.existsSync('weekly-simulation.json')){
               try{
                 const weekly=JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));
@@ -71,8 +67,6 @@ jobs:
                 }
               }catch(e){console.warn('Weekly Simulation merge skipped:',e.message)}
             }
-            // Merge verified live-scoreboard finals directly. This keeps Scorigami current even
-            // when Weekly Simulation has not yet rolled to the current week.
             if(fs.existsSync('deseret-live-details-2026.json')){
               try{
                 const live=JSON.parse(fs.readFileSync('deseret-live-details-2026.json','utf8'));
@@ -93,7 +87,7 @@ jobs:
             }
             candidates.sort((a,b)=>a.ts-b.ts||a.index-b.index);
             const exactSeen=new Map(),lastBySignature=new Map(),unique=[];
-            for(const g of candidates){const exactKey=`${g.date}|${g.pair}`,priorSig=exactSeen.get(exactKey);if(priorSig!==undefined){exactDuplicatesRemoved++;if(priorSig!==g.sig)conflictingDuplicates++;continue}exactSeen.set(exactKey,g.sig);const signature=`${g.pair}|${g.sig}`,prior=lastBySignature.get(signature);if(prior){const days=(g.ts-prior.ts)/86400000,modern=(year(g.date)||0)>=2000&&(year(prior.date)||0)>=2000,maxGap=modern?7:3;if(days>0&&days<=maxGap){nearDuplicatesRemoved++;continue}}lastBySignature.set(signature,g);unique.push(g)}
+            for(const g of candidates){const exactKey=`${g.ts}|${g.pair}`,priorSig=exactSeen.get(exactKey);if(priorSig!==undefined){exactDuplicatesRemoved++;if(priorSig!==g.sig)conflictingDuplicates++;continue}exactSeen.set(exactKey,g.sig);const signature=`${g.pair}|${g.sig}`,prior=lastBySignature.get(signature);if(prior){const days=(g.ts-prior.ts)/86400000,modern=(year(g.date)||0)>=2000&&(year(prior.date)||0)>=2000,maxGap=modern?7:3;if(days>0&&days<=maxGap){nearDuplicatesRemoved++;continue}}lastBySignature.set(signature,g);unique.push(g)}
             for(const g of unique){const {date,team1,team2,score1,score2}=g,high=Math.max(score1,score2),low=Math.min(score1,score2),k=`${high}-${low}`,yr=year(date);let e=scoreMap.get(k);if(!e){e={winner:high,loser:low,count:0,firstYear:null,recentYear:null,games:[]};scoreMap.set(k,e)}e.count++;if(yr!==null){e.firstYear=e.firstYear===null?yr:Math.min(e.firstYear,yr);e.recentYear=e.recentYear===null?yr:Math.max(e.recentYear,yr)}const tie=score1===score2,winningTeam=tie?team1:(score1>score2?team1:team2),losingTeam=tie?team2:(score1>score2?team2:team1);e.games.push({date,year:yr,winner:winningTeam,loser:losingTeam,winnerScore:high,loserScore:low,tie,team1,team2,score1,score2});maxWinningScore=Math.max(maxWinningScore,high);maxLosingScore=Math.max(maxLosingScore,low)}
             for(const e of scoreMap.values())e.games.sort((a,b)=>stamp(b.date)-stamp(a.date));const scores=[...scoreMap.values()].sort((a,b)=>a.winner-b.winner||a.loser-b.loser),duplicatesRemoved=exactDuplicatesRemoved+nearDuplicatesRemoved+knownCorrectionsRemoved;const payload={summary:{sourceRows,weeklyFinalsAdded,liveFinalsAdded,uniqueGames:unique.length,duplicatesRemoved,exactDuplicatesRemoved,nearDuplicatesRemoved,knownCorrectionsRemoved,conflictingDuplicates,uniqueFinalScores:scores.length,skippedRows},maxWinningScore,maxLosingScore,scores};if(!scores.length||!unique.length)throw new Error('No score data');fs.writeFileSync('scorigami.json',JSON.stringify(payload));console.log(`Source rows: ${sourceRows}; weekly finals merged: ${weeklyFinalsAdded}; live finals merged: ${liveFinalsAdded}; unique games: ${unique.length}; duplicates removed: ${duplicatesRemoved} (${exactDuplicatesRemoved} exact, ${nearDuplicatesRemoved} near-date, ${knownCorrectionsRemoved} known correction); conflicts: ${conflictingDuplicates}`)})().catch(e=>{console.error(e);process.exit(1)});
           NODE
