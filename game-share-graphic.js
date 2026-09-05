@@ -290,14 +290,36 @@
     const leftCenter=format==='x'?330*s:270*s,rightCenter=format==='x'?1270*s:810*s;
     const drawTeam=(name,info,logo,cx,side)=>{
       const color=safeHex(info?.backgroundColor,side==='away'?'#b00000':'#b22200');
-      drawContain(ctx,logo,cx-logoSize/2,top,logoSize,logoSize);
+      const winner=data.final&&(side==='away'?data.actualAway>data.actualHome:data.actualHome>data.actualAway);
+      if(winner){
+        ctx.save();
+        rounded(ctx,cx-213*s,top+logoSize+2*s,426*s,74*s,16*s,null,'#FFFFFF');
+        ctx.lineWidth=4*s;ctx.stroke();
+        rounded(ctx,cx-64*s,top-18*s,128*s,30*s,15*s,'#FFFFFF');
+        ctx.fillStyle='#111';ctx.textAlign='center';ctx.font=`900 ${16*s}px Arial`;ctx.fillText('WINNER',cx,top+3*s);
+        ctx.restore();
+      }
+      drawContain(ctx,logo,cx-logoSize/2,top+(winner?16*s:0),logoSize,logoSize-(winner?16*s:0));
       ctx.fillStyle=color;rounded(ctx,cx-205*s,top+logoSize+10*s,410*s,58*s,12*s,color);
       ctx.fillStyle=safeHex(info?.textColor,'#fff');ctx.textAlign='center';fitText(ctx,name,370*s,31*s,18*s);ctx.fillText(name,cx,top+logoSize+49*s);
       ctx.fillStyle='#aaa';ctx.font=`900 ${17*s}px Arial`;ctx.fillText(teamMeta(info)||'Utah High School Football',cx,top+logoSize+82*s);
     };
     drawTeam(data.away,data.awayInfo,awayLogo,leftCenter,'away');drawTeam(data.home,data.homeInfo,homeLogo,rightCenter,'home');
-    ctx.textAlign='center';ctx.fillStyle='#777';ctx.font=`1000 ${38*s}px Arial`;ctx.fillText(data.final?`${data.actualAway} – ${data.actualHome}`:'AT',width/2,top+logoSize/2+20*s);
-    ctx.fillStyle=data.final?ORANGE:'#aaa';ctx.font=`900 ${16*s}px Arial`;ctx.fillText(data.status,width/2,top+logoSize/2+50*s);
+    ctx.textAlign='center';
+    if(data.final){
+      const scoreY=top+logoSize/2+20*s,offset=67*s;
+      const scores=[data.actualAway,data.actualHome];
+      scores.forEach((score,i)=>{
+        ctx.fillStyle=scores[i]>scores[1-i]?'#FFFFFF':'#AAAAAA';
+        fitText(ctx,String(score),112*s,80*s,44*s);
+        ctx.fillText(String(score),width/2+(i?offset:-offset),scoreY);
+        if(scores[i]>scores[1-i]){ctx.fillStyle=ORANGE;ctx.fillRect(width/2+(i?offset:-offset)-42*s,scoreY+12*s,84*s,5*s)}
+      });
+      ctx.fillStyle='#777';ctx.font=`900 ${32*s}px Arial`;ctx.fillText('–',width/2,scoreY-12*s);
+    }else{
+      ctx.fillStyle='#777';ctx.font=`1000 ${38*s}px Arial`;ctx.fillText('AT',width/2,top+logoSize/2+20*s);
+    }
+    ctx.fillStyle=data.final?ORANGE:'#aaa';ctx.font=`900 ${18*s}px Arial`;ctx.fillText(data.status,width/2,top+logoSize/2+65*s);
 
     const statsY=(format==='story'?610:format==='x'?365:505)*s;
     const gap=20*s,colW=(width-84*s-gap)/2;
