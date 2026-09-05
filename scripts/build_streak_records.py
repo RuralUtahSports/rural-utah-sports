@@ -27,6 +27,16 @@ def date_key(value, fallback_year, index):
     return (int(fallback_year), 1, 1, index)
 
 
+def canonical_date(value):
+    text = str(value or '').strip()
+    for fmt in ('%m/%d/%Y', '%Y-%m-%d'):
+        try:
+            return datetime.strptime(text, fmt).strftime('%Y-%m-%d')
+        except ValueError:
+            pass
+    return text
+
+
 def streak_summary(run):
     if not run:
         return {'length': 0, 'startDate': '', 'endDate': '', 'startOpponent': '', 'endOpponent': ''}
@@ -118,10 +128,11 @@ def main():
                 index+=1
                 events.append({'sort':date_key(game.get('date'),year,index),'date':str(game.get('date','')).strip(),'opponent':str(game.get('opponent','')).strip(),'result':result,'teamScore':whole(game.get('teamScore'))})
         # Current-season finals live in standings-2026.json before they are folded into historical team pages.
-        # Deduplicate in case a 2026 final has already reached both sources.
-        seen={(e['date'],e['opponent'],e['teamScore']) for e in events}
+        # Deduplicate in case a 2026 final has already reached both sources. Normalize dates so
+        # equivalent values such as 9/4/2026 and 09/04/2026 cannot be counted twice.
+        seen={(canonical_date(e['date']),e['opponent'],e['teamScore']) for e in events}
         for event in live.get(name,[]):
-            key=(event['date'],event['opponent'],event['teamScore'])
+            key=(canonical_date(event['date']),event['opponent'],event['teamScore'])
             if key not in seen:
                 events.append(event); seen.add(key)
         events.sort(key=lambda x:x['sort'])
