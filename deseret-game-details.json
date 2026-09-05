@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-05T04:18:29.374Z",
+  "updatedAt": "2026-09-05T05:05:10.415Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -69965,7 +69965,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-09-05T04:17:24.484Z",
+      "fetchedAt": "2026-09-05T05:04:51.315Z",
       "finalRefreshCount": 1,
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked"
@@ -70591,12 +70591,41 @@
     },
     "2026-09-04|ALTAMONT|UMALEHI": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/altamont-football-vs-utah-military-camp-williams-football-football/274401",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Altamont Longhorns (1-2)",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 46
+          },
+          {
+            "team": "Utah Military Camp Williams Marauders (1-2)",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 54
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -70606,9 +70635,10 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-05T04:17:27.987Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-05T04:18:29.291Z"
+      "fetchedAt": "2026-09-05T05:04:52.341Z",
+      "finalRefreshCount": 1,
+      "finalSource": "deseret-day-scoreboard-unlinked",
+      "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|DAVIS|ALTA": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/davis-football-vs-alta-football/273743",
@@ -71780,10 +71810,10 @@
     },
     "2026-09-04|FREMONT|BONNEVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/fremont-football-vs-bonneville-football/273498",
-      "status": "Q4",
-      "final": false,
-      "clock": "4:03",
-      "period": "Q4",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -71799,9 +71829,9 @@
               20,
               14,
               7,
-              0
+              7
             ],
-            "total": 41
+            "total": 48
           },
           {
             "team": "Bonneville Lakers (1-2)",
@@ -71822,12 +71852,13 @@
         "Fremont — ( 9:16 2Q ) Ky Majors , 46-yard pass from Calvin Cooper ( kick from Ben Delbridge )",
         "Fremont — ( 5:53 2Q ) Ky Majors , 42-yard pass from Calvin Cooper ( kick from Ben Delbridge )",
         "Fremont — ( 4:25 3Q ) Calvin Cooper , 1-yard run ( kick from Ben Delbridge )",
-        "Bonneville — ( 4:03 4Q ) Kane Linkous , 20-yard pass from Luke Loughton ( run failed )"
+        "Bonneville — ( 4:03 4Q ) Kane Linkous , 20-yard pass from Luke Loughton ( run failed )",
+        "Fremont — ( 1:07 4Q ) Breckon Phillips , 29-yard pass from Cooper Ortgiesen ( kick from Ben Delbridge )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "BONNEVILLE",
+          "team": "FREMONT",
           "headers": [
             "NO",
             "PLAYER",
@@ -71890,6 +71921,15 @@
           ],
           "rows": [
             [
+              "8",
+              "C . Cooper Ortgiesen",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ],
+            [
               "9",
               ". Calvin Cooper",
               "",
@@ -71943,7 +71983,7 @@
               ". Breckon Phillips",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -71962,7 +72002,7 @@
               "47",
               "B . Ben Delbridge",
               "",
-              "3",
+              "4",
               ""
             ],
             [
@@ -71978,12 +72018,14 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 6,
-        "rows": 9,
-        "coreCells": 18,
+        "rows": 10,
+        "coreCells": 22,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-09-05T04:17:34.544Z",
+      "fetchedAt": "2026-09-05T05:04:53.227Z",
+      "finalRefreshCount": 1,
+      "finalSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|CARBON|CANYONVIEW": {
@@ -72437,10 +72479,10 @@
     },
     "2026-09-04|BOXELDER|NORTHRIDGE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/box-elder-football-vs-northridge-football/273509",
-      "status": "Q4",
-      "final": false,
-      "clock": "7:56",
-      "period": "Q4",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -72574,7 +72616,9 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-09-05T04:17:36.739Z",
+      "fetchedAt": "2026-09-05T05:04:54.334Z",
+      "finalRefreshCount": 1,
+      "finalSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|DIXIE|CEDARCITY": {
@@ -74408,12 +74452,41 @@
     },
     "2026-09-04|LAYTONCHRISTIAN|EAST": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/layton-christian-football-vs-east-football/273447",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "Layton Christian Eagles (3-0)",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 50
+          },
+          {
+            "team": "East Leopards (0-2)",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -74423,9 +74496,10 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-05T04:17:47.809Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-05T04:18:29.292Z"
+      "fetchedAt": "2026-09-05T05:04:54.895Z",
+      "finalRefreshCount": 1,
+      "finalSource": "deseret-day-scoreboard-unlinked",
+      "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|NORTHSEVIER|ENTERPRISE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/north-sevier-football-vs-enterprise-football/273376",
@@ -75329,10 +75403,10 @@
     },
     "2026-09-04|GREENCANYON|STANSBURY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/green-canyon-football-vs-stansbury-football/273706",
-      "status": "Q4",
-      "final": false,
-      "clock": "3:04",
-      "period": "Q4",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -75528,7 +75602,9 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-09-05T04:17:53.501Z",
+      "fetchedAt": "2026-09-05T05:04:55.812Z",
+      "finalRefreshCount": 1,
+      "finalSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|MILFORD|GUNNISONVALLEY": {
@@ -78224,10 +78300,10 @@
     },
     "2026-09-04|OREM|SPRINGVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/orem-football-vs-springville-football/274355",
-      "status": "Q4",
-      "final": false,
-      "clock": "4:27",
-      "period": "Q4",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -78417,7 +78493,9 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-09-05T04:18:04.557Z",
+      "fetchedAt": "2026-09-05T05:04:55.938Z",
+      "finalRefreshCount": 1,
+      "finalSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|SAINTJOSEPH|PANGUITCH": {
@@ -78466,12 +78544,12 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-05T02:34:55.072Z",
-      "finalRefreshCount": 2,
+      "fetchedAt": "2026-09-05T05:04:56.507Z",
+      "finalRefreshCount": 3,
+      "finalSource": "verified-manual",
       "statusSource": "verified-manual",
       "scoreSource": "verified-manual",
-      "manualScoreNote": "User-confirmed final: Saint Joseph 35-6 Panguitch",
-      "finalSource": "verified-manual"
+      "manualScoreNote": "User-confirmed final: Saint Joseph 35-6 Panguitch"
     },
     "2026-09-04|TIMPVIEW|PAYSON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/timpview-football-vs-payson-football/273773",
@@ -78651,10 +78729,10 @@
     },
     "2026-09-04|WESTFIELD|ROY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/west-field-football-football-vs-roy-football/273525",
-      "status": "Q3",
-      "final": false,
-      "clock": "2:42",
-      "period": "Q3",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -78670,9 +78748,9 @@
               0,
               0,
               14,
-              null
+              16
             ],
-            "total": 14
+            "total": 30
           },
           {
             "team": "Roy Royals (1-2)",
@@ -78680,9 +78758,9 @@
               6,
               6,
               7,
-              null
+              6
             ],
-            "total": 19
+            "total": 25
           }
         ]
       },
@@ -78691,7 +78769,10 @@
         "Roy — ( 2:28 2Q ) Luke Pebley , 45-yard pass from Gunner Pearson ( run failed )",
         "West Field — ( 9:01 3Q ) Kolt Abbott , 10-yard pass from Easton Eilertson ( kick failed )",
         "Roy — ( 5:30 3Q ) Gunner Pearson , 2-yard run ( kick from Luke Pebley )",
-        "West Field — ( 2:42 3Q ) 1-yard run ( run successful )"
+        "West Field — ( 2:42 3Q ) 1-yard run ( run successful )",
+        "Roy — ( 9:58 4Q ) Gunner Pearson , 10-yard run ( kick failed )",
+        "West Field — ( 7:09 4Q ) Caden Judy , 1-yard run ( run from Easton Eilertson )",
+        "West Field — ( 2:30 4Q ) Easton Eilertson , 1-yard run ( run from Caden Judy )"
       ],
       "stats": [
         {
@@ -78710,7 +78791,34 @@
               "G . Gunner Pearson",
               "",
               "",
-              "2"
+              "3"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "WEST FIELD",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "C . Caden Judy",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "6",
+              "E . Easton Eilertson",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -78825,13 +78933,15 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 6,
-        "rows": 6,
-        "coreCells": 14,
+        "blocks": 7,
+        "rows": 8,
+        "coreCells": 18,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 5
+        "emptyCoreBlocks": 6
       },
-      "fetchedAt": "2026-09-05T04:18:07.292Z",
+      "fetchedAt": "2026-09-05T05:04:57.842Z",
+      "finalRefreshCount": 1,
+      "finalSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|SUMMITACADEMY|SANJUAN": {
@@ -80066,10 +80176,10 @@
     },
     "2026-09-04|WASATCH|DEERCREEK": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/wasatch-football-vs-deer-creek-football-football/273343",
-      "status": "Q4",
-      "final": false,
-      "clock": "6:55",
-      "period": "Q4",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
       "kickoffTime": "7:00 PM",
       "boxScore": {
         "periods": [
@@ -80085,9 +80195,9 @@
               6,
               8,
               10,
-              8
+              16
             ],
-            "total": 32
+            "total": 40
           },
           {
             "team": "Deer Creek Riverhawks (0-3)",
@@ -80108,7 +80218,8 @@
         "Wasatch — ( 10:59 2Q ) safety",
         "Deer Creek — ( 3:07 3Q ) Brodey Ferguson , 25-yard FG",
         "Wasatch — ( 0:01 3Q ) Grady Coombs , 1-yard run ( run from Everest Moyer )",
-        "Wasatch — ( 6:55 4Q ) Grady Coombs , 36-yard run ( run from Aksel Wheeler )"
+        "Wasatch — ( 6:55 4Q ) Grady Coombs , 36-yard run ( run from Aksel Wheeler )",
+        "Wasatch — ( 3:28 4Q ) Braxton Sandoval , 1-yard run ( run from Braxton Sandoval )"
       ],
       "stats": [
         {
@@ -80134,7 +80245,7 @@
               "B . Braxton Sandoval",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -80255,7 +80366,9 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-09-05T04:18:15.106Z",
+      "fetchedAt": "2026-09-05T05:04:58.854Z",
+      "finalRefreshCount": 1,
+      "finalSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|WHITEHORSE|WATERCANYON": {
@@ -80438,11 +80551,11 @@
       "awayTeam": "CORNER CANYON",
       "homeTeam": "LIBERTY, AZ",
       "deseretUrl": "",
-      "status": "Q3",
-      "final": false,
-      "clock": "7:08",
-      "period": "Q3",
-      "kickoffTime": "7:00 PM",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "8:00 PM",
       "boxScore": {
         "periods": [
           "Q1",
@@ -80469,7 +80582,7 @@
               null,
               null
             ],
-            "total": 21
+            "total": 38
           }
         ],
         "source": "deseret-day-scoreboard-unlinked"
@@ -80479,7 +80592,8 @@
       "kickoffSource": "deseret-day-scoreboard-unlinked",
       "statusSource": "deseret-day-scoreboard-unlinked",
       "kickoffFallbackAt": "2026-09-05T01:28:54.419Z",
-      "scoreSource": "deseret-day-scoreboard-unlinked"
+      "scoreSource": "deseret-day-scoreboard-unlinked",
+      "finalSource": "deseret-day-scoreboard-unlinked"
     },
     "2026-09-04|HAYDENCO|GRAND": {
       "date": "09/04/2026",
@@ -80679,7 +80793,7 @@
       "awayTeam": "SKYRIDGE",
       "homeTeam": "LIBERTY, NV",
       "deseretUrl": "",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
