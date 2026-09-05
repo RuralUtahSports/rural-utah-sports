@@ -44,6 +44,28 @@ if((scorePage||gamePage)&&!window.__RUS_SUPABASE_LIVE_FETCH__){
   };
 }
 
+// The base scoreboard historically treated the 44+ mercy-rule flag as a
+// final-only result. Restore the intended live behavior: a 44+ margin counts
+// during the fourth quarter as well as after the game becomes final.
+const installLiveMercyRuleFix=()=>{
+  if(!scorePage||window.__RUS_LIVE_MERCY_RULE_FIX__)return;
+  if(typeof window.mercyGame!=='function'||typeof window.scoreState!=='function')return;
+  window.__RUS_LIVE_MERCY_RULE_FIX__=true;
+  window.mercyGame=game=>{
+    let state;
+    try{state=window.scoreState(game)}catch{return false}
+    const away=Number(state?.away),home=Number(state?.home);
+    if(state?.away==null||state?.home==null||!Number.isFinite(away)||!Number.isFinite(home)||Math.abs(away-home)<44)return false;
+    if(state?.done)return true;
+    if(!state?.live)return false;
+    let detail=null;
+    try{detail=typeof window.detailFor==='function'?window.detailFor(game):null}catch{}
+    const marker=`${state?.status||''} ${detail?.status||''} ${detail?.period||''} ${detail?.clock||''}`;
+    return /\bQ4\b|4TH|FOURTH|4(?:ST|ND|RD|TH)?\s+QUARTER/i.test(marker);
+  };
+  try{if(typeof window.render==='function')window.render()}catch(error){console.warn('Could not rerender mercy-rule scoreboard state',error)}
+};
+
 const loadScoreboard=()=>{
   if(!scorePage||document.querySelector('script[data-rus-scoreboard-school-assets]'))return;
   const s=document.createElement('script');s.src='school-assets-scoreboard.js?v=20260905-oos-ranks1';s.async=true;s.dataset.rusScoreboardSchoolAssets='1';document.body.appendChild(s);
@@ -68,7 +90,8 @@ const loadOverallRankingsShare=()=>{
   if(!rankingsPage||window.__rusOverallDirectShareBuild==='ios3-overall-featured-top3-logos'||document.querySelector('script[data-rus-rankings-overall-share]'))return;
   const s=document.createElement('script');s.src='rankings-overall-share-direct-v3.js?v=20260820-ios3-overall-featured-top3-logos';s.async=true;s.dataset.rusRankingsOverallShare='1';document.body.appendChild(s);
 };
-const loadExtras=()=>{loadScoreboard();loadScoreboardLiveClock();loadGameVisuals();loadGameLiveStatus();loadRankingsSponsorRemoval();loadOverallRankingsShare()};
+const loadExtras=()=>{installLiveMercyRuleFix();loadScoreboard();loadScoreboardLiveClock();loadGameVisuals();loadGameLiveStatus();loadRankingsSponsorRemoval();loadOverallRankingsShare()};
+installLiveMercyRuleFix();
 if(window.RUSSchoolAssets){loadExtras();return}
 let core=[...document.scripts].find(s=>(s.getAttribute('src')||'').split('?')[0].endsWith('school-assets-core.js'));
 if(!core){
