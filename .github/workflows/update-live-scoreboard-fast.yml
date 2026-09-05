@@ -1,0 +1,84 @@
+name: Fast Live Scoreboard Refresh
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '2,7,12,17,22,27,32,37,42,47,52,57 22-23 * 8-11 4-6'
+    - cron: '2,7,12,17,22,27,32,37,42,47,52,57 0-6 * 8-11 5,6,0'
+    - cron: '2,7,12,17,22,27,32,37,42,47,52,57 16-21 * 8-11 6'
+  push:
+    paths:
+      - 'weekly-simulation.json'
+      - 'out-of-state.json'
+      - 'scripts/build_live_scoreboard_details.mjs'
+      - 'scripts/reconcile-deseret-day-status.mjs'
+      - 'scripts/reconcile-deseret-unlinked-games.mjs'
+      - 'scripts/fill-boxscore-from-scoring-plays.mjs'
+      - 'scripts/repair-live-status-anomalies.mjs'
+      - 'scripts/apply-kickoff-live-fallback.mjs'
+      - 'scripts/apply-manual-scoreboard-corrections.mjs'
+      - 'manual-scoreboard-corrections-2026.json'
+      - '.github/workflows/update-live-scoreboard-fast.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fast-live-scoreboard
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Fast live score and status refresh
+        run: |
+          node scripts/reconcile-deseret-day-status.mjs
+          node scripts/reconcile-deseret-unlinked-games.mjs --self-test
+          node scripts/reconcile-deseret-unlinked-games.mjs
+          node scripts/fill-boxscore-from-scoring-plays.mjs
+          node scripts/repair-live-status-anomalies.mjs
+          node scripts/apply-kickoff-live-fallback.mjs
+          node scripts/apply-manual-scoreboard-corrections.mjs
+          node scripts/build_live_scoreboard_details.mjs
+
+      - name: Publish fast scoreboard refresh
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+
+          publish_once() {
+            git add deseret-game-details.json deseret-live-details-2026.json
+            if git diff --cached --quiet; then
+              echo "Fast live scoreboard is already current."
+              return 0
+            fi
+            git commit -m "Fast-refresh live scoreboard"
+            git pull --rebase origin main
+            git push
+          }
+
+          if publish_once; then
+            exit 0
+          fi
+
+          # If another workflow changed the same JSON while this fast pass was
+          # running, restart from current main and recalculate instead of
+          # leaving the scoreboard stale behind a rebase conflict.
+          git rebase --abort || true
+          git fetch origin main
+          git reset --hard origin/main
+          node scripts/reconcile-deseret-day-status.mjs
+          node scripts/reconcile-deseret-unlinked-games.mjs
+          node scripts/fill-boxscore-from-scoring-plays.mjs
+          node scripts/repair-live-status-anomalies.mjs
+          node scripts/apply-kickoff-live-fallback.mjs
+          node scripts/apply-manual-scoreboard-corrections.mjs
+          node scripts/build_live_scoreboard_details.mjs
+          publish_once
