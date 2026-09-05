@@ -2,22 +2,48 @@ name: Fix scoreboard refresh cache
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'school-assets-bundle.js'
+      - '.github/workflows/fix-scoreboard-refresh-cache.yml'
 
 permissions:
   contents: write
 
+concurrency:
+  group: scoreboard-cache-bust
+  cancel-in-progress: true
+
 jobs:
-  verify:
+  update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify current scoreboard refresh cache key
+      - name: Bust scoreboard bundle cache key
         run: |
           python - <<'PY'
           from pathlib import Path
-          s = Path('scoreboard.html').read_text()
-          expected = 'scoreboard-refresh.js?v=20260904-live-refresh-fix1'
-          if expected not in s:
-              raise SystemExit('current scoreboard refresh cache key missing')
-          print('scoreboard refresh cache key is current')
+          path = Path('scoreboard.html')
+          text = path.read_text()
+          old = 'school-assets-bundle.js?v=20260905-oos-ranks1'
+          new = 'school-assets-bundle.js?v=20260905-live-count1'
+          if new in text:
+              print('scoreboard bundle cache key already current')
+          elif old in text:
+              path.write_text(text.replace(old, new))
+              print('updated scoreboard bundle cache key')
+          else:
+              raise SystemExit('expected scoreboard bundle cache key not found')
           PY
+      - name: Commit cache key when changed
+        run: |
+          if git diff --quiet -- scoreboard.html; then
+            echo "Scoreboard cache key current."
+          else
+            git config user.name "RuralUtahSports"
+            git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+            git add scoreboard.html
+            git commit -m "Bust scoreboard live-count cache"
+            git pull --rebase origin main
+            git push
+          fi
