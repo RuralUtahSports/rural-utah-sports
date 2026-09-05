@@ -44,6 +44,63 @@ if((scorePage||gamePage)&&!window.__RUS_SUPABASE_LIVE_FETCH__){
   };
 }
 
+// Do not infer LIVE merely because a non-final detail happens to contain a
+// non-zero score. Old/stale Deseret records can keep a score while their status
+// is still Scheduled. Only a real live marker (Live, quarter, halftime, OT, or
+// an active clock) is allowed to count as live.
+const detailIsActuallyLive=detail=>{
+  if(!detail||detail.final===true)return false;
+  const status=String(detail.status||'').trim();
+  const period=String(detail.period||'').trim();
+  const clock=String(detail.clock||'').trim();
+  if(/^(?:live|q[1-4]|halftime|half|ot)$/i.test(status))return true;
+  if(/^(?:q?[1-4]|1st|2nd|3rd|4th)$/i.test(period))return true;
+  return !!clock&&!/^(?:scheduled|upcoming|final)$/i.test(status);
+};
+
+const installStrictLiveCounterFix=()=>{
+  if(!scorePage||window.__RUS_STRICT_LIVE_COUNTER_FIX__||typeof window.liveGame!=='function')return;
+  window.__RUS_STRICT_LIVE_COUNTER_FIX__=true;
+  window.liveGame=game=>{
+    let detail=null;
+    try{detail=typeof window.detailFor==='function'?window.detailFor(game):null}catch{}
+    return detailIsActuallyLive(detail);
+  };
+  try{if(typeof window.render==='function')window.render()}catch(error){console.warn('Could not rerender strict live counter state',error)}
+};
+
+// scoreboard-refresh.js installs its authoritative scoreState asynchronously.
+// Once that function is in place, wrap it so stale Scheduled records cannot
+// still paint cards as LIVE just because they contain a score.
+const installStrictScoreStateFix=()=>{
+  if(!scorePage||window.__RUS_STRICT_SCORE_STATE_FIX__)return true;
+  if(typeof window.scoreState!=='function')return false;
+  let source='';
+  try{source=Function.prototype.toString.call(window.scoreState)}catch{}
+  if(!/authoritativeScoreState/.test(source))return false;
+  const priorScoreState=window.scoreState;
+  window.scoreState=game=>{
+    const state=priorScoreState(game);
+    if(!state?.live||state?.done)return state;
+    let detail=null;
+    try{detail=typeof window.detailFor==='function'?window.detailFor(game):null}catch{}
+    if(detailIsActuallyLive(detail))return state;
+    return {...state,done:false,live:false,away:null,home:null,status:'Upcoming',hasDes:false};
+  };
+  window.__RUS_STRICT_SCORE_STATE_FIX__=true;
+  try{if(typeof window.render==='function')window.render()}catch(error){console.warn('Could not rerender strict scoreboard state',error)}
+  return true;
+};
+
+const armStrictScoreStateFix=()=>{
+  if(!scorePage||installStrictScoreStateFix())return;
+  let tries=0;
+  const timer=setInterval(()=>{
+    tries++;
+    if(installStrictScoreStateFix()||tries>=120)clearInterval(timer);
+  },100);
+};
+
 // The base scoreboard historically treated the 44+ mercy-rule flag as a
 // final-only result. Restore the intended live behavior: a 44+ margin counts
 // during the fourth quarter as well as after the game becomes final.
@@ -90,8 +147,8 @@ const loadOverallRankingsShare=()=>{
   if(!rankingsPage||window.__rusOverallDirectShareBuild==='ios3-overall-featured-top3-logos'||document.querySelector('script[data-rus-rankings-overall-share]'))return;
   const s=document.createElement('script');s.src='rankings-overall-share-direct-v3.js?v=20260820-ios3-overall-featured-top3-logos';s.async=true;s.dataset.rusRankingsOverallShare='1';document.body.appendChild(s);
 };
-const loadExtras=()=>{installLiveMercyRuleFix();loadScoreboard();loadScoreboardLiveClock();loadGameVisuals();loadGameLiveStatus();loadRankingsSponsorRemoval();loadOverallRankingsShare()};
-installLiveMercyRuleFix();
+const loadExtras=()=>{installStrictLiveCounterFix();armStrictScoreStateFix();installLiveMercyRuleFix();loadScoreboard();loadScoreboardLiveClock();loadGameVisuals();loadGameLiveStatus();loadRankingsSponsorRemoval();loadOverallRankingsShare()};
+installStrictLiveCounterFix();armStrictScoreStateFix();installLiveMercyRuleFix();
 if(window.RUSSchoolAssets){loadExtras();return}
 let core=[...document.scripts].find(s=>(s.getAttribute('src')||'').split('?')[0].endsWith('school-assets-core.js'));
 if(!core){
