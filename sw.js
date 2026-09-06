@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260831-mvp-share1';
+const CACHE='rus-site-20260906-playoff-domainfix1';
 const CORE=[
   './',
   './index.html',
@@ -29,8 +29,8 @@ const LIVE_DATA=/(weekly-simulation|deseret|live-|record-alerts|standings-2026|r
 const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
-const FRESH_HTML=/\/(?:rankings|scoreboard|game|team|team-page-content|simulators)\.html$/i;
-const FRESH_JS=/(?:pwa|weekly-picks|weekly-picks-enhanced|weekly-picks-backend|weekly-simulation-promo|home-this-week|home-record-alerts|home-game-of-week|home-feature-share|site-share|game-center-upgrade|game-center-color-layout|rankings-sponsor-removal|school-assets-bundle|rus-lines-dashboard|scoreboard-refresh|scoreboard-share-layout|scoreboard-share-layout-core|share-graphic|mvp-race-share|mobile-shell|nav-menu|team-tabs|team-record-tabs-repair|team-player-records|team-stat-records|team-enhancements|team-enhancements-runtime)\.js$/i;
+const FRESH_HTML=/\/(?:rankings|scoreboard|game|team|team-page-content|simulators|playoff-picture)\.html$/i;
+const FRESH_JS=/(?:pwa|weekly-picks|weekly-picks-enhanced|weekly-picks-backend|weekly-simulation-promo|home-this-week|home-record-alerts|home-game-of-week|home-feature-share|site-share|game-center-upgrade|game-center-color-layout|rankings-sponsor-removal|school-assets-bundle|rus-lines-dashboard|scoreboard-refresh|scoreboard-share-layout|scoreboard-share-layout-core|share-graphic|mvp-race-share|mobile-shell|nav-menu|team-tabs|team-record-tabs-repair|team-player-records|team-stat-records|team-enhancements|team-enhancements-runtime|playoff-picture-v2)\.js$/i;
 const CACHE_BUSTERS=new Set(['v','ver','version','t','ts','timestamp','_']);
 const NETWORK_INFLIGHT=new Map();
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>Promise.allSettled(CORE.map(x=>cache.add(x)))).then(()=>self.skipWaiting()))});
@@ -40,4 +40,4 @@ function sharedNetwork(id,factory){if(!NETWORK_INFLIGHT.has(id)){const task=Prom
 async function networkFirst(req,{normalize=false}={}){const cache=await caches.open(CACHE),key=normalize?normalizedLiveKey(req):req,id=`network:${key.url}`;return sharedNetwork(id,async()=>{try{const res=await fetch(req);if(res&&res.ok)await cache.put(key,res.clone());return res}catch(err){const hit=await cache.match(key);if(hit)return hit;throw err}})}
 async function staleWhileRevalidate(req){const cache=await caches.open(CACHE),url=new URL(req.url),key=JSON_DATA.test(url.pathname)?normalizedLiveKey(req):req,hit=await cache.match(key),fresh=sharedNetwork(`swr:${key.url}`,async()=>{const res=await fetch(req);if(res&&res.ok)await cache.put(key,res.clone());return res}).catch(()=>null);return hit||await fresh||Response.error()}
 async function cacheFirst(req){const cache=await caches.open(CACHE),hit=await cache.match(req);if(hit)return hit;return sharedNetwork(`cache:${req.url}`,async()=>{const res=await fetch(req);if(res&&res.ok)await cache.put(req,res.clone());return res})}
-self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);if(url.origin!==location.origin)return;if(LIVE_DATA.test(url.pathname)){event.respondWith(networkFirst(req,{normalize:true}));return}if(FRESH_JS.test(url.pathname)||FRESH_HTML.test(url.pathname)){event.respondWith(networkFirst(req));return}if(req.mode==='navigate'||HTML.test(url.pathname)){event.respondWith(staleWhileRevalidate(req));return}if(IMAGE.test(url.pathname)){event.respondWith(cacheFirst(req));return}event.respondWith(staleWhileRevalidate(req))});
+self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);if(req.mode==='navigate'&&url.hostname==='ruralutahsports.github.io'){const path=url.pathname.replace(/^\/rural-utah-sports(?=\/|$)/,'')||'/';event.respondWith(Promise.resolve(Response.redirect(`https://ruralutahsports.com${path}${url.search}`,302)));return}if(url.origin!==location.origin)return;if(LIVE_DATA.test(url.pathname)){event.respondWith(networkFirst(req,{normalize:true}));return}if(FRESH_JS.test(url.pathname)||FRESH_HTML.test(url.pathname)){event.respondWith(networkFirst(req));return}if(req.mode==='navigate'||HTML.test(url.pathname)){event.respondWith(staleWhileRevalidate(req));return}if(IMAGE.test(url.pathname)){event.respondWith(cacheFirst(req));return}event.respondWith(staleWhileRevalidate(req))});
