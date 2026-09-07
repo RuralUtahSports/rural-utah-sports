@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   if(window.__rusPlayoffPictureShareBuild)return;
-  window.__rusPlayoffPictureShareBuild='20260907-canvas7';
+  window.__rusPlayoffPictureShareBuild='20260907-canvas8';
 
   const root=document.getElementById('featureRoot');
   if(!root)return;
@@ -270,7 +270,7 @@
   async function makeCanvas(format,title,kind){
     const data=blockData(title);
     if(!data?.rows.length)throw new Error('Projected seeds are still loading.');
-    const logosByName=await loadLogoCache();
+    const logosByName=Object.fromEntries(Object.entries(await loadLogoCache()).map(([name,url])=>[norm(name),url]));
     const rows=await Promise.all((kind==='bracket'?data.rows.slice(0,16):data.rows).map(async row=>({...row,logo:await loadImage(logosByName?.[norm(row.team)]||'')})));
     const {canvas,c,w,h}=baseCanvas(format),margin=format==='x'?42:format==='story'?34:30;
     drawHeader(c,w,format,data.cls,kind,margin);
