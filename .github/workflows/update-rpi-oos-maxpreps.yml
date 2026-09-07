@@ -1,0 +1,59 @@
+name: Refresh RPI Out-of-State Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    # MaxPreps records are refreshed several times daily as scores are posted.
+    - cron: '17 */6 * * *'
+  push:
+    paths:
+      - 'scripts/update_rpi_oos_from_maxpreps.mjs'
+      - '.github/workflows/update-rpi-oos-maxpreps.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rpi-oos-maxpreps
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refresh out-of-state records from MaxPreps
+        env:
+          MAXPREPS_SEASON: 26-27
+        run: node scripts/update_rpi_oos_from_maxpreps.mjs
+
+      - name: Verify RPI data
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync('rpi-oos-2026.json', 'utf8'));
+          const teams = Object.keys(data.teams || {});
+          if (!teams.length) throw new Error('No out-of-state teams were written');
+          if (!Number.isFinite(Number(data.summary?.teams))) throw new Error('Refresh summary is missing');
+          console.log(`Verified ${teams.length} out-of-state teams (${data.summary.fetched} MaxPreps pages loaded).`);
+          NODE
+
+      - name: Commit refreshed RPI data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- rpi-oos-2026.json)" ]; then
+            echo "RPI out-of-state data already current."
+            exit 0
+          fi
+          git add rpi-oos-2026.json
+          git commit -m "Auto-refresh RPI out-of-state data from MaxPreps"
+          for attempt in 1 2 3 4; do
+            if git push; then
+              exit 0
+            fi
+            git pull --rebase -X theirs origin main || { git rebase --abort || true; exit 1; }
+            sleep 5
+          done
+          exit 1
