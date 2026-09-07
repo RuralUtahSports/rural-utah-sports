@@ -90,6 +90,8 @@ function extractTables(html) {
   let m;
   while ((m = re.exec(html))) {
     const rows = [];
+    const captionMatch = m[1].match(/<caption\b[^>]*>([\s\S]*?)<\/caption>/i);
+    const caption = captionMatch ? cellText(captionMatch[1]) : '';
     const rowRe = /<tr\b[^>]*>([\s\S]*?)<\/tr>/gi;
     let rm;
     while ((rm = rowRe.exec(m[1]))) {
@@ -101,7 +103,7 @@ function extractTables(html) {
     }
     if (rows.length) {
       const context = htmlText(html.slice(Math.max(0, m.index - 2600), m.index));
-      out.push({ rows, context });
+      out.push({ rows, context, caption });
     }
   }
   return out;
@@ -217,7 +219,7 @@ function extractStats(tables, game, scoringPlays = []) {
     if (!rows.length) continue;
     stats.push({
       category,
-      team: inferTeam(t.context, game, category) || inferTeamFromScoring(rows, scoringPlays, game),
+      team: bestTeamMatch(t.caption, game) || inferTeam(t.context, game, category) || inferTeamFromScoring(rows, scoringPlays, game),
       headers,
       rows
     });
