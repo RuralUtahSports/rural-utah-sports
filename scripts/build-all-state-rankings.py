@@ -12,7 +12,7 @@ record = {}
 for rows in standings.values():
     for x in rows:
         record[x['team']] = x
-all_teams = {x['team']: x for x in teams}
+all_teams = {x['team']: x for x in teams if x.get('classification') != '8P'}
 order = []
 def add(name, why):
     if name in all_teams and name not in order:
