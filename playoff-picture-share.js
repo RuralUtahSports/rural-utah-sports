@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   if(window.__rusPlayoffPictureShareBuild)return;
-  window.__rusPlayoffPictureShareBuild='20260907-canvas6';
+  window.__rusPlayoffPictureShareBuild='20260907-canvas7';
 
   const root=document.getElementById('featureRoot');
   if(!root)return;
@@ -100,7 +100,7 @@
         bg:pillColor(pill,'--bg','#2b2b2b'),
         fg:pillColor(pill,'--fg','#ffffff')
       };
-    }).filter(Boolean).filter(row=>!INELIGIBLE.has(norm(row.team))).slice(0,16);
+    }).filter(Boolean).filter(row=>!INELIGIBLE.has(norm(row.team)));
     return{cls,rows};
   }
   function injectStyle(){
@@ -202,7 +202,7 @@
     const tx=logoX+logoSize+13,right=x+w-16;
     c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#fff';
     fit(c,data.team,Math.max(80,right-tx-76),Math.min(24,h*.33),10,1000);c.fillText(data.team,tx,y+h*.48);
-    c.fillStyle='#888';c.font=`900 ${Math.max(10,Math.min(14,h*.18))}px Arial`;c.fillText('PROJECTED SEED',tx,y+h*.73);
+    c.fillStyle='#888';c.font=`900 ${Math.max(10,Math.min(14,h*.18))}px Arial`;c.fillText(data.seed<=16?'PROJECTED IN':'PROJECTED OUT',tx,y+h*.73);
     c.textAlign='right';c.fillStyle=ORANGE;c.font=`1000 ${Math.max(11,Math.min(16,h*.2))}px Arial`;c.fillText(data.rpi?`RPI ${data.rpi}`:'RPI —',right,y+h*.73);
     c.restore();
   }
@@ -271,12 +271,22 @@
     const data=blockData(title);
     if(!data?.rows.length)throw new Error('Projected seeds are still loading.');
     const logosByName=await loadLogoCache();
-    const rows=await Promise.all(data.rows.map(async row=>({...row,logo:await loadImage(logosByName?.[norm(row.team)]||'')})));
+    const rows=await Promise.all((kind==='bracket'?data.rows.slice(0,16):data.rows).map(async row=>({...row,logo:await loadImage(logosByName?.[norm(row.team)]||'')})));
     const {canvas,c,w,h}=baseCanvas(format),margin=format==='x'?42:format==='story'?34:30;
     drawHeader(c,w,format,data.cls,kind,margin);
     if(kind==='seeds'){
-      const cols=format==='story'?1:2,top=format==='story'?255:220,bottom=format==='story'?66:48,gap=format==='x'?12:11,rowCount=Math.ceil(rows.length/cols),usableW=w-margin*2-gap*(cols-1),cardW=usableW/cols,usableH=h-top-bottom-gap*(rowCount-1),cardH=usableH/rowCount;
-      rows.forEach((row,i)=>{const col=Math.floor(i/rowCount),r=i%rowCount;drawSeedCard(c,row,margin+col*(cardW+gap),top+r*(cardH+gap),cardW,cardH,row.logo)});
+      const cols=format==='story'?1:2,top=format==='story'?285:250,bottom=format==='story'?66:48,gap=format==='x'?12:11,rowCount=Math.ceil(rows.length/cols),cutoffSpace=rows.some(row=>row.seed>16)?30:0,usableW=w-margin*2-gap*(cols-1),cardW=usableW/cols,usableH=h-top-bottom-gap*(rowCount-1)-cutoffSpace,cardH=usableH/rowCount;
+      c.fillStyle=ORANGE;c.textAlign='left';c.font='900 15px Arial';c.fillText('PLAYOFF CUTOFF: TOP 16 ELIGIBLE TEAMS',margin,top-17);
+      rows.forEach((row,i)=>{
+        const col=Math.floor(i/rowCount),r=i%rowCount,x=margin+col*(cardW+gap);
+        const columnRows=rows.slice(col*rowCount,(col+1)*rowCount),cutIndex=columnRows.findIndex(item=>item.seed>16);
+        const y=top+r*(cardH+gap)+(cutIndex>=0&&r>=cutIndex?cutoffSpace:0);
+        if(cutIndex===r){
+          c.strokeStyle=ORANGE;c.lineWidth=2;c.setLineDash([7,5]);c.beginPath();c.moveTo(x,y-10);c.lineTo(x+cardW,y-10);c.stroke();c.setLineDash([]);
+          c.fillStyle=ORANGE;c.textAlign='left';c.font='900 12px Arial';c.fillText(row.seed===17?'PLAYOFF CUTOFF — BELOW: PROJECTED OUT':'PROJECTED OUT',x+4,y-19);
+        }
+        drawSeedCard(c,row,x,y,cardW,cardH,row.logo);
+      });
     }else{
       const first=projectedRounds(rows)[0],rounds=[first];for(let i=1;i<4;i++)rounds.push(Array.from({length:Math.ceil(rounds[i-1].length/2)},()=>({})));const labels=['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP'],cols=4,gap=format==='x'?28:18,top=format==='story'?285:255,bottom=format==='story'?74:48,areaH=h-top-bottom,groupH=format==='story'?100:format==='x'?60:80,roundGap=format==='story'?28:format==='x'?12:18,usableW=w-margin*2-gap*(cols-1),colW=usableW/cols;
       const columns=rounds.map((games,index)=>({x:margin+index*(colW+gap),w:colW,games}));
