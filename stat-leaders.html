@@ -163,7 +163,7 @@ function buildPastMeta(alignment){teamMeta.clear();for(const r of alignment?.reg
 function setupWeekSelect(){
  const select=document.getElementById('leaderWeek');
  select.innerHTML=`<option value="season">Season totals</option>${weeks.map(w=>`<option value="${w.value}">Week ${w.number} — ${esc(w.label)}</option>`).join('')}`;
- const today=weekStart(new Date().toISOString().slice(0,10)),wanted=weeks.find(w=>w.number===requestedWeek),current=weeks.find(w=>w.start===today);timeframe=(wanted||current)?.value||'season';select.value=timeframe;select.disabled=!weeks.length;
+ const wanted=weeks.find(w=>w.number===requestedWeek);timeframe=wanted?.value||'season';select.value=timeframe;select.disabled=!weeks.length;
  select.onchange=()=>{timeframe=select.value;metric='';visibleCount=5;updateScopeCopy();const u=new URL(location.href),wk=activeWeek();if(wk)u.searchParams.set('week',String(wk.number));else u.searchParams.delete('week');history.replaceState(null,'',u);render()};
 }
 async function load(){
