@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   if(window.__rusPlayoffPictureShareBuild)return;
-  window.__rusPlayoffPictureShareBuild='20260907-canvas2';
+  window.__rusPlayoffPictureShareBuild='20260907-canvas5';
 
   const root=document.getElementById('featureRoot');
   if(!root)return;
@@ -273,9 +273,9 @@
       const cols=format==='story'?1:2,top=format==='story'?255:220,bottom=format==='story'?66:48,gap=format==='x'?12:11,rowCount=Math.ceil(rows.length/cols),usableW=w-margin*2-gap*(cols-1),cardW=usableW/cols,usableH=h-top-bottom-gap*(rowCount-1),cardH=usableH/rowCount;
       rows.forEach((row,i)=>{const col=Math.floor(i/rowCount),r=i%rowCount;drawSeedCard(c,row,margin+col*(cardW+gap),top+r*(cardH+gap),cardW,cardH,row.logo)});
     }else{
-      const rounds=projectedRounds(rows),labels=['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP'],cols=4,gap=format==='x'?22:8,top=format==='story'?270:format==='x'?215:215,bottom=format==='story'?74:48,areaH=h-top-bottom,groupH=format==='story'?100:format==='x'?70:86,usableW=w-margin*2-gap*(cols-1),colW=usableW/cols;
+      const rounds=[projectedRounds(rows)[0],[],[],[]],labels=['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP'],cols=4,gap=format==='x'?28:18,top=format==='story'?270:format==='x'?215:215,bottom=format==='story'?74:48,areaH=h-top-bottom,groupH=format==='story'?100:format==='x'?68:86,roundGap=format==='story'?28:format==='x'?12:18,usableW=w-margin*2-gap*(cols-1),colW=usableW/cols;
       const columns=rounds.map((games,index)=>({x:margin+index*(colW+gap),w:colW,games}));
-      const ys=columns.map(column=>{const total=column.games.length*groupH+Math.max(0,column.games.length-1)*(format==='x'?9:10);const start=top+Math.max(0,(areaH-total)/2);return column.games.map((_,i)=>start+i*(groupH+(format==='x'?9:10)))});
+      const ys=columns.map(column=>{const total=column.games.length*groupH+Math.max(0,column.games.length-1)*roundGap;const start=top+Math.max(0,(areaH-total)/2);return column.games.map((_,i)=>start+i*(groupH+roundGap))});
       columns.forEach((column,index)=>{
         c.fillStyle=ORANGE;c.textAlign='center';c.textBaseline='alphabetic';c.font=`1000 ${Math.max(10,Math.min(16,format==='story'?17:14))}px Arial`;
         c.fillText(labels[index],column.x+column.w/2,top-19);
