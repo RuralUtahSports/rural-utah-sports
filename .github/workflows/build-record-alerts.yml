@@ -7,6 +7,7 @@ on:
   workflow_run:
     workflows:
       - "Build Player Single-Game Records"
+      - "Merge Current Player Single-Game Records"
       - "Build Team Stat Single-Game Records"
     types: [completed]
   push:
