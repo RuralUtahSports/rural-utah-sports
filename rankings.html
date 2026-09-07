@@ -33,14 +33,14 @@
 <h2 class="page-title">2026 Football Rankings</h2>
 <p class="subtitle" id="rankingSubtitle">Week 4 State Top 25 and classification rankings are live.</p>
 <div class="meta" id="rankingMeta"><div class="badge"><strong>2026</strong> Week 4</div><div class="badge">State Top 25: Week 4</div><div class="badge">Class Rankings: Week 4</div><div class="badge">RUS Rankings Archive</div></div>
-<div class="top-ranking-actions"><a class="top-ranking-jump" href="#classification-rankings">↓ Jump to Classification Rankings</a><a class="top-ranking-jump" href="#all-state-rankings">↓ All 118 Power Rankings</a></div>
+<div class="top-ranking-actions"><a class="top-ranking-jump" href="#classification-rankings">↓ Jump to Classification Rankings</a><button class="top-ranking-jump" type="button" id="allStateOpen">↓ Open All 118 Power Rankings</button></div>
 <section class="state25" id="state-top-25">
   <div class="state25-head"><h2>RUS State Top 25</h2><p id="state25Description">The statewide poll is editorial and can include any Utah team. Movement is measured against the previous published State Top 25 snapshot.</p></div>
   <div class="state25-controls"><div class="archive-field"><label for="state25Snapshot">State Top 25 Week</label><select id="state25Snapshot"></select></div><div class="archive-help" id="state25ArchiveHelp">Older statewide polls are permanently archived here.</div></div>
   <div class="state25-labels"><div>Rank</div><div>Move</div><div>Team</div><div>Class</div><div>ELO</div><div>Reasoning</div></div>
   <ol class="state25-list" id="state25List"><li class="loading">Loading State Top 25…</li></ol>
 </section>
-<section class="state25" id="all-state-rankings">
+<section class="state25" id="all-state-rankings" hidden>
   <div class="state25-head"><h2>RUS All-State Power Rankings</h2><p>A statewide ranking of all 118 Utah football teams, including 8-player programs. Rankings will consider record, opponent strength, head-to-head results and cross-class performance.</p></div>
   <div class="state25-labels"><div>Rank</div><div></div><div>Team</div><div>Class</div><div>Record</div><div>Reasoning</div></div>
   <ol class="state25-list" id="allStateList"><li class="loading">Loading All-State rankings…</li></ol>
@@ -67,7 +67,7 @@ function renderAllState(data){const list=document.getElementById('allStateList')
 (async()=>{const root=document.getElementById('rankings');try{const stamp=Date.now(),[r,s,c,e]=await Promise.all([fetch('rankings-history-2026.json?v='+stamp),fetch('state-top25-history-2026.json?v='+stamp),fetch('team-colors-exact.json?v='+stamp),fetch('elo-summary.json?v='+stamp)]);if(!r.ok||!s.ok||!c.ok||!e.ok)throw new Error('Ranking data unavailable');rankingArchive=await r.json();state25Archive=await s.json();const colorRows=await c.json();rankingElo=await e.json();for(const x of colorRows)rankingColors[x.team]=x;
 const stateSnaps=state25Archive.snapshots||[],stateSelect=document.getElementById('state25Snapshot');stateSelect.innerHTML=[...stateSnaps].reverse().map(x=>`<option value="${esc(x.key)}">${esc(x.label)}${x.date?' — '+esc(x.date):''}</option>`).join('');const stateLatest=stateSnaps.at(-1);if(stateLatest){stateSelect.value=stateLatest.key;renderState25(stateLatest.key)}stateSelect.addEventListener('change',()=>renderState25(stateSelect.value));
 const snaps=rankingArchive.snapshots||[],select=document.getElementById('rankingSnapshot');select.innerHTML=[...snaps].reverse().map(x=>`<option value="${esc(x.key)}">${esc(x.label)}${x.date?' — '+esc(x.date):''}</option>`).join('');const latest=snaps.at(-1);if(latest){select.value=latest.key;renderSnapshot(latest.key)}select.addEventListener('change',()=>renderSnapshot(select.value));
-const all=await fetch('all-state-rankings-2026.json?v='+stamp);if(all.ok)renderAllState(await all.json());
+const allStateButton=document.getElementById('allStateOpen'),allStateSection=document.getElementById('all-state-rankings');let allStateLoaded=false;allStateButton?.addEventListener('click',async()=>{allStateSection.hidden=false;allStateButton.textContent='↑ Hide All 118 Power Rankings';allStateSection.scrollIntoView({behavior:'smooth',block:'start'});if(allStateLoaded)return;const all=await fetch('all-state-rankings-2026.json?v='+stamp);if(all.ok){renderAllState(await all.json());allStateLoaded=true}else document.getElementById('allStateList').innerHTML='<li class="error">All-State rankings could not be loaded.</li>'});
 }catch(e){console.error(e);root.className='error';root.textContent='Rankings archive could not be loaded.'}})();
 </script>
 <script src="back-to-top.js" defer></script>
