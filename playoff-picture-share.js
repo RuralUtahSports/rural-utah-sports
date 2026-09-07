@@ -5,7 +5,7 @@
 
   const root=document.getElementById('featureRoot');
   if(!root)return;
-  const ORANGE='#F14D07',BG='#0c0c0c',CARD='#161616';
+  const ORANGE='#F14D07',BG='#0c0c0c',CARD='#161616',INELIGIBLE=new Set(['LAYTON CHRISTIAN','GRAND']);
   const PAIRS=[[1,16],[8,9],[4,13],[5,12],[2,15],[7,10],[3,14],[6,11]];
   const norm=v=>String(v??'').trim().toUpperCase().replace(/[.'’]/g,'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();
   const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
@@ -100,7 +100,7 @@
         bg:pillColor(pill,'--bg','#2b2b2b'),
         fg:pillColor(pill,'--fg','#ffffff')
       };
-    }).filter(Boolean).slice(0,16);
+    }).filter(Boolean).filter(row=>!INELIGIBLE.has(norm(row.team))).slice(0,16);
     return{cls,rows};
   }
   function injectStyle(){
