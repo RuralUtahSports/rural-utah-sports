@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   if(window.__rusPlayoffPictureShareBuild)return;
-  window.__rusPlayoffPictureShareBuild='20260907-canvas1';
+  window.__rusPlayoffPictureShareBuild='20260907-canvas2';
 
   const root=document.getElementById('featureRoot');
   if(!root)return;
@@ -180,12 +180,12 @@
     c.textAlign='left';c.textBaseline='alphabetic';
     c.fillStyle=ORANGE;c.font=`1000 ${brand}px Arial`;c.fillText('RURAL UTAH SPORTS',margin,55);
     c.fillStyle='#fff';
-    const headline=kind==='seeds'?'PROJECTED PLAYOFF SEEDS':'PROJECTED FIRST-ROUND BRACKET';
+    const headline=kind==='seeds'?'PROJECTED PLAYOFF SEEDS':'PROJECTED PLAYOFF BRACKET';
     fit(c,headline,w-margin*2,title,28,1000);c.fillText(headline,margin,story?142:x?121:130);
     c.fillStyle='#aaa';c.font=`900 ${sub}px Arial`;
     c.fillText(`${cls.toUpperCase()}  •  IF THE PLAYOFFS STARTED TODAY`,margin,story?184:x?158:166);
     c.fillStyle='#666';c.font=`900 ${story?16:13}px Arial`;
-    c.fillText('PROVISIONAL RUS RPI  •  UNOFFICIAL PROJECTION',margin,story?213:x?184:192);
+    c.fillText(kind==='seeds'?'PROVISIONAL RUS RPI  •  UNOFFICIAL PROJECTION':'PROVISIONAL RUS RPI  •  HIGHER SEED ADVANCES  •  NO PROJECTED SCORES',margin,story?213:x?184:192);
   }
   function drawSeedCard(c,data,x,y,w,h,logo){
     c.save();
@@ -206,26 +206,61 @@
     c.textAlign='right';c.fillStyle=ORANGE;c.font=`1000 ${Math.max(11,Math.min(16,h*.2))}px Arial`;c.fillText(data.rpi?`RPI ${data.rpi}`:'RPI —',right,y+h*.73);
     c.restore();
   }
-  function drawMatchupTeam(c,data,x,y,w,h,logo){
-    const badge=Math.max(19,Math.min(27,h*.42)),logoSize=Math.min(h-8,Math.max(28,Math.min(54,w*.15)));
-    c.fillStyle='#2b2b2b';c.beginPath();c.arc(x+badge,y+h/2,badge/2,0,Math.PI*2);c.fill();
-    c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.font=`1000 ${Math.max(11,badge*.47)}px Arial`;c.fillText(String(data.seed),x+badge,y+h/2+1);
-    const logoX=x+badge+15,logoY=y+(h-logoSize)/2;
-    if(logo)drawContain(c,logo,logoX,logoY,logoSize,logoSize);else{c.fillStyle='rgba(255,255,255,.16)';c.font=`1000 ${Math.min(18,logoSize*.35)}px Arial`;c.fillText(initials(data.team),logoX+logoSize/2,logoY+logoSize/2)}
-    const tx=logoX+logoSize+11;
-    c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#fff';
-    fit(c,data.team,w-(tx-x)-12,Math.min(22,h*.45),9,1000);c.fillText(data.team,tx,y+h*.61);
+  function drawTeamStrip(c,data,x,y,w,h,logo){
+    const bye=!data,bg=bye?'#202020':data.bg,fg=bye?'#777':data.fg;
+    c.fillStyle=bg;c.fillRect(x,y,w,h);
+    if(!bye){
+      const logoSize=Math.min(h-8,Math.max(22,Math.min(38,w*.16))),logoX=x+10,logoY=y+(h-logoSize)/2;
+      if(logo)drawContain(c,logo,logoX,logoY,logoSize,logoSize,.86);
+      const tx=logoX+logoSize+8,badgeW=Math.max(37,Math.min(52,w*.2)),badgeH=Math.max(22,h-10),badgeX=x+w-badgeW-7,badgeY=y+(h-badgeH)/2;
+      c.fillStyle='#d5ad35';roundRect(c,badgeX,badgeY,badgeW,badgeH,5);c.fill();
+      c.fillStyle='#111';c.textAlign='center';c.textBaseline='middle';c.font=`1000 ${Math.max(11,Math.min(16,badgeH*.48))}px Arial`;c.fillText(`#${data.seed}`,badgeX+badgeW/2,badgeY+badgeH/2+1);
+      c.fillStyle=fg;c.textAlign='left';c.textBaseline='middle';
+      fit(c,data.team,Math.max(64,badgeX-tx-8),Math.min(22,h*.42),9,1000);c.fillText(data.team,tx,y+h/2+1);
+    }else{
+      c.fillStyle=fg;c.textAlign='left';c.textBaseline='middle';c.font=`900 ${Math.max(11,Math.min(16,h*.4))}px Arial`;c.fillText('BYE',x+12,y+h/2+1);
+    }
   }
-  function drawBracketCard(c,a,b,x,y,w,h,index,logos){
-    c.save();c.fillStyle=CARD;roundRect(c,x,y,w,h,12);c.fill();c.strokeStyle='rgba(255,255,255,.15)';c.lineWidth=2;c.stroke();
-    c.fillStyle=ORANGE;c.fillRect(x,y,7,h);
-    c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#888';c.font=`1000 ${Math.max(11,Math.min(15,h*.09))}px Arial`;c.fillText(`GAME ${index+1}  •  PROJECTED FIRST ROUND`,x+22,y+25);
-    const top=y+35,rowH=Math.max(42,(h-47)/2);
-    drawMatchupTeam(c,a,x+22,top,w-44,rowH,logos.get(a.seed));
-    c.strokeStyle='rgba(255,255,255,.12)';c.lineWidth=1;c.beginPath();c.moveTo(x+22,top+rowH);c.lineTo(x+w-22,top+rowH);c.stroke();
-    if(b)drawMatchupTeam(c,b,x+22,top+rowH,w-44,rowH,logos.get(b.seed));
-    else{c.fillStyle='#777';c.font=`900 ${Math.max(12,Math.min(17,h*.11))}px Arial`;c.fillText('BYE',x+22,top+rowH+rowH*.62)}
+  function drawBracketMatch(c,a,b,x,y,w,h,logos){
+    const rowH=(h-1)/2;
+    c.save();roundRect(c,x,y,w,h,7);c.clip();
+    drawTeamStrip(c,a,x,y,w,rowH,logos.get(a?.seed));
+    drawTeamStrip(c,b,x,y+rowH+1,w,rowH,logos.get(b?.seed));
     c.restore();
+    c.strokeStyle='rgba(255,255,255,.18)';c.lineWidth=1;roundRect(c,x,y,w,h,7);c.stroke();
+  }
+  function projectedWinner(a,b){
+    if(!a)return null;
+    if(!b)return a;
+    return a.seed<=b.seed?a:b;
+  }
+  function projectedRounds(rows){
+    const bySeed=new Map(rows.map(row=>[row.seed,row]));
+    const first=PAIRS.map(([a,b])=>({a:bySeed.get(a),b:bySeed.get(b)})).filter(game=>game.a);
+    const next=games=>{
+      const out=[];
+      for(let i=0;i<games.length;i+=2){
+        const a=projectedWinner(games[i]?.a,games[i]?.b),b=projectedWinner(games[i+1]?.a,games[i+1]?.b);
+        if(a)out.push({a,b});
+      }
+      return out;
+    };
+    const quarter=next(first),semi=next(quarter),final=next(semi);
+    return[first,quarter,semi,final];
+  }
+  function drawBracketConnectors(c,left,right,ysLeft,ysRight,groupH){
+    if(!ysLeft.length||!ysRight.length)return;
+    const mid=left.x+left.w+(right.x-left.x-left.w)/2;
+    c.save();c.strokeStyle='rgba(255,255,255,.32)';c.lineWidth=2;c.lineJoin='round';c.lineCap='round';c.beginPath();
+    for(let i=0;i<ysLeft.length;i+=2){
+      const targetTop=ysRight[Math.floor(i/2)];
+      if(targetTop==null)continue;
+      const y1=ysLeft[i]+groupH/2,y2=ysLeft[i+1]==null?y1:ysLeft[i+1]+groupH/2,target=targetTop+groupH/2;
+      c.moveTo(left.x+left.w,y1);c.lineTo(mid,y1);
+      if(y2!==y1){c.moveTo(left.x+left.w,y2);c.lineTo(mid,y2);}
+      c.moveTo(mid,Math.min(y1,y2));c.lineTo(mid,Math.max(y1,y2));c.lineTo(right.x,target);
+    }
+    c.stroke();c.restore();
   }
   async function makeCanvas(format,title,kind){
     const data=blockData(title);
@@ -238,9 +273,16 @@
       const cols=format==='story'?1:2,top=format==='story'?255:220,bottom=format==='story'?66:48,gap=format==='x'?12:11,rowCount=Math.ceil(rows.length/cols),usableW=w-margin*2-gap*(cols-1),cardW=usableW/cols,usableH=h-top-bottom-gap*(rowCount-1),cardH=usableH/rowCount;
       rows.forEach((row,i)=>{const col=Math.floor(i/rowCount),r=i%rowCount;drawSeedCard(c,row,margin+col*(cardW+gap),top+r*(cardH+gap),cardW,cardH,row.logo)});
     }else{
-      const bySeed=new Map(rows.map(row=>[row.seed,row])),matches=PAIRS.map(([a,b])=>[bySeed.get(a),bySeed.get(b)]).filter(([a])=>a),cols=format==='story'?1:format==='x'?4:2,top=format==='story'?255:220,bottom=format==='story'?66:48,gap=format==='x'?12:12,rowCount=Math.ceil(matches.length/cols),usableW=w-margin*2-gap*(cols-1),cardW=usableW/cols,usableH=h-top-bottom-gap*(rowCount-1),cardH=usableH/rowCount;
+      const rounds=projectedRounds(rows),labels=['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP'],cols=4,gap=format==='x'?22:8,top=format==='story'?270:format==='x'?215:215,bottom=format==='story'?74:48,areaH=h-top-bottom,groupH=format==='story'?100:format==='x'?70:86,usableW=w-margin*2-gap*(cols-1),colW=usableW/cols;
+      const columns=rounds.map((games,index)=>({x:margin+index*(colW+gap),w:colW,games}));
+      const ys=columns.map(column=>{const total=column.games.length*groupH+Math.max(0,column.games.length-1)*(format==='x'?9:10);const start=top+Math.max(0,(areaH-total)/2);return column.games.map((_,i)=>start+i*(groupH+(format==='x'?9:10)))});
+      columns.forEach((column,index)=>{
+        c.fillStyle=ORANGE;c.textAlign='center';c.textBaseline='alphabetic';c.font=`1000 ${Math.max(10,Math.min(16,format==='story'?17:14))}px Arial`;
+        c.fillText(labels[index],column.x+column.w/2,top-19);
+      });
+      for(let i=0;i<columns.length-1;i++)drawBracketConnectors(c,columns[i],columns[i+1],ys[i],ys[i+1],groupH);
       const logosBySeed=new Map(rows.map(row=>[row.seed,row.logo]));
-      matches.forEach(([a,b],i)=>{const col=Math.floor(i/rowCount),r=i%rowCount;drawBracketCard(c,a,b,margin+col*(cardW+gap),top+r*(cardH+gap),cardW,cardH,i,logosBySeed)});
+      columns.forEach((column,index)=>column.games.forEach((game,i)=>drawBracketMatch(c,game.a,game.b,column.x,ys[index][i],column.w,groupH,logosBySeed)));
     }
     c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#777';c.font=`900 ${format==='story'?15:12}px Arial`;c.fillText('@ruralutahsports77',margin,h-20);
     return{canvas,cls:data.cls};
@@ -256,7 +298,7 @@
   function preview(canvas,cls,kind,format){
     const label=kind==='seeds'?'Projected Seeds':'Projected Bracket',slug=safeSlug(`${cls}-${kind}`),name=`rus-${slug}-${format}-${Date.now()}.png`,overlay=document.createElement('div');
     overlay.className='rus-playoff-share-preview';
-    overlay.innerHTML=`<div class="rus-playoff-share-preview-card"><h3>${esc(cls)} ${label} graphic is ready</h3><p>Rendered directly in a RUS social format. This projection shows teams and seeds only; the official UHSAA playoff bracket may change.</p><div class="rus-playoff-share-preview-host"></div><div class="rus-playoff-share-preview-actions"><button class="primary share">Share PNG</button><button class="save">Save PNG</button><button class="close">Close</button></div></div>`;
+    overlay.innerHTML=`<div class="rus-playoff-share-preview-card"><h3>${esc(cls)} ${label} graphic is ready</h3><p>Rendered directly in a RUS social format. Later rounds advance the higher seed; no projected scores are shown. The official UHSAA playoff bracket may change.</p><div class="rus-playoff-share-preview-host"></div><div class="rus-playoff-share-preview-actions"><button class="primary share">Share PNG</button><button class="save">Save PNG</button><button class="close">Close</button></div></div>`;
     overlay.querySelector('.rus-playoff-share-preview-host').appendChild(canvas);
     document.body.appendChild(overlay);
     const close=()=>overlay.remove();
