@@ -119,15 +119,22 @@ function matches(game, candidate) {
   return away.has(candidate.awayKey) && home.has(candidate.homeKey);
 }
 
-async function fetchHtml(url) {
+async function fetchHtml(url, attempt = 0) {
   const res = await fetch(url, {
-    headers: {
-      'user-agent': 'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.github.io/)'
-    },
-    redirect: 'follow'
+    headers: { accept: 'text/html,application/xhtml+xml' },
+    redirect: 'follow',
+    signal: AbortSignal.timeout(18000)
   });
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-  return await res.text();
+  if (res.ok) return await res.text();
+  if ((res.status === 403 || res.status === 429) && attempt < 5) {
+    const retryAfter = Number(res.headers.get('retry-after'));
+    const delay = Number.isFinite(retryAfter) && retryAfter > 0
+      ? Math.min(Math.max(retryAfter * 1000, 1000), 30000)
+      : Math.min(30000, 1500 * 2 ** attempt);
+    await new Promise(resolve => setTimeout(resolve, delay));
+    return fetchHtml(url, attempt + 1);
+  }
+  throw new Error(`${res.status} ${res.statusText}`);
 }
 
 async function candidatesForDate(date) {
