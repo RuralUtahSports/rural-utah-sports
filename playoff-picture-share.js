@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   if(window.__rusPlayoffPictureShareBuild)return;
-  window.__rusPlayoffPictureShareBuild='20260907-canvas5';
+  window.__rusPlayoffPictureShareBuild='20260907-canvas6';
 
   const root=document.getElementById('featureRoot');
   if(!root)return;
@@ -185,7 +185,7 @@
     c.fillStyle='#aaa';c.font=`900 ${sub}px Arial`;
     c.fillText(`${cls.toUpperCase()}  •  IF THE PLAYOFFS STARTED TODAY`,margin,story?184:x?158:166);
     c.fillStyle='#666';c.font=`900 ${story?16:13}px Arial`;
-    c.fillText(kind==='seeds'?'PROVISIONAL RUS RPI  •  UNOFFICIAL PROJECTION':'PROVISIONAL RUS RPI  •  HIGHER SEED ADVANCES  •  NO PROJECTED SCORES',margin,story?213:x?184:192);
+    c.fillText(kind==='seeds'?'PROVISIONAL RUS RPI  •  UNOFFICIAL PROJECTION':'PROVISIONAL RUS RPI  •  FIRST-ROUND MATCHUPS ONLY',margin,story?213:x?184:192);
   }
   function drawSeedCard(c,data,x,y,w,h,logo){
     c.save();
@@ -223,6 +223,11 @@
   }
   function drawBracketMatch(c,a,b,x,y,w,h,logos){
     const rowH=(h-1)/2;
+    if(!a&&!b){
+      c.fillStyle=CARD;roundRect(c,x,y,w,h,7);c.fill();
+      c.strokeStyle='rgba(255,255,255,.35)';c.lineWidth=1; c.stroke();
+      c.beginPath();c.moveTo(x,y+h/2);c.lineTo(x+w,y+h/2);c.stroke();return;
+    }
     c.save();roundRect(c,x,y,w,h,7);c.clip();
     drawTeamStrip(c,a,x,y,w,rowH,logos.get(a?.seed));
     drawTeamStrip(c,b,x,y+rowH+1,w,rowH,logos.get(b?.seed));
@@ -273,9 +278,10 @@
       const cols=format==='story'?1:2,top=format==='story'?255:220,bottom=format==='story'?66:48,gap=format==='x'?12:11,rowCount=Math.ceil(rows.length/cols),usableW=w-margin*2-gap*(cols-1),cardW=usableW/cols,usableH=h-top-bottom-gap*(rowCount-1),cardH=usableH/rowCount;
       rows.forEach((row,i)=>{const col=Math.floor(i/rowCount),r=i%rowCount;drawSeedCard(c,row,margin+col*(cardW+gap),top+r*(cardH+gap),cardW,cardH,row.logo)});
     }else{
-      const rounds=[projectedRounds(rows)[0],[],[],[]],labels=['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP'],cols=4,gap=format==='x'?28:18,top=format==='story'?270:format==='x'?215:215,bottom=format==='story'?74:48,areaH=h-top-bottom,groupH=format==='story'?100:format==='x'?68:86,roundGap=format==='story'?28:format==='x'?12:18,usableW=w-margin*2-gap*(cols-1),colW=usableW/cols;
+      const first=projectedRounds(rows)[0],rounds=[first];for(let i=1;i<4;i++)rounds.push(Array.from({length:Math.ceil(rounds[i-1].length/2)},()=>({})));const labels=['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP'],cols=4,gap=format==='x'?28:18,top=format==='story'?285:255,bottom=format==='story'?74:48,areaH=h-top-bottom,groupH=format==='story'?100:format==='x'?60:80,roundGap=format==='story'?28:format==='x'?12:18,usableW=w-margin*2-gap*(cols-1),colW=usableW/cols;
       const columns=rounds.map((games,index)=>({x:margin+index*(colW+gap),w:colW,games}));
-      const ys=columns.map(column=>{const total=column.games.length*groupH+Math.max(0,column.games.length-1)*roundGap;const start=top+Math.max(0,(areaH-total)/2);return column.games.map((_,i)=>start+i*(groupH+roundGap))});
+      const total=first.length*groupH+Math.max(0,first.length-1)*roundGap,start=top+Math.max(0,(areaH-total)/2),ys=[first.map((_,i)=>start+i*(groupH+roundGap))];
+      for(let r=1;r<4;r++)ys.push(columns[r].games.map((_,i)=>(ys[r-1][i*2]+(ys[r-1][i*2+1]??ys[r-1][i*2]))/2));
       columns.forEach((column,index)=>{
         c.fillStyle=ORANGE;c.textAlign='center';c.textBaseline='alphabetic';c.font=`1000 ${Math.max(10,Math.min(16,format==='story'?17:14))}px Arial`;
         c.fillText(labels[index],column.x+column.w/2,top-19);
@@ -298,7 +304,7 @@
   function preview(canvas,cls,kind,format){
     const label=kind==='seeds'?'Projected Seeds':'Projected Bracket',slug=safeSlug(`${cls}-${kind}`),name=`rus-${slug}-${format}-${Date.now()}.png`,overlay=document.createElement('div');
     overlay.className='rus-playoff-share-preview';
-    overlay.innerHTML=`<div class="rus-playoff-share-preview-card"><h3>${esc(cls)} ${label} graphic is ready</h3><p>Rendered directly in a RUS social format. Later rounds advance the higher seed; no projected scores are shown. The official UHSAA playoff bracket may change.</p><div class="rus-playoff-share-preview-host"></div><div class="rus-playoff-share-preview-actions"><button class="primary share">Share PNG</button><button class="save">Save PNG</button><button class="close">Close</button></div></div>`;
+    overlay.innerHTML=`<div class="rus-playoff-share-preview-card"><h3>${esc(cls)} ${label} graphic is ready</h3><p>Rendered directly in a RUS social format. Later-round boxes are left empty until matchups are known. The official UHSAA playoff bracket may change.</p><div class="rus-playoff-share-preview-host"></div><div class="rus-playoff-share-preview-actions"><button class="primary share">Share PNG</button><button class="save">Save PNG</button><button class="close">Close</button></div></div>`;
     overlay.querySelector('.rus-playoff-share-preview-host').appendChild(canvas);
     document.body.appendChild(overlay);
     const close=()=>overlay.remove();
