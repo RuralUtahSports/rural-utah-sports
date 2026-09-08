@@ -68,13 +68,31 @@
   function safeFilename(value){return String(value||'game').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 
 
+  function boxTeamMatches(row,name){
+    const label=canon(String(row?.team||'').replace(/\s*\([^)]*\).*$/, ''));
+    return label===canon(name)||label.startsWith(canon(name)+' ');
+  }
+  function overtimeStatus(detail){
+    const text=[detail?.status,detail?.period,...(detail?.boxScore?.periods||[]),...(detail?.scoringPlays||[]).map(p=>typeof p==='string'?p:p?.text||p?.description||'')].join(' ');
+    const match=text.match(/\b(\d+)\s*OT\b/i);
+    return match?`${match[1]} OT`:/\bOT\b|overtime/i.test(text)?'OT':'';
+  }
   function finalBox(detail,away,home,totals){
     const box=detail?.boxScore;
     if(!Array.isArray(box?.rows)||box.rows.length!==2)return null;
     let periods=(box.periods?.length?box.periods:['Q1','Q2','Q3','Q4']).map(p=>String(p).toUpperCase());
-    const rows=[away,home].map(name=>box.rows.find(r=>canon(r.team)===canon(name)));
+    const rows=[away,home].map(name=>box.rows.find(r=>boxTeamMatches(r,name)));
     if(rows.some(r=>!r))return null;
-    const values=rows.map(r=>(r.quarters||[]).map(asNumber));
+    const missingFirst=periods[0]==='Q2';
+    const values=rows.map(r=>{
+      const quarters=(r.quarters||[]).map(asNumber);
+      if(missingFirst){
+        const first=String(r.team||'').match(/\s+(\d+)\s*$/);
+        if(first)quarters.unshift(Number(first[1]));
+      }
+      return quarters;
+    });
+    if(missingFirst)periods.unshift('Q1');
     if(values.some((v,i)=>v.length<4||v.some(n=>n===null||n<0)||v.reduce((a,b)=>a+b,0)!==totals[i]))return null;
     const count=Math.max(...values.map(v=>v.length));
     if(values.some(v=>v.length!==count))return null;
@@ -101,9 +119,9 @@
     if(dataPromise)return dataPromise;
     dataPromise=(async()=>{
       const stamp=Date.now();
-      const files=['weekly-simulation.json','teams-data.json','standings-2026.json','elo-summary.json','school-logo-cache.json','deseret-game-details.json','deseret-rosters-stats-2026.json','oos-graphic-rankings.json'];
+      const files=['weekly-simulation.json','teams-data.json','standings-2026.json','elo-summary.json','school-logo-cache.json','deseret-game-details.json','deseret-rosters-stats-2026.json','oos-graphic-rankings.json',`player-game-stats-${dateParts(requestedDate)?.year||2026}.json`];
       const values=await Promise.all(files.map(file=>fetch(`${file}?v=${stamp}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)));
-      const [weekly,teams,standings,elo,logosRaw,details,seasonStats,oosRanks]=values;
+      const [weekly,teams,standings,elo,logosRaw,details,seasonStats,oosRanks,playerStats]=values;
       const logos=logosRaw||{};
       try{
         const svg=await fetch(`school-logos/rich-user.svg?v=${stamp}`,{cache:'no-store'}).then(r=>r.ok?r.text():'');
@@ -118,7 +136,7 @@
       const detail=details?.games?.[gameKey(date,away,home)]||details?.games?.[gameKey(date,home,away)]||null;
       const detailRows=detail?.boxScore?.rows||[];
       const weeklyAway=asNumber(current?.actualAway),weeklyHome=asNumber(current?.actualHome);
-      const detailAway=asNumber(detailRows[0]?.total),detailHome=asNumber(detailRows[1]?.total);
+      const detailAway=asNumber(detailRows.find(r=>boxTeamMatches(r,away))?.total),detailHome=asNumber(detailRows.find(r=>boxTeamMatches(r,home))?.total);
       const queryAway=q.has('score1')?asNumber(q.get('score1')):null;
       const queryHome=q.has('score2')?asNumber(q.get('score2')):null;
       const weeklyFinal=weeklyAway!==null&&weeklyHome!==null;
@@ -166,14 +184,14 @@
       return{
         away,home,date,year:gameYear,final,live,
         quarterScores:final?finalBox(detail,away,home,[actualAway,actualHome]):null,
-        status:final?'FINAL':live?String(detail?.status||'LIVE').toUpperCase():'UPCOMING',
+        status:final?`FINAL${overtimeStatus(detail)?' - '+overtimeStatus(detail):''}`:live?String(detail?.status||'LIVE').toUpperCase():'UPCOMING',
         actualAway,actualHome,predictedAway,predictedHome,projectedTotal,projectedMargin,line,
         awayChance,homeChance,
         awayInfo,homeInfo,
         awayRecord:recordText(awayStanding),homeRecord:recordText(homeStanding),
         awayLogo:logoFor(away,logos),homeLogo:logoFor(home,logos),
-        awayLeaders:teamStatLeaders(seasonStats,away),
-        homeLeaders:teamStatLeaders(seasonStats,home)
+        awayLeaders:final||live?gameStatLeaders(playerStats,detail,away,home,date):teamStatLeaders(seasonStats,away),
+        homeLeaders:final||live?gameStatLeaders(playerStats,detail,home,away,date):teamStatLeaders(seasonStats,home)
       };
     })().catch(error=>{dataPromise=null;throw error});
     return dataPromise;
@@ -221,6 +239,36 @@
     const match=String(value??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);
     return match?Number(match[0]):null;
   }
+  function gameStatLeaders(payload,detail,team,opponent,date){
+    const entry=Object.entries(payload?.teams||{}).find(([name])=>canon(name)===canon(team))?.[1];
+    const game=(entry?.games||[]).find(g=>isoDate(g.date)===isoDate(date)&&canon(g.opponent)===canon(opponent));
+    const sections=[];
+    for(const player of game?.players||[])for(const line of player.statLines||[]){
+      sections.push({category:line.category,headers:Object.keys(line.values||{}),rows:[{name:player.name,values:line.values}]});
+    }
+    // Use the game feed if the player index has not caught up yet.
+    if(!sections.length)for(const block of detail?.stats||[]){
+      if(canon(block.team)!==canon(team))continue;
+      const headers=block.headers||[],nameIndex=headers.findIndex(h=>/^(PLAYER|NAME)$/.test(norm(h)));
+      if(nameIndex<0)continue;
+      sections.push({category:block.category,headers,rows:(block.rows||[]).map(row=>({name:row[nameIndex],values:Object.fromEntries(headers.map((h,i)=>[h,row[i]]))}))});
+    }
+    const wants=[['PASSING',/passing/i,'pass yds'],['RUSHING',/rushing/i,'rush yds'],['RECEIVING',/receiv/i,'rec yds'],['DEFENSE',/defen|tackle|sack|intercept/i,'tackles']];
+    return wants.map(([label,category,suffix])=>{
+      const rows=sections.filter(s=>category.test(s.category)).flatMap(s=>s.rows);
+      const metrics=label==='DEFENSE'?['TACKLES','SACKS','PASSINT','INTERCEPTIONS']:['YARDS','TD'];
+      for(const metric of metrics){
+        const candidates=rows.map(row=>{const key=Object.keys(row.values||{}).find(k=>compact(k)===metric);return{name:row.name,value:statNumber(row.values?.[key]),values:row.values};}).filter(r=>r.value!==null);
+        if(!candidates.length)continue;
+        candidates.sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name));
+        const best=candidates[0],unit=metric==='YARDS'?suffix:metric==='TD'?'TD':metric.toLowerCase();
+        const td=statNumber(Object.entries(best.values).find(([k])=>compact(k)==='TD')?.[1]);
+        return{label,name:best.name,stat:`${best.value} ${unit}${metric==='YARDS'&&td>0?' • '+td+' TD':''}`};
+      }
+      return{label,name:'Not reported',stat:''};
+    });
+  }
+
   function teamStatLeaders(stats,team){
     const teams=stats?.teams||{};
     const entry=teams[team]||teams[norm(team)]||Object.entries(teams).find(([name])=>canon(name)===canon(team))?.[1];
@@ -278,7 +326,7 @@
       const rowY=y+(72+58*index)*scale;
       ctx.fillStyle='#777';ctx.font=`900 ${12*scale}px Arial`;ctx.fillText(leader.label,x+24*scale,rowY);
       ctx.fillStyle='#fff';fitText(ctx,leader.name,w-190*scale,18*scale,12*scale);ctx.fillText(leader.name,x+24*scale,rowY+23*scale);
-      ctx.fillStyle=color;ctx.font=`900 ${15*scale}px Arial`;ctx.textAlign='right';ctx.fillText(leader.stat||'—',x+w-20*scale,rowY+23*scale);ctx.textAlign='left';
+      ctx.fillStyle=color;ctx.textAlign='right';fitText(ctx,leader.stat||'—',180*scale,15*scale,11*scale);ctx.fillText(leader.stat||'—',x+w-20*scale,rowY+23*scale);ctx.textAlign='left';
       if(index<3){ctx.fillStyle='#242424';ctx.fillRect(x+20*scale,rowY+35*scale,w-40*scale,1)}
     });
   }
@@ -311,8 +359,8 @@
       drawContain(ctx,logo,cx-logoSize/2,top+(winner?16*s:0),logoSize,logoSize-(winner?16*s:0));
       ctx.fillStyle=color;rounded(ctx,cx-205*s,top+logoSize+10*s,410*s,58*s,12*s,color);
       ctx.fillStyle=safeHex(info?.textColor,'#fff');ctx.textAlign='center';fitText(ctx,name,370*s,31*s,18*s);ctx.fillText(name,cx,top+logoSize+49*s);
-      ctx.fillStyle='#aaa';ctx.font=`900 ${17*s}px Arial`;ctx.fillText(info.graphicRanking||teamMeta(info)||'High School Football',cx,top+logoSize+82*s);
-      if(info.graphicRankingSource){ctx.fillStyle='#888';ctx.font=`800 ${12*s}px Arial`;ctx.fillText(info.graphicRankingSource,cx,top+logoSize+101*s);}
+      ctx.fillStyle='#aaa';ctx.font=`900 ${17*s}px Arial`;ctx.fillText(info.graphicRanking||teamMeta(info)||'High School Football',cx,top+logoSize+94*s);
+      if(info.graphicRankingSource){ctx.fillStyle='#888';ctx.font=`800 ${12*s}px Arial`;ctx.fillText(info.graphicRankingSource,cx,top+logoSize+113*s);}
     };
     drawTeam(data.away,data.awayInfo,awayLogo,leftCenter,'away');drawTeam(data.home,data.homeInfo,homeLogo,rightCenter,'home');
     ctx.textAlign='center';
@@ -344,7 +392,7 @@
     ctx.textAlign='right';ctx.fillStyle='#fff';fitText(ctx,data.line,420*s,40*s,22*s);ctx.fillText(data.line,width-58*s,lineY+62*s);
     }
     ctx.fillStyle='#050505';ctx.fillRect(0,height-54*s,width,54*s);ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font=`900 ${14*s}px Arial`;ctx.fillText('ruralutahsports.com',42*s,height-22*s);
-    ctx.textAlign='right';ctx.fillStyle='#777';ctx.fillText('Season leaders from reported Deseret statistics',width-42*s,height-22*s);
+    ctx.textAlign='right';ctx.fillStyle='#777';ctx.fillText(data.final||data.live?'Game leaders • reported game statistics':'Season leaders from reported Deseret statistics',width-42*s,height-22*s);
     return canvas;
   }
   function canvasBlob(canvas){
