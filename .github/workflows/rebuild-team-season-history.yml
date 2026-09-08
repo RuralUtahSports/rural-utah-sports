@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - 'team-page-data/**'
+      - 'team-page-content.html'
       - 'scripts/rebuild_team_season_history.py'
       - '.github/workflows/rebuild-team-season-history.yml'
 
