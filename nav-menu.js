@@ -370,7 +370,7 @@
         false,
       );
       addScript(
-        "player-awards-integration.js?v=20260831-quality-wins1",
+        "player-awards-integration.js?v=20260908-mvp-classification1",
         "rusPlayerAwards",
         false,
       );
