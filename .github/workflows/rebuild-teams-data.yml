@@ -460,6 +460,9 @@ jobs:
           node scripts/schedule-known-corrections.mjs
           node scripts/sanitize-team-schedules.mjs
 
+      - name: Restore every schedule-backed season to team history
+        run: python scripts/rebuild_team_season_history.py
+
       - name: Commit updated data
         run: |
           git config user.name "RuralUtahSports"
