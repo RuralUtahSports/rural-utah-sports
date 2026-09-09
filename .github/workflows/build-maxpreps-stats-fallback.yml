@@ -1,4 +1,5 @@
 name: Build MaxPreps Stats Fallback
+# Defensive fallback refreshes can run independently of the Deseret source refresh.
 
 on:
   workflow_dispatch:
