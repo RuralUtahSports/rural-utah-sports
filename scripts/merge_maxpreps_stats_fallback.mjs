@@ -214,7 +214,10 @@ function selfTest(){
   const team={team:'MOUNTAIN RIDGE',roster:[{playerId:'hunt',number:'11',name:'Jaxon Hunt'}],stats:[{category:'Passing',headers:['TD'],rows:[{playerId:'hunt',number:'11',name:'Jaxon Hunt',values:{TD:'10'}}]}]};
   const result=mergeTeam(team,rows,'fixture');if(result.filledFields!==3||team.stats[0].rows[0].values.TD!=='10'||team.stats[0].rows[0].values.YARDS!=='1049')throw new Error('MaxPreps merge self-test failed');
   const flightLogs={groups:[{name:'Defense',subgroups:[{name:'Defensive Statistics',stats:[{stamp:'2026-08-28T19:00:00',opponentSchoolName:'Kimberly',score:'48-7',result:'W',contestUrl:'fixture',stats:[{name:'INTs',value:'2'},{name:'INTYards',value:'64'},{name:'YardsPerINT',value:'32.0'},{name:'PassesDefensed',value:'1'}]}]},{name:'Touchdowns',stats:[{stamp:'2026-08-28T19:00:00',opponentSchoolName:'Kimberly',score:'48-7',result:'W',contestUrl:'fixture',stats:[{name:'IntReturnedTDNum',value:'1'}]}]}]}]};
-  const flightPayload='6:'+JSON.stringify(['
+  const flightPayload='6:'+JSON.stringify([String.fromCharCode(36),String.fromCharCode(36)+'L1',null,{pageProps:{statsCardProps:{careerGameLogs:flightLogs}}}]);
+  const flightHtml='<script>self.__next_f.push([1,'+JSON.stringify(flightPayload)+'])</script>',game=parsePlayerGameLogs(flightHtml,{playerId:'harvey',number:'5',name:'Synic Harvey'}).find(x=>x.opponent==='Kimberly'),defense=game?.statLines.find(x=>x.category==='Defensive Statistics'),touchdowns=game?.statLines.find(x=>x.category==='Touchdowns');
+  if(defense?.values?.['PASS INT.']!=='2'||defense?.values?.['PASS INT YDS']!=='64'||defense?.values?.PD!=='1'||touchdowns?.values?.['DEFENSE TD']!=='1')throw new Error('MaxPreps streamed defensive-stat self-test failed');
+  console.log('MaxPreps fallback self-test passed.');
 }
 if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
 
