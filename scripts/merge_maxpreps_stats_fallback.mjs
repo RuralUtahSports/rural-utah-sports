@@ -266,7 +266,6 @@ cache.updatedAt=new Date().toISOString();fs.writeFileSync(CACHE,JSON.stringify(c
 gameCache.updatedAt=new Date().toISOString();gameCache.summary={playersQueued:playerTasks.length,playersFetched:gamePlayersFetched,playersFailed:gamePlayersFailed,playerGames:gameRows};fs.writeFileSync(GAME_CACHE,JSON.stringify(gameCache,null,2)+'\n');
 console.log(`MaxPreps fallback: checked ${checked} teams; ${available} pages available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped; ${failures} failures. Game logs: ${gamePlayersFetched}/${playerTasks.length} players fetched, ${gameRows} player-games, ${gamePlayersFailed} failures.`);
 if(checked<Math.max(20,Math.floor(entries.length*.5)))throw new Error(`Too few MaxPreps teams checked: ${checked}/${entries.length}`);
-,'$L1',null,{pageProps:{statsCardProps:{careerGameLogs:flightLogs}}}]);
   const flightHtml='<script>self.__next_f.push([1,'+JSON.stringify(flightPayload)+'])</script>',game=parsePlayerGameLogs(flightHtml,{playerId:'harvey',number:'5',name:'Synic Harvey'}).find(x=>x.opponent==='Kimberly'),defense=game?.statLines.find(x=>x.category==='Defensive Statistics'),touchdowns=game?.statLines.find(x=>x.category==='Touchdowns');
   if(defense?.values?.['PASS INT.']!=='2'||defense?.values?.['PASS INT YDS']!=='64'||defense?.values?.PD!=='1'||touchdowns?.values?.['DEFENSE TD']!=='1')throw new Error('MaxPreps streamed defensive-stat self-test failed');
   console.log('MaxPreps fallback self-test passed.');
