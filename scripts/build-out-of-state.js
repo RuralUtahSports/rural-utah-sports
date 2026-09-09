@@ -52,10 +52,18 @@ function oosInfo(name) {
   if (!m || !stateCodes.has(m[1]) || m[1] === 'UT') return null;
   return {state:m[1], opponent:raw.replace(/,[ ]*[A-Z]{2}$/i, '').trim()};
 }
+function cleanOpponentName(opponent, state) {
+  let value = clean(opponent).replace(/\s+/g, ' ').trim();
+  const code = norm(state);
+  if (!code) return value;
+  const escaped = code.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  value = value.replace(new RegExp(`\\s*(?:\\(${escaped}\\)|,\\s*${escaped})$`, 'i'), '').trim();
+  return value;
+}
 function makeGame(team, year, date, opponent, state, pf, pa) {
   pf = Number(pf); pa = Number(pa);
   return {
-    team:canonical(team), year:Number(year), date:clean(date), opponent:clean(opponent).replace(/\s+/g, ' ').trim(),
+    team:canonical(team), year:Number(year), date:clean(date), opponent:cleanOpponentName(opponent, state),
     state, stateName:stateNames[state] || state, pf, pa, result:pf > pa ? 'W' : pf < pa ? 'L' : 'T', margin:pf - pa
   };
 }
