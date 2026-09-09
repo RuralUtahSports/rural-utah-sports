@@ -58,7 +58,10 @@ const oosOpponentAliases = {
   'HI|KAHUKA':'Kahuku',
   'HI|KAHUKU':'Kahuku',
   'HI|KEALAKEHE':'Kealakehe',
-  'HI|KEALAKEHI':'Kealakehe'
+  'HI|KEALAKEHI':'Kealakehe',
+  'WY|EVANSON':'Evanston',
+  'WY|EVANSTON':'Evanston',
+  'WY|EVANTSON':'Evanston'
 };
 function cleanOpponentName(opponent, state) {
   let value = clean(opponent).replace(/\s+/g, ' ').trim();
