@@ -120,11 +120,53 @@ function selfTest(){
   const guarded=makeRoster('1140'),partial={teams:{MANTI:{games:rows.slice(0,2).map(makeGame)}}},teamData={teams:{MANTI:{team:'MANTI',schedule:rows.map(([date,opponent])=>({date,opponent,teamScore:1,opponentScore:0,result:'W',rusStatus:'Final'}))}}};
   const guardResult=reconcileSeasonStats(guarded,partial,{teamData});
   if(guardResult.skippedTeams!==1||guarded.teams.MANTI.stats[0].rows[0].values.YARDS!=='1140')throw new Error('Incomplete game-log guard self-test failed');
-  const defenseRoster={teams:{LCA:{stats:[]}}},defenseGames={teams:{LCA:{games:[
-    {date:'2026-08-14',opponent:'Hunter',status:'Final',final:true,players:[{playerId:'harvey',name:'Synic Harvey',number:'5',statLines:[{category:'Defense',values:{'Pass Int.':'1'}}]}]},
-    {date:'2026-08-28',opponent:'Kimberly',status:'Final',final:true,players:[{playerId:'harvey',name:'Synic Harvey',number:'5',statLines:[{category:'Tackles',values:{'PASS INT.':'2'}}]}]},
-    {date:'2026-09-04',opponent:'East',status:'Final',final:true,players:[{playerId:'harvey',name:'Synic Harvey',number:'5',statLines:[{category:'Defensive Statistics',values:{INTs:'2'}}]}]}
-  ]}}},defenseResult=reconcileSeasonStats(defenseRoster,defenseGames),defenseValues=defenseRoster.teams.LCA.stats[0].rows[0].values;
+  const defenseRoster={teams:{LCA:{stats:[]}}};
+  const defenseGames={
+    teams:{
+      LCA:{
+        games:[
+          {
+            date:'2026-08-14',
+            opponent:'Hunter',
+            status:'Final',
+            final:true,
+            players:[{
+              playerId:'harvey',
+              name:'Synic Harvey',
+              number:'5',
+              statLines:[{category:'Defense',values:{'Pass Int.':'1'}}]
+            }]
+          },
+          {
+            date:'2026-08-28',
+            opponent:'Kimberly',
+            status:'Final',
+            final:true,
+            players:[{
+              playerId:'harvey',
+              name:'Synic Harvey',
+              number:'5',
+              statLines:[{category:'Tackles',values:{'PASS INT.':'2'}}]
+            }]
+          },
+          {
+            date:'2026-09-04',
+            opponent:'East',
+            status:'Final',
+            final:true,
+            players:[{
+              playerId:'harvey',
+              name:'Synic Harvey',
+              number:'5',
+              statLines:[{category:'Defensive Statistics',values:{INTs:'2'}}]
+            }]
+          }
+        ]
+      }
+    }
+  };
+  const defenseResult=reconcileSeasonStats(defenseRoster,defenseGames);
+  const defenseValues=defenseRoster.teams.LCA.stats[0].rows[0].values;
   if(defenseResult.players!==1||defenseValues['PASS INT.']!=='5')throw new Error('Defensive season reconciliation self-test failed');
   console.log('Season reconciliation self-test passed.');
 }
