@@ -15,6 +15,10 @@ const numeric=value=>{
 const rounded=(value,places=2)=>Number(value.toFixed(places)).toString();
 const isoDate=value=>{const s=clean(value);let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return `${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return `${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;return s};
 const hasScore=value=>value!==null&&value!==undefined&&value!==''&&Number.isFinite(Number(value));
+const categoryKey=v=>{const key=compact(v);return ['DEFENSE','DEFENSESPECIALTEAMS','DEFENSIVESTATISTICS','TACKLES','SACKS','TOUCHDOWNS'].includes(key)?'DEFENSESPECIALTEAMS':key};
+const categoryLabel=v=>categoryKey(v)==='DEFENSESPECIALTEAMS'?'Defense/Special Teams':clean(v);
+const headerKey=(category,header)=>{const key=compact(header);if(categoryKey(category)==='DEFENSESPECIALTEAMS'){if(['PASSINT','INTERCEPTIONS','INTS'].includes(key))return'PASSINT';if(['DEFENSETD','DEFENSIVETD','TD'].includes(key))return'DEFENSETD';if(['RETURNTD','RETURNTDS'].includes(key))return'RETURNTD'}return key};
+const outputHeader={PASSINT:'PASS INT.',DEFENSETD:'DEFENSE TD',RETURNTD:'RETURN TD'};
 const CATEGORY_FIELDS={
   PASSING:['COMP-ATT','YARDS','TD','INT'],
   RUSHING:['CARRIES','YARDS','TD'],
@@ -32,10 +36,10 @@ function addValue(bucket,key,value){
 function aggregatePlayer(player){
   const categories=new Map();
   for(const line of player.lines||[]){
-    const category=compact(line.category),allowed=CATEGORY_FIELDS[category];if(!allowed)continue;
-    const bucket=categories.get(category)||{category:line.category,values:{},found:new Set(),completions:0,attempts:0};
+    const category=categoryKey(line.category),allowed=CATEGORY_FIELDS[category];if(!allowed)continue;
+    const bucket=categories.get(category)||{category:categoryLabel(line.category),values:{},found:new Set(),completions:0,attempts:0};
     for(const [header,value] of Object.entries(line.values||{})){
-      const key=compact(header);
+      const key=headerKey(category,header);
       if(category==='PASSING'&&key==='COMPATT'){
         const match=clean(value).match(/^(\d+)\s*-\s*(\d+)$/);if(match){bucket.completions+=Number(match[1]);bucket.attempts+=Number(match[2]);bucket.found.add('COMPATT')}
       }else if(allowed.includes(key))addValue(bucket,key,value);
@@ -49,7 +53,7 @@ function outputValues(bucket){
   const values={};
   for(const key of bucket.found){
     if(key==='COMPATT')values['COMP-ATT']=`${bucket.completions}-${bucket.attempts}`;
-    else values[key]=rounded(bucket.values[key]||0);
+    else values[outputHeader[key]||key]=rounded(bucket.values[key]||0);
   }
   if(bucket.category&&compact(bucket.category)==='PASSING'&&bucket.found.has('COMPATT')){
     values['COMP%']=bucket.attempts?rounded(bucket.completions/bucket.attempts*100):'0';
@@ -116,6 +120,12 @@ function selfTest(){
   const guarded=makeRoster('1140'),partial={teams:{MANTI:{games:rows.slice(0,2).map(makeGame)}}},teamData={teams:{MANTI:{team:'MANTI',schedule:rows.map(([date,opponent])=>({date,opponent,teamScore:1,opponentScore:0,result:'W',rusStatus:'Final'}))}}};
   const guardResult=reconcileSeasonStats(guarded,partial,{teamData});
   if(guardResult.skippedTeams!==1||guarded.teams.MANTI.stats[0].rows[0].values.YARDS!=='1140')throw new Error('Incomplete game-log guard self-test failed');
+  const defenseRoster={teams:{LCA:{stats:[]}}},defenseGames={teams:{LCA:{games:[
+    {date:'2026-08-14',opponent:'Hunter',status:'Final',final:true,players:[{playerId:'harvey',name:'Synic Harvey',number:'5',statLines:[{category:'Defense',values:{'Pass Int.':'1'}}]}]},
+    {date:'2026-08-28',opponent:'Kimberly',status:'Final',final:true,players:[{playerId:'harvey',name:'Synic Harvey',number:'5',statLines:[{category:'Tackles',values:{'PASS INT.':'2'}}]}]},
+    {date:'2026-09-04',opponent:'East',status:'Final',final:true,players:[{playerId:'harvey',name:'Synic Harvey',number:'5',statLines:[{category:'Defensive Statistics',values:{INTs:'2'}}]}]}
+  ]}}},defenseResult=reconcileSeasonStats(defenseRoster,defenseGames),defenseValues=defenseRoster.teams.LCA.stats[0].rows[0].values;
+  if(defenseResult.players!==1||defenseValues['PASS INT.']!=='5')throw new Error('Defensive season reconciliation self-test failed');
   console.log('Season reconciliation self-test passed.');
 }
 
