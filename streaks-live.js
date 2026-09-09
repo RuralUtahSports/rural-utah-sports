@@ -13,8 +13,8 @@ function baseState(team,x){const w=x?.currentWinStreak||{},l=x?.currentLossStrea
 function applyResult(s,result,date){if(!result||dateNum(date)<=dateNum(s.last))return;if(s.type===result){s.len+=1}else{s.type=result;s.len=1;s.start=date}s.last=date}
 function renderTable(title,rows,map,kind){const body=rows.length?rows.map((x,i)=>`<tr><td class="rank">${i+1}</td><td class="left">${teamPill(x.team,map)}</td><td><strong>${kind==='historic'?x.len:x.type+x.len}</strong></td><td>${fmt(x.start)}</td><td>${fmt(x.last)}</td></tr>`).join(''):`<tr><td colspan="5" class="empty">No ${title.toLowerCase()} of 2+ games right now.</td></tr>`;return `<h2 class="section-title">${title}</h2><div class="table-wrap"><table><thead><tr><th>#</th><th class="left">Team</th><th>${kind==='historic'?'Length':'Streak'}</th><th>Started</th><th>${kind==='historic'?'Ended':'Through'}</th></tr></thead><tbody>${body}</tbody></table></div>`}
 async function run(){
-  const [history,weekly,teams]=await Promise.all([get('streak-records.json'),get('weekly-simulation.json'),get('teams-data.json')]);
-  if(!history||!teams){root.innerHTML='<div class="empty">Streak data could not be loaded.</div>';return}
+  const [history,weekly,teams,allHistory]=await Promise.all([get('streak-records.json'),get('weekly-simulation.json'),get('teams-data.json'),get('streak-history.json')]);
+  if(!history||!teams||!allHistory){root.innerHTML='<div class="empty">Streak data could not be loaded.</div>';return}
   const teamMap=new Map((teams||[]).map(t=>[norm(t.team),t]));
   const states=new Map(Object.entries(history).map(([team,x])=>[norm(team),baseState(team,x)]));
   const games=(weekly?.games||[]).filter(isFinal).sort((a,b)=>dateNum(a.date)-dateNum(b.date));
@@ -22,9 +22,9 @@ async function run(){
   const all=[...states.values()];
   const wins=all.filter(x=>x.type==='W'&&x.len>=2).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)).slice(0,30);
   const losses=all.filter(x=>x.type==='L'&&x.len>=2).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)).slice(0,20);
-  const historicWins=Object.entries(history).map(([team,x])=>({team,len:Number(x?.longestWinStreak?.length||0),start:x?.longestWinStreak?.startDate||'',last:x?.longestWinStreak?.endDate||''})).filter(x=>x.len>0).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)).slice(0,30);
-  const historicLosses=Object.entries(history).map(([team,x])=>({team,len:Number(x?.longestLossStreak?.length||0),start:x?.longestLossStreak?.startDate||'',last:x?.longestLossStreak?.endDate||''})).filter(x=>x.len>0).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)).slice(0,30);
-  root.innerHTML=`<div class="feature-note"><strong>Active means active across seasons.</strong> A streak does not reset just because a new season starts. Completed games newer than the streak database are added live, and the active lists below show streaks of at least two games.</div>${renderTable('Active Winning Streaks',wins,teamMap,'active')}${renderTable('Active Losing Streaks',losses,teamMap,'active')}${renderTable('Longest Winning Streaks in Database',historicWins,teamMap,'historic')}${renderTable('Longest Losing Streaks in Database',historicLosses,teamMap,'historic')}`;
+  const flatten=(field)=>allHistory[field].flatMap((rows,i)=>rows.map(s=>({team:allHistory.teams[i],start:s[0]||'',last:s[1]||'',len:Number(s[2]||0)}))).filter(x=>x.len>=2).sort((a,b)=>b.len-a.len||a.team.localeCompare(b.team)||String(a.start).localeCompare(String(b.start)));
+  const historicWins=flatten('winning'),historicLosses=flatten('losing');
+  root.innerHTML=`<div class="feature-note"><strong>Active means active across seasons.</strong> A streak does not reset just because a new season starts. Completed games newer than the streak database are added live. The historical lists include every recorded winning and losing streak of at least two games, including multiple streaks by the same team.</div>${renderTable('Active Winning Streaks',wins,teamMap,'active')}${renderTable('Active Losing Streaks',losses,teamMap,'active')}${renderTable('All Winning Streaks in Database',historicWins,teamMap,'historic')}${renderTable('All Losing Streaks in Database',historicLosses,teamMap,'historic')}`;
 }
 run().catch(e=>{console.error(e);root.innerHTML='<div class="empty">Streak data could not be loaded.</div>'});
 })();

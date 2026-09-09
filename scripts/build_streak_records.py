@@ -8,6 +8,7 @@ TEAM_DIR = ROOT / 'team-page-data'
 TEAMS_FILE = ROOT / 'teams-data.json'
 CURRENT_FILE = ROOT / 'standings-2026.json'
 STREAK_OUT_FILE = ROOT / 'streak-records.json'
+STREAK_HISTORY_OUT_FILE = ROOT / 'streak-history.json'
 SEASON_OUT_FILE = ROOT / 'season-records.json'
 
 
@@ -51,6 +52,18 @@ def longest(events, target):
             if len(current)>len(best): best=list(current)
         else: current=[]
     return streak_summary(best)
+
+
+def all_streaks(events, target, minimum=2):
+    runs=[]; current=[]
+    for event in events:
+        if event['result']==target:
+            current.append(event)
+        else:
+            if len(current)>=minimum: runs.append(streak_summary(current))
+            current=[]
+    if len(current)>=minimum: runs.append(streak_summary(current))
+    return runs
 
 
 def current(events, target):
@@ -113,7 +126,7 @@ def current_events_by_team():
 def main():
     teams=json.loads(TEAMS_FILE.read_text(encoding='utf-8'))
     live=current_events_by_team()
-    streak_output={}; seasons={}
+    streak_output={}; history_teams=[]; history_wins=[]; history_losses=[]; seasons={}
     for team in teams:
         name=str(team.get('team','')).strip()
         if not name: continue
@@ -136,6 +149,10 @@ def main():
             if event_date not in seen_dates:
                 events.append(event); seen_dates.add(event_date)
         events.sort(key=lambda x:x['sort'])
+        winning=all_streaks(events,'W'); losing=all_streaks(events,'L')
+        history_teams.append(name)
+        history_wins.append([[s['startDate'],s['endDate'],s['length']] for s in winning])
+        history_losses.append([[s['startDate'],s['endDate'],s['length']] for s in losing])
         streak_output[name]={
             'longestWinStreak':longest(events,'W'),'longestLossStreak':longest(events,'L'),
             'currentWinStreak':current(events,'W'),'currentLossStreak':current(events,'L'),
@@ -151,8 +168,10 @@ def main():
             seasons.setdefault(str(year),[]).append({'team':name,'wins':wins,'losses':losses,'ties':ties,'games':games,'pointsFor':pf,'pointsAgainst':pa,'winPct':round(win_pct,6),'avgMargin':round(avg_margin,3)})
     for rows in seasons.values(): rows.sort(key=lambda r:(-r['winPct'],-r['wins'],-r['avgMargin'],r['team']))
     STREAK_OUT_FILE.write_text(json.dumps(streak_output,indent=2,sort_keys=True)+'\n',encoding='utf-8')
+    STREAK_HISTORY_OUT_FILE.write_text(json.dumps({'teams':history_teams,'winning':history_wins,'losing':history_losses},separators=(',',':'))+'\n',encoding='utf-8')
     SEASON_OUT_FILE.write_text(json.dumps({'seasons':seasons},separators=(',',':'))+'\n',encoding='utf-8')
     print(f'Wrote {len(streak_output)} teams to {STREAK_OUT_FILE.name}')
+    print(f'Wrote {sum(map(len,history_wins)) + sum(map(len,history_losses))} historical streaks to {STREAK_HISTORY_OUT_FILE.name}')
     print(f'Wrote {sum(len(v) for v in seasons.values())} team-seasons to {SEASON_OUT_FILE.name}')
 
 
