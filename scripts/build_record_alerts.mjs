@@ -44,7 +44,7 @@ function collectSchoolAlerts(dir,recordType){
       const current=best(rows.filter(r=>Number(r.season)===CURRENT_SEASON));
       const prior=best(rows.filter(r=>Number(r.season)<CURRENT_SEASON));
       if(!current||!prior||num(current.value)<=num(prior.value))continue;
-      alerts.push({...baseAlert(current,doc,cat,recordType),scope:'school',previousValue:num(prior.value)});
+      alerts.push({...baseAlert(current,doc,cat,recordType),scope:'school',previousValue:num(prior.value),previousDate:prior.date||null,previousSeason:prior.season||null});
     }
   }
   return alerts;
@@ -58,7 +58,7 @@ function collectStatewideAlerts(file,recordType){
     const current=best(rows.filter(r=>Number(r.season)===CURRENT_SEASON));
     const prior=best(rows.filter(r=>Number(r.season)<CURRENT_SEASON));
     if(!current||!prior||num(current.value)<=num(prior.value))continue;
-    alerts.push({...baseAlert(current,doc,cat,recordType),scope:'statewide',previousValue:num(prior.value)});
+    alerts.push({...baseAlert(current,doc,cat,recordType),scope:'statewide',previousValue:num(prior.value),previousDate:prior.date||null,previousSeason:prior.season||null});
   }
   return alerts;
 }

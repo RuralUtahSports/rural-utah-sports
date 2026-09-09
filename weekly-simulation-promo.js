@@ -140,7 +140,7 @@
       )
         return;
       const s = document.createElement("script");
-      s.src = "home-record-alerts.js?v=20260826-record-alert6";
+      s.src = "home-record-alerts.js?v=20260909-record-dates";
       s.defer = true;
       s.dataset.rusHomeRecordAlerts = "record-alert6";
       document.body.appendChild(s);
