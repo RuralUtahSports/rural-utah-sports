@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260906-playoff-domainfix1';
+const CACHE='rus-site-20260909-stat-leaders-shareall1';
 const CORE=[
   './',
   './index.html',
@@ -29,7 +29,7 @@ const LIVE_DATA=/(weekly-simulation|deseret|live-|record-alerts|standings-2026|r
 const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
-const FRESH_HTML=/\/(?:rankings|scoreboard|game|team|team-page-content|simulators|playoff-picture)\.html$/i;
+const FRESH_HTML=/\/(?:rankings|scoreboard|game|team|team-page-content|simulators|playoff-picture|stat-leaders)\.html$/i;
 const FRESH_JS=/(?:pwa|weekly-picks|weekly-picks-enhanced|weekly-picks-backend|weekly-simulation-promo|home-this-week|home-record-alerts|home-game-of-week|home-feature-share|site-share|game-center-upgrade|game-center-color-layout|rankings-sponsor-removal|school-assets-bundle|rus-lines-dashboard|scoreboard-refresh|scoreboard-share-layout|scoreboard-share-layout-core|share-graphic|mvp-race-share|mobile-shell|nav-menu|team-tabs|team-record-tabs-repair|team-player-records|team-stat-records|team-enhancements|team-enhancements-runtime|playoff-picture-v2)\.js$/i;
 const CACHE_BUSTERS=new Set(['v','ver','version','t','ts','timestamp','_']);
 const NETWORK_INFLIGHT=new Map();
