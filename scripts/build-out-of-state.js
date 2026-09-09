@@ -52,13 +52,21 @@ function oosInfo(name) {
   if (!m || !stateCodes.has(m[1]) || m[1] === 'UT') return null;
   return {state:m[1], opponent:raw.replace(/,[ ]*[A-Z]{2}$/i, '').trim()};
 }
+const oosOpponentAliases = {
+  'FL|IMG':'IMG Academy',
+  'FL|IMG ACADEMY':'IMG Academy',
+  'HI|KAHUKA':'Kahuku',
+  'HI|KAHUKU':'Kahuku',
+  'HI|KEALAKEHE':'Kealakehe',
+  'HI|KEALAKEHI':'Kealakehe'
+};
 function cleanOpponentName(opponent, state) {
   let value = clean(opponent).replace(/\s+/g, ' ').trim();
   const code = norm(state);
   if (!code) return value;
   const escaped = code.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   value = value.replace(new RegExp(`\\s*(?:\\(${escaped}\\)|,\\s*${escaped})$`, 'i'), '').trim();
-  return value;
+  return oosOpponentAliases[`${code}|${norm(value)}`] || value;
 }
 function makeGame(team, year, date, opponent, state, pf, pa) {
   pf = Number(pf); pa = Number(pa);
