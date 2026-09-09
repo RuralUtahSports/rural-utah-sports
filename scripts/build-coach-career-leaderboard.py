@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the all-time coaching leaderboard from verified coach tenures and team pages."""
+"""Build coach career totals and derive postseason records from RUS brackets."""
 
 from __future__ import annotations
 
@@ -11,13 +11,27 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# The record book occasionally uses a formal name where the verified tenure
-# index uses a nickname (or vice versa).
-PLAYOFF_BASELINE_ALIASES = {
-    "BOBBURNS": "ROBERTBURNS",
-    "JAMESDURRANTJR": "JIMDURRANT",
-    "PRESSUMMERHAYS": "PRESTONLPRESSUMMERHAYS",
-    "UDALLWESTOVER": "UDELLWESTOVER",
+# Bracket files use a few display names that differ from the team keys used by
+# the coaching-history index. Keep the normalization here so every consumer
+# uses the same team-season playoff totals.
+TEAM_ALIASES = {
+    "AMERICANLEADERSHIP": "ALA",
+    "AMERICANLEADERSHIPACADEMY": "ALA",
+    "AMERLEAD": "ALA",
+    "CEDAR": "CEDARCITY",
+    "GUNNISON": "GUNNISONVALLEY",
+    "JUDGE": "JUDGEMEMORIAL",
+    "LAYTONCHRISTIANACADEMY": "LAYTONCHRISTIAN",
+    "MONUMENTVALLEY": "MONUMENTVAL",
+    "PANGUTICH": "PANGUITCH",
+    "SAINTJOSEPH": "SAINTJOSEPH",
+    "STJOSEPH": "SAINTJOSEPH",
+    "SUMMITACAD": "SUMMITACADEMY",
+    "UMACAMPWILLIAMS": "UMALEHI",
+    "UMAHILLFIELD": "UMAHILLFIELD",
+    "UTAHMILITARYACADEMYCAMPWILLIAMS": "UMALEHI",
+    "UTAHMILITARYACADEMYHILLFIELD": "UMAHILLFIELD",
+    "WASATCHACADEMY": "WASATCHACAD",
 }
 
 
@@ -27,6 +41,13 @@ def load(path: Path):
 
 def slug(value: str) -> str:
     return re.sub(r"^-+|-+$", "", re.sub(r"[^a-z0-9]+", "-", value.lower()))
+
+
+def team_key(value: str) -> str:
+    value = str(value or "").strip().upper()
+    value = re.sub(r"^\s*(?:#|NO\.?\s*)\d+\s*", "", value)
+    normalized = re.sub(r"[^A-Z0-9]", "", value)
+    return TEAM_ALIASES.get(normalized, normalized)
 
 
 def coach_key(value: str) -> str:
@@ -46,33 +67,114 @@ def result_totals(games):
     return totals
 
 
+def parse_score(value):
+    """Return a numeric bracket score, or None for forfeits/placeholders."""
+    if isinstance(value, (int, float)):
+        return float(value)
+    text = str(value or "").strip().upper()
+    if text in {"", "F", "—", "-", "CHAMPION", "CO-CHAMP"}:
+        return None
+    try:
+        return float(text)
+    except ValueError:
+        return None
+
+
+def build_playoff_records(rows):
+    """Derive team-season postseason records from the historical brackets."""
+    known_teams = {team_key(row[0]) for row in rows}
+    records = defaultdict(lambda: defaultdict(lambda: {
+        "wins": 0, "losses": 0, "ties": 0, "games": 0
+    }))
+    bracket_years = []
+    parsed_games = 0
+    skipped_entries = 0
+
+    for bracket_path in sorted(ROOT.glob("brackets-*.json")):
+        match = re.search(r"brackets-(\d{4})\.json$", bracket_path.name)
+        if not match:
+            continue
+        year = int(match.group(1))
+        bracket_years.append(year)
+        bracket = load(bracket_path)
+        for rounds in bracket.values():
+            for _, games in rounds or []:
+                for game in games or []:
+                    if not isinstance(game, list) or len(game) < 4:
+                        skipped_entries += 1
+                        continue
+                    team_a, score_a_raw, team_b, score_b_raw = game[:4]
+                    score_a = parse_score(score_a_raw)
+                    score_b = parse_score(score_b_raw)
+                    if score_a is None and score_b is None:
+                        skipped_entries += 1
+                        continue
+
+                    key_a = team_key(team_a)
+                    key_b = team_key(team_b)
+                    if score_a is None:
+                        outcome_a, outcome_b = "losses", "wins"
+                    elif score_b is None:
+                        outcome_a, outcome_b = "wins", "losses"
+                    elif score_a > score_b:
+                        outcome_a, outcome_b = "wins", "losses"
+                    elif score_a < score_b:
+                        outcome_a, outcome_b = "losses", "wins"
+                    else:
+                        outcome_a = outcome_b = "ties"
+
+                    for key, outcome in ((key_a, outcome_a), (key_b, outcome_b)):
+                        if key not in known_teams:
+                            continue
+                        record = records[key][str(year)]
+                        record[outcome] += 1
+                        record["games"] += 1
+                    parsed_games += 1
+
+    normalized = {
+        team: {year: dict(sorted(totals.items())) for year, totals in sorted(seasons.items())}
+        for team, seasons in sorted(records.items())
+    }
+    return {
+        "format": "coach-playoff-records-v1",
+        "source": "Historical RUS state-playoff bracket files",
+        "bracketYears": sorted(set(bracket_years)),
+        "postseasonGames": parsed_games,
+        "skippedBracketEntries": skipped_entries,
+        "teamSeasons": sum(len(seasons) for seasons in normalized.values()),
+        "records": normalized,
+    }
+
+
 def main() -> None:
     index = load(ROOT / "coach-history-index.json")
-    playoff_baseline = load(ROOT / "coach-playoff-baseline.json")
-    playoff_baseline_year = int(playoff_baseline["throughYear"])
-    playoff_baseline_by_key = {
-        PLAYOFF_BASELINE_ALIASES.get(coach_key(name), coach_key(name)): totals
-        for name, totals in playoff_baseline.get("records", {}).items()
-    }
     rows = []
     for shard in index.get("shards", []):
         rows.extend(load(ROOT / shard).get("rows", []))
+    all_schedules = {
+        team_key(team): schedules
+        for team, schedules in load(ROOT / "team-schedules.json").items()
+    }
+    playoff_payload = build_playoff_records(rows)
+    playoff_records = playoff_payload["records"]
+    (ROOT / "coach-playoff-records.json").write_text(
+        json.dumps(playoff_payload, separators=(",", ":"), ensure_ascii=False, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
     coaches = defaultdict(lambda: {
         "name": "", "wins": 0, "losses": 0, "ties": 0,
         "playoffWins": 0, "playoffLosses": 0, "playoffTies": 0,
         "championships": 0, "appearances": 0, "seasons": 0, "schools": set(),
-        "playoffByYear": defaultdict(lambda: {"wins": 0, "losses": 0, "ties": 0}),
     })
 
     for row in rows:
         team, _, _, school, _, _, tenures, *_ = row
         page_path = ROOT / "team-page-data" / f"{slug(team)}.json"
-        if not page_path.exists():
-            continue
-        page = load(page_path)
-        schedules = page.get("schedules", {})
+        page = load(page_path) if page_path.exists() else {}
+        schedules = page.get("schedules") or all_schedules.get(team_key(team), {})
         history = {int(x.get("year")): x for x in page.get("seasonHistory", []) if x.get("year") is not None}
+        playoff_by_year = playoff_records.get(team_key(team), {})
         titles_by_year = defaultdict(list)
         for title in page.get("championshipHistory", []):
             if title.get("year") is not None:
@@ -91,17 +193,16 @@ def main() -> None:
                     coach["wins"] += totals["wins"]
                     coach["losses"] += totals["losses"]
                     coach["ties"] += totals["ties"]
-                    playoff = result_totals(g for g in games if g.get("playoff") is True)
-                    coach["playoffWins"] += playoff["wins"]
-                    coach["playoffLosses"] += playoff["losses"]
-                    coach["playoffTies"] += playoff["ties"]
-                    for result_name in ("wins", "losses", "ties"):
-                        coach["playoffByYear"][year][result_name] += playoff[result_name]
                 elif year in history:
                     season = history[year]
                     coach["wins"] += int(season.get("wins", 0) or 0)
                     coach["losses"] += int(season.get("losses", 0) or 0)
                     coach["ties"] += int(season.get("ties", 0) or 0)
+
+                playoff = playoff_by_year.get(str(year), {})
+                coach["playoffWins"] += int(playoff.get("wins", 0) or 0)
+                coach["playoffLosses"] += int(playoff.get("losses", 0) or 0)
+                coach["playoffTies"] += int(playoff.get("ties", 0) or 0)
 
                 for title in titles_by_year[year]:
                     coach["appearances"] += 1
@@ -109,41 +210,16 @@ def main() -> None:
                         coach["championships"] += 1
 
     output = []
-    baseline_matches = 0
     for key, coach in coaches.items():
-        baseline = playoff_baseline_by_key.get(key)
-        if baseline:
-            # Historical schedule notes are inconsistent, especially before the
-            # modern bracket era. Anchor those years to the published record-book
-            # totals, then add verified playoff games from later seasons.
-            later = {
-                result_name: sum(
-                    totals[result_name]
-                    for year, totals in coach["playoffByYear"].items()
-                    if year > playoff_baseline_year
-                )
-                for result_name in ("wins", "losses", "ties")
-            }
-            coach["playoffWins"] = int(baseline["wins"]) + later["wins"]
-            coach["playoffLosses"] = int(baseline["losses"]) + later["losses"]
-            coach["playoffTies"] = int(baseline.get("ties", 0)) + later["ties"]
-            baseline_matches += 1
         coach["schools"] = sorted(coach["schools"])
-        del coach["playoffByYear"]
         coach["games"] = coach["wins"] + coach["losses"] + coach["ties"]
         output.append(coach)
     output.sort(key=lambda x: (-x["wins"], -x["games"], x["name"]))
 
-    if baseline_matches < 150:
-        raise RuntimeError(
-            f"Only {baseline_matches} published playoff records matched coach tenures; "
-            "refusing to publish a likely name-mapping regression."
-        )
-
     payload = {
         "source": (
-            "Published Utah playoff coaching records through 2024, plus RUS "
-            "verified coach assignments and team-page playoff results since 2025"
+            "RUS historical bracket-derived postseason games joined to verified "
+            "coach assignments"
         ),
         "coaches": output,
     }
@@ -152,7 +228,11 @@ def main() -> None:
         encoding="utf-8",
     )
     print(f"Built {len(output)} coach career rows")
-    print(f"Applied published playoff baselines to {baseline_matches} coaches")
+    print(
+        "Derived "
+        f"{playoff_payload['postseasonGames']} postseason games across "
+        f"{playoff_payload['teamSeasons']} team-seasons"
+    )
 
 
 if __name__ == "__main__":

@@ -41,8 +41,9 @@
   function record(w,l,t){ return `${Number(w||0)}-${Number(l||0)}-${Number(t||0)}`; }
   function pct(w,l,t){ const g=Number(w||0)+Number(l||0)+Number(t||0); return g?(((Number(w||0)+Number(t||0)*.5)/g)*100).toFixed(1)+'%':'—'; }
   function inTenure(year,t){ const y=Number(year); return Number.isFinite(y)&&y>=t.start&&y<=t.end; }
+  function playoffRecord(playoffData,team,year){ return playoffData?.records?.[norm(team)]?.[String(year)] || {wins:0,losses:0,ties:0,games:0}; }
 
-  function coachStats(t,pageData){
+  function coachStats(t,pageData,playoffData,teamName){
     let wins=0,losses=0,ties=0,pw=0,pl=0,pt=0;
     const schedules=pageData?.schedules||{};
     const seasonHistory=Array.isArray(pageData?.seasonHistory)?pageData.seasonHistory:[];
@@ -52,14 +53,13 @@
         for(const g of games){
           const r=clean(g.result).toUpperCase();
           if(r==='W')wins++; else if(r==='L')losses++; else if(r==='T')ties++;
-          if(g.playoff===true){
-            if(r==='W')pw++; else if(r==='L')pl++; else if(r==='T')pt++;
-          }
         }
       }else{
         const s=seasonHistory.find(x=>Number(x.year)===year);
         if(s){wins+=Number(s.wins||0);losses+=Number(s.losses||0);ties+=Number(s.ties||0)}
       }
+      const postseason=playoffRecord(playoffData,teamName,year);
+      pw+=Number(postseason.wins||0); pl+=Number(postseason.losses||0); pt+=Number(postseason.ties||0);
     }
     let appearances=0,titles=0;
     for(const c of Array.isArray(pageData?.championshipHistory)?pageData.championshipHistory:[]){
@@ -71,13 +71,13 @@
     return {wins,losses,ties,pw,pl,pt,appearances,titles};
   }
 
-  function buildSection(team, data, pageData){
+  function buildSection(team, data, pageData, playoffData){
     const tenures = [...(team.tenures || [])].sort((a,b)=>b.end-a.end || b.start-a.start);
     const knownYears = Object.keys(team.seasons || {}).map(Number).filter(Number.isFinite).sort((a,b)=>a-b);
     const first = knownYears[0], last = knownYears.at(-1);
     const current = clean(team.currentCoach || team.seasons?.['2026']?.coach);
     const rows = tenures.map(t => {
-      const s=coachStats(t,pageData);
+      const s=coachStats(t,pageData,playoffData,team.team);
       return `<tr><td>${esc(tenureLabel(t))}</td><td class="rus-coach-name"><a class="rus-coach-link" href="${coachHref(t.coach)}">${esc(t.coach)}</a></td><td>${record(s.wins,s.losses,s.ties)}</td><td>${pct(s.wins,s.losses,s.ties)}</td><td>${record(s.pw,s.pl,s.pt)}</td><td>${s.appearances}</td><td class="rus-coach-title-total">${s.titles}</td></tr>`;
     }).join('');
     const notes = (team.notes || []).map(n=>`<p class="rus-coach-note">${esc(n)}</p>`).join('');
@@ -95,7 +95,7 @@
       </div>
       <div class="rus-coach-wrap"><table><thead><tr><th>Season(s)</th><th>Head Coach</th><th>W-L-T</th><th>Win %</th><th>Playoffs</th><th>Title Games</th><th>Titles</th></tr></thead><tbody>${rows || '<tr><td colspan="7">No verified coaching history is available yet.</td></tr>'}</tbody></table></div>
       ${notes}
-      <p class="rus-coach-coverage">Coach records are calculated from RUS game schedules for the seasons assigned to each coach, with season summaries used only when individual schedule data is unavailable. Playoff record uses verified playoff-marked games, and title totals use the Championship Log. Seasons with an unresolved coach are not credited to anyone. <a class="rus-coach-link" href="coaches.html?team=${encodeURIComponent(team.team)}">Open statewide coaching history →</a></p>`;
+      <p class="rus-coach-coverage">Coach records are calculated from RUS game schedules for the seasons assigned to each coach, with season summaries used only when individual schedule data is unavailable. Playoff records are derived from the historical postseason bracket games for each team and season, and title totals use the Championship Log. Seasons with an unresolved coach are not credited to anyone. <a class="rus-coach-link" href="coaches.html?team=${encodeURIComponent(team.team)}">Open statewide coaching history →</a></p>`;
     return section;
   }
 
@@ -113,19 +113,24 @@
     if (!title) return;
     page.dataset.rusCoachMounting='1';
     try{
-      const index = await fetch(`coach-history-index.json?v=20260827-coaches10`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()});
-      const parts = await Promise.all((index.shards||[]).map(name=>fetch(`${name}?v=20260827-coaches10`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()})));
+      const index = await fetch(`coach-history-index.json?v=20260909-coach-playoffs1`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()});
+      const [parts,playoffResponse] = await Promise.all([
+        Promise.all((index.shards||[]).map(name=>fetch(`${name}?v=20260909-coach-playoffs1`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()}))),
+        fetch('coach-playoff-records.json?v=20260909-coach-playoffs1',{cache:'no-store'})
+      ]);
+      if(!playoffResponse.ok) throw new Error(`Playoff records HTTP ${playoffResponse.status}`);
+      const playoffData = await playoffResponse.json();
       const data = unpackData(index,parts);
       const wanted = currentTeamName() || clean(title.textContent).toUpperCase();
       const team = findTeam(data,wanted) || findTeam(data,title.textContent);
       if (!team) return;
       let pageData={};
       try{
-        const r=await fetch(`team-page-data/${teamSlug(clean(title.textContent))}.json?v=20260827-coaches10`,{cache:'no-store'});
+        const r=await fetch(`team-page-data/${teamSlug(clean(title.textContent))}.json?v=20260909-coach-playoffs1`,{cache:'no-store'});
         if(r.ok) pageData=await r.json();
       }catch(e){console.warn('Coach record data:',e)}
       for(const oldSection of [...page.querySelectorAll('.rus-coach-history')]) oldSection.remove();
-      const section = buildSection(team,data,pageData);
+      const section = buildSection(team,data,pageData,playoffData);
       const headings = [...page.querySelectorAll('h2.section-title')];
       const greatest = headings.find(h => /greatest seasons/i.test(h.textContent));
       if (greatest) greatest.parentNode.insertBefore(section,greatest);
