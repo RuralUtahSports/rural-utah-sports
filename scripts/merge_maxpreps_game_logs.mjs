@@ -59,8 +59,45 @@ function selfTest(){
   const oosOutput={teams:{LOGAN:{team:'LOGAN',games:[]}}},oosCache={teams:{LOGAN:{games:[{date:'2026-08-21',opponent:'Preston',url:'https://example.test/oos',playerId:'pingree',number:'7',name:'Jase Pingree',statLines:[{category:'Receiving',values:{RECEPTIONS:'9',YARDS:'228',TD:'2'}}]}]}}},unscoredSchedule={teams:{LOGAN:{team:'LOGAN',schedule:[{date:'2026-08-21',awayTeam:'LOGAN',homeTeam:'Preston, ID',opponent:'Preston, ID'}]}}},weekly={games:[{date:'8/21/2026',awayTeam:'LOGAN',homeTeam:'PRESTON, ID',actualAway:49,actualHome:20,wl:'W'}]};
   const oosRecovered=mergeMaxPrepsGameLogs(oosOutput,oosCache,unscoredSchedule,weekly),oosGame=oosOutput.teams.LOGAN.games[0];
   if(oosRecovered.gamesAdded!==1||oosGame?.teamScore!==49||oosGame?.opponentScore!==20||oosGame?.players[0]?.statLines[0]?.values?.YARDS!=='228')throw new Error('Out-of-state missing-final recovery self-test failed');
-  const defensiveOutput={teams:{'LAYTON CHRISTIAN':{games:[{date:'2026-08-28',opponent:'KIMBERLY',players:[{playerId:'harvey',number:'5',name:'Synic Harvey',statLines:[{category:'Defense',values:{Tackles:'7','Pass Int.':''}}]}]}]}}},defensiveCache={teams:{'LAYTON CHRISTIAN':{games:[{date:'2026-08-28',opponent:'Kimberly',playerId:'harvey',number:'5',name:'Synic Harvey',statLines:[{category:'Tackles',values:{TACKLES:'6'}},{category:'Defensive Statistics',values:{'PASS INT.':'2','PASS INT YDS':'64'}}]}}]}}};
-  const defensiveResult=mergeMaxPrepsGameLogs(defensiveOutput,defensiveCache),defensivePlayer=defensiveOutput.teams['LAYTON CHRISTIAN'].games[0].players[0],defensiveLine=defensivePlayer.statLines[0];
+  const defensiveOutput={
+    teams:{
+      'LAYTON CHRISTIAN':{
+        games:[{
+          date:'2026-08-28',
+          opponent:'KIMBERLY',
+          players:[{
+            playerId:'harvey',
+            number:'5',
+            name:'Synic Harvey',
+            statLines:[{
+              category:'Defense',
+              values:{Tackles:'7','Pass Int.':''}
+            }]
+          }]
+        }]
+      }
+    }
+  };
+  const defensiveCache={
+    teams:{
+      'LAYTON CHRISTIAN':{
+        games:[{
+          date:'2026-08-28',
+          opponent:'Kimberly',
+          playerId:'harvey',
+          number:'5',
+          name:'Synic Harvey',
+          statLines:[
+            {category:'Tackles',values:{TACKLES:'6'}},
+            {category:'Defensive Statistics',values:{'PASS INT.':'2','PASS INT YDS':'64'}}
+          ]
+        }]
+      }
+    }
+  };
+  const defensiveResult=mergeMaxPrepsGameLogs(defensiveOutput,defensiveCache);
+  const defensivePlayer=defensiveOutput.teams['LAYTON CHRISTIAN'].games[0].players[0];
+  const defensiveLine=defensivePlayer.statLines[0];
   if(defensiveResult.fieldsFilled!==2||defensivePlayer.statLines.length!==1||defensiveLine.values.Tackles!=='7'||defensiveLine.values['Pass Int.']!=='2'||defensiveLine.values['PASS INT YDS']!=='64')throw new Error('MaxPreps defensive merge self-test failed');
   console.log('MaxPreps game-log merge self-test passed.');
 }
