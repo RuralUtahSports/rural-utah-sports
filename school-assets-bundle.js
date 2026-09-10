@@ -152,7 +152,7 @@ installStrictLiveCounterFix();armStrictScoreStateFix();installLiveMercyRuleFix()
 if(window.RUSSchoolAssets){loadExtras();return}
 let core=[...document.scripts].find(s=>(s.getAttribute('src')||'').split('?')[0].endsWith('school-assets-core.js'));
 if(!core){
-  core=document.createElement('script');core.src='school-assets-core.js?v=20260910-oos-1';core.async=true;core.dataset.rusSchoolAssetsCore='1';document.body.appendChild(core);
+  core=document.createElement('script');core.src='school-assets-core.js?v=20260910-oos-2';core.async=true;core.dataset.rusSchoolAssetsCore='1';document.body.appendChild(core);
 }
 core.addEventListener('load',loadExtras,{once:true});
 window.addEventListener('rus:school-assets-ready',loadExtras,{once:true});
