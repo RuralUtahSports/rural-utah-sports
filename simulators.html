@@ -75,8 +75,8 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showTab(b.dataset.tab
 (async()=>{try{const stamp=Date.now(),[s,w,r]=await Promise.all([fetch('simulator-data.json?v='+stamp),fetch('weekly-simulation.json?v='+stamp),fetch('standings-2026.json?v='+stamp)]);if(!s.ok||!w.ok)throw new Error('Simulator data unavailable');simulator=await s.json();weekly=(await w.json()).games||[];if(r.ok)seasonResults=(await r.json()).games||[];renderH2H();renderWeekly();const initialTab=new URLSearchParams(location.search).get('tab')||location.hash.replace('#','');if(initialTab==='weekly'||initialTab==='greatest')showTab(initialTab)}catch(e){console.error(e);document.getElementById('h2hContent').innerHTML='<div class="error">Simulator data could not be loaded.</div>';document.getElementById('weeklyContent').innerHTML='<div class="error">Weekly simulation data could not be loaded.</div>'}})();
 </script>
 <script src="greatest-season-simulator.js"></script>
-<script src="weekly-picks.js?v=20260827-week3fix1"></script>
-<script src="weekly-picks-enhanced.js?v=20260827-week3fix1"></script>
+<script src="weekly-picks.js?v=20260910-sunday-release1"></script>
+<script src="weekly-picks-enhanced.js?v=20260910-sunday-release1"></script>
 <script src="weekly-picks-backend.js?v=20260827-week3fix1"></script>
 <script src="back-to-top.js" defer></script>
 <script src="weekly-simulation-promo.js?v=20260824-boxscroll1" defer></script>

@@ -1,5 +1,5 @@
 (() => {
-  const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20260824-wednesday1';
+  const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20260910-sunday1';
   const LIVE_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-live-details-2026.json';
   const FULL_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
   const WEEKLY_FEED = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/weekly-simulation.json';

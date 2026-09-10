@@ -10,6 +10,8 @@ on:
       - 'team-schedules.json'
       - 'elo-summary.json'
       - 'scripts/normalize-weekly-team-names.mjs'
+      - 'scripts/fill-weekly-projections.mjs'
+      - 'simulators.html'
       - '.github/workflows/build-simulator-data.yml'
 
 permissions:
@@ -27,6 +29,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+
+      - name: Preserve published computer projections
+        run: cp weekly-simulation.json /tmp/rus-previous-weekly.json
 
       # weekly-simulation.json is rebuilt from the sheet each run, so deleted sheet games are removed from the site feed too.
       - name: Build compact simulator data
@@ -165,6 +170,9 @@ jobs:
 
           fs.writeFileSync('weekly-simulation.json',JSON.stringify({games:weekly}));console.log(`Weekly simulation games: ${weekly.length}; normalized team fields: ${normalized}`);
           NODE
+
+      - name: Fill missing projections after Sunday morning release
+        run: node scripts/fill-weekly-projections.mjs /tmp/rus-previous-weekly.json
 
       - name: Validate simulator data before publish
         run: node scripts/audit-football-data.mjs

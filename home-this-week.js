@@ -4,7 +4,7 @@ const norm=v=>String(v??'').trim().toUpperCase();
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const parseDate=v=>{const t=Date.parse(String(v||''));return Number.isFinite(t)?t:0};
 const startDay=v=>{const d=new Date(v);d.setHours(0,0,0,0);return d};
-const footballWeekStart=v=>{const d=startDay(v),day=d.getDay();if(day>=1&&day<=3)d.setDate(d.getDate()+(4-day));else d.setDate(d.getDate()-(day===0?3:day-4));return d.getTime()};
+const footballWeekStart=v=>{const d=startDay(v),day=d.getDay();if(day===0&&Number(new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',hour:'numeric',hourCycle:'h23'}).format(new Date(v)))>=8)d.setDate(d.getDate()+4);else if(day>=1&&day<=3)d.setDate(d.getDate()+(4-day));else d.setDate(d.getDate()-(day===0?3:day-4));return d.getTime()};
 const gameWeekStart=v=>{const d=startDay(v);if(d.getDay()===3)d.setDate(d.getDate()+1);else d.setDate(d.getDate()-((d.getDay()+3)%7));return d.getTime()};
 const safeHex=(v,f)=>/^#[0-9A-F]{3}(?:[0-9A-F]{3})?$/i.test(String(v||'').trim())?String(v).trim():f;
 const CLASS_ORDER=['6A','5A','4A','3A','2A','1A','8P'];

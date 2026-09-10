@@ -209,7 +209,12 @@
     const requested = Number(new URLSearchParams(window.location.search).get('week'));
     if (Number.isInteger(requested) && weekBuckets.some(w => w.number === requested)) return requested;
 
-    const today = startOfLocalDay(Date.now()).getTime();
+    const mountain = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit',
+      weekday: 'short', hour: '2-digit', hourCycle: 'h23'
+    }).formatToParts(new Date()).map(p => [p.type, p.value]));
+    const today = startOfLocalDay(`${mountain.year}-${mountain.month}-${mountain.day}T12:00:00`).getTime()
+      + (mountain.weekday === 'Sun' && Number(mountain.hour) >= 8 ? DAY : 0);
     const current = weekBuckets.find(w => {
       const monday = w.start - (3 * DAY);
       const nextMonday = monday + WEEK;
