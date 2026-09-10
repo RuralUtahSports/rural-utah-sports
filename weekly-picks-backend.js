@@ -17,3 +17,51 @@ if(typeof wpBindPickButtons==='function'){const old=wpBindPickButtons;window.wpB
 window.wpReset=function(){const w=wpCurrentWeek();if(!w||wpReleased(w))return;if(!confirm('Clear your username and all picks for this week?'))return;try{localStorage.removeItem(wpStorageKey(w.key));localStorage.removeItem(wpeUserKey(w.key));localStorage.removeItem(wpeScoreKey(w.key))}catch{}wpRenderBody();wpeBackendQueue()}
 document.addEventListener('change',e=>{if(e.target?.id==='wpWeek')setTimeout(wpeRefreshParticipantCount,0)});
 (function wpeBackendInitialSync(){let tries=0;const timer=setInterval(()=>{tries++;if(typeof wpCurrentWeek==='function'&&wpCurrentWeek()){clearInterval(timer);wpeBackendQueue();wpeRefreshParticipantCount();setInterval(wpeRefreshParticipantCount,60000)}else if(tries>100)clearInterval(timer)},150)})();
+
+// H2H margin calibration: keep genuinely close matchups close, but stop elite-vs-bottom
+// matchups from being compressed into one-score projections. This runs after the main
+// simulator model, so winner probability still comes from the full ELO/SOS/current-season blend.
+(function rusH2HMarginCalibration(){
+  if(typeof calculate!=='function'||typeof clamp!=='function')return;
+  const baseCalculate=calculate;
+  calculate=function(t1,t2){
+    const r=baseCalculate(t1,t2);
+    if(!r)return r;
+
+    const c1=r.current1||null,c2=r.current2||null;
+    const n=v=>Number.isFinite(Number(v))?Number(v):0;
+    const seasonDiff1=c1?n(c1.adjustedDiff):n(r.a?.recent10Diff||r.a?.avgDiff);
+    const seasonDiff2=c2?n(c2.adjustedDiff):n(r.b?.recent10Diff||r.b?.avgDiff);
+    const rawDiff1=c1?n(c1.avgDiff):n(r.a?.avgDiff);
+    const rawDiff2=c2?n(c2.avgDiff):n(r.b?.avgDiff);
+    const elo1=c1?n(c1.elo):n(r.a?.elo)||1500;
+    const elo2=c2?n(c2.elo):n(r.b?.elo)||1500;
+
+    const prob=clamp(n(r.prob1)/100,.01,.99);
+    const probabilityMargin=clamp(Math.log(prob/(1-prob))*13.5,-52,52);
+    const seasonGap=clamp(seasonDiff1-seasonDiff2,-70,70);
+    const rawGap=clamp(rawDiff1-rawDiff2,-80,80);
+    const eloMargin=clamp((elo1-elo2)/12,-42,42);
+
+    // Blend independent measures instead of letting preseason regression flatten the score.
+    let targetMargin=probabilityMargin*.40+seasonGap*.35+rawGap*.15+eloMargin*.10;
+    const evidenceMargin=seasonGap*.55+rawGap*.25+eloMargin*.20;
+
+    // When multiple current-strength signals agree on a large mismatch, require the score
+    // to reflect it. This is deliberately a floor, not an automatic blowout multiplier.
+    if(Math.abs(evidenceMargin)>=16&&Math.sign(evidenceMargin)===Math.sign(targetMargin||evidenceMargin)){
+      targetMargin=Math.sign(evidenceMargin)*Math.max(Math.abs(targetMargin),Math.min(52,Math.abs(evidenceMargin)*.85));
+    }
+    targetMargin=clamp(targetMargin,-55,55);
+
+    const oldTotal=Math.max(24,n(r.p1)+n(r.p2));
+    const total=clamp(Math.max(oldTotal,Math.abs(targetMargin)+14),24,98);
+    r.p1=Math.max(0,Math.round((total+targetMargin)/2));
+    r.p2=Math.max(0,Math.round((total-targetMargin)/2));
+    if(r.p1===1)r.p1=3;
+    if(r.p2===1)r.p2=3;
+    if(r.winner===t1&&r.p1<=r.p2)r.p1=r.p2+3;
+    if(r.winner===t2&&r.p2<=r.p1)r.p2=r.p1+3;
+    return r;
+  };
+})();
