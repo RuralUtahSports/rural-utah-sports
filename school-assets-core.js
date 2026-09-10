@@ -16,6 +16,13 @@ const CUSTOM_LOGOS={
   'LONE PEAK':'school-logos/lone-peak.svg','MAPLE MOUNTAIN':'school-logos/maple-mountain.svg','MILFORD':'school-logos/milford.svg',
   'MILLARD':'school-logos/millard.svg','MORGAN':'school-logos/morgan.svg','OREM':'school-logos/orem.svg','PROVIDENCE HALL':'school-logos/providence-hall.svg',
   'RICH':'school-logos/rich-user.svg','RIDGELINE':'school-logos/ridgeline-card.png?v=20260817-7','SAN JUAN':'school-logos/san-juan.svg',
+  'EASTWOOD':'school-logos/eastwood-tx.jpg?v=20260910-1','EASTWOOD (TX)':'school-logos/eastwood-tx.jpg?v=20260910-1','EASTWOOD TX':'school-logos/eastwood-tx.jpg?v=20260910-1',
+  'NORWOOD':'school-logos/norwood-co.jpg?v=20260910-1','NORWOOD (CO)':'school-logos/norwood-co.jpg?v=20260910-1','NORWOOD CO':'school-logos/norwood-co.jpg?v=20260910-1',
+  'PRESTON':'school-logos/preston-id.jpg?v=20260910-1','PRESTON (ID)':'school-logos/preston-id.jpg?v=20260910-1','PRESTON ID':'school-logos/preston-id.jpg?v=20260910-1',
+  'FAITH LUTHERAN':'school-logos/faith-lutheran-nv.jpg?v=20260910-1','FAITH LUTHERAN (NV)':'school-logos/faith-lutheran-nv.jpg?v=20260910-1','FAITH LUTHERAN NV':'school-logos/faith-lutheran-nv.jpg?v=20260910-1',
+  'MOFFAT COUNTY':'school-logos/moffat-county-co.jpg?v=20260910-1','MOFFAT COUNTY (CO)':'school-logos/moffat-county-co.jpg?v=20260910-1','MOFFAT COUNTY CO':'school-logos/moffat-county-co.jpg?v=20260910-1',
+  'LINCOLN COUNTY':'school-logos/lincoln-county-nv.jpg?v=20260910-1','LINCOLN COUNTY (NV)':'school-logos/lincoln-county-nv.jpg?v=20260910-1','LINCOLN COUNTY NV':'school-logos/lincoln-county-nv.jpg?v=20260910-1',
+  'RANCHO BERNARDO':'school-logos/rancho-bernardo-ca.png?v=20260910-1','RANCHO BERNARDO (CA)':'school-logos/rancho-bernardo-ca.png?v=20260910-1','RANCHO BERNARDO CA':'school-logos/rancho-bernardo-ca.png?v=20260910-1',
   'SOUTH SUMMIT':'school-logos/south-summit.webp?v=20260817-1','VIEWMONT':'school-logos/viewmont.svg'
 };
 const BAD=new Set(['ESCALANTE','USDB','UTAH SCH DEAF']);
