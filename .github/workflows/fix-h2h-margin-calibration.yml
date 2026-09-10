@@ -1,0 +1,66 @@
+name: Fix H2H Simulator Margin Calibration
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-h2h-margin-calibration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Expand extreme mismatches without inflating close games
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('simulators.html')
+          text = path.read_text()
+
+          old = "seasonGap=clamp(margin1-margin2,-60,60),eloMargin=clamp((e1-e2)/18,-30,30),priorMargin=clamp(Number(r.a.recent10Diff||0)-Number(r.b.recent10Diff||0),-50,50),evidenceMargin=seasonGap*.50+eloMargin*.30+priorMargin*.20,baseMargin=probabilityMargin*.40+evidenceMargin*.60,separationBoost=Math.abs(baseMargin)>14?Math.min(16,(Math.abs(baseMargin)-14)*.70):0,targetMargin=clamp(Math.sign(baseMargin||1)*(Math.abs(baseMargin)+separationBoost),-50,50),total=clamp(Math.max(baseTotal,Math.abs(targetMargin)+12),24,94);"
+
+          new = "seasonGap=clamp(margin1-margin2,-60,60),rawPerformanceGap=clamp((c1?.avgDiff??margin1)-(c2?.avgDiff??margin2),-80,80),eloMargin=clamp((e1-e2)/16,-34,34),priorMargin=clamp(Number(r.a.recent10Diff||0)-Number(r.b.recent10Diff||0),-50,50),evidenceMargin=seasonGap*.45+eloMargin*.30+priorMargin*.15+rawPerformanceGap*.10,baseMargin=probabilityMargin*.35+evidenceMargin*.65,separationBoost=Math.abs(baseMargin)>12?Math.min(20,(Math.abs(baseMargin)-12)*.75):0,performanceFloor=Math.abs(rawPerformanceGap)>=30&&Math.sign(rawPerformanceGap)===Math.sign(baseMargin)?Math.min(48,(Math.abs(rawPerformanceGap)-10)*.60):0,targetAbs=Math.max(Math.abs(baseMargin)+separationBoost,performanceFloor),targetMargin=clamp(Math.sign(baseMargin||rawPerformanceGap||1)*targetAbs,-55,55),total=clamp(Math.max(baseTotal,Math.abs(targetMargin)+13),24,98);"
+
+          if old not in text:
+              raise SystemExit('Expected simulator margin formula was not found; refusing to patch blindly.')
+
+          text = text.replace(old, new, 1)
+          path.write_text(text)
+          PY
+
+      - name: Verify calibration guardrails
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('simulators.html').read_text()
+          required = [
+              'rawPerformanceGap=clamp(',
+              'performanceFloor=Math.abs(rawPerformanceGap)>=30',
+              'targetAbs=Math.max(Math.abs(baseMargin)+separationBoost,performanceFloor)',
+              'targetMargin=clamp(',
+          ]
+          missing = [x for x in required if x not in text]
+          if missing:
+              raise SystemExit('Calibration patch validation failed: ' + ', '.join(missing))
+          print('H2H margin calibration patch verified.')
+          PY
+
+      - name: Commit simulator calibration
+        run: |
+          if git diff --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add simulators.html
+          git commit -m "Fix compressed head-to-head simulator margins"
+          git push
