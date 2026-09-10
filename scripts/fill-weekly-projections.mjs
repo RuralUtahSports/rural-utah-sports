@@ -6,6 +6,7 @@ import vm from 'node:vm';
 const file='weekly-simulation.json';
 const feed=JSON.parse(fs.readFileSync(file,'utf8'));
 const data=JSON.parse(fs.readFileSync('simulator-data.json','utf8'));
+// v2 keeps weekly projections and the interactive H2H predictor on the same live-season model.
 const MODEL_VERSION='20260910-calibration-v2';
 const prior=process.argv[2]&&fs.existsSync(process.argv[2])?JSON.parse(fs.readFileSync(process.argv[2],'utf8')):{games:[]};
 const num=v=>v===null||v===undefined||String(v).trim()===''?null:Number.isFinite(Number(v))?Number(v):null;
