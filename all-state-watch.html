@@ -24,7 +24,7 @@ function render(){document.getElementById('viewBtns').innerHTML=['All-Utah','All
 async function init(){const stamp=Date.now();const [a,b,c,d]=await Promise.all([fetch(`deseret-rosters-stats-2026.json?v=${stamp}`,{cache:'no-store'}),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`standings-2026.json?v=${stamp}`,{cache:'no-store'}),fetch(`state-top25-history-2026.json?v=${stamp}`,{cache:'no-store'})]);if(!a.ok||!b.ok||!c.ok)throw new Error('Projected awards data unavailable');data=await a.json();teams=await b.json();standings=await c.json();stateTop25=d.ok?await d.json():null;teamContexts=window.RUSAwardScoring?.buildTeamContexts?window.RUSAwardScoring.buildTeamContexts(standings,stateTop25):new Map();document.getElementById('updated').textContent=`Updated ${new Date(data.updatedAt||Date.now()).toLocaleString()}`;render()}init().catch(e=>{console.error(e);results.innerHTML='<div class="empty">Projected awards data is still syncing. Try again shortly.</div>'});
 </script>
 
-<script src="school-assets-bundle.js?v=20260910-oos-3"></script>
+<script src="school-assets-bundle.js?v=20260910-oos-4"></script>
 <script src="school-logo-integration.js?v=20260815-logo2"></script>
 <script src="nav-menu.js?v=20260827-mobile-nav-restore1"></script>
 </body></html>
