@@ -1,0 +1,120 @@
+name: Add Week 5 OOS school logos
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-week5-oos-logos.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  add-logos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download out-of-state school logos
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p school-logos
+
+          curl -L --fail --retry 3 --retry-delay 2 \
+            'https://cache.bsnsports.com/comp/sls/get/43/4626?f=jpg&sid=4626&ts=1638206562' \
+            -o school-logos/eastwood-tx.jpg
+
+          curl -L --fail --retry 3 --retry-delay 2 \
+            'https://cache.bsnsports.com/comp/sls/get/43/13066?f=jpg&sid=13066&ts=1746810985' \
+            -o school-logos/preston-id.jpg
+
+          curl -L --fail --retry 3 --retry-delay 2 \
+            'https://static.hudl.com/users/prod/47913_cb392d5d3c944e1eb40a3e207a1cea94.jpg' \
+            -o school-logos/faith-lutheran-nv.jpg
+
+          curl -L --fail --retry 3 --retry-delay 2 \
+            'https://cache.bsnsports.com/comp/sls/get/43/11624?f=jpg&sid=11624&ts=1638206562' \
+            -o school-logos/moffat-county-co.jpg
+
+          curl -L --fail --retry 3 --retry-delay 2 \
+            'https://cache.bsnsports.com/comp/sls/get/43/8295?f=jpg&sid=8295&ts=1638206562' \
+            -o school-logos/lincoln-county-nv.jpg
+
+          curl -L --fail --retry 3 --retry-delay 2 \
+            'https://3.files.edl.io/2767/23/06/27/212932-bc659e72-56fe-406e-bd05-bd8983bc9378.png' \
+            -o school-logos/rancho-bernardo-ca.png
+
+          python - <<'PY'
+          import html as htmlmod
+          import re
+          import urllib.request
+          from urllib.parse import urljoin
+
+          page_url = 'https://www.norwoodk12.org/'
+          req = urllib.request.Request(page_url, headers={'User-Agent':'Mozilla/5.0'})
+          with urllib.request.urlopen(req, timeout=30) as response:
+              page = response.read().decode('utf-8', 'ignore')
+
+          candidates = []
+          for tag in re.findall(r'<img\b[^>]*>', page, flags=re.I):
+              src_m = re.search(r'\bsrc=["\']([^"\']+)', tag, flags=re.I)
+              if not src_m:
+                  continue
+              src = htmlmod.unescape(src_m.group(1))
+              text = tag.lower()
+              score = 0
+              if 'logo' in text: score += 10
+              if 'maverick' in text: score += 9
+              if 'norwood' in text: score += 6
+              if 'finalsite' in src.lower() or 'resources.' in src.lower(): score += 2
+              if score:
+                  candidates.append((score, urljoin(page_url, src)))
+
+          candidates.sort(reverse=True)
+          if not candidates:
+              raise RuntimeError('Could not find a Norwood school logo image on the official school site')
+
+          last_error = None
+          for _, url in candidates:
+              try:
+                  req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0'})
+                  with urllib.request.urlopen(req, timeout=30) as response:
+                      data = response.read()
+                      ctype = response.headers.get('Content-Type','').lower()
+                  if len(data) < 1000 or 'image' not in ctype:
+                      continue
+                  ext = '.png' if 'png' in ctype else '.jpg'
+                  with open('school-logos/norwood-co' + ext, 'wb') as f:
+                      f.write(data)
+                  with open('school-logos/norwood-co.ext', 'w') as f:
+                      f.write(ext)
+                  print('Norwood logo:', url)
+                  break
+              except Exception as exc:
+                  last_error = exc
+          else:
+              raise RuntimeError(f'Could not download a Norwood logo candidate: {last_error}')
+          PY
+
+          file school-logos/eastwood-tx.jpg school-logos/preston-id.jpg \
+            school-logos/faith-lutheran-nv.jpg school-logos/moffat-county-co.jpg \
+            school-logos/lincoln-county-nv.jpg school-logos/rancho-bernardo-ca.png \
+            school-logos/norwood-co.*
+
+      - name: Commit logo files
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f school-logos/norwood-co.ext
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add school-logos/eastwood-tx.jpg \
+                  school-logos/preston-id.jpg \
+                  school-logos/faith-lutheran-nv.jpg \
+                  school-logos/moffat-county-co.jpg \
+                  school-logos/lincoln-county-nv.jpg \
+                  school-logos/rancho-bernardo-ca.png \
+                  school-logos/norwood-co.*
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add Week 5 OOS school logo assets'
+          git push
