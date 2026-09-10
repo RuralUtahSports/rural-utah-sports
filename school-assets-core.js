@@ -17,7 +17,7 @@ const CUSTOM_LOGOS={
   'MILLARD':'school-logos/millard.svg','MORGAN':'school-logos/morgan.svg','OREM':'school-logos/orem.svg','PROVIDENCE HALL':'school-logos/providence-hall.svg',
   'RICH':'school-logos/rich-user.svg','RIDGELINE':'school-logos/ridgeline-card.png?v=20260817-7','SAN JUAN':'school-logos/san-juan.svg',
   'EASTWOOD':'school-logos/eastwood-tx.jpg?v=20260910-2',
-  'NORWOOD':'school-logos/norwood-co.png?v=20260910-3',
+  'NORWOOD':'school-logos/norwood-co.png?v=20260910-4',
   'PRESTON':'school-logos/preston-id.jpg?v=20260910-2',
   'FAITH LUTHERAN':'school-logos/faith-lutheran-nv.jpg?v=20260910-2',
   'MOFFAT':'school-logos/moffat-county-co.jpg?v=20260910-2','MOFFAT COUNTY':'school-logos/moffat-county-co.jpg?v=20260910-2',
