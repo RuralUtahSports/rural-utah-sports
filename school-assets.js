@@ -3,7 +3,7 @@
   const core=new URL('school-assets-core.js',here).href;
   try{
     const req=new XMLHttpRequest();
-    req.open('GET',`${core}?v=20260821-emery-2`,false);
+    req.open('GET',`${core}?v=20260910-oos-1`,false);
     req.send(null);
     if(req.status && (req.status<200||req.status>=300))throw new Error(`HTTP ${req.status}`);
     (0,eval)(req.responseText);
