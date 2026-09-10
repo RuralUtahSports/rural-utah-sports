@@ -1,0 +1,44 @@
+name: Fix H2H margin calibration v3
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-h2h-margin-calibration-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Expand elite-vs-weak margins without inflating close games
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('simulators.html')
+          s = p.read_text()
+
+          old = "targetMargin=clamp(probabilityMargin*.45+evidenceMargin*.55,-42,42),total=clamp(Math.max(baseTotal,Math.abs(targetMargin)+10),24,90);"
+          new = "baseMargin=probabilityMargin*.40+evidenceMargin*.60,separationBoost=Math.abs(baseMargin)>14?Math.min(16,(Math.abs(baseMargin)-14)*.70):0,targetMargin=clamp(Math.sign(baseMargin||1)*(Math.abs(baseMargin)+separationBoost),-50,50),total=clamp(Math.max(baseTotal,Math.abs(targetMargin)+12),24,94);"
+
+          if old not in s:
+              raise SystemExit('Expected H2H calibration formula was not found; refusing to patch the wrong code.')
+
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+          PY
+
+      - name: Commit calibration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add simulators.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Expand H2H score margins for true mismatches"
+          git push
