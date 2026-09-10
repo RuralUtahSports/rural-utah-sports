@@ -1,0 +1,96 @@
+name: Fix Simulator Calibration
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-simulator-calibration.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Calibrate projected margins and sync weekly model inputs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          # 1) Fix the browser H2H score calibration. The old formula capped the
+          # projected margin at 24 and scaled probability linearly, which made
+          # huge team-strength gaps look artificially close.
+          html_path = Path('simulators.html')
+          html = html_path.read_text()
+          old = "total=clamp((off1+def1+off2+def2)/2,20,85),targetMargin=clamp((prob-.5)*32,-24,24);r.p1=Math.max(0,Math.round((total+targetMargin)/2));r.p2=Math.max(0,Math.round((total-targetMargin)/2));"
+          new = "baseTotal=clamp((off1+def1+off2+def2)/2,24,90),probSafe=clamp(prob,.02,.98),probabilityMargin=clamp(Math.log(probSafe/(1-probSafe))*7.5,-38,38),seasonGap=clamp(margin1-margin2,-60,60),eloMargin=clamp((e1-e2)/18,-30,30),priorMargin=clamp(Number(r.a.recent10Diff||0)-Number(r.b.recent10Diff||0),-50,50),evidenceMargin=seasonGap*.50+eloMargin*.30+priorMargin*.20,targetMargin=clamp(probabilityMargin*.45+evidenceMargin*.55,-42,42),total=clamp(Math.max(baseTotal,Math.abs(targetMargin)+10),24,90);r.p1=Math.max(0,Math.round((total+targetMargin)/2));r.p2=Math.max(0,Math.round((total-targetMargin)/2));"
+          if old in html:
+              html = html.replace(old, new, 1)
+              html_path.write_text(html)
+              print('Updated H2H score calibration.')
+          elif 'probabilityMargin=clamp(Math.log(probSafe/(1-probSafe))*7.5' in html:
+              print('H2H calibration already applied.')
+          else:
+              raise SystemExit('Could not locate H2H score calibration block.')
+
+          # 2) Make the weekly projection generator run the SAME live-season
+          # model as the browser. Previously the VM had weekly=[] and
+          # seasonResults=[], so it silently fell back to the preseason model.
+          script_path = Path('scripts/fill-weekly-projections.mjs')
+          script = script_path.read_text()
+
+          if "const MODEL_VERSION='20260910-calibration-v2';" not in script:
+              anchor = "const data=JSON.parse(fs.readFileSync('simulator-data.json','utf8'));\n"
+              if anchor not in script:
+                  raise SystemExit('Could not add model version.')
+              script = script.replace(anchor, anchor + "const MODEL_VERSION='20260910-calibration-v2';\n", 1)
+
+          old_ctx = "const context=vm.createContext({console,data});\nvm.runInContext(html.slice(start,end)+'\\nsimulator=data;globalThis.project=(a,b)=>calculate(a,b);',context,{timeout:5000});"
+          new_ctx = "const seasonFeed=fs.existsSync('standings-2026.json')?JSON.parse(fs.readFileSync('standings-2026.json','utf8')):{games:[]};\nconst context=vm.createContext({console,data,feed,seasonFeed});\nvm.runInContext(html.slice(start,end)+'\\nsimulator=data;weekly=feed.games||[];seasonResults=Array.isArray(seasonFeed.games)?seasonFeed.games:[];globalThis.project=(a,b)=>calculate(a,b);',context,{timeout:5000});"
+          if old_ctx in script:
+              script = script.replace(old_ctx, new_ctx, 1)
+          elif "weekly=feed.games||[];seasonResults=Array.isArray(seasonFeed.games)" not in script:
+              raise SystemExit('Could not locate weekly VM context block.')
+
+          old_restore = "if(old?.projectionSource==='rus-simulator'&&num(old.awayScore)!==null&&num(old.homeScore)!==null){\n    for(const f of ['awayScore','homeScore','winner','projectionSource','projectionGeneratedAt'])g[f]=old[f];"
+          new_restore = "if(old?.projectionSource==='rus-simulator'&&old?.projectionModel===MODEL_VERSION&&num(old.awayScore)!==null&&num(old.homeScore)!==null){\n    for(const f of ['awayScore','homeScore','winner','projectionSource','projectionGeneratedAt','projectionModel'])g[f]=old[f];"
+          if old_restore in script:
+              script = script.replace(old_restore, new_restore, 1)
+          elif "old?.projectionModel===MODEL_VERSION" not in script:
+              raise SystemExit('Could not locate projection restore block.')
+
+          old_generated = "g.projectionSource='rus-simulator';g.projectionGeneratedAt=now.toISOString();generated++;"
+          new_generated = "g.projectionSource='rus-simulator';g.projectionModel=MODEL_VERSION;g.projectionGeneratedAt=now.toISOString();generated++;"
+          if old_generated in script:
+              script = script.replace(old_generated, new_generated, 1)
+          elif "g.projectionModel=MODEL_VERSION" not in script:
+              raise SystemExit('Could not locate projection metadata block.')
+
+          script_path.write_text(script)
+          print('Updated weekly projection generator to use live 2026 results.')
+          PY
+
+      - name: Basic syntax checks
+        run: |
+          node --check scripts/fill-weekly-projections.mjs
+          grep -q "projectionModel=MODEL_VERSION" scripts/fill-weekly-projections.mjs
+          grep -q "probabilityMargin=clamp" simulators.html
+
+      - name: Commit fixes
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- simulators.html scripts/fill-weekly-projections.mjs)" ]; then
+            echo "Calibration is already current."
+            exit 0
+          fi
+          git add simulators.html scripts/fill-weekly-projections.mjs
+          git commit -m "Calibrate simulator projected scores"
+          git pull --rebase -X theirs origin main
+          git push
