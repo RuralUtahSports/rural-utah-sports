@@ -117,29 +117,36 @@ function occurrences(text, names) {
 
 function scoreFromPair(text, pair) {
   if (!pair) return null;
-  const between = text.slice(pair.a.index + pair.a.length, pair.h.index);
-  if (!/@/.test(between)) return null;
-  const afterRaw = text.slice(pair.h.index + pair.h.length, pair.h.index + pair.h.length + 100);
-  const after = afterRaw.split(/\b(?:Stats|Previous Matchup|Live|Final|Upcoming)\b/i)[0];
-  const awayNums = (between.match(/\b\d{1,3}\b/g) || []).map(Number).filter(n => n >= 0 && n <= 199);
-  const homeNums = (after.match(/\b\d{1,3}\b/g) || []).map(Number).filter(n => n >= 0 && n <= 199);
-  if (!awayNums.length || !homeNums.length) return null;
-  return { away: awayNums[awayNums.length - 1], home: homeNums[0] };
+  const first = pair.order === 'away-home' ? pair.a : pair.h;
+  const second = pair.order === 'away-home' ? pair.h : pair.a;
+  const between = text.slice(first.index + first.length, second.index);
+  const values = [...between.matchAll(/(?<![\d:])\d{1,3}(?![\d:])/g)]
+    .map(match => Number(match[0]))
+    .filter(value => Number.isInteger(value) && value >= 0 && value <= 199);
+  if (values.length < 2) return null;
+  return pair.order === 'away-home'
+    ? { away: values[0], home: values[1] }
+    : { away: values[1], home: values[0] };
 }
 
 function findGamePair(text, game) {
   const away = occurrences(text, namesFor(game.awayTeam));
   const home = occurrences(text, namesFor(game.homeTeam));
+  const candidates = [
+    ...away.flatMap(a => home.map(h => ({ a, h, order: 'away-home' }))),
+    ...home.flatMap(h => away.map(a => ({ a, h, order: 'home-away' })))
+  ];
   let best = null;
-  for (const a of away) {
-    for (const h of home) {
-      if (h.index <= a.index) continue;
-      const gap = h.index - a.index;
-      if (gap > 240) continue;
-      const pair = { a, h, gap };
-      const score = scoreFromPair(text, pair);
-      if (!score) continue;
-      if (!best || gap < best.pair.gap) best = { pair, score };
+  for (const candidate of candidates) {
+    const first = candidate.order === 'away-home' ? candidate.a : candidate.h;
+    const second = candidate.order === 'away-home' ? candidate.h : candidate.a;
+    if (second.index <= first.index) continue;
+    const gap = second.index - first.index;
+    if (gap > 240) continue;
+    const score = scoreFromPair(text, candidate);
+    if (!score) continue;
+    if (!best || gap < best.pair.gap) {
+      best = { pair: { ...candidate, gap }, score };
     }
   }
   return best;
@@ -147,18 +154,20 @@ function findGamePair(text, game) {
 
 function liveStateBefore(text, pair) {
   if (!pair) return null;
-  const prefix = text.slice(Math.max(0, pair.a.index - 150), pair.a.index);
-  const liveAt = prefix.toLowerCase().lastIndexOf('live');
-  if (liveAt < 0) return null;
-  const live = prefix.slice(liveAt);
-  if (/\bhalf(?:time)?\b/i.test(live)) return { status: 'HALFTIME', clock: '', period: 'HALFTIME' };
-  let m = live.match(/\b(\d{1,2}:\d{2})\s+(?:in\s+)?(?:the\s+)?([1-4])(?:st|nd|rd|th)\s+Quarter\b/i);
-  if (m) return { status: `Q${m[2]}`, clock: m[1], period: `Q${m[2]}` };
-  m = live.match(/\b(\d{1,2}:\d{2})\s+Q([1-4])\b/i);
-  if (m) return { status: `Q${m[2]}`, clock: m[1], period: `Q${m[2]}` };
-  m = live.match(/\bQ([1-4])\b(?:\s+(\d{1,2}:\d{2}))?/i);
-  if (m) return { status: `Q${m[1]}`, clock: m[2] || '', period: `Q${m[1]}` };
-  return { status: 'Live', clock: '', period: '' };
+  const first = pair.order === 'away-home' ? pair.a : pair.h;
+  const second = pair.order === 'away-home' ? pair.h : pair.a;
+  const segment = text.slice(first.index, second.index + second.length + 80);
+  if (/\bFinal\b/i.test(segment)) return { status: 'Final', clock: '', period: '', final: true };
+  if (/\bhalf(?:time)?\b/i.test(segment)) return { status: 'HALFTIME', clock: '', period: 'HALFTIME', final: false };
+
+  let match = segment.match(/\b(\d{1,2}:\d{2})\s+(?:in\s+)?(?:the\s+)?([1-4])(?:st|nd|rd|th)\s+Quarter\b/i);
+  if (match) return { status: `Q${match[2]}`, clock: match[1], period: `Q${match[2]}`, final: false };
+  match = segment.match(/\b(\d{1,2}:\d{2})\s+Q([1-4])\b/i);
+  if (match) return { status: `Q${match[2]}`, clock: match[1], period: `Q${match[2]}`, final: false };
+  match = segment.match(/\bQ([1-4])\b(?:\s+(\d{1,2}:\d{2}))?/i);
+  if (match) return { status: `Q${match[1]}`, clock: match[2] || '', period: `Q${match[1]}`, final: false };
+  if (/\bLive\b/i.test(segment)) return { status: 'Live', clock: '', period: '', final: false };
+  return null;
 }
 
 function ensureDetail(details, game) {
@@ -212,7 +221,7 @@ console.log(`Deseret browser live fallback scanning ${games.length} RUS game(s) 
 
 const found = new Map();
 for (let attempt = 1; attempt <= 3 && found.size < games.length; attempt++) {
-  const url = `${BASE}/high-school/scores-schedule/${today}?region=all&_rus_browser=${Date.now()}_${attempt}`;
+  const url = `${BASE}/high-school/football/scores-schedule/${today}?region=all&_rus_browser=${Date.now()}_${attempt}`;
   const result = spawnSync(browser, [
     '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
     '--virtual-time-budget=10000', '--dump-dom', url
@@ -246,7 +255,7 @@ for (const game of games) {
   }
   const { score, state } = hit;
   const detail = ensureDetail(details, game);
-  if (detail.final === true) continue;
+  if (detail.final === true && !state.final) continue;
   const rows = ensureRows(detail, game);
   const beforeAwayRaw = Number(rows[0]?.total);
   const beforeHomeRaw = Number(rows[1]?.total);
@@ -290,16 +299,16 @@ for (const game of games) {
     console.warn(`Ignored browser period regression for ${key}: ${state.status} behind ${detail.status}.`);
   }
 
-  if (detail.status !== nextState.status || clean(detail.clock) !== nextState.clock || clean(detail.period) !== nextState.period || detail.final !== false) {
+  if (detail.status !== nextState.status || clean(detail.clock) !== nextState.clock || clean(detail.period) !== nextState.period || detail.final !== !!state.final) {
     detail.status = nextState.status;
     detail.clock = nextState.clock;
     detail.period = nextState.period;
-    detail.final = false;
+    detail.final = !!state.final;
     changed++;
   }
   detail.scoreSource = 'deseret-browser-live';
-  detail.statusSource = staleHalftime ? 'deseret-browser-live-stale-state-guard' : 'deseret-browser-live';
-  console.log(`Browser live ${key}: ${nextAway}-${nextHome} ${nextState.status}${nextState.clock ? ` ${nextState.clock}` : ''}`);
+  detail.statusSource = state.final ? 'deseret-browser-live-final' : staleHalftime ? 'deseret-browser-live-stale-state-guard' : 'deseret-browser-live';
+  console.log(`Browser scoreboard ${key}: ${nextAway}-${nextHome} ${nextState.status}${nextState.clock ? ` ${nextState.clock}` : ''}`);
 }
 
 if (changed) {
