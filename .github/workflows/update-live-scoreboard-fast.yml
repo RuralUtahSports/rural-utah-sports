@@ -18,6 +18,8 @@ on:
       - 'scripts/apply-kickoff-live-fallback.mjs'
       - 'scripts/apply-manual-scoreboard-corrections.mjs'
       - 'manual-scoreboard-corrections-2026.json'
+      - 'scripts/apply-scoreboard-schedule-overrides.mjs'
+      - 'scoreboard-schedule-overrides-2026.json'
       - '.github/workflows/update-live-scoreboard-fast.yml'
 
 permissions:
@@ -47,6 +49,7 @@ jobs:
           node scripts/repair-live-status-anomalies.mjs
           node scripts/apply-kickoff-live-fallback.mjs
           node scripts/apply-manual-scoreboard-corrections.mjs
+          node scripts/apply-scoreboard-schedule-overrides.mjs
           node scripts/build_live_scoreboard_details.mjs
 
       - name: Publish fast scoreboard refresh
@@ -55,7 +58,7 @@ jobs:
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
 
           publish_once() {
-            git add deseret-game-details.json deseret-live-details-2026.json
+            git add deseret-game-details.json deseret-live-details-2026.json weekly-simulation.json
             if git diff --cached --quiet; then
               echo "Fast live scoreboard is already current."
               return 0
@@ -81,6 +84,7 @@ jobs:
           node scripts/repair-live-status-anomalies.mjs
           node scripts/apply-kickoff-live-fallback.mjs
           node scripts/apply-manual-scoreboard-corrections.mjs
+          node scripts/apply-scoreboard-schedule-overrides.mjs
           node scripts/build_live_scoreboard_details.mjs
           publish_once
 
