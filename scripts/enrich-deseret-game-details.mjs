@@ -377,7 +377,14 @@ async function fetchHtml(url, attempt = 0) {
     signal: AbortSignal.timeout(18000)
   });
   if (res.ok) return await res.text();
-  if ((res.status === 403 || res.status === 429) && attempt < 5) {
+
+  // Deseret is currently returning a deterministic 403 to GitHub runners.
+  // Do not spend the whole five-minute live window retrying every blocked page;
+  // preserve the last good detail and let the browser/Supabase paths refresh it.
+  if (res.status === 403) throw new Error(`${res.status} ${res.statusText}`);
+
+  // A 429 is usually temporary, so keep a short bounded retry for rate limits.
+  if (res.status === 429 && attempt < 2) {
     const retryAfter = Number(res.headers.get('retry-after'));
     const delay = Number.isFinite(retryAfter) && retryAfter > 0
       ? Math.min(Math.max(retryAfter * 1000, 1000), 30000)
