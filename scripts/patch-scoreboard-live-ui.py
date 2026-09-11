@@ -38,7 +38,7 @@ old_tag = 'scoreboard-refresh.js?v=20260904-live-refresh-fix1'
 new_tag = 'scoreboard-refresh.js?v=20260910-live-refresh-fix2'
 if old_tag in page:
     page = page.replace(old_tag, new_tag)
-elif new_tag not in page:
+elif 'scoreboard-refresh.js?v=' not in page:
     raise SystemExit('scoreboard cache-bust tag not found')
 html.write_text(page)
 
