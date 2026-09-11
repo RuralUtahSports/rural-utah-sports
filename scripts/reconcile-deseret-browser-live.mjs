@@ -60,9 +60,19 @@ function textOf(html) {
 }
 
 function footballText(text) {
-  const start = text.search(/\bFootball\b/i);
+  const scheduleAt = text.search(/\bScores\s*&\s*Schedule\b/i);
+  const scope = scheduleAt >= 0 ? text.slice(scheduleAt) : text;
+  const candidates = [...scope.matchAll(/\bFootball\b/ig)];
+  let start = -1;
+  for (const match of candidates) {
+    const after = scope.slice(match.index + match[0].length, match.index + match[0].length + 260);
+    if (/\b(?:Live|Final|Upcoming)\b/i.test(after)) {
+      start = match.index + match[0].length;
+      break;
+    }
+  }
   if (start < 0) return '';
-  const tail = text.slice(start + 'Football'.length);
+  const tail = scope.slice(start);
   const nextSport = tail.search(/\b(?:Girls Soccer|Girls Volleyball|Boys Soccer|Boys Volleyball|Baseball|Softball|Boys Basketball|Girls Basketball|Wrestling|Swimming|Track|Cross country|Golf|Boys Lacrosse|Girls Lacrosse)\b/i);
   return nextSport >= 0 ? tail.slice(0, nextSport) : tail;
 }
@@ -184,6 +194,7 @@ if (!games.length) {
   console.log(`Deseret browser live fallback: no RUS games on ${today}.`);
   process.exit(0);
 }
+console.log(`Deseret browser live fallback scanning ${games.length} RUS game(s) on ${today}.`);
 
 const url = `${BASE}/high-school/scores-schedule/${today}?region=all&_rus_browser=${Date.now()}`;
 const result = spawnSync(browser, [
@@ -205,10 +216,14 @@ if (!pageText) {
 let changed = 0;
 for (const game of games) {
   const pair = closestGamePair(pageText, game);
+  if (!pair) continue;
   const state = liveStateBefore(pageText, pair);
-  if (!pair || !state) continue;
+  if (!state) continue;
   const score = scoreFromPair(pageText, pair);
-  if (!score) continue;
+  if (!score) {
+    console.log(`Browser live matched ${gameKey(game)} but no score was reported yet.`);
+    continue;
+  }
 
   const detail = ensureDetail(details, game);
   if (detail.final === true) continue;
