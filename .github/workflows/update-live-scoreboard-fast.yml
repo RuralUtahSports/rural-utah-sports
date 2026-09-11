@@ -10,6 +10,7 @@ on:
     paths:
       - 'weekly-simulation.json'
       - 'out-of-state.json'
+      - 'scripts/enrich-deseret-game-details.mjs'
       - 'scripts/build_live_scoreboard_details.mjs'
       - 'scripts/reconcile-deseret-day-status.mjs'
       - 'scripts/reconcile-deseret-browser-live.mjs'
@@ -59,6 +60,7 @@ jobs:
           # and guards against score/period regressions, so a broader day-page
           # reconciler cannot overwrite it with a stale Halftime badge afterward.
           node scripts/reconcile-deseret-browser-live.mjs
+          DESERET_BROWSER_ONLY=1 node scripts/enrich-deseret-game-details.mjs
           node scripts/build_live_scoreboard_details.mjs
 
       - name: Publish fast scoreboard refresh
@@ -97,6 +99,7 @@ jobs:
           node scripts/apply-manual-scoreboard-corrections.mjs
           node scripts/apply-scoreboard-schedule-overrides.mjs
           node scripts/reconcile-deseret-browser-live.mjs
+          DESERET_BROWSER_ONLY=1 node scripts/enrich-deseret-game-details.mjs
           node scripts/build_live_scoreboard_details.mjs
           publish_once
 
