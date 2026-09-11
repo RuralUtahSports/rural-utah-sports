@@ -2,6 +2,7 @@ import fs from 'node:fs';
 
 const refreshPath = 'scoreboard-refresh.js';
 const htmlPath = 'scoreboard.html';
+const CACHE_VERSION = '20260911-live-refresh-fix4';
 
 const badMerge = `      if (typeof detailMap !== 'undefined' && detailMap?.clear) {
         detailMap.clear();
@@ -36,8 +37,8 @@ if (fs.existsSync(refreshPath)) {
 if (fs.existsSync(htmlPath)) {
   let html = fs.readFileSync(htmlPath, 'utf8');
   const next = html.replace(
-    /scoreboard-refresh\.js\?v=20260910-live-refresh-fix\d+/g,
-    'scoreboard-refresh.js?v=20260910-live-refresh-fix3'
+    /scoreboard-refresh\.js\?v=[^"'\\s]+/g,
+    `scoreboard-refresh.js?v=${CACHE_VERSION}`
   );
   if (next !== html) {
     fs.writeFileSync(htmlPath, next);
