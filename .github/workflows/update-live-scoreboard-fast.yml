@@ -19,6 +19,7 @@ on:
       - 'scripts/apply-kickoff-live-fallback.mjs'
       - 'scripts/apply-manual-scoreboard-corrections.mjs'
       - 'scripts/patch-scoreboard-live-ui.py'
+      - 'scripts/patch-scoreboard-client-merge.mjs'
       - 'manual-scoreboard-corrections-2026.json'
       - 'scripts/apply-scoreboard-schedule-overrides.mjs'
       - 'scoreboard-schedule-overrides-2026.json'
@@ -45,6 +46,7 @@ jobs:
       - name: Fast live score and status refresh
         run: |
           python3 scripts/patch-scoreboard-live-ui.py
+          node scripts/patch-scoreboard-client-merge.mjs
           node scripts/reconcile-deseret-day-status.mjs
           node scripts/reconcile-deseret-unlinked-games.mjs --self-test
           node scripts/reconcile-deseret-unlinked-games.mjs
@@ -86,6 +88,7 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
           python3 scripts/patch-scoreboard-live-ui.py
+          node scripts/patch-scoreboard-client-merge.mjs
           node scripts/reconcile-deseret-day-status.mjs
           node scripts/reconcile-deseret-unlinked-games.mjs
           node scripts/fill-boxscore-from-scoring-plays.mjs
