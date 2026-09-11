@@ -59,24 +59,6 @@ function textOf(html) {
     .trim();
 }
 
-function footballText(text) {
-  const scheduleAt = text.search(/\bScores\s*&\s*Schedule\b/i);
-  const scope = scheduleAt >= 0 ? text.slice(scheduleAt) : text;
-  const candidates = [...scope.matchAll(/\bFootball\b/ig)];
-  let start = -1;
-  for (const match of candidates) {
-    const after = scope.slice(match.index + match[0].length, match.index + match[0].length + 80);
-    if (/^\s*(?:Live|Final|Upcoming)\b/i.test(after)) {
-      start = match.index + match[0].length;
-      break;
-    }
-  }
-  if (start < 0) return '';
-  const tail = scope.slice(start);
-  const nextSport = tail.search(/\b(?:Girls Soccer|Girls Volleyball|Boys Soccer|Boys Volleyball|Baseball|Softball|Boys Basketball|Girls Basketball|Wrestling|Swimming|Track|Cross country|Golf|Boys Lacrosse|Girls Lacrosse)\b/i);
-  return nextSport >= 0 ? tail.slice(0, nextSport) : tail;
-}
-
 function namesFor(value) {
   const base = compact(value);
   return [...new Set([clean(value), ...(aliases[base] || [])].filter(Boolean))];
@@ -131,7 +113,7 @@ function findGamePair(text, game) {
 
 function liveStateBefore(text, pair) {
   if (!pair) return null;
-  const prefix = text.slice(Math.max(0, pair.a.index - 130), pair.a.index);
+  const prefix = text.slice(Math.max(0, pair.a.index - 150), pair.a.index);
   const liveAt = prefix.toLowerCase().lastIndexOf('live');
   if (liveAt < 0) return null;
   const live = prefix.slice(liveAt);
@@ -197,20 +179,15 @@ console.log(`Deseret browser live fallback scanning ${games.length} RUS game(s) 
 const url = `${BASE}/high-school/scores-schedule/${today}?region=all&_rus_browser=${Date.now()}`;
 const result = spawnSync(browser, [
   '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
-  '--virtual-time-budget=8000', '--dump-dom', url
-], { encoding: 'utf8', timeout: 25000, maxBuffer: 12 * 1024 * 1024 });
+  '--virtual-time-budget=12000', '--dump-dom', url
+], { encoding: 'utf8', timeout: 30000, maxBuffer: 12 * 1024 * 1024 });
 
 if (result.error || result.status !== 0 || !clean(result.stdout)) {
   console.warn(`Deseret browser live fallback failed: ${result.error?.message || `exit ${result.status}`}`);
   process.exit(0);
 }
 
-const pageText = footballText(textOf(result.stdout));
-if (!pageText) {
-  console.warn('Deseret browser live fallback: Football section not found.');
-  process.exit(0);
-}
-
+const pageText = textOf(result.stdout);
 let changed = 0;
 for (const game of games) {
   const match = findGamePair(pageText, game);
@@ -219,7 +196,10 @@ for (const game of games) {
     continue;
   }
   const state = liveStateBefore(pageText, match.pair);
-  if (!state) continue;
+  if (!state) {
+    console.log(`Browser live found a score but no live status for ${gameKey(game)}.`);
+    continue;
+  }
   const score = match.score;
 
   const detail = ensureDetail(details, game);
