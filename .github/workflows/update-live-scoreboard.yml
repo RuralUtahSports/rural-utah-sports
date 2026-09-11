@@ -91,6 +91,11 @@ jobs:
       - name: Reconcile rendered Deseret scoreboard
         run: node scripts/reconcile-deseret-browser-live.mjs
 
+      - name: Import rendered Deseret game-page box scores
+        env:
+          DESERET_BROWSER_ONLY: '1'
+        run: node scripts/enrich-deseret-game-details.mjs
+
       # Out-of-state kickoff times are discovered during daily-scoreboard
       # reconciliation, so rebuild the compact feed after every reconciliation
       # and correction step before publishing it.
@@ -189,6 +194,7 @@ jobs:
             # Keep the rendered-browser score/status pass after anomaly repair
             # so verified finals cannot be demoted on the next minute tick.
             node scripts/reconcile-deseret-browser-live.mjs
+            DESERET_BROWSER_ONLY=1 node scripts/enrich-deseret-game-details.mjs
             node scripts/build_live_scoreboard_details.mjs
             after_finals=$(jq -c '[.games | to_entries[] | select(.value.final == true) | {key: .key, away: .value.boxScore.rows[0].total, home: .value.boxScore.rows[1].total}] | sort_by(.key)' deseret-game-details.json | sha256sum)
             if [ "$before_finals" != "$after_finals" ]; then
