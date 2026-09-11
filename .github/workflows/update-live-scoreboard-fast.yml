@@ -46,7 +46,6 @@ jobs:
         run: |
           python3 scripts/patch-scoreboard-live-ui.py
           node scripts/reconcile-deseret-day-status.mjs
-          node scripts/reconcile-deseret-browser-live.mjs
           node scripts/reconcile-deseret-unlinked-games.mjs --self-test
           node scripts/reconcile-deseret-unlinked-games.mjs
           node scripts/fill-boxscore-from-scoring-plays.mjs
@@ -54,6 +53,10 @@ jobs:
           node scripts/apply-kickoff-live-fallback.mjs
           node scripts/apply-manual-scoreboard-corrections.mjs
           node scripts/apply-scoreboard-schedule-overrides.mjs
+          # Run the rendered-browser pass last. It has game-specific score rows
+          # and guards against score/period regressions, so a broader day-page
+          # reconciler cannot overwrite it with a stale Halftime badge afterward.
+          node scripts/reconcile-deseret-browser-live.mjs
           node scripts/build_live_scoreboard_details.mjs
 
       - name: Publish fast scoreboard refresh
@@ -84,13 +87,13 @@ jobs:
           git reset --hard origin/main
           python3 scripts/patch-scoreboard-live-ui.py
           node scripts/reconcile-deseret-day-status.mjs
-          node scripts/reconcile-deseret-browser-live.mjs
           node scripts/reconcile-deseret-unlinked-games.mjs
           node scripts/fill-boxscore-from-scoring-plays.mjs
           node scripts/repair-live-status-anomalies.mjs
           node scripts/apply-kickoff-live-fallback.mjs
           node scripts/apply-manual-scoreboard-corrections.mjs
           node scripts/apply-scoreboard-schedule-overrides.mjs
+          node scripts/reconcile-deseret-browser-live.mjs
           node scripts/build_live_scoreboard_details.mjs
           publish_once
 
