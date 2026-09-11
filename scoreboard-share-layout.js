@@ -116,9 +116,12 @@
   }
 
   async function loadTeamImage(team){
-    const dom=team.domImage;
-    if(dom?.complete&&dom.naturalWidth&&dom.naturalHeight)return dom;
-    return loadFirstImage(team.logoCandidates);
+    // Displayed logos may have loaded cross-origin without CORS. Never reuse
+    // those elements in an export canvas; load fresh, origin-clean images.
+    const candidates=[...new Set(team.logoCandidates||[])].filter(Boolean);
+    const local=candidates.filter(src=>{try{return new URL(src,location.href).origin===location.origin||/^data:|^blob:/i.test(src)}catch{return false}});
+    const remote=candidates.filter(src=>!local.includes(src));
+    return await loadFirstImage(local)||await loadFirstImage(remote);
   }
 
   function selectedGameElements(btn){
