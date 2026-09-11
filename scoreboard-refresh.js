@@ -448,8 +448,10 @@
 
       if (typeof detailMap !== 'undefined' && detailMap?.clear) {
         detailMap.clear();
-        for (const [key, value] of Object.entries(payload.games)) detailMap.set(key, value);
+        // Full-game details are a fallback/base only. The compact live feed is
+        // newer and authoritative for current score/status, so it must win.
         for (const [key, value] of loadedFullDetails) detailMap.set(key, value);
+        for (const [key, value] of Object.entries(payload.games)) detailMap.set(key, value);
       }
       if (typeof render === 'function') render();
 
