@@ -12,6 +12,7 @@ on:
       - 'out-of-state.json'
       - 'scripts/build_live_scoreboard_details.mjs'
       - 'scripts/reconcile-deseret-day-status.mjs'
+      - 'scripts/reconcile-deseret-browser-live.mjs'
       - 'scripts/reconcile-deseret-unlinked-games.mjs'
       - 'scripts/fill-boxscore-from-scoring-plays.mjs'
       - 'scripts/repair-live-status-anomalies.mjs'
@@ -43,6 +44,7 @@ jobs:
       - name: Fast live score and status refresh
         run: |
           node scripts/reconcile-deseret-day-status.mjs
+          node scripts/reconcile-deseret-browser-live.mjs
           node scripts/reconcile-deseret-unlinked-games.mjs --self-test
           node scripts/reconcile-deseret-unlinked-games.mjs
           node scripts/fill-boxscore-from-scoring-plays.mjs
@@ -79,6 +81,7 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
           node scripts/reconcile-deseret-day-status.mjs
+          node scripts/reconcile-deseret-browser-live.mjs
           node scripts/reconcile-deseret-unlinked-games.mjs
           node scripts/fill-boxscore-from-scoring-plays.mjs
           node scripts/repair-live-status-anomalies.mjs
