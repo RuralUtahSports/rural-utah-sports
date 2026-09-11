@@ -1,6 +1,6 @@
 (()=>{
   const path=(location.pathname.split('/').pop()||'').toLowerCase();
-  if(path!=='scoreboard.html')return;
+  // scoreboard-refresh.js is the sole live scoreboard writer.\n  if(path==='scoreboard.html')return;
 
   const LIVE_URL='https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
   const compact=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
