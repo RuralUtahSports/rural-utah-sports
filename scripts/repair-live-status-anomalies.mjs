@@ -138,7 +138,7 @@ for(const [key,g] of Object.entries(data.games||{})){
   const isConfirmedBareLive=confirmedBareLiveGameIds.has(gameId(g));
   const isMercyFinal=mercyBox(g);
   const isBrowserVerifiedLive=g.statusSource==='deseret-browser-live'&&g.scoreSource==='deseret-browser-live'&&!!g.boxScore;
-  const hasAuthoritativeFinal=g.final===true&&['deseret-game-page','deseret-day-scoreboard','deseret-day-scoreboard-unlinked','confirmed'].includes(g.finalSource);
+  const hasAuthoritativeFinal=g.final===true&&['deseret-game-page','deseret-day-scoreboard','deseret-day-scoreboard-unlinked','deseret-browser-live-final','weekly-simulation-final','verified-manual','confirmed'].includes(g.finalSource);
 
   // Finals from a specific Deseret game page or a tightly matched Deseret day
   // scoreboard entry are authoritative. Only ambiguous untagged Finals are
