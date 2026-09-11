@@ -4,6 +4,8 @@ import { spawnSync } from 'node:child_process';
 const WEEKLY = 'weekly-simulation.json';
 const DETAILS = 'deseret-game-details.json';
 const BASE = 'https://sports.deseret.com';
+const TIME_ZONE = 'America/Denver';
+const STALE_HALFTIME_MINUTES = 90;
 const clean = value => String(value ?? '').trim();
 const compact = value => clean(value).toUpperCase().replace(/[^A-Z0-9]/g, '');
 const aliases = {
@@ -30,9 +32,41 @@ function isoDate(value) {
 
 function utahDate() {
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit'
+    timeZone: TIME_ZONE, year: 'numeric', month: '2-digit', day: '2-digit'
   }).formatToParts(new Date()).map(part => [part.type, part.value]));
   return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function utahMinutesNow() {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+    timeZone: TIME_ZONE,
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23'
+  }).formatToParts(new Date()).filter(part => part.type !== 'literal').map(part => [part.type, part.value]));
+  return Number(parts.hour) * 60 + Number(parts.minute);
+}
+
+function kickoffMinutes(value) {
+  const m = clean(value).match(/^(\d{1,2}):(\d{2})\s*([AP]M)$/i);
+  if (!m) return null;
+  let hour = Number(m[1]);
+  const minute = Number(m[2]);
+  if (hour === 12) hour = 0;
+  if (m[3].toUpperCase() === 'PM') hour += 12;
+  if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+  return hour * 60 + minute;
+}
+
+function stateRank(status) {
+  const s = clean(status).toUpperCase();
+  if (s === 'Q1') return 1;
+  if (s === 'Q2') return 2;
+  if (s === 'HALFTIME' || s === 'HALF') return 2.5;
+  if (s === 'Q3') return 3;
+  if (s === 'Q4') return 4;
+  if (s === 'OT') return 5;
+  return 0;
 }
 
 function gameKey(game) {
@@ -214,23 +248,58 @@ for (const game of games) {
   const detail = ensureDetail(details, game);
   if (detail.final === true) continue;
   const rows = ensureRows(detail, game);
-  const beforeAway = Number(rows[0]?.total);
-  const beforeHome = Number(rows[1]?.total);
-  if (beforeAway !== score.away || beforeHome !== score.home) {
-    rows[0].total = score.away;
-    rows[1].total = score.home;
+  const beforeAwayRaw = Number(rows[0]?.total);
+  const beforeHomeRaw = Number(rows[1]?.total);
+  const beforeAway = Number.isFinite(beforeAwayRaw) ? beforeAwayRaw : 0;
+  const beforeHome = Number.isFinite(beforeHomeRaw) ? beforeHomeRaw : 0;
+  const nextAway = Math.max(beforeAway, score.away);
+  const nextHome = Math.max(beforeHome, score.home);
+  const scoreAdvanced = nextAway > beforeAway || nextHome > beforeHome;
+  const sourceRegressed = score.away < beforeAway || score.home < beforeHome;
+
+  if (nextAway !== beforeAway || nextHome !== beforeHome) {
+    rows[0].total = nextAway;
+    rows[1].total = nextHome;
     changed++;
   }
-  if (detail.status !== state.status || clean(detail.clock) !== state.clock || clean(detail.period) !== state.period || detail.final !== false) {
-    detail.status = state.status;
-    detail.clock = state.clock;
-    detail.period = state.period;
+  if (sourceRegressed) {
+    console.warn(`Ignored browser score regression for ${key}: source ${score.away}-${score.home}, kept ${nextAway}-${nextHome}.`);
+  }
+  if (detail.boxScore) detail.boxScore.source = 'deseret-browser-live';
+
+  let nextState = state;
+  const currentRank = stateRank(detail.status);
+  const incomingRank = stateRank(state.status);
+  const kickoff = kickoffMinutes(detail.kickoffTime);
+  const elapsed = kickoff === null ? null : utahMinutesNow() - kickoff;
+  const staleHalftime = /^HALFTIME$/i.test(clean(state.status)) && (
+    scoreAdvanced ||
+    sourceRegressed ||
+    (elapsed !== null && elapsed >= STALE_HALFTIME_MINUTES)
+  );
+
+  if (staleHalftime) {
+    nextState = { status: 'Live', clock: '', period: '' };
+    console.warn(`Ignored stale halftime state for ${key}; using generic Live.`);
+  } else if (incomingRank > 0 && currentRank > 0 && incomingRank < currentRank) {
+    nextState = {
+      status: clean(detail.status) || 'Live',
+      clock: clean(detail.clock),
+      period: clean(detail.period)
+    };
+    console.warn(`Ignored browser period regression for ${key}: ${state.status} behind ${detail.status}.`);
+  }
+
+  if (detail.status !== nextState.status || clean(detail.clock) !== nextState.clock || clean(detail.period) !== nextState.period || detail.final !== false) {
+    detail.status = nextState.status;
+    detail.clock = nextState.clock;
+    detail.period = nextState.period;
     detail.final = false;
     changed++;
   }
   detail.scoreSource = 'deseret-browser-live';
-  detail.statusSource = 'deseret-browser-live';
-  console.log(`Browser live ${key}: ${score.away}-${score.home} ${state.status}${state.clock ? ` ${state.clock}` : ''}`);
+  detail.statusSource = staleHalftime ? 'deseret-browser-live-stale-state-guard' : 'deseret-browser-live';
+  console.log(`Browser live ${key}: ${nextAway}-${nextHome} ${nextState.status}${nextState.clock ? ` ${nextState.clock}` : ''}`);
 }
 
 if (changed) {
