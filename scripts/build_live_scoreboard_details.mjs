@@ -3,6 +3,7 @@ import fs from 'node:fs';
 const WEEKLY = 'weekly-simulation.json';
 const DETAILS = 'deseret-game-details.json';
 const OUTPUT = 'deseret-live-details-2026.json';
+const SUPABASE_LIVE_URL = 'https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/live-scoreboard';
 const TIME_ZONE = 'America/Denver';
 const STALE_HALFTIME_MINUTES = 90;
 
@@ -190,6 +191,30 @@ function protectPublishedLiveState(key, detail, previous, today) {
   return detail;
 }
 
+async function fetchSupabaseLive() {
+  try {
+    const response = await fetch(SUPABASE_LIVE_URL + '?v=' + Date.now(), {
+      cache: 'no-store',
+      headers: { accept: 'application/json' }
+    });
+    if (!response.ok) {
+      console.warn('Supabase live cache returned HTTP ' + response.status + '.');
+      return null;
+    }
+    const payload = await response.json();
+    const stamp = Date.parse(String(payload?.updatedAt || ''));
+    const age = Number.isFinite(stamp) ? Date.now() - stamp : Infinity;
+    if (!payload?.games || !Object.keys(payload.games).length || age > 10 * 60 * 1000) {
+      console.warn('Supabase live cache is empty or stale; keeping the GitHub detail history.');
+      return null;
+    }
+    return payload;
+  } catch (error) {
+    console.warn('Supabase live cache unavailable; keeping the GitHub detail history.', error);
+    return null;
+  }
+}
+
 const today = new Intl.DateTimeFormat('en-CA', {
   timeZone: TIME_ZONE,
   year: 'numeric',
@@ -199,7 +224,20 @@ const today = new Intl.DateTimeFormat('en-CA', {
 
 if (!fs.existsSync(WEEKLY) || !fs.existsSync(DETAILS)) process.exit(0);
 const weekly = JSON.parse(fs.readFileSync(WEEKLY, 'utf8'));
-const details = JSON.parse(fs.readFileSync(DETAILS, 'utf8'));
+const githubDetails = JSON.parse(fs.readFileSync(DETAILS, 'utf8'));
+const supabaseLive = await fetchSupabaseLive();
+const details = { ...githubDetails, games: { ...(githubDetails.games || {}) } };
+if (supabaseLive) {
+  const parsedGames = Number(supabaseLive?.meta?.parsedGames);
+  const candidates = Object.entries(supabaseLive.games || {})
+    .filter(([, detail]) => detail?.source === 'supabase-exact-game-card' && isLiveOrFinal(detail));
+  if ((Number.isFinite(parsedGames) ? parsedGames > 0 : candidates.length > 0) && candidates.length) {
+    for (const [key, detail] of candidates) {
+      details.games[key] = { ...(details.games[key] || {}), ...detail };
+    }
+    console.log('Merged ' + candidates.length + ' parsed game(s) from the Supabase live cache.');
+  }
+}
 const previous = fs.existsSync(OUTPUT) ? JSON.parse(fs.readFileSync(OUTPUT, 'utf8')) : { games: {} };
 const todayNumber = dayNumber(today);
 const games = {};
