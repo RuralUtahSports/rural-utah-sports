@@ -137,6 +137,7 @@ for(const [key,g] of Object.entries(data.games||{})){
   const isConfirmedFinal=confirmedFinalGameIds.has(gameId(g));
   const isConfirmedBareLive=confirmedBareLiveGameIds.has(gameId(g));
   const isMercyFinal=mercyBox(g);
+  const isBrowserVerifiedLive=g.statusSource==='deseret-browser-live'&&g.scoreSource==='deseret-browser-live'&&!!g.boxScore;
   const hasAuthoritativeFinal=g.final===true&&['deseret-game-page','deseret-day-scoreboard','deseret-day-scoreboard-unlinked','confirmed'].includes(g.finalSource);
 
   // Finals from a specific Deseret game page or a tightly matched Deseret day
@@ -179,7 +180,10 @@ for(const [key,g] of Object.entries(data.games||{})){
     continue;
   }
 
-  if(/^halftime$/i.test(String(g.status||'')) && !plays.length && !hasClock){
+  // A rendered Deseret scoreboard row gives us game-specific score evidence,
+  // so preserve its Halftime label even when the page does not publish a clock
+  // or scoring-play feed for that matchup.
+  if(/^halftime$/i.test(String(g.status||'')) && !plays.length && !hasClock && !isBrowserVerifiedLive){
     g.status='Scheduled';
     g.period='';
     fixed++;
