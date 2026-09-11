@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-11T01:39:49.887Z",
+  "updatedAt": "2026-09-11T01:48:42.940Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -86654,7 +86654,11 @@
         "emptyCoreBlocks": 0
       },
       "fetchedAt": "2026-09-07T17:38:57.325Z",
-      "finalRefreshCount": 8
+      "finalRefreshCount": 8,
+      "finalSource": "verified-manual",
+      "statusSource": "verified-manual",
+      "scoreSource": "verified-manual",
+      "manualScoreNote": "User-confirmed final: Saint Joseph 35-6 Panguitch"
     },
     "2026-09-04|TIMPVIEW|PAYSON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-04/timpview-football-vs-payson-football/273773",
@@ -90307,9 +90311,39 @@
       "status": "Live",
       "final": false,
       "clock": "",
-      "period": "",
+      "period": "Live",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "WEST",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 21
+          },
+          {
+            "team": "BRIGHTON",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ],
+        "source": "manual-scoreboard-correction"
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -90320,17 +90354,49 @@
         "emptyCoreBlocks": 0
       },
       "fetchedAt": "2026-09-10T06:02:48.318Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-11T01:39:49.754Z"
+      "statusSource": "verified-manual",
+      "kickoffFallbackAt": "2026-09-11T01:48:42.852Z",
+      "scoreSource": "verified-manual-floor",
+      "manualScoreNote": "User-provided Deseret live scoreboard: West leads Brighton 21-0"
     },
     "2026-09-10|ROY|BOXELDER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-10/roy-football-vs-box-elder-football/273505",
       "status": "Live",
       "final": false,
       "clock": "",
-      "period": "",
+      "period": "Live",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "ROY",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "BOXELDER",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 15
+          }
+        ],
+        "source": "manual-scoreboard-correction"
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -90341,8 +90407,10 @@
         "emptyCoreBlocks": 0
       },
       "fetchedAt": "2026-09-10T06:02:48.831Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-11T01:39:49.754Z"
+      "statusSource": "verified-manual",
+      "kickoffFallbackAt": "2026-09-11T01:48:42.852Z",
+      "scoreSource": "verified-manual-floor",
+      "manualScoreNote": "User-provided Deseret live scoreboard: Box Elder leads Roy 15-0"
     },
     "2026-09-11|ALA|SOUTHSEVIER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/american-leadership-football-vs-south-sevier-football/273701",
@@ -91318,9 +91386,39 @@
       "status": "Live",
       "final": false,
       "clock": "",
-      "period": "",
+      "period": "Live",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "JUAB",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "GRANTSVILLE",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ],
+        "source": "manual-scoreboard-correction"
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -91335,7 +91433,10 @@
       "awayTeam": "JUAB",
       "homeTeam": "GRANTSVILLE",
       "scheduleOverride": "User-confirmed reschedule: Juab at Grantsville moved to Sept. 10 and is in progress",
-      "statusSource": "schedule-override"
+      "statusSource": "schedule-override",
+      "kickoffFallbackAt": "2026-09-11T01:48:42.853Z",
+      "scoreSource": "verified-manual-floor",
+      "manualScoreNote": "User-provided Deseret live scoreboard: Grantsville leads Juab 7-0"
     }
   }
 }
