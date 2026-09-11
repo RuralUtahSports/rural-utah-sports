@@ -128,8 +128,8 @@ const loadScoreboard=()=>{
   const s=document.createElement('script');s.src='school-assets-scoreboard.js?v=20260905-oos-ranks1';s.async=true;s.dataset.rusScoreboardSchoolAssets='1';document.body.appendChild(s);
 };
 const loadScoreboardLiveClock=()=>{
-  if(!scorePage||document.querySelector('script[data-rus-scoreboard-live-clock]'))return;
-  const s=document.createElement('script');s.src='scoreboard-live-clock.js?v=20260820-supabase-live1';s.async=true;s.dataset.rusScoreboardLiveClock='1';document.body.appendChild(s);
+  // scoreboard-refresh.js owns the only scoreboard live poller. The old clock
+  // overlay fetched a second, stale source and rewrote its scores.
 };
 const loadGameVisuals=()=>{
   if(!gamePage||document.querySelector('script[data-rus-game-center-color-layout]'))return;
