@@ -1,0 +1,41 @@
+name: Diagnose Deseret Live Browser
+
+on:
+  push:
+    paths:
+      - '.github/workflows/diagnose-deseret-live.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check browser access to Deseret live scoreboard
+        shell: bash
+        run: |
+          set +e
+          BROWSER="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser)"
+          echo "Browser: ${BROWSER:-missing}"
+          if [ -z "$BROWSER" ]; then exit 1; fi
+          "$BROWSER" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=10000 --dump-dom 'https://sports.deseret.com/high-school/scores-schedule/2026-09-10?region=all&_rus_browser=1' > /tmp/deseret-live.html 2>/tmp/chrome.err
+          RC=$?
+          echo "Chrome exit: $RC"
+          echo "DOM bytes: $(wc -c < /tmp/deseret-live.html 2>/dev/null || echo 0)"
+          echo '--- Chrome stderr tail ---'
+          tail -30 /tmp/chrome.err || true
+          echo '--- Relevant DOM text ---'
+          python3 - <<'PY'
+          import html, re
+          from pathlib import Path
+          raw=Path('/tmp/deseret-live.html').read_text(errors='ignore') if Path('/tmp/deseret-live.html').exists() else ''
+          raw=re.sub(r'<(script|style|noscript|svg)\b[^>]*>[\s\S]*?</\1>', ' ', raw, flags=re.I)
+          text=html.unescape(re.sub(r'<[^>]+>', ' ', raw))
+          text=re.sub(r'\s+', ' ', text)
+          for needle in ['West', 'Brighton', 'Juab', 'Grantsville', 'Roy', 'Box Elder']:
+              i=text.lower().find(needle.lower())
+              print(f'[{needle}]', text[max(0,i-180):i+360] if i >= 0 else 'NOT FOUND')
+          PY
+          exit $RC
