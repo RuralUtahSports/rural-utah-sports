@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {spawnSync} from 'node:child_process';
 import {applyGameDetailCorrections} from './apply_manual_stat_corrections.mjs';
 
 const SOURCE = 'weekly-simulation.json';
@@ -406,6 +407,171 @@ function hoursSince(value) {
   return Number.isFinite(t) ? (Date.now() - t) / 3600000 : 999;
 }
 
+function utahDate() {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(new Date()).map(part => [part.type, part.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function hasCompleteBoxScore(detail) {
+  const rows = detail?.boxScore?.rows;
+  return Array.isArray(rows) && rows.length >= 2 && rows.slice(0, 2).every(row =>
+    Array.isArray(row?.quarters) && row.quarters.length >= 4 &&
+    row.quarters.slice(0, 4).every(value => value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value))) &&
+    Number.isFinite(Number(row.total))
+  );
+}
+
+function normalizeBrowserBoxScore(boxScore, game) {
+  if (!boxScore?.rows?.length) return boxScore;
+  const mapped = boxScore.rows.map(row => ({
+    ...row,
+    team: bestTeamMatch(row.team, game) || row.team
+  }));
+  const away = mapped.find(row => compact(row.team) === compact(game.awayTeam));
+  const home = mapped.find(row => compact(row.team) === compact(game.homeTeam));
+  return {
+    ...boxScore,
+    rows: away && home ? [away, home] : mapped
+  };
+}
+
+function mergeBrowserDetail(prior, parsed, game) {
+  const priorStats = prior?.statsAvailability || statsAvailability(prior?.stats || []);
+  const parsedStats = parsed?.statsAvailability || statsAvailability(parsed?.stats || []);
+  const next = {
+    ...(prior || {}),
+    ...(parsed || {}),
+    date: game.date,
+    awayTeam: game.awayTeam,
+    homeTeam: game.homeTeam,
+    browserFetchedAt: parsed?.fetchedAt || new Date().toISOString(),
+    detailSource: 'deseret-browser-game-page'
+  };
+
+  if (!parsed?.kickoffTime && prior?.kickoffTime) next.kickoffTime = prior.kickoffTime;
+  if (!parsed?.boxScore && prior?.boxScore) next.boxScore = prior.boxScore;
+  if (!Array.isArray(parsed?.scoringPlays) || !parsed.scoringPlays.length) {
+    if (Array.isArray(prior?.scoringPlays) && prior.scoringPlays.length) next.scoringPlays = prior.scoringPlays;
+  }
+  if (qualityRank(priorStats) > qualityRank(parsedStats)) {
+    next.stats = prior?.stats || [];
+    next.statsAvailability = priorStats;
+    next.statsPreservedFrom = prior?.fetchedAt || '';
+  }
+
+  // A browser page can briefly render without its final badge while the
+  // score table is already complete. Preserve a verified final in that case.
+  if (prior?.final === true && parsed?.final !== true) {
+    next.status = 'Final';
+    next.final = true;
+    next.clock = '';
+    next.period = '';
+  }
+
+  // Do not let a stale rendered page replace a newer total already captured
+  // by the live/manual reconciliation passes.
+  const priorRows = prior?.boxScore?.rows;
+  const nextRows = next?.boxScore?.rows;
+  if (Array.isArray(priorRows) && Array.isArray(nextRows) && priorRows.length >= 2 && nextRows.length >= 2) {
+    for (let i = 0; i < 2; i++) {
+      const oldTotal = Number(priorRows[i]?.total);
+      const newTotal = Number(nextRows[i]?.total);
+      if (Number.isFinite(oldTotal) && Number.isFinite(newTotal)) nextRows[i].total = Math.max(oldTotal, newTotal);
+    }
+  }
+  if (next.final === true) next.finalRefreshCount = prior?.final ? Number(prior.finalRefreshCount || 0) + 1 : 1;
+  return next;
+}
+
+function browserDumpDom(url, browserPath) {
+  const pageUrl = new URL(url);
+  pageUrl.searchParams.set('_rus_boxscore', `${Date.now()}_${Math.random().toString(36).slice(2)}`);
+  const result = spawnSync(browserPath, [
+    '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
+    '--virtual-time-budget=10000', '--dump-dom', pageUrl.toString()
+  ], { encoding: 'utf8', timeout: 30000, maxBuffer: 20 * 1024 * 1024 });
+  if (result.error) throw result.error;
+  if (result.status !== 0 || !clean(result.stdout)) throw new Error(`browser exit ${result.status}`);
+  return result.stdout;
+}
+
+async function runBrowserOnly(weekly, details, linkIndex) {
+  const browserPath = ['/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser']
+    .find(path => fs.existsSync(path));
+  if (!browserPath) {
+    console.warn('Deseret browser game-page fallback: Chrome/Chromium not available.');
+    return;
+  }
+
+  const today = utahDate();
+  const todayNumber = Date.parse(`${today}T12:00:00Z`);
+  const candidates = [];
+  for (const game of weekly.games || []) {
+    const date = isoDate(game.date);
+    const dayNumber = Date.parse(`${date}T12:00:00Z`);
+    if (!date || !Number.isFinite(todayNumber) || !Number.isFinite(dayNumber)) continue;
+    const dayDelta = Math.round((dayNumber - todayNumber) / 86400000);
+    if (dayDelta > 0 || dayDelta < -4) continue;
+
+    const key = gameKey(game);
+    const prior = details[key] || null;
+    const directUrl = clean(game.deseretUrl) || clean(linkIndex[key]) || clean(prior?.url) || clean(prior?.deseretUrl) || DIRECT_URL_OVERRIDES.get(key) || '';
+    if (!directUrl) continue;
+    const priorScore = detailScoreForBrowser(prior);
+    const priorActive = prior?.final === true || /^(?:final|live|q[1-4]|halftime|half|ot)$/i.test(clean(prior?.status)) || clean(prior?.clock) ||
+      (priorScore && (priorScore.away > 0 || priorScore.home > 0));
+    if (!priorActive) continue;
+
+    // Full pages are expensive to render. Revisit partial/final pages often
+    // enough for late-arriving stats, but avoid fetching the same page every
+    // minute when it is already complete.
+    const browserAge = hoursSince(prior?.browserFetchedAt);
+    const priorStats = prior?.statsAvailability || statsAvailability(prior?.stats || []);
+    if (prior?.browserFetchedAt && browserAge < (priorStats.status === 'full' ? 12 : 2) && hasCompleteBoxScore(prior)) continue;
+    candidates.push({ game: { ...game, deseretUrl: directUrl }, key, prior, browserAge });
+  }
+
+  candidates.sort((a, b) => {
+    const aLive = /^(?:live|q[1-4]|halftime|half|ot)$/i.test(clean(a.prior?.status)) ? 0 : 1;
+    const bLive = /^(?:live|q[1-4]|halftime|half|ot)$/i.test(clean(b.prior?.status)) ? 0 : 1;
+    return aLive - bLive || b.browserAge - a.browserAge || String(a.key).localeCompare(String(b.key));
+  });
+
+  const limit = 24;
+  let fetched = 0, failures = 0;
+  for (const candidate of candidates.slice(0, limit)) {
+    try {
+      const html = browserDumpDom(candidate.game.deseretUrl, browserPath);
+      const parsed = parseGameDetails(html, candidate.game);
+      parsed.boxScore = normalizeBrowserBoxScore(parsed.boxScore, candidate.game);
+      details[candidate.key] = mergeBrowserDetail(candidate.prior, parsed, candidate.game);
+      fetched++;
+      const detail = details[candidate.key];
+      console.log(`Deseret browser detail ${candidate.key}: ${detail.status}; box=${detail.boxScore ? 'yes' : 'no'}; plays=${detail.scoringPlays?.length || 0}; statTables=${detail.stats?.length || 0}; stats=${detail.statsAvailability?.status || 'unknown'}`);
+    } catch (error) {
+      failures++;
+      console.warn(`Deseret browser detail failed ${candidate.key}: ${error.message}`);
+    }
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+
+  if (fetched) {
+    const updatedAt = new Date().toISOString();
+    fs.writeFileSync(OUTPUT, JSON.stringify({ updatedAt, games: details }, null, 2) + '\n');
+  }
+  console.log(`Deseret browser game-page details: ${fetched} fetched, ${failures} failures, ${Math.max(0, candidates.length - limit)} deferred by page limit.`);
+}
+
+function detailScoreForBrowser(detail) {
+  const rows = detail?.boxScore?.rows;
+  if (!Array.isArray(rows) || rows.length < 2) return null;
+  const away = Number(rows[0]?.total);
+  const home = Number(rows[1]?.total);
+  return Number.isFinite(away) && Number.isFinite(home) ? { away, home } : null;
+}
+
 if (!fs.existsSync(SOURCE)) {
   console.log(`${SOURCE} not found; skipping Deseret game details.`);
   process.exit(0);
@@ -425,6 +591,11 @@ if (fs.existsSync(OUTPUT)) {
   try { previous = JSON.parse(fs.readFileSync(OUTPUT, 'utf8')); } catch {}
 }
 const details = { ...(previous.games || {}) };
+
+if (process.env.DESERET_BROWSER_ONLY === '1') {
+  await runBrowserOnly(weekly, details, linkIndex);
+  process.exit(0);
+}
 
 let fetched = 0, reusedFinal = 0, deferredStats = 0, skippedFuture = 0, failures = 0;
 for (const game of games) {
