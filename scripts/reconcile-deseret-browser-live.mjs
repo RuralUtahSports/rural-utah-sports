@@ -307,6 +307,7 @@ for (const game of games) {
     changed++;
   }
   detail.scoreSource = 'deseret-browser-live';
+  if (state.final) detail.finalSource = 'deseret-browser-live-final';
   detail.statusSource = state.final ? 'deseret-browser-live-final' : staleHalftime ? 'deseret-browser-live-stale-state-guard' : 'deseret-browser-live';
   console.log(`Browser scoreboard ${key}: ${nextAway}-${nextHome} ${nextState.status}${nextState.clock ? ` ${nextState.clock}` : ''}`);
 }
