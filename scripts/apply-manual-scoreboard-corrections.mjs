@@ -144,7 +144,8 @@ for (const correction of corrections) {
   if (correction.status && !correction.finalScore && detail.final !== true) {
     const nextStatus = clean(correction.status);
     const nextClock = clean(correction.clock);
-    const nextPeriod = clean(correction.period) || nextStatus;
+    const suppliedPeriod = clean(correction.period);
+    const nextPeriod = suppliedPeriod || (/^(?:q[1-4]|halftime|half|ot)$/i.test(nextStatus) ? nextStatus : '');
     if (detail.final || detail.status !== nextStatus || clean(detail.clock) !== nextClock || clean(detail.period) !== nextPeriod) updated++;
     detail.final = false;
     detail.status = nextStatus;
