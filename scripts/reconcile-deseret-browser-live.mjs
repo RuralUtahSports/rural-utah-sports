@@ -65,8 +65,8 @@ function footballText(text) {
   const candidates = [...scope.matchAll(/\bFootball\b/ig)];
   let start = -1;
   for (const match of candidates) {
-    const after = scope.slice(match.index + match[0].length, match.index + match[0].length + 260);
-    if (/\b(?:Live|Final|Upcoming)\b/i.test(after)) {
+    const after = scope.slice(match.index + match[0].length, match.index + match[0].length + 80);
+    if (/^\s*(?:Live|Final|Upcoming)\b/i.test(after)) {
       start = match.index + match[0].length;
       break;
     }
