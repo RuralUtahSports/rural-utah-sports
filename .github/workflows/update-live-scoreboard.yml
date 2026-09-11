@@ -105,10 +105,11 @@ jobs:
             git commit -m "Auto-refresh live scoreboard"
             ok=0
             for attempt in 1 2 3 4; do
-              if git pull --rebase origin main && git push; then
+              if git pull --rebase -X theirs origin main && git push; then
                 ok=1
                 break
               fi
+              git rebase --abort || true
               sleep 5
             done
             if [ "$ok" -ne 1 ]; then exit 1; fi
@@ -143,10 +144,11 @@ jobs:
             git commit -m "Auto-refresh team records"
             ok=0
             for attempt in 1 2 3 4; do
-              if git pull --rebase origin main && git push; then
+              if git pull --rebase -X theirs origin main && git push; then
                 ok=1
                 break
               fi
+              git rebase --abort || true
               sleep 5
             done
             if [ "$ok" -ne 1 ]; then exit 1; fi
@@ -170,7 +172,7 @@ jobs:
         run: |
           for iteration in $(seq 1 240); do
             sleep 60
-            git pull --rebase origin main
+            git pull --rebase -X theirs origin main
             before_finals=$(jq -c '[.games | to_entries[] | select(.value.final == true) | {key: .key, away: .value.boxScore.rows[0].total, home: .value.boxScore.rows[1].total}] | sort_by(.key)' deseret-game-details.json | sha256sum)
             node scripts/enrich-deseret-game-details.mjs
             node scripts/reconcile-deseret-day-status.mjs
@@ -189,7 +191,7 @@ jobs:
             git add deseret-game-details.json deseret-live-details-2026.json standings-2026.json teams-data.json team-page-data
             if ! git diff --cached --quiet; then
               git commit -m "Auto-refresh live scoreboard and team records"
-              git pull --rebase origin main
+              git pull --rebase -X theirs origin main
               git push
             fi
           done
