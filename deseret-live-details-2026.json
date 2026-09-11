@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-11T05:08:16.071Z",
+  "updatedAt": "2026-09-11T05:09:52.914Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -22,34 +22,236 @@
           {
             "team": "WEST",
             "quarters": [
-              null,
-              null,
-              null,
-              null
+              21,
+              21,
+              14,
+              0
             ],
             "total": 56
           },
           {
             "team": "BRIGHTON",
             "quarters": [
-              null,
-              null,
-              null,
-              null
+              0,
+              13,
+              0,
+              0
             ],
             "total": 13
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "West — (8:07 1Q) Monson Vaenuku , 35-yard pass from Kamden Lopati (kick from Dominic Jones )",
+        "West — (7:20 1Q) Mani Tu'uao , 12-yard pass from Kamden Lopati (kick from Dominic Jones )",
+        "West — (1:25 1Q) Naeata Hamilton , 1-yard run (kick from Dominic Jones )",
+        "West — (9:10 2Q) Mani Tu'uao , 31-yard pass from Kamden Lopati (kick from Dominic Jones )",
+        "Brighton — (8:49 2Q) Rodrigo Queiroz , 80-yard pass from Griffin Matsumori (kick from Evan Price )",
+        "West — (4:35 2Q) Derendrick Dixon , 6-yard run (kick from Dominic Jones )",
+        "Brighton — (3:47 2Q) Cole Christensen , 38-yard pass from Griffin Matsumori (kick failed)",
+        "West — (0:57 2Q) Mani Tu'uao , 15-yard run (kick from Dominic Jones )",
+        "West — (9:45 3Q) Lester Falatea , 70-yard punt return (kick from Dominic Jones )",
+        "West — (0:00 3Q) Lester Falatea , 25-yard pass from Kamden Lopati (kick from Dominic Jones )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "WEST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "D. Derendrick Dixon",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "22",
+              "N. Naeata Hamilton",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "1",
+              "M. Mani Tu'uao",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "BRIGHTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "7",
+              "G. Griffin Matsumori",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "WEST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "0",
+              "K. Kamden Lopati",
+              "",
+              "",
+              "",
+              "4",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "BRIGHTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "15",
+              "C. Cole Christensen",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "5",
+              "R. Rodrigo Queiroz",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "WEST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "L. Lester Falatea",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "1",
+              "M. Mani Tu'uao",
+              "",
+              "",
+              "2"
+            ],
+            [
+              "4",
+              "M. Monson Vaenuku",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "BRIGHTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "E. Evan Price",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "WEST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "15",
+              "D. Dominic Jones",
+              "",
+              "8",
+              ""
+            ],
+            [
+              "3",
+              "L. Lester Falatea",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 7,
+        "rows": 13,
+        "coreCells": 24,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 5
       },
       "finalSource": "verified-manual",
       "scoreSource": "verified-manual",
@@ -76,34 +278,226 @@
           {
             "team": "ROY",
             "quarters": [
-              null,
-              null,
-              null,
-              null
+              0,
+              7,
+              6,
+              6
             ],
             "total": 19
           },
           {
-            "team": "BOXELDER",
+            "team": "BOX ELDER",
             "quarters": [
-              null,
-              null,
-              null,
-              null
+              15,
+              3,
+              10,
+              0
             ],
             "total": 28
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Box Elder — (9:34 1Q) Judd Howells , 4-yard run (kick from Tytan Hupp )",
+        "Box Elder — (6:46 1Q) Josh Pugsley , 62-yard pass from Kadyn Reyes (pass from Pierre Pierren )",
+        "Roy — (3:07 2Q) Howie Howard , 4-yard run (kick from Luke Pebley )",
+        "Box Elder — (0:00 2Q) Tytan Hupp , 20-yard FG",
+        "Roy — (5:38 3Q) Juju Teran , 44-yard pass from Gunner Pearson (pass failed)",
+        "Box Elder — (2:02 3Q) Tytan Hupp , 27-yard FG",
+        "Box Elder — (0:08 3Q) Cammon Bushnell , 36-yard pass from Kadyn Reyes (kick from Tytan Hupp )",
+        "Roy — (5:32 4Q) Tyler Dickson , 12-yard pass from Gunner Pearson (pass failed)"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "J. Judd Howells",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "H. Howie Howard",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "BOX ELDER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "16",
+              "K. Kadyn Reyes",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "7",
+              "G. Gunner Pearson",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "BOX ELDER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "C. Cammon Bushnell",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "11",
+              "J. Josh Pugsley",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "12",
+              "T. Tyler Dickson",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "2",
+              "J. Juju Teran",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "BOX ELDER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "19",
+              "T. Tytan Hupp",
+              "2",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "L. Luke Pebley",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 8,
+        "rows": 10,
+        "coreCells": 20,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 6
       },
       "finalSource": "verified-manual",
       "scoreSource": "verified-manual",
@@ -130,34 +524,227 @@
           {
             "team": "JUAB",
             "quarters": [
-              null,
-              null,
-              null,
-              null
+              0,
+              7,
+              0,
+              0
             ],
             "total": 7
           },
           {
             "team": "GRANTSVILLE",
             "quarters": [
-              null,
-              null,
-              null,
-              null
+              0,
+              14,
+              21,
+              7
             ],
             "total": 42
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Grantsville — (9:00 2Q) Beck Mondragon , 23-yard pass from Graeson Warren (kick from Cache Hammond )",
+        "Grantsville — (4:54 2Q) Colt Thomas , 18-yard pass from Graeson Warren (kick from Cache Hammond )",
+        "Juab — (2:33 2Q) Brady Gempeler , 18-yard pass from Price Armstrong (kick from Price Armstrong )",
+        "Grantsville — (11:44 3Q) Dawson Dunlevy , 90-yard kick return (kick from Cache Hammond )",
+        "Grantsville — (7:43 3Q) Graeson Warren , 41-yard run (kick from Cache Hammond )",
+        "Grantsville — (3:57 3Q) Robert Rounds , 95-yard int. return (kick from Cache Hammond )",
+        "Grantsville — (7:39 4Q) Robert Rounds , 40-yard int. return (kick from Cache Hammond )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "GRANTSVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "17",
+              "G. Graeson Warren",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "GRANTSVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "17",
+              "G. Graeson Warren",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "JUAB",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "8",
+              "P. Price Armstrong",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "GRANTSVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "45",
+              "C. Colt Thomas",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "0",
+              "B. Beck Mondragon",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "JUAB",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "5",
+              "B. Brady Gempeler",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "GRANTSVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "51",
+              "C. Cache Hammond",
+              "",
+              "6",
+              ""
+            ],
+            [
+              "22",
+              "D. Dawson Dunlevy",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "JUAB",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "P. Price Armstrong",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "GRANTSVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "R. Robert Rounds",
+              "",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 8,
+        "rows": 10,
+        "coreCells": 19,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 6
       },
       "finalSource": "verified-manual",
       "scoreSource": "verified-manual",
