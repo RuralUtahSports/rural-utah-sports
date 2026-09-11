@@ -1,6 +1,7 @@
 (() => {
   const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20260910-sunday1';
   const LIVE_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-live-details-2026.json';
+  const SUPABASE_DETAILS = 'https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/live-scoreboard';
   const FULL_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
   const WEEKLY_FEED = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/weekly-simulation.json';
   const OUT_OF_STATE_FEED = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/out-of-state-live.json';
@@ -99,6 +100,17 @@
       if (detail) {
         const status = clean(detail.status) || 'Upcoming';
         const score = detailScore(detail);
+        if (detail.final === true && score.hasDes) {
+          return {
+            done: true,
+            away: score.away,
+            home: score.home,
+            status: 'Final',
+            live: false,
+            sheetDone: true,
+            hasDes: true
+          };
+        }
         const live = isLiveDetail(detail) || (detail.final !== true && score.hasDes && (score.away > 0 || score.home > 0));
         if (live) {
           return {
@@ -435,23 +447,49 @@
     }
   }
 
+  async function fetchLivePayload(url) {
+    try {
+      const response = await fetch(`${url}?v=${Date.now()}`, {
+        cache: 'no-store',
+        headers: { Accept: 'application/json' }
+      });
+      if (!response.ok) return null;
+      const payload = await response.json();
+      if (!payload?.games || typeof payload.games !== 'object') return null;
+
+      const entries = Object.entries(payload.games).filter(([, detail]) =>
+        url !== SUPABASE_DETAILS || detail?.source === 'supabase-exact-game-card'
+      );
+      if (!entries.length) return null;
+      return { ...payload, games: Object.fromEntries(entries) };
+    } catch {
+      return null;
+    }
+  }
+
   let syncing = false;
   async function syncLatest() {
-    if (syncing) return;
+    if (syncing) return false;
     syncing = true;
     try {
       await refreshWeeklyFeed();
-      const response = await fetch(`${LIVE_DETAILS}?v=${Date.now()}`, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`live details ${response.status}`);
-      const payload = await response.json();
-      if (!payload?.games) throw new Error('live details payload missing games');
+      const payloads = (await Promise.all(
+        [LIVE_DETAILS, SUPABASE_DETAILS].map(fetchLivePayload)
+      )).filter(Boolean);
+      if (!payloads.length) throw new Error('live details payload unavailable');
+
+      // The compact GitHub feed supplies the history; parsed Supabase cards
+      // are an authoritative overlay for the current games.
+      const liveGames = {};
+      for (const candidate of payloads) {
+        Object.assign(liveGames, candidate.games);
+      }
+      const payload = payloads[payloads.length - 1];
 
       if (typeof detailMap !== 'undefined' && detailMap?.clear) {
         detailMap.clear();
-        // Full-game details are a fallback/base only. The compact live feed is
-        // newer and authoritative for current score/status, so it must win.
         for (const [key, value] of loadedFullDetails) detailMap.set(key, value);
-        for (const [key, value] of Object.entries(payload.games)) detailMap.set(key, value);
+        for (const [key, value] of Object.entries(liveGames)) detailMap.set(key, value);
       }
       if (typeof render === 'function') render();
 
@@ -462,12 +500,16 @@
           ? `Live data ${when.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} • checks every 15 seconds`
           : 'Live scores check every 15 seconds';
       }
+      return true;
     } catch (error) {
       console.warn('Authoritative live scoreboard sync failed', error);
+      return false;
     } finally {
       syncing = false;
     }
   }
+
+  window.RUSScoreboardSync = syncLatest;
 
   (async () => {
     await ensureFullWeeklyFeed();
