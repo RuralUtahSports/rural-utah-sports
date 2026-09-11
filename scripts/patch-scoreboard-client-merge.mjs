@@ -37,13 +37,13 @@ if (fs.existsSync(refreshPath)) {
 if (fs.existsSync(htmlPath)) {
   let html = fs.readFileSync(htmlPath, 'utf8');
   const next = html.replace(
-    /scoreboard-refresh\.js\?v=[^"'\\s]+/g,
+    /scoreboard-refresh\.js\?v=[^"'\s]+/g,
     `scoreboard-refresh.js?v=${CACHE_VERSION}`
   );
   if (next !== html) {
     fs.writeFileSync(htmlPath, next);
     changed = true;
-    console.log('Bumped scoreboard-refresh.js browser cache version to fix3.');
+    console.log('Bumped scoreboard-refresh.js browser cache version.');
   }
 }
 
