@@ -37,6 +37,10 @@ jobs:
 
       - name: Update Deseret box scores, scoring plays and stats
         run: node scripts/enrich-deseret-game-details.mjs
+      - name: Import rendered Deseret game-page box scores
+        env:
+          DESERET_BROWSER_ONLY: '1'
+        run: node scripts/enrich-deseret-game-details.mjs
       - name: Build compact current-window scoreboard details
         run: node scripts/build_live_scoreboard_details.mjs
 
