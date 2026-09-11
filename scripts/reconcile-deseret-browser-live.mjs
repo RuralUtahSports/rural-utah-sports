@@ -176,32 +176,41 @@ if (!games.length) {
 }
 console.log(`Deseret browser live fallback scanning ${games.length} RUS game(s) on ${today}.`);
 
-const url = `${BASE}/high-school/scores-schedule/${today}?region=all&_rus_browser=${Date.now()}`;
-const result = spawnSync(browser, [
-  '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
-  '--virtual-time-budget=12000', '--dump-dom', url
-], { encoding: 'utf8', timeout: 30000, maxBuffer: 12 * 1024 * 1024 });
+const found = new Map();
+for (let attempt = 1; attempt <= 3 && found.size < games.length; attempt++) {
+  const url = `${BASE}/high-school/scores-schedule/${today}?region=all&_rus_browser=${Date.now()}_${attempt}`;
+  const result = spawnSync(browser, [
+    '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
+    '--virtual-time-budget=10000', '--dump-dom', url
+  ], { encoding: 'utf8', timeout: 28000, maxBuffer: 12 * 1024 * 1024 });
 
-if (result.error || result.status !== 0 || !clean(result.stdout)) {
-  console.warn(`Deseret browser live fallback failed: ${result.error?.message || `exit ${result.status}`}`);
-  process.exit(0);
+  if (result.error || result.status !== 0 || !clean(result.stdout)) {
+    console.warn(`Deseret browser live fallback attempt ${attempt} failed: ${result.error?.message || `exit ${result.status}`}`);
+    continue;
+  }
+
+  const pageText = textOf(result.stdout);
+  for (const game of games) {
+    const key = gameKey(game);
+    if (found.has(key)) continue;
+    const match = findGamePair(pageText, game);
+    if (!match) continue;
+    const state = liveStateBefore(pageText, match.pair);
+    if (!state) continue;
+    found.set(key, { game, score: match.score, state });
+  }
+  console.log(`Deseret browser live attempt ${attempt}: matched ${found.size}/${games.length} current game(s).`);
 }
 
-const pageText = textOf(result.stdout);
 let changed = 0;
 for (const game of games) {
-  const match = findGamePair(pageText, game);
-  if (!match) {
-    console.log(`Browser live did not find a scored row for ${gameKey(game)}.`);
+  const key = gameKey(game);
+  const hit = found.get(key);
+  if (!hit) {
+    console.log(`Browser live did not find a scored live row for ${key}.`);
     continue;
   }
-  const state = liveStateBefore(pageText, match.pair);
-  if (!state) {
-    console.log(`Browser live found a score but no live status for ${gameKey(game)}.`);
-    continue;
-  }
-  const score = match.score;
-
+  const { score, state } = hit;
   const detail = ensureDetail(details, game);
   if (detail.final === true) continue;
   const rows = ensureRows(detail, game);
@@ -221,7 +230,7 @@ for (const game of games) {
   }
   detail.scoreSource = 'deseret-browser-live';
   detail.statusSource = 'deseret-browser-live';
-  console.log(`Browser live ${gameKey(game)}: ${score.away}-${score.home} ${state.status}${state.clock ? ` ${state.clock}` : ''}`);
+  console.log(`Browser live ${key}: ${score.away}-${score.home} ${state.status}${state.clock ? ` ${state.clock}` : ''}`);
 }
 
 if (changed) {
