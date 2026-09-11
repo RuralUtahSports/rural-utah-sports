@@ -82,30 +82,6 @@
     return changed;
   }
 
-  async function fetchLatestLiveDetails() {
-    const sources = [
-      `${LIVE_DETAILS_URL}?v=${Date.now()}`,
-      `deseret-game-details.json?v=${Date.now()}`
-    ];
-    const payloads = (await Promise.all(sources.map(async url => {
-      try {
-        const response = await fetch(url, { cache: 'no-store' });
-        if (!response.ok) return null;
-        const payload = await response.json();
-        return payload && payload.games ? payload : null;
-      } catch {
-        return null;
-      }
-    }))).filter(Boolean);
-    if (!payloads.length) throw new Error('Live scoreboard data unavailable');
-    payloads.sort((a, b) => {
-      const bt = Date.parse(String(b.updatedAt || '')) || 0;
-      const at = Date.parse(String(a.updatedAt || '')) || 0;
-      return bt - at;
-    });
-    return payloads[0];
-  }
-
   async function refreshLiveDetails({ announce = false } = {}) {
     if (liveRefreshInFlight) return false;
     liveRefreshInFlight = true;
@@ -115,24 +91,10 @@
     }
 
     try {
-      const payload = await fetchLatestLiveDetails();
-      const updatedAt = String(payload.updatedAt || '');
-      const changed = !lastLiveUpdatedAt || updatedAt !== lastLiveUpdatedAt || !detailMap.size;
-      lastLiveUpdatedAt = updatedAt || lastLiveUpdatedAt;
-
-      if (changed) {
-        detailMap.clear();
-        for (const [key, value] of Object.entries(payload.games || {})) detailMap.set(key, value);
-        const staleFinalsCleared = clearStaleFinalsWhenLive();
-        if (staleFinalsCleared && seasonGames) buildWeekBuckets();
-        render();
+      if (typeof window.RUSScoreboardSync !== 'function') {
+        throw new Error('Authoritative scoreboard sync is not ready');
       }
-
-      const clock = formatLiveUpdatedAt(updatedAt);
-      if (refreshNote) refreshNote.textContent = clock
-        ? `Live data ${clock} • auto-checks every minute`
-        : 'Live scores auto-update every minute';
-      return changed;
+      return Boolean(await window.RUSScoreboardSync());
     } catch (error) {
       console.warn('Live scoreboard refresh failed', error);
       if (refreshNote) refreshNote.textContent = 'Auto-refresh retrying • tap Refresh Scores anytime';
@@ -442,10 +404,6 @@
 
   hydrateScoreboardLogos();
 
-  // The repository's live-score job updates main independently of GitHub Pages.
-  // Read that source directly so an already-open scoreboard does not wait for a Pages deploy.
-  window.addEventListener('load', () => {
-    setTimeout(() => refreshLiveDetails(), 1200);
-    setInterval(() => refreshLiveDetails(), LIVE_REFRESH_MS);
-  }, { once: true });
+  // scoreboard-refresh.js owns the single authoritative live poll.
+  // Keep this helper focused on the week selector, logos, links, and manual button.
 })();
