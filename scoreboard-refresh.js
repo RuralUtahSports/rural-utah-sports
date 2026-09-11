@@ -381,6 +381,61 @@
 
   const loadedFullDetails = new Map();
 
+  function hasDetailValue(value) {
+    return value !== null && value !== undefined && value !== '';
+  }
+
+  function mergeBoxScore(baseBox, overlayBox) {
+    if (!baseBox) return overlayBox || null;
+    if (!overlayBox) return baseBox;
+    const baseRows = Array.isArray(baseBox.rows) ? baseBox.rows : [];
+    const overlayRows = Array.isArray(overlayBox.rows) ? overlayBox.rows : [];
+    if (baseRows.length < 2 || overlayRows.length < 2) return overlayBox || baseBox;
+
+    const rows = baseRows.map((baseRow, rowIndex) => {
+      const overlayRow = overlayRows[rowIndex] || {};
+      const baseQuarters = Array.isArray(baseRow.quarters) ? baseRow.quarters : [];
+      const overlayQuarters = Array.isArray(overlayRow.quarters) ? overlayRow.quarters : [];
+      const quarterCount = Math.max(baseQuarters.length, overlayQuarters.length);
+      const quarters = Array.from({ length: quarterCount }, (_, index) =>
+        hasDetailValue(overlayQuarters[index]) ? overlayQuarters[index] : baseQuarters[index]
+      );
+      return {
+        ...baseRow,
+        ...overlayRow,
+        quarters,
+        total: hasDetailValue(overlayRow.total) ? overlayRow.total : baseRow.total
+      };
+    });
+    return {
+      ...baseBox,
+      ...overlayBox,
+      periods: Array.isArray(baseBox.periods) && baseBox.periods.length ? baseBox.periods : overlayBox.periods,
+      rows
+    };
+  }
+
+  function detailQuality(detail) {
+    const status = clean(detail?.statsAvailability?.status);
+    return status === 'full' ? 3 : status === 'partial' ? 2 : 1;
+  }
+
+  function mergeDetailData(base, overlay) {
+    if (!base) return overlay || null;
+    if (!overlay) return base;
+    const merged = { ...base, ...overlay };
+    merged.boxScore = mergeBoxScore(base.boxScore, overlay.boxScore);
+    for (const field of ['scoringPlays', 'stats']) {
+      if (!Array.isArray(overlay[field]) || !overlay[field].length) merged[field] = base[field] || [];
+    }
+    if ((!overlay.statsAvailability || clean(overlay.statsAvailability.status) === 'unavailable') ||
+        detailQuality(base) > detailQuality(overlay)) {
+      merged.statsAvailability = base.statsAvailability || overlay.statsAvailability;
+      if (Array.isArray(base.stats) && base.stats.length) merged.stats = base.stats;
+    }
+    return merged;
+  }
+
   let fullDetailsPromise = null;
   async function loadFullDetails() {
     if (!fullDetailsPromise) {
@@ -398,15 +453,16 @@
       element.addEventListener('toggle', async () => {
         if (!element.open) return;
         const key = element.dataset.detailKey || '';
-        if (!key || detailMap.has(key)) return;
+        if (!key || loadedFullDetails.has(key)) return;
         const payload = await loadFullDetails();
         const detail = payload?.games?.[key];
         if (!detail) return;
         loadedFullDetails.set(key, detail);
-        detailMap.set(key, detail);
+        const merged = mergeDetailData(detailMap.get(key), detail);
+        detailMap.set(key, merged);
         const body = element.querySelector('.detail-body');
         if (body && typeof boxHtml === 'function') {
-          const content = (boxHtml(detail) || '') + (scoringHtml(detail) || '') + (statsHtml(detail) || '');
+          const content = (boxHtml(merged) || '') + (scoringHtml(merged) || '') + (statsHtml(merged) || '');
           body.innerHTML = content || '<div class="detail-empty">No additional game details were reported.</div>';
         }
       });
@@ -488,8 +544,12 @@
 
       if (typeof detailMap !== 'undefined' && detailMap?.clear) {
         detailMap.clear();
-        for (const [key, value] of loadedFullDetails) detailMap.set(key, value);
-        for (const [key, value] of Object.entries(liveGames)) detailMap.set(key, value);
+        for (const [key, value] of Object.entries(liveGames)) {
+          detailMap.set(key, mergeDetailData(loadedFullDetails.get(key), value));
+        }
+        for (const [key, value] of loadedFullDetails) {
+          if (!detailMap.has(key)) detailMap.set(key, value);
+        }
       }
       if (typeof render === 'function') render();
 
