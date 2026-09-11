@@ -99,7 +99,19 @@ function occurrences(text, names) {
   return out.sort((a, b) => a.index - b.index);
 }
 
-function closestGamePair(text, game) {
+function scoreFromPair(text, pair) {
+  if (!pair) return null;
+  const between = text.slice(pair.a.index + pair.a.length, pair.h.index);
+  if (!/@/.test(between)) return null;
+  const afterRaw = text.slice(pair.h.index + pair.h.length, pair.h.index + pair.h.length + 100);
+  const after = afterRaw.split(/\b(?:Stats|Previous Matchup|Live|Final|Upcoming)\b/i)[0];
+  const awayNums = (between.match(/\b\d{1,3}\b/g) || []).map(Number).filter(n => n >= 0 && n <= 199);
+  const homeNums = (after.match(/\b\d{1,3}\b/g) || []).map(Number).filter(n => n >= 0 && n <= 199);
+  if (!awayNums.length || !homeNums.length) return null;
+  return { away: awayNums[awayNums.length - 1], home: homeNums[0] };
+}
+
+function findGamePair(text, game) {
   const away = occurrences(text, namesFor(game.awayTeam));
   const home = occurrences(text, namesFor(game.homeTeam));
   let best = null;
@@ -107,33 +119,19 @@ function closestGamePair(text, game) {
     for (const h of home) {
       if (h.index <= a.index) continue;
       const gap = h.index - a.index;
-      if (gap > 220) continue;
-      if (!best || gap < best.gap) best = { a, h, gap };
+      if (gap > 240) continue;
+      const pair = { a, h, gap };
+      const score = scoreFromPair(text, pair);
+      if (!score) continue;
+      if (!best || gap < best.pair.gap) best = { pair, score };
     }
   }
   return best;
 }
 
-function scoreFromPair(text, pair) {
-  if (!pair) return null;
-  const between = text.slice(pair.a.index + pair.a.length, pair.h.index)
-    .replace(/\b(?:19|20)\d{2}\b/g, ' ')
-    .replace(/\b\d{1,2}:\d{2}\b/g, ' ');
-  const afterRaw = text.slice(pair.h.index + pair.h.length, pair.h.index + pair.h.length + 150);
-  const after = afterRaw.split(/\b(?:Stats|Previous Matchup|Live|Final|Upcoming)\b/i)[0]
-    .replace(/\b(?:19|20)\d{2}\b/g, ' ')
-    .replace(/\b\d{1,2}:\d{2}\b/g, ' ');
-  const awayNums = [...between.matchAll(/(?:^|[^A-Za-z0-9])(\d{1,3})(?=$|[^A-Za-z0-9])/g)]
-    .map(match => Number(match[1])).filter(n => Number.isInteger(n) && n >= 0 && n <= 199);
-  const homeNums = [...after.matchAll(/(?:^|[^A-Za-z0-9])(\d{1,3})(?=$|[^A-Za-z0-9])/g)]
-    .map(match => Number(match[1])).filter(n => Number.isInteger(n) && n >= 0 && n <= 199);
-  if (!awayNums.length || !homeNums.length) return null;
-  return { away: awayNums[awayNums.length - 1], home: homeNums[0] };
-}
-
 function liveStateBefore(text, pair) {
   if (!pair) return null;
-  const prefix = text.slice(Math.max(0, pair.a.index - 110), pair.a.index);
+  const prefix = text.slice(Math.max(0, pair.a.index - 130), pair.a.index);
   const liveAt = prefix.toLowerCase().lastIndexOf('live');
   if (liveAt < 0) return null;
   const live = prefix.slice(liveAt);
@@ -215,15 +213,14 @@ if (!pageText) {
 
 let changed = 0;
 for (const game of games) {
-  const pair = closestGamePair(pageText, game);
-  if (!pair) continue;
-  const state = liveStateBefore(pageText, pair);
-  if (!state) continue;
-  const score = scoreFromPair(pageText, pair);
-  if (!score) {
-    console.log(`Browser live matched ${gameKey(game)} but no score was reported yet.`);
+  const match = findGamePair(pageText, game);
+  if (!match) {
+    console.log(`Browser live did not find a scored row for ${gameKey(game)}.`);
     continue;
   }
+  const state = liveStateBefore(pageText, match.pair);
+  if (!state) continue;
+  const score = match.score;
 
   const detail = ensureDetail(details, game);
   if (detail.final === true) continue;
