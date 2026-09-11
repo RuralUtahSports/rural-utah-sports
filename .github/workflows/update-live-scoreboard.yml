@@ -86,6 +86,11 @@ jobs:
       - name: Apply verified manual scoreboard corrections
         run: node scripts/apply-manual-scoreboard-corrections.mjs
 
+      # Run the rendered-browser pass last so the broader status repair cannot
+      # overwrite verified finals with a stale Scheduled badge.
+      - name: Reconcile rendered Deseret scoreboard
+        run: node scripts/reconcile-deseret-browser-live.mjs
+
       # Out-of-state kickoff times are discovered during daily-scoreboard
       # reconciliation, so rebuild the compact feed after every reconciliation
       # and correction step before publishing it.
@@ -181,6 +186,9 @@ jobs:
             node scripts/repair-live-status-anomalies.mjs
             node scripts/apply-kickoff-live-fallback.mjs
             node scripts/apply-manual-scoreboard-corrections.mjs
+            # Keep the rendered-browser score/status pass after anomaly repair
+            # so verified finals cannot be demoted on the next minute tick.
+            node scripts/reconcile-deseret-browser-live.mjs
             node scripts/build_live_scoreboard_details.mjs
             after_finals=$(jq -c '[.games | to_entries[] | select(.value.final == true) | {key: .key, away: .value.boxScore.rows[0].total, home: .value.boxScore.rows[1].total}] | sort_by(.key)' deseret-game-details.json | sha256sum)
             if [ "$before_finals" != "$after_finals" ]; then
