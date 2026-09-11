@@ -353,6 +353,20 @@
     }
   }
 
+  function normalizeStatusBadges() {
+    document.querySelectorAll('#board .status').forEach(node => {
+      const raw = clean(node.textContent).replace(/^[\s•]+|[\s•]+$/g, '');
+      if (!raw) return;
+      const parts = raw.split(/\s*•\s*/).map(clean).filter(Boolean);
+      const unique = [];
+      for (const part of parts) {
+        if (!unique.some(value => value.toUpperCase() === part.toUpperCase())) unique.push(part);
+      }
+      const normalized = unique.join(' • ');
+      if (normalized && normalized !== clean(node.textContent)) node.textContent = normalized;
+    });
+  }
+
   const loadedFullDetails = new Map();
 
   let fullDetailsPromise = null;
@@ -394,6 +408,7 @@
     render = function regionAwareRender(...args) {
       removeKnownStaleGames();
       const result = baseRender.apply(this, args);
+      normalizeStatusBadges();
       applyRegionFilter();
       installFullDetailLoading();
       return result;
