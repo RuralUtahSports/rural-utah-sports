@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T01:32:46.891Z",
+  "updatedAt": "2026-09-12T01:35:19.029Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -788,7 +788,8 @@
             ],
             "total": 21
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "South Sevier — (6:32 1Q) Cooper Castle , 79-yard run (kick from Narees DeJesus )",
@@ -903,7 +904,7 @@
       "awayTeam": "WATER CANYON",
       "homeTeam": "ALTAMONT",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/water-canyon-football-football-vs-altamont-football/273688",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -957,8 +958,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Syracuse — (0:00 1Q) Parker Moffat , 15-yard pass from Ledger Wight (kick from Jed Beutler )"
@@ -1077,7 +1077,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Herriman — (11:20 1Q) Max Wilson , 47-yard pass from Bryson Sweeney (kick from Brody Crayk )",
@@ -1188,7 +1189,7 @@
             "team": "BEAVER",
             "quarters": [
               6,
-              null,
+              0,
               null,
               null
             ],
@@ -1198,19 +1199,39 @@
             "team": "MILLARD",
             "quarters": [
               0,
-              null,
+              7,
               null,
               null
             ],
-            "total": 0
+            "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
-        "Beaver — (4:14 1Q) Emmet Lurth , 63-yard pass from Davis Carter (kick failed)"
+        "Beaver — (4:14 1Q) Emmet Lurth , 63-yard pass from Davis Carter (kick failed)",
+        "Millard — (10:47 2Q) Jensen Davies , 4-yard run (kick from Sergio Arellano )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "MILLARD",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "32",
+              "J. Jensen Davies",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "BEAVER",
@@ -1254,15 +1275,35 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "MILLARD",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "S. Sergio Arellano",
+              "",
+              "1",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 6,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
+        "emptyCoreBlocks": 3
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -1304,8 +1345,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Stansbury — (8:19 1Q) Lincoln Reutzel , 15-yard pass from Brighton Reutzel (kick from Seth Wilcox )"
@@ -1417,18 +1457,18 @@
           {
             "team": "AMERICAN FORK",
             "quarters": [
-              8,
+              15,
               null,
               null,
               null
             ],
-            "total": 8
+            "total": 15
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
-        "American Fork — (4:42 1Q) DC Fonua , 10-yard run (pass from Jake Matsen )"
+        "American Fork — (4:42 1Q) DC Fonua , 10-yard run (pass from Jake Matsen )",
+        "American Fork — (0:15 1Q) Noah Behm , 37-yard blocked kick (kick from Jace Worthington )"
       ],
       "stats": [
         {
@@ -1450,15 +1490,57 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "AMERICAN FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "26",
+              "J. Jace Worthington",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "AMERICAN FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "5",
+              "N. Noah Behm",
+              "",
+              "",
+              "",
+              "1"
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 2,
+        "blocks": 3,
+        "rows": 3,
+        "coreCells": 5,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 2
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -1467,7 +1549,7 @@
       "awayTeam": "RIVERTON",
       "homeTeam": "CEDAR VALLEY",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/riverton-football-vs-cedar-valley-football/273569",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -1521,7 +1603,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Bonneville — (8:52 1Q) Polo Afuvai , 42-yard pass from Boston Chipman (kick failed)",
@@ -1661,7 +1744,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "North Sanpete — (5:15 1Q) Trevor Mann , 3-yard run (kick from Gunner Pollock )"
@@ -1739,12 +1823,12 @@
           {
             "team": "RICHFIELD",
             "quarters": [
-              21,
+              35,
               null,
               null,
               null
             ],
-            "total": 28
+            "total": 35
           },
           {
             "team": "CARBON",
@@ -1756,13 +1840,14 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Richfield — (11:36 1Q) Trey Yardley , 60-yard run (kick from Sam Gonzolez )",
         "Richfield — (9:27 1Q) Colton White , 30-yard pass from Cordon White (kick from Sam Gonzolez )",
-        "Richfield — (6:56 1Q) Trey Yardley , 15-yard pass from Cordon White (kick from Sam Gonzolez )"
+        "Richfield — (6:56 1Q) Trey Yardley , 15-yard pass from Cordon White (kick from Sam Gonzolez )",
+        "Richfield — (3:14 1Q) Porter White , 48-yard run (kick from Sam Gonzolez )",
+        "Richfield — (1:36 1Q) Nash Spell , 20-yard pass from Cordon White (kick from Sam Gonzolez )"
       ],
       "stats": [
         {
@@ -1776,6 +1861,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "35",
+              "P. Porter White",
+              "",
+              "",
+              "1"
+            ],
             [
               "3",
               "T. Trey Yardley",
@@ -1804,7 +1896,7 @@
               "",
               "",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -1820,6 +1912,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "84",
+              "N. Nash Spell",
+              "",
+              "",
+              "1"
+            ],
             [
               "8",
               "C. Colton White",
@@ -1851,7 +1950,7 @@
               "26",
               "S. Sam Gonzolez",
               "",
-              "3",
+              "5",
               ""
             ]
           ]
@@ -1860,8 +1959,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 4,
-        "rows": 5,
-        "coreCells": 10,
+        "rows": 7,
+        "coreCells": 14,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
@@ -1889,7 +1988,7 @@
             "team": "CEDAR CITY",
             "quarters": [
               7,
-              null,
+              0,
               null,
               null
             ],
@@ -1899,20 +1998,40 @@
             "team": "MANTI",
             "quarters": [
               7,
-              null,
+              7,
               null,
               null
             ],
-            "total": 7
+            "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Cedar City — (7:28 1Q) Kutler Tom , 80-yard pass from Jackson Mann (kick from Cody Stevenson )",
-        "Manti — (2:17 1Q) Hudson Crane , 10-yard pass from Isaiah Wright (kick from Tyler Steinfeldt )"
+        "Manti — (2:17 1Q) Hudson Crane , 10-yard pass from Isaiah Wright (kick from Tyler Steinfeldt )",
+        "Manti — (8:55 2Q) Stetson Thomson , 20-yard run (kick from Tyler Steinfeldt )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "MANTI",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "S. Stetson Thomson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "MANTI",
@@ -2016,7 +2135,7 @@
               "9",
               "T. Tyler Steinfeldt",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -2044,11 +2163,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 6,
-        "rows": 6,
-        "coreCells": 12,
+        "blocks": 7,
+        "rows": 7,
+        "coreCells": 14,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
+        "emptyCoreBlocks": 5
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -2090,7 +2209,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Fremont — (4:37 1Q) Isaia Fonotisatele , 25-yard int. return (kick from Daxton Shupe )"
@@ -2187,7 +2307,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Mountain Ridge — (8:16 1Q) Tytan DeJong , 5-yard pass from Jaxon Hunt (run failed)",
@@ -2290,7 +2411,7 @@
       "awayTeam": "HURRICANE",
       "homeTeam": "CRIMSON CLIFFS",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/hurricane-football-vs-crimson-cliffs-football/273495",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -2344,7 +2465,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Murray — (10:18 1Q) Mckade Eardley , 4-yard run (kick from Anthony Guerra )",
@@ -2524,7 +2646,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Cyprus — (7:15 1Q) Gafa Fanene , 37-yard fumble recovery (kick successful)"
@@ -2738,8 +2861,7 @@
             ],
             "total": 3
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Davis — (8:49 1Q) Griffin Carmack , 25-yard FG"
@@ -2814,7 +2936,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Green Canyon — (5:36 1Q) Samuel Selman , 2-yard run (kick from Boston Daines )",
@@ -2910,7 +3033,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Pine View — (11:18 1Q) Carter Buchanan , 73-yard pass from Coy Doman (kick failed)",
@@ -3018,7 +3142,7 @@
       "awayTeam": "DESERT HILLS",
       "homeTeam": "SNOW CANYON",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/desert-hills-football-vs-snow-canyon-football/273484",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -3051,7 +3175,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [],
       "stats": [],
@@ -3102,7 +3227,8 @@
             ],
             "total": 6
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Duchesne — (9:04 2Q) Kyson Despain , 1-yard run (kick failed)"
@@ -3177,7 +3303,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Highland — (8:01 1Q) Zamiri Vaughn , 41-yard pass from Will Bauman (kick from Willem Miles )",
@@ -3299,16 +3426,70 @@
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "OGDEN",
+            "quarters": [
+              8,
+              null,
+              null,
+              null
+            ],
+            "total": 8
+          },
+          {
+            "team": "EMERY",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Ogden — (1:40 1Q) Jack Thompson , 53-yard run (run from Jack Thompson )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "OGDEN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "J. Jack Thompson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 1,
+        "rows": 1,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 1
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|WOODSCROSS|FARMINGTON": {
       "date": "09/11/2026",
@@ -3348,7 +3529,8 @@
             ],
             "total": 10
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Woods Cross — (5:54 1Q) Archer Gale , 19-yard FG",
@@ -3510,7 +3692,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Gunnison Valley — (9:32 2Q) Chance Hammond , 24-yard run (kick from Edrick Salas )"
@@ -3605,8 +3788,7 @@
             ],
             "total": 8
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Hunter — (7:15 1Q) Abbas Aweis , 11-yard pass from Sione \"Isi\" Moungaafi (run from Ryder Paea )",
@@ -3717,7 +3899,7 @@
       "awayTeam": "JUAN DIEGO",
       "homeTeam": "JORDAN",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/juan-diego-football-vs-jordan-football/273757",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -3771,7 +3953,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Union — (3:57 1Q) Cruz Labrum , 4-yard run (kick from Kaden Womack )"
@@ -3866,7 +4049,8 @@
             ],
             "total": 10
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Kanab — (10:52 1Q) Kaleb Warner , 8-yard run (kick from Ray Capson )",
@@ -3970,7 +4154,7 @@
       "awayTeam": "LAYTON CHRISTIAN",
       "homeTeam": "VIEWMONT",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/layton-christian-football-vs-viewmont-football/273448",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -4024,7 +4208,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Lone Peak — (11:44 1Q) Krew Robinson , 99-yard kick return (kick from Dean Zolman )"
@@ -4106,7 +4291,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Weber — (8:07 1Q) Creed Devries , 25-yard pass from Carter Payne (kick from Zach Jenkins )",
@@ -4246,7 +4432,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Logan — (7:41 1Q) Mason Birch , 1-yard run (pass from Easton Favero )"
@@ -4321,8 +4508,7 @@
             ],
             "total": 6
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Maple Mountain — (3:50 1Q) Israel Vaenuku , 27-yard FG",
@@ -4365,7 +4551,7 @@
       "awayTeam": "MONUMENT VAL",
       "homeTeam": "UMA-LEHI",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/monument-valley-football-vs-utah-military-camp-williams-football-football/274422",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -4464,7 +4650,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Provo — (4:15 1Q) Liam Schoenrock , 11-yard pass from Ryker Carson (kick from Cannon Brinley )",
@@ -4597,26 +4784,92 @@
           {
             "team": "RICH",
             "quarters": [
-              0,
+              7,
               null,
               null,
               null
             ],
-            "total": 0
+            "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
-        "North Sevier — (7:00 1Q) run (kick successful)"
+        "North Sevier — (7:00 1Q) run (kick successful)",
+        "Rich — (1:54 1Q) Paxton Nicolodemos , 15-yard pass from Wilkes Weston (kick from Paxton Nicolodemos )"
       ],
-      "stats": [],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "RICH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "4",
+              "W. Wilkes Weston",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "RICH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "5",
+              "P. Paxton Nicolodemos",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "RICH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "5",
+              "P. Paxton Nicolodemos",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 3,
+        "rows": 3,
+        "coreCells": 6,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 2
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -4651,20 +4904,40 @@
           {
             "team": "OREM",
             "quarters": [
-              7,
+              14,
               null,
               null,
               null
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
-        "Orem — (10:33 1Q) Brooks Ross , 37-yard pass from Tanner Lewis (kick from Adrian Sanchez )"
+        "Orem — (10:33 1Q) Brooks Ross , 37-yard pass from Tanner Lewis (kick from Adrian Sanchez )",
+        "Orem — (0:07 1Q) Beckham Curtis , 4-yard run (kick from Adrian Sanchez )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "OREM",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "B. Beckham Curtis",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "OREM",
@@ -4724,7 +4997,7 @@
               "25",
               "A. Adrian Sanchez",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -4732,11 +5005,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
-        "coreCells": 6,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
+        "emptyCoreBlocks": 3
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -4745,7 +5018,7 @@
       "awayTeam": "PANGUITCH",
       "homeTeam": "WHITEHORSE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/panguitch-football-vs-whitehorse-football/273639",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -4895,8 +5168,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Springville — (9:52 1Q) Treyton Harris , 16-yard run (kick from Pheonix Marks )"
@@ -4991,7 +5263,8 @@
             ],
             "total": 21
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Ridgeline — (12:00 1Q) Hudson Parry , 99-yard kick return (kick from Hayden Miller )",
@@ -5123,7 +5396,7 @@
             "team": "SOUTH SUMMIT",
             "quarters": [
               14,
-              null,
+              0,
               null,
               null
             ],
@@ -5133,14 +5406,13 @@
             "team": "SAN JUAN",
             "quarters": [
               7,
-              null,
+              6,
               null,
               null
             ],
-            "total": 7
+            "total": 13
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "San Juan — (9:22 1Q) Quincy Singer , 5-yard pass from Beau Yeomans (kick from Luke Jeppesen )",
@@ -5308,8 +5580,7 @@
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Skyridge — (3:46 1Q) Beckham Bennett , 31-yard run (kick from Evan Kopp )",
@@ -5449,7 +5720,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Wasatch — (8:24 1Q) Aksel Wheeler , 14-yard run (kick successful)"
@@ -5517,24 +5789,24 @@
           {
             "team": "UINTAH",
             "quarters": [
-              7,
+              13,
               null,
               null,
               null
             ],
             "total": 13
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Uintah — (4:48 1Q) Keston Kunkel , 1-yard run (kick from Colton Van Wagoner )",
-        "Deer Creek — (2;57 1Q) Logan Duncan , 4-yard pass from Kai Betsinger (kick failed)"
+        "Deer Creek — (2;57 1Q) Logan Duncan , 4-yard pass from Kai Betsinger (kick failed)",
+        "Uintah — (2:32 1Q) Brody Murray , 10-yard pass from Landon Woods (run failed)"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "DEER CREEK",
+          "team": "UINTAH",
           "headers": [
             "NO",
             "PLAYER",
@@ -5549,6 +5821,30 @@
               "",
               "",
               "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "UINTAH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "18",
+              "L. Landon Woods",
+              "",
+              "",
+              "",
+              "1",
+              ""
             ]
           ]
         },
@@ -5573,6 +5869,26 @@
               "",
               "1",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "UINTAH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "13",
+              "B. Brody Murray",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -5619,11 +5935,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 4,
-        "coreCells": 8,
+        "blocks": 6,
+        "rows": 6,
+        "coreCells": 14,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 5
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -5632,7 +5948,7 @@
       "awayTeam": "MILFORD",
       "homeTeam": "LINCOLN COUNTY, NV",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/milford-football-vs-lincoln-county-nev-football/274428",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
