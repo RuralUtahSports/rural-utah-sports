@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T03:16:18.516Z",
+  "updatedAt": "2026-09-12T03:19:08.545Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -1001,8 +1001,7 @@
             ],
             "total": 8
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [],
       "stats": [],
@@ -1021,8 +1020,8 @@
       "awayTeam": "ALTA",
       "homeTeam": "SYRACUSE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/alta-football-vs-syracuse-football/274394",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -1223,6 +1222,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|BINGHAM|HERRIMAN": {
@@ -1249,7 +1249,7 @@
               0,
               0,
               0,
-              null
+              0
             ],
             "total": 0
           },
@@ -1259,12 +1259,11 @@
               14,
               13,
               14,
-              null
+              3
             ],
-            "total": 41
+            "total": 44
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Herriman — (11:20 1Q) Max Wilson , 47-yard pass from Bryson Sweeney (kick from Brody Crayk )",
@@ -1272,7 +1271,8 @@
         "Herriman — (6:26 2Q) Filisi Filipe , 26-yard pass from Bryson Sweeney (kick from Brody Crayk )",
         "Herriman — (0:05 2Q) Filisi Filipe , 19-yard pass from Bryson Sweeney (kick failed)",
         "Herriman — (10:19 3Q) Filisi Filipe , 44-yard run (kick from Brody Crayk )",
-        "Herriman — (8:40 3Q) Filisi Filipe , 2-yard run (kick from Brody Crayk )"
+        "Herriman — (8:40 3Q) Filisi Filipe , 2-yard run (kick from Brody Crayk )",
+        "Herriman — (4:25 4Q) Brody Crayk , 27-yard FG"
       ],
       "stats": [
         {
@@ -1367,7 +1367,7 @@
             [
               "39",
               "B. Brody Crayk",
-              "",
+              "1",
               "5",
               ""
             ]
@@ -2581,7 +2581,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Richfield — (11:36 1Q) Trey Yardley , 60-yard run (kick from Sam Gonzolez )",
@@ -2755,7 +2756,8 @@
             ],
             "total": 28
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Cedar City — (7:28 1Q) Kutler Tom , 80-yard pass from Jackson Mann (kick from Cody Stevenson )",
@@ -3236,7 +3238,7 @@
               13,
               23,
               7,
-              null
+              0
             ],
             "total": 43
           },
@@ -3246,12 +3248,11 @@
               0,
               0,
               0,
-              null
+              7
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Mountain Ridge — (8:16 1Q) Tytan DeJong , 5-yard pass from Jaxon Hunt (run failed)",
@@ -3259,12 +3260,13 @@
         "Mountain Ridge — (9:34 2Q) Tytan DeJong , 6-yard pass from Jaxon Hunt (run from Jaxon Hunt )",
         "Mountain Ridge — (7:40 2Q) Tyson Dunn , 6-yard run (pass from Jaxon Hunt )",
         "Mountain Ridge — (5:40 2Q) Marshall West , 3-yard pass from Jaxon Hunt (kick from Will O'Neil )",
-        "Mountain Ridge — (4:09 3Q) Xander Thayer , 4-yard run (kick from Will O'Neil )"
+        "Mountain Ridge — (4:09 3Q) Xander Thayer , 4-yard run (kick from Will O'Neil )",
+        "Copper Hills — (1:00 4Q) Ishmael Duffus , 24-yard pass from Grayson Hill (kick from Lincoln Anderson )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "MOUNTAIN RIDGE",
+          "team": "COPPER HILLS",
           "headers": [
             "NO",
             "PLAYER",
@@ -3286,6 +3288,30 @@
               "",
               "",
               "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "COPPER HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "80",
+              "G. Grayson Hill",
+              "",
+              "",
+              "",
+              "1",
+              ""
             ]
           ]
         },
@@ -3319,6 +3345,26 @@
               "",
               "3",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "COPPER HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "12",
+              "I. Ishmael Duffus",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -3358,6 +3404,26 @@
         },
         {
           "category": "Special Teams",
+          "team": "COPPER HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "32",
+              "L. Lincoln Anderson",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
           "team": "MOUNTAIN RIDGE",
           "headers": [
             "NO",
@@ -3379,11 +3445,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 8,
-        "coreCells": 18,
+        "blocks": 7,
+        "rows": 11,
+        "coreCells": 24,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 5
       },
       "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
@@ -3544,7 +3610,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Murray — (10:18 1Q) Mckade Eardley , 4-yard run (kick from Anthony Guerra )",
@@ -4086,8 +4153,7 @@
             ],
             "total": 31
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Davis — (8:49 1Q) Griffin Carmack , 25-yard FG",
@@ -4252,9 +4318,9 @@
               10,
               16,
               0,
-              null
+              7
             ],
-            "total": 26
+            "total": 33
           },
           {
             "team": "DESERET PEAK",
@@ -4262,12 +4328,11 @@
               0,
               0,
               7,
-              null
+              0
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Green Canyon — (5:36 1Q) Samuel Selman , 2-yard run (kick from Boston Daines )",
@@ -4275,12 +4340,13 @@
         "Green Canyon — (7:40 2Q) Tagg Rainey , 27-yard pass from Ethan Munk (kick from Boston Daines )",
         "Green Canyon — (4:54 2Q) 14-yard run (kick failed)",
         "Green Canyon — (0:05 2Q) Boston Daines , 28-yard FG",
-        "Deseret Peak — (2;23 3Q) Karter Stroyek , 16-yard pass from Andrew Harris (kick from Karter Stroyek )"
+        "Deseret Peak — (2;23 3Q) Karter Stroyek , 16-yard pass from Andrew Harris (kick from Karter Stroyek )",
+        "Green Canyon — (2:21 4Q) Samuel Selman , 25-yard run (kick from Boston Daines )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "DESERET PEAK",
+          "team": "GREEN CANYON",
           "headers": [
             "NO",
             "PLAYER",
@@ -4294,7 +4360,7 @@
               "S. Samuel Selman",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -4421,7 +4487,7 @@
               "82",
               "B. Boston Daines",
               "2",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -4474,9 +4540,10 @@
               0,
               null
             ],
-            "total": 21
+            "total": 28
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Pine View — (11:18 1Q) Carter Buchanan , 73-yard pass from Coy Doman (kick failed)",
@@ -5076,7 +5143,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Highland — (8:01 1Q) Zamiri Vaughn , 41-yard pass from Will Bauman (kick from Willem Miles )",
@@ -5221,10 +5289,10 @@
             "quarters": [
               8,
               14,
-              7,
-              null
+              14,
+              7
             ],
-            "total": 36
+            "total": 43
           },
           {
             "team": "EMERY",
@@ -5232,19 +5300,20 @@
               0,
               7,
               0,
-              null
+              0
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Ogden — (1:40 1Q) Jack Thompson , 53-yard run (run from Jack Thompson )",
         "Ogden — (9:07 2Q) Matt Thompson , 16-yard run (kick from Colton Rasmussen )",
         "Emery — (1:57 2Q) Heath Lupo , 3-yard run (kick from Corbyn Ward )",
         "Ogden — (0:56 2Q) Matt Thompson , 42-yard pass from Emmett Rector (kick from Colton Rasmussen )",
-        "Ogden — (5:33 3Q) Blake Weston , 14-yard pass from Emmett Rector (kick from Colton Rasmussen )"
+        "Ogden — (5:33 3Q) Blake Weston , 14-yard pass from Emmett Rector (kick from Colton Rasmussen )",
+        "Ogden — (1:49 3Q) Anderson Curry , 3-yard run (kick from Colton Rasmussen )",
+        "Ogden — (7:08 j4Q) Ryker Rice , 1-yard run (kick from Colton Rasmussen )"
       ],
       "stats": [
         {
@@ -5278,6 +5347,20 @@
             "TD"
           ],
           "rows": [
+            [
+              "10",
+              "R. Ryker Rice",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "4",
+              "A. Anderson Curry",
+              "",
+              "",
+              "1"
+            ],
             [
               "18",
               "M. Matt Thompson",
@@ -5380,7 +5463,7 @@
               "21",
               "C. Colton Rasmussen",
               "",
-              "3",
+              "5",
               ""
             ]
           ]
@@ -5389,8 +5472,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 6,
-        "rows": 8,
-        "coreCells": 14,
+        "rows": 10,
+        "coreCells": 18,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
@@ -5814,7 +5897,8 @@
             ],
             "total": 16
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Hunter — (7:15 1Q) Abbas Aweis , 11-yard pass from Sione \"Isi\" Moungaafi (run from Ryder Paea )",
@@ -6022,7 +6106,7 @@
               0,
               0,
               7,
-              null
+              0
             ],
             "total": 7
           },
@@ -6032,12 +6116,11 @@
               0,
               0,
               27,
-              null
+              7
             ],
-            "total": 27
+            "total": 34
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [],
       "stats": [],
@@ -6720,8 +6803,8 @@
       "awayTeam": "LEHI",
       "homeTeam": "WEBER",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/lehi-football-vs-weber-football/274389",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -6753,7 +6836,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Weber — (8:07 1Q) Creed Devries , 25-yard pass from Carter Payne (kick from Zach Jenkins )",
@@ -6930,6 +7014,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|LOGAN|PROVIDENCEHALL": {
@@ -6955,7 +7040,7 @@
             "quarters": [
               8,
               48,
-              7,
+              14,
               null
             ],
             "total": 70
@@ -6965,13 +7050,12 @@
             "quarters": [
               0,
               0,
-              0,
+              7,
               null
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Logan — (7:41 1Q) Mason Birch , 1-yard run (pass from Easton Favero )",
@@ -6982,7 +7066,9 @@
         "Logan — (2:26 2Q) Trey Covington , 10-yard pass from Easton Favero (run failed)",
         "Logan — (0:54 2Q) Jase Pingree , 57-yard pass from Easton Favero (kick from Mason Birch )",
         "Logan — (0:30 2Q) Ethan Carson , 37-yard int. return (kick from Mason Birch )",
-        "Logan — (11:16 3Q) Jase Pingree , 92-yard kick return (kick from Mason Birch )"
+        "Logan — (11:16 3Q) Jase Pingree , 92-yard kick return (kick from Mason Birch )",
+        "Providence Hall — (6:15 3Q) Beau Mousley , 63-yard pass from Ty Evans (kick from Owen Mortensen )",
+        "Logan — (2:45 3Q) Mason Birch , 1-yard run (kick from Mason Birch )"
       ],
       "stats": [
         {
@@ -7001,7 +7087,31 @@
               "M. Mason Birch",
               "",
               "",
-              "2"
+              "3"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "PROVIDENCE HALL",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "1",
+              "T. Ty Evans",
+              "",
+              "",
+              "",
+              "1",
+              ""
             ]
           ]
         },
@@ -7026,6 +7136,26 @@
               "",
               "4",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "PROVIDENCE HALL",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "24",
+              "B. Beau Mousley",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -7065,6 +7195,26 @@
         },
         {
           "category": "Special Teams",
+          "team": "PROVIDENCE HALL",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "54",
+              "O. Owen Mortensen",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
           "team": "LOGAN",
           "headers": [
             "NO",
@@ -7078,7 +7228,7 @@
               "11",
               "M. Mason Birch",
               "",
-              "7",
+              "8",
               ""
             ],
             [
@@ -7123,11 +7273,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 5,
-        "rows": 9,
-        "coreCells": 18,
+        "blocks": 8,
+        "rows": 12,
+        "coreCells": 24,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
+        "emptyCoreBlocks": 6
       },
       "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
@@ -7156,7 +7306,7 @@
               0,
               14,
               0,
-              null
+              0
             ],
             "total": 14
           },
@@ -7166,9 +7316,9 @@
               6,
               0,
               10,
-              null
+              6
             ],
-            "total": 16
+            "total": 22
           }
         ]
       },
@@ -7178,12 +7328,33 @@
         "Payson — (8:06 2Q) Valentin Sanchez , 17-yard pass from Trevor Robinson (kick from Bronx Newbury )",
         "Payson — (0:24 2Q) Carson Wall , 2-yard pass from Trevor Robinson (kick from Bronx Newbury )",
         "Maple Mountain — (8:07 3Q) Israel Vaenuku , 47-yard FG",
-        "Maple Mountain — (7:29 3Q) Israel Vaenuku , 35-yard fumble recovery (kick from Israel Vaenuku )"
+        "Maple Mountain — (7:29 3Q) Israel Vaenuku , 35-yard fumble recovery (kick from Israel Vaenuku )",
+        "Maple Mountain — (11:07 4Q) Kyren Jones , 6-yard run (run failed)"
       ],
       "stats": [
         {
-          "category": "Passing",
+          "category": "Rushing",
           "team": "MAPLE MOUNTAIN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "K. Kyren Jones",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "PAYSON",
           "headers": [
             "NO",
             "PLAYER",
@@ -7297,11 +7468,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 5,
-        "rows": 6,
-        "coreCells": 11,
+        "blocks": 6,
+        "rows": 7,
+        "coreCells": 13,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 4
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -7364,7 +7535,8 @@
             ],
             "total": 20
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Sky View — (8:06 1Q) Jordan Hoyt , 47-yard FG",
@@ -8306,7 +8478,7 @@
               3,
               8
             ],
-            "total": 27
+            "total": 34
           },
           {
             "team": "PLEASANT GROVE",
@@ -8462,7 +8634,8 @@
             ],
             "total": 62
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Ridgeline — (12:00 1Q) Hudson Parry , 99-yard kick return (kick from Hayden Miller )",
@@ -8639,9 +8812,9 @@
               14,
               7,
               0,
-              null
+              7
             ],
-            "total": 21
+            "total": 28
           },
           {
             "team": "SAN JUAN",
@@ -8649,12 +8822,11 @@
               7,
               24,
               14,
-              null
+              0
             ],
             "total": 45
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "San Juan — (9:22 1Q) Quincy Singer , 5-yard pass from Beau Yeomans (kick from Luke Jeppesen )",
@@ -8667,12 +8839,13 @@
         "San Juan — (3:00 2Q) Beau Yeomans , 15-yard run (pass failed)",
         "South Summit — (0:44 2Q) Jesse Clegg , 15-yard pass from Ian Mair (kick from Smoot )",
         "San Juan — (9:26 3Q) Brigg Palmer , 7-yard run (kick from Luke Jeppesen )",
-        "San Juan — (5:57 3Q) Brigg Palmer , 30-yard run (kick from Luke Jeppesen )"
+        "San Juan — (5:57 3Q) Brigg Palmer , 30-yard run (kick from Luke Jeppesen )",
+        "South Summit — (10:33 4Q) Brody Larsen , 5-yard run (kick from Smoot )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "SAN JUAN",
+          "team": "SOUTH SUMMIT",
           "headers": [
             "NO",
             "PLAYER",
@@ -8713,7 +8886,7 @@
               "B. Brody Larsen",
               "",
               "",
-              "1"
+              "2"
             ],
             [
               "3",
@@ -8861,7 +9034,7 @@
               "20",
               ". Smoot",
               "",
-              "3",
+              "4",
               ""
             ]
           ]
