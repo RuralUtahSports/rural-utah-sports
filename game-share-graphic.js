@@ -93,9 +93,14 @@
       return quarters;
     });
     if(missingFirst)periods.unshift('Q1');
-    if(values.some((v,i)=>v.length<4||v.some(n=>n===null||n<0)||v.reduce((a,b)=>a+b,0)!==totals[i]))return null;
-    const count=Math.max(...values.map(v=>v.length));
-    if(values.some(v=>v.length!==count))return null;
+    // Keep reported quarters visible when a period was not played or reported.
+    if(values.every(v=>v.every(n=>n===null)))return null;
+    const count=Math.max(4,periods.length,...values.map(v=>v.length));
+    values.forEach(v=>{while(v.length<count)v.push(null)});
+    if(values.some((v,i)=>{
+      const reported=v.filter(n=>n!==null),sum=reported.reduce((a,b)=>a+b,0);
+      return reported.some(n=>n<0)||sum>totals[i]||(!v.includes(null)&&sum!==totals[i]);
+    }))return null;
     while(periods.length<count)periods.push(periods.length<4?'Q'+(periods.length+1):periods.length===4?'OT':(periods.length-3)+' OT');
     if(periods.length!==count)return null;
     return{periods,rows:values};
@@ -110,7 +115,7 @@
     [data.away,data.home].forEach((name,i)=>{
       const ry=y+(80+i*30)*s;
       ctx.textAlign='left';ctx.fillStyle='#fff';fitText(ctx,name,nameW-32*s,18*s,12*s);ctx.fillText(name,x+24*s,ry);
-      [...box.rows[i],i?data.actualHome:data.actualAway].forEach((n,j)=>{ctx.textAlign='center';ctx.fillStyle=j===box.periods.length?ORANGE:'#fff';ctx.font=`900 ${19*s}px Arial`;ctx.fillText(String(n),x+nameW+cellW*(j+.5),ry)});
+      [...box.rows[i],i?data.actualHome:data.actualAway].forEach((n,j)=>{ctx.textAlign='center';ctx.fillStyle=j===box.periods.length?ORANGE:'#fff';ctx.font=`900 ${19*s}px Arial`;ctx.fillText(n===null?'-':String(n),x+nameW+cellW*(j+.5),ry)});
     });
   }
 
