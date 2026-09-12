@@ -48,7 +48,10 @@ jobs:
           for(const a of d.alerts){
             if(!['player','team'].includes(a.recordType)) throw new Error('Bad recordType');
             if(!['school','statewide','uhsaa'].includes(a.scope)) throw new Error('Bad scope');
-            if(!(Number(a.value)>Number(a.previousValue))) throw new Error('Alert does not beat previous record');
+            if(a.teamHistoryRank){
+              if(!Number.isInteger(Number(a.historyRank)) || Number(a.historyRank)<1 || Number(a.historyRank)>5) throw new Error('Bad team-history rank');
+              if(!Number.isFinite(Number(a.value))) throw new Error('Team-history alert missing value');
+            }else if(!(Number(a.value)>Number(a.previousValue))) throw new Error('Alert does not beat previous record');
             if(a.uhsaaWatch){
               if(!(Number(a.value)>Number(a.uhsaaListedValue))) throw new Error('UHSAA watch does not exceed listed mark');
               if(!a.uhsaaSourceUrl) throw new Error('UHSAA watch missing source URL');
