@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T03:27:16.381Z",
+  "updatedAt": "2026-09-12T03:28:43.253Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -755,8 +755,8 @@
       "awayTeam": "ALA",
       "homeTeam": "SOUTH SEVIER",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/american-leadership-football-vs-south-sevier-football/273701",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -961,6 +961,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|WATERCANYON|ALTAMONT": {
@@ -1609,8 +1610,8 @@
       "awayTeam": "STANSBURY",
       "homeTeam": "BEAR RIVER",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/stansbury-football-vs-bear-river-football/273566",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -1642,7 +1643,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Stansbury — (8:19 1Q) Lincoln Reutzel , 15-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
@@ -1813,6 +1815,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|LAYTON|AMERICANFORK": {
@@ -2744,7 +2747,7 @@
               7,
               7
             ],
-            "total": 35
+            "total": 38
           },
           {
             "team": "MANTI",
@@ -3481,7 +3484,7 @@
               0,
               0
             ],
-            "total": 3
+            "total": 11
           },
           {
             "team": "CRIMSON CLIFFS",
@@ -3803,7 +3806,7 @@
               7,
               0,
               7,
-              null
+              0
             ],
             "total": 14
           },
@@ -3813,9 +3816,9 @@
               7,
               0,
               3,
-              null
+              7
             ],
-            "total": 10
+            "total": 17
           }
         ]
       },
@@ -3823,9 +3826,30 @@
         "Cyprus — (7:15 1Q) Gafa Fanene , 37-yard fumble recovery (kick successful)",
         "West Jordan — (1:50 1Q) Lexen Rivera , 23-yard pass from Kenyon Shockey (kick from Dominic Pettersson )",
         "Cyprus — (6:35 3Q) 21-yard FG",
-        "West Jordan — (2;11 3Q) Gauge Eaton , 17-yard pass from Kenyon Shockey (kick from Dominic Pettersson )"
+        "West Jordan — (2:11 3Q) Gauge Eaton , 17-yard pass from Kenyon Shockey (kick from Dominic Pettersson )",
+        "Cyprus — (7:41 4Q) Bentley Lowe , 8-yard run (kick successful)"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "CYPRUS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "28",
+              "B. Bentley Lowe",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Passing",
           "team": "WEST JORDAN",
@@ -3922,11 +3946,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 5,
-        "coreCells": 11,
+        "blocks": 5,
+        "rows": 6,
+        "coreCells": 13,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 4
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -5490,8 +5514,8 @@
       "awayTeam": "WOODS CROSS",
       "homeTeam": "FARMINGTON",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/woods-cross-football-vs-farmington-football/273752",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -5685,6 +5709,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|TAYLORSVILLE|GRANGER": {
@@ -5692,8 +5717,8 @@
       "awayTeam": "TAYLORSVILLE",
       "homeTeam": "GRANGER",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/taylorsville-football-vs-granger-football/274380",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -5725,7 +5750,8 @@
             ],
             "total": 49
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [],
       "stats": [],
@@ -5736,6 +5762,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|GUNNISONVALLEY|PAROWAN": {
@@ -5869,8 +5896,8 @@
       "awayTeam": "HILLCREST",
       "homeTeam": "HUNTER",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/hillcrest-football-vs-hunter-football/273763",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -5900,7 +5927,7 @@
               8,
               0
             ],
-            "total": 16
+            "total": 22
           }
         ],
         "source": "deseret-browser-live"
@@ -6085,6 +6112,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 6
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|JUANDIEGO|JORDAN": {
@@ -6567,8 +6595,8 @@
       "awayTeam": "LAYTON CHRISTIAN",
       "homeTeam": "VIEWMONT",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/layton-christian-football-vs-viewmont-football/273448",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -6611,6 +6639,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|TIMPVIEW|LONEPEAK": {
@@ -7315,7 +7344,7 @@
               0,
               0
             ],
-            "total": 14
+            "total": 20
           },
           {
             "team": "MAPLE MOUNTAIN",
@@ -9460,7 +9489,8 @@
             ],
             "total": 29
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Uintah — (4:48 1Q) Keston Kunkel , 1-yard run (kick from Colton Van Wagoner )",
