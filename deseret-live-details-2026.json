@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T04:35:53.911Z",
+  "updatedAt": "2026-09-12T04:37:41.265Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -6712,7 +6712,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [],
       "stats": [],
@@ -8411,12 +8412,41 @@
       "awayTeam": "PANGUITCH",
       "homeTeam": "WHITEHORSE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/panguitch-football-vs-whitehorse-football/273639",
-      "status": "Scheduled",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "PANGUITCH",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 6
+          },
+          {
+            "team": "WHITEHORSE",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 46
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -8425,7 +8455,9 @@
         "rows": 0,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
-      }
+      },
+      "finalSource": "deseret-browser-live-final",
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|SALEMHILLS|PARKCITY": {
       "date": "09/11/2026",
