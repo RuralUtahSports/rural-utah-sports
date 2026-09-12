@@ -6,6 +6,7 @@ const OUT='record-alerts.json';
 const UHSAA_FILE='data/uhsaa-football-single-game-records.json';
 const TEAM_HISTORY_DIR='team-page-data';
 const TEAMS_FILE='teams-data.json';
+const MIN_TEAM_HISTORY_GAMES=30;
 const MAX_ALERTS=240;
 
 const clean=v=>String(v??'').replace(/\s+/g,' ').trim();
@@ -123,6 +124,7 @@ function collectTeamHistoryTopFive(){
         games.push({...game,season:Number(season),date,teamScore,opponentScore});
       }
     }
+    if(games.length<MIN_TEAM_HISTORY_GAMES)continue;
     for(const metric of historyMetrics){
       const eligible=games.filter(metric.eligible).map(game=>({...game,value:metric.value(game)})).filter(game=>game.value!=null&&game.value>0);
       for(const game of eligible.filter(game=>game.season===CURRENT_SEASON)){
@@ -189,7 +191,7 @@ const alerts=[...merged.values()].sort((a,b)=>
 const out={
   updatedAt:new Date().toISOString(),
   currentSeason:CURRENT_SEASON,
-  coverageNote:'School and RUS statewide record alerts compare reported single-game records in Rural Utah Sports datasets. Team-history alerts flag completed games ranking in a program’s all-time top five for points scored, largest win, points allowed, or largest loss. UHSAA watch alerts only mean a performance exceeds the mark currently listed in the UHSAA football records book; official recognition may require UHSAA review.',
+  coverageNote:`School and RUS statewide record alerts compare reported single-game records in Rural Utah Sports datasets. Team-history alerts require at least ${MIN_TEAM_HISTORY_GAMES} completed games and flag completed games ranking in a program’s all-time top five for points scored, largest win, points allowed, or largest loss. UHSAA watch alerts only mean a performance exceeds the mark currently listed in the UHSAA football records book; official recognition may require UHSAA review.`,
   uhsaaSource:uhsaa?{source:uhsaa.source,sourceUrl:uhsaa.sourceUrl,checkedAt:uhsaa.checkedAt}:null,
   alerts
 };
