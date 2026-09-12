@@ -10,6 +10,8 @@
   };
   const canon=v=>aliases[norm(v)]||norm(v);
   let records=new Map(),lastResults=new Map(),lastStamp='',smallSchoolArchive=null;
+  const scheduleCache=new Map(),scheduleInflight=new Map();
+  let scheduleDetailsIndex=null,scheduleDetailsPromise=null,schedulePopover=null,scheduleActiveLink=null,scheduleHideTimer=0;
 
   function recordText(r){
     if(!r)return'';
@@ -85,7 +87,286 @@
     badge.textContent=resultText(result);
   }
 
+
+  function scheduleEscape(v){
+    const t=String(v??'');
+    if(typeof esc==='function')return esc(t);
+    const entities={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'};
+    return t.replace(/[&<>"']/g,ch=>entities[ch]);
+  }
+
+  function scheduleSlug(v){
+    return String(v??'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  }
+
+  function scheduleHasValue(v){
+    return v!==null&&v!==undefined&&String(v).trim()!=='';
+  }
+
+  function scheduleDateValue(v){
+    const raw=String(v??'').trim();
+    const normalized=/^\d{4}-\d{2}-\d{2}$/.test(raw)?raw+'T12:00:00':raw;
+    const time=new Date(normalized).getTime();
+    return Number.isFinite(time)?time:0;
+  }
+
+  function scheduleDateLabel(v){
+    const raw=String(v??'').trim();
+    const time=scheduleDateValue(raw);
+    if(!time)return raw;
+    return new Date(time).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+  }
+
+  function scheduleRows(rows){
+    const bySignature=new Map(),byUrl=new Map();
+    for(const raw of rows||[]){
+      if(!raw||typeof raw!=='object')continue;
+      const signature=[raw.date,canon(raw.awayTeam),canon(raw.homeTeam)].join('|');
+      const prior=bySignature.get(signature)||(raw.gameUrl?byUrl.get(raw.gameUrl):null);
+      const merged=prior?{...prior,...raw}:{...raw};
+      ['gameUrl','gameId','teamScore','opponentScore','result','rusStatus','rusVerified'].forEach(key=>{
+        if(!scheduleHasValue(merged[key])&&scheduleHasValue(prior?.[key]))merged[key]=prior[key];
+      });
+      bySignature.set(signature,merged);
+      if(scheduleHasValue(merged.gameUrl))byUrl.set(merged.gameUrl,merged);
+    }
+    return [...bySignature.values()].sort((a,b)=>scheduleDateValue(a.date)-scheduleDateValue(b.date));
+  }
+
+  function scheduleDetailFor(details,g){
+    return details?.get?.(g?.gameUrl)||null;
+  }
+
+  function loadScheduleDetails(){
+    if(scheduleDetailsIndex)return Promise.resolve(scheduleDetailsIndex);
+    if(!scheduleDetailsPromise){
+      scheduleDetailsPromise=fetch('deseret-live-details-2026.json?v='+Date.now(),{cache:'no-store'})
+        .then(res=>res.ok?res.json():null)
+        .then(data=>{
+          const index=new Map();
+          for(const d of Object.values(data?.games||{})){
+            if(d?.url)index.set(d.url,d);
+          }
+          scheduleDetailsIndex=index;
+          return index;
+        })
+        .catch(()=>{
+          scheduleDetailsIndex=new Map();
+          return scheduleDetailsIndex;
+        });
+    }
+    return scheduleDetailsPromise;
+  }
+
+  function scheduleScoreNumber(v){
+    return scheduleHasValue(v)&&Number.isFinite(Number(v))?Number(v):null;
+  }
+
+  function scheduleIsFinal(g,d){
+    return d?.final===true||/^final$/i.test(String(d?.status||''))||/^final$/i.test(String(g?.rusStatus||''))||!!g?.result;
+  }
+
+  function scheduleScore(team,g,d){
+    const rows=d?.boxScore?.rows||[];
+    const awayDetail=scheduleScoreNumber(rows[0]?.total),homeDetail=scheduleScoreNumber(rows[1]?.total);
+    let us=null,them=null;
+    if(awayDetail!==null&&homeDetail!==null){
+      const isAway=canon(g?.awayTeam)===canon(team);
+      us=isAway?awayDetail:homeDetail;
+      them=isAway?homeDetail:awayDetail;
+    }else{
+      us=scheduleScoreNumber(g?.teamScore);
+      them=scheduleScoreNumber(g?.opponentScore);
+    }
+    if(us===null||them===null)return{label:'—',className:'',completed:false,hasScore:false};
+    const completed=scheduleIsFinal(g,d);
+    return{
+      label:String(us)+'-'+String(them),
+      className:completed?(us>them?'win':us<them?'loss':'tie'):'',
+      completed,
+      hasScore:true
+    };
+  }
+
+  function scheduleStatus(d,g){
+    if(scheduleIsFinal(g,d))return'Final';
+    const detail=String(d?.status||'').trim();
+    if(detail)return detail;
+    const rus=String(g?.rusStatus||'').trim();
+    return rus||'Scheduled';
+  }
+
+  function scheduleStatusClass(status){
+    return /final/i.test(status)?'final':/live|q[1-4]|half|ot|progress/i.test(status)?'live':'';
+  }
+
+  function scheduleRecordFor(team,rows,details){
+    let wins=0,losses=0,ties=0;
+    for(const g of rows||[]){
+      const score=scheduleScore(team,g,scheduleDetailFor(details,g));
+      if(!score.completed||!score.hasScore)continue;
+      const parts=score.label.split('-').map(Number);
+      if(parts.length!==2||!parts.every(Number.isFinite))continue;
+      if(parts[0]>parts[1])wins++;
+      else if(parts[0]<parts[1])losses++;
+      else ties++;
+    }
+    return wins+losses+ties?{wins,losses,ties}:null;
+  }
+
+  function loadTeamSchedule(team){
+    const key=canon(team);
+    if(scheduleCache.has(key))return Promise.resolve(scheduleCache.get(key));
+    if(!scheduleInflight.has(key)){
+      scheduleInflight.set(key,(async()=>{
+        const slug=scheduleSlug(team);
+        if(!slug)throw new Error('Missing team slug');
+        const [response,liveDetails]=await Promise.all([
+          fetch('team-current-data/'+slug+'.json?v='+Date.now(),{cache:'no-store'}),
+          loadScheduleDetails()
+        ]);
+        if(!response.ok)throw new Error('Schedule data unavailable');
+        const payload=await response.json();
+        const current=payload?.current||payload||{};
+        const details=new Map();
+        for(const d of Object.values(payload?.details?.games||{})){
+          if(d?.url)details.set(d.url,d);
+        }
+        for(const [url,d] of liveDetails||[])details.set(url,d);
+        const data={...current,team:current.team||team,schedule:scheduleRows(current.schedule),details};
+        scheduleCache.set(key,data);
+        return data;
+      })().catch(error=>{
+        scheduleInflight.delete(key);
+        throw error;
+      }));
+    }
+    return scheduleInflight.get(key);
+  }
+
+  function schedulePopoverMarkup(team,data){
+    const rows=data?.schedule||[];
+    const details=data?.details;
+    const record=scheduleRecordFor(team,rows,details);
+    const recordLabel=record?record.wins+'-'+record.losses+(record.ties?'-'+record.ties:''):'No finals yet';
+    if(!rows.length){
+      return '<div class="rus-ranking-schedule-head"><div><strong>'+scheduleEscape(team)+'</strong><span>2026 SCHEDULE</span></div></div><div class="rus-ranking-schedule-empty">No 2026 schedule is posted yet.</div>';
+    }
+    const games=rows.map(g=>{
+      const detail=scheduleDetailFor(details,g);
+      const score=scheduleScore(team,g,detail);
+      const status=scheduleStatus(detail,g);
+      const opponent=g.opponent||(canon(g.awayTeam)===canon(team)?g.homeTeam:g.awayTeam)||'Opponent';
+      const venue=g.site==='home'?'vs':g.site==='away'?'at':canon(g.awayTeam)===canon(team)?'at':'vs';
+      return '<div class="rus-ranking-schedule-item">'+
+        '<div class="rus-ranking-schedule-date">'+scheduleEscape(scheduleDateLabel(g.date))+'</div>'+
+        '<div class="rus-ranking-schedule-match"><span>'+scheduleEscape(venue)+'</span><strong>'+scheduleEscape(opponent)+'</strong></div>'+
+        '<div class="rus-ranking-schedule-result '+score.className+'"><span class="'+scheduleStatusClass(status)+'">'+scheduleEscape(status)+'</span><strong>'+scheduleEscape(score.label)+'</strong></div>'+
+      '</div>';
+    }).join('');
+    return '<div class="rus-ranking-schedule-head"><div><strong>'+scheduleEscape(team)+'</strong><span>2026 SCHEDULE</span></div><div class="rus-ranking-schedule-record">'+scheduleEscape(recordLabel)+' <small>RECORD</small></div></div>'+
+      '<div class="rus-ranking-schedule-meta">'+rows.length+' GAMES</div>'+
+      '<div class="rus-ranking-schedule-list">'+games+'</div>';
+  }
+
+  function positionSchedulePopover(){
+    if(!schedulePopover||schedulePopover.hidden||!scheduleActiveLink)return;
+    const rect=scheduleActiveLink.getBoundingClientRect();
+    const width=Math.min(370,Math.max(0,window.innerWidth-24));
+    schedulePopover.style.width=width+'px';
+    const height=schedulePopover.offsetHeight;
+    let left=Math.max(12,Math.min(rect.left,window.innerWidth-width-12));
+    let top=rect.bottom+9;
+    if(top+height>window.innerHeight-12&&rect.top-height-9>12)top=rect.top-height-9;
+    schedulePopover.style.left=Math.round(left)+'px';
+    schedulePopover.style.top=Math.round(Math.max(12,top))+'px';
+  }
+
+  function closeSchedulePopover(){
+    if(scheduleHideTimer){clearTimeout(scheduleHideTimer);scheduleHideTimer=0}
+    if(scheduleActiveLink)scheduleActiveLink.removeAttribute('aria-describedby');
+    scheduleActiveLink=null;
+    if(schedulePopover){
+      schedulePopover.hidden=true;
+      schedulePopover.innerHTML='';
+    }
+  }
+
+  function queueSchedulePopoverHide(){
+    if(scheduleHideTimer)clearTimeout(scheduleHideTimer);
+    scheduleHideTimer=setTimeout(()=>{
+      scheduleHideTimer=0;
+      if(schedulePopover?.matches(':hover'))return;
+      closeSchedulePopover();
+    },220);
+  }
+
+  function ensureSchedulePopover(){
+    if(schedulePopover||!document.body)return schedulePopover;
+    schedulePopover=document.createElement('div');
+    schedulePopover.id='rus-ranking-schedule-popover';
+    schedulePopover.setAttribute('role','tooltip');
+    schedulePopover.setAttribute('aria-live','polite');
+    schedulePopover.hidden=true;
+    schedulePopover.addEventListener('pointerenter',()=>{
+      if(scheduleHideTimer){clearTimeout(scheduleHideTimer);scheduleHideTimer=0}
+    });
+    schedulePopover.addEventListener('pointerleave',queueSchedulePopoverHide);
+    document.body.appendChild(schedulePopover);
+    window.addEventListener('scroll',positionSchedulePopover,true);
+    window.addEventListener('resize',positionSchedulePopover);
+    return schedulePopover;
+  }
+
+  async function showSchedulePopover(team,link){
+    if(scheduleHideTimer){clearTimeout(scheduleHideTimer);scheduleHideTimer=0}
+    const popover=ensureSchedulePopover();
+    if(!popover)return;
+    if(scheduleActiveLink&&scheduleActiveLink!==link)scheduleActiveLink.removeAttribute('aria-describedby');
+    scheduleActiveLink=link;
+    link.setAttribute('aria-describedby',popover.id);
+    popover.hidden=false;
+    popover.innerHTML='<div class="rus-ranking-schedule-loading">Loading 2026 schedule…</div>';
+    positionSchedulePopover();
+    try{
+      const data=await loadTeamSchedule(team);
+      if(scheduleActiveLink!==link)return;
+      popover.innerHTML=schedulePopoverMarkup(team,data);
+      positionSchedulePopover();
+    }catch(error){
+      if(scheduleActiveLink!==link)return;
+      popover.innerHTML='<div class="rus-ranking-schedule-loading">Schedule is unavailable right now.</div>';
+      positionSchedulePopover();
+      console.warn('Ranking schedule popover:',error.message);
+    }
+  }
+
+  function bindScheduleHover(){
+    if(!ensureSchedulePopover())return;
+    document.querySelectorAll('.rank-row,.state25-row,.small-school-row').forEach(row=>{
+      const link=row.querySelector('a.team-link');
+      if(!link||link.dataset.rusScheduleBound)return;
+      const team=(teamNameFromRow(row)||link.textContent||'').trim();
+      if(!team)return;
+      link.dataset.rusScheduleBound='1';
+      link.addEventListener('pointerenter',event=>{
+        if(event.pointerType==='touch')return;
+        showSchedulePopover(team,link);
+      });
+      link.addEventListener('pointerleave',queueSchedulePopoverHide);
+      link.addEventListener('focusin',()=>{
+        if(window.matchMedia?.('(hover: none)')?.matches&&window.matchMedia?.('(pointer: coarse)')?.matches)return;
+        showSchedulePopover(team,link);
+      });
+      link.addEventListener('focusout',event=>{
+        if(event.relatedTarget&&link.contains(event.relatedTarget))return;
+        queueSchedulePopoverHide();
+      });
+    });
+  }
+
   function decorate(){
+    bindScheduleHover();
     if(!records.size&&!lastResults.size)return;
     document.querySelectorAll('.rank-row,.state25-row,.small-school-row').forEach(row=>{
       const team=canon(teamNameFromRow(row)),pill=row.querySelector('.team-pill');
@@ -261,6 +542,34 @@
     const s=document.createElement('style');
     s.id='rus-rankings-live-record-style';
     s.textContent=`
+
+      #rus-ranking-schedule-popover{position:fixed;z-index:10050;display:block;box-sizing:border-box;width:min(370px,calc(100vw - 24px));max-height:min(420px,calc(100vh - 24px));overflow:auto;background:#090909;border:1px solid #555;border-top:4px solid #F14D07;border-radius:8px;box-shadow:0 14px 34px rgba(0,0,0,.72);color:#fff;font-size:12px}
+      #rus-ranking-schedule-popover[hidden]{display:none!important}
+      .rus-ranking-schedule-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:12px 13px 10px;background:#151515;border-bottom:1px solid #333}
+      .rus-ranking-schedule-head>div:first-child{min-width:0}
+      .rus-ranking-schedule-head strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:16px;text-transform:uppercase}
+      .rus-ranking-schedule-head span{display:block;margin-top:3px;color:#F14D07;font-size:9px;font-weight:900;letter-spacing:.6px}
+      .rus-ranking-schedule-record{flex:0 0 auto;color:#fff;font-size:14px;font-weight:1000;text-align:right;white-space:nowrap}
+      .rus-ranking-schedule-record small{display:block;color:#888;font-size:8px;letter-spacing:.5px}
+      .rus-ranking-schedule-meta{padding:7px 13px;color:#777;font-size:9px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid #222}
+      .rus-ranking-schedule-list{background:#000}
+      .rus-ranking-schedule-item{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px 12px;border-bottom:1px solid #252525}
+      .rus-ranking-schedule-item:last-child{border-bottom:0}
+      .rus-ranking-schedule-date{color:#aaa;font-size:10px;font-weight:900;white-space:nowrap}
+      .rus-ranking-schedule-match{display:flex;align-items:baseline;gap:7px;min-width:0}
+      .rus-ranking-schedule-match span{color:#777;font-size:9px;font-weight:900;text-transform:uppercase}
+      .rus-ranking-schedule-match strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+      .rus-ranking-schedule-result{text-align:right;white-space:nowrap}
+      .rus-ranking-schedule-result>span{display:block;color:#888;font-size:8px;font-weight:900;text-transform:uppercase}
+      .rus-ranking-schedule-result>span.final{color:#F14D07}
+      .rus-ranking-schedule-result>span.live{color:#ffd54a}
+      .rus-ranking-schedule-result>strong{display:block;margin-top:2px;font-size:12px}
+      .rus-ranking-schedule-result.win>strong{color:#62df8c}
+      .rus-ranking-schedule-result.loss>strong{color:#ff7777}
+      .rus-ranking-schedule-result.tie>strong{color:#ddd}
+      .rus-ranking-schedule-loading,.rus-ranking-schedule-empty{padding:20px 14px;color:#aaa;line-height:1.5}
+      @media (hover:none) and (pointer:coarse){#rus-ranking-schedule-popover{display:none!important}}
+
       .team-pill{gap:8px;flex-wrap:wrap}
       .rus-live-record{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.28);font-size:10px;line-height:1;font-weight:900;letter-spacing:.2px;white-space:nowrap;color:inherit}
       .rus-last-result{display:inline-flex;align-items:center;justify-content:center;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.2);font-size:10px;line-height:1;font-weight:900;letter-spacing:.1px;white-space:nowrap}
