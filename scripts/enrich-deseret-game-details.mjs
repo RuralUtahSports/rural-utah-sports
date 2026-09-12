@@ -342,7 +342,7 @@ function extractStatus(html, box, scoringPlays, clockInfo) {
   if (clockInfo?.period) return { status: clockInfo.period, final: false };
   const q = head.match(/\b(?:Q([1-4])|([1-4])Q|([1-4])(?:st|nd|rd|th))\b/i);
   if (q) return { status: `Q${q[1] || q[2] || q[3]}`, final: false };
-  if (/\bOT\b/i.test(head)) return { status: 'OT', final: false };
+  // Do not infer overtime from an arbitrary "OT" token in the page header.\n  // Deseret pages include navigation and promo copy ahead of Game Details, so\n  // a broad match here mislabeled ordinary in-progress games as overtime.\n  // The rendered daily-scoreboard reconciler supplies a verified OT status.
   const hasPoints = box?.rows?.some(r => Number(r.total) > 0);
   return { status: (hasPoints || scoringPlays?.length) ? 'Live' : 'Scheduled', final: false };
 }
