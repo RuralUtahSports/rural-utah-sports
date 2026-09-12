@@ -9,12 +9,44 @@
     STJOSEPH:'SAINTJOSEPH'
   };
   const canon=v=>aliases[norm(v)]||norm(v);
-  let records=new Map(),lastStamp='',smallSchoolArchive=null;
+  let records=new Map(),lastResults=new Map(),lastStamp='',smallSchoolArchive=null;
 
   function recordText(r){
     if(!r)return'';
     const w=Number(r.wins)||0,l=Number(r.losses)||0,t=Number(r.ties)||0;
     return t?`${w}-${l}-${t}`:`${w}-${l}`;
+  }
+
+  function resultText(r){
+    if(!r)return'';
+    const outcome=r.score>r.opponentScore?'W':r.score<r.opponentScore?'L':'T';
+    return `Last: ${outcome} ${r.score}-${r.opponentScore} ${r.isAway?'@':'vs'} ${r.opponent}`;
+  }
+
+  function resultClass(r){
+    if(!r)return'';
+    if(r.score>r.opponentScore)return'win';
+    if(r.score<r.opponentScore)return'loss';
+    return'tie';
+  }
+
+  function buildLastResults(games){
+    const next=new Map();
+    (games||[]).forEach((g,order)=>{
+      if(!g?.awayTeam||!g?.homeTeam)return;
+      const awayScore=Number(g.actualAway),homeScore=Number(g.actualHome);
+      if(!Number.isFinite(awayScore)||!Number.isFinite(homeScore))return;
+      const ts=Date.parse(String(g.date||''));
+      if(!Number.isFinite(ts))return;
+      const put=(team,opponent,score,opponentScore,isAway)=>{
+        const key=canon(team),prior=next.get(key);
+        if(prior&&(ts<prior.ts||(ts===prior.ts&&order<prior.order)))return;
+        next.set(key,{opponent,score,opponentScore,isAway,ts,order});
+      };
+      put(g.awayTeam,g.homeTeam,awayScore,homeScore,true);
+      put(g.homeTeam,g.awayTeam,homeScore,awayScore,false);
+    });
+    lastResults=next;
   }
 
   function teamNameFromRow(row){
@@ -36,11 +68,30 @@
     badge.textContent=recordText(rec);
   }
 
+  function addLastResultToPill(pill,result){
+    if(!pill)return;
+    let badge=pill.querySelector('.rus-last-result');
+    if(!result){
+      badge?.remove();
+      return;
+    }
+    if(!badge){
+      badge=document.createElement('span');
+      badge.className='rus-last-result';
+      const recordBadge=pill.querySelector('.rus-live-record');
+      if(recordBadge)pill.insertBefore(badge,recordBadge);else pill.appendChild(badge);
+    }
+    badge.className=`rus-last-result ${resultClass(result)}`;
+    badge.textContent=resultText(result);
+  }
+
   function decorate(){
-    if(!records.size)return;
+    if(!records.size&&!lastResults.size)return;
     document.querySelectorAll('.rank-row,.state25-row,.small-school-row').forEach(row=>{
-      const rec=records.get(canon(teamNameFromRow(row)));
-      if(rec)addRecordToPill(row.querySelector('.team-pill'),rec);
+      const team=canon(teamNameFromRow(row)),pill=row.querySelector('.team-pill');
+      addLastResultToPill(pill,lastResults.get(team));
+      const rec=records.get(team);
+      if(rec)addRecordToPill(pill,rec);
     });
   }
 
@@ -212,6 +263,10 @@
     s.textContent=`
       .team-pill{gap:8px;flex-wrap:wrap}
       .rus-live-record{display:inline-flex;align-items:center;justify-content:center;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.28);font-size:10px;line-height:1;font-weight:900;letter-spacing:.2px;white-space:nowrap;color:inherit}
+      .rus-last-result{display:inline-flex;align-items:center;justify-content:center;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;padding:3px 7px;border-radius:999px;background:rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.2);font-size:10px;line-height:1;font-weight:900;letter-spacing:.1px;white-space:nowrap}
+      .rus-last-result.win{color:#b8ffd0}
+      .rus-last-result.loss{color:#ffb0b0}
+      .rus-last-result.tie{color:#e6e6e6}
       .class-rankings-update-note{margin:-5px 0 20px;background:#151515;border:1px solid #333;border-left:5px solid #F14D07;border-radius:7px;padding:13px 15px;color:#aaa;font-size:12px;line-height:1.5}
       .class-rankings-update-note strong{color:#fff}
       .rank-row.has-class-movement{grid-template-columns:50px 64px minmax(0,1fr) auto}
@@ -341,6 +396,7 @@
       const next=new Map();
       for(const list of Object.values(data.byClassification||{}))for(const r of list||[])next.set(canon(r.team),r);
       records=next;
+      buildLastResults(data.games);
       scheduleDecorate();
     }catch(e){console.warn('Rankings live records:',e.message)}
   }
