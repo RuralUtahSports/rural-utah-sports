@@ -675,10 +675,8 @@
 
   async function primeRankings(){
     try{
-      if(!(rankingArchive?.snapshots||[]).length){
-        const res=await fetch('rankings-history-2026.json',{cache:'no-cache'});
-        if(res.ok)rankingArchive=await res.json();
-      }
+      const res=await fetch('rankings-history-2026.json?v=rankings-'+Date.now(),{cache:'no-store'});
+      if(res.ok)rankingArchive=await res.json();
       paintAvailableRankings();
 
       const loadSecondary=async()=>{
