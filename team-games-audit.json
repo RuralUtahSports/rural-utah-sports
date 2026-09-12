@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T06:33:18.436Z",
+  "updatedAt": "2026-09-12T06:35:38.197Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,16 +8,16 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68136,
+    "scheduleRowsAudited": 68161,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 215,
-    "reciprocalMismatches": 986,
+    "seasonSummaryMismatches": 213,
+    "reciprocalMismatches": 989,
     "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 216
+    "recent2025PlusIssues": 217
   },
   "recent2025PlusIssues": [
     {
@@ -221,29 +221,6 @@
       ]
     },
     {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
-        }
-      }
-    },
-    {
       "type": "same-day-multiple-opponents",
       "team": "JUAN DIEGO",
       "season": "2025",
@@ -338,29 +315,6 @@
         "CANYON VIEW",
         "CEDAR CITY"
       ]
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
-        }
-      }
     },
     {
       "type": "suspicious-repeat",
@@ -1797,6 +1751,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -1811,7 +1785,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -1874,6 +1848,26 @@
         }
       ],
       "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "JORDAN",
+      "teamB": "JUAN DIEGO",
+      "date": "9/11/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "JUAN DIEGO",
+          "opponent": "JORDAN",
+          "date": "9/11/2026",
+          "teamScore": 7,
+          "opponentScore": 34,
+          "result": "L",
+          "season": "2026",
+          "index": 4
+        }
+      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -2739,6 +2733,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -2753,7 +2767,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -2772,7 +2786,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -5839,29 +5853,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "JUAN DIEGO",
       "season": "2022",
       "mismatches": {
@@ -6776,29 +6767,6 @@
         "pointsAgainst": {
           "expected": 463,
           "actual": 416
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
         }
       }
     },
@@ -17217,6 +17185,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -17231,7 +17219,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -17496,6 +17484,26 @@
         }
       ],
       "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "JORDAN",
+      "teamB": "JUAN DIEGO",
+      "date": "9/11/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "JUAN DIEGO",
+          "opponent": "JORDAN",
+          "date": "9/11/2026",
+          "teamScore": 7,
+          "opponentScore": 34,
+          "result": "L",
+          "season": "2026",
+          "index": 4
+        }
+      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -22805,6 +22813,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -22819,7 +22847,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -22838,7 +22866,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -30106,7 +30134,7 @@
       "team": "DAVIS",
       "file": "davis.json",
       "seasons": 111,
-      "totalGames": 1078
+      "totalGames": 1079
     },
     {
       "team": "DEER CREEK",
@@ -30124,49 +30152,49 @@
       "team": "DESERET PEAK",
       "file": "deseret-peak.json",
       "seasons": 2,
-      "totalGames": 14
+      "totalGames": 15
     },
     {
       "team": "DESERT HILLS",
       "file": "desert-hills.json",
       "seasons": 19,
-      "totalGames": 207
+      "totalGames": 208
     },
     {
       "team": "DIXIE",
       "file": "dixie.json",
       "seasons": 82,
-      "totalGames": 803
+      "totalGames": 804
     },
     {
       "team": "DUCHESNE",
       "file": "duchesne.json",
       "seasons": 57,
-      "totalGames": 567
+      "totalGames": 568
     },
     {
       "team": "EAST",
       "file": "east.json",
       "seasons": 113,
-      "totalGames": 1061
+      "totalGames": 1062
     },
     {
       "team": "EMERY",
       "file": "emery.json",
       "seasons": 65,
-      "totalGames": 647
+      "totalGames": 648
     },
     {
       "team": "ENTERPRISE",
       "file": "enterprise.json",
       "seasons": 30,
-      "totalGames": 319
+      "totalGames": 320
     },
     {
       "team": "FARMINGTON",
       "file": "farmington.json",
       "seasons": 9,
-      "totalGames": 94
+      "totalGames": 95
     },
     {
       "team": "FREMONT",
@@ -30184,7 +30212,7 @@
       "team": "GRANGER",
       "file": "granger.json",
       "seasons": 69,
-      "totalGames": 682
+      "totalGames": 683
     },
     {
       "team": "GRANTSVILLE",
@@ -30196,13 +30224,13 @@
       "team": "GREEN CANYON",
       "file": "green-canyon.json",
       "seasons": 10,
-      "totalGames": 107
+      "totalGames": 108
     },
     {
       "team": "GUNNISON VALLEY",
       "file": "gunnison-valley.json",
       "seasons": 37,
-      "totalGames": 355
+      "totalGames": 356
     },
     {
       "team": "HERRIMAN",
@@ -30214,19 +30242,19 @@
       "team": "HIGHLAND",
       "file": "highland.json",
       "seasons": 69,
-      "totalGames": 730
+      "totalGames": 731
     },
     {
       "team": "HILLCREST",
       "file": "hillcrest.json",
       "seasons": 64,
-      "totalGames": 623
+      "totalGames": 624
     },
     {
       "team": "HUNTER",
       "file": "hunter.json",
       "seasons": 37,
-      "totalGames": 398
+      "totalGames": 399
     },
     {
       "team": "HURRICANE",
@@ -30244,13 +30272,13 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 72,
-      "totalGames": 722
+      "totalGames": 723
     },
     {
       "team": "JUAN DIEGO",
       "file": "juan-diego.json",
       "seasons": 27,
-      "totalGames": 313
+      "totalGames": 314
     },
     {
       "team": "JUDGE MEMORIAL",
@@ -30394,13 +30422,13 @@
       "team": "OGDEN",
       "file": "ogden.json",
       "seasons": 128,
-      "totalGames": 1107
+      "totalGames": 1108
     },
     {
       "team": "OLYMPUS",
       "file": "olympus.json",
       "seasons": 74,
-      "totalGames": 752
+      "totalGames": 753
     },
     {
       "team": "OREM",
@@ -30412,7 +30440,7 @@
       "team": "PANGUITCH",
       "file": "panguitch.json",
       "seasons": 8,
-      "totalGames": 68
+      "totalGames": 69
     },
     {
       "team": "PARK CITY",
@@ -30424,7 +30452,7 @@
       "team": "PAROWAN",
       "file": "parowan.json",
       "seasons": 78,
-      "totalGames": 695
+      "totalGames": 696
     },
     {
       "team": "PAYSON",
@@ -30436,7 +30464,7 @@
       "team": "PINE VIEW",
       "file": "pine-view.json",
       "seasons": 44,
-      "totalGames": 455
+      "totalGames": 456
     },
     {
       "team": "PLEASANT GROVE",
@@ -30526,7 +30554,7 @@
       "team": "SNOW CANYON",
       "file": "snow-canyon.json",
       "seasons": 33,
-      "totalGames": 342
+      "totalGames": 343
     },
     {
       "team": "SOUTH SEVIER",
@@ -30574,7 +30602,7 @@
       "team": "TAYLORSVILLE",
       "file": "taylorsville.json",
       "seasons": 46,
-      "totalGames": 450
+      "totalGames": 451
     },
     {
       "team": "TIMPANOGOS",
@@ -30676,7 +30704,7 @@
       "team": "WOODS CROSS",
       "file": "woods-cross.json",
       "seasons": 50,
-      "totalGames": 505
+      "totalGames": 506
     }
   ]
 }
