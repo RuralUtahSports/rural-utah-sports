@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T04:55:34.168Z",
+  "updatedAt": "2026-09-12T04:57:27.930Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -1884,8 +1884,7 @@
             ],
             "total": 45
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "American Fork — (4:42 1Q) DC Fonua , 10-yard run (pass from Jake Matsen )",
@@ -8692,7 +8691,7 @@
               7,
               3,
               3,
-              8
+              21
             ],
             "total": 34
           },
@@ -8702,20 +8701,42 @@
               0,
               0,
               0,
-              0
+              8
             ],
             "total": 8
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Springville — (9:52 1Q) Treyton Harris , 16-yard run (kick from Pheonix Marks )",
         "Springville — (0:20 2Q) Pheonix Marks , 29-yard FG",
         "Springville — (4:55 3Q) Pheonix Marks , 38-yard FG",
-        "Springville — (11:39 4Q) Siaosi \"Leka\" Toki , 18-yard pass from Beckett Burton (pass from Siaosi \"Leka\" Toki )"
+        "Springville — (11:39 4Q) Siaosi \"Leka\" Toki , 18-yard pass from Beckett Burton (pass from Siaosi \"Leka\" Toki )",
+        "Springville — (9:32 4Q) Siaosi \"Leka\" Toki , 91-yard int. return (kick from Pheonix Marks )",
+        "Springville — (8:56 4Q) Damian Tupou , 24-yard pass from Bradley Miller (kick from Pheonix Marks )",
+        "Pleasant Grove — (2:04 4Q) Corbin Robbins , 16-yard run (run from Corbin Robbins )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "PLEASANT GROVE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "16",
+              "C. Corbin Robbins",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Rushing",
           "team": "SPRINGVILLE",
@@ -8750,6 +8771,15 @@
           ],
           "rows": [
             [
+              "11",
+              "B. Bradley Miller",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ],
+            [
               "15",
               "B. Beckett Burton",
               "",
@@ -8771,6 +8801,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "3",
+              "D. Damian Tupou",
+              "",
+              "",
+              "1"
+            ],
             [
               "6",
               "S. Siaosi \"Leka\" Toki",
@@ -8795,19 +8832,41 @@
               "16",
               "P. Pheonix Marks",
               "2",
-              "1",
+              "3",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "SPRINGVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "S. Siaosi \"Leka\" Toki",
+              "",
+              "",
+              "",
+              "1"
             ]
           ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 4,
-        "coreCells": 8,
+        "blocks": 6,
+        "rows": 8,
+        "coreCells": 19,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 5
       },
       "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
