@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T03:04:44.978Z",
+  "updatedAt": "2026-09-12T03:07:33.755Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -968,12 +968,41 @@
       "awayTeam": "WATER CANYON",
       "homeTeam": "ALTAMONT",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/water-canyon-football-football-vs-altamont-football/273688",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "WATER CANYON",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 54
+          },
+          {
+            "team": "ALTAMONT",
+            "quarters": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "total": 8
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -1022,7 +1051,8 @@
             ],
             "total": 21
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Syracuse — (0:00 1Q) Parker Moffat , 15-yard pass from Ledger Wight (kick from Jed Beutler )",
@@ -1597,7 +1627,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Stansbury — (8:19 1Q) Lincoln Reutzel , 15-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
@@ -1990,8 +2021,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Cedar Valley — (7:21 1Q) Jonas Grover , 13-yard pass from Briggs Williamson (kick from Paxton Woods )",
@@ -2181,17 +2211,17 @@
             "quarters": [
               6,
               9,
-              null,
+              7,
               null
             ],
-            "total": 15
+            "total": 22
           },
           {
             "team": "WEST FIELD",
             "quarters": [
               7,
               14,
-              null,
+              0,
               null
             ],
             "total": 21
@@ -3282,7 +3312,8 @@
             ],
             "total": 10
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Hurricane — (0:16 2Q) Cameron Lemmon , 20-yard FG",
@@ -3573,7 +3604,7 @@
       "awayTeam": "WEST JORDAN",
       "homeTeam": "CYPRUS",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/west-jordan-football-vs-cyprus-football/273608",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -3606,7 +3637,8 @@
             ],
             "total": 10
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Cyprus — (7:15 1Q) Gafa Fanene , 37-yard fumble recovery (kick successful)",
@@ -3749,8 +3781,7 @@
             ],
             "total": 17
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Summit Academy — (2:32 1Q) Rigby Young , 3-yard run (kick from Kyden Mortenson )",
@@ -3933,8 +3964,7 @@
             ],
             "total": 31
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Davis — (8:49 1Q) Griffin Carmack , 25-yard FG",
@@ -4573,7 +4603,8 @@
             ],
             "total": 26
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Desert Hills — (9:21 1Q) Seth Brown , 6-yard run (kick from Mason Boshell )",
@@ -5415,8 +5446,7 @@
             ],
             "total": 35
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [],
       "stats": [],
@@ -5592,7 +5622,8 @@
             ],
             "total": 8
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Hunter — (7:15 1Q) Abbas Aweis , 11-yard pass from Sione \"Isi\" Moungaafi (run from Ryder Paea )",
@@ -5752,8 +5783,8 @@
       "awayTeam": "JUAN DIEGO",
       "homeTeam": "JORDAN",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/juan-diego-football-vs-jordan-football/273757",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -5785,7 +5816,8 @@
             ],
             "total": 27
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [],
       "stats": [],
@@ -5795,7 +5827,9 @@
         "rows": 0,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
-      }
+      },
+      "finalSource": "deseret-browser-live-final",
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|KEARNS|UNION": {
       "date": "09/11/2026",
@@ -5833,7 +5867,7 @@
               20,
               7
             ],
-            "total": 41
+            "total": 48
           }
         ],
         "source": "deseret-browser-live"
@@ -6255,7 +6289,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [],
       "stats": [],
@@ -6913,8 +6948,7 @@
             ],
             "total": 16
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Maple Mountain — (3:50 1Q) Israel Vaenuku , 27-yard FG",
@@ -7054,7 +7088,7 @@
       "awayTeam": "MONUMENT VAL",
       "homeTeam": "UMA-LEHI",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/monument-valley-football-vs-utah-military-camp-williams-football-football/274422",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -7463,8 +7497,7 @@
             ],
             "total": 41
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "North Sevier — (7:00 1Q) Houston Mickelsen , run (kick from Cole Johnson )",
@@ -7807,7 +7840,7 @@
       "awayTeam": "PANGUITCH",
       "homeTeam": "WHITEHORSE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/panguitch-football-vs-whitehorse-football/273639",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -7861,8 +7894,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Park City — (2:03 1Q) Josh Hofer , 1-yard run (kick from Will Hladon )",
@@ -8625,7 +8657,7 @@
             "quarters": [
               0,
               0,
-              null,
+              0,
               null
             ],
             "total": 0
@@ -8635,10 +8667,10 @@
             "quarters": [
               14,
               14,
-              null,
+              7,
               null
             ],
-            "total": 28
+            "total": 42
           }
         ]
       },
@@ -8646,7 +8678,8 @@
         "Skyridge — (3:46 1Q) Beckham Bennett , 31-yard run (kick from Evan Kopp )",
         "Skyridge — (3:00 1Q) Omarian Sanders , 20-yard pass from Jagger Fountaine (kick from Evan Kopp )",
         "Skyridge — (3:08 2Q) Malosi Shepard , 1-yard pass from Jagger Fountaine (kick from Evan Kopp )",
-        "Skyridge — (1:58 2Q) Malosi Shepard , 34-yard pass from Jagger Fountaine (kick from Evan Kopp )"
+        "Skyridge — (1:58 2Q) Malosi Shepard , 34-yard pass from Jagger Fountaine (kick from Evan Kopp )",
+        "Skyridge — (2:26 3Q) Steeler Wesley , 7-yard pass from Jagger Fountaine (kick from Evan Kopp )"
       ],
       "stats": [
         {
@@ -8688,7 +8721,7 @@
               "",
               "",
               "",
-              "3",
+              "4",
               ""
             ]
           ]
@@ -8704,6 +8737,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "5",
+              "S. Steeler Wesley",
+              "",
+              "",
+              "1"
+            ],
             [
               "14",
               "M. Malosi Shepard",
@@ -8735,7 +8775,7 @@
               "31",
               "E. Evan Kopp",
               "",
-              "4",
+              "5",
               ""
             ]
           ]
@@ -8744,8 +8784,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 4,
-        "rows": 5,
-        "coreCells": 10,
+        "rows": 6,
+        "coreCells": 12,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
@@ -8994,7 +9034,8 @@
             ],
             "total": 29
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Uintah — (4:48 1Q) Keston Kunkel , 1-yard run (kick from Colton Van Wagoner )",
