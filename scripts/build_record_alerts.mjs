@@ -124,10 +124,9 @@ function collectTeamHistoryTopFive(){
       }
     }
     for(const metric of historyMetrics){
-      const eligible=games.filter(metric.eligible).map(game=>({...game,value:metric.value(game)})).filter(game=>game.value!=null&&game.value>=0);
-      const values=[...new Set(eligible.map(game=>game.value))].sort((a,b)=>b-a);
+      const eligible=games.filter(metric.eligible).map(game=>({...game,value:metric.value(game)})).filter(game=>game.value!=null&&game.value>0);
       for(const game of eligible.filter(game=>game.season===CURRENT_SEASON)){
-        const historyRank=values.indexOf(game.value)+1;
+        const historyRank=1+eligible.filter(row=>row.value>game.value).length;
         if(historyRank<1||historyRank>5)continue;
         const tiedCount=eligible.filter(row=>row.value===game.value).length;
         const prior=eligible.filter(row=>row.date!==game.date||clean(row.opponent)!==clean(game.opponent)).sort((a,b)=>b.value-a.value||dateValue(b.date)-dateValue(a.date))[0]||null;
@@ -135,7 +134,7 @@ function collectTeamHistoryTopFive(){
           recordType:'team',scope:'school',teamHistoryRank:true,team,player:null,
           categoryKey:`teamHistory-${metric.key}`,category:metric.label,unit:'points',value:game.value,
           season:CURRENT_SEASON,date:game.date,opponent:clean(game.opponent),teamScore:game.teamScore,opponentScore:game.opponentScore,
-          gameId:null,gameUrl:null,historyRank,tiedCount,historyGamesReviewed:eligible.length,
+          gameId:null,gameUrl:null,historyRank,tiedCount,historyGamesReviewed:games.length,
           previousValue:prior?.value??game.value,previousDate:prior?.date||null,previousSeason:prior?.season||null
         });
       }
