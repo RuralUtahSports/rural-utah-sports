@@ -1,5 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
+// Restore verified current finals before canonical schedules replace team pages.
+import './sync_current_finals_to_team_pages.mjs';
 
 const clean = value => String(value ?? '').trim().replace(/\s+/g, ' ');
 const aliases = {

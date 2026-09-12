@@ -9,6 +9,8 @@ on:
       - "Build Player Single-Game Records"
       - "Merge Current Player Single-Game Records"
       - "Build Team Stat Single-Game Records"
+      - "Sync Website Data From Google Sheet"
+      - "Update Live Scoreboard"
     types: [completed]
   push:
     branches: [main]
@@ -17,6 +19,7 @@ on:
       - 'team-stat-single-game-records/**'
       - 'data/uhsaa-football-single-game-records.json'
       - 'scripts/build_record_alerts.mjs'
+      - 'scripts/sync_current_finals_to_team_pages.mjs'
       - '.github/workflows/build-record-alerts.yml'
 
 permissions:
@@ -38,7 +41,9 @@ jobs:
         with:
           node-version: '22'
       - name: Build current-season record alerts
-        run: node scripts/build_record_alerts.mjs
+        run: |
+          node scripts/sync_current_finals_to_team_pages.mjs
+          node scripts/build_record_alerts.mjs
       - name: Validate alert payload
         run: |
           node - <<'NODE'
@@ -63,7 +68,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add record-alerts.json
+          git add record-alerts.json team-schedules.json team-page-data
           if git diff --cached --quiet; then echo "Record alerts already current."; exit 0; fi
           git commit -m "Auto-sync home record alerts"
           ok=0

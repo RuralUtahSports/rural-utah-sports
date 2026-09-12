@@ -147,7 +147,7 @@ jobs:
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add standings-2026.json teams-data.json team-page-data
+          git add standings-2026.json teams-data.json team-schedules.json team-page-data
           if git diff --cached --quiet; then
             echo "Team records are already current."
           else
@@ -202,7 +202,7 @@ jobs:
               node scripts/update-alltime-team-records.mjs
               node scripts/sync_current_finals_to_team_pages.mjs
             fi
-            git add deseret-game-details.json deseret-live-details-2026.json standings-2026.json teams-data.json team-page-data
+            git add deseret-game-details.json deseret-live-details-2026.json standings-2026.json teams-data.json team-schedules.json team-page-data
             if ! git diff --cached --quiet; then
               git commit -m "Auto-refresh live scoreboard and team records"
               git pull --rebase -X theirs origin main
