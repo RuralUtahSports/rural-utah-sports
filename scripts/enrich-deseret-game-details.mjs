@@ -540,7 +540,11 @@ async function runBrowserOnly(weekly, details, linkIndex) {
     // minute when it is already complete.
     const browserAge = hoursSince(prior?.browserFetchedAt);
     const priorStats = prior?.statsAvailability || statsAvailability(prior?.stats || []);
-    if (prior?.browserFetchedAt && browserAge < (priorStats.status === 'full' ? 12 : 2) && hasCompleteBoxScore(prior)) continue;
+    const priorLive = /^(?:live|q[1-4]|halftime|half|ot)$/i.test(clean(prior?.status));
+    // Never rate-limit an in-progress game just because all four quarter cells exist.
+    // Deseret can pre-render numeric quarter cells, so treating that as complete can
+    // freeze a live game for 2-12 hours and miss the final score/status.
+    if (!priorLive && prior?.browserFetchedAt && browserAge < (priorStats.status === 'full' ? 12 : 2) && hasCompleteBoxScore(prior)) continue;
     candidates.push({ game: { ...game, deseretUrl: directUrl }, key, prior, browserAge });
   }
 
