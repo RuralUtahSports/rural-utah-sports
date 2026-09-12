@@ -335,6 +335,11 @@ function extractClock(html, game) {
 }
 
 function extractStatus(html, box, scoringPlays, clockInfo) {
+  // Prefer Deseret's structured game state when present. It remains stable
+  // even when the rendered banner appears in an unexpected DOM position.
+  if (/"status"\s*:\s*"Done"/i.test(html) || /"progressLabel"\s*:\s*"Final"/i.test(html)) {
+    return { status: 'Final', final: true };
+  }
   // Rendered Deseret pages can place the visible scoreboard after more than
   // 120 KB of framework markup. Parse the complete DOM so a real Final badge
   // is not truncated and downgraded to Live merely because points exist.
