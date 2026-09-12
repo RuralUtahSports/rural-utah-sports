@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T11:19:51.383Z",
+  "updatedAt": "2026-09-12T14:05:16.274Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,16 +8,16 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68161,
+    "scheduleRowsAudited": 68172,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 213,
-    "reciprocalMismatches": 989,
+    "seasonSummaryMismatches": 211,
+    "reciprocalMismatches": 988,
     "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 217
+    "recent2025PlusIssues": 216
   },
   "recent2025PlusIssues": [
     {
@@ -1848,26 +1848,6 @@
         }
       ],
       "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "JORDAN",
-      "teamB": "JUAN DIEGO",
-      "date": "9/11/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "JUAN DIEGO",
-          "opponent": "JORDAN",
-          "date": "9/11/2026",
-          "teamScore": 7,
-          "opponentScore": 34,
-          "result": "L",
-          "season": "2026",
-          "index": 4
-        }
-      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -5604,20 +5584,20 @@
       "team": "GUNNISON VALLEY",
       "season": "2001",
       "mismatches": {
-        "games": {
-          "expected": 8,
-          "actual": 9
-        },
         "wins": {
           "expected": 4,
           "actual": 5
         },
+        "losses": {
+          "expected": 5,
+          "actual": 4
+        },
         "pointsFor": {
-          "expected": 148,
+          "expected": 162,
           "actual": 167
         },
         "pointsAgainst": {
-          "expected": 188,
+          "expected": 207,
           "actual": 202
         }
       }
@@ -5791,29 +5771,6 @@
         "pointsAgainst": {
           "expected": 230,
           "actual": 236
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2001",
-      "mismatches": {
-        "games": {
-          "expected": 9,
-          "actual": 10
-        },
-        "wins": {
-          "expected": 4,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 153,
-          "actual": 172
-        },
-        "pointsAgainst": {
-          "expected": 156,
-          "actual": 170
         }
       }
     },
@@ -6297,44 +6254,9 @@
       "team": "MONTICELLO",
       "season": "2022",
       "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 12
-        },
-        "wins": {
-          "expected": 7,
-          "actual": 8
-        },
         "pointsFor": {
-          "expected": 423,
+          "expected": 465,
           "actual": 464
-        },
-        "pointsAgainst": {
-          "expected": 254,
-          "actual": 274
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MONUMENT VALLEY",
-      "season": "2022",
-      "mismatches": {
-        "games": {
-          "expected": 8,
-          "actual": 9
-        },
-        "losses": {
-          "expected": 7,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 138,
-          "actual": 158
-        },
-        "pointsAgainst": {
-          "expected": 445,
-          "actual": 487
         }
       }
     },
@@ -17484,26 +17406,6 @@
         }
       ],
       "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "JORDAN",
-      "teamB": "JUAN DIEGO",
-      "date": "9/11/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "JUAN DIEGO",
-          "opponent": "JORDAN",
-          "date": "9/11/2026",
-          "teamScore": 7,
-          "opponentScore": 34,
-          "result": "L",
-          "season": "2026",
-          "index": 4
-        }
-      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -30266,7 +30168,7 @@
       "team": "JORDAN",
       "file": "jordan.json",
       "seasons": 117,
-      "totalGames": 1089
+      "totalGames": 1090
     },
     {
       "team": "JUAB",
@@ -30290,19 +30192,19 @@
       "team": "KANAB",
       "file": "kanab.json",
       "seasons": 77,
-      "totalGames": 771
+      "totalGames": 772
     },
     {
       "team": "KEARNS",
       "file": "kearns.json",
       "seasons": 61,
-      "totalGames": 603
+      "totalGames": 604
     },
     {
       "team": "LAYTON CHRISTIAN",
       "file": "layton-christian.json",
       "seasons": 23,
-      "totalGames": 233
+      "totalGames": 234
     },
     {
       "team": "LAYTON",
@@ -30314,7 +30216,7 @@
       "team": "LEHI",
       "file": "lehi.json",
       "seasons": 105,
-      "totalGames": 937
+      "totalGames": 938
     },
     {
       "team": "LOGAN",
@@ -30326,7 +30228,7 @@
       "team": "LONE PEAK",
       "file": "lone-peak.json",
       "seasons": 30,
-      "totalGames": 360
+      "totalGames": 361
     },
     {
       "team": "MANTI",
@@ -30410,7 +30312,7 @@
       "team": "NORTH SUMMIT",
       "file": "north-summit.json",
       "seasons": 101,
-      "totalGames": 935
+      "totalGames": 936
     },
     {
       "team": "NORTHRIDGE",
@@ -30614,7 +30516,7 @@
       "team": "TIMPVIEW",
       "file": "timpview.json",
       "seasons": 50,
-      "totalGames": 569
+      "totalGames": 570
     },
     {
       "team": "TOOELE",
@@ -30644,13 +30546,13 @@
       "team": "UNION",
       "file": "union.json",
       "seasons": 76,
-      "totalGames": 716
+      "totalGames": 717
     },
     {
       "team": "VIEWMONT",
       "file": "viewmont.json",
       "seasons": 63,
-      "totalGames": 634
+      "totalGames": 635
     },
     {
       "team": "WASATCH",
@@ -30668,7 +30570,7 @@
       "team": "WEBER",
       "file": "weber.json",
       "seasons": 101,
-      "totalGames": 908
+      "totalGames": 909
     },
     {
       "team": "WEST FIELD",
