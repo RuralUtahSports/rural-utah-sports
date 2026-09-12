@@ -118,10 +118,27 @@
   }
 
   function scheduleRows(rows){
-    const sourceRows=(rows||[]).filter((raw,index,all)=>{
-      if(!raw?.rusSupplemental)return true;
-      return !all.some((other,otherIndex)=>otherIndex!==index&&other?.gameUrl&&other.date===raw.date&&(canon(other.awayTeam)===canon(raw.awayTeam)||canon(other.homeTeam)===canon(raw.homeTeam)));
-    });
+    // Match supplemental finals to the linked game before removing duplicates.
+    const opponentKey=value=>canon(String(value??'').trim()
+      .replace(/(?:,?\s+)(?:CA|CALIF\.?|CALIFORNIA|NV|NEV\.?|NEVADA|AZ|ARIZ\.?|ARIZONA|ID|IDAHO|TX|TEXAS|FL|FLA\.?|FLORIDA|HI|HAWAII|NJ|NEW JERSEY|VA|VIRGINIA|CO|COLORADO|NM|NEW MEXICO|WY|WYOMING)$/i,''));
+    const allRows=(rows||[]).filter(raw=>raw&&typeof raw==='object');
+    const sourceRows=allRows.filter(raw=>!raw.rusSupplemental).map(raw=>({...raw}));
+    for(const raw of allRows.filter(row=>row.rusSupplemental)){
+      const matches=sourceRows.filter(other=>other.date===raw.date&&
+        opponentKey(other.awayTeam)===opponentKey(raw.awayTeam)&&
+        opponentKey(other.homeTeam)===opponentKey(raw.homeTeam));
+      if(matches.length!==1){
+        sourceRows.push({...raw});
+        continue;
+      }
+      const target=matches[0];
+      ['teamScore','opponentScore','result','rusStatus','rusVerified'].forEach(key=>{
+        if(scheduleHasValue(raw[key])&&(raw.rusVerified||!scheduleHasValue(target[key])))target[key]=raw[key];
+      });
+      ['gameUrl','gameId'].forEach(key=>{
+        if(!scheduleHasValue(target[key])&&scheduleHasValue(raw[key]))target[key]=raw[key];
+      });
+    }
     const bySignature=new Map(),byUrl=new Map();
     for(const raw of sourceRows){
       if(!raw||typeof raw!=='object')continue;
