@@ -522,7 +522,10 @@ async function runBrowserOnly(weekly, details, linkIndex) {
     const priorScore = detailScoreForBrowser(prior);
     const priorActive = prior?.final === true || /^(?:final|live|q[1-4]|halftime|half|ot)$/i.test(clean(prior?.status)) || clean(prior?.clock) ||
       (priorScore && (priorScore.away > 0 || priorScore.home > 0));
-    if (!priorActive) continue;
+    // A newly discovered direct URL may not have a detail row yet. Fetch it
+    // on game day so out-of-state matchups can enter the live feed instead of
+    // requiring an impossible pre-existing live status.
+    if (!priorActive && dayDelta !== 0) continue;
 
     // Full pages are expensive to render. Revisit partial/final pages often
     // enough for late-arriving stats, but avoid fetching the same page every
