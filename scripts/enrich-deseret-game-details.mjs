@@ -586,6 +586,23 @@ if (fs.existsSync(LINKS)) {
     linkIndex = linked?.links && typeof linked.links === 'object' ? linked.links : {};
   } catch {}
 }
+// Team schedule snapshots often contain direct game URLs that are absent from
+// the central link index, especially when one opponent is from out of state.
+// Fold those URLs into the same lookup so those games receive live updates and
+// box scores instead of depending on the blocked day-scoreboard request.
+if (fs.existsSync('team-current-data')) {
+  for (const file of fs.readdirSync('team-current-data')) {
+    if (!file.endsWith('.json')) continue;
+    try {
+      const teamData = JSON.parse(fs.readFileSync(`team-current-data/${file}`, 'utf8'));
+      for (const scheduled of teamData?.current?.schedule || []) {
+        const url = clean(scheduled?.gameUrl);
+        if (!url || !scheduled?.date || !scheduled?.awayTeam || !scheduled?.homeTeam) continue;
+        linkIndex[gameKey(scheduled)] ||= url;
+      }
+    } catch {}
+  }
+}
 let previous = { games: {} };
 if (fs.existsSync(OUTPUT)) {
   try { previous = JSON.parse(fs.readFileSync(OUTPUT, 'utf8')); } catch {}
