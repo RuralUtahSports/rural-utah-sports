@@ -118,8 +118,12 @@
   }
 
   function scheduleRows(rows){
+    const sourceRows=(rows||[]).filter((raw,index,all)=>{
+      if(!raw?.rusSupplemental)return true;
+      return !all.some((other,otherIndex)=>otherIndex!==index&&other?.gameUrl&&other.date===raw.date&&(canon(other.awayTeam)===canon(raw.awayTeam)||canon(other.homeTeam)===canon(raw.homeTeam)));
+    });
     const bySignature=new Map(),byUrl=new Map();
-    for(const raw of rows||[]){
+    for(const raw of sourceRows){
       if(!raw||typeof raw!=='object')continue;
       const signature=[raw.date,canon(raw.awayTeam),canon(raw.homeTeam)].join('|');
       const prior=bySignature.get(signature)||(raw.gameUrl?byUrl.get(raw.gameUrl):null);
