@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T05:16:23.374Z",
+  "updatedAt": "2026-09-12T05:18:22.354Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -2665,8 +2665,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Richfield — (11:36 1Q) Trey Yardley , 60-yard run (kick from Sam Gonzolez )",
@@ -2826,7 +2825,7 @@
               7,
               14,
               7,
-              7
+              10
             ],
             "total": 38
           },
@@ -2840,8 +2839,7 @@
             ],
             "total": 28
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Cedar City — (7:28 1Q) Kutler Tom , 80-yard pass from Jackson Mann (kick from Cody Stevenson )",
@@ -2852,7 +2850,8 @@
         "Cedar City — (0:31 2Q) Hunter Burgess , 39-yard pass from Jackson Mann (kick from Cody Stevenson )",
         "Cedar City — (3:05 3Q) Owen Burton , 29-yard run (kick from Cody Stevenson )",
         "Manti — (11:53 4Q) Hudson Crane , 23-yard pass from Isaiah Wright (kick from Tyler Steinfeldt )",
-        "Cedar City — (6:43 4Q) Braxton DeMille , 5-yard run (kick from Cody Stevenson )"
+        "Cedar City — (6:43 4Q) Braxton DeMille , 5-yard run (kick from Cody Stevenson )",
+        "Cedar City — (2:43 4Q) Cody Stevenson , 22-yard FG"
       ],
       "stats": [
         {
@@ -3045,7 +3044,7 @@
             [
               "30",
               "C. Cody Stevenson",
-              "",
+              "1",
               "5",
               ""
             ]
@@ -5418,8 +5417,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Highland — (8:01 1Q) Zamiri Vaughn , 41-yard pass from Will Bauman (kick from Willem Miles )",
@@ -7946,7 +7944,7 @@
               0,
               0,
               0,
-              0
+              14
             ],
             "total": 14
           },
@@ -7960,19 +7958,20 @@
             ],
             "total": 20
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Sky View — (8:06 1Q) Jordan Hoyt , 47-yard FG",
         "Sky View — (0:45 2Q) Rad Sparrow , 56-yard pass from Tucker Stokes (kick from Jordan Hoyt )",
         "Sky View — (1:26 3Q) Peyton Palmer , 1-yard run (kick from Jordan Hoyt )",
-        "Sky View — (7;35 4Q) Jordan Hoyt , 32-yard FG"
+        "Sky View — (7;35 4Q) Jordan Hoyt , 32-yard FG",
+        "Mountain Crest — (6:05 4Q) Mason Bradford , 19-yard pass from Brady Muir (kick from Elijah Fletcher )",
+        "Mountain Crest — (2:03 4Q) Kael Olsen , 14-yard pass from Brady Muir (kick from Elijah Fletcher )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "SKY VIEW",
+          "team": "MOUNTAIN CREST",
           "headers": [
             "NO",
             "PLAYER",
@@ -8015,6 +8014,30 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "MOUNTAIN CREST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "B. Brady Muir",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
           "category": "Receiving",
           "team": "SKY VIEW",
           "headers": [
@@ -8028,6 +8051,33 @@
             [
               "1",
               "R. Rad Sparrow",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "MOUNTAIN CREST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "K. Kael Olsen",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "8",
+              "M. Mason Bradford",
               "",
               "",
               "1"
@@ -8053,15 +8103,35 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "MOUNTAIN CREST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "14",
+              "E. Elijah Fletcher",
+              "",
+              "2",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 4,
-        "coreCells": 8,
+        "blocks": 7,
+        "rows": 8,
+        "coreCells": 16,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 5
       },
       "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
