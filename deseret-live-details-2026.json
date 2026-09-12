@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T04:57:27.930Z",
+  "updatedAt": "2026-09-12T04:59:21.757Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -2471,22 +2471,23 @@
               7,
               7,
               0,
-              0
+              7
             ],
             "total": 21
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "North Sanpete — (5:15 1Q) Trevor Mann , 3-yard run (kick from Gunner Pollock )",
         "North Sanpete — (5:56 2Q) Trevor Mann , 5-yard run (kick from Gunner Pollock )",
-        "Canyon View — (1:47 2Q) Camden Sheridan , 1-yard run (kick from Jackson Beckstrom )"
+        "Canyon View — (1:47 2Q) Camden Sheridan , 1-yard run (kick from Jackson Beckstrom )",
+        "Canyon View — (11:02 4Q) Bryson Barnes , 49-yard pass from Owen Williams (kick failed)",
+        "North Sanpete — (1:34 4Q) Luke Lee , 8-yard run (kick from Gunner Pollock )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "CANYON VIEW",
+          "team": "NORTH SANPETE",
           "headers": [
             "NO",
             "PLAYER",
@@ -2495,6 +2496,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "12",
+              "L. Luke Lee",
+              "",
+              "",
+              "1"
+            ],
             [
               "7",
               "T. Trevor Mann",
@@ -2525,6 +2533,50 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "O. Owen Williams",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "B. Bryson Barnes",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
           "category": "Special Teams",
           "team": "NORTH SANPETE",
           "headers": [
@@ -2539,7 +2591,7 @@
               "16",
               "G. Gunner Pollock",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -2567,11 +2619,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 4,
-        "coreCells": 4,
+        "blocks": 6,
+        "rows": 7,
+        "coreCells": 12,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
+        "emptyCoreBlocks": 4
       },
       "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
@@ -6302,7 +6354,7 @@
               0,
               0,
               7,
-              0
+              13
             ],
             "total": 20
           },
@@ -6312,12 +6364,11 @@
               7,
               7,
               20,
-              7
+              14
             ],
             "total": 48
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Union — (3:57 1Q) Cruz Labrum , 4-yard run (kick from Kaden Womack )",
@@ -6326,12 +6377,15 @@
         "Kearns — (4:55 3Q) Emmanuel Nguyen , 3-yard run (kick successful)",
         "Union — (0:13 3Q) Brett Meeks , 5-yard run (kick from Kaden Womack )",
         "Union — (0:00 3Q) Jaxson Grimm , 10-yard int. return (kick failed)",
-        "Union — (10:59 4Q) Brett Meeks , 33-yard fumble recovery (kick from Kaden Womack )"
+        "Union — (10:59 4Q) Brett Meeks , 33-yard fumble recovery (kick from Kaden Womack )",
+        "Union — (6:21 4Q) Tyce Labrum , 5-yard run (kick from Kaden Womack )",
+        "Kearns — (4:20 4Q) Mudey Muse , 33-yard pass from Mason Rodarte (kick failed)",
+        "Kearns — (0:12 4Q) Mudey Muse , 22-yard pass from Mason Rodarte (kick from Alejandro Barragan )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "UNION",
+          "team": "KEARNS",
           "headers": [
             "NO",
             "PLAYER",
@@ -6340,6 +6394,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "2",
+              "T. Tyce Labrum",
+              "",
+              "",
+              "1"
+            ],
             [
               "24",
               "B. Brett Meeks",
@@ -6384,6 +6445,50 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "KEARNS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "4",
+              "M. Mason Rodarte",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "KEARNS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "54",
+              "M. Mudey Muse",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
           "category": "Special Teams",
           "team": "UNION",
           "headers": [
@@ -6398,7 +6503,27 @@
               "57",
               "K. Kaden Womack",
               "",
-              "5",
+              "6",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "KEARNS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "10",
+              "A. Alejandro Barragan",
+              "",
+              "1",
               ""
             ]
           ]
@@ -6436,11 +6561,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 7,
-        "coreCells": 14,
+        "blocks": 7,
+        "rows": 11,
+        "coreCells": 22,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 5
       },
       "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"

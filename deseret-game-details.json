@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T04:57:27.314Z",
+  "updatedAt": "2026-09-12T04:59:21.147Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -91028,16 +91028,16 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-09-12T04:57:13.228Z",
+      "fetchedAt": "2026-09-12T04:59:07.238Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live-final",
       "date": "09/11/2026",
       "awayTeam": "ALA",
       "homeTeam": "SOUTH SEVIER",
-      "browserFetchedAt": "2026-09-12T04:57:13.228Z",
+      "browserFetchedAt": "2026-09-12T04:59:07.238Z",
       "detailSource": "deseret-browser-game-page",
       "finalSource": "deseret-browser-live-final",
-      "finalRefreshCount": 47
+      "finalRefreshCount": 48
     },
     "2026-09-11|WATERCANYON|ALTAMONT": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/water-canyon-football-football-vs-altamont-football/273688",
@@ -91085,17 +91085,17 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T04:57:23.783Z",
+      "fetchedAt": "2026-09-12T04:59:17.627Z",
       "date": "09/11/2026",
       "awayTeam": "WATER CANYON",
       "homeTeam": "ALTAMONT",
-      "browserFetchedAt": "2026-09-12T04:57:23.783Z",
+      "browserFetchedAt": "2026-09-12T04:59:17.627Z",
       "detailSource": "deseret-browser-game-page",
       "statusSource": "deseret-browser-live-final",
       "kickoffFallbackAt": "2026-09-12T03:05:58.857Z",
       "scoreSource": "deseret-browser-live",
       "finalSource": "deseret-browser-live-final",
-      "finalRefreshCount": 51
+      "finalRefreshCount": 52
     },
     "2026-09-11|ALTA|SYRACUSE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/alta-football-vs-syracuse-football/274394",
@@ -92586,22 +92586,23 @@
               7,
               7,
               0,
-              0
+              7
             ],
             "total": 21
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "North Sanpete — (5:15 1Q) Trevor Mann , 3-yard run (kick from Gunner Pollock )",
         "North Sanpete — (5:56 2Q) Trevor Mann , 5-yard run (kick from Gunner Pollock )",
-        "Canyon View — (1:47 2Q) Camden Sheridan , 1-yard run (kick from Jackson Beckstrom )"
+        "Canyon View — (1:47 2Q) Camden Sheridan , 1-yard run (kick from Jackson Beckstrom )",
+        "Canyon View — (11:02 4Q) Bryson Barnes , 49-yard pass from Owen Williams (kick failed)",
+        "North Sanpete — (1:34 4Q) Luke Lee , 8-yard run (kick from Gunner Pollock )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "CANYON VIEW",
+          "team": "NORTH SANPETE",
           "headers": [
             "NO",
             "PLAYER",
@@ -92610,6 +92611,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "12",
+              "L. Luke Lee",
+              "",
+              "",
+              "1"
+            ],
             [
               "7",
               "T. Trevor Mann",
@@ -92640,6 +92648,50 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "O. Owen Williams",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "6",
+              "B. Bryson Barnes",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
           "category": "Special Teams",
           "team": "NORTH SANPETE",
           "headers": [
@@ -92654,7 +92706,7 @@
               "16",
               "G. Gunner Pollock",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -92682,21 +92734,22 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 4,
-        "coreCells": 4,
+        "blocks": 6,
+        "rows": 7,
+        "coreCells": 12,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
+        "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-09-12T02:58:21.097Z",
+      "fetchedAt": "2026-09-12T04:58:49.596Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live-final",
       "date": "09/11/2026",
       "awayTeam": "CANYON VIEW",
       "homeTeam": "NORTH SANPETE",
-      "browserFetchedAt": "2026-09-12T02:58:21.097Z",
+      "browserFetchedAt": "2026-09-12T04:58:49.596Z",
       "detailSource": "deseret-browser-game-page",
-      "finalSource": "deseret-browser-live-final"
+      "finalSource": "deseret-browser-live-final",
+      "finalRefreshCount": 1
     },
     "2026-09-11|RICHFIELD|CARBON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/richfield-football-vs-carbon-football/273683",
@@ -93954,17 +94007,17 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-09-12T04:57:17.193Z",
+      "fetchedAt": "2026-09-12T04:59:10.701Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live-final",
       "date": "09/11/2026",
       "awayTeam": "MURRAY",
       "homeTeam": "COTTONWOOD",
-      "browserFetchedAt": "2026-09-12T04:57:17.193Z",
+      "browserFetchedAt": "2026-09-12T04:59:10.701Z",
       "detailSource": "deseret-browser-game-page",
       "statsPreservedFrom": "2026-09-12T02:37:09.857Z",
       "finalSource": "deseret-browser-live-final",
-      "finalRefreshCount": 51
+      "finalRefreshCount": 52
     },
     "2026-09-11|WESTJORDAN|CYPRUS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/west-jordan-football-vs-cyprus-football/273608",
@@ -96522,7 +96575,7 @@
               0,
               0,
               7,
-              0
+              13
             ],
             "total": 20
           },
@@ -96532,12 +96585,11 @@
               7,
               7,
               20,
-              7
+              14
             ],
             "total": 48
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Union — (3:57 1Q) Cruz Labrum , 4-yard run (kick from Kaden Womack )",
@@ -96546,12 +96598,15 @@
         "Kearns — (4:55 3Q) Emmanuel Nguyen , 3-yard run (kick successful)",
         "Union — (0:13 3Q) Brett Meeks , 5-yard run (kick from Kaden Womack )",
         "Union — (0:00 3Q) Jaxson Grimm , 10-yard int. return (kick failed)",
-        "Union — (10:59 4Q) Brett Meeks , 33-yard fumble recovery (kick from Kaden Womack )"
+        "Union — (10:59 4Q) Brett Meeks , 33-yard fumble recovery (kick from Kaden Womack )",
+        "Union — (6:21 4Q) Tyce Labrum , 5-yard run (kick from Kaden Womack )",
+        "Kearns — (4:20 4Q) Mudey Muse , 33-yard pass from Mason Rodarte (kick failed)",
+        "Kearns — (0:12 4Q) Mudey Muse , 22-yard pass from Mason Rodarte (kick from Alejandro Barragan )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "UNION",
+          "team": "KEARNS",
           "headers": [
             "NO",
             "PLAYER",
@@ -96560,6 +96615,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "2",
+              "T. Tyce Labrum",
+              "",
+              "",
+              "1"
+            ],
             [
               "24",
               "B. Brett Meeks",
@@ -96604,6 +96666,50 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "KEARNS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "4",
+              "M. Mason Rodarte",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "KEARNS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "54",
+              "M. Mudey Muse",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
           "category": "Special Teams",
           "team": "UNION",
           "headers": [
@@ -96618,7 +96724,27 @@
               "57",
               "K. Kaden Womack",
               "",
-              "5",
+              "6",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "KEARNS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "10",
+              "A. Alejandro Barragan",
+              "",
+              "1",
               ""
             ]
           ]
@@ -96656,21 +96782,22 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 7,
-        "coreCells": 14,
+        "blocks": 7,
+        "rows": 11,
+        "coreCells": 22,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-09-12T02:58:41.705Z",
+      "fetchedAt": "2026-09-12T04:58:53.061Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live-final",
       "date": "09/11/2026",
       "awayTeam": "KEARNS",
       "homeTeam": "UNION",
-      "browserFetchedAt": "2026-09-12T02:58:41.705Z",
+      "browserFetchedAt": "2026-09-12T04:58:53.061Z",
       "detailSource": "deseret-browser-game-page",
-      "finalSource": "deseret-browser-live-final"
+      "finalSource": "deseret-browser-live-final",
+      "finalRefreshCount": 1
     },
     "2026-09-11|NORTHSUMMIT|KANAB": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/north-summit-football-vs-kanab-football/273324",
@@ -97669,16 +97796,16 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 6
       },
-      "fetchedAt": "2026-09-12T04:57:27.213Z",
+      "fetchedAt": "2026-09-12T04:59:21.046Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live-final",
       "date": "09/11/2026",
       "awayTeam": "LOGAN",
       "homeTeam": "PROVIDENCE HALL",
-      "browserFetchedAt": "2026-09-12T04:57:27.213Z",
+      "browserFetchedAt": "2026-09-12T04:59:21.046Z",
       "detailSource": "deseret-browser-game-page",
       "finalSource": "deseret-browser-live-final",
-      "finalRefreshCount": 51
+      "finalRefreshCount": 52
     },
     "2026-09-11|PAYSON|MAPLEMOUNTAIN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/payson-football-vs-maple-mountain-football/273643",
@@ -97927,11 +98054,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T04:57:06.251Z",
+      "fetchedAt": "2026-09-12T04:59:00.052Z",
       "date": "09/11/2026",
       "awayTeam": "MONUMENT VAL",
       "homeTeam": "UMA-LEHI",
-      "browserFetchedAt": "2026-09-12T04:57:06.251Z",
+      "browserFetchedAt": "2026-09-12T04:59:00.052Z",
       "detailSource": "deseret-browser-game-page",
       "statusSource": "kickoff-time-fallback",
       "kickoffFallbackAt": "2026-09-12T03:55:07.023Z",
@@ -98761,17 +98888,17 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T04:57:02.943Z",
+      "fetchedAt": "2026-09-12T04:58:56.363Z",
       "date": "09/11/2026",
       "awayTeam": "PANGUITCH",
       "homeTeam": "WHITEHORSE",
-      "browserFetchedAt": "2026-09-12T04:57:02.943Z",
+      "browserFetchedAt": "2026-09-12T04:58:56.363Z",
       "detailSource": "deseret-browser-game-page",
       "statusSource": "deseret-browser-live-final",
       "kickoffFallbackAt": "2026-09-12T04:36:58.011Z",
       "scoreSource": "deseret-browser-live",
       "finalSource": "deseret-browser-live-final",
-      "finalRefreshCount": 12
+      "finalRefreshCount": 13
     },
     "2026-09-11|SALEMHILLS|PARKCITY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/salem-hills-football-vs-park-city-football/273427",
@@ -98949,16 +99076,16 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-09-12T04:57:09.965Z",
+      "fetchedAt": "2026-09-12T04:59:03.488Z",
       "statusSource": "deseret-browser-live-final",
       "kickoffFallbackAt": "2026-09-12T01:24:07.457Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "SALEM HILLS",
       "homeTeam": "PARK CITY",
-      "browserFetchedAt": "2026-09-12T04:57:09.965Z",
+      "browserFetchedAt": "2026-09-12T04:59:03.488Z",
       "detailSource": "deseret-browser-game-page",
-      "finalRefreshCount": 42,
+      "finalRefreshCount": 43,
       "finalSource": "deseret-browser-live-final"
     },
     "2026-09-11|SPRINGVILLE|PLEASANTGROVE": {
@@ -99355,16 +99482,16 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-09-12T04:57:20.512Z",
+      "fetchedAt": "2026-09-12T04:59:14.461Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live-final",
       "date": "09/11/2026",
       "awayTeam": "TOOELE",
       "homeTeam": "RIDGELINE",
-      "browserFetchedAt": "2026-09-12T04:57:20.512Z",
+      "browserFetchedAt": "2026-09-12T04:59:14.461Z",
       "detailSource": "deseret-browser-game-page",
       "finalSource": "deseret-browser-live-final",
-      "finalRefreshCount": 51,
+      "finalRefreshCount": 52,
       "statsPreservedFrom": "2026-09-12T03:27:05.440Z"
     },
     "2026-09-11|SOUTHSUMMIT|SANJUAN": {
