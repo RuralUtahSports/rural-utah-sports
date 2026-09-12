@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T01:27:38.728Z",
+  "updatedAt": "2026-09-12T01:30:09.474Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -90855,7 +90855,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "South Sevier — (6:32 1Q) Cooper Castle , 79-yard run (kick from Narees DeJesus )",
@@ -90966,7 +90967,7 @@
     },
     "2026-09-11|WATERCANYON|ALTAMONT": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/water-canyon-football-football-vs-altamont-football/273688",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -90983,7 +90984,7 @@
       },
       "fetchedAt": "2026-09-12T01:26:33.957Z",
       "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.956Z",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.601Z",
       "date": "09/11/2026",
       "awayTeam": "WATER CANYON",
       "homeTeam": "ALTAMONT",
@@ -91025,8 +91026,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Syracuse — (0:00 1Q) Parker Moffat , 15-yard pass from Ledger Wight (kick from Jed Beutler )"
@@ -91105,14 +91105,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
       },
-      "fetchedAt": "2026-09-12T01:24:25.198Z",
+      "fetchedAt": "2026-09-12T01:29:14.500Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:24:07.456Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "ALTA",
       "homeTeam": "SYRACUSE",
-      "browserFetchedAt": "2026-09-12T01:24:25.198Z",
+      "browserFetchedAt": "2026-09-12T01:29:14.500Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|BINGHAM|HERRIMAN": {
@@ -91150,7 +91150,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Herriman — (11:20 1Q) Max Wilson , 47-yard pass from Bryson Sweeney (kick from Brody Crayk )",
@@ -91281,26 +91282,73 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Beaver — (4:14 1Q) Emmet Lurth , 63-yard pass from Davis Carter (kick failed)"
+      ],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "BEAVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "16",
+              "D. Davis Carter",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "BEAVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "87",
+              "E. Emmet Lurth",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 6,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 2
       },
-      "fetchedAt": "2026-09-12T01:24:28.582Z",
+      "fetchedAt": "2026-09-12T01:29:17.204Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:24:07.456Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "BEAVER",
       "homeTeam": "MILLARD",
-      "browserFetchedAt": "2026-09-12T01:24:28.582Z",
+      "browserFetchedAt": "2026-09-12T01:29:17.204Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|STANSBURY|BEARRIVER": {
@@ -91338,8 +91386,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Stansbury — (8:19 1Q) Lincoln Reutzel , 15-yard pass from Brighton Reutzel (kick from Seth Wilcox )"
@@ -91418,13 +91465,13 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
       },
-      "fetchedAt": "2026-09-12T01:21:10.347Z",
+      "fetchedAt": "2026-09-12T01:29:11.742Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "STANSBURY",
       "homeTeam": "BEAR RIVER",
-      "browserFetchedAt": "2026-09-12T01:21:10.347Z",
+      "browserFetchedAt": "2026-09-12T01:29:11.742Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|LAYTON|AMERICANFORK": {
@@ -91462,8 +91509,7 @@
             ],
             "total": 8
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "American Fork — (4:42 1Q) DC Fonua , 10-yard run (pass from Jake Matsen )"
@@ -91498,19 +91544,19 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 1
       },
-      "fetchedAt": "2026-09-12T01:24:46.215Z",
+      "fetchedAt": "2026-09-12T01:29:33.864Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:24:07.456Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "LAYTON",
       "homeTeam": "AMERICAN FORK",
-      "browserFetchedAt": "2026-09-12T01:24:46.215Z",
+      "browserFetchedAt": "2026-09-12T01:29:33.864Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|RIVERTON|CEDARVALLEY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/riverton-football-vs-cedar-valley-football/273569",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -91525,14 +91571,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:25:15.051Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
+      "fetchedAt": "2026-09-12T01:30:01.440Z",
       "date": "09/11/2026",
       "awayTeam": "RIVERTON",
       "homeTeam": "CEDAR VALLEY",
-      "browserFetchedAt": "2026-09-12T01:25:15.051Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-12T01:30:01.440Z",
+      "detailSource": "deseret-browser-game-page",
+      "statusSource": "kickoff-time-fallback",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.602Z"
     },
     "2026-09-11|BONNEVILLE|WESTFIELD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/bonneville-football-vs-west-field-football-football/273501",
@@ -91569,7 +91615,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "West Field — (8:52 1Q) Andrew Combe , 42-yard pass from Danny Stitzer II (kick failed)"
@@ -91672,7 +91719,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "North Sanpete — (5:15 1Q) Trevor Mann , 3-yard run (kick from Gunner Pollock )"
@@ -91759,7 +91807,7 @@
               null,
               null
             ],
-            "total": 21
+            "total": 28
           },
           {
             "team": "CARBON",
@@ -91771,7 +91819,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Richfield — (11:36 1Q) Trey Yardley , 60-yard run (kick from Sam Gonzolez )",
@@ -91923,8 +91972,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Cedar City — (7:28 1Q) Kutler Tom , 80-yard pass from Jackson Mann (kick from Cody Stevenson )",
@@ -92068,14 +92116,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-09-12T01:24:31.704Z",
+      "fetchedAt": "2026-09-12T01:29:20.128Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:24:07.456Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "CEDAR CITY",
       "homeTeam": "MANTI",
-      "browserFetchedAt": "2026-09-12T01:24:31.704Z",
+      "browserFetchedAt": "2026-09-12T01:29:20.128Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|CLEARFIELD|FREMONT": {
@@ -92113,7 +92161,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Fremont — (4:37 1Q) Isaia Fonotisatele , 25-yard int. return (kick from Daxton Shupe )"
@@ -92214,7 +92263,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Mountain Ridge — (8:16 1Q) Tytan DeJong , 5-yard pass from Jaxon Hunt (run failed)",
@@ -92321,7 +92371,7 @@
     },
     "2026-09-11|HURRICANE|CRIMSONCLIFFS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/hurricane-football-vs-crimson-cliffs-football/273495",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -92336,14 +92386,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:24:40.385Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
+      "fetchedAt": "2026-09-12T01:29:28.295Z",
       "date": "09/11/2026",
       "awayTeam": "HURRICANE",
       "homeTeam": "CRIMSON CLIFFS",
-      "browserFetchedAt": "2026-09-12T01:24:40.385Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-12T01:29:28.295Z",
+      "detailSource": "deseret-browser-game-page",
+      "statusSource": "kickoff-time-fallback",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.602Z"
     },
     "2026-09-11|MURRAY|COTTONWOOD": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/murray-football-vs-cottonwood-football/273628",
@@ -92380,7 +92430,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Murray — (10:18 1Q) Mckade Eardley , 4-yard run (kick from Anthony Guerra )",
@@ -92510,7 +92561,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Cyprus — (7:15 1Q) Gafa Fanene , 37-yard fumble recovery (kick successful)"
@@ -92576,7 +92628,7 @@
             "team": "SUMMIT ACADEMY",
             "quarters": [
               7,
-              null,
+              0,
               null,
               null
             ],
@@ -92586,19 +92638,39 @@
             "team": "DELTA",
             "quarters": [
               0,
-              null,
+              7,
               null,
               null
             ],
-            "total": 0
+            "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
-        "Summit Academy — (2:32 1Q) Rigby Young , 3-yard run (kick from Kyden Mortenson )"
+        "Summit Academy — (2:32 1Q) Rigby Young , 3-yard run (kick from Kyden Mortenson )",
+        "Delta — (8:58 2Q) Bronx Hunt , 9-yard run (kick from Jacen Johnson )"
       ],
       "stats": [
+        {
+          "category": "Rushing",
+          "team": "DELTA",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "B. Bronx Hunt",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
         {
           "category": "Rushing",
           "team": "SUMMIT ACADEMY",
@@ -92616,6 +92688,26 @@
               "",
               "",
               "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "DELTA",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "J. Jacen Johnson",
+              "",
+              "1",
+              ""
             ]
           ]
         },
@@ -92642,19 +92734,19 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 4,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 2
       },
-      "fetchedAt": "2026-09-12T01:25:20.976Z",
+      "fetchedAt": "2026-09-12T01:30:06.942Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "SUMMIT ACADEMY",
       "homeTeam": "DELTA",
-      "browserFetchedAt": "2026-09-12T01:25:20.976Z",
+      "browserFetchedAt": "2026-09-12T01:30:06.942Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|OLYMPUS|DAVIS": {
@@ -92692,8 +92784,7 @@
             ],
             "total": 3
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Davis — (8:49 1Q) Griffin Carmack , 25-yard FG"
@@ -92728,14 +92819,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:25:06.511Z",
+      "fetchedAt": "2026-09-12T01:29:53.617Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:24:07.457Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "OLYMPUS",
       "homeTeam": "DAVIS",
-      "browserFetchedAt": "2026-09-12T01:25:06.511Z",
+      "browserFetchedAt": "2026-09-12T01:29:53.617Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|GREENCANYON|DESERETPEAK": {
@@ -92773,7 +92864,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Green Canyon — (5:36 1Q) Samuel Selman , 2-yard run (kick from Boston Daines )",
@@ -92873,7 +92965,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Pine View — (11:18 1Q) Carter Buchanan , 73-yard pass from Coy Doman (kick failed)",
@@ -92985,7 +93078,7 @@
     },
     "2026-09-11|DESERTHILLS|SNOWCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/desert-hills-football-vs-snow-canyon-football/273484",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -93018,7 +93111,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [],
       "stats": [],
@@ -93040,7 +93134,7 @@
     },
     "2026-09-11|ENTERPRISE|DUCHESNE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/enterprise-football-vs-duchesne-football/273374",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -93073,7 +93167,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [],
       "stats": [],
@@ -93128,7 +93223,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Highland — (8:01 1Q) Zamiri Vaughn , 41-yard pass from Will Bauman (kick from Willem Miles )",
@@ -93249,7 +93345,7 @@
     },
     "2026-09-11|OGDEN|EMERY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/ogden-football-vs-emery-football/273462",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -93264,14 +93360,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:25:03.430Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
+      "fetchedAt": "2026-09-12T01:29:51.158Z",
       "date": "09/11/2026",
       "awayTeam": "OGDEN",
       "homeTeam": "EMERY",
-      "browserFetchedAt": "2026-09-12T01:25:03.430Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-12T01:29:51.158Z",
+      "detailSource": "deseret-browser-game-page",
+      "statusSource": "kickoff-time-fallback",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.602Z"
     },
     "2026-09-11|WOODSCROSS|FARMINGTON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/woods-cross-football-vs-farmington-football/273752",
@@ -93306,9 +93402,10 @@
               null,
               null
             ],
-            "total": 3
+            "total": 10
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Woods Cross — (5:54 1Q) Archer Gale , 19-yard FG",
@@ -93375,7 +93472,7 @@
     },
     "2026-09-11|TAYLORSVILLE|GRANGER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/taylorsville-football-vs-granger-football/274380",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -93390,14 +93487,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:25:23.836Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
+      "fetchedAt": "2026-09-12T01:30:09.374Z",
       "date": "09/11/2026",
       "awayTeam": "TAYLORSVILLE",
       "homeTeam": "GRANGER",
-      "browserFetchedAt": "2026-09-12T01:25:23.836Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-12T01:30:09.374Z",
+      "detailSource": "deseret-browser-game-page",
+      "statusSource": "kickoff-time-fallback",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.602Z"
     },
     "2026-09-11|GUNNISONVALLEY|PAROWAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/gunnison-valley-football-vs-parowan-football/273682",
@@ -93434,7 +93531,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Gunnison Valley — (9:32 2Q) Chance Hammond , 24-yard run (kick from Edrick Salas )"
@@ -93533,8 +93631,7 @@
             ],
             "total": 8
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Hunter — (7:15 1Q) Abbas Aweis , 11-yard pass from Sione \"Isi\" Moungaafi (run from Ryder Paea )",
@@ -93638,19 +93735,19 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "fetchedAt": "2026-09-12T01:24:37.537Z",
+      "fetchedAt": "2026-09-12T01:29:25.817Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:24:07.457Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "HILLCREST",
       "homeTeam": "HUNTER",
-      "browserFetchedAt": "2026-09-12T01:24:37.537Z",
+      "browserFetchedAt": "2026-09-12T01:29:25.817Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|JUANDIEGO|JORDAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/juan-diego-football-vs-jordan-football/273757",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -93665,14 +93762,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:24:43.039Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
+      "fetchedAt": "2026-09-12T01:29:30.769Z",
       "date": "09/11/2026",
       "awayTeam": "JUAN DIEGO",
       "homeTeam": "JORDAN",
-      "browserFetchedAt": "2026-09-12T01:24:43.039Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-12T01:29:30.769Z",
+      "detailSource": "deseret-browser-game-page",
+      "statusSource": "kickoff-time-fallback",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.602Z"
     },
     "2026-09-11|KEARNS|UNION": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/kearns-football-vs-union-football/273394",
@@ -93709,7 +93806,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Union — (3:57 1Q) Cruz Labrum , 4-yard run (kick from Kaden Womack )"
@@ -93808,7 +93906,8 @@
             ],
             "total": 10
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Kanab — (10:52 1Q) Kaleb Warner , 8-yard run (kick from Ray Capson )",
@@ -93875,7 +93974,7 @@
     },
     "2026-09-11|LAYTONCHRISTIAN|VIEWMONT": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/layton-christian-football-vs-viewmont-football/273448",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -93890,14 +93989,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:24:48.891Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
+      "fetchedAt": "2026-09-12T01:29:36.620Z",
       "date": "09/11/2026",
       "awayTeam": "LAYTON CHRISTIAN",
       "homeTeam": "VIEWMONT",
-      "browserFetchedAt": "2026-09-12T01:24:48.891Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-12T01:29:36.620Z",
+      "detailSource": "deseret-browser-game-page",
+      "statusSource": "kickoff-time-fallback",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.602Z"
     },
     "2026-09-11|TIMPVIEW|LONEPEAK": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/timpview-football-vs-lone-peak-football/273472",
@@ -94021,7 +94120,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Weber — (8:07 1Q) Creed Devries , 25-yard pass from Carter Payne (kick from Zach Jenkins )",
@@ -94165,7 +94265,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Logan — (7:41 1Q) Mason Birch , 1-yard run (pass from Easton Favero )"
@@ -94237,18 +94338,18 @@
           {
             "team": "MAPLE MOUNTAIN",
             "quarters": [
-              3,
+              6,
               null,
               null,
               null
             ],
-            "total": 3
+            "total": 6
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
-        "Maple Mountain — (3:50 1Q) Israel Vaenuku , 27-yard FG"
+        "Maple Mountain — (3:50 1Q) Israel Vaenuku , 27-yard FG",
+        "Maple Mountain — (2:12 1Q) Israel Vaenuku , 30-yard FG"
       ],
       "stats": [
         {
@@ -94265,7 +94366,7 @@
             [
               "8",
               "I. Israel Vaenuku",
-              "1",
+              "2",
               "",
               ""
             ]
@@ -94280,19 +94381,19 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:25:12.369Z",
+      "fetchedAt": "2026-09-12T01:29:58.561Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:24:07.457Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "PAYSON",
       "homeTeam": "MAPLE MOUNTAIN",
-      "browserFetchedAt": "2026-09-12T01:25:12.369Z",
+      "browserFetchedAt": "2026-09-12T01:29:58.561Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|MONUMENTVAL|UMALEHI": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/monument-valley-football-vs-utah-military-camp-williams-football-football/274422",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -94307,14 +94408,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:24:54.606Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
+      "fetchedAt": "2026-09-12T01:29:43.531Z",
       "date": "09/11/2026",
       "awayTeam": "MONUMENT VAL",
       "homeTeam": "UMA-LEHI",
-      "browserFetchedAt": "2026-09-12T01:24:54.606Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-12T01:29:43.531Z",
+      "detailSource": "deseret-browser-game-page",
+      "statusSource": "kickoff-time-fallback",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.602Z"
     },
     "2026-09-11|MOUNTAINCREST|SKYVIEW": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/mountain-crest-football-vs-sky-view-football/273611",
@@ -94357,13 +94458,13 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:24:57.705Z",
+      "fetchedAt": "2026-09-12T01:29:45.971Z",
       "statusSource": "kickoff-time-fallback",
       "kickoffFallbackAt": "2026-09-12T01:24:07.457Z",
       "date": "09/11/2026",
       "awayTeam": "MOUNTAIN CREST",
       "homeTeam": "SKY VIEW",
-      "browserFetchedAt": "2026-09-12T01:24:57.705Z",
+      "browserFetchedAt": "2026-09-12T01:29:45.971Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|MOUNTAINVIEW|PROVO": {
@@ -94399,9 +94500,10 @@
               null,
               null
             ],
-            "total": 7
+            "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Provo — (4:15 1Q) Liam Schoenrock , 11-yard pass from Ryker Carson (kick from Cannon Brinley )"
@@ -94507,7 +94609,7 @@
           {
             "team": "NORTH SEVIER",
             "quarters": [
-              null,
+              7,
               null,
               null,
               null
@@ -94517,17 +94619,18 @@
           {
             "team": "RICH",
             "quarters": [
-              null,
+              0,
               null,
               null,
               null
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
-      "scoringPlays": [],
+      "scoringPlays": [
+        "North Sevier — (7:00 1Q) run (kick successful)"
+      ],
       "stats": [],
       "statsAvailability": {
         "status": "unavailable",
@@ -94536,13 +94639,13 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:25:00.548Z",
+      "fetchedAt": "2026-09-12T01:29:48.424Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
       "date": "09/11/2026",
       "awayTeam": "NORTH SEVIER",
       "homeTeam": "RICH",
-      "browserFetchedAt": "2026-09-12T01:25:00.548Z",
+      "browserFetchedAt": "2026-09-12T01:29:48.424Z",
       "detailSource": "deseret-browser-game-page",
       "scoreSource": "deseret-browser-live"
     },
@@ -94581,8 +94684,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Orem — (10:33 1Q) Brooks Ross , 37-yard pass from Tanner Lewis (kick from Adrian Sanchez )"
@@ -94661,18 +94763,18 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
       },
-      "fetchedAt": "2026-09-12T01:21:03.441Z",
+      "fetchedAt": "2026-09-12T01:29:05.960Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "SPANISH FORK",
       "homeTeam": "OREM",
-      "browserFetchedAt": "2026-09-12T01:21:03.441Z",
+      "browserFetchedAt": "2026-09-12T01:29:05.960Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|PANGUITCH|WHITEHORSE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/panguitch-football-vs-whitehorse-football/273639",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -94687,14 +94789,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:25:09.539Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
+      "fetchedAt": "2026-09-12T01:29:56.041Z",
       "date": "09/11/2026",
       "awayTeam": "PANGUITCH",
       "homeTeam": "WHITEHORSE",
-      "browserFetchedAt": "2026-09-12T01:25:09.539Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-12T01:29:56.041Z",
+      "detailSource": "deseret-browser-game-page",
+      "statusSource": "kickoff-time-fallback",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.602Z"
     },
     "2026-09-11|SALEMHILLS|PARKCITY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/salem-hills-football-vs-park-city-football/273427",
@@ -94731,8 +94833,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Park City — (2:03 1Q) Josh Hofer , 1-yard run (kick from Will Hladon )"
@@ -94787,14 +94888,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 1
       },
-      "fetchedAt": "2026-09-12T01:25:17.862Z",
+      "fetchedAt": "2026-09-12T01:30:04.090Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:24:07.457Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "SALEM HILLS",
       "homeTeam": "PARK CITY",
-      "browserFetchedAt": "2026-09-12T01:25:17.862Z",
+      "browserFetchedAt": "2026-09-12T01:30:04.090Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|SPRINGVILLE|PLEASANTGROVE": {
@@ -94832,8 +94933,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Springville — (9:52 1Q) Treyton Harris , 16-yard run (kick from Pheonix Marks )"
@@ -94888,13 +94988,13 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 1
       },
-      "fetchedAt": "2026-09-12T01:21:06.851Z",
+      "fetchedAt": "2026-09-12T01:29:09.019Z",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "SPRINGVILLE",
       "homeTeam": "PLEASANT GROVE",
-      "browserFetchedAt": "2026-09-12T01:21:06.851Z",
+      "browserFetchedAt": "2026-09-12T01:29:09.019Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|TOOELE|RIDGELINE": {
@@ -95040,7 +95140,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "San Juan — (9:22 1Q) Quincy Singer , 5-yard pass from Beau Yeomans (kick from Luke Jeppesen )",
@@ -95212,7 +95313,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Skyridge — (3:46 1Q) Beckham Bennett , 31-yard run (kick from Evan Kopp )",
@@ -95409,12 +95511,12 @@
           {
             "team": "DEER CREEK",
             "quarters": [
-              0,
+              6,
               null,
               null,
               null
             ],
-            "total": 0
+            "total": 6
           },
           {
             "team": "UINTAH",
@@ -95426,16 +95528,16 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
-        "Uintah — (4:48 1Q) Keston Kunkel , 1-yard run (kick from Colton Van Wagoner )"
+        "Uintah — (4:48 1Q) Keston Kunkel , 1-yard run (kick from Colton Van Wagoner )",
+        "Deer Creek — (2;57 1Q) Logan Duncan , 4-yard pass from Kai Betsinger (kick failed)"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "UINTAH",
+          "team": "DEER CREEK",
           "headers": [
             "NO",
             "PLAYER",
@@ -95447,6 +95549,50 @@
             [
               "65",
               "K. Keston Kunkel",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "DEER CREEK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "1",
+              "K. Kai Betsinger",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "DEER CREEK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "L. Logan Duncan",
               "",
               "",
               "1"
@@ -95476,25 +95622,25 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-09-12T01:24:34.548Z",
+      "fetchedAt": "2026-09-12T01:29:22.828Z",
       "statusSource": "deseret-browser-live",
       "kickoffFallbackAt": "2026-09-12T01:24:07.457Z",
       "scoreSource": "deseret-browser-live",
       "date": "09/11/2026",
       "awayTeam": "DEER CREEK",
       "homeTeam": "UINTAH",
-      "browserFetchedAt": "2026-09-12T01:24:34.548Z",
+      "browserFetchedAt": "2026-09-12T01:29:22.828Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-11|MILFORD|LINCOLNCOUNTYNV": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/milford-football-vs-lincoln-county-nev-football/274428",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -95509,14 +95655,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-12T01:24:51.778Z",
-      "statusSource": "kickoff-time-fallback",
-      "kickoffFallbackAt": "2026-09-12T01:26:16.957Z",
+      "fetchedAt": "2026-09-12T01:29:39.142Z",
       "date": "09/11/2026",
       "awayTeam": "MILFORD",
       "homeTeam": "LINCOLN COUNTY, NV",
-      "browserFetchedAt": "2026-09-12T01:24:51.778Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-12T01:29:39.142Z",
+      "detailSource": "deseret-browser-game-page",
+      "statusSource": "kickoff-time-fallback",
+      "kickoffFallbackAt": "2026-09-12T01:28:51.602Z"
     },
     "2026-09-10|JUAB|GRANTSVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/juab-football-vs-grantsville-football/273755",
