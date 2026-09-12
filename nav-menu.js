@@ -341,7 +341,7 @@
       );
     if (path === "rankings.html") {
       addScript(
-        "rankings-live-records.js?v=20260912-last-result1",
+        "rankings-live-records.js?v=20260912-hover-schedule1",
         "rusRankingsLiveRecords",
         true,
       );
