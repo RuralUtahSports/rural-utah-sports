@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T03:07:33.755Z",
+  "updatedAt": "2026-09-12T03:10:28.242Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -968,8 +968,8 @@
       "awayTeam": "WATER CANYON",
       "homeTeam": "ALTAMONT",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/water-canyon-football-football-vs-altamont-football/273688",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -1001,7 +1001,8 @@
             ],
             "total": 8
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [],
       "stats": [],
@@ -1011,7 +1012,9 @@
         "rows": 0,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
-      }
+      },
+      "finalSource": "deseret-browser-live-final",
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|ALTA|SYRACUSE": {
       "date": "09/11/2026",
@@ -1037,7 +1040,7 @@
               0,
               0,
               7,
-              null
+              0
             ],
             "total": 7
           },
@@ -1047,18 +1050,18 @@
               7,
               0,
               14,
-              null
+              7
             ],
-            "total": 21
+            "total": 28
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Syracuse — (0:00 1Q) Parker Moffat , 15-yard pass from Ledger Wight (kick from Jed Beutler )",
         "Syracuse — (9:09 3Q) Bo Metcalfe , 25-yard pass from Ledger Wight (kick from Jed Beutler )",
         "Alta — (4:41 3Q) Ryland Clayton , 76-yard pass from Xavier Cocci (kick from Madden McCallister )",
-        "Syracuse — (0:27 3Q) Kao Prom , 19-yard pass from Ledger Wight (kick from Jed Beutler )"
+        "Syracuse — (0:27 3Q) Kao Prom , 19-yard pass from Ledger Wight (kick from Jed Beutler )",
+        "Syracuse — (7:22 4Q) Ryder Martinez , 26-yard pass from Ledger Wight (kick from Jed Beutler )"
       ],
       "stats": [
         {
@@ -1080,7 +1083,7 @@
               "",
               "",
               "",
-              "3",
+              "4",
               ""
             ]
           ]
@@ -1120,6 +1123,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "14",
+              "R. Ryder Martinez",
+              "",
+              "",
+              "1"
+            ],
             [
               "7",
               "K. Kao Prom",
@@ -1178,7 +1188,7 @@
               "40",
               "J. Jed Beutler",
               "",
-              "3",
+              "4",
               ""
             ]
           ]
@@ -1207,8 +1217,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 6,
-        "rows": 8,
-        "coreCells": 16,
+        "rows": 9,
+        "coreCells": 18,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
@@ -1627,8 +1637,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Stansbury — (8:19 1Q) Lincoln Reutzel , 15-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
@@ -2234,7 +2243,8 @@
         "West Field — (11:57 2Q) Elijah Woods , 7-yard run (kick from Jaxon Hart )",
         "West Field — (7:20 2Q) Caden Judy , 3-yard run (kick from Jaxon Hart )",
         "Bonneville — (5:41 2Q) Trevyn Sears , 42-yard pass from Boston Chipman (run failed)",
-        "Bonneville — (0:01 2Q) Mathis Wilcoxen , 9-yard FG"
+        "Bonneville — (0:01 2Q) Mathis Wilcoxen , 9-yard FG",
+        "Bonneville — (6:37 3Q) Trevyn Sears , 3-yard pass from Boston Chipman (kick from Aiden Wilcox )"
       ],
       "stats": [
         {
@@ -2290,7 +2300,7 @@
               "",
               "",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -2311,7 +2321,7 @@
               "T. Trevyn Sears",
               "",
               "",
-              "1"
+              "2"
             ],
             [
               "13",
@@ -2354,6 +2364,13 @@
           ],
           "rows": [
             [
+              "24",
+              "A. Aiden Wilcox",
+              "",
+              "1",
+              ""
+            ],
+            [
               "40",
               "M. Mathis Wilcoxen",
               "1",
@@ -2366,7 +2383,7 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 5,
-        "rows": 8,
+        "rows": 9,
         "coreCells": 14,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
@@ -3138,7 +3155,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Mountain Ridge — (8:16 1Q) Tytan DeJong , 5-yard pass from Jaxon Hunt (run failed)",
@@ -3604,7 +3622,7 @@
       "awayTeam": "WEST JORDAN",
       "homeTeam": "CYPRUS",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/west-jordan-football-vs-cyprus-football/273608",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -3637,8 +3655,7 @@
             ],
             "total": 10
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Cyprus — (7:15 1Q) Gafa Fanene , 37-yard fumble recovery (kick successful)",
@@ -3767,7 +3784,7 @@
               7,
               0,
               7,
-              null
+              0
             ],
             "total": 14
           },
@@ -3777,9 +3794,9 @@
               0,
               10,
               7,
-              null
+              7
             ],
-            "total": 17
+            "total": 24
           }
         ]
       },
@@ -3788,7 +3805,8 @@
         "Delta — (8:58 2Q) Bronx Hunt , 9-yard run (kick from Jacen Johnson )",
         "Delta — (0:01 2Q) Jacen Johnson , 42-yard FG",
         "Summit Academy — (10:30 3Q) Siaosi Afu , 30-yard pass from Rigby Young (kick from Kyden Mortenson )",
-        "Delta — (5:44 3Q) Bronx Hunt , 60-yard run (kick from Jacen Johnson )"
+        "Delta — (5:44 3Q) Bronx Hunt , 60-yard run (kick from Jacen Johnson )",
+        "Delta — (10:04 4Q) Bronx Hunt , 60-yard run (kick from Jacen Johnson )"
       ],
       "stats": [
         {
@@ -3807,7 +3825,7 @@
               "B. Bronx Hunt",
               "",
               "",
-              "2"
+              "3"
             ]
           ]
         },
@@ -3890,7 +3908,7 @@
               "1",
               "J. Jacen Johnson",
               "1",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -3931,8 +3949,8 @@
       "awayTeam": "OLYMPUS",
       "homeTeam": "DAVIS",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/olympus-football-vs-davis-football/273592",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -3964,7 +3982,8 @@
             ],
             "total": 31
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Davis — (8:49 1Q) Griffin Carmack , 25-yard FG",
@@ -4102,6 +4121,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|GREENCANYON|DESERETPEAK": {
@@ -4768,9 +4788,9 @@
               0,
               0,
               0,
-              null
+              6
             ],
-            "total": 0
+            "total": 6
           },
           {
             "team": "DUCHESNE",
@@ -4778,7 +4798,7 @@
               0,
               13,
               7,
-              null
+              0
             ],
             "total": 20
           }
@@ -4787,12 +4807,13 @@
       "scoringPlays": [
         "Duchesne — (9:04 2Q) Kyson Despain , 1-yard run (kick failed)",
         "Duchesne — (3:14 2Q) Brex Robinson , 31-yard run (kick from Alec Thomas )",
-        "Duchesne — (2:04 3Q) Brex Robinson , 1-yard run (kick from Alec Thomas )"
+        "Duchesne — (2:04 3Q) Brex Robinson , 1-yard run (kick from Alec Thomas )",
+        "Enterprise — (4:30 4Q) Jake Christensen , 40-yard pass from Jack Moyle (pass failed)"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "DUCHESNE",
+          "team": "ENTERPRISE",
           "headers": [
             "NO",
             "PLAYER",
@@ -4811,6 +4832,50 @@
             [
               "15",
               "K. Kyson Despain",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "ENTERPRISE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "12",
+              "J. Jack Moyle",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "ENTERPRISE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "J. Jake Christensen",
               "",
               "",
               "1"
@@ -4840,11 +4905,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 3,
-        "coreCells": 4,
+        "blocks": 4,
+        "rows": 5,
+        "coreCells": 10,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 3
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -5232,7 +5297,7 @@
               3,
               7,
               7,
-              null
+              0
             ],
             "total": 17
           },
@@ -5242,9 +5307,9 @@
               10,
               10,
               7,
-              null
+              7
             ],
-            "total": 27
+            "total": 34
           }
         ]
       },
@@ -5256,7 +5321,8 @@
         "Farmington — (0:04 2Q) Owen Morris , 39-yard FG",
         "Farmington — (9:34 3Q) Kyle Colledge , 3-yard run (kick from Owen Morris )",
         "Woods Cross — (3:10 3Q) Vili Brown , 3-yard run (kick from Archer Gale )",
-        "Farmington — (2:56 3Q) Benson Rogers , 80-yard pass from Alton Dahl (kick from Owen Morris )"
+        "Farmington — (2:56 3Q) Benson Rogers , 80-yard pass from Alton Dahl (kick from Owen Morris )",
+        "Farmington — (8:18 4Q) Benson Rogers , 33-yard pass from Alton Dahl (kick from Owen Morris )"
       ],
       "stats": [
         {
@@ -5325,7 +5391,7 @@
               "",
               "",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -5346,7 +5412,7 @@
               "B. Benson Rogers",
               "",
               "",
-              "1"
+              "2"
             ],
             [
               "14",
@@ -5372,7 +5438,7 @@
               "24",
               "O. Owen Morris",
               "2",
-              "3",
+              "4",
               ""
             ]
           ]
@@ -5464,8 +5530,8 @@
       "awayTeam": "GUNNISON VALLEY",
       "homeTeam": "PAROWAN",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/gunnison-valley-football-vs-parowan-football/273682",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -5582,6 +5648,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-11|HILLCREST|HUNTER": {
@@ -5622,8 +5689,7 @@
             ],
             "total": 8
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Hunter — (7:15 1Q) Abbas Aweis , 11-yard pass from Sione \"Isi\" Moungaafi (run from Ryder Paea )",
@@ -6289,8 +6355,7 @@
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [],
       "stats": [],
@@ -6750,7 +6815,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Logan — (7:41 1Q) Mason Birch , 1-yard run (pass from Easton Favero )",
@@ -8063,7 +8129,7 @@
               3,
               8
             ],
-            "total": 21
+            "total": 27
           },
           {
             "team": "PLEASANT GROVE",
@@ -8411,7 +8477,8 @@
             ],
             "total": 45
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "San Juan — (9:22 1Q) Quincy Singer , 5-yard pass from Beau Yeomans (kick from Luke Jeppesen )",
@@ -8672,7 +8739,8 @@
             ],
             "total": 42
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Skyridge — (3:46 1Q) Beckham Bennett , 31-yard run (kick from Evan Kopp )",
@@ -9034,8 +9102,7 @@
             ],
             "total": 29
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Uintah — (4:48 1Q) Keston Kunkel , 1-yard run (kick from Colton Van Wagoner )",
