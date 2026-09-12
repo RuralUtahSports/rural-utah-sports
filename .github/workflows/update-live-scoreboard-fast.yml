@@ -31,7 +31,8 @@ permissions:
   actions: write
 
 concurrency:
-  group: live-scoreboard
+  # Keep fast ticks from canceling the sustained game-night watcher.
+  group: live-scoreboard-fast
   cancel-in-progress: true
 
 jobs:
