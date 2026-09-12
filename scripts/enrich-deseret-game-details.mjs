@@ -335,7 +335,10 @@ function extractClock(html, game) {
 }
 
 function extractStatus(html, box, scoringPlays, clockInfo) {
-  const text = htmlText(html.slice(0, Math.min(html.length, 120000)));
+  // Rendered Deseret pages can place the visible scoreboard after more than
+  // 120 KB of framework markup. Parse the complete DOM so a real Final badge
+  // is not truncated and downgraded to Live merely because points exist.
+  const text = htmlText(html);
   const head = text.split(/Game Details/i)[0] || text.slice(0, 5000);
   if (/\bFinal\b/i.test(head)) return { status: 'Final', final: true };
   if (/\bHalftime\b/i.test(head)) return { status: 'Halftime', final: false };
