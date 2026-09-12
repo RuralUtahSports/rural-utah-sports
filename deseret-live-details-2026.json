@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T05:05:12.840Z",
+  "updatedAt": "2026-09-12T05:07:05.730Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -3564,7 +3564,7 @@
               0,
               3,
               0,
-              0
+              8
             ],
             "total": 11
           },
@@ -3578,18 +3578,18 @@
             ],
             "total": 10
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Hurricane — (0:16 2Q) Cameron Lemmon , 20-yard FG",
         "Crimson Cliffs — (9:16 3Q) Tanoai Andresen , 12-yard run (kick from Jacob Sparks )",
-        "Crimson Cliffs — (11:52 4Q) Jacob Sparks , 27-yard FG"
+        "Crimson Cliffs — (11:52 4Q) Jacob Sparks , 27-yard FG",
+        "Hurricane — (3:15 4Q) Max Hutchings , 10-yard pass from Kannon Cowan (run failed)"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "CRIMSON CLIFFS",
+          "team": "HURRICANE",
           "headers": [
             "NO",
             "PLAYER",
@@ -3601,6 +3601,50 @@
             [
               "7",
               "T. Tanoai Andresen",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "11",
+              "K. Kannon Cowan",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "M. Max Hutchings",
               "",
               "",
               "1"
@@ -3650,11 +3694,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
-        "coreCells": 2,
+        "blocks": 5,
+        "rows": 5,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 3
       },
       "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
