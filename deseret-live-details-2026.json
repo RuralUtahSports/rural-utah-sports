@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-12T05:03:08.744Z",
+  "updatedAt": "2026-09-12T05:05:12.840Z",
   "games": {
     "2026-09-10|WEST|BRIGHTON": {
       "date": "09/10/2026",
@@ -4989,7 +4989,7 @@
               7,
               0,
               0,
-              0
+              7
             ],
             "total": 14
           },
@@ -5003,8 +5003,7 @@
             ],
             "total": 26
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Desert Hills — (9:21 1Q) Seth Brown , 6-yard run (kick from Mason Boshell )",
@@ -5012,12 +5011,13 @@
         "Snow Canyon — (1:22 2Q) Brody Lounsbury , 3-yard pass from Parker Olson (kick from Slayden Penny )",
         "Snow Canyon — (2:53 3Q) Slayden Penny , 20-yard FG",
         "Snow Canyon — (11:48 4Q) safety",
-        "Snow Canyon — (9:26 4Q) Issaiah Thompson , 16-yard pass from Parker Olson (kick from Slayden Penny )"
+        "Snow Canyon — (9:26 4Q) Issaiah Thompson , 16-yard pass from Parker Olson (kick from Slayden Penny )",
+        "Desert Hills — (0:54 4Q) Josiah Thomas , 8-yard pass from Deacon Virgin (kick from Mason Boshell )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "SNOW CANYON",
+          "team": "DESERT HILLS",
           "headers": [
             "NO",
             "PLAYER",
@@ -5060,6 +5060,30 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "DESERT HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "D. Deacon Virgin",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
           "category": "Receiving",
           "team": "SNOW CANYON",
           "headers": [
@@ -5087,6 +5111,26 @@
             [
               "87",
               "C. Cory Hiatt",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "DESERT HILLS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "9",
+              "J. Josiah Thomas",
               "",
               "",
               "1"
@@ -5128,7 +5172,7 @@
               "28",
               "M. Mason Boshell",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -5136,11 +5180,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 5,
-        "rows": 7,
-        "coreCells": 12,
+        "blocks": 7,
+        "rows": 9,
+        "coreCells": 18,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 5
       },
       "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
@@ -10485,8 +10529,8 @@
       "awayTeam": "MILFORD",
       "homeTeam": "LINCOLN COUNTY, NV",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/milford-football-vs-lincoln-county-nev-football/274428",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "7:00 PM",
@@ -10504,9 +10548,9 @@
               7,
               0,
               7,
-              0
+              21
             ],
-            "total": 14
+            "total": 35
           },
           {
             "team": "Lincoln County, Nev. Lynx",
@@ -10514,9 +10558,9 @@
               7,
               7,
               14,
-              7
+              14
             ],
-            "total": 35
+            "total": 42
           }
         ]
       },
@@ -10527,7 +10571,11 @@
         "Lincoln County, Nev. — (11:44 3Q) 60-yard pass (kick successful)",
         "Milford — (7:34 3Q) Braxton Hansen , 1-yard run (kick from Maddix Alger )",
         "Lincoln County, Nev. — (3:25 3Q) 25-yard pass (kick successful)",
-        "Lincoln County, Nev. — (10:35 4Q) 3-yard run (kick successful)"
+        "Lincoln County, Nev. — (10:35 4Q) 3-yard run (kick successful)",
+        "Milford — (7:27 4Q) Tayon Blackburn , 17-yard run (kick from Maddix Alger )",
+        "Milford — (5:37 4Q) Braxton Hansen , 2-yard run (kick from Maddix Alger )",
+        "Lincoln County, Nev. — (3:52 4Q) 56-yard run (kick successful)",
+        "Milford — (1:59 4Q) Tayon Blackburn , 8-yard run (kick from Maddix Alger )"
       ],
       "stats": [
         {
@@ -10542,11 +10590,18 @@
           ],
           "rows": [
             [
+              "29",
+              "T. Tayon Blackburn",
+              "",
+              "",
+              "2"
+            ],
+            [
               "1",
               "B. Braxton Hansen",
               "",
               "",
-              "2"
+              "3"
             ]
           ]
         },
@@ -10565,7 +10620,7 @@
               "22",
               "M. Maddix Alger",
               "",
-              "2",
+              "5",
               ""
             ]
           ]
@@ -10574,8 +10629,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "rows": 3,
+        "coreCells": 4,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 1
       }
@@ -10638,8 +10693,8 @@
       "awayTeam": "MORGAN",
       "homeTeam": "FAITH LUTHERAN, NV",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/morgan-football-vs-faith-lutheran-nev-football-football/273291",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -10657,9 +10712,9 @@
               6,
               20,
               14,
-              7
+              14
             ],
-            "total": 47
+            "total": 54
           },
           {
             "team": "Faith Lutheran, Nev. Crusaders",
@@ -10667,9 +10722,9 @@
               0,
               14,
               16,
-              0
+              6
             ],
-            "total": 30
+            "total": 36
           }
         ]
       },
@@ -10684,7 +10739,9 @@
         "Morgan — (7:16 3Q) Rhett Larsen , 15-yard pass from Owen Gilson (kick from C Gorham )",
         "Faith Lutheran, Nev. — (5:03 3Q) run (run successful)",
         "Faith Lutheran, Nev. — (0:16 3Q) run",
-        "Morgan — (10:31 4Q) George Thurston , 15-yard pass from Owen Gilson (kick from C Gorham )"
+        "Morgan — (10:31 4Q) George Thurston , 15-yard pass from Owen Gilson (kick from C Gorham )",
+        "Morgan — (8:57 4Q) George Thurston , 18-yard pass from Owen Gilson (kick from C Gorham )",
+        "Faith Lutheran, Nev. — (3:47 4Q) run (kick failed)"
       ],
       "stats": [
         {
@@ -10726,7 +10783,7 @@
               "",
               "",
               "",
-              "5",
+              "6",
               ""
             ]
           ]
@@ -10754,7 +10811,7 @@
               "G. George Thurston",
               "",
               "",
-              "4"
+              "5"
             ]
           ]
         },
@@ -10773,7 +10830,7 @@
               "36",
               "C. C Gorham",
               "",
-              "5",
+              "6",
               ""
             ]
           ]
@@ -10815,8 +10872,8 @@
       "awayTeam": "PRESTON, ID",
       "homeTeam": "NORTHRIDGE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/preston-idaho-football-vs-northridge-football/273532",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -10834,9 +10891,9 @@
               0,
               0,
               6,
-              6
+              14
             ],
-            "total": 12
+            "total": 20
           },
           {
             "team": "NORTHRIDGE",
@@ -10858,7 +10915,8 @@
         "Preston, Idaho — (1:03 3Q) 5-yard run (kick failed)",
         "Northridge — (7:44 4Q) Roman Fitisemanu , 12-yard pass from Liam Fresques (kick from Garrett Burkhardt )",
         "Preston, Idaho — (6;06 4Q) 6-yard run (run failed)",
-        "Northridge — (3:21 4Q) Garrett Burkhardt , 40-yard FG"
+        "Northridge — (3:21 4Q) Garrett Burkhardt , 40-yard FG",
+        "Northridge — (1:01 4Q) 9-yard pass (pass successful)"
       ],
       "stats": [
         {
@@ -10967,8 +11025,8 @@
       "awayTeam": "WESTLAKE",
       "homeTeam": "RANCHO BERNARDO, CA",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-11/westlake-football-vs-rancho-bernardo-calif-football-football/273732",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -10986,9 +11044,9 @@
               13,
               0,
               0,
-              8
+              15
             ],
-            "total": 21
+            "total": 28
           },
           {
             "team": "RANCHO BERNARDO, CA",
@@ -11006,12 +11064,14 @@
         "Westlake — (11:00 1Q) Ashton Blake , 51-yard run (kick failed)",
         "Westlake — (5:00 1Q) Slone Sua , 12-yard pass from Silas Taumoepeau (kick from Logan Sorensen )",
         "Rancho Bernardo, Calif. — (2:55 2Q) run (kick successful)",
-        "Rancho Bernardo, Calif. — (3:54 3Q) run (kick successful)"
+        "Rancho Bernardo, Calif. — (3:54 3Q) run (kick successful)",
+        "Westlake — (11:55 4Q) Rosko Misa , 11-yard run (run from Silas Taumoepeau )",
+        "Westlake — (0:41 4Q) Malakai Leilua , 1-yard run (kick from Logan Sorensen )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "RANCHO BERNARDO, CA",
+          "team": "WESTLAKE",
           "headers": [
             "NO",
             "PLAYER",
@@ -11020,6 +11080,20 @@
             "TD"
           ],
           "rows": [
+            [
+              "8",
+              "M. Malakai Leilua",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "39",
+              "R. Rosko Misa",
+              "",
+              "",
+              "1"
+            ],
             [
               "47",
               "A. Ashton Blake",
@@ -11088,7 +11162,7 @@
               "68",
               "L. Logan Sorensen",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -11097,8 +11171,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 4,
-        "rows": 4,
-        "coreCells": 8,
+        "rows": 6,
+        "coreCells": 12,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       }
