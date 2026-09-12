@@ -9,6 +9,7 @@ on:
   push:
     paths:
       - 'weekly-simulation.json'
+      - 'deseret-game-links.json'
       - 'out-of-state.json'
       - 'scripts/enrich-deseret-game-details.mjs'
       - 'scripts/build_live_scoreboard_details.mjs'
