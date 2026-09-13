@@ -711,6 +711,7 @@
       }
 `;
 
+    s.textContent+=`
       /* rus-classification-full-color-box */
       body[data-rus-page="rankings.html"] .rank-card .rank-row{
         grid-template-columns:50px minmax(180px,1fr) auto!important;
@@ -764,6 +765,7 @@
         }
       }
 
+`;
     document.head.appendChild(s);
   }
 
