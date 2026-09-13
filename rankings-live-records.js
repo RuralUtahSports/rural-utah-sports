@@ -80,8 +80,7 @@
     if(!badge){
       badge=document.createElement('span');
       badge.className='rus-last-result';
-      const recordBadge=pill.querySelector('.rus-live-record');
-      if(recordBadge)pill.insertBefore(badge,recordBadge);else pill.appendChild(badge);
+      pill.appendChild(badge);
     }
     badge.className=`rus-last-result ${resultClass(result)}`;
     badge.textContent=resultText(result);
@@ -386,6 +385,31 @@
     });
   }
 
+  function layoutTeamPill(pill){
+    if(!pill)return;
+    let header=pill.querySelector('.rus-ranking-team-heading');
+    if(!header){
+      header=document.createElement('span');
+      header.className='rus-ranking-team-heading';
+      const name=document.createElement('span');
+      name.className='rus-ranking-team-name';
+      for(const node of Array.from(pill.childNodes)){
+        if(node.nodeType===3)name.appendChild(node);
+      }
+      name.title=name.textContent.trim();
+      header.appendChild(name);
+      pill.prepend(header);
+    }
+    const record=pill.querySelector('.rus-live-record');
+    if(record&&record.parentNode!==header)header.appendChild(record);
+    const result=pill.querySelector('.rus-last-result');
+    if(result){
+      result.title=result.textContent;
+      if(result.parentNode!==pill)pill.appendChild(result);
+    }
+    pill.classList.add('rus-ranking-team-layout');
+  }
+
   function decorate(){
     bindScheduleHover();
     if(!records.size&&!lastResults.size)return;
@@ -394,6 +418,7 @@
       addLastResultToPill(pill,lastResults.get(team));
       const rec=records.get(team);
       if(rec)addRecordToPill(pill,rec);
+      layoutTeamPill(pill);
     });
   }
 
@@ -663,6 +688,26 @@
         .state25-row>.state25-reason{grid-area:reason!important;grid-column:auto!important;width:100%!important;min-width:0!important;padding:0!important;margin:1px 0 0!important;font-size:13px!important;line-height:1.5!important;text-align:left!important}
       }
     `;
+    s.textContent+=`
+      /* Keep every team label on two consistent lines at every breakpoint. */
+      :is(.rank-row,.state25-row,.small-school-row) .team-link .team-pill.rus-ranking-team-layout{
+        display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+        grid-template-rows:20px 18px!important;gap:4px!important;
+        box-sizing:border-box!important;height:54px!important;min-height:54px!important;
+        width:100%!important;min-width:0!important;max-width:100%!important;
+        padding:6px 8px!important;text-align:left!important;justify-content:stretch!important;
+        align-items:center!important;overflow:hidden!important;
+      }
+      .rus-ranking-team-heading{display:flex;align-items:center;gap:7px;min-width:0;width:100%;white-space:nowrap}
+      .rus-ranking-team-name{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:20px}
+      .rus-ranking-team-heading>.rus-live-record{flex:0 0 auto;margin:0!important}
+      .team-pill.rus-ranking-team-layout>.rus-last-result{
+        display:block!important;justify-self:start;box-sizing:border-box;
+        max-width:100%;min-width:0;margin:0!important;height:18px;
+        padding:2px 6px!important;line-height:12px!important;white-space:nowrap!important;
+        overflow:hidden!important;text-overflow:ellipsis;
+      }
+`;
     document.head.appendChild(s);
   }
 
