@@ -32,6 +32,7 @@ nav a:hover,nav a.active{background:#F14D07;color:#000}
 .filter-input:focus,.filter-select:focus{border-color:#F14D07}
 .clear-button{height:42px;padding:0 18px;background:#F14D07;color:#000;border:0;border-radius:4px;font-weight:900;cursor:pointer;text-transform:uppercase}
 .result-count{color:#999;margin-bottom:12px;font-size:14px}
+.load-more-wrap{display:flex;justify-content:center;margin:14px 0 0}.load-more-button{height:42px;padding:0 22px;background:#F14D07;color:#000;border:0;border-radius:5px;font-weight:900;cursor:pointer;text-transform:uppercase}.load-more-button:hover{filter:brightness(1.12)}.load-more-button.secondary{background:#222;color:#fff;border:1px solid #555}
 .table-wrap{overflow:auto;max-height:72vh;background:#000;border:1px solid #333;border-radius:7px}
 table{width:100%;border-collapse:collapse;min-width:850px}
 th{position:sticky;top:0;z-index:3;background:#F14D07;color:#000;padding:13px 10px;text-transform:uppercase;font-size:11px;white-space:nowrap}
@@ -126,6 +127,7 @@ html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulati
       <tbody id="champRows"><tr><td colspan="5" class="loading">Loading championship history...</td></tr></tbody>
     </table>
   </div>
+  <div id="champMoreControls" class="load-more-wrap" aria-live="polite"></div>
   <p class="note">Historical championship formats changed over time. Entries marked co-champions preserve the wording and outcome recorded in the Championship Log.</p>
 </main>
 <footer>
@@ -135,6 +137,10 @@ html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulati
 <script>
 let allEntries=[];
 let knownTeams=new Map();
+let filteredRows=[];
+let visibleCount=40;
+const INITIAL_VISIBLE=40;
+const LOAD_MORE_COUNT=40;
 
 function clean(v){return String(v??'').trim()}
 function escapeHTML(v){return clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
@@ -224,12 +230,14 @@ function filterRows(){
   displayRows(rows);
 }
 
-function displayRows(rows){
-  document.getElementById('resultCount').textContent=`Showing ${rows.length.toLocaleString()} championship entries`;
-  document.getElementById('champRows').innerHTML=rows.map((e,i)=>{
+function displayRows(rows,reset=true){
+  if(reset){filteredRows=rows;visibleCount=INITIAL_VISIBLE;}
+  const visible=filteredRows.slice(0,visibleCount);
+  document.getElementById('resultCount').textContent=`Showing ${visible.length.toLocaleString()} of ${filteredRows.length.toLocaleString()} championship entries`;
+  document.getElementById('champRows').innerHTML=visible.map((e,i)=>{
     const classes=[];
     if(e.status!=='championship')classes.push('special-row');
-    if(i>0&&String(e.year)!==String(rows[i-1].year))classes.push('year-break');
+    if(i>0&&String(e.year)!==String(visible[i-1].year))classes.push('year-break');
     return `<tr class="${classes.join(' ')}">
       <td class="year">${escapeHTML(e.year)}</td>
       <td class="class-cell">${escapeHTML(e.classification)}</td>
@@ -238,6 +246,24 @@ function displayRows(rows){
       <td class="team-cell">${renderRunner(e)}</td>
     </tr>`;
   }).join('')||'<tr><td colspan="5" class="loading">No championship entries match those filters.</td></tr>';
+  const controls=document.getElementById('champMoreControls');
+  if(filteredRows.length>INITIAL_VISIBLE&&visible.length<filteredRows.length){
+    controls.innerHTML='<button type="button" class="load-more-button" onclick="showMoreChampionships()">Show more</button>';
+  }else if(filteredRows.length>INITIAL_VISIBLE){
+    controls.innerHTML='<button type="button" class="load-more-button secondary" onclick="showLessChampionships()">Show less</button>';
+  }else{
+    controls.innerHTML='';
+  }
+}
+
+function showMoreChampionships(){
+  visibleCount=Math.min(visibleCount+LOAD_MORE_COUNT,filteredRows.length);
+  displayRows(filteredRows,false);
+}
+
+function showLessChampionships(){
+  visibleCount=INITIAL_VISIBLE;
+  displayRows(filteredRows,false);
 }
 
 function clearFilters(){
