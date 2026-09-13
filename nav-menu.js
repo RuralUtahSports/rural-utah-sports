@@ -341,7 +341,7 @@
       );
     if (path === "rankings.html") {
       addScript(
-        "rankings-live-records.js?v=20260912-supplemental-score4",
+        "rankings-live-records.js?v=20260913-two-line-rows1",
         "rusRankingsLiveRecords",
         true,
       );
