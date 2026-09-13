@@ -407,6 +407,8 @@
       result.title=result.textContent;
       if(result.parentNode!==pill)pill.appendChild(result);
     }
+    if(pill.style.color)pill.style.setProperty('--team-text',pill.style.color);
+    else if(!pill.style.getPropertyValue('--team-text'))pill.style.setProperty('--team-text','#FFFFFF');
     pill.classList.add('rus-ranking-team-layout');
   }
 
@@ -708,6 +710,60 @@
         overflow:hidden!important;text-overflow:ellipsis;
       }
 `;
+
+      /* rus-classification-full-color-box */
+      body[data-rus-page="rankings.html"] .rank-card .rank-row{
+        grid-template-columns:50px minmax(180px,1fr) auto!important;
+        gap:10px!important;min-height:66px!important;
+        padding:13px 16px 13px 12px!important;border-left-width:7px!important;
+        background:linear-gradient(90deg,var(--team-tint,rgba(255,255,255,.04)) 0%,rgba(0,0,0,0) 62%)!important;
+      }
+      body[data-rus-page="rankings.html"] .rank-card .rank-row:hover{
+        background:linear-gradient(90deg,var(--team-tint-strong,rgba(255,255,255,.08)) 0%,rgba(0,0,0,0) 72%)!important;
+      }
+      body[data-rus-page="rankings.html"] .rank-card .rank-row.has-class-movement{
+        grid-template-columns:50px 64px minmax(0,1fr) auto!important;
+      }
+      body[data-rus-page="rankings.html"] .rank-card .rank-row .team-link .team-pill{
+        display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+        grid-template-rows:20px 18px!important;gap:4px!important;
+        align-items:center!important;justify-content:stretch!important;
+        width:100%!important;max-width:none!important;min-width:0!important;
+        height:54px!important;min-height:54px!important;padding:6px 8px!important;
+        border-radius:5px!important;
+        background:var(--team-accent,#333)!important;
+        color:var(--team-text,#fff)!important;
+        box-shadow:0 2px 8px rgba(0,0,0,.28)!important;
+        text-align:left!important;overflow:hidden!important;
+      }
+      @media(min-width:901px){
+        body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .rank-row{
+          grid-template-columns:50px minmax(180px,1fr) auto!important;
+          gap:10px!important;min-height:66px!important;
+          padding:13px 16px 13px 12px!important;border-left-width:7px!important;
+        }
+        body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .rank-row.has-class-movement{
+          grid-template-columns:50px 64px minmax(0,1fr) auto!important;
+        }
+        body[data-rus-page="rankings.html"][data-rus-desktop="1"] .rank-card .rank-row .team-link .team-pill{
+          min-height:54px!important;height:54px!important;padding:6px 8px!important;
+        }
+      }
+      @media(max-width:700px){
+        body[data-rus-page="rankings.html"] .rank-card .rank-row{
+          grid-template-columns:44px minmax(0,1fr) auto!important;
+          gap:8px!important;min-height:64px!important;
+          padding:10px 12px 10px 8px!important;border-left-width:5px!important;
+        }
+        body[data-rus-page="rankings.html"] .rank-card .rank-row.has-class-movement{
+          grid-template-columns:40px 52px minmax(0,1fr)!important;
+          gap:7px!important;
+        }
+        body[data-rus-page="rankings.html"] .rank-card .rank-row .team-link .team-pill{
+          font-size:14px!important;line-height:1.15!important;
+        }
+      }
+
     document.head.appendChild(s);
   }
 
