@@ -341,7 +341,7 @@
       );
     if (path === "rankings.html") {
       addScript(
-        "rankings-live-records.js?v=20260913-class-color-box1",
+        "rankings-live-records.js?v=20260913-class-color-box2",
         "rusRankingsLiveRecords",
         true,
       );
