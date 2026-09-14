@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {reconcileFinalGames} from './reconcile-final-games.mjs';
 
 const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -19,6 +20,12 @@ const gameKey=(date,away,home)=>`${isoDate(date)}|${norm(away)}|${norm(home)}`;
 let deseretGames={};
 try{deseretGames=JSON.parse(fs.readFileSync('deseret-game-details.json','utf8')).games||{}}catch{}
 
+// Merge current finals without allowing scheduled responses to erase a final.
+try{for(const [key,d] of Object.entries(JSON.parse(fs.readFileSync('deseret-live-details-2026.json','utf8')).games||{})){
+  if(d?.final===true||!deseretGames[key]?.final)deseretGames[key]={...deseretGames[key],...d};
+}}catch{}
+let corrections=[];
+try{corrections=JSON.parse(fs.readFileSync('verified-finals-2026.json','utf8'))}catch{}
 let weeklyGames=[];
 try{weeklyGames=JSON.parse(fs.readFileSync('weekly-simulation.json','utf8')).games||[]}catch{}
 const weeklyByKey=new Map(weeklyGames.map(g=>[gameKey(g.date,g.awayTeam,g.homeTeam),g]));
@@ -96,7 +103,7 @@ for(const t of teams){
 
 function apply(name,pf,pa,date,isRegion){const x=st[name];if(!x)return;x.pointsFor+=pf;x.pointsAgainst+=pa;let result='T';if(pf>pa){x.wins++;result='W';if(isRegion)x.regionWins++}else if(pf<pa){x.losses++;result='L';if(isRegion)x.regionLosses++}else{x.ties++;if(isRegion)x.regionTies++}x.results.push({date,result})}
 let completed=0,sheetFinals=0,weeklyFinals=0,deseretFinals=0;
-const games=[];
+const candidates=[];
 for(const r of rows){
   const key=gameKey(r[0],r[1],r[2]);
   let aa=n(r[7]),ah=n(r[8]),source='';
@@ -116,13 +123,18 @@ for(const r of rows){
   }
   if(aa===null||ah===null)continue;
   const a=resolve(r[1]),h=resolve(r[2]);if(!a&&!h)continue;
+  candidates.push({date:clean(r[0]),awayTeam:a||clean(r[1]),homeTeam:h||clean(r[2]),actualAway:aa,actualHome:ah,source});
+}
+const games=reconcileFinalGames(candidates,{details:deseretGames,corrections});
+for(const g of games){
   completed++;
-  if(source==='sheet')sheetFinals++;
-  else if(source==='weekly')weeklyFinals++;
-  else if(source==='deseret')deseretFinals++;
-  games.push({date:clean(r[0]),awayTeam:a||clean(r[1]),homeTeam:h||clean(r[2]),actualAway:aa,actualHome:ah,source});
+  if(g.source==='sheet')sheetFinals++;
+  else if(g.source==='weekly')weeklyFinals++;
+  else deseretFinals++;
+  const a=resolve(g.awayTeam),h=resolve(g.homeTeam);
   const sameRegion=!!(a&&h&&st[a]&&st[h]&&st[a].classification===st[h].classification&&st[a].region&&st[a].region===st[h].region);
-  if(a)apply(a,aa,ah,r[0],sameRegion);if(h)apply(h,ah,aa,r[0],sameRegion)
+  if(a)apply(a,g.actualAway,g.actualHome,g.date,sameRegion);
+  if(h)apply(h,g.actualHome,g.actualAway,g.date,sameRegion);
 }
 games.sort((a,b)=>dateStamp(a.date)-dateStamp(b.date)||a.awayTeam.localeCompare(b.awayTeam)||a.homeTeam.localeCompare(b.homeTeam));
 for(const x of Object.values(st)){x.results.sort((a,b)=>dateStamp(a.date)-dateStamp(b.date));let streak='—';if(x.results.length){const last=x.results.at(-1).result;let count=0;for(let i=x.results.length-1;i>=0&&x.results[i].result===last;i--)count++;streak=last+count}x.streak=streak;delete x.results}

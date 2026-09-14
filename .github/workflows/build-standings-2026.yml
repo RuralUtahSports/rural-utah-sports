@@ -12,6 +12,9 @@ on:
       - 'standings.html'
       - 'weekly-simulation.json'
       - 'deseret-game-details.json'
+      - 'deseret-live-details-2026.json'
+      - 'verified-finals-2026.json'
+      - 'scripts/reconcile-final-games.mjs'
       - 'scripts/build_standings_2026.mjs'
       - '.github/workflows/build-standings-2026.yml'
 
@@ -27,6 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Test final-score reconciliation
+        run: node scripts/test-final-reconciliation.mjs
 
       - name: Build standings from Weekly Simulation and Deseret finals
         env:
@@ -48,15 +54,21 @@ jobs:
           console.log(`Verified ${all.length} teams and ${d.summary.completedGames} completed games.`);
           NODE
 
+      - name: Audit every team record
+        run: node scripts/audit_standings_records_2026.mjs
+
+      - name: Refresh current team schedules
+        run: node scripts/build_team_current_shards.mjs
+
       - name: Commit standings
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          if [ -z "$(git status --porcelain -- standings-2026.json)" ]; then
+          if [ -z "$(git status --porcelain -- standings-2026.json team-current-data)" ]; then
             echo "Standings already current."
             exit 0
           fi
-          git add standings-2026.json
+          git add standings-2026.json team-current-data
           git commit -m "Auto-sync 2026 standings"
           git pull --rebase origin main
           git push

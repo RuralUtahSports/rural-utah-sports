@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 const norm=value=>String(value??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
-const aliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN'};
+const aliases={EASTWOODTEXAS:'EASTWOODTX',STJOSEPH:'SAINTJOSEPH',CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN'};
 const canon=value=>aliases[norm(value)]||norm(value);
 const slug=value=>String(value??'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const isoDate=value=>{
@@ -27,7 +27,7 @@ const keys=new Set([
 ]);
 const find=(teams,key)=>Object.entries(teams||{}).find(([name])=>canon(name)===key)?.[1]||null;
 const standingRows=Object.values(standings.byClassification||{}).flat();
-const weeklyFor=key=>(weekly.games||[]).filter(game=>canon(game?.awayTeam)===key||canon(game?.homeTeam)===key);
+const weeklyFor=key=>[...(weekly.games||[]).filter(g=>!(standings.games||[]).some(f=>canon(f.awayTeam)===canon(g.awayTeam)&&canon(f.homeTeam)===canon(g.homeTeam)&&Math.abs(Date.parse(isoDate(f.date))-Date.parse(isoDate(g.date)))<=3*86400000)),...(standings.games||[])].filter(game=>canon(game?.awayTeam)===key||canon(game?.homeTeam)===key);
 
 function mergeSchedule(team,key){
   if(!team)return team;
@@ -53,6 +53,7 @@ function mergeSchedule(team,key){
         rusVerified:true
       }:{})
     };
+    if(!index.has(k)){const moved=schedule.findIndex(g=>canon(g.opponent)===canon(opponent)&&Math.abs(Date.parse(isoDate(g.date))-Date.parse(date))<=3*86400000);if(moved>=0)index.set(k,moved)}
     if(index.has(k)){
       const i=index.get(k);
       schedule[i]={...schedule[i],...direct,gameUrl:schedule[i].gameUrl||direct.gameUrl||''};
@@ -66,6 +67,7 @@ function mergeSchedule(team,key){
 }
 
 function mergedStanding(base,key){
+  if(base)return {...base,games:base.wins+base.losses+base.ties};
   const finals=weeklyFor(key).filter(game=>hasScore(game.actualAway)&&hasScore(game.actualHome));
   if(!finals.length)return base;
   let wins=0,losses=0,ties=0,pointsFor=0,pointsAgainst=0;
