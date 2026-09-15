@@ -39,15 +39,20 @@ jobs:
           console.log(`Verified ${teams.length} out-of-state teams (${data.summary.fetched} MaxPreps pages loaded).`);
           NODE
 
+      - name: Rebuild football RPI standings
+        run: |
+          node scripts/fetch_uhsaa_rpi.mjs
+          node scripts/build_rpi_standings.mjs
+
       - name: Commit refreshed RPI data
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          if [ -z "$(git status --porcelain -- rpi-oos-2026.json)" ]; then
+          if [ -z "$(git status --porcelain -- rpi-oos-2026.json uhsaa-rpi-official-2026.json rpi-standings-2026.json)" ]; then
             echo "RPI out-of-state data already current."
             exit 0
           fi
-          git add rpi-oos-2026.json
+          git add rpi-oos-2026.json uhsaa-rpi-official-2026.json rpi-standings-2026.json
           git commit -m "Auto-refresh RPI out-of-state data from MaxPreps"
           for attempt in 1 2 3 4; do
             if git push; then
