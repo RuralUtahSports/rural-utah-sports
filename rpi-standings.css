@@ -92,7 +92,13 @@
   font-size: 11px;
 }
 
-.projected-bracket-head > span {
+.projected-bracket-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.projected-bracket-actions > span {
   padding: 6px 10px;
   border-radius: 999px;
   background: #f14d07;
@@ -101,6 +107,24 @@
   font-weight: 1000;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.rpi-bracket-share {
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid #f14d07;
+  border-radius: 7px;
+  background: #181818;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 1000;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rpi-bracket-share:hover {
+  background: #f14d07;
+  color: #000;
 }
 
 .bracket-scroll {
@@ -233,9 +257,111 @@
   font-size: 12px;
 }
 
+.rpi-share-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0,0,0,.94);
+}
+
+.rpi-share-sheet {
+  width: min(560px,100%);
+  max-height: 94vh;
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid #444;
+  border-top: 5px solid #f14d07;
+  border-radius: 14px;
+  background: #111;
+  color: #fff;
+}
+
+.rpi-share-sheet h3 {
+  margin: 0 0 5px;
+  font-size: 21px;
+}
+
+.rpi-share-sheet p {
+  margin: 0 0 13px;
+  color: #aaa;
+  font-size: 12px;
+}
+
+.rpi-share-options,
+.rpi-share-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.rpi-share-sheet button,
+.rpi-share-sheet a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 8px;
+  background: #1d1d1d;
+  color: #fff;
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.rpi-share-options button {
+  display: block;
+}
+
+.rpi-share-options strong {
+  display: block;
+  color: #f14d07;
+  font-size: 12px;
+}
+
+.rpi-share-cancel,
+.rpi-share-close {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.rpi-share-actions .rpi-share-close {
+  grid-column: 1/-1;
+}
+
+.rpi-share-actions .rpi-share-native {
+  border-color: #f14d07;
+  background: #f14d07;
+  color: #000;
+}
+
+.rpi-share-sheet canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 68vh;
+  object-fit: contain;
+  border: 1px solid #333;
+  background: #080808;
+}
+
 @media(max-width:700px) {
   .projected-bracket-head {
     align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .projected-bracket-actions {
+    width: 100%;
+  }
+
+  .rpi-bracket-share {
+    flex: 1;
   }
 
   .projected-bracket {
