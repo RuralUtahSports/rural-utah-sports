@@ -78,7 +78,7 @@
     ],
     analytics: [
       ["ELO", "elo.html"],
-      ["RPI Standings", "rpi.html"],
+      ["UHSAA RPI", "rpi.html"],
       ["Playoff Picture", "playoff-picture.html"],
       ["Upset Tracker", "upsets.html"],
       ["Scorigami", "scorigami.html"],
