@@ -1,6 +1,15 @@
 (()=>{'use strict';
 const root=document.getElementById('featureRoot');if(!root)return;
 const classes=['6A','5A','4A','3A','2A','1A','8P'];
+const bracketFormats={
+  '6A':{cutoff:16,rounds:[['First Round',[[1,16],[8,9],[4,13],[5,12],[2,15],[7,10],[3,14],[6,11]]]]},
+  '5A':{cutoff:16,rounds:[['First Round',[[1,16],[8,9],[4,13],[5,12],[2,15],[7,10],[3,14],[6,11]]]]},
+  '4A':{cutoff:16,rounds:[['First Round',[[1,16],[8,9],[4,13],[5,12],[2,15],[7,10],[3,14],[6,11]]]]},
+  '3A':{cutoff:13,rounds:[['First Round',[[1,null],[8,9],[4,13],[5,12],[2,null],[7,10],[3,null],[6,11]]]]},
+  '2A':{cutoff:9,rounds:[['Play-In',[[8,9]]],['Quarterfinals',[[1,'Winner #8/#9'],[4,5],[2,7],[3,6]]]]},
+  '1A':{cutoff:9,rounds:[['Play-In',[[8,9]]],['Quarterfinals',[[1,'Winner #8/#9'],[4,5],[2,7],[3,6]]]]},
+  '8P':{cutoff:11,rounds:[['Play-In',[[8,9],[7,10],[6,11]]],['Quarterfinals',[[1,'Winner #8/#9'],[4,5],[2,'Winner #7/#10'],[3,'Winner #6/#11']]]]}
+};
 const h=value=>String(value??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const norm=value=>String(value??'').trim().toUpperCase().replace(/\s+/g,' ');
 const value=value=>Number.isFinite(Number(value))?Number(value).toFixed(6):'—';
@@ -10,9 +19,11 @@ async function run(){
   if(!data?.classifications)throw new Error('RPI data unavailable');
   const meta=new Map(teams.map(team=>[norm(team.team),team]));
   const pill=team=>{const item=meta.get(norm(team))||{};return `<a class="team-pill" style="--bg:${h(item.backgroundColor||'#222')};--fg:${h(item.textColor||'#fff')}" href="team.html?team=${encodeURIComponent(team)}">${h(team)}</a>`};
+  const bracketTeam=(rows,seed)=>{if(seed===null)return '<span class="bracket-bye">BYE</span>';if(typeof seed==='string')return `<span class="bracket-placeholder">${h(seed)}</span>`;const row=rows.find(item=>item.rank===seed);return row?`<span class="bracket-seed">#${seed}</span>${pill(row.team)}`:`<span class="bracket-placeholder">#${seed} TBD</span>`};
+  const bracket=(classification,rows)=>{const format=bracketFormats[classification];return `<section class="projected-bracket"><div class="projected-bracket-head"><div><h3>Projected Playoff Bracket</h3><p>Based on the current official UHSAA RPI seeds.</p></div><span>Top ${format.cutoff}</span></div>${format.rounds.map(([label,games])=>`<div class="bracket-round-block"><h4>${label}</h4><div class="bracket-matchups">${games.map(([first,second])=>`<div class="bracket-matchup"><div>${bracketTeam(rows,first)}</div><small>VS</small><div>${bracketTeam(rows,second)}</div></div>`).join('')}</div></div>`).join('')}</section>`};
   const updated=data.fetchedAt?new Date(data.fetchedAt).toLocaleString():'';
   const tabs=classes.map((classification,index)=>`<button class="rpi-tab${index===0?' active':''}" type="button" data-rpi-class="${classification}">${classification==='8P'?'8-Player':classification}</button>`).join('');
-  const sections=classes.map((classification,index)=>{const rows=data.classifications[classification]?.rows||[];return `<section class="rpi-class" data-rpi-section="${classification}"${index?' hidden':''}><h2 class="section-title">${classification==='8P'?'8-Player':classification} RPI</h2><div class="table-wrap"><table><thead><tr><th>RPI Rank</th><th class="left">Team</th><th>Record</th><th>RPI Value</th><th>MWP</th><th>OWP</th><th>OOWP</th></tr></thead><tbody>${rows.map(row=>`<tr><td class="rank">${row.rank}</td><td class="left">${pill(row.team)}</td><td><strong>${h(row.record)}</strong></td><td><strong>${value(row.rpi)}</strong></td><td>${value(row.mwp)}</td><td>${value(row.owp)}</td><td>${value(row.oowp)}</td></tr>`).join('')}</tbody></table></div></section>`}).join('');
+  const sections=classes.map((classification,index)=>{const rows=data.classifications[classification]?.rows||[],cutoff=bracketFormats[classification].cutoff;return `<section class="rpi-class" data-rpi-section="${classification}"${index?' hidden':''}><h2 class="section-title">${classification==='8P'?'8-Player':classification} RPI</h2><div class="table-wrap"><table><thead><tr><th>RPI Rank</th><th class="left">Team</th><th>Record</th><th>RPI Value</th><th>MWP</th><th>OWP</th><th>OOWP</th></tr></thead><tbody>${rows.map(row=>`<tr class="${row.rank<=cutoff?'playoff-team':'outside-playoffs'}"><td class="rank">${row.rank}</td><td class="left">${pill(row.team)}</td><td><strong>${h(row.record)}</strong></td><td><strong>${value(row.rpi)}</strong></td><td>${value(row.mwp)}</td><td>${value(row.owp)}</td><td>${value(row.oowp)}</td></tr>${row.rank===cutoff?`<tr class="playoff-cutoff-row"><td colspan="7"><span>PLAYOFF CUTOFF</span></td></tr>`:''}`).join('')}</tbody></table></div>${bracket(classification,rows)}</section>`}).join('');
   root.innerHTML=`<div class="feature-note"><strong>Official UHSAA standings.</strong> Every rank, record, RPI, MWP, OWP and OOWP value below comes directly from UHSAA, not the Rural Utah Sports projection. <a href="https://uhsaa.org/football-rpi/" target="_blank" rel="noopener">View the UHSAA source</a>${updated?`<br><strong>Official data synced:</strong> ${h(updated)}`:''}</div><div class="rpi-tabs" role="tablist" aria-label="Football classification">${tabs}</div>${sections}`;
   root.querySelectorAll('[data-rpi-class]').forEach(button=>button.addEventListener('click',()=>{const selected=button.dataset.rpiClass;root.querySelectorAll('[data-rpi-class]').forEach(item=>item.classList.toggle('active',item===button));root.querySelectorAll('[data-rpi-section]').forEach(section=>{section.hidden=section.dataset.rpiSection!==selected})}));
 }

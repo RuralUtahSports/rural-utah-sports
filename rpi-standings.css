@@ -32,3 +32,141 @@
 .rpi-class[hidden] {
   display: none;
 }
+
+.playoff-cutoff-row td {
+  position: relative;
+  height: 24px;
+  padding: 0;
+  border-top: 3px solid #f14d07;
+  border-bottom: 0;
+}
+
+.playoff-cutoff-row span {
+  position: relative;
+  top: -9px;
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #f14d07;
+  color: #000;
+  font-size: 9px;
+  font-weight: 1000;
+  letter-spacing: .08em;
+}
+
+.outside-playoffs {
+  opacity: .58;
+}
+
+.projected-bracket {
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid #333;
+  border-top: 5px solid #f14d07;
+  border-radius: 10px;
+  background: #090909;
+}
+
+.projected-bracket-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.projected-bracket-head h3,
+.bracket-round-block h4 {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.projected-bracket-head h3 {
+  color: #f14d07;
+  font-size: 19px;
+}
+
+.projected-bracket-head p {
+  margin: 5px 0 0;
+  color: #888;
+  font-size: 11px;
+}
+
+.projected-bracket-head > span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f14d07;
+  color: #000;
+  font-size: 10px;
+  font-weight: 1000;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.bracket-round-block + .bracket-round-block {
+  margin-top: 18px;
+}
+
+.bracket-round-block h4 {
+  margin-bottom: 9px;
+  color: #aaa;
+  font-size: 11px;
+}
+
+.bracket-matchups {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.bracket-matchup {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 58px;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #141414;
+}
+
+.bracket-matchup > div {
+  min-width: 0;
+}
+
+.bracket-matchup small {
+  color: #666;
+  font-size: 9px;
+  font-weight: 1000;
+}
+
+.bracket-seed {
+  display: block;
+  margin-bottom: 4px;
+  color: #f14d07;
+  font-size: 10px;
+  font-weight: 1000;
+}
+
+.bracket-bye,
+.bracket-placeholder {
+  color: #888;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+@media(max-width:700px) {
+  .projected-bracket-head {
+    align-items: flex-start;
+  }
+
+  .bracket-matchups {
+    grid-template-columns: 1fr;
+  }
+
+  .bracket-matchup {
+    grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  }
+}
