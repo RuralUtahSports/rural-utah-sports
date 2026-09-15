@@ -19,7 +19,7 @@
 <div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html">Boys Basketball</a></div>
 <h2 class="page-title">Boys Basketball Teams</h2>
 <p class="subtitle">Browse Utah boys basketball programs for the 2026–27 season. UHSAA programs are organized by their current basketball classification and region, with Utah Prep included as the only additional independent program.</p>
-<div class="season-note"><strong>Building the basketball database:</strong> this is the foundation for future RUS basketball schedules, scores, standings, rankings, stats and team pages. School colors are reused from the football database when a match is available.</div>
+<div class="season-note"><strong>Building the basketball database:</strong> this is the foundation for future RUS basketball schedules, scores, standings, rankings, stats and team pages. Existing RUS school branding is reused when available, with basketball-specific colors for programs not covered by the football database.</div>
 <div id="classSummary" class="class-summary"></div>
 <div class="filter-panel"><div class="filter-title">Find a Team</div><div class="filter-grid">
 <div class="filter-group"><label for="searchBox">Search</label><input id="searchBox" class="filter-input" type="text" placeholder="Search for a team..."></div>
@@ -44,9 +44,34 @@ const brandAliases={
   AMERICANPREPWV:'AMERICANPREP',MAESERPREPACADEMY:'MAESERPREP',MERITPREP:'MERITPREP',
   'UMACAMPWILLIAMS':'UMALEHI','UMAHILLFIELD':'UMAHILLFIELD',LAYTONCHRISTIANACADEMY:'LAYTONCHRISTIANACADEMY'
 };
+const basketballBrands={
+  AMERICANHERITAGE:{backgroundColor:'#C8102E',textColor:'#FFFFFF'},
+  AMERICANPREPWV:{backgroundColor:'#0B2341',textColor:'#FFFFFF'},
+  DAVINCIACADEMY:{backgroundColor:'#1F4E9A',textColor:'#FFFFFF'},
+  DEERCREEK:{backgroundColor:'#0B1F3A',textColor:'#FFFFFF'},
+  DRAPERAPA:{backgroundColor:'#0B2341',textColor:'#FFFFFF'},
+  ESKDALE:{backgroundColor:'#6F2C91',textColor:'#FFFFFF'},
+  FREEDOMPREPACADEMY:{backgroundColor:'#C8102E',textColor:'#FFFFFF'},
+  INTERMOUNTAINCHRISTIAN:{backgroundColor:'#6B1F2B',textColor:'#FFFFFF'},
+  LAKEPOWELL:{backgroundColor:'#263A62',textColor:'#FFFFFF'},
+  LIAHONA:{backgroundColor:'#0A2342',textColor:'#FFFFFF'},
+  MAESERPREPACADEMY:{backgroundColor:'#0B2E59',textColor:'#FFFFFF'},
+  MERITPREP:{backgroundColor:'#21409A',textColor:'#FFFFFF'},
+  MOUNTAINVALLEY:{backgroundColor:'#0067B1',textColor:'#FFFFFF'},
+  MOUNTAINVALLEYSCHOOL:{backgroundColor:'#0067B1',textColor:'#FFFFFF'},
+  MOUNTVERNON:{backgroundColor:'#B22234',textColor:'#FFFFFF'},
+  PARADIGM:{backgroundColor:'#B22234',textColor:'#FFFFFF'},
+  ROWLANDHALL:{backgroundColor:'#154734',textColor:'#FFFFFF'},
+  SALTLAKEACADEMY:{backgroundColor:'#0B2341',textColor:'#FFFFFF'},
+  USDB:{backgroundColor:'#0057B8',textColor:'#FFFFFF'},
+  UTAHPREP:{backgroundColor:'#C9A227',textColor:'#111111'},
+  VANGUARDACADEMY:{backgroundColor:'#5B2C83',textColor:'#FFFFFF'},
+  WASATCHACADEMY:{backgroundColor:'#F47C20',textColor:'#111111'},
+  WATERFORD:{backgroundColor:'#6B1E3F',textColor:'#FFFFFF'}
+};
 let teams=[],brands=new Map();
 function color(v,f){return /^#[0-9A-F]{6}$/i.test(clean(v))?clean(v):f}
-function brandFor(name){const key=norm(name),alias=brandAliases[key]||key;return brands.get(alias)||brands.get(key)||null}
+function brandFor(name){const key=norm(name),alias=brandAliases[key]||key;return basketballBrands[key]||basketballBrands[alias]||brands.get(alias)||brands.get(key)||null}
 function classSort(a,b){return (classOrder[a.classification]??99)-(classOrder[b.classification]??99)||a.team.localeCompare(b.team)}
 function regionNumber(v){const m=clean(v).match(/(\d+)/);return m?Number(m[1]):999}
 function buildFilters(){
@@ -69,8 +94,7 @@ function render(list){
  const grid=document.getElementById('teamsGrid');grid.innerHTML='';document.getElementById('resultCount').textContent=`Showing ${list.length} of ${teams.length} boys basketball teams`;
  if(!list.length){grid.innerHTML='<div class="loading">No teams match your filters.</div>';return}
  list.forEach(team=>{
-   const brand=brandFor(team.team),bg=color(brand?.backgroundColor,'#F14D07');let fg=color(brand?.textColor,'#000000');
-   if(!brand){fg='#000000'}
+   const brand=brandFor(team.team),bg=color(brand?.backgroundColor,'#333333');let fg=color(brand?.textColor,'#FFFFFF');
    const card=document.createElement('article');card.className='team-card';
    const isU=team.association==='UHSAA';
    card.innerHTML=`<div class="team-color-bar" style="background:${bg}"></div><div class="team-card-content"><div class="team-name" style="background:${bg};color:${fg}">${esc(team.team)}</div><div class="team-meta"><span class="meta-pill">${esc(team.classification)}</span><span class="meta-pill ${isU?'uhsaa':''}">${esc(team.association)}</span>${team.newFor2026?'<span class="meta-pill new">New 2026–27</span>':''}</div><div class="team-region">${esc(team.region)}</div><div class="team-status">Basketball team page coming next</div></div>`;
