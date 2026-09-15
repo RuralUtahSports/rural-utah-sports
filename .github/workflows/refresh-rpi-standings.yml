@@ -1,0 +1,62 @@
+name: Refresh Football RPI Standings
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  push:
+    paths:
+      - 'scripts/build_rpi_standings.mjs'
+      - 'scripts/fetch_uhsaa_rpi.mjs'
+      - '.github/workflows/refresh-rpi-standings.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: football-rpi-standings
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch official UHSAA RPI snapshot
+        run: node scripts/fetch_uhsaa_rpi.mjs
+
+      - name: Build RUS RPI standings
+        run: node scripts/build_rpi_standings.mjs
+
+      - name: Verify generated standings
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync('rpi-standings-2026.json', 'utf8'));
+          const classes = ['6A', '5A', '4A', '3A', '2A', '1A', '8P'];
+          const rows = classes.flatMap((classification) => data.classifications?.[classification] || []);
+          if (rows.length !== 116) throw new Error(`Expected 116 ranked teams, found ${rows.length}`);
+          if (rows.some((row) => !Number.isFinite(row.rpi))) throw new Error('Invalid RPI value found');
+          console.log(`Verified ${rows.length} football RPI rows.`);
+          NODE
+
+      - name: Commit refreshed standings
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- uhsaa-rpi-official-2026.json rpi-standings-2026.json)" ]; then
+            echo "RPI standings already current."
+            exit 0
+          fi
+          git add uhsaa-rpi-official-2026.json rpi-standings-2026.json
+          git commit -m "Auto-refresh football RPI standings"
+          for attempt in 1 2 3 4; do
+            if git push; then
+              exit 0
+            fi
+            git pull --rebase -X theirs origin main || { git rebase --abort || true; exit 1; }
+            sleep 5
+          done
+          exit 1

@@ -78,6 +78,7 @@
     ],
     analytics: [
       ["ELO", "elo.html"],
+      ["RPI Standings", "rpi.html"],
       ["Playoff Picture", "playoff-picture.html"],
       ["Upset Tracker", "upsets.html"],
       ["Scorigami", "scorigami.html"],
@@ -191,6 +192,7 @@
       "rivalry.html",
       "streaks.html",
       "milestones.html",
+      "rpi.html",
       "playoff-picture.html",
       "upsets.html",
       "game-week.html",
