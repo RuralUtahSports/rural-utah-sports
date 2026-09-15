@@ -39,7 +39,7 @@ const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const esc=v=>clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const classOrder={'6A':0,'5A':1,'4A':2,'3A':3,'2A':4,'1A':5,'Independent':6};
-const brandAliases={ALA:'ALA',CEDAR:'CEDARCITY',GRANDCOUNTY:'GRAND',SAINTJOSEPH:'STJOSEPH',AMERICANPREPWV:'AMERICANPREP',MAESERPREPACADEMY:'MAESERPREP',MERITPREP:'MERITPREP',UMACAMPWILLIAMS:'UMALEHI',UMAHILLFIELD:'UMAHILLFIELD',LAYTONCHRISTIANACADEMY:'LAYTONCHRISTIANACADEMY'};
+const brandAliases={ALA:'ALA',CEDAR:'CEDARCITY',GRANDCOUNTY:'GRAND',SAINTJOSEPH:'SAINTJOSEPH',AMERICANPREPWV:'AMERICANPREP',MAESERPREPACADEMY:'MAESERPREP',MERITPREP:'MERITPREP',UMACAMPWILLIAMS:'UMALEHI',UMAHILLFIELD:'UMAHILLFIELD',LAYTONCHRISTIANACADEMY:'LAYTONCHRISTIAN'};
 // Primary colors below are taken from the UHSAA School Directory. When multiple
 // colors are listed, the first listed school color is used for the card background.
 const basketballBrands={
