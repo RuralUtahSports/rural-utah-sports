@@ -18,7 +18,7 @@
 <main class="container">
 <div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html">Boys Basketball</a></div>
 <h2 class="page-title">Boys Basketball Teams</h2>
-<p class="subtitle">Browse Utah boys basketball programs for the 2026–27 season. UHSAA programs are organized by their current basketball classification and region, with additional Utah programs tracked by Deseret News and MaxPreps listed as Independent / Other.</p>
+<p class="subtitle">Browse Utah boys basketball programs for the 2026–27 season. UHSAA programs are organized by their current basketball classification and region, with Utah Prep included as the only additional independent program.</p>
 <div class="season-note"><strong>Building the basketball database:</strong> this is the foundation for future RUS basketball schedules, scores, standings, rankings, stats and team pages. School colors are reused from the football database when a match is available.</div>
 <div id="classSummary" class="class-summary"></div>
 <div class="filter-panel"><div class="filter-title">Find a Team</div><div class="filter-grid">
@@ -86,7 +86,7 @@ function filterTeams(){
 async function load(){
  try{
    const [tr,br]=await Promise.all([fetch(`boys-basketball-teams.json?v=${Date.now()}`,{cache:'no-store'}),fetch('teams-data.json').catch(()=>null)]);
-   if(!tr.ok)throw new Error('Unable to load boys-basketball-teams.json');teams=await tr.json();
+   if(!tr.ok)throw new Error('Unable to load boys-basketball-teams.json');teams=(await tr.json()).filter(t=>t.association==='UHSAA'||t.team==='Utah Prep');
    if(br?.ok){const football=await br.json();football.forEach(t=>brands.set(norm(t.team),t))}
    buildFilters();filterTeams();
  }catch(e){console.error(e);document.getElementById('teamsGrid').innerHTML='<div class="error">Unable to load boys basketball team data.</div>';document.getElementById('resultCount').textContent='';}
