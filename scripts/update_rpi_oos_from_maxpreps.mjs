@@ -112,6 +112,11 @@ function baseSchoolUrls(html, state) {
       urls.add(`https://www.maxpreps.com/${parts.join('/')}/`);
     } catch {}
   }
+  for (const match of expanded.matchAll(/(?:href=["'])?\/([a-z]{2}\/[^/"'<>?\\\s]+\/[^/"'<>?\\\s]+)\/?/gi)) {
+    const parts = match[1].split('/').filter(Boolean);
+    if (parts.length !== 3 || parts[0].toUpperCase() !== state) continue;
+    urls.add(`https://www.maxpreps.com/${parts.join('/')}/`);
+  }
   return [...urls];
 }
 
