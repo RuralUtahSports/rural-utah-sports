@@ -1,0 +1,66 @@
+name: Build Current Game Stats
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'deseret-game-details.json'
+      - 'weekly-simulation.json'
+      - 'deseret-team-data-2026.json'
+      - 'manual-stat-corrections-2026.json'
+      - 'maxpreps-player-game-stats-2026.json'
+      - 'scripts/build_player_game_stats.mjs'
+      - 'scripts/merge_maxpreps_game_logs.mjs'
+      - 'scripts/reconcile_season_stats_from_game_logs.mjs'
+      - '.github/workflows/build-current-game-stats.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: current-game-stats
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build current player game stats
+        run: |
+          node scripts/build_player_game_stats.mjs
+          node scripts/merge_maxpreps_game_logs.mjs
+      - name: Verify current game stats
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const data=JSON.parse(fs.readFileSync('player-game-stats-2026.json','utf8'));
+          if(!data.summary||data.summary.teamGames<400) throw new Error('Current game stat output is incomplete');
+          const age=Date.now()-Date.parse(data.updatedAt);
+          if(!Number.isFinite(age)||age>15*60*1000) throw new Error('Current game stat output was not rebuilt');
+          console.log(data.summary);
+          NODE
+      - name: Publish current game stats
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add player-game-stats-2026.json
+          if git diff --cached --quiet; then echo "Current game stats already published."; exit 0; fi
+          git commit -m "Auto-sync current player game stats"
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort || true
+            sleep $((attempt * 5))
+          done
+          exit 1
