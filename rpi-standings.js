@@ -10,15 +10,26 @@ const bracketFormats={
   '1A':{cutoff:9,opening:'nine'},
   '8P':{cutoff:11,opening:'eleven'}
 };
+const teamAliases={
+  'JUAN DIEGO CATHOLIC':'JUAN DIEGO',
+  'CEDAR':'CEDAR CITY',
+  'AMERICAN LEADERSHIP ACADEMY':'ALA',
+  'JUDGE MEMORIAL CATHOLIC':'JUDGE MEMORIAL',
+  'ST. JOSEPH':'SAINT JOSEPH',
+  'UTAH MILITARY ACADEMY - CAMP WILLIAMS':'UMA-LEHI',
+  'UTAH MILITARY ACADEMY - HILL FIELD':'UMA-HILLFIELD',
+  'MONUMENT VALLEY':'MONUMENT VAL'
+};
 const h=value=>String(value??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const norm=value=>String(value??'').trim().toUpperCase().replace(/\s+/g,' ');
+const teamKey=value=>teamAliases[norm(value)]||norm(value);
 const value=value=>Number.isFinite(Number(value))?Number(value).toFixed(6):'—';
 const get=async(file,fallback)=>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);try{const response=await fetch(`${file}?v=${Date.now()}`,{cache:'no-store',signal:controller.signal});return response.ok?await response.json():fallback}catch{return fallback}finally{clearTimeout(timer)}};
 async function run(){
   const [data,teams]=await Promise.all([get('uhsaa-rpi-official-2026.json',null),get('teams-data.json',[])]);
   if(!data?.classifications)throw new Error('RPI data unavailable');
   const meta=new Map(teams.map(team=>[norm(team.team),team]));
-  const pill=team=>{const item=meta.get(norm(team))||{};return `<a class="team-pill" style="--bg:${h(item.backgroundColor||'#222')};--fg:${h(item.textColor||'#fff')}" href="team.html?team=${encodeURIComponent(team)}">${h(team)}</a>`};
+  const pill=team=>{const item=meta.get(teamKey(team))||{},canonical=item.team||team;return `<a class="team-pill" style="--bg:${h(item.backgroundColor||'#222')};--fg:${h(item.textColor||'#fff')}" href="team.html?team=${encodeURIComponent(canonical)}">${h(team)}</a>`};
   const bracketSlot=(rows,slot)=>{if(slot===null)return '<span class="bracket-slot-seed"></span><span class="bracket-bye">BYE</span>';if(typeof slot==='string')return `<span class="bracket-slot-seed"></span><span class="bracket-placeholder">${h(slot)}</span>`;const row=rows.find(item=>item.rank===slot);return row?`<span class="bracket-slot-seed">${slot}</span>${pill(row.team)}`:`<span class="bracket-slot-seed">${slot}</span><span class="bracket-placeholder">TBD</span>`};
   const bracketRounds=classification=>{const type=bracketFormats[classification].opening;if(type==='sixteen')return [['First Round',[[1,16],[8,9],[4,13],[5,12],[2,15],[7,10],[3,14],[6,11]]],['Quarterfinals',[['Winner 1/16','Winner 8/9'],['Winner 4/13','Winner 5/12'],['Winner 2/15','Winner 7/10'],['Winner 3/14','Winner 6/11']]],['Semifinals',[['Winner QF1','Winner QF2'],['Winner QF3','Winner QF4']]],['Championship',[['Winner SF1','Winner SF2']]]];if(type==='thirteen')return [['First Round',[[1,null],[8,9],[4,13],[5,12],[2,null],[7,10],[3,null],[6,11]]],['Quarterfinals',[[1,'Winner 8/9'],['Winner 4/13','Winner 5/12'],[2,'Winner 7/10'],[3,'Winner 6/11']]],['Semifinals',[['Winner QF1','Winner QF2'],['Winner QF3','Winner QF4']]],['Championship',[['Winner SF1','Winner SF2']]]];if(type==='nine')return [['First Round',[[8,9]]],['Quarterfinals',[[1,'Winner 8/9'],[4,5],[2,7],[3,6]]],['Semifinals',[['Winner QF1','Winner QF2'],['Winner QF3','Winner QF4']]],['Championship',[['Winner SF1','Winner SF2']]]];return [['First Round',[[8,9],[7,10],[6,11]]],['Quarterfinals',[[1,'Winner 8/9'],[4,5],[2,'Winner 7/10'],[3,'Winner 6/11']]],['Semifinals',[['Winner QF1','Winner QF2'],['Winner QF3','Winner QF4']]],['Championship',[['Winner SF1','Winner SF2']]]]};
   const gameCenter=(type,roundIndex,gameIndex,count)=>roundIndex===0&&type==='nine'?12.5:roundIndex===0&&type==='eleven'?[12.5,62.5,87.5][gameIndex]:(gameIndex+.5)*100/count;
