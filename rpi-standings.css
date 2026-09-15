@@ -137,6 +137,7 @@
 }
 
 .bracket-track {
+  position: relative;
   display: flex;
   align-items: stretch;
   gap: 42px;
@@ -146,6 +147,8 @@
 }
 
 .bracket-stage {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex: 0 0 230px;
   flex-direction: column;
@@ -161,39 +164,37 @@
 }
 
 .bracket-games {
-  display: flex;
+  position: relative;
   flex: 1;
-  flex-direction: column;
-  justify-content: space-around;
-  gap: 10px;
 }
 
 .bracket-game {
-  position: relative;
+  position: absolute;
+  top: var(--game-center);
+  right: 0;
+  left: 0;
+  transform: translateY(-50%);
   border: 1px solid #333;
   border-radius: 7px;
   background: #141414;
   box-shadow: 0 5px 15px rgba(0,0,0,.35);
 }
 
-.bracket-game:not(.bracket-final)::after {
+.bracket-connectors {
   position: absolute;
-  top: 50%;
-  right: -43px;
-  width: 42px;
-  height: 2px;
-  background: #f14d07;
-  content: '';
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
 
-.bracket-final::after {
-  position: absolute;
-  top: 50%;
-  right: -43px;
-  width: 42px;
-  height: 2px;
-  background: #f14d07;
-  content: '';
+.bracket-connectors path {
+  fill: none;
+  stroke: #f14d07;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
 }
 
 .bracket-slot {
@@ -235,6 +236,12 @@
 .bracket-champion {
   flex-basis: 155px;
   min-width: 155px;
+}
+
+.bracket-champion .bracket-games {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .champion-box {
