@@ -33,6 +33,18 @@
   display: none;
 }
 
+.rpi-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.rpi-section-heading .section-title {
+  margin: 0;
+}
+
 .playoff-cutoff-row td {
   position: relative;
   height: 24px;
@@ -109,7 +121,8 @@
   white-space: nowrap;
 }
 
-.rpi-bracket-share {
+.rpi-bracket-share,
+.rpi-standings-share {
   min-height: 34px;
   padding: 7px 11px;
   border: 1px solid #f14d07;
@@ -122,7 +135,8 @@
   cursor: pointer;
 }
 
-.rpi-bracket-share:hover {
+.rpi-bracket-share:hover,
+.rpi-standings-share:hover {
   background: #f14d07;
   color: #000;
 }
@@ -369,6 +383,15 @@
 
   .rpi-bracket-share {
     flex: 1;
+  }
+
+  .rpi-section-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .rpi-standings-share {
+    width: 100%;
   }
 
   .projected-bracket {
