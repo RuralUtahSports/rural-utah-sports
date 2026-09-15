@@ -7,19 +7,11 @@ on:
     - cron: '*/15 * * * *'
   push:
     paths:
-      - 'deseret-team-data-2026.json'
-      - 'deseret-game-details.json'
-      - 'deseret-game-links.json'
       - 'scripts/enrich-deseret-game-details.mjs'
-      - 'standings-2026.json'
-      - 'weekly-simulation.json'
-      - 'weekly-awards-stat-status.json'
       - 'manual-stat-corrections-2026.json'
       - 'scripts/build_deseret_rosters_stats.mjs'
       - 'scripts/merge_deseret_stats_endpoints.mjs'
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
-      - 'maxpreps-stats-fallback-2026.json'
-      - 'maxpreps-player-game-stats-2026.json'
       - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/build_player_game_stats.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
@@ -40,7 +32,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # Deseret occasionally rate-limits the full statewide pass. Leave enough
+    # time for bounded retries instead of discarding the entire refresh.
+    timeout-minutes: 75
     steps:
       - name: Checkout latest main
         uses: actions/checkout@v4
