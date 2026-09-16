@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-16T17:05:06.804Z",
+  "updatedAt": "2026-09-16T17:06:16.576Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -14,10 +14,10 @@
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 233,
+    "seasonSummaryMismatches": 234,
     "reciprocalMismatches": 989,
     "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 239
+    "recent2025PlusIssues": 240
   },
   "recent2025PlusIssues": [
     {
@@ -139,6 +139,29 @@
         "pointsAgainst": {
           "expected": 177,
           "actual": 183
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "CORNER CANYON",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 5
+        },
+        "wins": {
+          "expected": 5,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 268,
+          "actual": 216
+        },
+        "pointsAgainst": {
+          "expected": 73,
+          "actual": 66
         }
       }
     },
@@ -5723,6 +5746,29 @@
         "pointsAgainst": {
           "expected": 309,
           "actual": 311
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "CORNER CANYON",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 5
+        },
+        "wins": {
+          "expected": 5,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 268,
+          "actual": 216
+        },
+        "pointsAgainst": {
+          "expected": 73,
+          "actual": 66
         }
       }
     },
