@@ -39,12 +39,13 @@ const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const esc=v=>clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const classOrder={'6A':0,'5A':1,'4A':2,'3A':3,'2A':4,'1A':5,'Independent':6};
-const brandAliases={ALA:'ALA',CEDAR:'CEDARCITY',GRANDCOUNTY:'GRAND',SAINTJOSEPH:'SAINTJOSEPH',AMERICANPREPWV:'AMERICANPREP',MAESERPREPACADEMY:'MAESERPREP',MERITPREP:'MERITPREP',UMACAMPWILLIAMS:'UMALEHI',UMAHILLFIELD:'UMAHILLFIELD',LAYTONCHRISTIANACADEMY:'LAYTONCHRISTIAN'};
+const brandAliases={ALA:'ALA',CEDAR:'CEDARCITY',GRANDCOUNTY:'GRAND',SAINTJOSEPH:'SAINTJOSEPH',MONUMENTVALLEY:'MONUMENTVAL',AMERICANPREPWV:'AMERICANPREP',MAESERPREPACADEMY:'MAESERPREP',MERITPREP:'MERITPREP',UMACAMPWILLIAMS:'UMALEHI',UMAHILLFIELD:'UMAHILLFIELD',LAYTONCHRISTIANACADEMY:'LAYTONCHRISTIAN'};
 // Primary colors below are taken from the UHSAA School Directory. When multiple
 // colors are listed, the first listed school color is used for the card background.
 const basketballBrands={
  AMERICANHERITAGE:{backgroundColor:'#C8102E',textColor:'#FFFFFF',colors:'Red, White and Blue'},
  AMERICANPREPWV:{backgroundColor:'#0B2341',textColor:'#FFFFFF',colors:'Navy Blue and Cardinal Red'},
+ BRYCEVALLEY:{backgroundColor:'#0B6623',textColor:'#FFFFFF',colors:'Green and White'},
  DAVINCIACADEMY:{backgroundColor:'#0B6623',textColor:'#FFFFFF',colors:'Green, Gold and Blue'},
  DEERCREEK:{backgroundColor:'#0B1F3A',textColor:'#FFFFFF',colors:'Navy, Silver, White'},
  DRAPERAPA:{backgroundColor:'#C8102E',textColor:'#FFFFFF',colors:'Red, White and Blue'},
@@ -59,19 +60,26 @@ const basketballBrands={
  MAESERPREPACADEMY:{backgroundColor:'#D4AF37',textColor:'#111111',colors:'Gold and Navy'},
  MANILA:{backgroundColor:'#C8102E',textColor:'#FFFFFF',colors:'Red, White and Black'},
  MERITPREP:{backgroundColor:'#1D4ED8',textColor:'#FFFFFF',colors:'Blue, Maroon and White'},
+ MOUNTAINVALLEY:{backgroundColor:'#1261A0',textColor:'#FFFFFF',colors:'Blue, Black and White'},
  MOUNTVERNON:{backgroundColor:'#C8102E',textColor:'#FFFFFF',colors:'Red, White and Blue'},
  NAVAJOMOUNTAIN:{backgroundColor:'#0B1F3A',textColor:'#FFFFFF',colors:'Navy Blue, White and Silver'},
  PARADIGM:{backgroundColor:'#C8102E',textColor:'#FFFFFF',colors:'Red, White, Blue'},
  PINNACLE:{backgroundColor:'#000000',textColor:'#FFFFFF',colors:'Black, Purple and Green'},
+ PIUTE:{backgroundColor:'#5B92E5',textColor:'#FFFFFF',colors:'Columbia Blue, Red and White'},
+ ROCKWELL:{backgroundColor:'#1E3A8A',textColor:'#D4AF37',colors:'Blue and Gold'},
  ROWLANDHALL:{backgroundColor:'#154734',textColor:'#FFFFFF',colors:'Forest Green and White'},
  SALTLAKEACADEMY:{backgroundColor:'#0B1F3A',textColor:'#FFFFFF',colors:'Navy, White'},
  TABIONA:{backgroundColor:'#5B2C83',textColor:'#FFFFFF',colors:'Purple and White'},
  TELOS:{backgroundColor:'#0B1F3A',textColor:'#FFFFFF',colors:'Navy, Gold and Silver'},
+ TINTIC:{backgroundColor:'#1D4ED8',textColor:'#FFFFFF',colors:'Royal Blue, White, Silver and Black'},
  USDB:{backgroundColor:'#1D4ED8',textColor:'#FFFFFF',colors:'Blue and White'},
  UTAHPREP:{backgroundColor:'#000000',textColor:'#D4AF37',colors:'Black and Gold'},
+ VALLEY:{backgroundColor:'#000000',textColor:'#F47C20',colors:'Black and Orange'},
  VANGUARDACADEMY:{backgroundColor:'#5B2C83',textColor:'#FFFFFF',colors:'Purple, Blue'},
  WASATCHACADEMY:{backgroundColor:'#000000',textColor:'#F47C20',colors:'Black and Orange'},
  WATERFORD:{backgroundColor:'#0B1F3A',textColor:'#FFFFFF',colors:'Navy and Burgundy'},
+ WAYNE:{backgroundColor:'#5B2C83',textColor:'#D4AF37',colors:'Purple and Gold'},
+ WENDOVER:{backgroundColor:'#2E8B57',textColor:'#FFFFFF',colors:'Kelly Green and White'},
  WESTDESERT:{backgroundColor:'#800000',textColor:'#FFFFFF',colors:'Maroon and White'}
 };
 let teams=[],brands=new Map();
