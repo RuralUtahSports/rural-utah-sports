@@ -2,6 +2,9 @@ name: Merge Current Player Single-Game Records
 
 on:
   workflow_dispatch:
+  schedule:
+    # Safety refresh after Tuesday stat pipelines and again Wednesday morning.
+    - cron: '15 15 * * 2,3'
   push:
     branches: [main]
     paths:
@@ -13,7 +16,10 @@ on:
       - 'scripts/merge_current_player_single_game_records.mjs'
       - '.github/workflows/merge-current-player-single-game-records.yml'
   workflow_run:
-    workflows: ["Build Deseret Rosters and Stats"]
+    workflows:
+      - "Build Deseret Rosters and Stats"
+      - "Build Current Game Stats"
+      - "Build MaxPreps Stats Fallback"
     types: [completed]
 
 permissions:
