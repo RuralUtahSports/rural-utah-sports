@@ -3,13 +3,13 @@
 if(window.RUSSchoolAssets)return;
 const A=window.RUSSchoolAssets={};
 const ALIASES={
-  'ALA':'American Leadership Academy','CEDAR CITY':'Cedar','GRAND':'Grand County','GUNNISON VALLEY':'Gunnison Valley',
+  'ALA':'American Leadership Academy','AMERICAN PREP WV':'American Preparatory WV','CEDAR CITY':'Cedar','GRAND':'Grand County','GUNNISON VALLEY':'Gunnison Valley',
   'MONUMENT VAL':'Monument Valley','MONUMENT VALLEY':'Monument Valley','SAINT JOSEPH':'Saint Joseph',
   'UMA-LEHI':'Utah Military Academy - Camp Williams','UMA-HILLFIELD':'Utah Military Academy - Hill Field',
   'WASATCH ACADEMY':'Wasatch Academy','WEST FIELD':'West Field','DESERET PEAK':'Deseret Peak','LAYTON CHRISTIAN':'Layton Christian Academy'
 };
 const CUSTOM_LOGOS={
-  'ALTA':'school-logos/alta.webp','BEAVER':'school-logos/beaver.webp','EAST':'school-logos/east-user.svg?v=20260817-1',
+  'ALTA':'school-logos/alta.webp','AMERICAN PREP WV':'https://uploads.deseret.com/cdn-cgi/image/fit%3Dcontain%2Cw%3D300%2Ch%3D300/hs-sports/schools/apa-west-valley.png','AMERICAN PREPARATORY WV':'https://uploads.deseret.com/cdn-cgi/image/fit%3Dcontain%2Cw%3D300%2Ch%3D300/hs-sports/schools/apa-west-valley.png','APA WEST VALLEY':'https://uploads.deseret.com/cdn-cgi/image/fit%3Dcontain%2Cw%3D300%2Ch%3D300/hs-sports/schools/apa-west-valley.png','BEAVER':'school-logos/beaver.webp','EAST':'school-logos/east-user.svg?v=20260817-1',
   'EMERY':'school-logos/emery-exact.png?v=20260821-5','GRAND':'school-logos/grand.webp?v=20260817-1','GRAND COUNTY':'school-logos/grand.webp?v=20260817-1',
   'GRANTSVILLE':'school-logos/grantsville.webp','GREEN CANYON':'school-logos/green-canyon.svg','HILLCREST':'school-logos/hillcrest.svg',
   'KEARNS':'school-logos/kearns.svg','LAYTON CHRISTIAN':'school-logos/layton-christian.svg','LAYTON CHRISTIAN ACADEMY':'school-logos/layton-christian.svg',
