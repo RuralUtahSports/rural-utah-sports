@@ -38,8 +38,16 @@ function teamLink(a){const tab=a.recordType==='player'?'player-records':'team-re
 function unitText(a){return a.unit?` ${String(a.unit)}`:''}
 function previousDateText(a){return (a.uhsaaWatch?a.uhsaaListedDate:a.previousDate)||(!a.uhsaaWatch&&a.previousSeason?`${a.previousSeason} (exact date unavailable)`:'Date unavailable')}
 function holderText(a){return[a.uhsaaListedHolder,a.uhsaaListedSchool].filter(Boolean).join(', ')}
-function kicker(a){if(a.uhsaaWatch)return'EXCEEDS LISTED UHSAA RECORD';if(a.teamHistoryRank)return`SCHOOL HISTORY • NO. ${a.historyRank}`;return`${a.scope==='statewide'?'STATEWIDE':'SCHOOL'} ${a.recordType==='player'?'PLAYER':'TEAM'} RECORD`}
-function describe(a){const teamHtml=`<span class="rus-record-alert-team">${esc(a.team||'')}</span>`,who=a.recordType==='player'?`<span class="rus-record-alert-player">${esc(a.player||'Player')}</span> (${teamHtml})`:teamHtml,unit=a.unit?` ${esc(a.unit)}`:'';if(a.teamHistoryRank){const tied=Number(a.tiedCount)>1?'tied for ':'';let action='posted';if(a.categoryKey==='teamHistory-largestWin')action='won by';else if(a.categoryKey==='teamHistory-pointsAllowed')action='allowed';else if(a.categoryKey==='teamHistory-largestLoss')action='lost by';return{
+const historyLabels={
+ 'teamHistory-pointsScored':'POINTS SCORED',
+ 'teamHistory-largestWin':'LARGEST WIN',
+ 'teamHistory-pointsAllowed':'POINTS ALLOWED',
+ 'teamHistory-largestLoss':'LARGEST LOSS'
+};
+function historyType(a){return a.alertType||a.categoryKey||''}
+function historyLabel(a){return historyLabels[historyType(a)]||'TEAM HISTORY'}
+function kicker(a){if(a.uhsaaWatch)return'EXCEEDS LISTED UHSAA RECORD';if(a.teamHistoryRank)return`SCHOOL HISTORY • ${historyLabel(a)} • NO. ${a.historyRank}`;return`${a.scope==='statewide'?'STATEWIDE':'SCHOOL'} ${a.recordType==='player'?'PLAYER':'TEAM'} RECORD`}
+function describe(a){const teamHtml=`<span class="rus-record-alert-team">${esc(a.team||'')}</span>`,who=a.recordType==='player'?`<span class="rus-record-alert-player">${esc(a.player||'Player')}</span> (${teamHtml})`:teamHtml,unit=a.unit?` ${esc(a.unit)}`:'';if(a.teamHistoryRank){const tied=Number(a.tiedCount)>1?'tied for ':'';let action='posted';if(historyType(a)==='teamHistory-pointsScored')action='scored';else if(historyType(a)==='teamHistory-largestWin')action='won by';else if(historyType(a)==='teamHistory-pointsAllowed')action='allowed';else if(historyType(a)==='teamHistory-largestLoss')action='lost by';return{
  kicker:kicker(a),
  title:`${teamHtml} ${action} <span class="rus-record-alert-value">${fmt(a.value)}${unit}</span>, ${tied}No. ${a.historyRank} in program history for ${esc(a.category)}.`,
  sub:`Final: ${fmt(a.teamScore)}–${fmt(a.opponentScore)} • ${esc(a.date||'Date unavailable')} • Ranked across ${fmt(a.historyGamesReviewed)} recorded games`,

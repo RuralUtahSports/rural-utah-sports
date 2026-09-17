@@ -100,10 +100,10 @@ function collectUhsaaWatches(dir,recordType,refs,source){
 }
 
 const historyMetrics=[
-  {key:'pointsScored',label:'Points Scored',value:g=>num(g.teamScore),eligible:()=>true},
-  {key:'largestWin',label:'Largest Win',value:g=>num(g.teamScore)-num(g.opponentScore),eligible:g=>num(g.teamScore)>num(g.opponentScore)},
-  {key:'pointsAllowed',label:'Points Allowed',value:g=>num(g.opponentScore),eligible:()=>true},
-  {key:'largestLoss',label:'Largest Loss',value:g=>num(g.opponentScore)-num(g.teamScore),eligible:g=>num(g.opponentScore)>num(g.teamScore)}
+  {key:'pointsScored',alertType:'teamHistory-pointsScored',label:'Points Scored',value:g=>num(g.teamScore),eligible:()=>true},
+  {key:'largestWin',alertType:'teamHistory-largestWin',label:'Largest Win',value:g=>num(g.teamScore)-num(g.opponentScore),eligible:g=>num(g.teamScore)>num(g.opponentScore)},
+  {key:'pointsAllowed',alertType:'teamHistory-pointsAllowed',label:'Points Allowed',value:g=>num(g.opponentScore),eligible:()=>true},
+  {key:'largestLoss',alertType:'teamHistory-largestLoss',label:'Largest Loss',value:g=>num(g.opponentScore)-num(g.teamScore),eligible:g=>num(g.opponentScore)>num(g.teamScore)}
 ];
 
 function teamNameForFile(file,teams){
@@ -133,7 +133,7 @@ function collectTeamHistoryTopFive(){
         const tiedCount=eligible.filter(row=>row.value===game.value).length;
         const prior=eligible.filter(row=>row.date!==game.date||clean(row.opponent)!==clean(game.opponent)).sort((a,b)=>b.value-a.value||dateValue(b.date)-dateValue(a.date))[0]||null;
         alerts.push({
-          recordType:'team',scope:'school',teamHistoryRank:true,team,player:null,
+          recordType:'team',scope:'school',teamHistoryRank:true,alertType:metric.alertType,team,player:null,
           categoryKey:`teamHistory-${metric.key}`,category:metric.label,unit:'points',value:game.value,
           season:CURRENT_SEASON,date:game.date,opponent:clean(game.opponent),teamScore:game.teamScore,opponentScore:game.opponentScore,
           gameId:null,gameUrl:null,historyRank,tiedCount,historyGamesReviewed:games.length,
