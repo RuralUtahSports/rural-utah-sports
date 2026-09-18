@@ -471,11 +471,20 @@ function mergeBrowserDetail(prior, parsed, game) {
 
   // A browser page can briefly render without its final badge while the
   // score table is already complete. Preserve a verified final in that case.
-  if (prior?.final === true && parsed?.final !== true) {
+  // Exception: if the only Final came from the broad rendered day scoreboard
+  // and this game-specific page now shows a concrete live period/clock, reopen
+  // the game so a premature Final cannot freeze the score.
+  const parsedSpecificLive = /^(?:Q[1-4]|Halftime|Half|OT)$/i.test(clean(parsed?.status)) || !!clean(parsed?.clock);
+  const canReopenBrowserFinal = prior?.finalSource === 'deseret-browser-live-final' && parsedSpecificLive;
+  if (prior?.final === true && parsed?.final !== true && !canReopenBrowserFinal) {
     next.status = 'Final';
     next.final = true;
     next.clock = '';
     next.period = '';
+  } else if (prior?.final === true && parsed?.final !== true && canReopenBrowserFinal) {
+    next.final = false;
+    delete next.finalSource;
+    next.statusSource = 'deseret-browser-game-page-live-reopen';
   }
 
   // Do not let a stale rendered page replace a newer total already captured
