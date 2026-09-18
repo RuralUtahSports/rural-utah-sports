@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-18T01:15:16.232Z",
+  "updatedAt": "2026-09-18T02:14:28.629Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -117416,51 +117416,326 @@
     },
     "2026-09-17|COTTONWOOD|JUANDIEGO": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-17/cottonwood-football-vs-juan-diego-football/273629",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
-      "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "COTTONWOOD",
+            "quarters": [
+              3,
+              0,
+              null,
+              null
+            ],
+            "total": 3
+          },
+          {
+            "team": "JUAN DIEGO",
+            "quarters": [
+              7,
+              14,
+              null,
+              null
+            ],
+            "total": 21
+          }
+        ]
       },
-      "fetchedAt": "2026-09-18T01:15:02.706Z",
+      "scoringPlays": [
+        "Cottonwood — (3:50 1Q) Nuno Rocha , 26-yard FG",
+        "Juan Diego — (0:30 1Q) Jacoby Ahlstrom , 3-yard run (kick from Nolan Jones )",
+        "Juan Diego — (7:07 2Q) Logan Child , 25-yard pass from Jacoby Ahlstrom (kick from Nolan Jones )",
+        "Juan Diego — (0:25 2Q) Tevita Vakautakakala , 1-yard run from Jacoby Ahlstrom (kick from Nolan Jones )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "JUAN DIEGO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "10",
+              "T. Tevita Vakautakakala",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "14",
+              "J. Jacoby Ahlstrom",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "JUAN DIEGO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "14",
+              "J. Jacoby Ahlstrom",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "JUAN DIEGO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "L. Logan Child",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "JUAN DIEGO",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "N. Nolan Jones",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "COTTONWOOD",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "18",
+              "N. Nuno Rocha",
+              "1",
+              "",
+              ""
+            ]
+          ]
+        }
+      ],
+      "statsAvailability": {
+        "status": "partial",
+        "blocks": 5,
+        "rows": 6,
+        "coreCells": 10,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 3
+      },
+      "fetchedAt": "2026-09-18T02:14:14.564Z",
       "date": "09/17/2026",
       "awayTeam": "COTTONWOOD",
       "homeTeam": "JUAN DIEGO",
-      "browserFetchedAt": "2026-09-18T01:15:02.706Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-18T02:14:14.564Z",
+      "detailSource": "deseret-browser-game-page",
+      "scoreSource": "deseret-browser-live",
+      "statusSource": "deseret-browser-live"
     },
     "2026-09-17|CYPRUS|TAYLORSVILLE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-17/cyprus-football-vs-taylorsville-football/273605",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
-      "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "CYPRUS",
+            "quarters": [
+              14,
+              6,
+              null,
+              null
+            ],
+            "total": 20
+          },
+          {
+            "team": "TAYLORSVILLE",
+            "quarters": [
+              9,
+              0,
+              null,
+              null
+            ],
+            "total": 9
+          }
+        ]
       },
-      "fetchedAt": "2026-09-18T01:15:06.022Z",
+      "scoringPlays": [
+        "Taylorsville — (4:23 1Q) Hunter Olsen , fumble recovery (kick failed)",
+        "Cyprus — (3:34 1Q) Gunner Fredrickson , 23-yard pass from Sidney McElreathe (kick from Barragan )",
+        "Taylorsville — (2:21 1Q) 42-yard FG",
+        "Cyprus — (0:31 1Q) Gunner Fredrickson , 74-yard pass from Sidney McElreathe (kick from Barragan )",
+        "Cyprus — (10:02 2Q) Barragan , 41-yard FG",
+        "Cyprus — (4:40 2Q) Barragan , 34-yard FG"
+      ],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "CYPRUS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "S. Sidney McElreathe",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "CYPRUS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "10",
+              "G. Gunner Fredrickson",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "CYPRUS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "-",
+              ". Barragan",
+              "2",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "TAYLORSVILLE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "58",
+              "H. Hunter Olsen",
+              "",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
+      "statsAvailability": {
+        "status": "partial",
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 9,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 3
+      },
+      "fetchedAt": "2026-09-18T02:14:18.154Z",
       "date": "09/17/2026",
       "awayTeam": "CYPRUS",
       "homeTeam": "TAYLORSVILLE",
-      "browserFetchedAt": "2026-09-18T01:15:06.022Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-18T02:14:18.154Z",
+      "detailSource": "deseret-browser-game-page",
+      "scoreSource": "deseret-browser-live",
+      "statusSource": "deseret-browser-live"
     },
     "2026-09-17|GRANGER|KEARNS": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-17/granger-football-vs-kearns-football/274383",
@@ -117480,18 +117755,18 @@
           {
             "team": "GRANGER",
             "quarters": [
-              7,
-              null,
+              14,
+              14,
               null,
               null
             ],
-            "total": 7
+            "total": 28
           },
           {
             "team": "KEARNS",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -117499,20 +117774,118 @@
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Granger — (5:56 1Q) Ethan Sam , 8-yard run (kick successful)",
+        "Granger — (4:52 1Q) Tomasi Vehikite , 60-yard punt return (kick successful)",
+        "Granger — (9:10 2Q) Kingston Patolo , 18-yard pass from Paseni Makoni (kick successful)",
+        "Granger — (2:56 2Q) Paseni Makoni , 1-yard run"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "GRANGER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "P. Paseni Makoni",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "5",
+              "E. Ethan Sam",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "GRANGER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "11",
+              "P. Paseni Makoni",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "GRANGER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "K. Kingston Patolo",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "GRANGER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "10",
+              "T. Tomasi Vehikite",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 4,
+        "rows": 5,
+        "coreCells": 10,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-09-18T01:14:59.250Z",
+      "fetchedAt": "2026-09-18T02:14:11.074Z",
       "date": "09/17/2026",
       "awayTeam": "GRANGER",
       "homeTeam": "KEARNS",
-      "browserFetchedAt": "2026-09-18T01:14:59.250Z",
+      "browserFetchedAt": "2026-09-18T02:14:11.074Z",
       "detailSource": "deseret-browser-game-page",
       "scoreSource": "deseret-browser-live",
       "statusSource": "deseret-browser-live"
@@ -117534,60 +117907,253 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-09-18T01:15:09.285Z",
+      "fetchedAt": "2026-09-18T02:14:28.529Z",
       "date": "09/17/2026",
       "awayTeam": "JORDAN",
       "homeTeam": "SKYLINE",
-      "browserFetchedAt": "2026-09-18T01:15:09.285Z",
+      "browserFetchedAt": "2026-09-18T02:14:28.529Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-09-17|KANAB|BEAVER": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-17/kanab-football-vs-beaver-football/273319",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
-      "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "KANAB",
+            "quarters": [
+              0,
+              7,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "BEAVER",
+            "quarters": [
+              0,
+              0,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
       },
-      "fetchedAt": "2026-09-18T01:15:12.685Z",
+      "scoringPlays": [
+        "Kanab — (3:06 2Q) Kaleb Warner , 1-yard run (kick from Ray Capson )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "KANAB",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "K. Kaleb Warner",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "KANAB",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "20",
+              "R. Ray Capson",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
+      "statsAvailability": {
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 1
+      },
+      "fetchedAt": "2026-09-18T02:14:21.692Z",
       "date": "09/17/2026",
       "awayTeam": "KANAB",
       "homeTeam": "BEAVER",
-      "browserFetchedAt": "2026-09-18T01:15:12.685Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-18T02:14:21.692Z",
+      "detailSource": "deseret-browser-game-page",
+      "scoreSource": "deseret-browser-live",
+      "statusSource": "deseret-browser-live"
     },
     "2026-09-17|SKYRIDGE|LEHI": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-17/skyridge-football-vs-lehi-football/273893",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
-      "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "SKYRIDGE",
+            "quarters": [
+              7,
+              0,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "LEHI",
+            "quarters": [
+              0,
+              7,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
       },
-      "fetchedAt": "2026-09-18T01:15:16.131Z",
+      "scoringPlays": [
+        "Skyridge — (1:15 1Q) Jagger Fountaine , 3-yard run (kick from Evan Kopp )",
+        "Lehi — (7:53 2Q) Paul Unga , 30-yard int. return (kick from Finn McBride )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "LEHI",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "J. Jagger Fountaine",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "LEHI",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "17",
+              "F. Finn McBride",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SKYRIDGE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "31",
+              "E. Evan Kopp",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "LEHI",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "9",
+              "P. Paul Unga",
+              "",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
+      "statsAvailability": {
+        "status": "partial",
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 5,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 2
+      },
+      "fetchedAt": "2026-09-18T02:14:25.061Z",
       "date": "09/17/2026",
       "awayTeam": "SKYRIDGE",
       "homeTeam": "LEHI",
-      "browserFetchedAt": "2026-09-18T01:15:16.131Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-09-18T02:14:25.061Z",
+      "detailSource": "deseret-browser-game-page",
+      "scoreSource": "deseret-browser-live",
+      "statusSource": "deseret-browser-live"
     }
   }
 }
