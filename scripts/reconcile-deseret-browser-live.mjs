@@ -277,10 +277,22 @@ for (const game of games) {
   if (detail.boxScore) detail.boxScore.source = 'deseret-browser-live';
 
   let nextState = state;
+  let acceptFinal = !!state.final;
   const currentRank = stateRank(detail.status);
   const incomingRank = stateRank(state.status);
   const kickoff = kickoffMinutes(detail.kickoffTime);
   const elapsed = kickoff === null ? null : utahMinutesNow() - kickoff;
+  const quarterRows = rows.slice(0, 2);
+  const hasQuarterData = quarterRows.some(row => Array.isArray(row?.quarters) && row.quarters.some(value => value !== null && value !== undefined && value !== ''));
+  const missingFourthQuarter = quarterRows.some(row => Array.isArray(row?.quarters) && (row.quarters[3] === null || row.quarters[3] === undefined || row.quarters[3] === ''));
+  const suspiciousEarlyFinal = acceptFinal && hasQuarterData && missingFourthQuarter;
+
+  if (suspiciousEarlyFinal) {
+    acceptFinal = false;
+    nextState = { status: 'Live', clock: '', period: '' };
+    console.warn(`Ignored suspicious browser Final for ${key}; fourth-quarter score is still missing.`);
+  }
+
   const staleHalftime = /^HALFTIME$/i.test(clean(state.status)) && (
     scoreAdvanced ||
     sourceRegressed ||
@@ -299,16 +311,17 @@ for (const game of games) {
     console.warn(`Ignored browser period regression for ${key}: ${state.status} behind ${detail.status}.`);
   }
 
-  if (detail.status !== nextState.status || clean(detail.clock) !== nextState.clock || clean(detail.period) !== nextState.period || detail.final !== !!state.final) {
+  if (detail.status !== nextState.status || clean(detail.clock) !== nextState.clock || clean(detail.period) !== nextState.period || detail.final !== acceptFinal) {
     detail.status = nextState.status;
     detail.clock = nextState.clock;
     detail.period = nextState.period;
-    detail.final = !!state.final;
+    detail.final = acceptFinal;
     changed++;
   }
   detail.scoreSource = 'deseret-browser-live';
-  if (state.final) detail.finalSource = 'deseret-browser-live-final';
-  detail.statusSource = state.final ? 'deseret-browser-live-final' : staleHalftime ? 'deseret-browser-live-stale-state-guard' : 'deseret-browser-live';
+  if (acceptFinal) detail.finalSource = 'deseret-browser-live-final';
+  else if (detail.finalSource === 'deseret-browser-live-final') delete detail.finalSource;
+  detail.statusSource = acceptFinal ? 'deseret-browser-live-final' : suspiciousEarlyFinal ? 'deseret-browser-live-early-final-guard' : staleHalftime ? 'deseret-browser-live-stale-state-guard' : 'deseret-browser-live';
   console.log(`Browser scoreboard ${key}: ${nextAway}-${nextHome} ${nextState.status}${nextState.clock ? ` ${nextState.clock}` : ''}`);
 }
 
