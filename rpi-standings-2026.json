@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updatedAt": "2026-09-18T18:33:14.448Z",
+  "updatedAt": "2026-09-18T20:58:39.558Z",
   "formula": {
     "rpi": "0.45 × MWP + 0.45 × OWP + 0.10 × OOWP",
     "footballMwp": "Unadjusted game-result winning percentage; football classifications are not weighted.",
@@ -12,7 +12,7 @@
       "LAYTONCHRISTIAN"
     ]
   },
-  "sourceUpdatedAt": "2026-09-18T16:29:46.374Z",
+  "sourceUpdatedAt": "2026-09-18T20:58:37.827Z",
   "classifications": {
     "6A": [
       {
@@ -48,6 +48,22 @@
         "rank": 2
       },
       {
+        "team": "CORNER CANYON",
+        "classification": "6A",
+        "region": "3",
+        "record": "4-1",
+        "wins": 4,
+        "losses": 1,
+        "ties": 0,
+        "games": 5,
+        "rpi": 0.7625,
+        "mwp": 0.8,
+        "owp": 0.75,
+        "oowp": 0.65,
+        "postseasonEligible": false,
+        "rank": 3
+      },
+      {
         "team": "SKYRIDGE",
         "classification": "6A",
         "region": "3",
@@ -60,22 +76,6 @@
         "mwp": 0.8,
         "owp": 0.7333333333333333,
         "oowp": 0.668,
-        "postseasonEligible": false,
-        "rank": 3
-      },
-      {
-        "team": "CORNER CANYON",
-        "classification": "6A",
-        "region": "3",
-        "record": "4-1",
-        "wins": 4,
-        "losses": 1,
-        "ties": 0,
-        "games": 5,
-        "rpi": 0.7549999999999999,
-        "mwp": 0.8,
-        "owp": 0.7333333333333333,
-        "oowp": 0.65,
         "postseasonEligible": false,
         "rank": 4
       },
@@ -120,10 +120,10 @@
         "losses": 2,
         "ties": 0,
         "games": 5,
-        "rpi": 0.6671666666666667,
+        "rpi": 0.6675,
         "mwp": 0.6,
         "owp": 0.75,
-        "oowp": 0.5966666666666667,
+        "oowp": 0.6,
         "postseasonEligible": false,
         "rank": 7
       },
@@ -410,10 +410,10 @@
         "losses": 2,
         "ties": 0,
         "games": 5,
-        "rpi": 0.5711666666666667,
+        "rpi": 0.5715000000000001,
         "mwp": 0.6,
         "owp": 0.55,
-        "oowp": 0.5366666666666666,
+        "oowp": 0.5399999999999999,
         "postseasonEligible": false,
         "rank": 8
       },
@@ -442,10 +442,10 @@
         "losses": 3,
         "ties": 0,
         "games": 5,
-        "rpi": 0.5308333333333334,
+        "rpi": 0.5311666666666667,
         "mwp": 0.4,
         "owp": 0.65,
-        "oowp": 0.5833333333333334,
+        "oowp": 0.5866666666666667,
         "postseasonEligible": false,
         "rank": 10
       },
@@ -1886,13 +1886,13 @@
     ]
   },
   "comparison": {
-    "officialFetchedAt": "2026-09-18T18:33:14.191Z",
+    "officialFetchedAt": "2026-09-18T20:58:39.127Z",
     "teamsCompared": 116,
-    "exactRankMatches": 78,
+    "exactRankMatches": 77,
     "recordMatches": 108,
     "exactRpiMatches": 18,
     "withinOneThousandth": 41,
-    "meanAbsoluteRpiDifference": 0.009958450031928481,
+    "meanAbsoluteRpiDifference": 0.009890921296296299,
     "rows": [
       {
         "classification": "6A",
@@ -1919,17 +1919,17 @@
         "team": "CORNER CANYON",
         "officialTeam": "Corner Canyon",
         "officialRank": 2,
-        "rusRank": 4,
-        "rankDifference": 2,
+        "rusRank": 3,
+        "rankDifference": 1,
         "officialRecord": "4-1",
         "rusRecord": "4-1",
         "recordMatch": true,
         "officialRpi": 0.785667,
-        "rusRpi": 0.7549999999999999,
-        "rpiDifference": -0.03066700000000011,
+        "rusRpi": 0.7625,
+        "rpiDifference": -0.02316700000000005,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.06666666666666676,
+          "owp": -0.050000000000000044,
           "oowp": -0.0066669999999999785
         },
         "likelyCause": "One or more opponent records differ from the official table."
@@ -1939,8 +1939,8 @@
         "team": "SKYRIDGE",
         "officialTeam": "Skyridge",
         "officialRank": 3,
-        "rusRank": 3,
-        "rankDifference": 0,
+        "rusRank": 4,
+        "rankDifference": 1,
         "officialRecord": "5-1",
         "rusRecord": "4-1",
         "recordMatch": false,
@@ -2025,12 +2025,12 @@
         "rusRecord": "3-2",
         "recordMatch": true,
         "officialRpi": 0.6679,
-        "rusRpi": 0.6671666666666667,
-        "rpiDifference": -0.0007333333333333636,
+        "rusRpi": 0.6675,
+        "rpiDifference": -0.00040000000000006697,
         "componentDifference": {
           "mwp": 0,
           "owp": 0,
-          "oowp": -0.007333333333333303
+          "oowp": -0.0040000000000000036
         },
         "likelyCause": "One or more second-level opponent records differ from the official table."
       },
@@ -2385,12 +2385,12 @@
         "rusRecord": "3-2",
         "recordMatch": true,
         "officialRpi": 0.5711,
-        "rusRpi": 0.5711666666666667,
-        "rpiDifference": 0.00006666666666665932,
+        "rusRpi": 0.5715000000000001,
+        "rpiDifference": 0.00040000000000006697,
         "componentDifference": {
           "mwp": 0,
           "owp": 0,
-          "oowp": 0.0006666666666665932
+          "oowp": 0.0039999999999998925
         },
         "likelyCause": "One or more second-level opponent records differ from the official table."
       },
@@ -2405,12 +2405,12 @@
         "rusRecord": "2-3",
         "recordMatch": true,
         "officialRpi": 0.533167,
-        "rusRpi": 0.5308333333333334,
-        "rpiDifference": -0.0023336666666665673,
+        "rusRpi": 0.5311666666666667,
+        "rpiDifference": -0.0020003333333332707,
         "componentDifference": {
           "mwp": 0,
           "owp": 0,
-          "oowp": -0.023333666666666586
+          "oowp": -0.020000333333333287
         },
         "likelyCause": "One or more second-level opponent records differ from the official table."
       },
