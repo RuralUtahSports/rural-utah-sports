@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-18T01:01:55.206Z",
+  "updatedAt": "2026-09-18T01:15:16.873Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -69,12 +69,41 @@
       "awayTeam": "GRANGER",
       "homeTeam": "KEARNS",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-17/granger-football-vs-kearns-football/274383",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "GRANGER",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "KEARNS",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -83,7 +112,8 @@
         "rows": 0,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
-      }
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-17|JORDAN|SKYLINE": {
       "date": "09/17/2026",
