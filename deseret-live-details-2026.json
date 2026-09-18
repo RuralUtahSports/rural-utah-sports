@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-18T03:04:55.449Z",
+  "updatedAt": "2026-09-18T03:41:13.894Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -687,20 +687,20 @@
             "quarters": [
               7,
               7,
-              null,
+              7,
               null
             ],
-            "total": 14
+            "total": 21
           },
           {
             "team": "LEHI",
             "quarters": [
               0,
               14,
-              null,
+              6,
               null
             ],
-            "total": 14
+            "total": 20
           }
         ]
       },
@@ -708,12 +708,34 @@
         "Skyridge — (1:15 1Q) Jagger Fountaine , 3-yard run (kick from Evan Kopp )",
         "Lehi — (7:53 2Q) Paul Unga , 30-yard int. return (kick from Finn McBride )",
         "Skyridge — (6:11 2Q) Omarian Sanders , 54-yard pass from Jagger Fountaine (kick from Evan Kopp )",
-        "Lehi — (5:58 2Q) Cam Wren , 85-yard kick return (kick from Finn McBride )"
+        "Lehi — (5:58 2Q) Cam Wren , 85-yard kick return (kick from Finn McBride )",
+        "Skyridge — (8:02 3Q) Omarian Sanders , 4-yard pass from Jagger Fountaine (kick from Evan Kopp )",
+        "Lehi — (2:51 3Q) Cam Bryce , 2-yard run (run failed)"
       ],
       "stats": [
         {
           "category": "Rushing",
           "team": "LEHI",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "C. Cam Bryce",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "SKYRIDGE",
           "headers": [
             "NO",
             "PLAYER",
@@ -750,7 +772,7 @@
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -771,7 +793,7 @@
               "O. Omarian Sanders",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -817,7 +839,7 @@
               "31",
               "E. Evan Kopp",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -847,11 +869,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 6,
-        "rows": 7,
-        "coreCells": 11,
+        "blocks": 7,
+        "rows": 8,
+        "coreCells": 13,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
+        "emptyCoreBlocks": 5
       },
       "scoreSource": "deseret-browser-live"
     }
