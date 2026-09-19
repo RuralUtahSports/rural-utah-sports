@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T02:18:04.286Z",
+  "updatedAt": "2026-09-19T02:20:49.618Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -706,7 +706,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Skyline — (1:02 1Q) Saia Vake , 3-yard run (kick from Josh Pinnock )",
@@ -1564,7 +1565,8 @@
             ],
             "total": 3
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Alta — (6:41 1Q) Madden McCallister , 35-yard FG"
@@ -1755,7 +1757,8 @@
             ],
             "total": 20
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Tooele — (7:33 1Q) Gus Pater , 1-yard run (kick failed)",
@@ -1953,7 +1956,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Davis — (7:35 1Q) Bode Sparrow , 27-yard pass from Paden Toula (kick from Griffin Carmack )",
@@ -2157,7 +2161,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Roy — (7:31 1Q) Howie Howard , 7-yard run (kick from Luke Pebley )",
@@ -2305,7 +2310,8 @@
             ],
             "total": 15
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Canyon View — (3:21 1Q) Camden Sheridan , 12-yard run (run failed)",
@@ -2645,7 +2651,7 @@
               null,
               null
             ],
-            "total": 9
+            "total": 17
           },
           {
             "team": "CEDAR CITY",
@@ -2657,7 +2663,8 @@
             ],
             "total": 17
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "North Sanpete — (10:11 1Q) Luke Lee , 9-yard run (kick failed)",
@@ -3494,7 +3501,8 @@
             ],
             "total": 28
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Hurricane — (7:55 1Q) RJ Allred , 3-yard run (kick from Cameron Lemmon )",
@@ -3671,7 +3679,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Duchesne — (9:45 1Q) Kyson Despain , 3-yard run (kick from Alec Thomas )",
@@ -3884,21 +3893,95 @@
       "awayTeam": "EAST",
       "homeTeam": "MURRAY",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/east-football-vs-murray-football/274345",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "EAST",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "MURRAY",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Murray — (9:42 1Q) Dru Reuss , 4-yard run (kick from Anthony Guerra )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "MURRAY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "D. Dru Reuss",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "MURRAY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "14",
+              "A. Anthony Guerra",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 1
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|ENTERPRISE|MILLARD": {
       "date": "09/18/2026",
@@ -3938,7 +4021,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Millard — (8:41 1Q) Jensen Davies , 3-yard run (kick from Sergio Arellano )",
@@ -4066,7 +4150,7 @@
             "team": "FARMINGTON",
             "quarters": [
               10,
-              null,
+              7,
               null,
               null
             ],
@@ -4076,13 +4160,14 @@
             "team": "WEBER",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Farmington — (8:06 1Q) Casey Farnsworth , 20-yard FG",
@@ -4202,7 +4287,8 @@
             ],
             "total": 10
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Northridge — (5:00 2Q) Garrett Burkhardt , 44-yard FG",
@@ -4343,7 +4429,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Green Canyon — (6:51 2Q) Ethan Munk , 1-yard run (kick from Boston Daines )",
@@ -4467,7 +4554,8 @@
             ],
             "total": 34
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "North Summit — (11:00 1Q) Kason Richins , 64-yard run (kick from Jose Sanchez )",
@@ -4639,7 +4727,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Westlake — (9:23 1Q) Ashton Taylor , 37-yard run (kick from Logan Sorensen )"
@@ -4701,10 +4790,10 @@
       "awayTeam": "HILLCREST",
       "homeTeam": "WEST",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/hillcrest-football-vs-west-football/274375",
-      "status": "Q1",
+      "status": "Live",
       "final": false,
-      "clock": "11:48",
-      "period": "Q1",
+      "clock": "",
+      "period": "",
       "kickoffTime": "",
       "boxScore": {
         "periods": [
@@ -4727,18 +4816,18 @@
           {
             "team": "WEST",
             "quarters": [
-              7,
+              14,
               null,
               null,
               null
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
-        "West — (11:48 1Q) Kamden Lopati , 65-yard run (kick from Dominic Jones )"
+        "West — (11:48 1Q) Kamden Lopati , 65-yard run (kick from Dominic Jones )",
+        "West — (1:21 1Q) Naeata Hamilton , 1-yard run (kick from Dominic Jones )"
       ],
       "stats": [
         {
@@ -4752,6 +4841,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "22",
+              "N. Naeata Hamilton",
+              "",
+              "",
+              "1"
+            ],
             [
               "0",
               "K. Kamden Lopati",
@@ -4776,7 +4872,7 @@
               "15",
               "D. Dominic Jones",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -4785,8 +4881,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "rows": 3,
+        "coreCells": 4,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 1
       },
@@ -5327,7 +5423,7 @@
       "awayTeam": "MAPLE MOUNTAIN",
       "homeTeam": "TIMPVIEW",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/maple-mountain-football-vs-timpview-football/273646",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -5344,17 +5440,17 @@
             "team": "MAPLE MOUNTAIN",
             "quarters": [
               0,
-              null,
+              7,
               null,
               null
             ],
-            "total": 0
+            "total": 7
           },
           {
             "team": "TIMPVIEW",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -5362,14 +5458,58 @@
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Maple Mountain — (10:21 2Q) Uhila Wolfgramm , 32-yard run (kick from Israel Vaenuku )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "MAPLE MOUNTAIN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "U. Uhila Wolfgramm",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "MAPLE MOUNTAIN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "I. Israel Vaenuku",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 1
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -5905,7 +6045,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Stansbury — (8:39 1Q) Boston Rowley , 25-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
@@ -6212,7 +6353,8 @@
             ],
             "total": 42
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Springville — (6:55 1Q) Siaosi \"Leka\" Toki , 58-yard pass from Beckett Burton (kick from Pheonix Marks )",
@@ -7085,7 +7227,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Mountain Ridge — (10:30 1Q) Marshall West , 62-yard pass from Jaxon Hunt (kick from Will O'Neil )",
