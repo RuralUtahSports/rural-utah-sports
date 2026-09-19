@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T02:12:42.206Z",
+  "updatedAt": "2026-09-19T02:15:23.889Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -690,7 +690,7 @@
             "team": "JORDAN",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -700,16 +700,17 @@
             "team": "SKYLINE",
             "quarters": [
               7,
-              null,
+              7,
               null,
               null
             ],
-            "total": 7
+            "total": 14
           }
         ]
       },
       "scoringPlays": [
-        "Skyline — (1:02 1Q) Saia Vake , 3-yard run (kick successful)"
+        "Skyline — (1:02 1Q) Saia Vake , 3-yard run (kick from Josh Pinnock )",
+        "Skyline — (9:55 2Q) Tate Johnson , 12-yard pass from Tu'i Will (kick from Josh Pinnock )"
       ],
       "stats": [
         {
@@ -731,15 +732,79 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Passing",
+          "team": "SKYLINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "7",
+              "T. Tu'i Will",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SKYLINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "T. Tate Johnson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SKYLINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "-",
+              "J. Josh Pinnock",
+              "",
+              "2",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
-        "coreCells": 2,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 3
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -995,17 +1060,18 @@
           {
             "team": "SUMMIT ACADEMY",
             "quarters": [
-              7,
+              14,
               null,
               null,
               null
             ],
-            "total": 7
+            "total": 14
           }
         ]
       },
       "scoringPlays": [
-        "Summit Academy — (4:31 1Q) Rigby Young , 2-yard run (kick from Kyden Mortenson )"
+        "Summit Academy — (4:31 1Q) Rigby Young , 2-yard run (kick from Kyden Mortenson )",
+        "Summit Academy — (1:30 1Q) Beckham Meredith , 56-yard pass from Rigby Young (kick from Kyden Mortenson )"
       ],
       "stats": [
         {
@@ -1029,6 +1095,50 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "SUMMIT ACADEMY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "11",
+              "R. Rigby Young",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SUMMIT ACADEMY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "B. Beckham Meredith",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
           "category": "Special Teams",
           "team": "SUMMIT ACADEMY",
           "headers": [
@@ -1043,7 +1153,7 @@
               "81",
               "K. Kyden Mortenson",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -1051,11 +1161,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 3
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -1081,11 +1191,11 @@
             "team": "ALTAMONT",
             "quarters": [
               0,
-              6,
+              12,
               null,
               null
             ],
-            "total": 6
+            "total": 12
           },
           {
             "team": "RICH",
@@ -1105,12 +1215,13 @@
         "Rich — (9:51 2Q) Jasper Johnson , 43-yard pass from Wilkes Weston (kick from Paxton Nicolodemos )",
         "Altamont — (7:46 2Q) Dallan Ledbetter , 1-yard run",
         "Rich — (6:04 2Q) Bode O'Mealy , 19-yard pass from Wilkes Weston (kick from Paxton Nicolodemos )",
-        "Rich — (5:00 2Q) Brady Cornia , 37-yard run (kick failed)"
+        "Rich — (5:00 2Q) Brady Cornia , 37-yard run (kick failed)",
+        "Altamont — (1:43 2Q) Dallan Ledbetter , 11-yard run (run failed)"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "RICH",
+          "team": "ALTAMONT",
           "headers": [
             "NO",
             "PLAYER",
@@ -1144,7 +1255,7 @@
               "D. Dallan Ledbetter",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -1399,7 +1510,7 @@
       "awayTeam": "OLYMPUS",
       "homeTeam": "ALTA",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/olympus-football-vs-alta-football/273586",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -1432,8 +1543,7 @@
             ],
             "total": 3
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Alta — (6:41 1Q) Madden McCallister , 35-yard FG"
@@ -1624,7 +1734,8 @@
             ],
             "total": 20
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Tooele — (7:33 1Q) Gus Pater , 1-yard run (kick failed)",
@@ -1770,7 +1881,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Davis — (7:35 1Q) Bode Sparrow , 27-yard pass from Paden Toula (kick from Griffin Carmack )",
@@ -1958,11 +2070,11 @@
             "team": "ROY",
             "quarters": [
               7,
-              7,
+              14,
               null,
               null
             ],
-            "total": 14
+            "total": 21
           },
           {
             "team": "BONNEVILLE",
@@ -1978,7 +2090,8 @@
       },
       "scoringPlays": [
         "Roy — (7:31 1Q) Howie Howard , 7-yard run (kick from Luke Pebley )",
-        "Roy — (11:48 2Q) Lucius Hicks , 86-yard pass from Gunner Pearson (kick from Luke Pebley )"
+        "Roy — (11:48 2Q) Lucius Hicks , 86-yard pass from Gunner Pearson (kick from Luke Pebley )",
+        "Roy — (3:47 2Q) Riley Jeppesen , 50-yard pass from Gunner Pearson (kick from Luke Pebley )"
       ],
       "stats": [
         {
@@ -2020,7 +2133,7 @@
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -2036,6 +2149,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "5",
+              "R. Riley Jeppesen",
+              "",
+              "",
+              "1"
+            ],
             [
               "16",
               "L. Lucius Hicks",
@@ -2060,7 +2180,7 @@
               "3",
               "L. Luke Pebley",
               "",
-              "2",
+              "3",
               ""
             ]
           ]
@@ -2069,8 +2189,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 4,
-        "rows": 4,
-        "coreCells": 8,
+        "rows": 5,
+        "coreCells": 10,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
@@ -2114,7 +2234,8 @@
             ],
             "total": 15
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Canyon View — (3:21 1Q) Camden Sheridan , 12-yard run (run failed)",
@@ -2317,7 +2438,7 @@
       "awayTeam": "VIEWMONT",
       "homeTeam": "BRIGHTON",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/viewmont-football-vs-brighton-football/273596",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -2334,11 +2455,11 @@
             "team": "VIEWMONT",
             "quarters": [
               0,
-              0,
+              7,
               null,
               null
             ],
-            "total": 0
+            "total": 7
           },
           {
             "team": "BRIGHTON",
@@ -2352,14 +2473,58 @@
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Viewmont — (9:56 2Q) Brett Tovey , 1-yard run (kick from Logan Campbell )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "VIEWMONT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "13",
+              "B. Brett Tovey",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "VIEWMONT",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "15",
+              "L. Logan Campbell",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 1
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -2422,7 +2587,8 @@
             ],
             "total": 17
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "North Sanpete — (10:11 1Q) Luke Lee , 9-yard run (kick failed)",
@@ -2782,11 +2948,11 @@
             "team": "LONE PEAK",
             "quarters": [
               0,
-              0,
+              7,
               null,
               null
             ],
-            "total": 0
+            "total": 7
           },
           {
             "team": "CORNER CANYON",
@@ -2801,12 +2967,13 @@
         ]
       },
       "scoringPlays": [
-        "Corner Canyon — (11:52 2Q) Jaxon Pehrson , 35-yard run (kick from Carson Burnett )"
+        "Corner Canyon — (11:52 2Q) Jaxon Pehrson , 35-yard run (kick from Carson Burnett )",
+        "Lone Peak — (10:13 2Q) Joseph Christensen , 52-yard run (kick from Zachary Zolman )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "CORNER CANYON",
+          "team": "LONE PEAK",
           "headers": [
             "NO",
             "PLAYER",
@@ -2818,6 +2985,26 @@
             [
               "3",
               "J. Jaxon Pehrson",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "LONE PEAK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "93",
+              "J. Joseph Christensen",
               "",
               "",
               "1"
@@ -2843,15 +3030,35 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "LONE PEAK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "28",
+              "Z. Zachary Zolman",
+              "",
+              "1",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 4,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 2
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -3218,7 +3425,8 @@
             ],
             "total": 28
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Hurricane — (7:55 1Q) RJ Allred , 3-yard run (kick from Cameron Lemmon )",
@@ -3395,7 +3603,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Duchesne — (9:45 1Q) Kyson Despain , 3-yard run (kick from Alec Thomas )",
@@ -3661,7 +3870,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Millard — (8:41 1Q) Jensen Davies , 3-yard run (kick from Sergio Arellano )",
@@ -3789,7 +3999,7 @@
             "team": "FARMINGTON",
             "quarters": [
               10,
-              null,
+              7,
               null,
               null
             ],
@@ -3799,13 +4009,14 @@
             "team": "WEBER",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Farmington — (8:06 1Q) Casey Farnsworth , 20-yard FG",
@@ -3925,7 +4136,8 @@
             ],
             "total": 10
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Northridge — (5:00 2Q) Garrett Burkhardt , 44-yard FG",
@@ -4066,7 +4278,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Green Canyon — (6:51 2Q) Ethan Munk , 1-yard run (kick from Boston Daines )",
@@ -4190,7 +4403,8 @@
             ],
             "total": 34
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "North Summit — (11:00 1Q) Kason Richins , 64-yard run (kick from Jose Sanchez )",
@@ -4329,21 +4543,95 @@
       "awayTeam": "HERRIMAN",
       "homeTeam": "WESTLAKE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/herriman-football-vs-westlake-football/273541",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "HERRIMAN",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "WESTLAKE",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Westlake — (9:23 1Q) Ashton Taylor , 37-yard run (kick from Logan Sorensen )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "WESTLAKE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "5",
+              "A. Ashton Taylor",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "WESTLAKE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "68",
+              "L. Logan Sorensen",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 1
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|HILLCREST|WEST": {
       "date": "09/18/2026",
@@ -5059,7 +5347,8 @@
             ],
             "total": 35
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Richfield — (7:47 1Q) Cordon White , 2-yard run (kick from Sam Gonzolez )",
@@ -5306,7 +5595,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Parowan — (8:37 1Q) Gradey Osborne , 25-yard pass from Tyson Bettridge (kick from Hayden Abbott )",
@@ -5553,7 +5843,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Stansbury — (8:39 1Q) Boston Rowley , 25-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
@@ -5854,11 +6145,11 @@
             "team": "SPRINGVILLE",
             "quarters": [
               14,
-              21,
+              28,
               null,
               null
             ],
-            "total": 35
+            "total": 42
           }
         ]
       },
@@ -5867,7 +6158,8 @@
         "Springville — (2:24 1Q) Sam Nadauld , punt return (kick from Pheonix Marks )",
         "Springville — (9:28 2Q) Sam Nadauld , 44-yard pass from Beckett Burton (kick from Pheonix Marks )",
         "Springville — (3:01 2Q) Siale Fonohema , 62-yard run (kick from Pheonix Marks )",
-        "Springville — (2:25 2Q) Damian Tupou , 32-yard pass from Beckett Burton (kick from Pheonix Marks )"
+        "Springville — (2:25 2Q) Damian Tupou , 32-yard pass from Beckett Burton (kick from Pheonix Marks )",
+        "Springville — (0:18 2Q) Sam Nadauld , 6-yard pass from Beckett Burton (kick from Pheonix Marks )"
       ],
       "stats": [
         {
@@ -5909,7 +6201,7 @@
               "",
               "",
               "",
-              "3",
+              "4",
               ""
             ]
           ]
@@ -5937,7 +6229,7 @@
               "S. Sam Nadauld",
               "",
               "",
-              "1"
+              "2"
             ],
             [
               "6",
@@ -5963,7 +6255,7 @@
               "16",
               "P. Pheonix Marks",
               "",
-              "5",
+              "6",
               ""
             ],
             [
@@ -6024,7 +6316,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Pine View — (8:39 1Q) Will Hatch , 37-yard run (kick from Russell Jacobs )",
@@ -6214,7 +6507,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Spanish Fork — (8:17 1Q) Nixon Warren , 10-yard run (kick from Preston Jones )",
@@ -6539,7 +6833,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Wasatch — (5:02 1Q) Aksel Wheeler , 1-yard run (kick from Austin Wilde )"
@@ -6732,7 +7027,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Mountain Ridge — (10:30 1Q) Marshall West , 62-yard pass from Jaxon Hunt (kick from Will O'Neil )"
