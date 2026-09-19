@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T04:32:31.318Z",
+  "updatedAt": "2026-09-19T04:34:40.267Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -4982,9 +4982,9 @@
               7,
               0,
               0,
-              null
+              7
             ],
-            "total": 7
+            "total": 14
           },
           {
             "team": "MURRAY",
@@ -4992,7 +4992,7 @@
               14,
               14,
               7,
-              null
+              0
             ],
             "total": 35
           }
@@ -6803,8 +6803,8 @@
       "awayTeam": "JUDGE MEMORIAL",
       "homeTeam": "PROVIDENCE HALL",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/judge-memorial-football-vs-providence-hall-football/273908",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -6836,7 +6836,8 @@
             ],
             "total": 13
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Judge Memorial — (5:20 1Q) 15-yard pass (kick successful)"
@@ -6849,6 +6850,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|SYRACUSE|LAYTON": {
@@ -8353,7 +8355,8 @@
             ],
             "total": 10
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Mountain View — (2:00 2Q) Ratu Malungahu , 9-yard run (kick from Easton Pace )",
@@ -8558,6 +8561,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|PARKCITY|PROVO": {
@@ -9743,9 +9747,9 @@
               14,
               20,
               6,
-              7
+              14
             ],
-            "total": 47
+            "total": 54
           },
           {
             "team": "CHAPARRAL, CA",
@@ -9771,7 +9775,8 @@
         "Chaparral, CA — (3:50 3Q) 1-yard run (kick successful)",
         "Chaparral, CA — (2:19 3Q) 48-yard pass (kick successful)",
         "Mountain Ridge — (1:18 3Q) Tyson Dunn , 64-yard run (run failed)",
-        "Mountain Ridge — (4:45 4Q) Jaxon Hunt , 6-yard run (kick from Will O'Neil )"
+        "Mountain Ridge — (4:45 4Q) Jaxon Hunt , 6-yard run (kick from Will O'Neil )",
+        "Mountain Ridge — (3:23 4Q) Jayce Helm , int. return (kick from Will O'Neil )"
       ],
       "stats": [
         {
@@ -9881,19 +9886,41 @@
               "19",
               "W. Will O'Neil",
               "",
-              "5",
+              "6",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Defense",
+          "team": "MOUNTAIN RIDGE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Tackles",
+            "Sacks",
+            "Pass Int.",
+            "TD"
+          ],
+          "rows": [
+            [
+              "3",
+              "J. Jayce Helm",
+              "",
+              "",
+              "",
+              "1"
             ]
           ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 8,
-        "coreCells": 16,
+        "blocks": 5,
+        "rows": 9,
+        "coreCells": 19,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 4
       },
       "scoreSource": "deseret-browser-live"
     },
