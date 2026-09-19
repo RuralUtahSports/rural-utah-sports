@@ -285,12 +285,20 @@ for (const game of games) {
   const quarterRows = rows.slice(0, 2);
   const hasQuarterData = quarterRows.some(row => Array.isArray(row?.quarters) && row.quarters.some(value => value !== null && value !== undefined && value !== ''));
   const missingFourthQuarter = quarterRows.some(row => Array.isArray(row?.quarters) && (row.quarters[3] === null || row.quarters[3] === undefined || row.quarters[3] === ''));
-  const suspiciousEarlyFinal = acceptFinal && hasQuarterData && missingFourthQuarter;
+  const quarterTotalMismatch = quarterRows.some(row => {
+    if (!Array.isArray(row?.quarters)) return false;
+    const values = row.quarters.map(value => value === null || value === undefined || value === '' ? null : Number(value));
+    if (!values.some(Number.isFinite)) return false;
+    const sum = values.reduce((total, value) => total + (Number.isFinite(value) ? value : 0), 0);
+    const displayedTotal = Number(row?.total);
+    return Number.isFinite(displayedTotal) && sum !== displayedTotal;
+  });
+  const suspiciousEarlyFinal = acceptFinal && hasQuarterData && (missingFourthQuarter || quarterTotalMismatch);
 
   if (suspiciousEarlyFinal) {
     acceptFinal = false;
     nextState = { status: 'Live', clock: '', period: '' };
-    console.warn(`Ignored suspicious browser Final for ${key}; fourth-quarter score is still missing.`);
+    console.warn(`Ignored suspicious browser Final for ${key}; quarter-by-quarter data does not support a completed game.`);
   }
 
   const staleHalftime = /^HALFTIME$/i.test(clean(state.status)) && (
