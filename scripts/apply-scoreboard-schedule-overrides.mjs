@@ -65,6 +65,10 @@ if (fs.existsSync(WEEKLY)) {
         [game.awayScore, game.homeScore] = [game.homeScore, game.awayScore];
         [game.actualAway, game.actualHome] = [game.actualHome, game.actualAway];
       }
+      if (override.kickoffTime && clean(game.kickoffTime) !== clean(override.kickoffTime)) {
+        game.kickoffTime = clean(override.kickoffTime);
+        changed = true;
+      }
       if (changed) {
         game.scheduleOverride = override.note || 'Schedule override';
         changes++;
@@ -105,6 +109,10 @@ function applyDetailOverrides(path) {
       if (override.status && detail.final !== true) {
         detail.status = override.status;
         detail.statusSource = 'schedule-override';
+      }
+      if (override.kickoffTime && clean(detail.kickoffTime) !== clean(override.kickoffTime)) {
+        detail.kickoffTime = clean(override.kickoffTime);
+        changes++;
       }
       if (oldKey !== newKey) {
         delete payload.games[oldKey];
