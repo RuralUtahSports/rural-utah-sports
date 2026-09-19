@@ -5,7 +5,7 @@
   const FULL_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
   const WEEKLY_FEED = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/weekly-simulation.json';
   const OUT_OF_STATE_FEED = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/out-of-state-live.json';
-  const REFRESH_MS = 15000;
+  const REFRESH_MS = 60000;
   const WEEKLY_REFRESH_MS = 60000;
   const STALE_GAME_KEYS = new Set(['2026-08-21|DOLORESCO|GRAND']);
   const VERIFIED_FINALS = new Map([
@@ -67,20 +67,24 @@
 
   function installAuthoritativeScoreState() {
     if (typeof scoreState !== 'function') return;
-    const priorScoreState = scoreState;
-    scoreState = function authoritativeScoreState(game) {
+    scoreState = function finalOnlyScoreState(game) {
       if (isFutureGame(game)) {
         return { done: false, away: null, home: null, status: 'Upcoming', live: false, sheetDone: false, hasDes: false };
       }
 
       const verified = VERIFIED_FINALS.get(keyFor(game));
       if (verified) {
-        return { done: true, away: Number(verified.away), home: Number(verified.home), status: 'Final', live: false, sheetDone: false, hasDes: false };
+        return {
+          done: true,
+          away: Number(verified.away),
+          home: Number(verified.home),
+          status: 'Final',
+          live: false,
+          sheetDone: false,
+          hasDes: false
+        };
       }
 
-      // The weekly feed only receives actualAway/actualHome after a result is
-      // complete. A stale game-detail badge must never turn that verified
-      // final back into a live game.
       if (hasReportedActual(game)) {
         return {
           done: true,
@@ -98,43 +102,21 @@
         if (typeof detailMap !== 'undefined' && detailMap?.get) detail = detailMap.get(keyFor(game)) || null;
       } catch {}
 
-      if (detail) {
-        const status = clean(detail.status) || 'Upcoming';
-        const score = detailScore(detail);
-        if (detail.final === true && score.hasDes) {
-          return {
-            done: true,
-            away: score.away,
-            home: score.home,
-            status: 'Final',
-            live: false,
-            sheetDone: true,
-            hasDes: true
-          };
-        }
-        const paused = /postpon|suspend|delay/i.test(status);
-        const live = !paused && (isLiveDetail(detail) || (detail.final !== true && score.hasDes && (score.away > 0 || score.home > 0)));
-        if (live) {
-          return {
-            done: false,
-            away: score.hasDes ? score.away : null,
-            home: score.hasDes ? score.home : null,
-            status: isLiveDetail(detail) ? status : 'Live',
-            live: true,
-            sheetDone: false,
-            hasDes: score.hasDes
-          };
-        }
-
-        if (detail.final !== true && /^scheduled$/i.test(status)) {
-          if (hasReportedActual(game)) {
-            const reported = priorScoreState(game);
-            if (reported && (reported.done || reported.sheetDone || (reported.away != null && reported.home != null))) return reported;
-          }
-          return { done: false, away: null, home: null, status: 'Upcoming', live: false, sheetDone: false, hasDes: false };
-        }
+      const score = detailScore(detail);
+      if (detail?.final === true && score.hasDes) {
+        return {
+          done: true,
+          away: score.away,
+          home: score.home,
+          status: 'Final',
+          live: false,
+          sheetDone: true,
+          hasDes: true
+        };
       }
-      return priorScoreState(game);
+
+      // Final-only mode: do not publish or display partial scores.
+      return { done: false, away: null, home: null, status: 'Upcoming', live: false, sheetDone: false, hasDes: false };
     };
   }
 
@@ -458,7 +440,7 @@
         if (!key || loadedFullDetails.has(key)) return;
         const payload = await loadFullDetails();
         const detail = payload?.games?.[key];
-        if (!detail) return;
+        if (!detail || detail.final !== true) return;
         loadedFullDetails.set(key, detail);
         const merged = mergeDetailData(detailMap.get(key), detail);
         detailMap.set(key, merged);
@@ -531,39 +513,20 @@
     syncing = true;
     try {
       await refreshWeeklyFeed();
-      const [githubPayload, supabasePayload] = await Promise.all(
-        [LIVE_DETAILS, SUPABASE_DETAILS].map(fetchLivePayload)
-      );
-      const payloads = [githubPayload, supabasePayload].filter(Boolean);
-      if (!payloads.length) throw new Error('live details payload unavailable');
+      const payload = await fetchLivePayload(LIVE_DETAILS);
+      if (!payload) throw new Error('final-score details payload unavailable');
 
-      // GitHub's compact feed is the published source of truth for completed
-      // games. Supabase can make a current game fresher, but it must never
-      // regress a published Final back to Live.
-      const liveGames = { ...(githubPayload?.games || {}) };
-      for (const [key, overlay] of Object.entries(supabasePayload?.games || {})) {
-        const base = liveGames[key];
-        if (base?.final === true && overlay?.final !== true) {
-          const merged = mergeDetailData(base, overlay);
-          merged.final = true;
-          merged.status = 'Final';
-          merged.clock = '';
-          merged.period = '';
-          merged.finalSource = base.finalSource || 'github-published-final';
-          liveGames[key] = merged;
-        } else {
-          liveGames[key] = mergeDetailData(base, overlay);
-        }
-      }
-      const payload = supabasePayload || githubPayload;
+      const finalGames = Object.fromEntries(
+        Object.entries(payload.games || {}).filter(([, detail]) => detail?.final === true)
+      );
 
       if (typeof detailMap !== 'undefined' && detailMap?.clear) {
         detailMap.clear();
-        for (const [key, value] of Object.entries(liveGames)) {
+        for (const [key, value] of Object.entries(finalGames)) {
           detailMap.set(key, mergeDetailData(loadedFullDetails.get(key), value));
         }
         for (const [key, value] of loadedFullDetails) {
-          if (!detailMap.has(key)) detailMap.set(key, value);
+          if (value?.final === true && !detailMap.has(key)) detailMap.set(key, value);
         }
       }
       if (typeof render === 'function') render();
@@ -572,12 +535,12 @@
       if (note) {
         const when = new Date(payload.updatedAt || Date.now());
         note.textContent = Number.isFinite(when.getTime())
-          ? `Live data ${when.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} • checks every 15 seconds`
-          : 'Live scores check every 15 seconds';
+          ? `Final scores updated ${when.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} • checks every minute`
+          : 'Final scores check every minute';
       }
       return true;
     } catch (error) {
-      console.warn('Authoritative live scoreboard sync failed', error);
+      console.warn('Final scoreboard sync failed', error);
       return false;
     } finally {
       syncing = false;
