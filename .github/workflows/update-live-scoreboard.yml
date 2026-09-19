@@ -99,6 +99,9 @@ jobs:
       - name: Re-apply verified manual scoreboard corrections
         run: node scripts/apply-manual-scoreboard-corrections.mjs
 
+      - name: Re-apply scoreboard schedule overrides
+        run: node scripts/apply-scoreboard-schedule-overrides.mjs
+
       # Out-of-state kickoff times are discovered during daily-scoreboard
       # reconciliation, so rebuild the compact feed after every reconciliation
       # and correction step before publishing it.
@@ -199,6 +202,7 @@ jobs:
             node scripts/reconcile-deseret-browser-live.mjs
             DESERET_BROWSER_ONLY=1 node scripts/enrich-deseret-game-details.mjs
             node scripts/apply-manual-scoreboard-corrections.mjs
+            node scripts/apply-scoreboard-schedule-overrides.mjs
             node scripts/build_live_scoreboard_details.mjs
             after_finals=$(jq -c '[.games | to_entries[] | select(.value.final == true) | {key: .key, away: .value.boxScore.rows[0].total, home: .value.boxScore.rows[1].total}] | sort_by(.key)' deseret-game-details.json | sha256sum)
             if [ "$before_finals" != "$after_finals" ]; then
