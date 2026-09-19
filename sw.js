@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260910-home-loading-fix1';
+const CACHE='rus-site-20260918-mobile-cache-repair1';
 const CORE=[
   './',
   './index.html',
