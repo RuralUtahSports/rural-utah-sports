@@ -88,7 +88,18 @@ jobs:
 
           for (const g of weekly.games || []) {
             const detail = findDetailForGame(g, live);
-            if (!detail || detail.final !== true) continue;
+            if (!detail) continue;
+            if (detail.final !== true) {
+              if (detail.statusSource === 'deseret-browser-live-early-final-guard' &&
+                  (g.actualAway !== null || g.actualHome !== null || clean(g.actualWinner) || clean(g.wl))) {
+                g.actualAway = null;
+                g.actualHome = null;
+                g.actualWinner = '';
+                g.wl = '';
+                changed++;
+              }
+              continue;
+            }
             const rows = detail.boxScore?.rows;
             if (!Array.isArray(rows) || rows.length < 2) continue;
             const away = Number(rows[0]?.total);
