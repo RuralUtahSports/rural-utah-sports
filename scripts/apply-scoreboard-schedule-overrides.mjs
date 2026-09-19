@@ -42,8 +42,30 @@ if (fs.existsSync(WEEKLY)) {
     for (const game of weekly.games || []) {
       if (!matchesGame(game, override)) continue;
       const nextDate = displayDate(targetDate);
+      const nextAway = clean(override.newAwayTeam || override.awayTeam);
+      const nextHome = clean(override.newHomeTeam || override.homeTeam);
+      const oldAway = clean(game.awayTeam);
+      const oldHome = clean(game.homeTeam);
+      const venueFlipped = compact(nextAway) === compact(oldHome) && compact(nextHome) === compact(oldAway);
+      let changed = false;
+
       if (game.date !== nextDate) {
         game.date = nextDate;
+        changed = true;
+      }
+      if (nextAway && game.awayTeam !== nextAway) {
+        game.awayTeam = nextAway;
+        changed = true;
+      }
+      if (nextHome && game.homeTeam !== nextHome) {
+        game.homeTeam = nextHome;
+        changed = true;
+      }
+      if (venueFlipped) {
+        [game.awayScore, game.homeScore] = [game.homeScore, game.awayScore];
+        [game.actualAway, game.actualHome] = [game.actualHome, game.actualAway];
+      }
+      if (changed) {
         game.scheduleOverride = override.note || 'Schedule override';
         changes++;
       }
@@ -60,8 +82,10 @@ function applyDetailOverrides(path) {
   for (const override of overrides) {
     const targetDate = isoDate(override.date);
     if (!targetDate) continue;
-    const awayKey = compact(override.awayTeam);
-    const homeKey = compact(override.homeTeam);
+    const targetAwayTeam = clean(override.newAwayTeam || override.awayTeam);
+    const targetHomeTeam = clean(override.newHomeTeam || override.homeTeam);
+    const awayKey = compact(targetAwayTeam);
+    const homeKey = compact(targetHomeTeam);
     const candidates = Object.entries(payload.games).filter(([key, detail]) => {
       const parts = key.split('|');
       const game = {
@@ -75,8 +99,8 @@ function applyDetailOverrides(path) {
     for (const [oldKey, detail] of candidates) {
       const newKey = `${targetDate}|${awayKey}|${homeKey}`;
       detail.date = displayDate(targetDate);
-      detail.awayTeam = override.awayTeam;
-      detail.homeTeam = override.homeTeam;
+      detail.awayTeam = targetAwayTeam;
+      detail.homeTeam = targetHomeTeam;
       detail.scheduleOverride = override.note || 'Schedule override';
       if (override.status && detail.final !== true) {
         detail.status = override.status;
