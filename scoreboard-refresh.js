@@ -61,6 +61,7 @@
   function isLiveDetail(detail) {
     if (!detail || detail.final === true) return false;
     const status = clean(detail.status);
+    if (/postpon|suspend|delay/i.test(status)) return false;
     return /^(?:live|q[1-4]|halftime|half|ot)$/i.test(status) || !!clean(detail.clock);
   }
 
@@ -111,7 +112,8 @@
             hasDes: true
           };
         }
-        const live = isLiveDetail(detail) || (detail.final !== true && score.hasDes && (score.away > 0 || score.home > 0));
+        const paused = /postpon|suspend|delay/i.test(status);
+        const live = !paused && (isLiveDetail(detail) || (detail.final !== true && score.hasDes && (score.away > 0 || score.home > 0)));
         if (live) {
           return {
             done: false,
