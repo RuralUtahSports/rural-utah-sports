@@ -63,6 +63,7 @@ jobs:
           # reconciler cannot overwrite it with a stale Halftime badge afterward.
           node scripts/reconcile-deseret-browser-live.mjs
           DESERET_BROWSER_ONLY=1 node scripts/enrich-deseret-game-details.mjs
+          node scripts/apply-scoreboard-schedule-overrides.mjs
           node scripts/build_live_scoreboard_details.mjs
 
       - name: Publish fast scoreboard refresh
