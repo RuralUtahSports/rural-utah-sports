@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T18:04:40.435Z",
+  "updatedAt": "2026-09-19T18:06:12.914Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -4238,7 +4238,8 @@
         "Carbon — (4:40 1Q) Kyler Sandoval , 2-yard run (kick from Kayden Dunn )",
         "Juab — (2:57 1Q) Brady Gempeler , 35-yard pass from Price Armstrong (kick from Price Armstrong )",
         "Juab — (11:01 2Q) Price Armstrong , 5-yard run (pass from Brady Gempeler )",
-        "Juab — (3:35 2Q) Grady Ballow , 2-yard run (run from Price Armstrong )"
+        "Juab — (3:35 2Q) Grady Ballow , 2-yard run (run from Price Armstrong )",
+        "Juab — (2:33 2Q) Brady Gempeler , 81-yard pass from Price Armstrong (kick failed)"
       ],
       "stats": [
         {
@@ -4307,7 +4308,7 @@
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -4328,7 +4329,7 @@
               "B. Brady Gempeler",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -4381,8 +4382,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
-      "scoreSource": "deseret-browser-live",
-      "statusSource": "verified-user-live"
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|NORTHSANPETE|CEDARCITY": {
       "date": "09/18/2026",
@@ -8451,7 +8451,7 @@
       "awayTeam": "MAPLE MOUNTAIN",
       "homeTeam": "TIMPVIEW",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/maple-mountain-football-vs-timpview-football/273646",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -9599,7 +9599,7 @@
       "awayTeam": "MORGAN",
       "homeTeam": "UNION",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/morgan-football-vs-union-football/273292",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -10294,7 +10294,7 @@
       "awayTeam": "PLEASANT GROVE",
       "homeTeam": "SPANISH FORK",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/pleasant-grove-football-vs-spanish-fork-football/274356",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -10312,7 +10312,7 @@
             "quarters": [
               7,
               7,
-              null,
+              0,
               null
             ],
             "total": 14
@@ -10322,22 +10322,23 @@
             "quarters": [
               7,
               0,
-              null,
+              7,
               null
             ],
-            "total": 7
+            "total": 14
           }
         ]
       },
       "scoringPlays": [
         "Spanish Fork — (8:17 1Q) Nixon Warren , 10-yard run (kick from Preston Jones )",
-        "Pleasant Grove — (3:49 1Q) Corbin Robbins , 1-yard run (kick successful)",
-        "Pleasant Grove — (0:24 2Q) Ryder Huntsman , 27-yard pass from Cannon Jacobson (kick from Ben Lyman )"
+        "Pleasant Grove — (3:49 1Q) Corbin Robbins , 1-yard run (kick from Ben Lyman )",
+        "Pleasant Grove — (0:24 2Q) Ryder Huntsman , 27-yard pass from Cannon Jacobson (kick from Ben Lyman )",
+        "Spanish Fork — (6:31 3Q) Nixon Warren , 35-yard pass from Hawkin Rasmussen (kick from Preston Jones )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "PLEASANT GROVE",
+          "team": "SPANISH FORK",
           "headers": [
             "NO",
             "PLAYER",
@@ -10377,6 +10378,30 @@
         },
         {
           "category": "Passing",
+          "team": "SPANISH FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "1",
+              "H. Hawkin Rasmussen",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
           "team": "PLEASANT GROVE",
           "headers": [
             "NO",
@@ -10396,6 +10421,26 @@
               "",
               "1",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SPANISH FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "N. Nixon Warren",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -10434,7 +10479,7 @@
               "34",
               "P. Preston Jones",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -10454,7 +10499,7 @@
               "47",
               "B. Ben Lyman",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -10462,11 +10507,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 6,
-        "rows": 6,
-        "coreCells": 10,
+        "blocks": 8,
+        "rows": 8,
+        "coreCells": 16,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
+        "emptyCoreBlocks": 6
       },
       "scoreSource": "deseret-browser-live"
     },
