@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T03:57:11.374Z",
+  "updatedAt": "2026-09-19T03:59:57.565Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -3581,8 +3581,8 @@
       "awayTeam": "CRIMSON CLIFFS",
       "homeTeam": "DESERT HILLS",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/crimson-cliffs-football-vs-desert-hills-football/273488",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -3614,7 +3614,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Crimson Cliffs — (7:31 1Q) Hu Alisa , 1-yard run (kick from Jacob Sparks )",
@@ -3725,6 +3726,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
+      "finalSource": "deseret-browser-live-final",
       "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|LONEPEAK|CORNERCANYON": {
@@ -5288,9 +5290,9 @@
               0,
               7,
               0,
-              0
+              6
             ],
-            "total": 7
+            "total": 13
           }
         ]
       },
@@ -5299,12 +5301,33 @@
         "Farmington — (2:42 2Q) Benson Rogers , 75-yard pass from Alton Dahl (kick from Casey Farnsworth )",
         "Weber — (0:38 2Q) Bridger Rasmussen , 44-yard pass from Carter Payne (kick from Zach Jenkins )",
         "Farmington — (6:22 3Q) Kava Fiefia , 77-yard pass from Alton Dahl (kick failed)",
-        "Farmington — (10:10 4Q) Kava Fiefia , 52-yard pass from Alton Dahl (kick from Owen Morris )"
+        "Farmington — (10:10 4Q) Kava Fiefia , 52-yard pass from Alton Dahl (kick from Owen Morris )",
+        "Weber — (7:43 4Q) Carter Payne , 1-yard run (run failed)"
       ],
       "stats": [
         {
+          "category": "Rushing",
+          "team": "WEBER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "C. Carter Payne",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
           "category": "Passing",
-          "team": "FARMINGTON",
+          "team": "WEBER",
           "headers": [
             "NO",
             "PLAYER",
@@ -5447,11 +5470,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 6,
-        "rows": 8,
-        "coreCells": 14,
+        "blocks": 7,
+        "rows": 9,
+        "coreCells": 16,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
+        "emptyCoreBlocks": 5
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -6219,10 +6242,10 @@
             "quarters": [
               14,
               21,
-              7,
+              14,
               null
             ],
-            "total": 42
+            "total": 49
           }
         ]
       },
@@ -6233,7 +6256,8 @@
         "West — (9:00 2Q) Samanu Tua'one , 10-yard run (kick from Dominic Jones )",
         "West — (5:10 2Q) Naeata Hamilton , 7-yard run (kick from Dominic Jones )",
         "West — (2:21 2Q) Derendrick Dixon , 8-yard run (kick from Dominic Jones )",
-        "West — (10:16 3Q) Mani Tu'uao , 30-yard pass from Kamden Lopati (kick from Dominic Jones )"
+        "West — (10:16 3Q) Mani Tu'uao , 30-yard pass from Kamden Lopati (kick from Dominic Jones )",
+        "West — (0:45 3Q) Derendrick Dixon , 12-yard pass from Kamden Lopati (kick from Dominic Jones )"
       ],
       "stats": [
         {
@@ -6316,7 +6340,7 @@
               "",
               "",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -6338,6 +6362,13 @@
               "",
               "",
               "1"
+            ],
+            [
+              "2",
+              "D. Derendrick Dixon",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -6356,7 +6387,7 @@
               "15",
               "D. Dominic Jones",
               "",
-              "6",
+              "7",
               ""
             ]
           ]
@@ -6365,8 +6396,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 5,
-        "rows": 8,
-        "coreCells": 16,
+        "rows": 9,
+        "coreCells": 18,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 4
       },
@@ -6420,12 +6451,13 @@
         "Hunter — (9:39 3Q) Abbas Aweis , 27-yard pass from Sione \"Isi\" Moungaafi (kick from Ashton Arpero )",
         "Hunter — (9:18 4Q) Ryder Paea , 79-yard run",
         "West Jordan — (5:59 4Q) Gauge Eaton , 7-yard pass from Kenyon Shockey (kick from Dominic Pettersson )",
-        "Hunter — (3:30 4Q) Ryder Paea , 11-yard run (run from Ryder Paea )"
+        "Hunter — (3:30 4Q) Ryder Paea , 11-yard run (run from Ryder Paea )",
+        "West Jordan — (1:43 4Q) Bryan Yang , 1-yard run (run failed)"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "HUNTER",
+          "team": "WEST JORDAN",
           "headers": [
             "NO",
             "PLAYER",
@@ -6439,7 +6471,7 @@
               "B. Bryan Yang",
               "",
               "",
-              "2"
+              "3"
             ]
           ]
         },
@@ -9515,10 +9547,10 @@
             "quarters": [
               7,
               7,
-              7,
+              14,
               null
             ],
-            "total": 21
+            "total": 28
           }
         ]
       },
@@ -9530,7 +9562,8 @@
         "Mountain Ridge — (4:53 2Q) Jordan Classenn , 5-yard pass from Jaxon Hunt (kick from Will O'Neil )",
         "Chaparral, CA — (4:39 2Q) 99-yard kick return (kick successful)",
         "Mountain Ridge — (0:55 2Q) Marshall West , 31-yard pass from Jaxon Hunt (kick failed)",
-        "Chaparral, CA — (10:53 3Q) 31-yard pass (kick successful)"
+        "Chaparral, CA — (10:53 3Q) 31-yard pass (kick successful)",
+        "Chaparral, CA — (3:50 3Q) 1-yard run (kick successful)"
       ],
       "stats": [
         {
