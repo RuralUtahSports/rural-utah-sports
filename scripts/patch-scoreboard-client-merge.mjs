@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 const refreshPath = 'scoreboard-refresh.js';
 const htmlPath = 'scoreboard.html';
-const CACHE_VERSION = '20260919-live-refresh-fix5';
+const CACHE_VERSION = '20260919-final-only1';
 
 const badMerge = `      if (typeof detailMap !== 'undefined' && detailMap?.clear) {
         detailMap.clear();
