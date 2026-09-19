@@ -107,8 +107,12 @@ function applyDetailOverrides(path) {
       detail.homeTeam = targetHomeTeam;
       detail.scheduleOverride = override.note || 'Schedule override';
       if (override.status && detail.final !== true) {
-        detail.status = override.status;
-        detail.statusSource = 'schedule-override';
+        const currentStatus = clean(detail.status);
+        const active = /^(?:live|q[1-4]|halftime|half|ot)$/i.test(currentStatus) || !!clean(detail.clock);
+        if (!active) {
+          detail.status = override.status;
+          detail.statusSource = 'schedule-override';
+        }
       }
       if (override.kickoffTime && clean(detail.kickoffTime) !== clean(override.kickoffTime)) {
         detail.kickoffTime = clean(override.kickoffTime);
