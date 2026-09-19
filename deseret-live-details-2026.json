@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T01:53:45.871Z",
+  "updatedAt": "2026-09-19T01:56:22.024Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -1106,7 +1106,7 @@
               null,
               null
             ],
-            "total": 22
+            "total": 29
           },
           {
             "team": "BEN LOMOND",
@@ -1118,7 +1118,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Grantsville — (11:45 1Q) Cruze Anderson , 80-yard kick return (kick from Cache Hammond )",
@@ -1329,7 +1330,7 @@
             "team": "BEAR RIVER",
             "quarters": [
               6,
-              0,
+              7,
               null,
               null
             ],
@@ -1345,18 +1346,18 @@
             ],
             "total": 13
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Tooele — (7:33 1Q) Gus Pater , 1-yard run (kick failed)",
         "Bear River — (1:03 1Q) Rigdon Vonk , 17-yard run (kick failed)",
-        "Tooele — (8:09 2Q) Gus Pater , 3-yard run (kick from Kenny Magalei )"
+        "Tooele — (8:09 2Q) Gus Pater , 3-yard run (kick from Kenny Magalei )",
+        "Bear River — (4:24 2Q) 14-yard run (kick from Helaman Nelson )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "TOOELE",
+          "team": "BEAR RIVER",
           "headers": [
             "NO",
             "PLAYER",
@@ -1413,12 +1414,32 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "BEAR RIVER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "99",
+              "H. Helaman Nelson",
+              "",
+              "1",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
+        "blocks": 4,
+        "rows": 4,
         "coreCells": 4,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
@@ -1447,11 +1468,11 @@
             "team": "AMERICAN FORK",
             "quarters": [
               3,
-              3,
+              10,
               null,
               null
             ],
-            "total": 6
+            "total": 13
           },
           {
             "team": "DAVIS",
@@ -1463,14 +1484,14 @@
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Davis — (7:35 1Q) Bode Sparrow , 27-yard pass from Paden Toula (kick from Griffin Carmack )",
         "American Fork — (6:09 1Q) Jace Worthington , 39-yard FG",
         "Davis — (2:57 1Q) Jaxton Itaaheau , 8-yard run (kick from Griffin Carmack )",
-        "American Fork — (10:16 2Q) Jace Worthington , 39-yard FG"
+        "American Fork — (10:16 2Q) Jace Worthington , 39-yard FG",
+        "American Fork — (2:51 2Q) run"
       ],
       "stats": [
         {
@@ -1631,17 +1652,17 @@
             "team": "ROY",
             "quarters": [
               7,
-              null,
+              7,
               null,
               null
             ],
-            "total": 7
+            "total": 14
           },
           {
             "team": "BONNEVILLE",
             "quarters": [
               0,
-              null,
+              0,
               null,
               null
             ],
@@ -1650,7 +1671,8 @@
         ]
       },
       "scoringPlays": [
-        "Roy — (7:31 1Q) Howie Howard , 7-yard run (kick from Luke Pebley )"
+        "Roy — (7:31 1Q) Howie Howard , 7-yard run (kick from Luke Pebley )",
+        "Roy — (11:48 2Q) Lucius Hicks , 86-yard pass from Gunner Pearson (kick from Luke Pebley )"
       ],
       "stats": [
         {
@@ -1674,6 +1696,50 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "7",
+              "G. Gunner Pearson",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "ROY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "16",
+              "L. Lucius Hicks",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
           "category": "Special Teams",
           "team": "ROY",
           "headers": [
@@ -1688,7 +1754,7 @@
               "3",
               "L. Luke Pebley",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -1696,11 +1762,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 3
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -1736,18 +1802,18 @@
             "team": "CANYON VIEW",
             "quarters": [
               6,
-              6,
+              9,
               null,
               null
             ],
-            "total": 12
+            "total": 15
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Canyon View — (3:21 1Q) Camden Sheridan , 12-yard run (run failed)",
-        "Canyon View — (8:55 2Q) Karson Greenland , 19-yard pass from Owen Williams (run failed)"
+        "Canyon View — (8:55 2Q) Karson Greenland , 19-yard pass from Owen Williams (run failed)",
+        "Canyon View — (0:08 2Q) Jackson Beckstrom , 20-yard FG"
       ],
       "stats": [
         {
@@ -1813,12 +1879,32 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "13",
+              "J. Jackson Beckstrom",
+              "1",
+              "",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 3,
-        "rows": 3,
+        "blocks": 4,
+        "rows": 4,
         "coreCells": 8,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
@@ -2000,8 +2086,7 @@
             ],
             "total": 17
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "North Sanpete — (10:11 1Q) Luke Lee , 9-yard run (kick failed)",
@@ -2223,7 +2308,7 @@
               null,
               null
             ],
-            "total": 10
+            "total": 17
           },
           {
             "team": "DESERT HILLS",
@@ -2235,7 +2320,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Crimson Cliffs — (7:31 1Q) Hu Alisa , 1-yard run (kick from Jacob Sparks )",
@@ -2298,7 +2384,7 @@
       "awayTeam": "LONE PEAK",
       "homeTeam": "CORNER CANYON",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/lone-peak-football-vs-corner-canyon-football/273465",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -2331,8 +2417,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [],
       "stats": [],
@@ -2371,7 +2456,7 @@
               null,
               null
             ],
-            "total": 9
+            "total": 17
           },
           {
             "team": "SAN JUAN",
@@ -2383,7 +2468,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Delta — (3:06 1Q) Jacen Johnson , 2-yard pass from Bodey Shurtz (kick failed)",
@@ -2545,7 +2631,8 @@
             ],
             "total": 0
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Ridgeline — (10:46 1Q) Noah Fiefia , 48-yard pass from Crew Cox (kick from Hayden Miller )"
@@ -2664,8 +2751,7 @@
             ],
             "total": 21
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Hurricane — (7:55 1Q) RJ Allred , 3-yard run (kick from Cameron Lemmon )",
@@ -2834,8 +2920,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Duchesne — (9:45 1Q) Kyson Despain , 3-yard run (kick from Alec Thomas )",
@@ -3070,8 +3155,7 @@
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Millard — (8:41 1Q) Jensen Davies , 3-yard run (kick from Sergio Arellano )",
@@ -3284,17 +3368,18 @@
             "team": "FREMONT",
             "quarters": [
               0,
-              7,
+              10,
               null,
               null
             ],
-            "total": 7
+            "total": 10
           }
         ]
       },
       "scoringPlays": [
         "Northridge — (5:00 2Q) Garrett Burkhardt , 44-yard FG",
-        "Fremont — (2:21 2Q) Breckon Phillips , 11-yard pass from Calvin Cooper (kick from Daxton Shupe )"
+        "Fremont — (2:21 2Q) Breckon Phillips , 11-yard pass from Calvin Cooper (kick from Daxton Shupe )",
+        "Fremont — (0:07 2Q) Daxton Shupe , 32-yard FG"
       ],
       "stats": [
         {
@@ -3355,7 +3440,7 @@
             [
               "46",
               "D. Daxton Shupe",
-              "",
+              "1",
               "1",
               ""
             ]
@@ -3414,7 +3499,7 @@
             "team": "SKY VIEW",
             "quarters": [
               0,
-              6,
+              12,
               null,
               null
             ],
@@ -3430,12 +3515,12 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Green Canyon — (6:51 2Q) Ethan Munk , 1-yard run (kick from Boston Daines )",
-        "Sky View — (5:13 2Q) Adam Semanoff , 1-yard run (kick from Max Allen )"
+        "Sky View — (5:13 2Q) Adam Semanoff , 1-yard run (kick failed)",
+        "Sky View — (0:13 2Q) Rad Sparrow , 1-yard run (run failed)"
       ],
       "stats": [
         {
@@ -3470,6 +3555,13 @@
           ],
           "rows": [
             [
+              "1",
+              "R. Rad Sparrow",
+              "",
+              "",
+              "1"
+            ],
+            [
               "7",
               "A. Adam Semanoff",
               "",
@@ -3497,33 +3589,13 @@
               ""
             ]
           ]
-        },
-        {
-          "category": "Special Teams",
-          "team": "SKY VIEW",
-          "headers": [
-            "NO",
-            "PLAYER",
-            "FG",
-            "PAT",
-            "Return TD"
-          ],
-          "rows": [
-            [
-              "15",
-              "M. Max Allen",
-              "",
-              "1",
-              ""
-            ]
-          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
+        "blocks": 3,
         "rows": 4,
-        "coreCells": 4,
+        "coreCells": 6,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
       },
@@ -3567,8 +3639,7 @@
             ],
             "total": 27
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "North Summit — (11:00 1Q) Kason Richins , 64-yard run (kick from Jose Sanchez )",
@@ -3705,7 +3776,7 @@
       "awayTeam": "HILLCREST",
       "homeTeam": "WEST",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/hillcrest-football-vs-west-football/274375",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -3790,7 +3861,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "West Jordan — (11:35 1Q) Bryan Yang , 7-yard run (kick from Dominic Pettersson )",
@@ -4099,7 +4171,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Logan — (7:39 1Q) Mason Birch , 6-yard run (run failed)",
@@ -4190,7 +4263,7 @@
       "awayTeam": "MAPLE MOUNTAIN",
       "homeTeam": "TIMPVIEW",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/maple-mountain-football-vs-timpview-football/273646",
-      "status": "Live",
+      "status": "Scheduled",
       "final": false,
       "clock": "",
       "period": "",
@@ -4223,8 +4296,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [],
       "stats": [],
@@ -4275,7 +4347,8 @@
             ],
             "total": 21
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Richfield — (7:47 1Q) Cordon White , 2-yard run (kick from Sam Gonzolez )",
@@ -4490,7 +4563,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Parowan — (8:37 1Q) Gradey Osborne , 25-yard pass from Tyson Bettridge (kick from Hayden Abbott )",
@@ -4737,8 +4811,7 @@
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Stansbury — (8:39 1Q) Boston Rowley , 25-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
@@ -5180,7 +5253,8 @@
             ],
             "total": 14
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Pine View — (8:39 1Q) Will Hatch , 37-yard run (kick from Russell Jacobs )",
@@ -5369,7 +5443,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Spanish Fork — (8:17 1Q) Nixon Warren , 10-yard run (kick from Preston Jones )",
@@ -5479,11 +5554,11 @@
             "team": "SALEM HILLS",
             "quarters": [
               0,
-              0,
+              6,
               null,
               null
             ],
-            "total": 0
+            "total": 6
           }
         ]
       },
@@ -5584,7 +5659,8 @@
             ],
             "total": 7
           }
-        ]
+        ],
+        "source": "deseret-browser-live"
       },
       "scoringPlays": [
         "Wasatch — (5:02 1Q) Aksel Wheeler , 1-yard run (kick from Austin Wilde )"
