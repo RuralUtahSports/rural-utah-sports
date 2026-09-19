@@ -41,6 +41,10 @@ jobs:
         env:
           DESERET_BROWSER_ONLY: '1'
         run: node scripts/enrich-deseret-game-details.mjs
+
+      - name: Apply scoreboard schedule overrides
+        run: node scripts/apply-scoreboard-schedule-overrides.mjs
+
       - name: Build compact current-window scoreboard details
         run: node scripts/build_live_scoreboard_details.mjs
 
