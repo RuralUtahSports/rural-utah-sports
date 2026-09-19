@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T01:47:50.230Z",
+  "updatedAt": "2026-09-19T01:48:26.103Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -4665,7 +4665,8 @@
         "Stansbury — (8:39 1Q) Boston Rowley , 25-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
         "Mountain Crest — (3:42 1Q) Brady Muir , 6-yard run (kick from Elijah Fletcher )",
         "Stansbury — (3:23 1Q) Junior Helu , 65-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
-        "Mountain Crest — (11:56 2Q) Brady Muir , 2-yard run (kick from Elijah Fletcher )"
+        "Mountain Crest — (11:56 2Q) Brady Muir , 2-yard run (kick from Elijah Fletcher )",
+        "Mountain Crest — (6:38 2Q) Kael Olsen , 15-yard pass from Brady Muir (kick failed)"
       ],
       "stats": [
         {
@@ -4713,6 +4714,30 @@
           ]
         },
         {
+          "category": "Passing",
+          "team": "MOUNTAIN CREST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "B. Brady Muir",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
           "category": "Receiving",
           "team": "STANSBURY",
           "headers": [
@@ -4733,6 +4758,26 @@
             [
               "2",
               "B. Boston Rowley",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "MOUNTAIN CREST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "K. Kael Olsen",
               "",
               "",
               "1"
@@ -4782,11 +4827,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 5,
-        "rows": 6,
-        "coreCells": 10,
+        "blocks": 7,
+        "rows": 8,
+        "coreCells": 16,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 3
+        "emptyCoreBlocks": 5
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -5522,11 +5567,11 @@
             "team": "RIGBY, ID",
             "quarters": [
               7,
-              7,
+              14,
               null,
               null
             ],
-            "total": 14
+            "total": 21
           },
           {
             "team": "BOX ELDER",
