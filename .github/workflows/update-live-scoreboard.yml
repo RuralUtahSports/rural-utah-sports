@@ -22,9 +22,9 @@ permissions:
 
 concurrency:
   group: live-scoreboard
-  # A new five-minute tick must not kill a refresh that is already publishing.
-  # Let the next tick wait so the live feed cannot get stuck before kickoff.
-  cancel-in-progress: false
+  # Cancel any older scoreboard job. This also stops a legacy game-night
+  # watcher from continuing to push commits after final-only mode is enabled.
+  cancel-in-progress: true
 
 jobs:
   refresh-live-details:
