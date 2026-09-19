@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T18:06:50.874Z",
+  "updatedAt": "2026-09-19T20:45:25.504Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,63 +8,18 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68407,
+    "scheduleRowsAudited": 68405,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 18,
     "sameDayMultipleOpponents": 55,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
-    "seasonSummaryMismatches": 6,
+    "seasonSummaryMismatches": 0,
     "reciprocalMismatches": 33,
     "likelyOpponentTypos": 1,
-    "recent2025PlusIssues": 14
+    "recent2025PlusIssues": 8
   },
   "recent2025PlusIssues": [
-    {
-      "type": "season-summary-mismatch",
-      "team": "CEDAR CITY",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 139,
-          "actual": 146
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "HERRIMAN",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 5,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 211,
-          "actual": 259
-        },
-        "pointsAgainst": {
-          "expected": 60,
-          "actual": 67
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "NORTH SANPETE",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 145,
-          "actual": 152
-        }
-      }
-    },
     {
       "type": "same-day-multiple-opponents",
       "team": "PANGUITCH",
@@ -74,75 +29,6 @@
         "ALTAMONT",
         "UMA-LEHI"
       ]
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "SALEM HILLS",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 125,
-          "actual": 145
-        },
-        "pointsAgainst": {
-          "expected": 93,
-          "actual": 106
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "TIMPANOGOS",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 2,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 133,
-          "actual": 146
-        },
-        "pointsAgainst": {
-          "expected": 106,
-          "actual": 126
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "WESTLAKE",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 1,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 101,
-          "actual": 108
-        },
-        "pointsAgainst": {
-          "expected": 68,
-          "actual": 116
-        }
-      }
     },
     {
       "type": "reciprocal-mismatch",
@@ -1158,122 +1044,7 @@
     }
   ],
   "invalidRows": [],
-  "seasonSummaryMismatches": [
-    {
-      "type": "season-summary-mismatch",
-      "team": "CEDAR CITY",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 139,
-          "actual": 146
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "HERRIMAN",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 5,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 211,
-          "actual": 259
-        },
-        "pointsAgainst": {
-          "expected": 60,
-          "actual": 67
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "NORTH SANPETE",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 145,
-          "actual": 152
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "SALEM HILLS",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 125,
-          "actual": 145
-        },
-        "pointsAgainst": {
-          "expected": 93,
-          "actual": 106
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "TIMPANOGOS",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 2,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 133,
-          "actual": 146
-        },
-        "pointsAgainst": {
-          "expected": 106,
-          "actual": 126
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "WESTLAKE",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 1,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 101,
-          "actual": 108
-        },
-        "pointsAgainst": {
-          "expected": 68,
-          "actual": 116
-        }
-      }
-    }
-  ],
+  "seasonSummaryMismatches": [],
   "reciprocalMismatches": [
     {
       "type": "reciprocal-mismatch",
@@ -2480,7 +2251,7 @@
       "team": "SALEM HILLS",
       "file": "salem-hills.json",
       "seasons": 19,
-      "totalGames": 204
+      "totalGames": 203
     },
     {
       "team": "SAN JUAN",
@@ -2564,7 +2335,7 @@
       "team": "TIMPANOGOS",
       "file": "timpanogos.json",
       "seasons": 31,
-      "totalGames": 316
+      "totalGames": 315
     },
     {
       "team": "TIMPVIEW",
