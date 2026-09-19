@@ -1,4 +1,4 @@
-name: Sync Live Finals to Weekly Feed
+name: Sync Finals to Weekly Feed
 
 on:
   workflow_dispatch:
@@ -123,14 +123,16 @@ jobs:
           NODE
 
       - name: Commit synced finals
+        id: publish
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           git add weekly-simulation.json
           if git diff --cached --quiet; then
             echo "Weekly final scores are already current."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "Sync live finals into weekly simulation"
+            git commit -m "Sync verified finals into weekly simulation"
             ok=0
             for attempt in 1 2 3 4; do
               if git pull --rebase origin main && git push; then
@@ -140,9 +142,13 @@ jobs:
               sleep 5
             done
             if [ "$ok" -ne 1 ]; then exit 1; fi
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Rebuild Scorigami from synced finals
+      - name: Refresh downstream data from new finals
+        if: steps.publish.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run build-scorigami.yml --ref main
+        run: |
+          gh workflow run build-scorigami.yml --ref main
+          gh workflow run update-live-scoreboard.yml --ref main
