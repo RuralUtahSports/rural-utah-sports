@@ -107,7 +107,9 @@ jobs:
             if (!Number.isFinite(away) || !Number.isFinite(home) || away < 0 || home < 0) continue;
 
             const winner = away === home ? 'TIE' : away > home ? g.awayTeam : g.homeTeam;
-            const wl = away === home ? 'T' : winner === g.awayTeam ? 'W' : 'L';
+            const predictedWinner = canonical(g.winner);
+            const actualWinner = canonical(winner);
+            const wl = away === home ? 'T' : predictedWinner ? (predictedWinner === actualWinner ? 'W' : 'L') : '';
             if (g.actualAway === away && g.actualHome === home && g.actualWinner === winner && g.wl === wl) continue;
             g.actualAway = away;
             g.actualHome = home;
