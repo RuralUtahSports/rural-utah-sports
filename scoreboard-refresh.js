@@ -531,18 +531,31 @@
     syncing = true;
     try {
       await refreshWeeklyFeed();
-      const payloads = (await Promise.all(
+      const [githubPayload, supabasePayload] = await Promise.all(
         [LIVE_DETAILS, SUPABASE_DETAILS].map(fetchLivePayload)
-      )).filter(Boolean);
+      );
+      const payloads = [githubPayload, supabasePayload].filter(Boolean);
       if (!payloads.length) throw new Error('live details payload unavailable');
 
-      // The compact GitHub feed supplies the history; parsed Supabase cards
-      // are an authoritative overlay for the current games.
-      const liveGames = {};
-      for (const candidate of payloads) {
-        Object.assign(liveGames, candidate.games);
+      // GitHub's compact feed is the published source of truth for completed
+      // games. Supabase can make a current game fresher, but it must never
+      // regress a published Final back to Live.
+      const liveGames = { ...(githubPayload?.games || {}) };
+      for (const [key, overlay] of Object.entries(supabasePayload?.games || {})) {
+        const base = liveGames[key];
+        if (base?.final === true && overlay?.final !== true) {
+          const merged = mergeDetailData(base, overlay);
+          merged.final = true;
+          merged.status = 'Final';
+          merged.clock = '';
+          merged.period = '';
+          merged.finalSource = base.finalSource || 'github-published-final';
+          liveGames[key] = merged;
+        } else {
+          liveGames[key] = mergeDetailData(base, overlay);
+        }
       }
-      const payload = payloads[payloads.length - 1];
+      const payload = supabasePayload || githubPayload;
 
       if (typeof detailMap !== 'undefined' && detailMap?.clear) {
         detailMap.clear();
