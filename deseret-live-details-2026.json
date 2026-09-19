@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T03:26:42.376Z",
+  "updatedAt": "2026-09-19T03:29:24.091Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -1165,8 +1165,7 @@
             ],
             "total": 34
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Summit Academy — (4:31 1Q) Rigby Young , 2-yard run (kick from Kyden Mortenson )",
@@ -1819,7 +1818,7 @@
             "quarters": [
               3,
               7,
-              null,
+              7,
               null
             ],
             "total": 17
@@ -1829,24 +1828,24 @@
             "quarters": [
               7,
               7,
-              null,
+              0,
               null
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Riverton — (9:40 1Q) Russell Whiting , 31-yard run (kick from Autrey Hobbs )",
         "Bingham — (3:00 1Q) Tucker Brown , 15-yard FG",
         "Bingham — (7:22 2Q) Inoke Vahe , 31-yard int. return (kick from Tucker Brown )",
-        "Riverton — (7:04 2Q) Tavin Hill , 95-yard kick return (kick from David Walker )"
+        "Riverton — (7:04 2Q) Tavin Hill , 95-yard kick return (kick from David Walker )",
+        "Bingham — (5:00 3Q) Beckham Greaves , 13-yard pass from Khi Spight (kick from Tucker Brown )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "RIVERTON",
+          "team": "BINGHAM",
           "headers": [
             "NO",
             "PLAYER",
@@ -1858,6 +1857,50 @@
             [
               "18",
               "R. Russell Whiting",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "BINGHAM",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "6",
+              "K. Khi Spight",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "BINGHAM",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "1",
+              "B. Beckham Greaves",
               "",
               "",
               "1"
@@ -1913,7 +1956,7 @@
               "99",
               "T. Tucker Brown",
               "1",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -1943,11 +1986,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 6,
-        "coreCells": 5,
+        "blocks": 6,
+        "rows": 8,
+        "coreCells": 11,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
+        "emptyCoreBlocks": 4
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -1975,9 +2018,9 @@
               6,
               14,
               7,
-              7
+              14
             ],
-            "total": 34
+            "total": 41
           },
           {
             "team": "TOOELE",
@@ -2000,13 +2043,14 @@
         "Tooele — (0:10 2Q) Landon Avina , 33-yard pass from Gus Pater (kick from Davin Green )",
         "Bear River — (4:50 3Q) Eli Braegger , 19-yard pass from Summit Phillips (kick from Helaman Nelson )",
         "Tooele — (11:56 4Q) Zidane Jenson , 1-yard run (kick from Davin Green )",
-        "Bear River — (8:24 4Q) run",
-        "Tooele — (8:07 4Q) 60-yard run (kick failed)"
+        "Bear River — (8:24 4Q) Eli Braegger , 19-yard pass from Summit Phillips (kick from Gideon Nelson )",
+        "Tooele — (8:07 4Q) Zidane Jenson , 60-yard run (kick failed)",
+        "Bear River — (5:46 4Q) Glaiden Behrens , 37-yard pass from Summit Phillips (kick from Gideon Nelson )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "TOOELE",
+          "team": "BEAR RIVER",
           "headers": [
             "NO",
             "PLAYER",
@@ -2020,7 +2064,7 @@
               "Z. Zidane Jenson",
               "",
               "",
-              "1"
+              "2"
             ],
             [
               "8",
@@ -2101,7 +2145,7 @@
               "",
               "",
               "",
-              "1",
+              "3",
               ""
             ]
           ]
@@ -2138,11 +2182,18 @@
           ],
           "rows": [
             [
+              "1",
+              "G. Glaiden Behrens",
+              "",
+              "",
+              "1"
+            ],
+            [
               "3",
               "E. Eli Braegger",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -2190,6 +2241,13 @@
               "",
               "3",
               ""
+            ],
+            [
+              "37",
+              "G. Gideon Nelson",
+              "",
+              "2",
+              ""
             ]
           ]
         }
@@ -2197,8 +2255,8 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 8,
-        "rows": 11,
-        "coreCells": 20,
+        "rows": 13,
+        "coreCells": 22,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 6
       },
@@ -2827,8 +2885,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Bountiful — (6:34 1Q) Ami Vunipola , 2-yard run (kick from Parker Hoffman )",
@@ -2988,18 +3045,38 @@
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Viewmont — (9:56 2Q) Brett Tovey , 1-yard run (kick from Logan Campbell )",
         "Viewmont — (2:54 2Q) Damon Frey , 7-yard pass from Brett Tovey (kick failed)",
-        "Brighton — (0:12 2Q) Easton Gustafson , 31-yard pass from Griffin Matsumori (kick from Adam Price )"
+        "Brighton — (0:12 2Q) Easton Gustafson , 31-yard pass from Griffin Matsumori (kick from Adam Price )",
+        "Brighton — (4:45 3Q) Griffin Matsumori , 7-yard run (kick from Adam Price )"
       ],
       "stats": [
         {
           "category": "Rushing",
           "team": "BRIGHTON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "G. Griffin Matsumori",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "VIEWMONT",
           "headers": [
             "NO",
             "PLAYER",
@@ -3120,7 +3197,7 @@
               "-",
               "A. Adam Price",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -3148,11 +3225,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 7,
-        "rows": 7,
-        "coreCells": 14,
+        "blocks": 8,
+        "rows": 8,
+        "coreCells": 16,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 5
+        "emptyCoreBlocks": 6
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -3420,8 +3497,7 @@
             ],
             "total": 14
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [],
       "stats": [],
@@ -3622,8 +3698,7 @@
             ],
             "total": 30
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Corner Canyon — (11:52 2Q) Jaxon Pehrson , 35-yard run (kick from Carson Burnett )",
@@ -3771,9 +3846,9 @@
               6,
               14,
               0,
-              null
+              7
             ],
-            "total": 20
+            "total": 27
           },
           {
             "team": "SAN JUAN",
@@ -3781,7 +3856,7 @@
               7,
               7,
               21,
-              null
+              0
             ],
             "total": 35
           }
@@ -4023,8 +4098,7 @@
             ],
             "total": 7
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Ridgeline — (10:46 1Q) Noah Fiefia , 48-yard pass from Crew Cox (kick from Hayden Miller )",
@@ -5481,8 +5555,8 @@
       "awayTeam": "SKY VIEW",
       "homeTeam": "GREEN CANYON",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/sky-view-football-vs-green-canyon-football/273614",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -5824,7 +5898,7 @@
       "awayTeam": "HERRIMAN",
       "homeTeam": "WESTLAKE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/herriman-football-vs-westlake-football/273541",
-      "status": "Live",
+      "status": "Suspended - Resumes Sat 10:00 AM",
       "final": false,
       "clock": "",
       "period": "",
@@ -5956,7 +6030,7 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 2
       },
-      "scoreSource": "deseret-browser-live",
+      "scoreSource": "verified-manual-floor",
       "manualScoreNote": "User-confirmed weather suspension: Herriman at Westlake stopped at 28-7 and will resume Saturday Sept. 19 at 10:00 AM."
     },
     "2026-09-18|HILLCREST|WEST": {
@@ -6145,7 +6219,8 @@
         "West Jordan — (3:44 1Q) Bryan Yang , 1-yard run (kick from Dominic Pettersson )",
         "Hunter — (1:36 1Q) Zion Tahi , 12-yard int. return (kick from Sione \"Isi\" Moungaafi )",
         "Hunter — (10:39 2Q) Abbas Aweis , 58-yard pass from Sione \"Isi\" Moungaafi (kick from Ashton Arpero )",
-        "Hunter — (9:39 3Q) Abbas Aweis , 27-yard pass from Sione \"Isi\" Moungaafi (kick from Ashton Arpero )"
+        "Hunter — (9:39 3Q) Abbas Aweis , 27-yard pass from Sione \"Isi\" Moungaafi (kick from Ashton Arpero )",
+        "Hunter — (9:18 4Q) Ryder Paea , 79-yard run"
       ],
       "stats": [
         {
@@ -6165,6 +6240,26 @@
               "",
               "",
               "2"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "HUNTER",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "80",
+              "R. Ryder Paea",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -6284,11 +6379,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 6,
-        "rows": 7,
-        "coreCells": 11,
+        "blocks": 7,
+        "rows": 8,
+        "coreCells": 13,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
+        "emptyCoreBlocks": 5
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -6330,8 +6425,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Judge Memorial — (5:20 1Q) 15-yard pass (kick successful)"
@@ -6384,8 +6478,7 @@
             ],
             "total": 0
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Syracuse — (5:52 1Q) Jed Beutler , 25-yard FG",
@@ -8327,8 +8420,8 @@
       "awayTeam": "SNOW CANYON",
       "homeTeam": "PINE VIEW",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/snow-canyon-football-vs-pine-view-football/273712",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -8741,8 +8834,7 @@
             ],
             "total": 6
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [
         "Timpanogos — (11:44 2Q) Zack McCann , 12-yard pass from Logan Holloway (kick failed)",
