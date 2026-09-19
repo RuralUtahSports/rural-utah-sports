@@ -225,7 +225,7 @@ const today = new Intl.DateTimeFormat('en-CA', {
 if (!fs.existsSync(WEEKLY) || !fs.existsSync(DETAILS)) process.exit(0);
 const weekly = JSON.parse(fs.readFileSync(WEEKLY, 'utf8'));
 const githubDetails = JSON.parse(fs.readFileSync(DETAILS, 'utf8'));
-const supabaseLive = await fetchSupabaseLive();
+const supabaseLive = null; // Final-only mode: do not merge live-score overlays.
 const details = { ...githubDetails, games: { ...(githubDetails.games || {}) } };
 if (supabaseLive) {
   const parsedGames = Number(supabaseLive?.meta?.parsedGames);
@@ -246,7 +246,7 @@ const usedSourceKeys = new Set();
 for (const game of weekly.games || []) {
   if (!inActiveWindow(game.date, todayNumber)) continue;
   const match = findDetailForGame(game, details);
-  if (!match) continue;
+  if (!match || !isFinal(match.detail) || !scoreTotals(match.detail)) continue;
   usedSourceKeys.add(match.key);
   const canonicalKey = gameKey(game);
   const literalKey = literalGameKey(game);
@@ -264,7 +264,7 @@ for (const game of weekly.games || []) {
 for (const [key, detail] of Object.entries(details.games || {})) {
   if (usedSourceKeys.has(key)) continue;
   if (!inActiveWindow(detail?.date || String(key).split('|')[0], todayNumber)) continue;
-  if (!isLiveOrFinal(detail)) continue;
+  if (!isFinal(detail) || !scoreTotals(detail)) continue;
   const compactGame = {
     date: detail.date,
     awayTeam: detail.awayTeam,
@@ -285,5 +285,14 @@ for (const [key, detail] of Object.entries(details.games || {})) {
   games[key] = protectPublishedLiveState(key, compactGame, previous, today);
 }
 
-fs.writeFileSync(OUTPUT, JSON.stringify({ updatedAt: new Date().toISOString(), games }, null, 2) + '\n');
-console.log('Built ' + OUTPUT + ': ' + Object.keys(games).length + ' active-window game details.');
+const previousGames = previous?.games || {};
+const changed = JSON.stringify(previousGames) !== JSON.stringify(games);
+const updatedAt = changed
+  ? new Date().toISOString()
+  : (previous?.updatedAt || new Date().toISOString());
+
+fs.writeFileSync(OUTPUT, JSON.stringify({ updatedAt, games }, null, 2) + '\n');
+console.log(
+  'Built ' + OUTPUT + ': ' + Object.keys(games).length +
+  ' verified final game details' + (changed ? ' (changed).' : ' (unchanged).')
+);
