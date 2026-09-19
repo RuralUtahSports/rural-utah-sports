@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T01:09:48.965Z",
+  "updatedAt": "2026-09-19T01:19:40.316Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -1020,42 +1020,215 @@
       "awayTeam": "BEAR RIVER",
       "homeTeam": "TOOELE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/bear-river-football-vs-tooele-football/273563",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "BEAR RIVER",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "TOOELE",
+            "quarters": [
+              6,
+              null,
+              null,
+              null
+            ],
+            "total": 6
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Tooele — (7:33 1Q) Gus Pater , run (kick failed)"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "TOOELE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "G. Gus Pater",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 1,
+        "rows": 1,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 1
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|AMERICANFORK|DAVIS": {
       "date": "09/18/2026",
       "awayTeam": "AMERICAN FORK",
       "homeTeam": "DAVIS",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/american-fork-football-vs-davis-football/273537",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "AMERICAN FORK",
+            "quarters": [
+              3,
+              null,
+              null,
+              null
+            ],
+            "total": 3
+          },
+          {
+            "team": "DAVIS",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Davis — (7:35 1Q) Bode Sparrow , 27-yard pass from Paden Toula (kick from Griffin Carmack )",
+        "American Fork — (6:09 1Q) Jace Worthington , 39-yard FG"
+      ],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "AMERICAN FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "17",
+              "P. Paden Toula",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "DAVIS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "B. Bode Sparrow",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "DAVIS",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "30",
+              "G. Griffin Carmack",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "AMERICAN FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "26",
+              "J. Jace Worthington",
+              "1",
+              "",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 6,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 2
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|COPPERHILLS|CEDARVALLEY": {
       "date": "09/18/2026",
@@ -1104,7 +1277,7 @@
       "awayTeam": "EMERY",
       "homeTeam": "CANYON VIEW",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/emery-football-vs-canyon-view-football/273408",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -1130,23 +1303,47 @@
           {
             "team": "CANYON VIEW",
             "quarters": [
-              0,
+              6,
               null,
               null,
               null
             ],
-            "total": 0
+            "total": 6
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Canyon View — (3:21 1Q) Camden Sheridan , 12-yard run (run failed)"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "CANYON VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "C. Camden Sheridan",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 1,
+        "rows": 1,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 1
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -1234,12 +1431,12 @@
           {
             "team": "NORTH SANPETE",
             "quarters": [
-              6,
+              9,
               null,
               null,
               null
             ],
-            "total": 6
+            "total": 9
           },
           {
             "team": "CEDAR CITY",
@@ -1254,7 +1451,8 @@
         ]
       },
       "scoringPlays": [
-        "North Sanpete — (10:11 1Q) Luke Lee , 9-yard run (kick failed)"
+        "North Sanpete — (10:11 1Q) Luke Lee , 9-yard run (kick failed)",
+        "North Sanpete — (1:43 1Q) Gunner Pollock , 32-yard FG"
       ],
       "stats": [
         {
@@ -1276,12 +1474,32 @@
               "1"
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "NORTH SANPETE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "16",
+              "G. Gunner Pollock",
+              "1",
+              "",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 1,
-        "rows": 1,
+        "blocks": 2,
+        "rows": 2,
         "coreCells": 2,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 1
@@ -1428,21 +1646,95 @@
       "awayTeam": "DIXIE",
       "homeTeam": "HURRICANE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/dixie-football-vs-hurricane-football/273708",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "DIXIE",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "HURRICANE",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Hurricane — (7:55 1Q) RJ Allred , 3-yard run (kick from Cameron Lemmon )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "24",
+              "R. RJ Allred",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "C. Cameron Lemmon",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 1
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|DUCHESNE|NORTHSEVIER": {
       "date": "09/18/2026",
@@ -1484,15 +1776,60 @@
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Duchesne — (9:45 1Q) Kyson Despain , 3-yard run (kick from Alec Thomas )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "DUCHESNE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "15",
+              "K. Kyson Despain",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "DUCHESNE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "17",
+              "A. Alec Thomas",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 1
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|EAST|MURRAY": {
       "date": "09/18/2026",
@@ -1536,12 +1873,12 @@
           {
             "team": "ENTERPRISE",
             "quarters": [
-              0,
+              7,
               null,
               null,
               null
             ],
-            "total": 0
+            "total": 7
           },
           {
             "team": "MILLARD",
@@ -1556,12 +1893,13 @@
         ]
       },
       "scoringPlays": [
-        "Millard — (8:41 1Q) Jensen Davies , 3-yard run (kick from Sergio Arellano )"
+        "Millard — (8:41 1Q) Jensen Davies , 3-yard run (kick from Sergio Arellano )",
+        "Enterprise — (4:56 1Q) Jack Moyle , 3-yard run (kick from Dylan Liebetrau )"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "MILLARD",
+          "team": "ENTERPRISE",
           "headers": [
             "NO",
             "PLAYER",
@@ -1573,6 +1911,26 @@
             [
               "32",
               "J. Jensen Davies",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "ENTERPRISE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "12",
+              "J. Jack Moyle",
               "",
               "",
               "1"
@@ -1598,15 +1956,35 @@
               ""
             ]
           ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "ENTERPRISE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "9",
+              "D. Dylan Liebetrau",
+              "",
+              "1",
+              ""
+            ]
+          ]
         }
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 2,
-        "rows": 2,
-        "coreCells": 2,
+        "blocks": 4,
+        "rows": 4,
+        "coreCells": 4,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 1
+        "emptyCoreBlocks": 2
       },
       "scoreSource": "deseret-browser-live"
     },
@@ -1734,17 +2112,18 @@
           {
             "team": "NORTH SUMMIT",
             "quarters": [
-              7,
+              14,
               null,
               null,
               null
             ],
-            "total": 7
+            "total": 14
           }
         ]
       },
       "scoringPlays": [
-        "North Summit — (11:00 1Q) Kason Richins , 64-yard run (kick from Jose Sanchez )"
+        "North Summit — (11:00 1Q) Kason Richins , 64-yard run (kick from Jose Sanchez )",
+        "North Summit — (7:43 1Q) Kason Richins , 4-yard run (kick from Jose Sanchez )"
       ],
       "stats": [
         {
@@ -1763,7 +2142,7 @@
               "K. Kason Richins",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -1782,7 +2161,7 @@
               "99",
               "J. Jose Sanchez",
               "",
-              "1",
+              "2",
               ""
             ]
           ]
@@ -1955,7 +2334,36 @@
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "MAPLE MOUNTAIN",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "TIMPVIEW",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -1964,7 +2372,8 @@
         "rows": 0,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
-      }
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|MANTI|RICHFIELD": {
       "date": "09/18/2026",
@@ -1992,21 +2401,119 @@
       "awayTeam": "PAROWAN",
       "homeTeam": "MILFORD",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/parowan-football-vs-milford-football/274327",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "PAROWAN",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "MILFORD",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Parowan — (8:37 1Q) Gradey Osborne , 25-yard pass from Tyson Bettridge (kick from Hayden Abbott )"
+      ],
+      "stats": [
+        {
+          "category": "Passing",
+          "team": "PAROWAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "4",
+              "T. Tyson Bettridge",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "PAROWAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "G. Gradey Osborne",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "PAROWAN",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "25",
+              "H. Hayden Abbott",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 3,
+        "rows": 3,
+        "coreCells": 6,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 2
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|MONTICELLO|WHITEHORSE": {
       "date": "09/18/2026",
@@ -2055,21 +2562,160 @@
       "awayTeam": "MOUNTAIN CREST",
       "homeTeam": "STANSBURY",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/mountain-crest-football-vs-stansbury-football/273707",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "MOUNTAIN CREST",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "STANSBURY",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Stansbury — (8:39 1Q) Boston Rowley , 25-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
+        "Mountain Crest — (3:42 1Q) Brady Muir , 6-yard run (kick from Elijah Fletcher )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "MOUNTAIN CREST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "B. Brady Muir",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "B. Brighton Reutzel",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "B. Boston Rowley",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "S. Seth Wilcox",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "MOUNTAIN CREST",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "14",
+              "E. Elijah Fletcher",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 5,
+        "rows": 5,
+        "coreCells": 8,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 3
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|MORGAN|UNION": {
       "date": "09/18/2026",
@@ -2160,42 +2806,190 @@
       "awayTeam": "SNOW CANYON",
       "homeTeam": "PINE VIEW",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/snow-canyon-football-vs-pine-view-football/273712",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "SNOW CANYON",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "PINE VIEW",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Pine View — (8:39 1Q) Will Hatch , 37-yard run (kick from Russell Jacobs )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "PINE VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "28",
+              "W. Will Hatch",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "PINE VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "R. Russell Jacobs",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 1
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|PLEASANTGROVE|SPANISHFORK": {
       "date": "09/18/2026",
       "awayTeam": "PLEASANT GROVE",
       "homeTeam": "SPANISH FORK",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/pleasant-grove-football-vs-spanish-fork-football/274356",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "PLEASANT GROVE",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "SPANISH FORK",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Spanish Fork — (8:17 1Q) Nixon Warren , 10-yard run (kick from Preston Jones )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "SPANISH FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "8",
+              "N. Nixon Warren",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SPANISH FORK",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "34",
+              "P. Preston Jones",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 1
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|TIMPANOGOS|SALEMHILLS": {
       "date": "09/18/2026",
@@ -2223,34 +3017,139 @@
       "awayTeam": "UINTAH",
       "homeTeam": "WASATCH",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/uintah-football-vs-wasatch-football/273310",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "UINTAH",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          },
+          {
+            "team": "WASATCH",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Wasatch — (5:02 1Q) Aksel Wheeler , 1-yard run (kick from Austin Wilde )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "WASATCH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "13",
+              "A. Aksel Wheeler",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "WASATCH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "33",
+              "A. Austin Wilde",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 2,
+        "rows": 2,
+        "coreCells": 2,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      }
+        "emptyCoreBlocks": 1
+      },
+      "scoreSource": "deseret-browser-live"
     },
     "2026-09-18|RIGBYID|BOXELDER": {
       "date": "09/18/2026",
       "awayTeam": "RIGBY, ID",
       "homeTeam": "BOX ELDER",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/rigby-idaho-football-vs-box-elder-football/273511",
-      "status": "Scheduled",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "RIGBY, ID",
+            "quarters": [
+              7,
+              null,
+              null,
+              null
+            ],
+            "total": 7
+          },
+          {
+            "team": "BOX ELDER",
+            "quarters": [
+              0,
+              null,
+              null,
+              null
+            ],
+            "total": 0
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Rigby, Idaho — (4:46 1Q) 2-yard run (kick successful)"
+      ],
       "stats": [],
       "statsAvailability": {
         "status": "unavailable",
