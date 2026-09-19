@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T03:59:57.565Z",
+  "updatedAt": "2026-09-19T04:02:48.937Z",
   "games": {
     "2026-09-17|KANAB|BEAVER": {
       "date": "09/17/2026",
@@ -6074,7 +6074,7 @@
       "awayTeam": "HERRIMAN",
       "homeTeam": "WESTLAKE",
       "url": "https://sports.deseret.com/high-school/football/game/2026-09-18/herriman-football-vs-westlake-football/273541",
-      "status": "Suspended - Resumes Sat 10:00 AM",
+      "status": "Live",
       "final": false,
       "clock": "",
       "period": "",
@@ -6918,7 +6918,7 @@
         ],
         "rows": [
           {
-            "team": "SOUTHSUMMIT",
+            "team": "SOUTH SUMMIT",
             "quarters": [
               null,
               null,
@@ -6928,7 +6928,7 @@
             "total": 0
           },
           {
-            "team": "LAYTONCHRISTIAN",
+            "team": "LAYTON CHRISTIAN",
             "quarters": [
               null,
               null,
@@ -6937,8 +6937,7 @@
             ],
             "total": 2
           }
-        ],
-        "source": "deseret-browser-live"
+        ]
       },
       "scoringPlays": [],
       "stats": [],
@@ -8204,10 +8203,10 @@
             "quarters": [
               14,
               14,
-              7,
+              14,
               null
             ],
-            "total": 35
+            "total": 42
           },
           {
             "team": "DEER CREEK",
@@ -8227,7 +8226,8 @@
         "Mountain View — (10:21 2Q) Brigham Moses , 31-yard pass from Hyrum Stafford (kick from Landon Pace )",
         "Deer Creek — (7:49 2Q) Tanner Curtis , 48-yard pass from Kai Betsinger (kick from Luke Wright )",
         "Deer Creek — (0:02 2Q) Brodey Ferguson , 24-yard FG",
-        "Mountain View — (9:48 3Q) Brigham Moses , 27-yard pass from Hyrum Stafford (kick from Landon Pace )"
+        "Mountain View — (9:48 3Q) Brigham Moses , 27-yard pass from Hyrum Stafford (kick from Landon Pace )",
+        "Mountain View — (3:48 3Q) Ratu Malungahu , 1-yard run (kick from Jordan Tidwell )"
       ],
       "stats": [
         {
@@ -8253,7 +8253,7 @@
               "R. Ratu Malungahu",
               "",
               "",
-              "1"
+              "2"
             ]
           ]
         },
@@ -8389,6 +8389,13 @@
               "",
               "4",
               ""
+            ],
+            [
+              "94",
+              "J. Jordan Tidwell",
+              "",
+              "1",
+              ""
             ]
           ]
         }
@@ -8396,7 +8403,7 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 7,
-        "rows": 9,
+        "rows": 10,
         "coreCells": 16,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 5
@@ -9247,7 +9254,7 @@
               0,
               7,
               7,
-              null
+              0
             ],
             "total": 14
           },
@@ -9257,9 +9264,9 @@
               7,
               3,
               0,
-              null
+              6
             ],
-            "total": 10
+            "total": 16
           }
         ]
       },
@@ -9267,12 +9274,13 @@
         "Wasatch — (5:02 1Q) Aksel Wheeler , 1-yard run (kick from Austin Wilde )",
         "Uintah — (5:18 2Q) Kache Barney , 31-yard pass from Landon Woods (kick from Colton Van Wagoner )",
         "Wasatch — (0:00 2Q) Austin Wilde , 36-yard FG",
-        "Uintah — (2:45 3Q) Kache Barney , 22-yard run (kick from Colton Van Wagoner )"
+        "Uintah — (2:45 3Q) Kache Barney , 22-yard run (kick from Colton Van Wagoner )",
+        "Wasatch — (5:53 4Q) Grady Coombs , 16-yard pass from Bryce Harr (kick failed)"
       ],
       "stats": [
         {
           "category": "Rushing",
-          "team": "UINTAH",
+          "team": "WASATCH",
           "headers": [
             "NO",
             "PLAYER",
@@ -9312,6 +9320,30 @@
         },
         {
           "category": "Passing",
+          "team": "WASATCH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "B. Bryce Harr",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
           "team": "UINTAH",
           "headers": [
             "NO",
@@ -9331,6 +9363,26 @@
               "",
               "1",
               ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "WASATCH",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "16",
+              "G. Grady Coombs",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -9397,11 +9449,11 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 6,
-        "rows": 6,
-        "coreCells": 10,
+        "blocks": 8,
+        "rows": 8,
+        "coreCells": 16,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 4
+        "emptyCoreBlocks": 6
       },
       "scoreSource": "deseret-browser-live"
     },
