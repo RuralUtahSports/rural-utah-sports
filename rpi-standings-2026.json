@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updatedAt": "2026-09-19T11:06:31.434Z",
+  "updatedAt": "2026-09-19T14:00:14.993Z",
   "formula": {
     "rpi": "0.45 × MWP + 0.45 × OWP + 0.10 × OOWP",
     "footballMwp": "Unadjusted game-result winning percentage; football classifications are not weighted.",
@@ -1886,13 +1886,13 @@
     ]
   },
   "comparison": {
-    "officialFetchedAt": "2026-09-19T11:06:30.995Z",
+    "officialFetchedAt": "2026-09-19T14:00:14.560Z",
     "teamsCompared": 116,
-    "exactRankMatches": 81,
-    "recordMatches": 104,
-    "exactRpiMatches": 8,
-    "withinOneThousandth": 34,
-    "meanAbsoluteRpiDifference": 0.012360744252873554,
+    "exactRankMatches": 43,
+    "recordMatches": 29,
+    "exactRpiMatches": 0,
+    "withinOneThousandth": 4,
+    "meanAbsoluteRpiDifference": 0.02818616411238823,
     "rows": [
       {
         "classification": "6A",
@@ -1901,56 +1901,36 @@
         "officialRank": 1,
         "rusRank": 1,
         "rankDifference": 0,
-        "officialRecord": "5-0",
+        "officialRecord": "6-0",
         "rusRecord": "5-0",
-        "recordMatch": true,
-        "officialRpi": 0.841222,
+        "recordMatch": false,
+        "officialRpi": 0.810111,
         "rusRpi": 0.8535,
-        "rpiDifference": 0.012278000000000011,
+        "rpiDifference": 0.04338900000000001,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0.030000000000000027,
-          "oowp": -0.012222000000000066
+          "owp": 0.09166700000000005,
+          "oowp": 0.02138899999999988
         },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "6A",
-        "team": "CORNER CANYON",
-        "officialTeam": "Corner Canyon",
-        "officialRank": 2,
-        "rusRank": 4,
-        "rankDifference": 2,
-        "officialRecord": "4-1",
-        "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.785667,
-        "rusRpi": 0.7328333333333333,
-        "rpiDifference": -0.05283366666666667,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.1166666666666667,
-          "oowp": -0.003333666666666679
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "6A",
         "team": "SKYRIDGE",
         "officialTeam": "Skyridge",
-        "officialRank": 3,
+        "officialRank": 2,
         "rusRank": 3,
-        "rankDifference": 0,
+        "rankDifference": 1,
         "officialRecord": "5-1",
         "rusRecord": "4-1",
         "recordMatch": false,
-        "officialRpi": 0.782667,
+        "officialRpi": 0.786759,
         "rusRpi": 0.756,
-        "rpiDifference": -0.026666999999999996,
+        "rpiDifference": -0.03075899999999998,
         "componentDifference": {
           "mwp": -0.033332999999999946,
-          "owp": -0.019444666666666666,
-          "oowp": -0.029166999999999943
+          "owp": -0.036110666666666735,
+          "oowp": 0.004906999999999995
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -1958,59 +1938,99 @@
         "classification": "6A",
         "team": "HERRIMAN",
         "officialTeam": "Herriman",
-        "officialRank": 4,
+        "officialRank": 3,
         "rusRank": 2,
-        "rankDifference": -2,
+        "rankDifference": -1,
         "officialRecord": "5-0",
         "rusRecord": "5-0",
         "recordMatch": true,
-        "officialRpi": 0.77385,
+        "officialRpi": 0.7719,
         "rusRpi": 0.7712499999999999,
-        "rpiDifference": -0.0026000000000001577,
+        "rpiDifference": -0.0006500000000001505,
         "componentDifference": {
           "mwp": 0,
-          "owp": 3.333333332689037e-7,
-          "oowp": -0.026000000000000023
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "6A",
-        "team": "AMERICAN FORK",
-        "officialTeam": "American Fork",
-        "officialRank": 5,
-        "rusRank": 5,
-        "rankDifference": 0,
-        "officialRecord": "4-1",
-        "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.710833,
-        "rusRpi": 0.6918333333333334,
-        "rpiDifference": -0.018999666666666637,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.040000000000000036,
-          "oowp": -0.009999666666666629
+          "owp": -0.00666666666666671,
+          "oowp": 0.023500000000000076
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "6A",
+        "team": "CORNER CANYON",
+        "officialTeam": "Corner Canyon",
+        "officialRank": 4,
+        "rusRank": 4,
+        "rankDifference": 0,
+        "officialRecord": "5-1",
+        "rusRecord": "4-1",
+        "recordMatch": false,
+        "officialRpi": 0.748472,
+        "rusRpi": 0.7328333333333333,
+        "rpiDifference": -0.01563866666666669,
+        "componentDifference": {
+          "mwp": -0.033332999999999946,
+          "owp": -0.011110666666666602,
+          "oowp": 0.043611333333333335
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "6A",
         "team": "WESTLAKE",
         "officialTeam": "Westlake",
-        "officialRank": 6,
+        "officialRank": 5,
         "rusRank": 6,
-        "rankDifference": 0,
+        "rankDifference": 1,
         "officialRecord": "4-1",
         "rusRecord": "4-1",
         "recordMatch": true,
-        "officialRpi": 0.705167,
+        "officialRpi": 0.711533,
         "rusRpi": 0.6871666666666667,
-        "rpiDifference": -0.018000333333333285,
+        "rpiDifference": -0.024366333333333268,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.040000000000000036,
-          "oowp": -3.33333333379926e-7
+          "owp": -0.050000000000000044,
+          "oowp": -0.01866633333333334
+        },
+        "likelyCause": "One or more opponent records differ from the official table."
+      },
+      {
+        "classification": "6A",
+        "team": "AMERICAN FORK",
+        "officialTeam": "American Fork",
+        "officialRank": 6,
+        "rusRank": 5,
+        "rankDifference": -1,
+        "officialRecord": "5-1",
+        "rusRecord": "4-1",
+        "recordMatch": false,
+        "officialRpi": 0.705722,
+        "rusRpi": 0.6918333333333334,
+        "rpiDifference": -0.01388866666666655,
+        "componentDifference": {
+          "mwp": -0.033332999999999946,
+          "owp": 0.010000000000000009,
+          "oowp": -0.03388866666666668
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "6A",
+        "team": "COPPER HILLS",
+        "officialTeam": "Copper Hills",
+        "officialRank": 7,
+        "rusRank": 9,
+        "rankDifference": 2,
+        "officialRecord": "4-1",
+        "rusRecord": "4-1",
+        "recordMatch": true,
+        "officialRpi": 0.634,
+        "rusRpi": 0.6452500000000001,
+        "rpiDifference": 0.011250000000000093,
+        "componentDifference": {
+          "mwp": 0,
+          "owp": 0.010000000000000009,
+          "oowp": 0.0675
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2018,41 +2038,21 @@
         "classification": "6A",
         "team": "DAVIS",
         "officialTeam": "Davis",
-        "officialRank": 7,
-        "rusRank": 7,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.6685,
-        "rusRpi": 0.6661666666666667,
-        "rpiDifference": -0.0023333333333332984,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.023333333333333317
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "6A",
-        "team": "COPPER HILLS",
-        "officialTeam": "Copper Hills",
         "officialRank": 8,
-        "rusRank": 9,
-        "rankDifference": 1,
-        "officialRecord": "4-1",
-        "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.64525,
-        "rusRpi": 0.6452500000000001,
-        "rpiDifference": 1.1102230246251565e-16,
+        "rusRank": 7,
+        "rankDifference": -1,
+        "officialRecord": "3-3",
+        "rusRecord": "3-2",
+        "recordMatch": false,
+        "officialRpi": 0.627546,
+        "rusRpi": 0.6661666666666667,
+        "rpiDifference": 0.038620666666666637,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0
+          "mwp": 0.09999999999999998,
+          "owp": -0.016666999999999987,
+          "oowp": 0.011203666666666723
         },
-        "likelyCause": null
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "6A",
@@ -2061,18 +2061,18 @@
         "officialRank": 9,
         "rusRank": 10,
         "rankDifference": 1,
-        "officialRecord": "3-2",
+        "officialRecord": "3-3",
         "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.634833,
+        "recordMatch": false,
+        "officialRpi": 0.61663,
         "rusRpi": 0.6257999999999999,
-        "rpiDifference": -0.009033000000000069,
+        "rpiDifference": 0.0091699999999999,
         "componentDifference": {
-          "mwp": 0,
-          "owp": -0.023333000000000048,
-          "oowp": 0.014666999999999986
+          "mwp": 0.09999999999999998,
+          "owp": -0.08166700000000005,
+          "oowp": 0.00920399999999999
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "6A",
@@ -2084,13 +2084,73 @@
         "officialRecord": "3-3",
         "rusRecord": "3-2",
         "recordMatch": false,
-        "officialRpi": 0.622352,
+        "officialRpi": 0.599046,
         "rusRpi": 0.6465666666666667,
-        "rpiDifference": 0.024214666666666718,
+        "rpiDifference": 0.04752066666666677,
         "componentDifference": {
           "mwp": 0.09999999999999998,
-          "owp": -0.04166633333333347,
-          "oowp": -0.020352333333333306
+          "owp": 0.011110666666666602,
+          "oowp": -0.02479633333333331
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "6A",
+        "team": "FARMINGTON",
+        "officialTeam": "Farmington",
+        "officialRank": 11,
+        "rusRank": 14,
+        "rankDifference": 3,
+        "officialRecord": "3-3",
+        "rusRecord": "2-3",
+        "recordMatch": false,
+        "officialRpi": 0.563722,
+        "rusRpi": 0.4739500000000001,
+        "rpiDifference": -0.08977199999999985,
+        "componentDifference": {
+          "mwp": -0.09999999999999998,
+          "owp": -0.10000033333333325,
+          "oowp": 0.0022779999999998912
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "6A",
+        "team": "SYRACUSE",
+        "officialTeam": "Syracuse",
+        "officialRank": 12,
+        "rusRank": 15,
+        "rankDifference": 3,
+        "officialRecord": "3-3",
+        "rusRecord": "2-3",
+        "recordMatch": false,
+        "officialRpi": 0.527194,
+        "rusRpi": 0.44225000000000003,
+        "rpiDifference": -0.08494400000000002,
+        "componentDifference": {
+          "mwp": -0.09999999999999998,
+          "owp": -0.08333333333333343,
+          "oowp": -0.02444400000000002
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "6A",
+        "team": "BINGHAM",
+        "officialTeam": "Bingham",
+        "officialRank": 13,
+        "rusRank": 16,
+        "rankDifference": 3,
+        "officialRecord": "2-4",
+        "rusRecord": "1-4",
+        "recordMatch": false,
+        "officialRpi": 0.493972,
+        "rusRpi": 0.42950000000000005,
+        "rpiDifference": -0.06447199999999997,
+        "componentDifference": {
+          "mwp": -0.13333299999999998,
+          "owp": 0,
+          "oowp": -0.044722000000000095
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2098,121 +2158,61 @@
         "classification": "6A",
         "team": "WEBER",
         "officialTeam": "Weber",
-        "officialRank": 11,
+        "officialRank": 14,
         "rusRank": 11,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
+        "rankDifference": -3,
+        "officialRecord": "3-3",
         "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.518667,
+        "recordMatch": false,
+        "officialRpi": 0.487843,
         "rusRpi": 0.5280833333333333,
-        "rpiDifference": 0.00941633333333336,
+        "rpiDifference": 0.04024033333333332,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0.020000333333333287,
-          "oowp": 0.004166333333333383
+          "mwp": 0.09999999999999998,
+          "owp": -0.024999666666666698,
+          "oowp": 0.06490733333333332
         },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "6A",
-        "team": "RIVERTON",
-        "officialTeam": "Riverton",
-        "officialRank": 12,
-        "rusRank": 12,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.504367,
-        "rusRpi": 0.47890000000000005,
-        "rpiDifference": -0.025466999999999962,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.04999999999999993,
-          "oowp": -0.029667
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "6A",
-        "team": "FARMINGTON",
-        "officialTeam": "Farmington",
-        "officialRank": 13,
-        "rusRank": 14,
-        "rankDifference": 1,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.496,
-        "rusRpi": 0.4739500000000001,
-        "rpiDifference": -0.022049999999999903,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.05000033333333331,
-          "oowp": 0.0044999999999999485
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "6A",
         "team": "LAYTON",
         "officialTeam": "Layton",
-        "officialRank": 14,
-        "rusRank": 13,
-        "rankDifference": -1,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.4791,
-        "rusRpi": 0.47770000000000007,
-        "rpiDifference": -0.0013999999999999568,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.014000000000000012
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "6A",
-        "team": "SYRACUSE",
-        "officialTeam": "Syracuse",
         "officialRank": 15,
-        "rusRank": 15,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
+        "rusRank": 13,
+        "rankDifference": -2,
+        "officialRecord": "2-4",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.476267,
-        "rusRpi": 0.44225000000000003,
-        "rpiDifference": -0.034016999999999964,
+        "recordMatch": false,
+        "officialRpi": 0.425528,
+        "rusRpi": 0.47770000000000007,
+        "rpiDifference": 0.05217200000000005,
         "componentDifference": {
-          "mwp": 0,
-          "owp": -0.0800003333333334,
-          "oowp": 0.01983299999999999
+          "mwp": 0.06666700000000003,
+          "owp": 0.050000000000000044,
+          "oowp": -0.003278000000000003
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "6A",
-        "team": "BINGHAM",
-        "officialTeam": "Bingham",
+        "team": "RIVERTON",
+        "officialTeam": "Riverton",
         "officialRank": 16,
-        "rusRank": 16,
-        "rankDifference": 0,
-        "officialRecord": "1-4",
-        "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.4319,
-        "rusRpi": 0.42950000000000005,
-        "rpiDifference": -0.0023999999999999577,
+        "rusRank": 12,
+        "rankDifference": -4,
+        "officialRecord": "2-4",
+        "rusRecord": "2-3",
+        "recordMatch": false,
+        "officialRpi": 0.417111,
+        "rusRpi": 0.47890000000000005,
+        "rpiDifference": 0.06178900000000004,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.024000000000000077
+          "mwp": 0.06666700000000003,
+          "owp": 0.07500000000000007,
+          "oowp": -0.019610999999999934
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "6A",
@@ -2224,35 +2224,35 @@
         "officialRecord": "1-4",
         "rusRecord": "1-4",
         "recordMatch": true,
-        "officialRpi": 0.414067,
+        "officialRpi": 0.4113,
         "rusRpi": 0.40900000000000003,
-        "rpiDifference": -0.005066999999999988,
+        "rpiDifference": -0.0022999999999999687,
         "componentDifference": {
           "mwp": 0,
           "owp": 0,
-          "oowp": -0.05066699999999996
+          "oowp": -0.022999999999999965
         },
         "likelyCause": "One or more second-level opponent records differ from the official table."
       },
       {
         "classification": "5A",
-        "team": "OREM",
-        "officialTeam": "Orem",
+        "team": "WEST",
+        "officialTeam": "West",
         "officialRank": 1,
-        "rusRank": 2,
-        "rankDifference": 1,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.660722,
-        "rusRpi": 0.6318333333333334,
-        "rpiDifference": -0.028888666666666674,
+        "rusRank": 3,
+        "rankDifference": 2,
+        "officialRecord": "6-0",
+        "rusRecord": "5-0",
+        "recordMatch": false,
+        "officialRpi": 0.681375,
+        "rusRpi": 0.62475,
+        "rpiDifference": -0.056624999999999925,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.06333333333333335,
-          "oowp": -0.0038886666666666514
+          "owp": -0.15833333333333335,
+          "oowp": 0.14625
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "5A",
@@ -2261,176 +2261,176 @@
         "officialRank": 2,
         "rusRank": 1,
         "rankDifference": -1,
-        "officialRecord": "5-0",
+        "officialRecord": "5-1",
         "rusRecord": "5-0",
-        "recordMatch": true,
-        "officialRpi": 0.647222,
+        "recordMatch": false,
+        "officialRpi": 0.655403,
         "rusRpi": 0.6826666666666666,
-        "rpiDifference": 0.03544466666666668,
+        "rpiDifference": 0.027263666666666686,
+        "componentDifference": {
+          "mwp": 0.166667,
+          "owp": -0.12222233333333338,
+          "oowp": 0.07263866666666663
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "OREM",
+        "officialTeam": "Orem",
+        "officialRank": 3,
+        "rusRank": 2,
+        "rankDifference": -1,
+        "officialRecord": "3-2",
+        "rusRecord": "3-2",
+        "recordMatch": true,
+        "officialRpi": 0.643556,
+        "rusRpi": 0.6318333333333334,
+        "rpiDifference": -0.011722666666666659,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0.06666666666666665,
-          "oowp": 0.054444666666666586
+          "owp": -0.023333333333333317,
+          "oowp": -0.012222666666666604
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "5A",
-        "team": "WEST",
-        "officialTeam": "West",
-        "officialRank": 3,
-        "rusRank": 3,
-        "rankDifference": 0,
-        "officialRecord": "5-0",
-        "rusRecord": "5-0",
-        "recordMatch": true,
-        "officialRpi": 0.62125,
-        "rusRpi": 0.62475,
-        "rpiDifference": 0.0035000000000000586,
+        "team": "BOUNTIFUL",
+        "officialTeam": "Bountiful",
+        "officialRank": 4,
+        "rusRank": 5,
+        "rankDifference": 1,
+        "officialRecord": "3-2",
+        "rusRecord": "2-2",
+        "recordMatch": false,
+        "officialRpi": 0.632267,
+        "rusRpi": 0.5886250000000001,
+        "rpiDifference": -0.04364199999999996,
         "componentDifference": {
-          "mwp": 0,
-          "owp": -3.333333333521704e-7,
-          "oowp": 0.03499999999999992
+          "mwp": -0.09999999999999998,
+          "owp": 0.01749999999999996,
+          "oowp": -0.06516699999999997
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "5A",
         "team": "PLEASANT GROVE",
         "officialTeam": "Pleasant Grove",
-        "officialRank": 4,
-        "rusRank": 4,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.618767,
-        "rusRpi": 0.6173,
-        "rpiDifference": -0.001466999999999996,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.014667000000000097
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "BOUNTIFUL",
-        "officialTeam": "Bountiful",
         "officialRank": 5,
-        "rusRank": 5,
-        "rankDifference": 0,
-        "officialRecord": "2-2",
-        "rusRecord": "2-2",
-        "recordMatch": true,
-        "officialRpi": 0.591375,
-        "rusRpi": 0.5886250000000001,
-        "rpiDifference": -0.002749999999999919,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.02749999999999997
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "SPANISH FORK",
-        "officialTeam": "Spanish Fork",
-        "officialRank": 6,
-        "rusRank": 6,
-        "rankDifference": 0,
+        "rusRank": 4,
+        "rankDifference": -1,
         "officialRecord": "3-2",
         "rusRecord": "3-2",
         "recordMatch": true,
-        "officialRpi": 0.590817,
-        "rusRpi": 0.5877,
-        "rpiDifference": -0.0031170000000000364,
+        "officialRpi": 0.6225,
+        "rusRpi": 0.6173,
+        "rpiDifference": -0.0052000000000000934,
         "componentDifference": {
           "mwp": 0,
-          "owp": 3.333333332689037e-7,
-          "oowp": -0.031166999999999945
+          "owp": -0.010000000000000009,
+          "oowp": -0.007000000000000117
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "5A",
         "team": "SPRINGVILLE",
         "officialTeam": "Springville",
-        "officialRank": 7,
+        "officialRank": 6,
         "rusRank": 7,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.5729,
-        "rusRpi": 0.5710333333333334,
-        "rpiDifference": -0.001866666666666572,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.01866666666666672
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "FREMONT",
-        "officialTeam": "Fremont",
-        "officialRank": 8,
-        "rusRank": 8,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.5717,
-        "rusRpi": 0.5701666666666667,
-        "rpiDifference": -0.0015333333333332755,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.015333333333333421
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "TIMPVIEW",
-        "officialTeam": "Timpview",
-        "officialRank": 9,
-        "rusRank": 10,
         "rankDifference": 1,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
+        "officialRecord": "4-2",
+        "rusRecord": "3-2",
+        "recordMatch": false,
+        "officialRpi": 0.605444,
+        "rusRpi": 0.5710333333333334,
+        "rpiDifference": -0.03441066666666659,
+        "componentDifference": {
+          "mwp": -0.06666700000000003,
+          "owp": -0.008332999999999924,
+          "oowp": -0.006610666666666654
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "SPANISH FORK",
+        "officialTeam": "Spanish Fork",
+        "officialRank": 7,
+        "rusRank": 6,
+        "rankDifference": -1,
+        "officialRecord": "3-2",
+        "rusRecord": "3-2",
         "recordMatch": true,
-        "officialRpi": 0.533167,
-        "rusRpi": 0.5295666666666667,
-        "rpiDifference": -0.0036003333333332055,
+        "officialRpi": 0.596333,
+        "rusRpi": 0.5877,
+        "rpiDifference": -0.008633000000000002,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": -0.0360003333333333
+          "owp": -0.01666666666666672,
+          "oowp": -0.011332999999999926
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "5A",
         "team": "ALTA",
         "officialTeam": "Alta",
-        "officialRank": 10,
+        "officialRank": 8,
         "rusRank": 11,
-        "rankDifference": 1,
-        "officialRecord": "3-2",
+        "rankDifference": 3,
+        "officialRecord": "4-2",
         "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.5201,
+        "recordMatch": false,
+        "officialRpi": 0.567361,
         "rusRpi": 0.5063333333333334,
-        "rpiDifference": -0.013766666666666594,
+        "rpiDifference": -0.06102766666666659,
+        "componentDifference": {
+          "mwp": -0.06666700000000003,
+          "owp": -0.06666699999999998,
+          "oowp": -0.01027766666666674
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "FREMONT",
+        "officialTeam": "Fremont",
+        "officialRank": 9,
+        "rusRank": 8,
+        "rankDifference": -1,
+        "officialRecord": "4-2",
+        "rusRecord": "3-2",
+        "recordMatch": false,
+        "officialRpi": 0.56213,
+        "rusRpi": 0.5701666666666667,
+        "rpiDifference": 0.008036666666666692,
+        "componentDifference": {
+          "mwp": -0.06666700000000003,
+          "owp": 0.08333300000000005,
+          "oowp": 0.005370666666666635
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "TIMPVIEW",
+        "officialTeam": "Timpview",
+        "officialRank": 10,
+        "rusRank": 10,
+        "rankDifference": 0,
+        "officialRecord": "2-3",
+        "rusRecord": "2-3",
+        "recordMatch": true,
+        "officialRpi": 0.508889,
+        "rusRpi": 0.5295666666666667,
+        "rpiDifference": 0.020677666666666705,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.02999999999999997,
-          "oowp": -0.002666666666666706
+          "owp": 0.050000000000000044,
+          "oowp": -0.01822233333333334
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2441,16 +2441,76 @@
         "officialRank": 11,
         "rusRank": 21,
         "rankDifference": 10,
-        "officialRecord": "2-3",
+        "officialRecord": "2-4",
         "rusRecord": "1-4",
         "recordMatch": false,
-        "officialRpi": 0.495017,
+        "officialRpi": 0.49475,
         "rusRpi": 0.40016666666666667,
-        "rpiDifference": -0.09485033333333331,
+        "rpiDifference": -0.09458333333333335,
         "componentDifference": {
-          "mwp": -0.2,
-          "owp": 3.333333332689037e-7,
-          "oowp": -0.04850033333333337
+          "mwp": -0.13333299999999998,
+          "owp": -0.05833366666666673,
+          "oowp": -0.08333333333333337
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "HILLCREST",
+        "officialTeam": "Hillcrest",
+        "officialRank": 12,
+        "rusRank": 16,
+        "rankDifference": 4,
+        "officialRecord": "4-2",
+        "rusRecord": "4-1",
+        "recordMatch": false,
+        "officialRpi": 0.48875,
+        "rusRpi": 0.4624166666666667,
+        "rpiDifference": -0.02633333333333332,
+        "componentDifference": {
+          "mwp": 0.13333300000000003,
+          "owp": -0.20833300000000002,
+          "oowp": 0.07416666666666671
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "VIEWMONT",
+        "officialTeam": "Viewmont",
+        "officialRank": 13,
+        "rusRank": 17,
+        "rankDifference": 4,
+        "officialRecord": "3-2",
+        "rusRecord": "2-2",
+        "recordMatch": false,
+        "officialRpi": 0.488667,
+        "rusRpi": 0.458125,
+        "rpiDifference": -0.030542000000000014,
+        "componentDifference": {
+          "mwp": -0.09999999999999998,
+          "owp": 0.04749999999999999,
+          "oowp": -0.06916700000000009
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "WEST FIELD",
+        "officialTeam": "West Field",
+        "officialRank": 14,
+        "rusRank": 9,
+        "rankDifference": -5,
+        "officialRecord": "4-2",
+        "rusRecord": "4-1",
+        "recordMatch": false,
+        "officialRpi": 0.486806,
+        "rusRpi": 0.555,
+        "rpiDifference": 0.06819400000000003,
+        "componentDifference": {
+          "mwp": 0.13333300000000003,
+          "owp": 0,
+          "oowp": 0.08194400000000002
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2458,199 +2518,59 @@
         "classification": "5A",
         "team": "OLYMPUS",
         "officialTeam": "Olympus",
-        "officialRank": 12,
-        "rusRank": 13,
-        "rankDifference": 1,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.486417,
-        "rusRpi": 0.4858333333333334,
-        "rpiDifference": -0.0005836666666665935,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.005833666666666737
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "PAYSON",
-        "officialTeam": "Payson",
-        "officialRank": 13,
-        "rusRank": 14,
-        "rankDifference": 1,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.478367,
-        "rusRpi": 0.4779833333333333,
-        "rpiDifference": -0.00038366666666667104,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.003833666666666735
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "HILLCREST",
-        "officialTeam": "Hillcrest",
-        "officialRank": 14,
-        "rusRank": 16,
-        "rankDifference": 2,
-        "officialRecord": "4-1",
-        "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.474583,
-        "rusRpi": 0.4624166666666667,
-        "rpiDifference": -0.012166333333333279,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.03,
-          "oowp": 0.013333666666666688
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "VIEWMONT",
-        "officialTeam": "Viewmont",
         "officialRank": 15,
-        "rusRank": 17,
-        "rankDifference": 2,
-        "officialRecord": "2-2",
-        "rusRecord": "2-2",
-        "recordMatch": true,
-        "officialRpi": 0.472139,
-        "rusRpi": 0.458125,
-        "rpiDifference": -0.014013999999999971,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.03749999999999998,
-          "oowp": 0.028610999999999942
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "MAPLE MOUNTAIN",
-        "officialTeam": "Maple Mountain",
-        "officialRank": 16,
-        "rusRank": 15,
-        "rankDifference": -1,
-        "officialRecord": "2-3",
+        "rusRank": 13,
+        "rankDifference": -2,
+        "officialRecord": "2-4",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.468167,
-        "rusRpi": 0.4693333333333334,
-        "rpiDifference": 0.0011663333333333803,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0.0066669999999999785,
-          "oowp": -0.018333666666666693
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "BRIGHTON",
-        "officialTeam": "Brighton",
-        "officialRank": 17,
-        "rusRank": 12,
-        "rankDifference": -5,
-        "officialRecord": "1-4",
-        "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.4681,
-        "rusRpi": 0.49100000000000005,
-        "rpiDifference": 0.02290000000000003,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0.050000000000000044,
-          "oowp": 0.003999999999999948
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "WEST FIELD",
-        "officialTeam": "West Field",
-        "officialRank": 18,
-        "rusRank": 9,
-        "rankDifference": -9,
-        "officialRecord": "3-2",
-        "rusRecord": "4-1",
         "recordMatch": false,
-        "officialRpi": 0.461,
-        "rusRpi": 0.555,
-        "rpiDifference": 0.09400000000000003,
+        "officialRpi": 0.461278,
+        "rusRpi": 0.4858333333333334,
+        "rpiDifference": 0.024555333333333373,
         "componentDifference": {
-          "mwp": 0.20000000000000007,
-          "owp": 0,
-          "oowp": 0.039999999999999925
+          "mwp": 0.06666700000000003,
+          "owp": -0.016666999999999987,
+          "oowp": 0.02055533333333326
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "5A",
-        "team": "WEST JORDAN",
-        "officialTeam": "West Jordan",
-        "officialRank": 19,
-        "rusRank": 19,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.439611,
-        "rusRpi": 0.42550000000000004,
-        "rpiDifference": -0.01411099999999993,
+        "team": "PAYSON",
+        "officialTeam": "Payson",
+        "officialRank": 16,
+        "rusRank": 14,
+        "rankDifference": -2,
+        "officialRecord": "3-3",
+        "rusRecord": "3-2",
+        "recordMatch": false,
+        "officialRpi": 0.455824,
+        "rusRpi": 0.4779833333333333,
+        "rpiDifference": 0.02215933333333331,
         "componentDifference": {
-          "mwp": 0,
-          "owp": -0.02999999999999997,
-          "oowp": -0.006111000000000033
+          "mwp": 0.09999999999999998,
+          "owp": -0.058333000000000024,
+          "oowp": 0.034092333333333225
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "5A",
-        "team": "NORTHRIDGE",
-        "officialTeam": "Northridge",
-        "officialRank": 20,
-        "rusRank": 18,
+        "team": "MAPLE MOUNTAIN",
+        "officialTeam": "Maple Mountain",
+        "officialRank": 17,
+        "rusRank": 15,
         "rankDifference": -2,
         "officialRecord": "2-3",
         "rusRecord": "2-3",
         "recordMatch": true,
-        "officialRpi": 0.434167,
-        "rusRpi": 0.4338333333333334,
-        "rpiDifference": -0.00033366666666662104,
+        "officialRpi": 0.455478,
+        "rusRpi": 0.4693333333333334,
+        "rpiDifference": 0.013855333333333386,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": -0.003333666666666679
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "ROY",
-        "officialTeam": "Roy",
-        "officialRank": 21,
-        "rusRank": 20,
-        "rankDifference": -1,
-        "officialRecord": "1-4",
-        "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.39535,
-        "rusRpi": 0.4203333333333334,
-        "rpiDifference": 0.024983333333333413,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0.050000000000000044,
-          "oowp": 0.02483333333333332
+          "owp": 0.030000000000000027,
+          "oowp": 0.0035553333333333548
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2658,21 +2578,101 @@
         "classification": "5A",
         "team": "HUNTER",
         "officialTeam": "Hunter",
-        "officialRank": 22,
+        "officialRank": 18,
         "rusRank": 22,
-        "rankDifference": 0,
-        "officialRecord": "0-4",
+        "rankDifference": 4,
+        "officialRecord": "1-4",
         "rusRecord": "0-4",
-        "recordMatch": true,
-        "officialRpi": 0.393875,
+        "recordMatch": false,
+        "officialRpi": 0.4433,
         "rusRpi": 0.39312500000000006,
-        "rpiDifference": -0.0007499999999999174,
+        "rpiDifference": -0.05017499999999997,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.007499999999999951
+          "mwp": -0.2,
+          "owp": 0.11250000000000004,
+          "oowp": -0.10799999999999998
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "BRIGHTON",
+        "officialTeam": "Brighton",
+        "officialRank": 19,
+        "rusRank": 12,
+        "rankDifference": -7,
+        "officialRecord": "1-5",
+        "rusRecord": "1-4",
+        "recordMatch": false,
+        "officialRpi": 0.437889,
+        "rusRpi": 0.49100000000000005,
+        "rpiDifference": 0.053111000000000075,
+        "componentDifference": {
+          "mwp": 0.033333,
+          "owp": 0.08333299999999999,
+          "oowp": 0.0061109999999999776
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "ROY",
+        "officialTeam": "Roy",
+        "officialRank": 20,
+        "rusRank": 20,
+        "rankDifference": 0,
+        "officialRecord": "2-4",
+        "rusRecord": "1-4",
+        "recordMatch": false,
+        "officialRpi": 0.419176,
+        "rusRpi": 0.4203333333333334,
+        "rpiDifference": 0.001157333333333399,
+        "componentDifference": {
+          "mwp": -0.13333299999999998,
+          "owp": 0.15000000000000002,
+          "oowp": -0.06342566666666671
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "NORTHRIDGE",
+        "officialTeam": "Northridge",
+        "officialRank": 21,
+        "rusRank": 18,
+        "rankDifference": -3,
+        "officialRecord": "2-4",
+        "rusRecord": "2-3",
+        "recordMatch": false,
+        "officialRpi": 0.395343,
+        "rusRpi": 0.4338333333333334,
+        "rpiDifference": 0.038490333333333404,
+        "componentDifference": {
+          "mwp": 0.06666700000000003,
+          "owp": 0.025000000000000022,
+          "oowp": -0.02759266666666671
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "WEST JORDAN",
+        "officialTeam": "West Jordan",
+        "officialRank": 22,
+        "rusRank": 19,
+        "rankDifference": -3,
+        "officialRecord": "2-4",
+        "rusRecord": "2-3",
+        "recordMatch": false,
+        "officialRpi": 0.373,
+        "rusRpi": 0.42550000000000004,
+        "rpiDifference": 0.05250000000000005,
+        "componentDifference": {
+          "mwp": 0.06666700000000003,
+          "owp": 0.058333000000000024,
+          "oowp": -0.03750000000000003
+        },
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "5A",
@@ -2681,18 +2681,18 @@
         "officialRank": 23,
         "rusRank": 23,
         "rankDifference": 0,
-        "officialRecord": "2-3",
+        "officialRecord": "2-4",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.369878,
+        "recordMatch": false,
+        "officialRpi": 0.351944,
         "rusRpi": 0.35775000000000007,
-        "rpiDifference": -0.012127999999999917,
+        "rpiDifference": 0.005806000000000089,
         "componentDifference": {
-          "mwp": 0,
-          "owp": -0.030000000000000027,
-          "oowp": 0.013722000000000067
+          "mwp": 0.06666700000000003,
+          "owp": -0.06666700000000003,
+          "oowp": 0.05805600000000005
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "5A",
@@ -2704,13 +2704,13 @@
         "officialRecord": "2-4",
         "rusRecord": "1-4",
         "recordMatch": false,
-        "officialRpi": 0.334306,
+        "officialRpi": 0.345583,
         "rusRpi": 0.30133333333333334,
-        "rpiDifference": -0.03297266666666665,
+        "rpiDifference": -0.04424966666666663,
         "componentDifference": {
           "mwp": -0.13333299999999998,
-          "owp": 0.06666700000000003,
-          "oowp": -0.02972266666666673
+          "owp": 0.050000000000000044,
+          "oowp": -0.06749966666666668
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2721,18 +2721,18 @@
         "officialRank": 25,
         "rusRank": 24,
         "rankDifference": -1,
-        "officialRecord": "1-4",
+        "officialRecord": "1-5",
         "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.319,
+        "recordMatch": false,
+        "officialRpi": 0.303167,
         "rusRpi": 0.34175000000000005,
-        "rpiDifference": 0.022750000000000048,
+        "rpiDifference": 0.038583000000000034,
         "componentDifference": {
-          "mwp": 0,
+          "mwp": 0.033333,
           "owp": 0.049999666666666664,
-          "oowp": 0.0025000000000001132
+          "oowp": 0.010833000000000093
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "5A",
@@ -2744,33 +2744,13 @@
         "officialRecord": "2-4",
         "rusRecord": "1-4",
         "recordMatch": false,
-        "officialRpi": 0.288667,
+        "officialRpi": 0.285157,
         "rusRpi": 0.24783333333333335,
-        "rpiDifference": -0.04083366666666666,
+        "rpiDifference": -0.037323666666666644,
         "componentDifference": {
           "mwp": -0.13333299999999998,
-          "owp": 0.04444466666666666,
-          "oowp": -0.008333666666666684
-        },
-        "likelyCause": "Completed-game record differs from the official table."
-      },
-      {
-        "classification": "5A",
-        "team": "KEARNS",
-        "officialTeam": "Kearns",
-        "officialRank": 27,
-        "rusRank": 28,
-        "rankDifference": 1,
-        "officialRecord": "0-5",
-        "rusRecord": "0-4",
-        "recordMatch": false,
-        "officialRpi": 0.164461,
-        "rusRpi": 0.15260416666666665,
-        "rpiDifference": -0.011856833333333344,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.0258336666666667,
-          "oowp": -0.00231933333333334
+          "owp": 0.049999666666666664,
+          "oowp": 0.0017593333333332795
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2778,19 +2758,39 @@
         "classification": "5A",
         "team": "TAYLORSVILLE",
         "officialTeam": "Taylorsville",
-        "officialRank": 28,
+        "officialRank": 27,
         "rusRank": 27,
-        "rankDifference": -1,
+        "rankDifference": 0,
         "officialRecord": "0-6",
         "rusRecord": "0-5",
         "recordMatch": false,
-        "officialRpi": 0.162954,
+        "officialRpi": 0.184954,
         "rusRpi": 0.15683333333333332,
-        "rpiDifference": -0.006120666666666663,
+        "rpiDifference": -0.028120666666666683,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.025000000000000022,
-          "oowp": 0.05129633333333322
+          "owp": -0.08333299999999999,
+          "oowp": 0.09379633333333326
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "5A",
+        "team": "KEARNS",
+        "officialTeam": "Kearns",
+        "officialRank": 28,
+        "rusRank": 28,
+        "rankDifference": 0,
+        "officialRecord": "0-5",
+        "rusRecord": "0-4",
+        "recordMatch": false,
+        "officialRpi": 0.153833,
+        "rusRpi": 0.15260416666666665,
+        "rpiDifference": -0.0012288333333333457,
+        "componentDifference": {
+          "mwp": 0,
+          "owp": 0.0041663333333333274,
+          "oowp": -0.03104133333333331
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2801,58 +2801,58 @@
         "officialRank": 1,
         "rusRank": 1,
         "rankDifference": 0,
-        "officialRecord": "5-0",
+        "officialRecord": "6-0",
         "rusRecord": "5-0",
-        "recordMatch": true,
-        "officialRpi": 0.847767,
+        "recordMatch": false,
+        "officialRpi": 0.793102,
         "rusRpi": 0.8368333333333334,
-        "rpiDifference": -0.01093366666666662,
+        "rpiDifference": 0.043731333333333455,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.040000000000000036,
-          "oowp": 0.07066633333333339
+          "owp": 0.07666699999999993,
+          "oowp": 0.09231433333333339
         },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "4A",
-        "team": "RIDGELINE",
-        "officialTeam": "Ridgeline",
-        "officialRank": 2,
-        "rusRank": 2,
-        "rankDifference": 0,
-        "officialRecord": "5-0",
-        "rusRecord": "5-0",
-        "recordMatch": true,
-        "officialRpi": 0.776933,
-        "rusRpi": 0.7777333333333333,
-        "rpiDifference": 0.0008003333333332918,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.008000333333333387
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
         "team": "STANSBURY",
         "officialTeam": "Stansbury",
-        "officialRank": 3,
+        "officialRank": 2,
         "rusRank": 3,
-        "rankDifference": 0,
-        "officialRecord": "4-1",
+        "rankDifference": 1,
+        "officialRecord": "5-1",
         "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.711833,
+        "recordMatch": false,
+        "officialRpi": 0.71775,
         "rusRpi": 0.6891333333333335,
-        "rpiDifference": -0.022699666666666563,
+        "rpiDifference": -0.028616666666666513,
+        "componentDifference": {
+          "mwp": -0.033332999999999946,
+          "owp": -0.03333300000000006,
+          "oowp": 0.013833333333333253
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "4A",
+        "team": "RIDGELINE",
+        "officialTeam": "Ridgeline",
+        "officialRank": 3,
+        "rusRank": 2,
+        "rankDifference": -1,
+        "officialRecord": "6-0",
+        "rusRecord": "5-0",
+        "recordMatch": false,
+        "officialRpi": 0.710157,
+        "rusRpi": 0.7777333333333333,
+        "rpiDifference": 0.06757633333333324,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.050000000000000044,
-          "oowp": -0.001999666666666733
+          "owp": 0.158333,
+          "oowp": -0.036740666666666644
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
@@ -2861,56 +2861,76 @@
         "officialRank": 4,
         "rusRank": 4,
         "rankDifference": 0,
-        "officialRecord": "3-2",
+        "officialRecord": "4-2",
         "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.679,
+        "recordMatch": false,
+        "officialRpi": 0.685833,
         "rusRpi": 0.6792222222222224,
-        "rpiDifference": 0.00022222222222234578,
+        "rpiDifference": -0.006610777777777632,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.0022222222222222365
+          "mwp": -0.06666700000000003,
+          "owp": 0.06666700000000003,
+          "oowp": -0.06611077777777774
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "4A",
-        "team": "PINE VIEW",
-        "officialTeam": "Pine View",
-        "officialRank": 5,
-        "rusRank": 5,
-        "rankDifference": 0,
-        "officialRecord": "4-1",
-        "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.6583,
-        "rusRpi": 0.6628000000000001,
-        "rpiDifference": 0.0045000000000000595,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0.009999999999999898,
-          "oowp": 0
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
         "team": "SNOW CANYON",
         "officialTeam": "Snow Canyon",
-        "officialRank": 6,
+        "officialRank": 5,
         "rusRank": 6,
-        "rankDifference": 0,
-        "officialRecord": "3-1",
+        "rankDifference": 1,
+        "officialRecord": "4-1",
         "rusRecord": "3-1",
-        "recordMatch": true,
-        "officialRpi": 0.648125,
+        "recordMatch": false,
+        "officialRpi": 0.684333,
         "rusRpi": 0.62,
-        "rpiDifference": -0.028124999999999956,
+        "rpiDifference": -0.06433299999999997,
+        "componentDifference": {
+          "mwp": -0.050000000000000044,
+          "owp": -0.08999999999999997,
+          "oowp": -0.01333300000000004
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "4A",
+        "team": "PINE VIEW",
+        "officialTeam": "Pine View",
+        "officialRank": 6,
+        "rusRank": 5,
+        "rankDifference": -1,
+        "officialRecord": "4-2",
+        "rusRecord": "4-1",
+        "recordMatch": false,
+        "officialRpi": 0.617056,
+        "rusRpi": 0.6628000000000001,
+        "rpiDifference": 0.04574400000000001,
+        "componentDifference": {
+          "mwp": 0.13333300000000003,
+          "owp": -0.023333000000000048,
+          "oowp": -0.037556000000000034
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "4A",
+        "team": "HIGHLAND",
+        "officialTeam": "Highland",
+        "officialRank": 7,
+        "rusRank": 9,
+        "rankDifference": 2,
+        "officialRecord": "4-1",
+        "rusRecord": "4-1",
+        "recordMatch": true,
+        "officialRpi": 0.579583,
+        "rusRpi": 0.5522,
+        "rpiDifference": -0.027382999999999935,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.0625,
-          "oowp": 0
+          "owp": -0.06666666666666665,
+          "oowp": 0.02616700000000005
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2918,181 +2938,161 @@
         "classification": "4A",
         "team": "MURRAY",
         "officialTeam": "Murray",
-        "officialRank": 7,
+        "officialRank": 8,
         "rusRank": 7,
-        "rankDifference": 0,
-        "officialRecord": "4-1",
+        "rankDifference": -1,
+        "officialRecord": "5-1",
         "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.587133,
+        "recordMatch": false,
+        "officialRpi": 0.575995,
         "rusRpi": 0.5858333333333334,
-        "rpiDifference": -0.001299666666666588,
+        "rpiDifference": 0.009838333333333393,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.012999666666666632
+          "mwp": -0.033332999999999946,
+          "owp": 0.06666700000000003,
+          "oowp": -0.05162066666666665
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
         "team": "CRIMSON CLIFFS",
         "officialTeam": "Crimson Cliffs",
-        "officialRank": 8,
-        "rusRank": 8,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.560667,
-        "rusRpi": 0.5604,
-        "rpiDifference": -0.0002670000000000172,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.002667000000000086
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "4A",
-        "team": "HIGHLAND",
-        "officialTeam": "Highland",
         "officialRank": 9,
-        "rusRank": 9,
-        "rankDifference": 0,
-        "officialRecord": "4-1",
-        "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.55375,
-        "rusRpi": 0.5522,
-        "rpiDifference": -0.0015499999999999403,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 3.3333333332441484e-7,
-          "oowp": -0.015499999999999958
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "4A",
-        "team": "DESERT HILLS",
-        "officialTeam": "Desert Hills",
-        "officialRank": 10,
-        "rusRank": 10,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.525417,
-        "rusRpi": 0.5229666666666667,
-        "rpiDifference": -0.002450333333333332,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 3.33333333379926e-7,
-          "oowp": -0.024500333333333346
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "4A",
-        "team": "TOOELE",
-        "officialTeam": "Tooele",
-        "officialRank": 11,
-        "rusRank": 12,
-        "rankDifference": 1,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.522861,
-        "rusRpi": 0.51025,
-        "rpiDifference": -0.012611000000000039,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.029999666666666702,
-          "oowp": 0.008889000000000036
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "4A",
-        "team": "MOUNTAIN CREST",
-        "officialTeam": "Mountain Crest",
-        "officialRank": 12,
-        "rusRank": 11,
+        "rusRank": 8,
         "rankDifference": -1,
-        "officialRecord": "3-2",
+        "officialRecord": "4-2",
         "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.5165,
-        "rusRpi": 0.5165000000000001,
-        "rpiDifference": 1.1102230246251565e-16,
+        "recordMatch": false,
+        "officialRpi": 0.571111,
+        "rusRpi": 0.5604,
+        "rpiDifference": -0.010711000000000026,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 5.551115123125783e-17
+          "mwp": -0.06666700000000003,
+          "owp": 0.04166700000000001,
+          "oowp": 0.005388999999999866
         },
-        "likelyCause": null
-      },
-      {
-        "classification": "4A",
-        "team": "SALEM HILLS",
-        "officialTeam": "Salem Hills",
-        "officialRank": 13,
-        "rusRank": 14,
-        "rankDifference": 1,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.495,
-        "rusRpi": 0.48283333333333334,
-        "rpiDifference": -0.012166666666666659,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.030000000000000027,
-          "oowp": 0.013333333333333197
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
         "team": "SKY VIEW",
         "officialTeam": "Sky View",
-        "officialRank": 14,
+        "officialRank": 10,
         "rusRank": 13,
-        "rankDifference": -1,
-        "officialRecord": "2-3",
+        "rankDifference": 3,
+        "officialRecord": "3-3",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.487833,
+        "recordMatch": false,
+        "officialRpi": 0.517889,
         "rusRpi": 0.4882333333333334,
-        "rpiDifference": 0.0004003333333333914,
+        "rpiDifference": -0.029655666666666636,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.0040003333333332725
+          "mwp": -0.09999999999999998,
+          "owp": 0.03333300000000006,
+          "oowp": 0.0034443333333332715
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "4A",
+        "team": "MOUNTAIN CREST",
+        "officialTeam": "Mountain Crest",
+        "officialRank": 11,
+        "rusRank": 11,
+        "rankDifference": 0,
+        "officialRecord": "3-3",
+        "rusRecord": "3-2",
+        "recordMatch": false,
+        "officialRpi": 0.509583,
+        "rusRpi": 0.5165000000000001,
+        "rpiDifference": 0.006917000000000062,
+        "componentDifference": {
+          "mwp": 0.09999999999999998,
+          "owp": -0.08333299999999993,
+          "oowp": -0.005832999999999922
+        },
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
         "team": "SKYLINE",
         "officialTeam": "Skyline",
-        "officialRank": 15,
+        "officialRank": 12,
         "rusRank": 15,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
+        "rankDifference": 3,
+        "officialRecord": "3-3",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.483556,
+        "recordMatch": false,
+        "officialRpi": 0.505463,
         "rusRpi": 0.47720000000000007,
-        "rpiDifference": -0.006355999999999917,
+        "rpiDifference": -0.028262999999999927,
+        "componentDifference": {
+          "mwp": -0.09999999999999998,
+          "owp": 0.040000000000000036,
+          "oowp": -0.012629999999999919
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "4A",
+        "team": "TOOELE",
+        "officialTeam": "Tooele",
+        "officialRank": 13,
+        "rusRank": 12,
+        "rankDifference": -1,
+        "officialRecord": "3-3",
+        "rusRecord": "3-2",
+        "recordMatch": false,
+        "officialRpi": 0.499907,
+        "rusRpi": 0.51025,
+        "rpiDifference": 0.010342999999999991,
+        "componentDifference": {
+          "mwp": 0.09999999999999998,
+          "owp": -0.07777766666666669,
+          "oowp": 0.00342600000000004
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "4A",
+        "team": "SALEM HILLS",
+        "officialTeam": "Salem Hills",
+        "officialRank": 14,
+        "rusRank": 14,
+        "rankDifference": 0,
+        "officialRecord": "3-2",
+        "rusRecord": "3-2",
+        "recordMatch": true,
+        "officialRpi": 0.488,
+        "rusRpi": 0.48283333333333334,
+        "rpiDifference": -0.005166666666666653,
         "componentDifference": {
           "mwp": 0,
           "owp": -0.010000000000000009,
-          "oowp": -0.018556000000000017
+          "oowp": -0.006666666666666821
         },
         "likelyCause": "One or more opponent records differ from the official table."
+      },
+      {
+        "classification": "4A",
+        "team": "DESERT HILLS",
+        "officialTeam": "Desert Hills",
+        "officialRank": 15,
+        "rusRank": 10,
+        "rankDifference": -5,
+        "officialRecord": "2-4",
+        "rusRecord": "2-3",
+        "recordMatch": false,
+        "officialRpi": 0.485778,
+        "rusRpi": 0.5229666666666667,
+        "rpiDifference": 0.0371886666666667,
+        "componentDifference": {
+          "mwp": 0.06666700000000003,
+          "owp": 0.033333333333333326,
+          "oowp": -0.07811133333333337
+        },
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
@@ -3104,35 +3104,35 @@
         "officialRecord": "2-3",
         "rusRecord": "2-3",
         "recordMatch": true,
-        "officialRpi": 0.451267,
+        "officialRpi": 0.470756,
         "rusRpi": 0.4506666666666667,
-        "rpiDifference": -0.0006003333333332583,
+        "rpiDifference": -0.020089333333333292,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": -0.00600033333333333
+          "owp": -0.050000000000000044,
+          "oowp": 0.02411066666666667
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "4A",
-        "team": "GREEN CANYON",
-        "officialTeam": "Green Canyon",
+        "team": "TIMPANOGOS",
+        "officialTeam": "Timpanogos",
         "officialRank": 17,
-        "rusRank": 17,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
+        "rusRank": 19,
+        "rankDifference": 2,
+        "officialRecord": "3-2",
+        "rusRecord": "3-2",
         "recordMatch": true,
-        "officialRpi": 0.4425,
-        "rusRpi": 0.44150000000000006,
-        "rpiDifference": -0.0009999999999999454,
+        "officialRpi": 0.438111,
+        "rusRpi": 0.42033333333333334,
+        "rpiDifference": -0.017777666666666636,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": -0.009999999999999898
+          "owp": -0.040000000000000036,
+          "oowp": 0.002222333333333326
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "4A",
@@ -3141,138 +3141,138 @@
         "officialRank": 18,
         "rusRank": 18,
         "rankDifference": 0,
-        "officialRecord": "1-4",
+        "officialRecord": "1-5",
         "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.4285,
+        "recordMatch": false,
+        "officialRpi": 0.437222,
         "rusRpi": 0.4287000000000001,
-        "rpiDifference": 0.000200000000000089,
+        "rpiDifference": -0.008521999999999919,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.0020000000000000018
+          "mwp": 0.033333,
+          "owp": -0.04999999999999993,
+          "oowp": -0.010221999999999953
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "4A",
-        "team": "TIMPANOGOS",
-        "officialTeam": "Timpanogos",
-        "officialRank": 19,
-        "rusRank": 19,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.420333,
-        "rusRpi": 0.42033333333333334,
-        "rpiDifference": 3.3333333332441484e-7,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 3.3333333332441484e-7
-        },
-        "likelyCause": null
-      },
-      {
-        "classification": "4A",
-        "team": "MOUNTAIN VIEW",
-        "officialTeam": "Mountain View",
-        "officialRank": 20,
-        "rusRank": 20,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.419517,
-        "rusRpi": 0.41891666666666666,
-        "rpiDifference": -0.0006003333333333138,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 3.333333332689037e-7,
-          "oowp": -0.00600033333333333
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
         "team": "PARK CITY",
         "officialTeam": "Park City",
-        "officialRank": 21,
+        "officialRank": 19,
         "rusRank": 21,
-        "rankDifference": 0,
+        "rankDifference": 2,
         "officialRecord": "1-4",
         "rusRecord": "1-4",
         "recordMatch": true,
-        "officialRpi": 0.410933,
+        "officialRpi": 0.428056,
         "rusRpi": 0.4107333333333334,
-        "rpiDifference": -0.00019966666666659805,
+        "rpiDifference": -0.017322666666666597,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": -0.001999666666666622
+          "owp": -0.050000000000000044,
+          "oowp": 0.0517773333333334
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "4A",
-        "team": "JORDAN",
-        "officialTeam": "Jordan",
-        "officialRank": 22,
-        "rusRank": 22,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
+        "team": "GREEN CANYON",
+        "officialTeam": "Green Canyon",
+        "officialRank": 20,
+        "rusRank": 17,
+        "rankDifference": -3,
+        "officialRecord": "2-4",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.393833,
-        "rusRpi": 0.3945,
-        "rpiDifference": 0.0006670000000000287,
+        "recordMatch": false,
+        "officialRpi": 0.419194,
+        "rusRpi": 0.44150000000000006,
+        "rpiDifference": 0.022306000000000048,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.0066669999999999785
+          "mwp": 0.06666700000000003,
+          "owp": -0.016666999999999987,
+          "oowp": -0.0019439999999999458
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
-        "team": "EAST",
-        "officialTeam": "East",
-        "officialRank": 23,
-        "rusRank": 23,
-        "rankDifference": 0,
-        "officialRecord": "0-3",
-        "rusRecord": "0-3",
-        "recordMatch": true,
-        "officialRpi": 0.370833,
-        "rusRpi": 0.37083333333333335,
-        "rpiDifference": 3.3333333332441484e-7,
+        "team": "MOUNTAIN VIEW",
+        "officialTeam": "Mountain View",
+        "officialRank": 21,
+        "rusRank": 20,
+        "rankDifference": -1,
+        "officialRecord": "3-3",
+        "rusRecord": "2-3",
+        "recordMatch": false,
+        "officialRpi": 0.415463,
+        "rusRpi": 0.41891666666666666,
+        "rpiDifference": 0.0034536666666666327,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 3.3333333332441484e-7
+          "mwp": -0.09999999999999998,
+          "owp": 0.11388933333333329,
+          "oowp": -0.02796333333333334
         },
-        "likelyCause": null
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
         "team": "UINTAH",
         "officialTeam": "Uintah",
-        "officialRank": 24,
+        "officialRank": 22,
         "rusRank": 24,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
+        "rankDifference": 2,
+        "officialRecord": "3-3",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.35405,
+        "recordMatch": false,
+        "officialRpi": 0.394944,
         "rusRpi": 0.35355000000000003,
-        "rpiDifference": -0.0004999999999999449,
+        "rpiDifference": -0.041393999999999986,
+        "componentDifference": {
+          "mwp": -0.09999999999999998,
+          "owp": 0.011110666666666658,
+          "oowp": -0.013944000000000067
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "4A",
+        "team": "JORDAN",
+        "officialTeam": "Jordan",
+        "officialRank": 23,
+        "rusRank": 22,
+        "rankDifference": -1,
+        "officialRecord": "2-4",
+        "rusRecord": "2-3",
+        "recordMatch": false,
+        "officialRpi": 0.384074,
+        "rusRpi": 0.3945,
+        "rpiDifference": 0.01042599999999999,
+        "componentDifference": {
+          "mwp": 0.06666700000000003,
+          "owp": -0.04333300000000001,
+          "oowp": -0.0007410000000000472
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "4A",
+        "team": "EAST",
+        "officialTeam": "East",
+        "officialRank": 24,
+        "rusRank": 23,
+        "rankDifference": -1,
+        "officialRecord": "0-4",
+        "rusRecord": "0-3",
+        "recordMatch": false,
+        "officialRpi": 0.382083,
+        "rusRpi": 0.37083333333333335,
+        "rpiDifference": -0.011249666666666658,
         "componentDifference": {
           "mwp": 0,
-          "owp": -3.3333333332441484e-7,
-          "oowp": -0.00500000000000006
+          "owp": -0.012499999999999956,
+          "oowp": -0.0562496666666667
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
@@ -3281,18 +3281,18 @@
         "officialRank": 25,
         "rusRank": 25,
         "rankDifference": 0,
-        "officialRecord": "0-5",
+        "officialRecord": "0-6",
         "rusRecord": "0-5",
-        "recordMatch": true,
-        "officialRpi": 0.336767,
+        "recordMatch": false,
+        "officialRpi": 0.331944,
         "rusRpi": 0.3375,
-        "rpiDifference": 0.0007330000000000392,
+        "rpiDifference": 0.005556000000000005,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": 0.007333000000000034
+          "owp": 0.016666999999999987,
+          "oowp": -0.01944399999999996
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
@@ -3304,15 +3304,15 @@
         "officialRecord": "0-6",
         "rusRecord": "0-6",
         "recordMatch": true,
-        "officialRpi": 0.31225,
+        "officialRpi": 0.3,
         "rusRpi": 0.31375,
-        "rpiDifference": 0.0014999999999999458,
+        "rpiDifference": 0.013749999999999984,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": 0.015000000000000013
+          "owp": 0.033332999999999946,
+          "oowp": -0.012500000000000011
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "4A",
@@ -3321,18 +3321,18 @@
         "officialRank": 27,
         "rusRank": 27,
         "rankDifference": 0,
-        "officialRecord": "1-4",
+        "officialRecord": "1-5",
         "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.263133,
+        "recordMatch": false,
+        "officialRpi": 0.256426,
         "rusRpi": 0.2641333333333334,
-        "rpiDifference": 0.0010003333333333808,
+        "rpiDifference": 0.007707333333333399,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.010000333333333333
+          "mwp": 0.033333,
+          "owp": -0.016666999999999987,
+          "oowp": 0.002074333333333289
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "4A",
@@ -3344,15 +3344,15 @@
         "officialRecord": "1-5",
         "rusRecord": "1-5",
         "recordMatch": true,
-        "officialRpi": 0.198083,
+        "officialRpi": 0.205972,
         "rusRpi": 0.19791666666666666,
-        "rpiDifference": -0.00016633333333335165,
+        "rpiDifference": -0.008055333333333331,
         "componentDifference": {
           "mwp": -3.333333333521704e-7,
-          "owp": -3.333333333521704e-7,
-          "oowp": -0.0016663333333333252
+          "owp": -0.01666633333333334,
+          "oowp": -0.005555333333333301
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "4A",
@@ -3361,18 +3361,18 @@
         "officialRank": 29,
         "rusRank": 29,
         "rankDifference": 0,
-        "officialRecord": "0-5",
+        "officialRecord": "0-6",
         "rusRecord": "0-5",
-        "recordMatch": true,
-        "officialRpi": 0.189233,
+        "recordMatch": false,
+        "officialRpi": 0.186944,
         "rusRpi": 0.18863333333333335,
-        "rpiDifference": -0.000599666666666665,
+        "rpiDifference": 0.0016893333333333482,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": -0.005999666666666625
+          "owp": 0.016666999999999987,
+          "oowp": -0.058110666666666644
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "3A",
@@ -3381,18 +3381,18 @@
         "officialRank": 1,
         "rusRank": 1,
         "rankDifference": 0,
-        "officialRecord": "4-1",
+        "officialRecord": "5-1",
         "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.7814,
+        "recordMatch": false,
+        "officialRpi": 0.742843,
         "rusRpi": 0.7810000000000001,
-        "rpiDifference": -0.0003999999999998449,
+        "rpiDifference": 0.03815700000000011,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.0040000000000000036
+          "mwp": -0.033332999999999946,
+          "owp": 0.10833300000000001,
+          "oowp": 0.04407399999999995
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "3A",
@@ -3404,13 +3404,53 @@
         "officialRecord": "4-1",
         "rusRecord": "4-1",
         "recordMatch": true,
-        "officialRpi": 0.686917,
+        "officialRpi": 0.708567,
         "rusRpi": 0.6962499999999999,
-        "rpiDifference": 0.009332999999999925,
+        "rpiDifference": -0.012317000000000022,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0.020000333333333287,
-          "oowp": 0.0033330000000000304
+          "owp": -0.036666666666666736,
+          "oowp": 0.04183300000000012
+        },
+        "likelyCause": "One or more opponent records differ from the official table."
+      },
+      {
+        "classification": "3A",
+        "team": "RICHFIELD",
+        "officialTeam": "Richfield",
+        "officialRank": 3,
+        "rusRank": 4,
+        "rankDifference": 1,
+        "officialRecord": "5-1",
+        "rusRecord": "4-1",
+        "recordMatch": false,
+        "officialRpi": 0.604778,
+        "rusRpi": 0.6263,
+        "rpiDifference": 0.02152199999999993,
+        "componentDifference": {
+          "mwp": -0.033332999999999946,
+          "owp": 0.07500000000000001,
+          "oowp": 0.027722000000000024
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "3A",
+        "team": "JUAB",
+        "officialTeam": "Juab",
+        "officialRank": 4,
+        "rusRank": 5,
+        "rankDifference": 1,
+        "officialRecord": "3-2",
+        "rusRecord": "3-2",
+        "recordMatch": true,
+        "officialRpi": 0.595067,
+        "rusRpi": 0.6203,
+        "rpiDifference": 0.02523299999999995,
+        "componentDifference": {
+          "mwp": 0,
+          "owp": 0.06000000000000005,
+          "oowp": -0.01766699999999999
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3418,61 +3458,21 @@
         "classification": "3A",
         "team": "NORTH SANPETE",
         "officialTeam": "North Sanpete",
-        "officialRank": 3,
-        "rusRank": 3,
-        "rankDifference": 0,
-        "officialRecord": "4-1",
-        "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.661,
-        "rusRpi": 0.661,
-        "rpiDifference": 0,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -1.1102230246251565e-16
-        },
-        "likelyCause": null
-      },
-      {
-        "classification": "3A",
-        "team": "RICHFIELD",
-        "officialTeam": "Richfield",
-        "officialRank": 4,
-        "rusRank": 4,
-        "rankDifference": 0,
-        "officialRecord": "4-1",
-        "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.6263,
-        "rusRpi": 0.6263,
-        "rpiDifference": 0,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0
-        },
-        "likelyCause": null
-      },
-      {
-        "classification": "3A",
-        "team": "JUAB",
-        "officialTeam": "Juab",
         "officialRank": 5,
-        "rusRank": 5,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.6203,
-        "rusRpi": 0.6203,
-        "rpiDifference": 0,
+        "rusRank": 3,
+        "rankDifference": -2,
+        "officialRecord": "4-2",
+        "rusRecord": "4-1",
+        "recordMatch": false,
+        "officialRpi": 0.590694,
+        "rusRpi": 0.661,
+        "rpiDifference": 0.07030599999999998,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0
+          "mwp": 0.13333300000000003,
+          "owp": 0.0166670000000001,
+          "oowp": 0.02805599999999997
         },
-        "likelyCause": null
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "3A",
@@ -3481,18 +3481,18 @@
         "officialRank": 6,
         "rusRank": 6,
         "rankDifference": 0,
-        "officialRecord": "4-1",
+        "officialRecord": "5-1",
         "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.5946,
+        "recordMatch": false,
+        "officialRpi": 0.586343,
         "rusRpi": 0.5946,
-        "rpiDifference": 0,
+        "rpiDifference": 0.00825700000000007,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0
+          "mwp": -0.033332999999999946,
+          "owp": 0.050000000000000044,
+          "oowp": 0.007574000000000081
         },
-        "likelyCause": null
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "3A",
@@ -3501,58 +3501,58 @@
         "officialRank": 7,
         "rusRank": 8,
         "rankDifference": 1,
-        "officialRecord": "3-2",
+        "officialRecord": "4-2",
         "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.52455,
+        "recordMatch": false,
+        "officialRpi": 0.565111,
         "rusRpi": 0.5235000000000001,
-        "rpiDifference": -0.0010499999999998844,
+        "rpiDifference": -0.041610999999999954,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.010499999999999954
+          "mwp": -0.06666700000000003,
+          "owp": -0.016666999999999987,
+          "oowp": -0.04111100000000001
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "3A",
-        "team": "OGDEN",
-        "officialTeam": "Ogden",
-        "officialRank": 8,
-        "rusRank": 7,
-        "rankDifference": -1,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.518433,
-        "rusRpi": 0.5413333333333333,
-        "rpiDifference": 0.0229003333333333,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0.04999999999999999,
-          "oowp": 0.0040003333333332725
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "3A",
         "team": "LOGAN",
         "officialTeam": "Logan",
-        "officialRank": 9,
+        "officialRank": 8,
         "rusRank": 9,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
+        "rankDifference": 1,
+        "officialRecord": "4-2",
         "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.503,
+        "recordMatch": false,
+        "officialRpi": 0.549583,
         "rusRpi": 0.5028,
-        "rpiDifference": -0.00019999999999997797,
+        "rpiDifference": -0.04678300000000002,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.0020000000000000018
+          "mwp": -0.06666700000000003,
+          "owp": -0.033333,
+          "oowp": -0.017832999999999988
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "3A",
+        "team": "OGDEN",
+        "officialTeam": "Ogden",
+        "officialRank": 9,
+        "rusRank": 7,
+        "rankDifference": -2,
+        "officialRecord": "3-3",
+        "rusRecord": "3-2",
+        "recordMatch": false,
+        "officialRpi": 0.480231,
+        "rusRpi": 0.5413333333333333,
+        "rpiDifference": 0.061102333333333314,
+        "componentDifference": {
+          "mwp": 0.09999999999999998,
+          "owp": 0.033333,
+          "oowp": 0.011018333333333241
+        },
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "3A",
@@ -3564,15 +3564,15 @@
         "officialRecord": "2-2",
         "rusRecord": "2-2",
         "recordMatch": true,
-        "officialRpi": 0.403375,
+        "officialRpi": 0.417569,
         "rusRpi": 0.40197916666666667,
-        "rpiDifference": -0.0013958333333333184,
+        "rpiDifference": -0.015589833333333358,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": -0.01395833333333335
+          "owp": -0.03749999999999998,
+          "oowp": 0.012847666666666646
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "3A",
@@ -3581,18 +3581,18 @@
         "officialRank": 11,
         "rusRank": 11,
         "rankDifference": 0,
-        "officialRecord": "1-4",
+        "officialRecord": "1-5",
         "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.385333,
+        "recordMatch": false,
+        "officialRpi": 0.385667,
         "rusRpi": 0.3855333333333334,
-        "rpiDifference": 0.0002003333333334134,
+        "rpiDifference": -0.00013366666666658755,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.0020003333333333817
+          "mwp": 0.033333,
+          "owp": -0.043332999999999955,
+          "oowp": 0.04366633333333342
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "3A",
@@ -3604,15 +3604,15 @@
         "officialRecord": "1-4",
         "rusRecord": "1-4",
         "recordMatch": true,
-        "officialRpi": 0.366667,
+        "officialRpi": 0.356611,
         "rusRpi": 0.36693333333333333,
-        "rpiDifference": 0.0002663333333333129,
+        "rpiDifference": 0.010322333333333322,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": 0.002666333333333326
+          "owp": 0.020000000000000018,
+          "oowp": 0.013222333333333336
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "3A",
@@ -3621,18 +3621,18 @@
         "officialRank": 13,
         "rusRank": 13,
         "rankDifference": 0,
-        "officialRecord": "1-4",
+        "officialRecord": "1-5",
         "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.297867,
+        "recordMatch": false,
+        "officialRpi": 0.335509,
         "rusRpi": 0.3479333333333333,
-        "rpiDifference": 0.050066333333333324,
+        "rpiDifference": 0.012424333333333315,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0.09999999999999998,
-          "oowp": 0.05066633333333331
+          "mwp": 0.033333,
+          "owp": 0.011110999999999982,
+          "oowp": -0.07575966666666667
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "2A",
@@ -3641,18 +3641,18 @@
         "officialRank": 1,
         "rusRank": 1,
         "rankDifference": 0,
-        "officialRecord": "4-1",
+        "officialRecord": "5-1",
         "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.731833,
+        "recordMatch": false,
+        "officialRpi": 0.765657,
         "rusRpi": 0.7410666666666668,
-        "rpiDifference": 0.009233666666666807,
+        "rpiDifference": -0.02459033333333327,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0.019999999999999907,
-          "oowp": 0.0023336666666667893
+          "mwp": -0.033332999999999946,
+          "owp": -0.025000000000000022,
+          "oowp": 0.0165926666666667
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "2A",
@@ -3661,18 +3661,18 @@
         "officialRank": 2,
         "rusRank": 2,
         "rankDifference": 0,
-        "officialRecord": "4-1",
+        "officialRecord": "4-2",
         "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.661833,
+        "recordMatch": false,
+        "officialRpi": 0.637611,
         "rusRpi": 0.6631,
-        "rpiDifference": 0.0012670000000000181,
+        "rpiDifference": 0.025488999999999984,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.012667000000000095
+          "mwp": 0.13333300000000003,
+          "owp": -0.07499999999999996,
+          "oowp": -0.007610999999999923
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "2A",
@@ -3684,33 +3684,13 @@
         "officialRecord": "3-2",
         "rusRecord": "3-2",
         "recordMatch": true,
-        "officialRpi": 0.6199,
+        "officialRpi": 0.627067,
         "rusRpi": 0.6225,
-        "rpiDifference": 0.0026000000000000467,
+        "rpiDifference": -0.004566999999999988,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": 0.026000000000000023
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "2A",
-        "team": "ALA",
-        "officialTeam": "American Leadership Academy",
-        "officialRank": 4,
-        "rusRank": 4,
-        "rankDifference": 0,
-        "officialRecord": "4-1",
-        "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.512217,
-        "rusRpi": 0.5189666666666667,
-        "rpiDifference": 0.006749666666666654,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0.013332999999999984,
-          "oowp": 0.007499666666666682
+          "owp": -0.020000000000000018,
+          "oowp": 0.044332999999999956
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3718,21 +3698,41 @@
         "classification": "2A",
         "team": "SUMMIT ACADEMY",
         "officialTeam": "Summit Academy",
-        "officialRank": 5,
+        "officialRank": 4,
         "rusRank": 5,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
+        "rankDifference": 1,
+        "officialRecord": "3-3",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.498733,
+        "recordMatch": false,
+        "officialRpi": 0.560694,
         "rusRpi": 0.5157999999999999,
-        "rpiDifference": 0.017066999999999943,
+        "rpiDifference": -0.0448940000000001,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0.033333333333333326,
-          "oowp": 0.02066699999999999
+          "mwp": -0.09999999999999998,
+          "owp": -0.011110666666666713,
+          "oowp": 0.05105599999999999
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "2A",
+        "team": "ALA",
+        "officialTeam": "American Leadership Academy",
+        "officialRank": 5,
+        "rusRank": 4,
+        "rankDifference": -1,
+        "officialRecord": "4-2",
+        "rusRecord": "4-1",
+        "recordMatch": false,
+        "officialRpi": 0.470194,
+        "rusRpi": 0.5189666666666667,
+        "rpiDifference": 0.048772666666666686,
+        "componentDifference": {
+          "mwp": 0.13333300000000003,
+          "owp": -0.028332999999999997,
+          "oowp": 0.015222666666666607
+        },
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "2A",
@@ -3741,18 +3741,18 @@
         "officialRank": 6,
         "rusRank": 6,
         "rankDifference": 0,
-        "officialRecord": "2-3",
+        "officialRecord": "2-4",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.432133,
+        "recordMatch": false,
+        "officialRpi": 0.404917,
         "rusRpi": 0.4327000000000001,
-        "rpiDifference": 0.0005670000000000952,
+        "rpiDifference": 0.027783000000000058,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.005666999999999978
+          "mwp": 0.06666700000000003,
+          "owp": -0.013888999999999985,
+          "oowp": 0.04033300000000001
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "2A",
@@ -3764,15 +3764,15 @@
         "officialRecord": "1-4",
         "rusRecord": "1-4",
         "recordMatch": true,
-        "officialRpi": 0.403333,
+        "officialRpi": 0.3949,
         "rusRpi": 0.40360000000000007,
-        "rpiDifference": 0.00026700000000007273,
+        "rpiDifference": 0.008700000000000097,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0,
-          "oowp": 0.0026670000000000305
+          "owp": 0.020000000000000018,
+          "oowp": -0.002999999999999947
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "2A",
@@ -3781,18 +3781,18 @@
         "officialRank": 8,
         "rusRank": 8,
         "rankDifference": 0,
-        "officialRecord": "1-4",
+        "officialRecord": "2-4",
         "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.3385,
+        "recordMatch": false,
+        "officialRpi": 0.393611,
         "rusRpi": 0.3508333333333334,
-        "rpiDifference": 0.012333333333333363,
+        "rpiDifference": -0.0427776666666666,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0.029999666666666702,
-          "oowp": -0.011666666666666714
+          "mwp": -0.13333299999999998,
+          "owp": 0.04944466666666669,
+          "oowp": -0.05027766666666672
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "2A",
@@ -3801,18 +3801,18 @@
         "officialRank": 9,
         "rusRank": 9,
         "rankDifference": 0,
-        "officialRecord": "1-2",
+        "officialRecord": "1-3",
         "rusRecord": "1-2",
-        "recordMatch": true,
-        "officialRpi": 0.307833,
+        "recordMatch": false,
+        "officialRpi": 0.250556,
         "rusRpi": 0.31083333333333335,
-        "rpiDifference": 0.003000333333333327,
+        "rpiDifference": 0.06027733333333335,
         "componentDifference": {
-          "mwp": 3.3333333332441484e-7,
-          "owp": 0,
-          "oowp": 0.03000033333333335
+          "mwp": 0.08333333333333331,
+          "owp": 0.04999999999999999,
+          "oowp": 0.002777333333333354
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "1A",
@@ -3824,13 +3824,13 @@
         "officialRecord": "5-1",
         "rusRecord": "4-1",
         "recordMatch": false,
-        "officialRpi": 0.68625,
+        "officialRpi": 0.686435,
         "rusRpi": 0.6840000000000002,
-        "rpiDifference": -0.0022499999999998632,
+        "rpiDifference": -0.002434999999999854,
         "componentDifference": {
           "mwp": -0.033332999999999946,
           "owp": 0.033332999999999946,
-          "oowp": -0.022499999999999964
+          "oowp": -0.02435199999999993
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -3841,18 +3841,18 @@
         "officialRank": 2,
         "rusRank": 3,
         "rankDifference": 1,
-        "officialRecord": "3-2",
+        "officialRecord": "4-2",
         "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.602167,
+        "recordMatch": false,
+        "officialRpi": 0.607972,
         "rusRpi": 0.5983333333333334,
-        "rpiDifference": -0.003833666666666624,
+        "rpiDifference": -0.009638666666666573,
         "componentDifference": {
-          "mwp": 0,
-          "owp": -0.010000000000000009,
-          "oowp": 0.006666333333333219
+          "mwp": -0.06666700000000003,
+          "owp": 0.033332999999999946,
+          "oowp": 0.05361133333333323
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "1A",
@@ -3861,56 +3861,76 @@
         "officialRank": 3,
         "rusRank": 2,
         "rankDifference": -1,
-        "officialRecord": "4-1",
+        "officialRecord": "5-1",
         "rusRecord": "4-1",
-        "recordMatch": true,
-        "officialRpi": 0.566917,
+        "recordMatch": false,
+        "officialRpi": 0.575148,
         "rusRpi": 0.6194,
-        "rpiDifference": 0.052482999999999946,
+        "rpiDifference": 0.04425199999999996,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0.12,
-          "oowp": -0.01516699999999993
+          "mwp": -0.033332999999999946,
+          "owp": 0.13333300000000003,
+          "oowp": -0.00748099999999996
         },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "1A",
-        "team": "ENTERPRISE",
-        "officialTeam": "Enterprise",
-        "officialRank": 4,
-        "rusRank": 4,
-        "rankDifference": 0,
-        "officialRecord": "3-2",
-        "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.526833,
-        "rusRpi": 0.5288333333333334,
-        "rpiDifference": 0.0020003333333333817,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.020000333333333287
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "1A",
         "team": "BEAVER",
         "officialTeam": "Beaver",
-        "officialRank": 5,
+        "officialRank": 4,
         "rusRank": 5,
-        "rankDifference": 0,
+        "rankDifference": 1,
         "officialRecord": "2-4",
         "rusRecord": "2-3",
         "recordMatch": false,
-        "officialRpi": 0.50525,
+        "officialRpi": 0.5025,
         "rusRpi": 0.5133333333333334,
-        "rpiDifference": 0.008083333333333442,
+        "rpiDifference": 0.010833333333333472,
         "componentDifference": {
           "mwp": 0.06666700000000003,
-          "owp": -0.05500000000000005,
-          "oowp": 0.02833333333333321
+          "owp": -0.046667000000000014,
+          "oowp": 0.0183333333333332
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "1A",
+        "team": "ENTERPRISE",
+        "officialTeam": "Enterprise",
+        "officialRank": 5,
+        "rusRank": 4,
+        "rankDifference": -1,
+        "officialRecord": "3-3",
+        "rusRecord": "3-2",
+        "recordMatch": false,
+        "officialRpi": 0.488787,
+        "rusRpi": 0.5288333333333334,
+        "rpiDifference": 0.04004633333333335,
+        "componentDifference": {
+          "mwp": 0.09999999999999998,
+          "owp": -0.024999999999999967,
+          "oowp": 0.06296333333333326
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "1A",
+        "team": "MILLARD",
+        "officialTeam": "Millard",
+        "officialRank": 6,
+        "rusRank": 7,
+        "rankDifference": 1,
+        "officialRecord": "3-3",
+        "rusRecord": "2-3",
+        "recordMatch": false,
+        "officialRpi": 0.481472,
+        "rusRpi": 0.4425666666666667,
+        "rpiDifference": -0.03890533333333329,
+        "componentDifference": {
+          "mwp": -0.09999999999999998,
+          "owp": 0.008333000000000035,
+          "oowp": 0.02344466666666667
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -3918,81 +3938,61 @@
         "classification": "1A",
         "team": "NORTH SEVIER",
         "officialTeam": "North Sevier",
-        "officialRank": 6,
-        "rusRank": 6,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
-        "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.4545,
-        "rusRpi": 0.4526666666666667,
-        "rpiDifference": -0.001833333333333298,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.010000000000000009,
-          "oowp": 0.026666666666666672
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "1A",
-        "team": "MILLARD",
-        "officialTeam": "Millard",
         "officialRank": 7,
-        "rusRank": 7,
-        "rankDifference": 0,
-        "officialRecord": "2-3",
+        "rusRank": 6,
+        "rankDifference": -1,
+        "officialRecord": "2-4",
         "rusRecord": "2-3",
-        "recordMatch": true,
-        "officialRpi": 0.443,
-        "rusRpi": 0.4425666666666667,
-        "rpiDifference": -0.0004333333333332856,
+        "recordMatch": false,
+        "officialRpi": 0.427731,
+        "rusRpi": 0.4526666666666667,
+        "rpiDifference": 0.024935666666666745,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": -0.0043333333333333
+          "mwp": 0.06666700000000003,
+          "owp": -0.022221999999999964,
+          "oowp": 0.04935166666666668
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
-      },
-      {
-        "classification": "1A",
-        "team": "PAROWAN",
-        "officialTeam": "Parowan",
-        "officialRank": 8,
-        "rusRank": 8,
-        "rankDifference": 0,
-        "officialRecord": "1-4",
-        "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.413658,
-        "rusRpi": 0.4106,
-        "rpiDifference": -0.003058000000000005,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": 3.333333332689037e-7,
-          "oowp": -0.030583000000000027
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "1A",
         "team": "GUNNISON VALLEY",
         "officialTeam": "Gunnison Valley",
-        "officialRank": 9,
+        "officialRank": 8,
         "rusRank": 9,
-        "rankDifference": 0,
-        "officialRecord": "2-2",
+        "rankDifference": 1,
+        "officialRecord": "2-3",
         "rusRecord": "2-2",
-        "recordMatch": true,
-        "officialRpi": 0.39625,
+        "recordMatch": false,
+        "officialRpi": 0.413111,
         "rusRpi": 0.397,
-        "rpiDifference": 0.0007500000000000284,
+        "rpiDifference": -0.016110999999999986,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0,
-          "oowp": 0.007499999999999951
+          "mwp": 0.09999999999999998,
+          "owp": -0.15000000000000002,
+          "oowp": 0.06388899999999997
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "1A",
+        "team": "PAROWAN",
+        "officialTeam": "Parowan",
+        "officialRank": 9,
+        "rusRank": 8,
+        "rankDifference": -1,
+        "officialRecord": "1-5",
+        "rusRecord": "1-4",
+        "recordMatch": false,
+        "officialRpi": 0.367049,
+        "rusRpi": 0.4106,
+        "rpiDifference": 0.043551000000000006,
+        "componentDifference": {
+          "mwp": 0.033333,
+          "owp": 0.08333333333333326,
+          "oowp": -0.08948600000000001
+        },
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "8P",
@@ -4004,13 +4004,13 @@
         "officialRecord": "3-1",
         "rusRecord": "3-1",
         "recordMatch": true,
-        "officialRpi": 0.724722,
+        "officialRpi": 0.722188,
         "rusRpi": 0.6386805555555556,
-        "rpiDifference": -0.08604144444444439,
+        "rpiDifference": -0.08350744444444447,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.16250033333333336,
-          "oowp": -0.12916644444444453
+          "owp": -0.16666633333333336,
+          "oowp": -0.08506944444444448
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -4024,13 +4024,13 @@
         "officialRecord": "4-1",
         "rusRecord": "4-1",
         "recordMatch": true,
-        "officialRpi": 0.620944,
+        "officialRpi": 0.6343,
         "rusRpi": 0.6337666666666667,
-        "rpiDifference": 0.012822666666666649,
+        "rpiDifference": -0.0005333333333332746,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0.033333,
-          "oowp": -0.021777333333333426
+          "owp": -0.0066669999999999785,
+          "oowp": 0.02466666666666656
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -4041,18 +4041,18 @@
         "officialRank": 3,
         "rusRank": 3,
         "rankDifference": 0,
-        "officialRecord": "3-2",
+        "officialRecord": "4-2",
         "rusRecord": "3-2",
-        "recordMatch": true,
-        "officialRpi": 0.590733,
+        "recordMatch": false,
+        "officialRpi": 0.583519,
         "rusRpi": 0.5861666666666666,
-        "rpiDifference": -0.004566333333333339,
+        "rpiDifference": 0.0026476666666666038,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 3.333333332689037e-7,
-          "oowp": -0.045666333333333364
+          "mwp": -0.06666700000000003,
+          "owp": 0.06666633333333327,
+          "oowp": 0.026481666666666626
         },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "8P",
@@ -4064,95 +4064,95 @@
         "officialRecord": "2-2",
         "rusRecord": "2-2",
         "recordMatch": true,
-        "officialRpi": 0.518507,
+        "officialRpi": 0.492389,
         "rusRpi": 0.4974166666666666,
-        "rpiDifference": -0.021090333333333433,
+        "rpiDifference": 0.005027666666666597,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.041667000000000065,
-          "oowp": -0.02340233333333336
+          "owp": 0.012499999999999956,
+          "oowp": -0.005972333333333357
         },
         "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "8P",
-        "team": "SAINT JOSEPH",
-        "officialTeam": "St. Joseph",
-        "officialRank": 5,
-        "rusRank": 5,
-        "rankDifference": 0,
-        "officialRecord": "2-2",
-        "rusRecord": "2-2",
-        "recordMatch": true,
-        "officialRpi": 0.488333,
-        "rusRpi": 0.4737222222222222,
-        "rpiDifference": -0.014610777777777806,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -0.03749999999999998,
-          "oowp": 0.0226392222222222
-        },
-        "likelyCause": "One or more opponent records differ from the official table."
-      },
-      {
-        "classification": "8P",
-        "team": "UMA-LEHI",
-        "officialTeam": "Utah Military Academy - Camp Williams",
-        "officialRank": 6,
-        "rusRank": 8,
-        "rankDifference": 2,
-        "officialRecord": "3-2",
-        "rusRecord": "3-3",
-        "recordMatch": false,
-        "officialRpi": 0.471417,
-        "rusRpi": 0.4245185185185185,
-        "rpiDifference": -0.04689848148148146,
-        "componentDifference": {
-          "mwp": -0.09999999999999998,
-          "owp": -0.0027777777777778234,
-          "oowp": -0.006481814814814801
-        },
-        "likelyCause": "Completed-game record differs from the official table."
-      },
-      {
-        "classification": "8P",
-        "team": "MILFORD",
-        "officialTeam": "Milford",
-        "officialRank": 7,
-        "rusRank": 7,
-        "rankDifference": 0,
-        "officialRecord": "1-4",
-        "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.433125,
-        "rusRpi": 0.4306666666666667,
-        "rpiDifference": -0.0024583333333332846,
-        "componentDifference": {
-          "mwp": 0,
-          "owp": -3.33333333379926e-7,
-          "oowp": -0.0245833333333334
-        },
-        "likelyCause": "One or more second-level opponent records differ from the official table."
       },
       {
         "classification": "8P",
         "team": "UMA-HILLFIELD",
         "officialTeam": "Utah Military Academy - Hill Field",
-        "officialRank": 8,
+        "officialRank": 5,
         "rusRank": 6,
-        "rankDifference": -2,
-        "officialRecord": "1-2",
+        "rankDifference": 1,
+        "officialRecord": "2-2",
         "rusRecord": "2-2",
-        "recordMatch": false,
-        "officialRpi": 0.398889,
+        "recordMatch": true,
+        "officialRpi": 0.471694,
         "rusRpi": 0.4725,
-        "rpiDifference": 0.07361099999999998,
+        "rpiDifference": 0.0008059999999999734,
         "componentDifference": {
-          "mwp": 0.166667,
-          "owp": -0.009721999999999953,
-          "oowp": 0.029860999999999915
+          "mwp": 0,
+          "owp": 0,
+          "oowp": 0.008055999999999952
+        },
+        "likelyCause": "One or more second-level opponent records differ from the official table."
+      },
+      {
+        "classification": "8P",
+        "team": "MILFORD",
+        "officialTeam": "Milford",
+        "officialRank": 6,
+        "rusRank": 7,
+        "rankDifference": 1,
+        "officialRecord": "2-4",
+        "rusRecord": "1-4",
+        "recordMatch": false,
+        "officialRpi": 0.456743,
+        "rusRpi": 0.4306666666666667,
+        "rpiDifference": -0.026076333333333312,
+        "componentDifference": {
+          "mwp": -0.13333299999999998,
+          "owp": 0.09166666666666667,
+          "oowp": -0.07326433333333338
         },
         "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "8P",
+        "team": "SAINT JOSEPH",
+        "officialTeam": "St. Joseph",
+        "officialRank": 7,
+        "rusRank": 5,
+        "rankDifference": -2,
+        "officialRecord": "2-3",
+        "rusRecord": "2-2",
+        "recordMatch": false,
+        "officialRpi": 0.431478,
+        "rusRpi": 0.4737222222222222,
+        "rpiDifference": 0.04224422222222224,
+        "componentDifference": {
+          "mwp": 0.09999999999999998,
+          "owp": -0.007499999999999951,
+          "oowp": 0.006194222222222157
+        },
+        "likelyCause": "Completed-game record differs from the official table."
+      },
+      {
+        "classification": "8P",
+        "team": "UMA-LEHI",
+        "officialTeam": "Utah Military Academy - Camp Williams",
+        "officialRank": 8,
+        "rusRank": 8,
+        "rankDifference": 0,
+        "officialRecord": "3-3",
+        "rusRecord": "3-3",
+        "recordMatch": true,
+        "officialRpi": 0.415597,
+        "rusRpi": 0.4245185185185185,
+        "rpiDifference": 0.008921518518518523,
+        "componentDifference": {
+          "mwp": 0,
+          "owp": 0.022222222222222143,
+          "oowp": -0.010786814814814805
+        },
+        "likelyCause": "One or more opponent records differ from the official table."
       },
       {
         "classification": "8P",
@@ -4164,13 +4164,13 @@
         "officialRecord": "2-3",
         "rusRecord": "2-3",
         "recordMatch": true,
-        "officialRpi": 0.383333,
+        "officialRpi": 0.363533,
         "rusRpi": 0.37735,
-        "rpiDifference": -0.005982999999999961,
+        "rpiDifference": 0.013817000000000024,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.020000333333333342,
-          "oowp": 0.030167
+          "owp": 0.026666666666666672,
+          "oowp": 0.01816699999999999
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -4181,18 +4181,18 @@
         "officialRank": 10,
         "rusRank": 10,
         "rankDifference": 0,
-        "officialRecord": "1-4",
+        "officialRecord": "1-5",
         "rusRecord": "1-4",
-        "recordMatch": true,
-        "officialRpi": 0.290167,
+        "recordMatch": false,
+        "officialRpi": 0.275088,
         "rusRpi": 0.3266277777777778,
-        "rpiDifference": 0.036460777777777786,
+        "rpiDifference": 0.051539777777777795,
         "componentDifference": {
-          "mwp": 0,
-          "owp": 0.08000000000000002,
-          "oowp": 0.0046107777777777414
+          "mwp": 0.033333,
+          "owp": 0.08277800000000002,
+          "oowp": -0.007102222222222232
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "Completed-game record differs from the official table."
       },
       {
         "classification": "8P",
@@ -4204,15 +4204,15 @@
         "officialRecord": "0-3",
         "rusRecord": "0-3",
         "recordMatch": true,
-        "officialRpi": 0.15213,
+        "officialRpi": 0.184417,
         "rusRpi": 0.1860462962962963,
-        "rpiDifference": 0.033916296296296305,
+        "rpiDifference": 0.0016292962962962954,
         "componentDifference": {
           "mwp": 0,
-          "owp": 0.07777777777777778,
-          "oowp": -0.01083303703703703
+          "owp": -2.2222222223478028e-7,
+          "oowp": 0.01629596296296293
         },
-        "likelyCause": "One or more opponent records differ from the official table."
+        "likelyCause": "One or more second-level opponent records differ from the official table."
       }
     ]
   }
