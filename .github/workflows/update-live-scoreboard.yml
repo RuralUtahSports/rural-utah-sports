@@ -1,158 +1,67 @@
 name: Update Final Scoreboard
-# Manual refresh requested: 2026-09-12T02:34:00Z
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows:
-      - "Build 2026 Standings"
-      - "Build Simulator Data"
-      - "Build Out of State Data"
-    types: [completed]
   push:
     paths:
-      - 'scripts/build_live_scoreboard_details.mjs'
-      - 'scripts/apply-manual-scoreboard-corrections.mjs'
-      - 'manual-scoreboard-corrections-2026.json'
-      - 'scripts/apply-scoreboard-schedule-overrides.mjs'
-      - 'scoreboard-schedule-overrides-2026.json'
       - '.github/workflows/update-live-scoreboard.yml'
+
 permissions:
   contents: write
 
 concurrency:
   group: live-scoreboard
-  # Cancel any older scoreboard job. This also stops a legacy game-night
-  # watcher from continuing to push commits after final-only mode is enabled.
   cancel-in-progress: true
 
 jobs:
-  refresh-live-details:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+  refresh-final-derived-data:
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 20
     steps:
       - name: Checkout latest main
         uses: actions/checkout@v4
         with:
           ref: main
 
-      - name: Refresh live box scores, game clock, scoring plays and stats
-        run: node scripts/enrich-deseret-game-details.mjs
-      - name: Build compact current-window scoreboard details
-        run: node scripts/build_live_scoreboard_details.mjs
-
-      - name: Reconcile Final/Live status from Deseret daily scoreboard
-        run: node scripts/reconcile-deseret-day-status.mjs
-
-      - name: Verify out-of-state scoreboard parser
-        run: node scripts/reconcile-deseret-unlinked-games.mjs --self-test
-
-      - name: Reconcile out-of-state games without direct Deseret URLs
-        run: node scripts/reconcile-deseret-unlinked-games.mjs
-
-      - name: Fill missing quarter scores from scoring plays
-        run: node scripts/fill-boxscore-from-scoring-plays.mjs
-
-      - name: Repair suspicious same-day statuses
-        run: node scripts/repair-live-status-anomalies.mjs
-
-      - name: Mark overdue scheduled games live after kickoff grace period
-        run: node scripts/apply-kickoff-live-fallback.mjs
-
-      - name: Apply verified manual scoreboard corrections
-        run: node scripts/apply-manual-scoreboard-corrections.mjs
-
-      # Run the rendered-browser pass last so the broader status repair cannot
-      # overwrite verified finals with a stale Scheduled badge.
-      - name: Reconcile rendered Deseret scoreboard
-        run: node scripts/reconcile-deseret-browser-live.mjs
-
-      - name: Import rendered Deseret game-page box scores
-        env:
-          DESERET_BROWSER_ONLY: '1'
-        run: node scripts/enrich-deseret-game-details.mjs
-
-      - name: Re-apply verified manual scoreboard corrections
-        run: node scripts/apply-manual-scoreboard-corrections.mjs
-
-      - name: Re-apply scoreboard schedule overrides
+      - name: Preserve verified schedule changes
         run: node scripts/apply-scoreboard-schedule-overrides.mjs
 
-      # Out-of-state kickoff times are discovered during daily-scoreboard
-      # reconciliation, so rebuild the compact feed after every reconciliation
-      # and correction step before publishing it.
-      - name: Rebuild compact current-window scoreboard details
-        run: node scripts/build_live_scoreboard_details.mjs
-
-      # Publish the scoreboard before the slower record-building work below.
-      # That way a later audit failure or job timeout cannot hold live scores hostage.
-      - name: Commit live scoreboard immediately
-        run: |
-          git config user.name "RuralUtahSports"
-          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add deseret-game-details.json deseret-live-details-2026.json
-          if git diff --cached --quiet; then
-            echo "Live scoreboard is already current."
-          else
-            git commit -m "Auto-refresh live scoreboard"
-            ok=0
-            for attempt in 1 2 3 4; do
-              if git pull --rebase -X theirs origin main && git push; then
-                ok=1
-                break
-              fi
-              git rebase --abort || true
-              sleep 5
-            done
-            if [ "$ok" -ne 1 ]; then exit 1; fi
-          fi
-
-      - name: Refresh 2026 team records for rankings and standings
+      - name: Refresh 2026 standings
         env:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
           WEEKLY_GID: 1211467999
         run: node scripts/build_standings_2026.mjs
 
-      # Team pages use teams-data.json for their all-time/current summary.
-      # Build it from the freshly rebuilt standings before auditing so a
-      # diagnostic mismatch cannot prevent finalized games from publishing.
-      - name: Refresh all-time team records with verified 2026 finals
+      - name: Refresh all-time team records
         env:
           SHEET_ID: 1IHr84tlMdZVAazLDh0HV7ZWoxNH4UpjpLt_UTV8KZwo
           CLEAN_GAMES_GID: 627882418
         run: node scripts/update-alltime-team-records.mjs
 
-      - name: Sync final games into team page Games tabs
+      - name: Sync final games into team pages
         run: node scripts/sync_current_finals_to_team_pages.mjs
 
-      - name: Commit team records immediately
-        run: |
-          git config user.name "RuralUtahSports"
-          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add standings-2026.json teams-data.json team-schedules.json team-page-data
-          if git diff --cached --quiet; then
-            echo "Team records are already current."
-          else
-            git commit -m "Auto-refresh team records"
-            ok=0
-            for attempt in 1 2 3 4; do
-              if git pull --rebase -X theirs origin main && git push; then
-                ok=1
-                break
-              fi
-              git rebase --abort || true
-              sleep 5
-            done
-            if [ "$ok" -ne 1 ]; then exit 1; fi
-          fi
-
-      # Keep the audit as a warning/diagnostic after the live record files are
-      # safely published. A points-total mismatch should never freeze records.
-      - name: Audit all 2026 Utah team records
+      - name: Audit 2026 team records
         continue-on-error: true
         run: node scripts/audit_standings_records_2026.mjs
 
-      # GitHub scheduled events are not firing reliably during tonight's games.
-      # A workflow-file push starts one bounded game-night watcher that keeps
-      # publishing the compact feed every minute for the next four hours.
+      - name: Publish final-derived data
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add weekly-simulation.json standings-2026.json teams-data.json team-schedules.json team-page-data
+          if git diff --cached --quiet; then
+            echo "Final-derived data is already current."
+            exit 0
+          fi
+          git commit -m "Refresh data from verified finals"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push; then
+              ok=1
+              break
+            fi
+            git rebase --abort || true
+            sleep 5
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
