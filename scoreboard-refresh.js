@@ -134,10 +134,7 @@
   async function ensureFullWeeklyFeed() {
     for (let i = 0; i < 30; i++) {
       try {
-        if (Array.isArray(allGames) && allGames.length) {
-          games = allGames.slice();
-          return;
-        }
+        if (Array.isArray(allGames) && allGames.length) return;
       } catch {}
       await sleep(100);
     }
@@ -146,11 +143,16 @@
       const response = await fetch(`${WEEKLY_FEED}?v=${Date.now()}`, { cache: 'no-store' });
       if (!response.ok) return;
       const payload = await response.json();
-      const fresh = (payload?.games || []).filter(g => g?.awayTeam && g?.homeTeam);
+      const fresh = (payload?.games || []).filter(g => g?.awayTeam && g?.homeTeam && yearOf(g.date) === 2026);
       if (!fresh.length) return;
-      if (typeof games !== 'undefined' && Array.isArray(games)) {
-        games = fresh;
-      }
+      allGames = fresh.sort((a, b) =>
+        dateVal(a.date) - dateVal(b.date) ||
+        String(a.awayTeam).localeCompare(String(b.awayTeam))
+      );
+      const selected = Number(document.getElementById('scoreboardWeekSelect')?.value);
+      games = Number.isInteger(selected)
+        ? allGames.filter(g => gameWeekNumber(g) === selected)
+        : allGames.slice();
     } catch (error) {
       console.warn('Could not recover full weekly scoreboard feed', error);
     }
@@ -438,6 +440,8 @@
         if (!element.open) return;
         const key = element.dataset.detailKey || '';
         if (!key || loadedFullDetails.has(key)) return;
+        const current = detailMap?.get?.(key) || null;
+        if (current?.final === true && Array.isArray(current?.boxScore?.rows) && current.boxScore.rows.length >= 2) return;
         const payload = await loadFullDetails();
         const detail = payload?.games?.[key];
         if (!detail || detail.final !== true) return;
@@ -551,7 +555,6 @@
 
   (async () => {
     await ensureFullWeeklyFeed();
-    await refreshWeeklyFeed(true);
     await loadLegacyHelper();
     installAuthoritativeScoreState();
     installRegionAwareRender();
