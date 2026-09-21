@@ -112,10 +112,9 @@
   async function load(){
     try{
       const stamp=Date.now();
-      const [r,tr,dr,er]=await Promise.all([
+      const [r,tr,er]=await Promise.all([
         fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}),
-        fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),
-        fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),
+        fetch(`team-colors-exact.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),
         fetch(`elo-game-changes-2026.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)
       ]);
       if(!r.ok)throw new Error();
@@ -123,7 +122,7 @@
         teamColors=new Map();
         for(const t of await tr.json())if(t?.team){teamColors.set(key(t.team),t);teamColors.set(norm(t.team),t)}
       }
-      if(dr?.ok){const details=await dr.json();detailGames=details?.games||{}}else detailGames={};
+      detailGames={};
       if(er?.ok){const e=await er.json();eloGames=e?.games||{}}else eloGames={};
       const data=await r.json(), weekGames=currentWeekGames(data.games||[]), rows=finalGames(weekGames).map(result).filter(x=>x.winner!=='Tie');
       if(!rows.length){host.innerHTML=card('Top Win',null,'');return}
