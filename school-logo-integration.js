@@ -43,9 +43,11 @@ function start(){
     dedupeScoreboardLiveStatus(root);
   };
   const pending=new Set();let queued=false;
+  const relevantSelector='img,.team-card,.rank-row,.state25-row,.small-school-row,.standings,.standings-row,.standing-row,.status.live';
+  const relevant=root=>root?.nodeType===1&&(root.matches?.(relevantSelector)||!!root.querySelector?.(relevantSelector));
   const queue=root=>{if(root?.nodeType===1)pending.add(root);if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;const roots=[...pending];pending.clear();roots.forEach(enhance)})};
   Promise.resolve(A.load?.()).finally(()=>queue(main));queue(main);
-  const observer=new MutationObserver(mutations=>mutations.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)queue(n)})));
+  const observer=new MutationObserver(mutations=>mutations.forEach(m=>m.addedNodes.forEach(n=>{if(relevant(n))queue(n)})));
   observer.observe(main,{childList:true,subtree:true});
   window.addEventListener('pageshow',()=>queue(main),{passive:true});
 }
