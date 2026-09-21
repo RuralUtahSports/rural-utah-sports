@@ -51,7 +51,7 @@ function addStyles(){
   .filters,.controls,.toolbar{border-radius:8px!important}
   .table-wrap,.table-scroll,.rus-mobile-table-scroll{border-radius:8px!important}
 
-  .rus-mobile-bottom-nav{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));left:0;right:0;bottom:0;z-index:2147483000;background:rgba(8,8,8,.97);border-top:1px solid #333;padding:5px 5px calc(5px + env(safe-area-inset-bottom));box-shadow:0 -10px 28px rgba(0,0,0,.42);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .rus-mobile-bottom-nav{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));left:0;right:0;bottom:0;z-index:2147483000;background:#080808;border-top:1px solid #333;padding:5px 5px calc(5px + env(safe-area-inset-bottom));box-shadow:0 -4px 12px rgba(0,0,0,.28);contain:layout paint}
   .rus-mobile-nav-item,.rus-mobile-more-button{appearance:none;border:0;background:transparent;color:#aaa;text-decoration:none;display:flex;min-width:0;min-height:55px;padding:5px 2px 3px;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:800 10px/1 Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.25px;-webkit-tap-highlight-color:transparent}
   .rus-mobile-nav-item svg,.rus-mobile-more-button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
   .rus-mobile-nav-item.active,.rus-mobile-more-button.active{color:#F14D07}
