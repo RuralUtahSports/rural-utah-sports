@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260921-search-runtime1';
+const CACHE='rus-site-20260921-shared-runtime2';
 const CORE=[
   './',
   './index.html',
@@ -37,7 +37,32 @@ self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 function normalizedLiveKey(req){const url=new URL(req.url);for(const key of [...url.searchParams.keys()])if(CACHE_BUSTERS.has(key.toLowerCase()))url.searchParams.delete(key);return new Request(url.toString(),{method:'GET',headers:req.headers,mode:req.mode,credentials:req.credentials,redirect:req.redirect})}
 function sharedNetwork(id,factory){if(!NETWORK_INFLIGHT.has(id)){const task=Promise.resolve().then(factory);NETWORK_INFLIGHT.set(id,task);task.finally(()=>{if(NETWORK_INFLIGHT.get(id)===task)NETWORK_INFLIGHT.delete(id)}).catch(()=>{})}return NETWORK_INFLIGHT.get(id).then(res=>res.clone())}
-async function networkFirst(req,{normalize=false}={}){const cache=await caches.open(CACHE),key=normalize?normalizedLiveKey(req):req,id=`network:${key.url}`;return sharedNetwork(id,async()=>{try{const res=await fetch(req);if(res&&res.ok)await cache.put(key,res.clone());return res}catch(err){const hit=await cache.match(key);if(hit)return hit;throw err}})}
-async function staleWhileRevalidate(req){const cache=await caches.open(CACHE),url=new URL(req.url),key=JSON_DATA.test(url.pathname)?normalizedLiveKey(req):req,hit=await cache.match(key),fresh=sharedNetwork(`swr:${key.url}`,async()=>{const res=await fetch(req);if(res&&res.ok)await cache.put(key,res.clone());return res}).catch(()=>null);return hit||await fresh||Response.error()}
-async function cacheFirst(req){const cache=await caches.open(CACHE),hit=await cache.match(req);if(hit)return hit;return sharedNetwork(`cache:${req.url}`,async()=>{const res=await fetch(req);if(res&&res.ok)await cache.put(req,res.clone());return res})}
-self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);if(req.mode==='navigate'&&url.hostname==='ruralutahsports.github.io'){const path=url.pathname.replace(/^\/rural-utah-sports(?=\/|$)/,'')||'/';event.respondWith(Promise.resolve(Response.redirect(`https://ruralutahsports.com${path}${url.search}`,302)));return}if(url.origin!==location.origin)return;if(LIVE_DATA.test(url.pathname)){event.respondWith(networkFirst(req,{normalize:true}));return}if((req.mode==='navigate'&&url.pathname.endsWith('/'))||FRESH_JS.test(url.pathname)||FRESH_HTML.test(url.pathname)){event.respondWith(networkFirst(req));return}if(req.mode==='navigate'||HTML.test(url.pathname)){event.respondWith(staleWhileRevalidate(req));return}if(IMAGE.test(url.pathname)){event.respondWith(cacheFirst(req));return}event.respondWith(staleWhileRevalidate(req))});
+function cacheResponse(event,cache,key,response){
+  if(!cache||!response?.ok)return;
+  // Storage failure or slow disk must never hold up a page response.
+  try{const write=cache.put(key,response.clone()).catch(()=>{});event?.waitUntil(write)}catch{}
+}
+async function boundedFetch(req){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),10000);
+  try{return await fetch(req,{signal:controller.signal})}finally{clearTimeout(timer)}
+}
+const openCache=()=>caches.open(CACHE).catch(()=>null);
+async function networkFirst(req,{normalize=false}={},event){
+  const cache=await openCache(),key=normalize?normalizedLiveKey(req):req,id=`network:${key.url}`;
+  return sharedNetwork(id,async()=>{
+    try{const res=await boundedFetch(req);cacheResponse(event,cache,key,res);return res}
+    catch(err){const hit=await cache?.match(key).catch(()=>null);if(hit)return hit;throw err}
+  });
+}
+async function staleWhileRevalidate(req,event){
+  const cache=await openCache(),url=new URL(req.url),key=JSON_DATA.test(url.pathname)?normalizedLiveKey(req):req,hit=await cache?.match(key).catch(()=>null);
+  const fresh=sharedNetwork(`swr:${key.url}`,async()=>{const res=await boundedFetch(req);cacheResponse(event,cache,key,res);return res}).catch(()=>null);
+  event?.waitUntil(fresh.then(()=>{}));
+  return hit||await fresh||Response.error();
+}
+async function cacheFirst(req,event){
+  const cache=await openCache(),hit=await cache?.match(req).catch(()=>null);if(hit)return hit;
+  return sharedNetwork(`cache:${req.url}`,async()=>{const res=await boundedFetch(req);cacheResponse(event,cache,req,res);return res});
+}
+self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET')return;const url=new URL(req.url);if(req.mode==='navigate'&&url.hostname==='ruralutahsports.github.io'){const path=url.pathname.replace(/^\/rural-utah-sports(?=\/|$)/,'')||'/';event.respondWith(Promise.resolve(Response.redirect(`https://ruralutahsports.com${path}${url.search}`,302)));return}if(url.origin!==location.origin)return;if(LIVE_DATA.test(url.pathname)){event.respondWith(networkFirst(req,{normalize:true},event));return}if((req.mode==='navigate'&&url.pathname.endsWith('/'))||FRESH_JS.test(url.pathname)||FRESH_HTML.test(url.pathname)){event.respondWith(networkFirst(req,{},event));return}if(req.mode==='navigate'||HTML.test(url.pathname)){event.respondWith(staleWhileRevalidate(req,event));return}if(IMAGE.test(url.pathname)){event.respondWith(cacheFirst(req,event));return}event.respondWith(staleWhileRevalidate(req,event))});

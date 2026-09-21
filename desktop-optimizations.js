@@ -152,18 +152,20 @@ function addRankingsStyles(){
   document.head.appendChild(s);
 }
 
-function optimizeImages(){
-  const imgs=[...document.images];
+function optimizeImages(root=document){
+  const imgs=root===document?[...document.images]:[...(root.matches?.('img')?[root]:[]),...root.querySelectorAll('img')];
   imgs.forEach((img,i)=>{
-    if(i<4||img.closest('header,.hero'))return;
+    if((root===document&&i<4)||img.closest('header,.hero'))return;
     if(!img.hasAttribute('loading'))img.loading='lazy';
     if(!img.hasAttribute('decoding'))img.decoding='async';
   });
 }
 
-function removeNestedVerticalScroll(){
+function removeNestedVerticalScroll(root=document){
   const selectors=['.table-wrap','.table-scroll','.history-wrap','.record-wrap'];
-  for(const el of document.querySelectorAll(selectors.join(','))){
+  const selector=selectors.join(',');
+  const wraps=[...(root.matches?.(selector)?[root]:[]),...root.querySelectorAll(selector)];
+  for(const el of wraps){
     el.style.removeProperty('max-height');
     el.style.overflowY='visible';
   }
@@ -190,9 +192,21 @@ function start(){
   optimizeImages();
   removeNestedVerticalScroll();
   loadDesktopV2();
-  const observer=new MutationObserver(()=>{
-    optimizeImages();
-    removeNestedVerticalScroll();
+  const pending=new Set();let queued=false;
+  const observer=new MutationObserver(records=>{
+    for(const record of records)for(const node of record.addedNodes)if(node.nodeType===1)pending.add(node);
+    if(!pending.size||queued)return;
+    queued=true;
+    requestAnimationFrame(()=>{
+      queued=false;const roots=[...pending];pending.clear();const set=new Set(roots);
+      for(const root of roots){
+        if(!root.isConnected)continue;
+        let parent=root.parentElement;
+        while(parent&&!set.has(parent))parent=parent.parentElement;
+        if(parent)continue;
+        optimizeImages(root);removeNestedVerticalScroll(root);
+      }
+    });
   });
   observer.observe(document.body,{subtree:true,childList:true});
 }

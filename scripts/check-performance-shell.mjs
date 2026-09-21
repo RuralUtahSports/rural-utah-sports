@@ -103,10 +103,10 @@ if(/setTimeout\s*\(\s*refreshScoreboardExtras/i.test(scoreboardAssets))fail('Sco
 if(scoreboardAssets.includes('[0,100,400,1000]'))fail('Scoreboard extras restored the four-pass timer refresh pattern');
 
 // Live data stays network-first, while the service worker also shares simultaneous network work.
-for(const token of ['LIVE_DATA','JSON_DATA','normalizedLiveKey','CACHE_BUSTERS','NETWORK_INFLIGHT','sharedNetwork','staleWhileRevalidate','networkFirst(req,{normalize:true})']){
+for(const token of ['LIVE_DATA','JSON_DATA','normalizedLiveKey','CACHE_BUSTERS','NETWORK_INFLIGHT','sharedNetwork','staleWhileRevalidate','networkFirst(req,{normalize:true},event)']){
   if(!sw.includes(token))fail(`sw.js is missing ${token}`);
 }
-if(!/req\.mode==='navigate'[\s\S]{0,180}staleWhileRevalidate\(req\)/.test(sw))fail('Navigations are not stale-while-revalidate');
+if(!/req\.mode==='navigate'[\s\S]{0,180}staleWhileRevalidate\(req,event\)/.test(sw))fail('Navigations are not stale-while-revalidate');
 if(!/[,{]\s*key\s*=\s*JSON_DATA\.test\(url\.pathname\)\s*\?\s*normalizedLiveKey\(req\)\s*:\s*req/.test(sw))fail('Static JSON cache-busters are not normalized in stale-while-revalidate');
 const liveLine=sw.split('\n').find(line=>line.includes('const LIVE_DATA='))||'';
 for(const staticScript of ['nav-menu','pwa','desktop-optimizations','home-personalized','my-teams-dashboard','game-center-upgrade'])if(liveLine.includes(staticScript))fail(`Static script ${staticScript} is incorrectly classified as LIVE_DATA`);

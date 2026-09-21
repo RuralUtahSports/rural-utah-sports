@@ -58,8 +58,8 @@
         }),
       );
     };
-    if (document.readyState === "complete") queue();
-    else window.addEventListener("load", queue, { once: true });
+    if (document.readyState !== "loading") queue();
+    else document.addEventListener("DOMContentLoaded", queue, { once: true });
   }
   const groups = {
     history: [
@@ -148,7 +148,7 @@
   }
   async function loadExtras() {
     await fetchCacheReady;
-    addScript("pwa.js?v=20260921-search-runtime1", "rusPwa", true);
+    addScript("pwa.js?v=20260921-shared-runtime2", "rusPwa", true);
     addScript("site-search.js?v=20260921-search-runtime1", "rusSiteSearch", true);
     addScript(
       "optimization-polish.js?v=20260921-search-runtime1",
@@ -184,7 +184,7 @@
         );
       } else {
         addScript(
-          "desktop-optimizations.js?v=20260818-tableheaderfix",
+          "desktop-optimizations.js?v=20260921-shared-runtime2",
           "rusDesktopOptimizations",
           true,
         );

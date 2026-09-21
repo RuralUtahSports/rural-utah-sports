@@ -16,6 +16,7 @@ on:
       - 'mobile-shell.js'
       - 'desktop-optimizations.js'
       - 'desktop-v2.js'
+      - 'scripts/test-shared-runtime.cjs'
       - 'site-search.js'
       - 'site-search-index.json'
       - 'scripts/test-search-runtime.cjs'
@@ -81,6 +82,7 @@ on:
       - 'mobile-shell.js'
       - 'desktop-optimizations.js'
       - 'desktop-v2.js'
+      - 'scripts/test-shared-runtime.cjs'
       - 'site-search.js'
       - 'site-search-index.json'
       - 'scripts/test-search-runtime.cjs'
@@ -219,3 +221,6 @@ jobs:
         run: |
           node scripts/build_player_search_index.mjs
           node scripts/test-search-runtime.cjs
+
+      - name: Verify shared runtime under stalled network and cache operations
+        run: node scripts/test-shared-runtime.cjs
