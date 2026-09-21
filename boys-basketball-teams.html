@@ -16,7 +16,7 @@
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav><div class="nav-content"></div></nav>
 <main class="container">
-<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html">Boys Basketball</a></div>
+<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260921-basketball-cache1">Boys Basketball</a></div>
 <h2 class="page-title">Boys Basketball Teams</h2>
 <p class="subtitle">Browse Utah boys basketball programs for the 2026–27 season. UHSAA programs are organized by their current basketball classification and region, with Utah Prep included as the only additional independent program.</p>
 <div class="season-note"><strong>Team branding:</strong> Basketball reuses RUS football logos and colors where available. Basketball-only programs use the UHSAA School Directory logo and colors, with Utah Prep using its official school branding.</div>
@@ -62,6 +62,7 @@ async function load(){try{const [tr,br]=await Promise.all([fetch(`boys-basketbal
 document.getElementById('searchBox').addEventListener('input',filterTeams);document.getElementById('classificationFilter').addEventListener('change',()=>{document.querySelectorAll('.class-chip').forEach(x=>x.classList.toggle('active',x.dataset.classification===document.getElementById('classificationFilter').value));rebuildRegions();filterTeams()});document.getElementById('regionFilter').addEventListener('change',filterTeams);document.getElementById('sortFilter').addEventListener('change',filterTeams);document.getElementById('clearButton').addEventListener('click',()=>{document.getElementById('searchBox').value='';document.getElementById('classificationFilter').value='all';document.getElementById('sortFilter').value='name';document.querySelectorAll('.class-chip').forEach(x=>x.classList.toggle('active',x.dataset.classification==='all'));rebuildRegions();document.getElementById('regionFilter').value='all';filterTeams()});load();
 })();
 </script>
+<script src="pwa.js?v=20260921-basketball-cache1" defer></script>
 <script src="back-to-top.js" defer></script>
 <script src="nav-menu.js?v=20260827-mobile-nav-restore1"></script>
 </body>
