@@ -6,7 +6,7 @@ const h=value=>String(value??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 const pct=value=>Number.isFinite(Number(value))?(Number(value)*100).toFixed(3)+'%':'—';
 const get=async(file,fallback)=>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);try{const response=await fetch(`${file}?v=${Date.now()}`,{cache:'no-store',signal:controller.signal});return response.ok?await response.json():fallback}catch{return fallback}finally{clearTimeout(timer)}};
 async function run(){
-  const [rpi,teams]=await Promise.all([get('rpi-standings-2026.json',null),get('teams-data.json',[])]);
+  const [rpi,teams]=await Promise.all([get('rpi-standings-2026.json',null),get('team-colors-exact.json',[])]);
   if(!rpi?.classifications)throw new Error('RPI data unavailable');
   const meta=new Map(teams.map(team=>[norm(team.team),team]));
   const pill=team=>{const item=meta.get(norm(team))||{};return `<a class="team-pill" style="--bg:${h(item.backgroundColor||'#222')};--fg:${h(item.textColor||'#fff')}" href="team.html?team=${encodeURIComponent(team)}">${h(team)}</a>`};
