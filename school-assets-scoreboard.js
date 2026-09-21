@@ -170,17 +170,12 @@ fetch(`elo-game-changes-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r
   const next=new Map();for(const game of Object.values(data?.games||{})){if(!game?.awayTeam||!game?.homeTeam)continue;const key=pairKey(game.awayTeam,game.homeTeam),prior=next.get(key);if(!prior||String(game.date||'')>String(prior.date||''))next.set(key,game)}
   eloPairMap=next;queueRefresh(30);
 }).catch(()=>{});
-Promise.all([
-  fetch(`weekly-simulation.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null),
-  fetch(`deseret-game-details.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null)
-]).then(([weekly,details])=>{
+fetch(`weekly-simulation.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(weekly=>{
   if(!weekly)return;let count=0;
   for(const g of weekly.games||[]){
-    const d=details?.games?.[detailKey(g)]||null,sheetDone=g.actualAway!==null&&g.actualAway!==undefined&&g.actualHome!==null&&g.actualHome!==undefined,box=d?.boxScore?.rows||[];
-    const away=sheetDone?Number(g.actualAway):Number(box[0]?.total),home=sheetDone?Number(g.actualHome):Number(box[1]?.total);
-    if(!Number.isFinite(away)||!Number.isFinite(home)||Math.abs(away-home)<44)continue;
-    const sourceFinal=sheetDone||!!d?.final,status=String(d?.status||''),q4=!sourceFinal&&(/\bQ4\b|4TH|FOURTH/i.test(status)||/\bQ4\b/i.test(String(d?.clock||''))||/\bQ4\b/i.test(String(d?.period||'')));
-    if(sourceFinal||q4)count++;
+    const away=Number(g.actualAway),home=Number(g.actualHome);
+    if(g.actualAway==null||g.actualHome==null||!Number.isFinite(away)||!Number.isFinite(home))continue;
+    if(Math.abs(away-home)>=44)count++;
   }
   mercyCount=count;queueRefresh(30);
 }).catch(()=>{});
