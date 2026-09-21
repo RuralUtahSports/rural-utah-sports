@@ -148,7 +148,7 @@
   }
   async function loadExtras() {
     await fetchCacheReady;
-    addScript("pwa.js?v=20260921-load-audit1", "rusPwa", true);
+    addScript("pwa.js?v=20260921-basketball-cache2", "rusPwa", true);
     addScript("site-search.js?v=20260921-shared-audit3", "rusSiteSearch", true);
     addScript(
       "optimization-polish.js?v=20260819-lcp1",
