@@ -90,9 +90,6 @@ if(colorLoaderBytes>1200)fail(`school-colors.js loader grew too large (${colorLo
 if(fetchCacheBytes>5000)fail(`rus-fetch-cache.js grew too large (${fetchCacheBytes} bytes)`);
 if(scoreboardBytes<=bundleBytes)fail('Scoreboard-only payload is not actually separated from the compatibility wrapper');
 if(!/path\s*===\s*["']scoreboard\.html["'][\s\S]{0,140}school-assets-bundle\.js\?v=20260818-perf2[\s\S]{0,140}school-assets-core\.js\?v=20260818-perf2/.test(nav))fail('nav-menu.js no longer routes school assets by page');
-for(const cached of ["'./rus-fetch-cache.js'","'./school-assets-core.js'","'./school-assets-bundle.js'","'./school-logo-integration.js'","'./school-colors.js'"]){
-  if(!sw.includes(cached))fail(`service worker core cache is missing ${cached}`);
-}
 
 // Scoreboard extras should react to real DOM/data changes, not constantly rescan every game card.
 for(const token of ['queueRefresh','MutationObserver','observer.observe(root','requestIdleCallback']){
@@ -102,21 +99,21 @@ if(/setInterval\s*\(\s*refreshScoreboardExtras/i.test(scoreboardAssets))fail('Sc
 if(/setTimeout\s*\(\s*refreshScoreboardExtras/i.test(scoreboardAssets))fail('Scoreboard extras directly schedule repeated full rescans');
 if(scoreboardAssets.includes('[0,100,400,1000]'))fail('Scoreboard extras restored the four-pass timer refresh pattern');
 
-// Live data stays network-first, while the service worker also shares simultaneous network work.
-for(const token of ['LIVE_DATA','JSON_DATA','normalizedLiveKey','CACHE_BUSTERS','NETWORK_INFLIGHT','sharedNetwork','staleWhileRevalidate','networkFirst(req,{normalize:true},event)']){
-  if(!sw.includes(token))fail(`sw.js is missing ${token}`);
+// Service worker caching is intentionally retired after repeated whole-site hangs.
+for(const token of ['skipWaiting','clients.claim','registration.unregister',"key.startsWith('rus-site-')"]){
+  if(!sw.includes(token))fail(`sw.js retirement worker is missing ${token}`);
 }
-if(!/req\.mode==='navigate'[\s\S]{0,180}staleWhileRevalidate\(req,event\)/.test(sw))fail('Navigations are not stale-while-revalidate');
-if(!/[,{]\s*key\s*=\s*JSON_DATA\.test\(url\.pathname\)\s*\?\s*normalizedLiveKey\(req\)\s*:\s*req/.test(sw))fail('Static JSON cache-busters are not normalized in stale-while-revalidate');
-const liveLine=sw.split('\n').find(line=>line.includes('const LIVE_DATA='))||'';
-for(const staticScript of ['nav-menu','pwa','desktop-optimizations','home-personalized','my-teams-dashboard','game-center-upgrade'])if(liveLine.includes(staticScript))fail(`Static script ${staticScript} is incorrectly classified as LIVE_DATA`);
-for(const liveSource of ['weekly-simulation','deseret','standings-2026','rankings-current','elo-summary'])if(!liveLine.includes(liveSource))fail(`Live source ${liveSource} is missing from LIVE_DATA`);
+if(/addEventListener\(['"]fetch['"]/.test(sw))fail('sw.js must not intercept requests after retirement');
+if(/serviceWorker\.register\s*\(/.test(pwa))fail('pwa.js must not register a service worker');
+for(const token of ['getRegistrations','registration.unregister()',"key.startsWith('rus-site-')",'rus-sw-retired-reload']){
+  if(!pwa.includes(token))fail(`pwa.js retirement flow is missing ${token}`);
+}
 
-// PWA registration and service-worker cache generations must move together.
+// PWA metadata and retirement-worker generations still move together for cache-busting.
 const pwaVersion=pwa.match(/const VERSION='([^']+)'/)?.[1];
 const swVersion=sw.match(/const CACHE='rus-site-([^']+)'/)?.[1];
-if(!pwaVersion||!swVersion)fail('Could not read PWA/service-worker cache versions');
-else if(pwaVersion!==swVersion)fail(`PWA version ${pwaVersion} does not match service-worker cache ${swVersion}`);
+if(!pwaVersion||!swVersion)fail('Could not read PWA/retirement-worker versions');
+else if(pwaVersion!==swVersion)fail(`PWA version ${pwaVersion} does not match retirement worker ${swVersion}`);
 
 // Catch accidental duplicate direct script tags. Legacy bundle tags are allowed because the file is now a tiny wrapper.
 let legacyBundlePages=0;

@@ -58,9 +58,10 @@ const desktop = fs.readFileSync('desktop-optimizations.js', 'utf8');
 const search = fs.readFileSync('site-search.js', 'utf8');
 const sw = fs.readFileSync('sw.js', 'utf8');
 
-for (const needle of ['manifest.webmanifest', 'apple-touch-icon', 'sw.js']) {
-  if (!pwa.includes(needle)) fail(`pwa.js no longer references ${needle}.`);
+for (const needle of ['manifest.webmanifest', 'apple-touch-icon', 'getRegistrations', 'unregister', 'rus-site-']) {
+  if (!pwa.includes(needle)) fail(`pwa.js is missing reliability retirement token ${needle}.`);
 }
+if (/serviceWorker\.register\s*\(/.test(pwa)) fail('pwa.js must not register a service worker.');
 
 for (const needle of ['pwa.js', 'site-search.js', 'mobile-shell.js', 'desktop-optimizations.js', 'recently-viewed.js', 'home-personalized.js', 'my-teams-dashboard.js', 'rus-lines-dashboard.js', 'game-center-upgrade.js']) {
   if (!nav.includes(needle)) fail(`nav-menu.js no longer loads ${needle}.`);
@@ -97,13 +98,10 @@ for (const needle of ['site-search-index.json', 'player.html?id=']) {
   if (!search.includes(needle)) fail(`site-search.js is missing expected search source/link: ${needle}.`);
 }
 
-for (const needle of ['RUSlogoNew.png', 'mobile-shell.js', 'site-search.js', 'optimization-polish.js', 'desktop-optimizations.js', 'desktop-v2.js', 'nav-menu.js', 'app-shell-polish.js']) {
-  if (!sw.includes(needle)) fail(`sw.js app-shell cache is missing ${needle}.`);
+for (const needle of ['skipWaiting', 'clients.claim', 'registration.unregister', "key.startsWith('rus-site-')"]) {
+  if (!sw.includes(needle)) fail(`sw.js retirement worker is missing ${needle}.`);
 }
-
-for (const needle of ['LIVE_DATA', 'staleWhileRevalidate', 'networkFirst', 'cacheFirst']) {
-  if (!sw.includes(needle)) fail(`sw.js is missing caching strategy ${needle}.`);
-}
+if (/addEventListener\(['"]fetch['"]/.test(sw)) fail('sw.js must not intercept fetches after service-worker retirement.');
 
 if (!process.exitCode) console.log('App shell sanity checks passed.');
 
