@@ -30,7 +30,7 @@ for(const token of ['function install()','window.render=function','loadCurrentSe
 
 const pwaVersion=pwa.match(/const VERSION='([^']+)'/)?.[1];
 const swVersion=sw.match(/const CACHE='rus-site-([^']+)'/)?.[1];
-const navPwaVersion=nav.match(/addScript\("pwa\\.js\\?v=([^"]+)"/)?.[1];
+const navPwaVersion=nav.match(/addScript\("pwa\.js\?v=([^"]+)"/)?.[1];
 if(!pwaVersion)fail('PWA first-render generation is missing');
 if(navPwaVersion!==pwaVersion)fail(`nav-menu PWA generation ${navPwaVersion||'missing'} does not match PWA ${pwaVersion||'missing'}`);
 if(swVersion!==pwaVersion)fail(`Service-worker generation ${swVersion||'missing'} does not match PWA ${pwaVersion||'missing'}`);
