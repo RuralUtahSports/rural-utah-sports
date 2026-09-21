@@ -75,7 +75,7 @@ function render(){const cf=$('classFilter').value,sf=$('statusFilter').value,q=n
     const html = originalCard(game);
     let state;
     try { state = scoreState(game); } catch { return html; }
-    const kickoff = String(detailFor(game)?.kickoffTime || '').trim();
+    const kickoff = String(game?.kickoffTime || detailFor(game)?.kickoffTime || '').trim();
     if (!kickoff || state.done || state.live || /postpon|cancel|suspend/i.test(String(state.status || ''))) return html;
     return html
       .replace('<div class="game-top"><span class="status', '<div class="game-top"><div class="game-status-group"><span class="status')
