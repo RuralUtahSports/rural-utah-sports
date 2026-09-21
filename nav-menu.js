@@ -156,21 +156,33 @@
       true,
     );
     addScript("recently-viewed.js?v=20260817-app4", "rusRecentlyViewed", true);
-    addScript("site-extras.js", "rusExtras", true);
+    if (oneOf("index.html","team.html","championships.html","games.html","records.html","elo.html","season.html","game.html","programs.html"))
+      addScript("site-extras.js?v=20260921-shared-audit1", "rusExtras", true);
     addScript("site-polish.js?v=20260818-nav1", "rusSitePolish", true);
     addScript("app-shell-polish.js?v=20260817-app3", "rusAppShellPolish", true);
     addScript("site-share.js", "rusShare", true);
     addScript("favorites.js?v=20260817-header3", "rusFavorites", true);
-    addScript(
-      "mobile-optimizations.js?v=20260817-mobile2",
-      "rusMobileOptimizations",
-      true,
-    );
-    addScript(
-      "desktop-optimizations.js?v=20260818-tableheaderfix",
-      "rusDesktopOptimizations",
-      true,
-    );
+    const mobileMedia = window.matchMedia("(max-width:700px)");
+    const loadDeviceOptimizations = () => {
+      if (mobileMedia.matches) {
+        addScript(
+          "mobile-optimizations.js?v=20260921-shared-audit1",
+          "rusMobileOptimizations",
+          true,
+        );
+      } else {
+        addScript(
+          "desktop-optimizations.js?v=20260818-tableheaderfix",
+          "rusDesktopOptimizations",
+          true,
+        );
+      }
+    };
+    loadDeviceOptimizations();
+    if (!window.__RUS_DEVICE_OPTIMIZATION_WATCH__) {
+      window.__RUS_DEVICE_OPTIMIZATION_WATCH__ = true;
+      mobileMedia.addEventListener?.("change", loadDeviceOptimizations);
+    }
     const schoolAssetPages = [
       "teams.html",
       "team.html",
@@ -437,6 +449,7 @@
         link("Home", "index.html", "home-link"),
         link("Game Week", "game-week.html"),
         link("Teams", "teams.html"),
+        link("Players", "players.html"),
         link("My Teams", "my-teams.html"),
         link("Games", "games.html"),
         link("Scoreboard", "scoreboard.html"),
