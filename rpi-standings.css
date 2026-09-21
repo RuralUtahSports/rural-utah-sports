@@ -398,3 +398,42 @@
     padding: 12px;
   }
 }
+
+
+.rank-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.rank-number {
+  min-width: 18px;
+  text-align: center;
+}
+
+.rpi-movement {
+  font-size: 10px;
+  font-weight: 1000;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+
+.rpi-movement.up {
+  color: #42d17d;
+}
+
+.rpi-movement.down {
+  color: #ff6868;
+}
+
+@media (max-width: 620px) {
+  .rank-wrap {
+    gap: 4px;
+  }
+
+  .rpi-movement {
+    font-size: 9px;
+  }
+}
