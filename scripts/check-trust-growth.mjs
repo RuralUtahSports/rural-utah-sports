@@ -9,5 +9,5 @@ const cred=fs.readFileSync('site-credibility.js','utf8');for(const n of ['whats-
 const seo=fs.readFileSync('seo-structured-data.js','utf8');for(const n of ['Organization','SportsTeam','SportsEvent','Person','CollectionPage','canonical'])if(!seo.includes(n))fail(`SEO layer missing ${n}`);
 const robots=fs.readFileSync('robots.txt','utf8');if(!robots.includes('sitemap.xml'))fail('robots.txt does not advertise sitemap.xml');
 const whats=fs.readFileSync('whats-new.html','utf8');if(!whats.includes('changelog.json'))fail("What's New page is not data-driven from changelog.json");
-const sw=fs.readFileSync('sw.js','utf8');for(const n of ['seo-structured-data','changelog','whats-new'])if(!sw.includes(n))fail(`service worker freshness rules missing ${n}`);
+const sw=fs.readFileSync('sw.js','utf8');if(/addEventListener\(['\"]fetch['\"]/.test(sw))fail('retired service worker must not intercept fetches');for(const n of ['registration.unregister','rus-site-'])if(!sw.includes(n))fail(`service worker retirement flow missing ${n}`);
 if(failed)process.exit(1);console.log('RUS Trust & Growth checks passed.');
