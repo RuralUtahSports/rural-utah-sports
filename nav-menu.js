@@ -149,7 +149,7 @@
   async function loadExtras() {
     await fetchCacheReady;
     addScript("pwa.js?v=20260918-mobile-cache-repair1", "rusPwa", true);
-    addScript("site-search.js?v=20260921-shared-audit1", "rusSiteSearch", true);
+    addScript("site-search.js?v=20260921-shared-audit2", "rusSiteSearch", true);
     addScript(
       "optimization-polish.js?v=20260819-lcp1",
       "rusOptimizationPolish",
@@ -157,10 +157,19 @@
     );
     addScript("recently-viewed.js?v=20260817-app4", "rusRecentlyViewed", true);
     if (oneOf("index.html","team.html","championships.html","games.html","records.html","elo.html","season.html","game.html","programs.html"))
-      addScript("site-extras.js?v=20260921-shared-audit1", "rusExtras", true);
+      addScript("site-extras.js?v=20260921-shared-audit2", "rusExtras", true);
     addScript("site-polish.js?v=20260818-nav1", "rusSitePolish", true);
     addScript("app-shell-polish.js?v=20260921-shared-audit1", "rusAppShellPolish", true);
-    addScript("site-share.js", "rusShare", true);
+    const fullSharePages = [
+      "records.html","greatest-seasons.html","games.html","championships.html",
+      "teams.html","rankings.html","standings.html","scorigami.html","out-of-state.html",
+      "compare.html","simulators.html","mvp-race.html","all-state-watch.html",
+      "all-utah.html","awards-2025.html","team-stats.html"
+    ];
+    if (fullSharePages.includes(path))
+      addScript("site-share.js?v=20260921-shared-audit1", "rusShare", true);
+    else
+      addScript("site-share-lite.js?v=20260921-shared-audit1", "rusShareLite", true);
     addScript("favorites.js?v=20260817-header3", "rusFavorites", true);
     const mobileMedia = window.matchMedia("(max-width:700px)");
     const loadDeviceOptimizations = () => {
