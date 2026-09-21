@@ -158,7 +158,10 @@
     addScript("recently-viewed.js?v=20260817-app4", "rusRecentlyViewed", true);
     if (oneOf("index.html","team.html","championships.html","games.html","records.html","elo.html","season.html","game.html","programs.html"))
       addScript("site-extras.js?v=20260921-shared-audit2", "rusExtras", true);
-    addScript("site-polish.js?v=20260818-nav1", "rusSitePolish", true);
+    if (oneOf("index.html","historical-rankings.html"))
+      addScript("site-polish.js?v=20260921-shared-audit1", "rusSitePolish", true);
+    else
+      addScript("table-accessibility.js?v=20260921-shared-audit1", "rusTableAccessibility", true);
     addScript("app-shell-polish.js?v=20260921-shared-audit1", "rusAppShellPolish", true);
     const fullSharePages = [
       "records.html","greatest-seasons.html","games.html","championships.html",
