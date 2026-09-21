@@ -93,7 +93,7 @@ for (const file of fs.readdirSync('.').filter(name => name.endsWith('.html'))) {
 
 if (!desktop.includes('desktop-v2.js')) fail('desktop-optimizations.js no longer loads desktop-v2.js.');
 
-for (const needle of ['player-search-index-2026.json', 'player.html?id=', 'standings-2026.json', 'weekly-simulation.json']) {
+for (const needle of ['site-search-index.json', 'player.html?id=']) {
   if (!search.includes(needle)) fail(`site-search.js is missing expected search source/link: ${needle}.`);
 }
 
@@ -106,3 +106,7 @@ for (const needle of ['LIVE_DATA', 'staleWhileRevalidate', 'networkFirst', 'cach
 }
 
 if (!process.exitCode) console.log('App shell sanity checks passed.');
+
+for (const source of ['deseret-rosters-stats-', 'teams-data.json', 'standings-2026.json', 'weekly-simulation.json']) {
+  if (search.includes(source)) fail(`Search must use the compact index instead of ${source}`);
+}

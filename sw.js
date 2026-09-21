@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260921-mobile-audit1';
+const CACHE='rus-site-20260921-search-runtime1';
 const CORE=[
   './',
   './index.html',
@@ -25,12 +25,12 @@ const CORE=[
   './school-logo-integration.js',
   './school-colors.js'
 ];
-const LIVE_DATA=/(weekly-simulation|deseret|live-|record-alerts|standings-2026|rankings-current|rankings-history-2026|state-top25-history-2026|small-school-rankings-history-2026|elo-summary|playoff-picture|game-preview-overrides|scoreboard.*\.json|2026\.json)/i;
+const LIVE_DATA=/(site-search-index|weekly-simulation|deseret|live-|record-alerts|standings-2026|rankings-current|rankings-history-2026|state-top25-history-2026|small-school-rankings-history-2026|elo-summary|playoff-picture|game-preview-overrides|scoreboard.*\.json|2026\.json)/i;
 const JSON_DATA=/\.json$/i;
 const IMAGE=/\.(?:png|jpg|jpeg|webp|svg|ico)$/i;
 const HTML=/\.html$/i;
 const FRESH_HTML=/\/(?:index|rankings|scoreboard|game|team|team-page-content|simulators|playoff-picture|stat-leaders|boys-basketball-teams)\.html$/i;
-const FRESH_JS=/(?:pwa|weekly-picks|weekly-picks-enhanced|weekly-picks-backend|weekly-simulation-promo|home-this-week|home-record-alerts|home-game-of-week|home-feature-share|site-share|game-center-upgrade|game-center-color-layout|rankings-sponsor-removal|school-assets-bundle|school-logo-integration|rus-lines-dashboard|scoreboard-refresh|scoreboard-share-layout|scoreboard-share-layout-core|share-graphic|mvp-race-share|mobile-shell|nav-menu|site-search|site-extras|site-share-lite|table-accessibility|app-shell-polish|mobile-optimizations|desktop-optimizations|growth-features|share-preview-links|team-tabs|team-record-tabs-repair|team-player-records|team-stat-records|team-enhancements|team-enhancements-runtime|playoff-picture-v2)\.js$/i;
+const FRESH_JS=/(?:optimization-polish|pwa|weekly-picks|weekly-picks-enhanced|weekly-picks-backend|weekly-simulation-promo|home-this-week|home-record-alerts|home-game-of-week|home-feature-share|site-share|game-center-upgrade|game-center-color-layout|rankings-sponsor-removal|school-assets-bundle|school-logo-integration|rus-lines-dashboard|scoreboard-refresh|scoreboard-share-layout|scoreboard-share-layout-core|share-graphic|mvp-race-share|mobile-shell|nav-menu|site-search|site-extras|site-share-lite|table-accessibility|app-shell-polish|mobile-optimizations|desktop-optimizations|growth-features|share-preview-links|team-tabs|team-record-tabs-repair|team-player-records|team-stat-records|team-enhancements|team-enhancements-runtime|playoff-picture-v2)\.js$/i;
 const CACHE_BUSTERS=new Set(['v','ver','version','t','ts','timestamp','_']);
 const NETWORK_INFLIGHT=new Map();
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>Promise.allSettled(CORE.map(x=>cache.add(x)))).then(()=>self.skipWaiting()))});

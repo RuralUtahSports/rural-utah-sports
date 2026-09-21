@@ -39,15 +39,29 @@ function start(){
     nodes(root,'.team-card:not([data-rus-school-logo])').forEach(card=>{const name=card.querySelector('.team-name')?.textContent?.trim(),content=card.querySelector('.team-card-content');if(!name||!content)return;const url=A.logoUrl?.(name)||'';if(!url)return;card.dataset.rusSchoolLogo='1';const wrap=document.createElement('div');wrap.className='rus-card-logo-wrap';wrap.appendChild(addImg(name,'rus-card-logo'));content.insertBefore(wrap,content.firstChild)});
     nodes(root,'.rank-row .team-link:not([data-rus-school-logo]),.state25-row .team-link:not([data-rus-school-logo]),.small-school-row .team-link:not([data-rus-school-logo])').forEach(link=>{const name=teamFromLink(link)||link.textContent.trim(),url=A.logoUrl?.(name)||'';if(!name||!url)return;link.dataset.rusSchoolLogo='1';link.insertBefore(addImg(name,'rus-ranking-school-logo'),link.firstChild)});
     nodes(root,'.standings .team-link:not([data-rus-school-logo])').forEach(link=>{const name=teamFromLink(link)||link.textContent.trim(),url=A.logoUrl?.(name)||'';if(!name||!url)return;link.dataset.rusSchoolLogo='1';link.insertBefore(addImg(name,'rus-standings-school-logo'),link.firstChild)});
-    replaceExisting(root);
-    dedupeScoreboardLiveStatus(root);
   };
   const pending=new Set();let queued=false;
-  const relevantSelector='img,.team-card,.rank-row,.state25-row,.small-school-row,.standings,.standings-row,.standing-row,.status.live';
-  const relevant=root=>root?.nodeType===1&&(root.matches?.(relevantSelector)||!!root.querySelector?.(relevantSelector));
-  const queue=root=>{if(root?.nodeType===1)pending.add(root);if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;const roots=[...pending];pending.clear();roots.forEach(enhance)})};
+  const queue=root=>{
+    if(root?.nodeType!==1)return;
+    pending.add(root);if(queued)return;queued=true;
+    requestAnimationFrame(()=>{
+      queued=false;const roots=[...pending];pending.clear();const set=new Set(roots);
+      for(const node of roots){
+        if(!node.isConnected)continue;
+        let parent=node.parentElement;
+        while(parent&&!set.has(parent))parent=parent.parentElement;
+        if(!parent&&(node.matches('img,.team-card,.team-link,.status.live')||node.querySelector('img,.team-card,.team-link,.status.live')))enhance(node);
+      }
+    });
+  };
   Promise.resolve(A.load?.()).finally(()=>queue(main));queue(main);
-  const observer=new MutationObserver(mutations=>mutations.forEach(m=>m.addedNodes.forEach(n=>{if(relevant(n))queue(n)})));
+  const observer=new MutationObserver(mutations=>{
+    for(const mutation of mutations)for(const node of mutation.addedNodes){
+      // Images inserted by this enhancer already have the correct source.
+      if(node.nodeType!==1||node.matches('.rus-card-logo-wrap,.rus-card-logo,.rus-ranking-school-logo,.rus-standings-school-logo'))continue;
+      queue(node);
+    }
+  });
   observer.observe(main,{childList:true,subtree:true});
   window.addEventListener('pageshow',()=>queue(main),{passive:true});
 }

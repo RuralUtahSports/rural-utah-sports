@@ -5,13 +5,28 @@ on:
   push:
     paths:
       - 'deseret-rosters-stats-2026.json'
+      - 'deseret-rosters-stats-2025.json'
+      - 'standings-2026.json'
+      - 'weekly-simulation.json'
+      - '.github/workflows/build-player-search-index.yml'
       - 'scripts/build_player_search_index.mjs'
+
+  workflow_run:
+    workflows: ['Build Deseret Rosters and Stats', 'Build MaxPreps Stats Fallback', 'Build 2025 Football Archive', 'Build 2026 Standings', 'Build Simulator Data', 'Enrich Weekly Deseret Links']
+    types: [completed]
+  schedule:
+    - cron: '23 * * * *'
+
+concurrency:
+  group: search-index
+  cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,15 +37,26 @@ jobs:
           node-version: '24'
       - name: Build lightweight player search index
         run: node scripts/build_player_search_index.mjs
+      - name: Validate search coverage and runtime behavior
+        run: node scripts/test-search-runtime.cjs
       - name: Commit index update
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          git add player-search-index-2026.json
+          git add site-search-index.json
           if git diff --cached --quiet; then
             echo "Player search index already current."
             exit 0
           fi
           git commit -m "Update player search index"
-          git pull --rebase origin main
-          git push
+          # Rebuild from latest inputs after a concurrent data update, not a stale rebase.
+          for attempt in 1 2 3 4; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git reset --hard origin/main
+            node scripts/build_player_search_index.mjs
+            git add site-search-index.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Update player search index"
+          done
+          exit 1

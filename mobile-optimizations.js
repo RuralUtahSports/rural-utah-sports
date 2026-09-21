@@ -75,6 +75,26 @@ function optimizeIframes(root=document){if(root.nodeType===1&&root.matches?.('if
 function wrapWideTables(root=document){if(!matchMedia(MOBILE).matches)return;const tables=[];if(root.nodeType===1&&root.matches?.('table'))tables.push(root);root.querySelectorAll?.('table').forEach(t=>tables.push(t));for(const table of tables){if(table.closest('.table-wrap,.table-scroll,.rus-mobile-table-scroll'))continue;const wrap=document.createElement('div');wrap.className='rus-mobile-table-scroll';wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Scrollable table');table.parentNode?.insertBefore(wrap,table);wrap.appendChild(table)}}
 function optimize(root=document){optimizeImages(root);optimizeIframes(root);wrapWideTables(root)}
 function optimizeDynamic(root){optimizeIframes(root);wrapWideTables(root)}
-function install(){document.body.dataset.rusPage=path;addStyles();optimize(document);let queued=false,pending=[];const flush=()=>{queued=false;const nodes=pending;pending=[];for(const n of nodes)if(n?.nodeType===1)optimizeDynamic(n)};new MutationObserver(records=>{for(const r of records)for(const n of r.addedNodes)if(n.nodeType===1&&(n.matches?.('table,iframe')||n.querySelector?.('table,iframe')))pending.push(n);if(!pending.length||queued)return;queued=true;requestAnimationFrame(flush)}).observe(document.body,{childList:true,subtree:true});addEventListener('resize',()=>{if(matchMedia(MOBILE).matches)wrapWideTables(document)},{passive:true})}
+function install(){
+  document.body.dataset.rusPage=path;addStyles();optimize(document);
+  const pending=new Set();let queued=false;
+  const flush=()=>{
+    queued=false;
+    const roots=[...pending];pending.clear();const set=new Set(roots);
+    for(const root of roots){
+      if(!root.isConnected)continue;
+      let parent=root.parentElement;
+      while(parent&&!set.has(parent))parent=parent.parentElement;
+      if(!parent)optimizeDynamic(root);
+    }
+  };
+  new MutationObserver(records=>{
+    for(const record of records)for(const node of record.addedNodes)if(node.nodeType===1)pending.add(node);
+    if(!pending.size||queued)return;
+    queued=true;requestAnimationFrame(flush);
+  }).observe(document.querySelector('main')||document.body,{childList:true,subtree:true});
+  // Viewport-height changes from the mobile address bar must not rescan tables.
+  matchMedia(MOBILE).addEventListener('change',event=>{if(event.matches)wrapWideTables(document)});
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
 })();
