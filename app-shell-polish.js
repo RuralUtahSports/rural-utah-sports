@@ -31,9 +31,10 @@ nav{background:rgba(5,5,5,.98)!important;border-bottom:1px solid #2a2a2a!importa
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 `;
 document.head.appendChild(s);
-if(!document.querySelector('script[data-rus-growth-features]')){const g=document.createElement('script');g.src='growth-features.js?v=20260818-growth1';g.defer=true;g.dataset.rusGrowthFeatures='1';document.body.appendChild(g)}
-if(!document.querySelector('script[data-rus-share-previews]')){const p=document.createElement('script');p.src='share-preview-links.js?v=20260818-share1';p.defer=true;p.dataset.rusSharePreviews='1';document.body.appendChild(p)}
 const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+const growthPages=new Set(['index.html','team.html','player.html','game.html','scoreboard.html','stat-leaders.html','team-stats.html','records.html','rankings.html','standings.html','mvp-race.html','all-state-watch.html','weekly-awards.html','my-teams.html']);
+if(growthPages.has(page)&&!document.querySelector('script[data-rus-growth-features]')){const g=document.createElement('script');g.src='growth-features.js?v=20260921-shared-audit1';g.defer=true;g.dataset.rusGrowthFeatures='1';document.body.appendChild(g)}
+if(['team.html','player.html','game.html'].includes(page)&&!document.querySelector('script[data-rus-share-previews]')){const p=document.createElement('script');p.src='share-preview-links.js?v=20260921-shared-audit1';p.defer=true;p.dataset.rusSharePreviews='1';document.body.appendChild(p)}
 if(['index.html','team.html','game-week.html'].includes(page)&&!document.querySelector('script[data-rus-record-watch-everywhere]')){const r=document.createElement('script');r.src='record-watch-everywhere.js?v=20260818-rw1';r.defer=true;r.dataset.rusRecordWatchEverywhere='1';document.body.appendChild(r)}
 if(page==='records.html'&&!document.querySelector('script[data-rus-player-single-game-records]')){const r=document.createElement('script');r.src='records-player-single-game.js?v=20260826-records1';r.defer=true;r.dataset.rusPlayerSingleGameRecords='1';document.body.appendChild(r)}
 })();
