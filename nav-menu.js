@@ -148,7 +148,7 @@
   }
   async function loadExtras() {
     await fetchCacheReady;
-    addScript("pwa.js?v=20260921-shared-runtime2", "rusPwa", true);
+    addScript("pwa.js?v=20260921-shared-runtime3", "rusPwa", true);
     addScript("site-search.js?v=20260921-search-runtime1", "rusSiteSearch", true);
     addScript(
       "optimization-polish.js?v=20260921-search-runtime1",

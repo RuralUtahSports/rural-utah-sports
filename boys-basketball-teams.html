@@ -63,9 +63,9 @@ async function load(){try{const [tr,br]=await Promise.all([fetch(`boys-basketbal
 document.getElementById('searchBox').addEventListener('input',filterTeams);document.getElementById('classificationFilter').addEventListener('change',()=>{document.querySelectorAll('.class-chip').forEach(x=>x.classList.toggle('active',x.dataset.classification===document.getElementById('classificationFilter').value));rebuildRegions();filterTeams()});document.getElementById('regionFilter').addEventListener('change',filterTeams);document.getElementById('sortFilter').addEventListener('change',filterTeams);document.getElementById('clearButton').addEventListener('click',()=>{document.getElementById('searchBox').value='';document.getElementById('classificationFilter').value='all';document.getElementById('sortFilter').value='name';document.querySelectorAll('.class-chip').forEach(x=>x.classList.toggle('active',x.dataset.classification==='all'));rebuildRegions();document.getElementById('regionFilter').value='all';filterTeams()});load();
 })();
 </script>
-<script src="pwa.js?v=20260921-basketball-box-fix1" defer></script>
+<script src="pwa.js?v=20260921-shared-runtime3" defer></script>
 <script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260921-basketball-box-fix1"></script>
+<script src="nav-menu.js?v=20260827-mobile-nav-restore1"></script>
 <script id="rus-basketball-final-color-enforcer">
 (()=>{
   'use strict';

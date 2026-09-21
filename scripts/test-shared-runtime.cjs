@@ -2,8 +2,8 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const source=fs.readFileSync('sw.js','utf8');
 const req=new Request('https://ruralutahsports.com/nav-menu.js');
 const timeout=p=>Promise.race([p,new Promise((_,reject)=>setTimeout(()=>reject(Error('Response blocked by storage')),250))]);
-function runtime(fetch,cache){
-  const work=[],context={Request,Response,URL,AbortController,fetch,caches:{open:async()=>cache},self:{addEventListener(){}},location:{origin:'https://ruralutahsports.com'},setTimeout:(fn,ms)=>setTimeout(fn,ms===10000?25:ms),clearTimeout};
+function runtime(fetch,cache,open=async()=>cache){
+  const work=[],context={Request,Response,URL,AbortController,fetch,caches:{open},self:{addEventListener(){}},location:{origin:'https://ruralutahsports.com'},setTimeout:(fn,ms)=>setTimeout(fn,ms===10000?25:ms),clearTimeout};
   vm.createContext(context);vm.runInContext(source,context);
   return {context,event:{waitUntil:p=>work.push(p)},work};
 }
@@ -15,6 +15,11 @@ function runtime(fetch,cache){
   }
   for(const method of ['networkFirst','cacheFirst','staleWhileRevalidate']){
     const {context,event}=runtime(async()=>new Response('fresh'),{match:async()=>{throw Error('storage failed')},put:()=>{throw Error('quota')}});
+    const response=await timeout(method==='networkFirst'?context[method](req,{},event):context[method](req,event));
+    assert.equal(await response.text(),'fresh');
+  }
+  for(const method of ['networkFirst','cacheFirst','staleWhileRevalidate']){
+    const {context,event}=runtime(async()=>new Response('fresh'),null,()=>new Promise(()=>{}));
     const response=await timeout(method==='networkFirst'?context[method](req,{},event):context[method](req,event));
     assert.equal(await response.text(),'fresh');
   }
@@ -55,5 +60,5 @@ function runtime(fetch,cache){
     if(state==='interactive'){assert.equal(registrations,0);await onLoad()}
     assert.equal(registrations,1);
   }
-  console.log('Shared runtime regressions passed: stalled cache writes, storage failure, hung network fallback, request deduplication, startup without window.load, late PWA registration, and batched desktop scans.');
+  console.log('Shared runtime regressions passed: stalled cache writes, stalled cache open, storage failure, hung network fallback, request deduplication, startup without window.load, late PWA registration, and batched desktop scans.');
 })().catch(error=>{console.error(error);process.exitCode=1});

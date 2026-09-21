@@ -30,7 +30,9 @@ for(const token of ['function install()','window.render=function','loadCurrentSe
 
 const pwaVersion=pwa.match(/const VERSION='([^']+)'/)?.[1];
 const swVersion=sw.match(/const CACHE='rus-site-([^']+)'/)?.[1];
-if(pwaVersion!=='20260921-mobile-audit1')fail(`Unexpected PWA first-render generation: ${pwaVersion||'missing'}`);
+const navPwaVersion=nav.match(/addScript\("pwa\\.js\\?v=([^"]+)"/)?.[1];
+if(!pwaVersion)fail('PWA first-render generation is missing');
+if(navPwaVersion!==pwaVersion)fail(`nav-menu PWA generation ${navPwaVersion||'missing'} does not match PWA ${pwaVersion||'missing'}`);
 if(swVersion!==pwaVersion)fail(`Service-worker generation ${swVersion||'missing'} does not match PWA ${pwaVersion||'missing'}`);
 
 if(!process.exitCode)console.log(`First-render checks passed. Team head wrapper ${loaderBytes} B -> ${runtimeBytes} B deferred runtime; mobile content-visibility guards and post-paint extras are active.`);
