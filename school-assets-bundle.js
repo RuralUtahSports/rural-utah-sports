@@ -18,7 +18,7 @@ function add(src,key){
 }
 
 function loadExtras(){
-  if(isScoreboard)add('school-assets-scoreboard.js?v=20260827-week3-ranks1','rusScoreboardSchoolAssets');
+  if(isScoreboard)add('school-assets-scoreboard.js?v=20260921-load-audit1','rusScoreboardSchoolAssets');
   if(isGame){
     add('game-center-color-layout.js?v=20260820-midwidth1','rusGameCenterColorLayout');
     add('game-live-status-fix.js?v=20260820-supabase-live1','rusGameLiveStatusFix');
