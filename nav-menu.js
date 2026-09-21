@@ -149,7 +149,7 @@
   async function loadExtras() {
     await fetchCacheReady;
     addScript("pwa.js?v=20260918-mobile-cache-repair1", "rusPwa", true);
-    addScript("site-search.js?v=20260921-shared-audit2", "rusSiteSearch", true);
+    addScript("site-search.js?v=20260921-shared-audit3", "rusSiteSearch", true);
     addScript(
       "optimization-polish.js?v=20260819-lcp1",
       "rusOptimizationPolish",
