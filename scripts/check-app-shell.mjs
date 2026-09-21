@@ -93,7 +93,7 @@ for (const file of fs.readdirSync('.').filter(name => name.endsWith('.html'))) {
 
 if (!desktop.includes('desktop-v2.js')) fail('desktop-optimizations.js no longer loads desktop-v2.js.');
 
-for (const needle of ['deseret-rosters-stats-${season}.json', 'player.html?id=', 'teams-data.json', 'weekly-simulation.json']) {
+for (const needle of ['player-search-index-2026.json', 'player.html?id=', 'standings-2026.json', 'weekly-simulation.json']) {
   if (!search.includes(needle)) fail(`site-search.js is missing expected search source/link: ${needle}.`);
 }
 
