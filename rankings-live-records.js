@@ -795,18 +795,25 @@
 
   async function primeRankings(){
     try{
-      const res=await fetch('rankings-history-2026.json?v=rankings-'+Date.now(),{cache:'no-store'});
-      if(res.ok)rankingArchive=await res.json();
+      if(window.RUSRankingsInitialDataReady){
+        try{await window.RUSRankingsInitialDataReady}catch{}
+      }
+      if(!rankingArchive?.snapshots?.length){
+        const res=await fetch('rankings-history-2026.json?v=rankings-'+Date.now(),{cache:'no-store'});
+        if(res.ok)rankingArchive=await res.json();
+      }
       paintAvailableRankings();
+
+      const needColors=!rankingColors||Object.keys(rankingColors).length<100;
+      const needElo=!rankingElo||Object.keys(rankingElo).length<50;
+      if(!needColors&&!needElo)return;
 
       const loadSecondary=async()=>{
         try{
-          const [c,e]=await Promise.allSettled([
-            fetch('team-colors-exact.json',{cache:'force-cache'}).then(r=>r.ok?r.json():[]),
-            fetch('elo-summary.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{})
-          ]);
-          if(c.status==='fulfilled'&&Array.isArray(c.value))for(const x of c.value)rankingColors[x.team]=x;
-          if(e.status==='fulfilled'&&e.value)rankingElo=e.value;
+          const tasks=[];
+          if(needColors)tasks.push(fetch('team-colors-exact.json',{cache:'force-cache'}).then(r=>r.ok?r.json():[]).then(rows=>{if(Array.isArray(rows))for(const x of rows)rankingColors[x.team]=x}));
+          if(needElo)tasks.push(fetch('elo-summary.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(data=>{if(data)rankingElo=data}));
+          await Promise.allSettled(tasks);
           paintAvailableRankings();
           const smallSelect=document.getElementById('smallSchoolSnapshot');
           if(smallSelect?.value)renderSmallSchool(smallSelect.value);
