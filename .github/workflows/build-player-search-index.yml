@@ -1,0 +1,36 @@
+name: Build Player Search Index
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'deseret-rosters-stats-2026.json'
+      - 'scripts/build_player_search_index.mjs'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build lightweight player search index
+        run: node scripts/build_player_search_index.mjs
+      - name: Commit index update
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add player-search-index-2026.json
+          if git diff --cached --quiet; then
+            echo "Player search index already current."
+            exit 0
+          fi
+          git commit -m "Update player search index"
+          git pull --rebase origin main
+          git push
