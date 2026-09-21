@@ -488,7 +488,7 @@
       // the canonical nav exists instead of waiting for window.load and an
       // idle callback, either of which can be delayed by a slow page asset.
       addScript(
-        "mobile-shell.js?v=20260827-mobile-nav-restore1",
+        "mobile-shell.js?v=20260921-mobile-audit2",
         "rusMobileShell",
         true,
       );
