@@ -1,5 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 
+(async()=>{
 const swSource=fs.readFileSync('sw.js','utf8');
 const listeners={};
 const waits=[];
@@ -60,3 +61,5 @@ for(let i=0;i<20;i++)observerCallback([{addedNodes:[root,child,detached]}]);
 assert.equal(frames.length,1);frames[0]();assert.deepEqual(processed,[root]);
 
 console.log('Shared runtime checks passed: service worker retired, RUS caches cleared, no fetch interception, startup does not wait for window.load, and desktop scans remain batched.');
+
+})().catch(error=>{console.error(error);process.exitCode=1});
