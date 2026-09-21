@@ -23,6 +23,13 @@ function runtime(fetch,cache,open=async()=>cache){
     const response=await timeout(method==='networkFirst'?context[method](req,{},event):context[method](req,event));
     assert.equal(await response.text(),'fresh');
   }
+  {
+    let imageFetches=0;
+    const {context,event}=runtime(async()=>{imageFetches++;return new Response('fresh')},{match:async()=>new Response('cached-image'),put:async()=>{}});
+    const response=await timeout(context.cacheFirst(req,event));
+    assert.equal(await response.text(),'cached-image');
+    assert.equal(imageFetches,0,'cacheFirst must not fetch when the cache already has the image');
+  }
   const stalledFetch=(_,init)=>new Promise((_,reject)=>init.signal.addEventListener('abort',()=>reject(Error('aborted'))));
   let r=runtime(stalledFetch,{match:async()=>new Response('cached'),put:async()=>{}});
   assert.equal(await (await timeout(r.context.networkFirst(req,{},r.event))).text(),'cached');
@@ -60,5 +67,5 @@ function runtime(fetch,cache,open=async()=>cache){
     if(state==='interactive'){assert.equal(registrations,0);await onLoad()}
     assert.equal(registrations,1);
   }
-  console.log('Shared runtime regressions passed: stalled cache writes, stalled cache open, storage failure, hung network fallback, request deduplication, startup without window.load, late PWA registration, and batched desktop scans.');
+  console.log('Shared runtime regressions passed: stalled cache writes, stalled cache open, cache-first image hits, storage failure, hung network fallback, request deduplication, startup without window.load, late PWA registration, and batched desktop scans.');
 })().catch(error=>{console.error(error);process.exitCode=1});
