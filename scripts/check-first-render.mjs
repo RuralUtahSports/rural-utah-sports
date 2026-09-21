@@ -21,7 +21,7 @@ const loaderBytes=Buffer.byteLength(teamLoader,'utf8');
 const runtimeBytes=Buffer.byteLength(teamRuntime,'utf8');
 if(loaderBytes>700)fail(`team-enhancements.js parser wrapper is too large (${loaderBytes} bytes)`);
 if(runtimeBytes<=loaderBytes)fail('Team enhancement runtime was not actually split from the head loader');
-for(const token of ['team-enhancements-runtime.js?v=20260826-record-mount4','s.async=false','rusTeamEnhancementsRuntime']){
+for(const token of ['team-enhancements-runtime.js?v=20260914-record-audit1','s.async=false','rusTeamEnhancementsRuntime']){
   if(!teamLoader.includes(token))fail(`Team enhancement wrapper is missing ${token}`);
 }
 for(const token of ['function install()','window.render=function','loadCurrentSeason','loadRosterStats','loadOverviewCleanup','Rivalry Hub']){
@@ -30,7 +30,7 @@ for(const token of ['function install()','window.render=function','loadCurrentSe
 
 const pwaVersion=pwa.match(/const VERSION='([^']+)'/)?.[1];
 const swVersion=sw.match(/const CACHE='rus-site-([^']+)'/)?.[1];
-if(pwaVersion!=='20260828-unique-featured1')fail(`Unexpected PWA first-render generation: ${pwaVersion||'missing'}`);
+if(pwaVersion!=='20260921-load-audit1')fail(`Unexpected PWA first-render generation: ${pwaVersion||'missing'}`);
 if(swVersion!==pwaVersion)fail(`Service-worker generation ${swVersion||'missing'} does not match PWA ${pwaVersion||'missing'}`);
 
 if(!process.exitCode)console.log(`First-render checks passed. Team head wrapper ${loaderBytes} B -> ${runtimeBytes} B deferred runtime; mobile content-visibility guards and post-paint extras are active.`);
