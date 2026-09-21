@@ -343,7 +343,7 @@
       );
     if (path === "rankings.html") {
       addScript(
-        "rankings-live-records.js?v=20260913-class-color-box2",
+        "rankings-live-records.js?v=20260921-load-audit1",
         "rusRankingsLiveRecords",
         true,
       );
