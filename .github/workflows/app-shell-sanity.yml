@@ -17,6 +17,8 @@ on:
       - 'desktop-optimizations.js'
       - 'desktop-v2.js'
       - 'site-search.js'
+      - 'site-search-index.json'
+      - 'scripts/test-search-runtime.cjs'
       - 'pwa.js'
       - 'sw.js'
       - 'optimization-polish.js'
@@ -80,6 +82,8 @@ on:
       - 'desktop-optimizations.js'
       - 'desktop-v2.js'
       - 'site-search.js'
+      - 'site-search-index.json'
+      - 'scripts/test-search-runtime.cjs'
       - 'pwa.js'
       - 'sw.js'
       - 'optimization-polish.js'
@@ -210,3 +214,8 @@ jobs:
 
       - name: Verify current-week and conditional stat fixes
         run: node scripts/check-current-week-and-stat-corrections.mjs
+
+      - name: Validate compact search and asynchronous interactions
+        run: |
+          node scripts/build_player_search_index.mjs
+          node scripts/test-search-runtime.cjs

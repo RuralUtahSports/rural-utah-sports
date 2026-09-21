@@ -24,15 +24,24 @@ const prep=root=>{
 const main=document.querySelector('main');
 if(main){
   prep(main);
+  const pending=new Set();let queued=false;
   const observer=new MutationObserver(mutations=>{
-    const roots=[];
-    for(const mutation of mutations){
-      for(const node of mutation.addedNodes){
-        if(node.nodeType===1)roots.push(node);
-      }
+    for(const mutation of mutations)for(const node of mutation.addedNodes){
+      if(node.nodeType===1)pending.add(node);
     }
-    if(!roots.length)return;
-    const run=()=>roots.forEach(prep);
+    if(!pending.size||queued)return;
+    queued=true;
+    const run=()=>{
+      queued=false;
+      const roots=[...pending];pending.clear();
+      const set=new Set(roots);
+      for(const root of roots){
+        if(!root.isConnected)continue;
+        let parent=root.parentElement;
+        while(parent&&!set.has(parent))parent=parent.parentElement;
+        if(!parent)prep(root);
+      }
+    };
     if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:250});
     else requestAnimationFrame(run);
   });
