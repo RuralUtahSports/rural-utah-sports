@@ -26,7 +26,7 @@ const teamKey=value=>teamAliases[norm(value)]||norm(value);
 const value=value=>Number.isFinite(Number(value))?Number(value).toFixed(6):'—';
 const get=async(file,fallback)=>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);try{const response=await fetch(`${file}?v=${Date.now()}`,{cache:'no-store',signal:controller.signal});return response.ok?await response.json():fallback}catch{return fallback}finally{clearTimeout(timer)}};
 async function run(){
-  const [data,teams]=await Promise.all([get('uhsaa-rpi-official-2026.json',null),get('teams-data.json',[])]);
+  const [data,teams]=await Promise.all([get('uhsaa-rpi-official-2026.json',null),get('team-colors-exact.json',[])]);
   if(!data?.classifications)throw new Error('RPI data unavailable');
   const meta=new Map(teams.map(team=>[norm(team.team),team]));
   const pill=team=>{const item=meta.get(teamKey(team))||{},canonical=item.team||team;return `<a class="team-pill" style="--bg:${h(item.backgroundColor||'#222')};--fg:${h(item.textColor||'#fff')}" href="team.html?team=${encodeURIComponent(canonical)}">${h(team)}</a>`};
