@@ -67,7 +67,7 @@ for (const needle of ['pwa.js', 'site-search.js', 'mobile-shell.js', 'desktop-op
 }
 
 const setupStart = nav.indexOf('function setup()');
-const mobileLoad = nav.indexOf('mobile-shell.js?v=20260827-mobile-nav-restore1', setupStart);
+const mobileLoad = nav.indexOf('mobile-shell.js?v=20260921-mobile-audit2', setupStart);
 const deferredExtras = nav.indexOf('afterFirstPaint(loadExtras', setupStart);
 if (setupStart < 0 || mobileLoad < setupStart || deferredExtras < 0 || mobileLoad > deferredExtras) {
   fail('Mobile navigation must load during critical setup before deferred extras.');
