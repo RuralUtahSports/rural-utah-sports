@@ -2,6 +2,7 @@ import fs from 'node:fs';
 
 const BASE = 'https://uhsaa.org/rpi/football/2026';
 const OUT = 'uhsaa-rpi-official-2026.json';
+const TIME_ZONE = 'America/Denver';
 const CLASSES = [
   ['6A', '6A'],
   ['5A', '5A'],
@@ -13,6 +14,7 @@ const CLASSES = [
 ];
 
 const clean = (value) => String(value ?? '').replace(/\s+/g, ' ').trim();
+const normalizeTeam = (value) => clean(value).toUpperCase();
 const decode = (value) => clean(value)
   .replace(/<!--[\s\S]*?-->/g, ' ')
   .replace(/&amp;/gi, '&')
@@ -22,6 +24,21 @@ const decode = (value) => clean(value)
   .replace(/<[^>]+>/g, ' ')
   .replace(/\s+/g, ' ')
   .trim();
+
+function weekOf(date = new Date()) {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-US', {
+      timeZone: TIME_ZONE,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).formatToParts(date).filter((part) => part.type !== 'literal').map((part) => [part.type, part.value])
+  );
+  const localDate = new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day)));
+  const daysSinceMonday = (localDate.getUTCDay() + 6) % 7;
+  localDate.setUTCDate(localDate.getUTCDate() - daysSinceMonday);
+  return localDate.toISOString().slice(0, 10);
+}
 
 async function fetchText(url, attempt = 0) {
   const response = await fetch(url, {
@@ -55,9 +72,33 @@ function parseRows(html, classification) {
   return rows;
 }
 
+const previous = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
+const currentWeek = weekOf();
+const sameMovementWeek = previous?.movement?.weekOf === currentWeek;
+const baselineWeekOf = sameMovementWeek
+  ? previous?.movement?.baselineWeekOf ?? null
+  : previous?.movement?.weekOf ?? null;
+
+function addMovement(rows, classification) {
+  const priorRows = previous?.classifications?.[classification]?.rows || [];
+  const priorByTeam = new Map(priorRows.map((row) => [normalizeTeam(row.team), row]));
+  return rows.map((row) => {
+    const prior = priorByTeam.get(normalizeTeam(row.team));
+    const baselineRank = sameMovementWeek
+      ? Number(prior?.previousRank ?? prior?.rank)
+      : Number(prior?.rank);
+    const previousRank = Number.isFinite(baselineRank) ? baselineRank : null;
+    return {
+      ...row,
+      previousRank,
+      rankChange: previousRank === null ? null : previousRank - row.rank,
+    };
+  });
+}
+
 const results = await Promise.all(CLASSES.map(async ([classification, endpoint]) => {
   const sourceUrl = `${BASE}/${endpoint}.php`;
-  const rows = parseRows(await fetchText(sourceUrl), classification);
+  const rows = addMovement(parseRows(await fetchText(sourceUrl), classification), classification);
   if (!rows.length) throw new Error(`No official ${classification} RPI rows found`);
   return [classification, {sourceUrl, rows}];
 }));
@@ -66,6 +107,11 @@ const payload = {
   season: 2026,
   fetchedAt: new Date().toISOString(),
   source: `${BASE}/`,
+  movement: {
+    weekOf: currentWeek,
+    baselineWeekOf,
+    label: baselineWeekOf ? `vs. official UHSAA RPI from ${baselineWeekOf}` : 'Official UHSAA week-over-week movement',
+  },
   classifications: Object.fromEntries(results),
 };
 
