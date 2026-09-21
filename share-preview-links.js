@@ -2,6 +2,7 @@
 'use strict';
 if(window.__RUS_SHARE_PREVIEW_LINKS__)return;window.__RUS_SHARE_PREVIEW_LINKS__=true;
 const path=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+if(!['team.html','player.html','game.html'].includes(path))return;
 const aliases={'CEDAR CITY':'CEDAR','GRAND COUNTY':'GRAND','MONUMENT VAL':'MONUMENT VALLEY','LAYTON CHRISTIAN ACADEMY':'LAYTON CHRISTIAN','AMERICAN LEADERSHIP ACADEMY':'ALA'};
 const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
 const rankKey=v=>aliases[norm(v)]||norm(v);
