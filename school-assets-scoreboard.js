@@ -162,7 +162,7 @@ Promise.all([
   });
   rankMap=nextClass;stateRankMap=nextState;queueRefresh(30);
 }).catch(()=>{});
-fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{
+(window.RUSScoreboardStandingsData?Promise.resolve(window.RUSScoreboardStandingsData):fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null)).then(data=>{
   const next=new Map();for(const teams of Object.values(data?.byClassification||{}))for(const row of teams||[])if(row?.team)next.set(rankKey(row.team),recordText(row));
   recordMap=next;queueRefresh(30);
 }).catch(()=>{});
