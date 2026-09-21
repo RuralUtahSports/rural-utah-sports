@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 if((location.pathname.split('/').pop()||'').toLowerCase()!=='team.html')return;
-const tabs=[['overview','Overview'],['seasons','Seasons'],['playoffs','Playoffs'],['games','Games'],['elo','ELO'],['team-records','Team Records'],['player-records','Player Records'],['history','History']];
+const tabs=[['overview','Overview'],['seasons','Seasons'],['playoffs','Playoffs'],['games','Games'],['elo','ELO'],['coaches','Coaches'],['streaks','Streaks'],['team-records','Team Records'],['player-records','Player Records'],['history','History']];
 const sectionMap={'team information':'overview','greatest seasons':'seasons','season-by-season history':'seasons','championship history':'playoffs','schedule by year':'games','elo history':'elo','historical records':'history'};
 const clean=v=>String(v??'').trim();
 const BRACKET_TEAM_ALIASES={'GUNNISON':'GUNNISON VALLEY','MAPLE MTN':'MAPLE MOUNTAIN','MONUMENT VAL':'MONUMENT VALLEY','CEDAR':'CEDAR CITY'};
@@ -10,8 +10,10 @@ function addStyles(){if(document.getElementById('rus-team-tabs-style'))return;co
 function collect(title){const nodes=[title];let n=title.nextSibling;while(n){if(n.nodeType===1&&n.classList?.contains('section-title'))break;if(n.nodeType===1&&n.classList?.contains('rus-timeline-wrap'))break;nodes.push(n);n=n.nextSibling}return nodes}
 function wanted(){const q=(new URLSearchParams(location.search).get('tab')||'').toLowerCase();return tabs.some(([k])=>k===q)?q:'overview'}
 const lazyTabScripts={
-  'team-records':[['team-stat-records.js?v=20260921-load-audit1','rusTeamStatRecords']],
-  'player-records':[['team-player-records.js?v=20260921-load-audit1','rusPlayerRecords'],['player-records-mode-toggle.js?v=20260921-load-audit1','rusPlayerRecordsMode']]
+  'coaches':[['team-coaches.js?v=20260921-load-audit2','rusTeamCoaches'],['team-coaches-tab.js?v=20260921-load-audit2','rusTeamCoachesTab']],
+  'streaks':[['team-streaks-tab.js?v=20260921-load-audit2','rusTeamStreaksTab']],
+  'team-records':[['team-stat-records.js?v=20260921-load-audit2','rusTeamStatRecords']],
+  'player-records':[['team-player-records.js?v=20260921-load-audit2','rusPlayerRecords'],['player-records-mode-toggle.js?v=20260921-load-audit2','rusPlayerRecordsMode']]
 };
 function ensureLazyTabScripts(key){
   const items=lazyTabScripts[key]||[];
