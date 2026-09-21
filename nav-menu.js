@@ -178,7 +178,7 @@
     const loadDeviceOptimizations = () => {
       if (mobileMedia.matches) {
         addScript(
-          "mobile-optimizations.js?v=20260921-shared-audit1",
+          "mobile-optimizations.js?v=20260921-mobile-audit1",
           "rusMobileOptimizations",
           true,
         );
@@ -232,7 +232,7 @@
           : "school-assets-core.js?v=20260818-perf2";
       addScript(assetScript, "rusSchoolAssets", true);
       addScript(
-        "school-logo-integration.js?v=20260817-ridgeline6",
+        "school-logo-integration.js?v=20260921-mobile-audit1",
         "rusSchoolLogoIntegration",
         true,
       );
