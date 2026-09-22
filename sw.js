@@ -1,4 +1,4 @@
-const CACHE='rus-site-20260922-retire2';
+const CACHE='rus-site-20260922-no-sw2';
 
 const bounded=(promise,timeout=1200,fallback=null)=>Promise.race([Promise.resolve(promise).catch(()=>fallback),new Promise(resolve=>setTimeout(()=>resolve(fallback),timeout))]);
 

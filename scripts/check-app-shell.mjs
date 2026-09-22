@@ -87,7 +87,7 @@ if (!mobile.includes("if(document.querySelector('nav .rus-nav'))install();")) {
 for (const file of fs.readdirSync('.').filter(name => name.endsWith('.html'))) {
   const html = fs.readFileSync(file, 'utf8');
   for (const match of html.matchAll(/<script\b[^>]*\bsrc=["']nav-menu\.js\?v=([^"']+)["'][^>]*>/gi)) {
-    if (match[1] !== '20260827-mobile-nav-restore1') fail(`${file} uses stale nav-menu version ${match[1]}.`);
+    if (match[1] !== '20260922-load-audit2') fail(`${file} uses stale nav-menu version ${match[1]}.`);
     if (/\bdefer\b/i.test(match[0])) fail(`${file} defers the critical navigation script.`);
   }
 }
