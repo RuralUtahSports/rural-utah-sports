@@ -7,6 +7,9 @@ on:
   push:
     paths:
       - '.github/workflows/rebuild-teams-data.yml'
+      - 'scripts/schedule-known-corrections.mjs'
+      - 'scripts/sanitize-team-schedules.mjs'
+      - 'scripts/rebuild_team_season_history.py'
 
 permissions:
   contents: write
