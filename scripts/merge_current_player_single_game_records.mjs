@@ -6,8 +6,10 @@ const MANUAL='manual-player-single-game-records-2026.json';
 const ROOT='player-single-game-records';
 const BY_TEAM=path.join(ROOT,'by-team');
 const STATEWIDE=path.join(ROOT,'statewide.json');
+const CURRENT_SEASON_OUT=path.join(ROOT,'2026.json');
 const TEAM_LIMIT=15;
 const STATE_LIMIT=100;
+const CURRENT_SEASON_LIMIT=500;
 
 const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -122,6 +124,35 @@ function mergeCategory(data,category,incoming,limit){
 }
 
 const incoming=currentEntries();
+
+// Publish a dedicated current-season leaderboard from the complete 2026 feed.
+// This avoids filtering the historical statewide top-100, which can hide
+// legitimate 2026 leaders that do not rank in the all-time top 100.
+if(fs.existsSync(STATEWIDE)){
+  const historical=JSON.parse(fs.readFileSync(STATEWIDE,'utf8'));
+  const meta=new Map((historical.categories||[]).map(cat=>[cat.key,{label:cat.label,unit:cat.unit}]));
+  const categories=[];
+  for(const category of [...new Set(incoming.map(row=>row.category))]){
+    const rows=incoming.filter(row=>row.category===category);
+    if(!rows.length)continue;
+    const info=meta.get(category)||{label:category,unit:''};
+    categories.push({
+      key:category,
+      label:info.label,
+      unit:info.unit,
+      entries:rankEntries(rows,CURRENT_SEASON_LIMIT)
+    });
+  }
+  const payload={
+    season:2026,
+    updatedAt:new Date().toISOString(),
+    source:'Current 2026 Deseret News / MaxPreps merged game stats',
+    coverageNote:'Current-season single-game leaders are built from the complete 2026 game-stat feed and verified manual corrections. Rankings update as new final-game statistics are published.',
+    categories
+  };
+  fs.writeFileSync(CURRENT_SEASON_OUT,JSON.stringify(payload,null,2)+'\n');
+}
+
 const byTeam=new Map();
 for(const e of incoming){
   const key=norm(e.team);
