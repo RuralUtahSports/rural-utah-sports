@@ -372,7 +372,7 @@
       );
     if (path === "rankings.html") {
       addScript(
-        "rankings-live-records.js?v=20260921-load-audit1",
+        "rankings-live-records.js?v=20260922-week7-adjust2",
         "rusRankingsLiveRecords",
         true,
       );
