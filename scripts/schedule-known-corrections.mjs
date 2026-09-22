@@ -36,6 +36,10 @@ const dateValue = value => {
 };
 
 const dateCorrections = new Map(Object.entries({
+  // Verified Uintah 2001 playoff date: first-round win over Ogden was Oct. 27.
+  'UINTAH|OGDEN|10/26/2001': '10/27/2001',
+  'OGDEN|UINTAH|10/26/2001': '10/27/2001',
+
   // Verified 2023 Games-audit corrections.
   'WATER CANYON|FREDONIA (AZ)|9/8/2023': '9/1/2023',
   'WEST|ST FRANCIS (MD)|9/22/2023': '9/15/2023',
@@ -194,6 +198,12 @@ const dateCorrections = new Map(Object.entries({
 }));
 
 const scoreCorrections = new Map(Object.entries({
+  // Verified Uintah historical score corrections.
+  'UINTAH|UNION|9/2/2016': { teamScore: 49, opponentScore: 0, result: 'W' },
+  'UNION|UINTAH|9/2/2016': { teamScore: 0, opponentScore: 49, result: 'L' },
+  'UINTAH|DESERT HILLS|8/22/2008': { teamScore: 3, opponentScore: 36, result: 'L' },
+  'DESERT HILLS|UINTAH|8/22/2008': { teamScore: 36, opponentScore: 3, result: 'W' },
+
   // Verified 2024 finals.
   'GUNNISON VALLEY|MILLARD|10/18/2024': { teamScore: 0, opponentScore: 45, result: 'L' },
   'MILLARD|GUNNISON VALLEY|10/18/2024': { teamScore: 45, opponentScore: 0, result: 'W' },
@@ -206,6 +216,10 @@ const scoreCorrections = new Map(Object.entries({
 }));
 
 const dropGames = new Set([
+  // Bogus duplicate Uintah 2001 row; the real Aug. 31 opponent was Sky View.
+  'UINTAH|SKYLINE|8/31/2001',
+  'SKYLINE|UINTAH|8/31/2001',
+
   // Verified 2023 copied/bad rows.
   'CEDAR CITY|WASATCH|10/13/2023',
   'WASATCH|CEDAR CITY|10/13/2023',
@@ -232,6 +246,8 @@ const forfeitGames = new Set([
 // Verified games missing entirely from the Clean Games sheet. Keep these in
 // the correction layer so the hourly sheet sync cannot erase them again.
 const ensuredGames = [
+  { team: 'UINTAH', season: '2001', date: '8/31/2001', opponent: 'SKY VIEW', teamScore: 17, opponentScore: 3, result: 'W', playoff: false },
+  { team: 'SKY VIEW', season: '2001', date: '8/31/2001', opponent: 'UINTAH', teamScore: 3, opponentScore: 17, result: 'L', playoff: false },
   { team: 'ALA', season: '2025', date: '10/24/2025', opponent: 'SOUTH SUMMIT', teamScore: 20, opponentScore: 55, result: 'L', playoff: true },
   { team: 'SOUTH SUMMIT', season: '2025', date: '10/24/2025', opponent: 'ALA', teamScore: 55, opponentScore: 20, result: 'W', playoff: true }
 ];
