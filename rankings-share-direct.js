@@ -1,17 +1,17 @@
 (()=>{
 'use strict';
 if((location.pathname.split('/').pop()||'').toLowerCase()!=='rankings.html')return;
-const BUILD='ios9-roundrect-fix';
+const BUILD='ios10-3a1a-scope-fix';
 if(window.__rusState25DirectShareBuild===BUILD)return;
 window.__rusState25DirectShareBuild=BUILD;
 // Compatibility value keeps the older sponsor loader from injecting the previous exporter again.
-window.__rusState25DirectShareVersion='ios9-roundrect-fix';
+window.__rusState25DirectShareVersion='ios10-3a1a-scope-fix';
 window.__rusState25DirectShare=true;
 const MOBILE=()=>matchMedia('(max-width:700px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||'');
 const text=(root,sel)=>root?.querySelector(sel)?.textContent?.trim()||'';
 const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
 const safeHex=(v,f='#333333')=>/^#[0-9A-F]{6}$/i.test(String(v||''))?String(v):f;
-function isState25Scope(){const state=document.getElementById('state-top-25'),cls=document.getElementById('classification-rankings');if(!state)return false;if(!cls)return true;return scrollY<cls.offsetTop-Math.min(innerHeight*.2,180)}
+function isState25Scope(){const small=document.querySelector('.small-school-section:not([hidden])');if(small?.querySelector('.small-school-row')){const r=small.getBoundingClientRect(),visible=Math.min(innerHeight,r.bottom)-Math.max(0,r.top);if(visible>80)return false}const state=document.getElementById('state-top-25'),cls=document.getElementById('classification-rankings');if(!state)return false;if(!cls)return true;return scrollY<cls.offsetTop-Math.min(innerHeight*.2,180)}
 function roundRect(c,x,y,w,h,r){r=Math.min(r,w/2,h/2);c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 function fit(c,value,maxWidth,start,min=9,weight=900){let n=start;for(;n>min;n--){c.font=`${weight} ${n}px Arial,Helvetica,sans-serif`;if(c.measureText(value).width<=maxWidth)break}return n}
 function rankFill(rank){return rank===1?'#d5ad35':rank===2?'#b9bcc1':rank===3?'#ad6b3d':'#252525'}
