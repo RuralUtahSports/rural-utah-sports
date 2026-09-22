@@ -29,7 +29,7 @@ async function openShare(button){
   if(button)button.disabled=true;
   await Promise.all([
     load('share-graphic.js?v=20260921-rankings-lazy1'),
-    load('rankings-share-direct.js?v=20260823-ios9-roundrect-fix'),
+    load('rankings-share-direct.js?v=20260922-3a1a-scope-fix1'),
     load('rankings-class-share-direct-v3.js?v=20260819-ios3-class-polish-elo'),
     load('rankings-overall-share-direct-v3.js?v=20260820-ios3-overall-featured-top3-logos')
   ]);
