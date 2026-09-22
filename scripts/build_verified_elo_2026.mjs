@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import './schedule-known-corrections.mjs';
 
 const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).replace(/\s+/g,' ').toUpperCase();
