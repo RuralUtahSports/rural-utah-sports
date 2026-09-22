@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - 'deseret-live-details-2026.json'
+      - 'deseret-game-details.json'
       - '.github/workflows/sync-live-finals-to-weekly.yml'
 
 permissions:
@@ -84,10 +85,18 @@ jobs:
 
           const weekly = JSON.parse(fs.readFileSync('weekly-simulation.json','utf8'));
           const live = JSON.parse(fs.readFileSync('deseret-live-details-2026.json','utf8'));
+          const full = fs.existsSync('deseret-game-details.json')
+            ? JSON.parse(fs.readFileSync('deseret-game-details.json','utf8'))
+            : { games: {} };
+          // The compact live feed is authoritative for delayed/manual finals.
+          // The full Deseret feed carries the regular Friday finals as well.
+          const mergedDetails = {
+            games: { ...(full.games || {}), ...(live.games || {}) }
+          };
           let changed = 0;
 
           for (const g of weekly.games || []) {
-            const detail = findDetailForGame(g, live);
+            const detail = findDetailForGame(g, mergedDetails);
             if (!detail) continue;
             if (detail.final !== true) {
               if (detail.statusSource === 'deseret-browser-live-early-final-guard' &&
