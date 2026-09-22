@@ -9,7 +9,7 @@ const STATEWIDE=path.join(ROOT,'statewide.json');
 const CURRENT_SEASON_OUT=path.join(ROOT,'2026.json');
 const TEAM_LIMIT=15;
 const STATE_LIMIT=100;
-const CURRENT_SEASON_LIMIT=500;
+const CURRENT_SEASON_LIMIT=100;
 
 const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
