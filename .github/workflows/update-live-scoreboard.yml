@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - '.github/workflows/update-live-scoreboard.yml'
+      - 'verified-finals-2026.json'
+      - 'manual-scoreboard-corrections-2026.json'
 
 permissions:
   contents: write
