@@ -529,7 +529,7 @@
   async function loadSmallSchoolArchive(){
     if(smallSchoolArchive?.snapshots?.length)return smallSchoolArchive;
     try{
-      const res=await fetch('small-school-rankings-history-2026.json?v=20260913-week6-manti8',{cache:'no-store'});
+      const res=await fetch('small-school-rankings-history-2026.json?v=20260922-week7-adjust2',{cache:'no-store'});
       if(res.ok)smallSchoolArchive=await res.json();
     }catch(e){console.warn('3A-1A rankings:',e.message)}
     return smallSchoolArchive;
