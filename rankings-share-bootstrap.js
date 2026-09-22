@@ -31,7 +31,7 @@ async function openShare(button){
     load('share-graphic.js?v=20260921-rankings-lazy1'),
     load('rankings-share-direct.js?v=20260922-3a1a-scope-fix1'),
     load('rankings-class-share-direct-v3.js?v=20260819-ios3-class-polish-elo'),
-    load('rankings-overall-share-direct-v3.js?v=20260820-ios3-overall-featured-top3-logos')
+    load('rankings-overall-share-direct-v3.js?v=20260922-padded-share-logos1')
   ]);
   button?.remove();
   document.getElementById(STYLE_ID)?.remove();
