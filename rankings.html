@@ -70,7 +70,7 @@ const stateSnaps=state25Archive.snapshots||[],stateSelect=document.getElementByI
 const snaps=rankingArchive.snapshots||[],select=document.getElementById('rankingSnapshot');select.innerHTML=[...snaps].reverse().map(x=>`<option value="${esc(x.key)}">${esc(x.label)}${x.date?' — '+esc(x.date):''}</option>`).join('');const latest=snaps.at(-1);if(latest){select.value=latest.key;renderSnapshot(latest.key)}select.addEventListener('change',()=>renderSnapshot(select.value));
 }catch(e){console.error(e);root.className='error';root.textContent='Rankings archive could not be loaded.'}})();
 </script>
-<script src="nav-menu.js?v=20260922-week7-adjust2"></script>
+<script src="nav-menu.js?v=20260922-dropdown-fix3"></script>
 <script src="school-assets-core.js?v=20260921-rankings-audit1"></script>
 <script src="school-logo-integration.js?v=20260817-ridgeline6"></script>
 <script src="back-to-top.js" defer></script>
