@@ -171,6 +171,9 @@ jobs:
           fs.writeFileSync('weekly-simulation.json',JSON.stringify({games:weekly}));console.log(`Weekly simulation games: ${weekly.length}; normalized team fields: ${normalized}`);
           NODE
 
+      - name: Reapply verified scoreboard schedule overrides
+        run: node scripts/apply-scoreboard-schedule-overrides.mjs
+
       - name: Fill missing projections after Sunday morning release
         run: node scripts/fill-weekly-projections.mjs /tmp/rus-previous-weekly.json
 

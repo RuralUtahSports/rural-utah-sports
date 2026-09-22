@@ -158,8 +158,9 @@ for (const correction of corrections) {
   }
 
   if (correction.finalScore) {
-    const nextAway = num(correction.finalScore.away);
-    const nextHome = num(correction.finalScore.home);
+    const flipScore = correction.flipFinalScore === true;
+    const nextAway = num(flipScore ? correction.finalScore.home : correction.finalScore.away);
+    const nextHome = num(flipScore ? correction.finalScore.away : correction.finalScore.home);
     if (num(rows[0]?.total) !== nextAway || num(rows[1]?.total) !== nextHome) {
       rows[0].total = nextAway;
       rows[1].total = nextHome;
