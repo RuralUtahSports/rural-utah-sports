@@ -480,14 +480,50 @@
         dropdown("Simulators", "simulators"),
         dropdown("About", "about"),
       ].join("");
+      const placeDesktopDropdown = (d) => {
+        if (!d?.open || !window.matchMedia("(min-width:701px)").matches) return;
+        const summary = d.querySelector(":scope > summary");
+        const drop = d.querySelector(":scope > .drop");
+        if (!summary || !drop) return;
+        const rect = summary.getBoundingClientRect();
+        const gap = 2;
+        const minWidth = Math.max(235, Math.round(rect.width));
+        const maxLeft = Math.max(8, window.innerWidth - minWidth - 8);
+        drop.style.position = "fixed";
+        drop.style.top = Math.round(rect.bottom + gap) + "px";
+        drop.style.left = Math.round(Math.min(Math.max(8, rect.left), maxLeft)) + "px";
+        drop.style.width = "max-content";
+        drop.style.minWidth = minWidth + "px";
+        drop.style.maxWidth = "min(360px, calc(100vw - 16px))";
+        drop.style.maxHeight = "none";
+        drop.style.overflow = "visible";
+        drop.style.zIndex = "2147482500";
+      };
+      const resetMobileDropdown = (d) => {
+        const drop = d?.querySelector(":scope > .drop");
+        if (!drop) return;
+        if (window.matchMedia("(max-width:700px)").matches) {
+          ["position","top","left","width","minWidth","maxWidth","maxHeight","overflow","zIndex"]
+            .forEach((key) => { drop.style[key] = ""; });
+        }
+      };
       document.querySelectorAll(".rus-nav details").forEach((d) =>
         d.addEventListener("toggle", () => {
           if (!d.open) return;
           document.querySelectorAll(".rus-nav details").forEach((other) => {
             if (other !== d) other.open = false;
           });
+          placeDesktopDropdown(d);
         }),
       );
+      const repositionOpenDropdown = () => {
+        const open = document.querySelector(".rus-nav details[open]");
+        if (!open) return;
+        if (window.matchMedia("(min-width:701px)").matches) placeDesktopDropdown(open);
+        else resetMobileDropdown(open);
+      };
+      window.addEventListener("resize", repositionOpenDropdown, { passive: true });
+      window.addEventListener("scroll", repositionOpenDropdown, { passive: true });
 
       // Mobile navigation is part of the critical shell. Load it as soon as
       // the canonical nav exists instead of waiting for window.load and an
