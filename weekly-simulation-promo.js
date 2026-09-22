@@ -121,30 +121,6 @@
       s.dataset.rusSeasonRecords = "1";
       document.body.appendChild(s);
     },
-    loadHomeGotw = () => {
-      if (
-        !/^(?:|index\.html)$/i.test(page()) ||
-        document.querySelector("script[data-rus-home-gotw]")
-      )
-        return;
-      const s = document.createElement("script");
-      s.src = "home-game-of-week.js?v=20260819-preview2";
-      s.defer = true;
-      s.dataset.rusHomeGotw = "preview2";
-      document.body.appendChild(s);
-    },
-    loadHomeRecordAlerts = () => {
-      if (
-        !/^(?:|index\.html)$/i.test(page()) ||
-        document.querySelector("script[data-rus-home-record-alerts]")
-      )
-        return;
-      const s = document.createElement("script");
-      s.src = "home-record-alerts.js?v=20260909-record-dates";
-      s.defer = true;
-      s.dataset.rusHomeRecordAlerts = "record-alert6";
-      document.body.appendChild(s);
-    },
     loadState25Direct = () => {
       if (
         !/rankings\.html$/i.test(page()) ||
@@ -182,8 +158,6 @@
       loadFullSeason();
       loadDynasty();
       loadSeasonRecords();
-      loadHomeGotw();
-      loadHomeRecordAlerts();
       loadState25Direct();
       loadClassDirect();
     };

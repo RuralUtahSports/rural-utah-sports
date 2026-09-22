@@ -148,7 +148,7 @@
   }
   async function loadExtras() {
     await fetchCacheReady;
-    addScript("pwa.js?v=20260921-no-sw1", "rusPwa", true);
+    addScript("pwa.js?v=20260922-no-sw2", "rusPwa", true);
     addScript("site-search.js?v=20260921-search-runtime1", "rusSiteSearch", true);
     addScript(
       "optimization-polish.js?v=20260921-search-runtime1",
@@ -157,7 +157,7 @@
     );
     addScript("recently-viewed.js?v=20260817-app4", "rusRecentlyViewed", true);
     if (oneOf("index.html","team.html","championships.html","games.html","records.html","elo.html","season.html","game.html","programs.html"))
-      addScript("site-extras.js?v=20260921-shared-audit2", "rusExtras", true);
+      addScript("site-extras.js?v=20260922-load-audit2", "rusExtras", true);
     if (oneOf("index.html","historical-rankings.html"))
       addScript("site-polish.js?v=20260921-shared-audit1", "rusSitePolish", true);
     else
@@ -313,6 +313,11 @@
     if (path === "elo.html")
       addScript("elo-explainer.js?v=20260812b", "rusEloExplainer", true);
     if (path === "index.html") {
+      addScript(
+        "home-rivalry-watch.js?v=20260922-lazy-history1",
+        "rusHomeRivalry",
+        true,
+      );
       addScript(
         "home-personalized.js?v=20260817-app4",
         "rusHomePersonalized",
