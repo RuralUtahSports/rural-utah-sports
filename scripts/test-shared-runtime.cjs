@@ -17,6 +17,7 @@ const context={
     clients:{claim:async()=>{claimed++}},
     registration:{unregister:async()=>{unregistered++;return true}}
   },
+  setTimeout,
   Promise
 };
 vm.createContext(context);
