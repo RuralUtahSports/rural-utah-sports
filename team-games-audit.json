@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-22T18:59:52.036Z",
+  "updatedAt": "2026-09-22T19:00:29.443Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,7 +8,7 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68323,
+    "scheduleRowsAudited": 68313,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
     "sameDayMultipleOpponents": 35,
@@ -6101,9 +6101,9 @@
       "team": "GUNNISON VALLEY",
       "season": "2001",
       "mismatches": {
-        "wins": {
-          "expected": 4,
-          "actual": 5
+        "games": {
+          "expected": 9,
+          "actual": 8
         },
         "losses": {
           "expected": 5,
@@ -6111,11 +6111,11 @@
         },
         "pointsFor": {
           "expected": 162,
-          "actual": 167
+          "actual": 148
         },
         "pointsAgainst": {
           "expected": 207,
-          "actual": 202
+          "actual": 188
         }
       }
     },
@@ -6421,9 +6421,9 @@
       "team": "KANAB",
       "season": "2001",
       "mismatches": {
-        "wins": {
-          "expected": 2,
-          "actual": 3
+        "games": {
+          "expected": 9,
+          "actual": 8
         },
         "losses": {
           "expected": 7,
@@ -6431,11 +6431,11 @@
         },
         "pointsFor": {
           "expected": 139,
-          "actual": 143
+          "actual": 123
         },
         "pointsAgainst": {
           "expected": 218,
-          "actual": 214
+          "actual": 198
         }
       }
     },
@@ -6507,13 +6507,21 @@
       "team": "LAYTON CHRISTIAN",
       "season": "2014",
       "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 3,
+          "actual": 2
+        },
         "pointsFor": {
           "expected": 187,
-          "actual": 194
+          "actual": 147
         },
         "pointsAgainst": {
           "expected": 311,
-          "actual": 304
+          "actual": 284
         }
       }
     },
@@ -6702,21 +6710,21 @@
       "team": "MANTI",
       "season": "2001",
       "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
         "wins": {
           "expected": 8,
           "actual": 7
         },
-        "losses": {
-          "expected": 2,
-          "actual": 3
-        },
         "pointsFor": {
           "expected": 261,
-          "actual": 234
+          "actual": 222
         },
         "pointsAgainst": {
           "expected": 92,
-          "actual": 119
+          "actual": 80
         }
       }
     },
@@ -6791,19 +6799,23 @@
       "mismatches": {
         "games": {
           "expected": 11,
-          "actual": 10
+          "actual": 9
         },
         "wins": {
           "expected": 4,
           "actual": 3
         },
+        "losses": {
+          "expected": 7,
+          "actual": 6
+        },
         "pointsFor": {
           "expected": 166,
-          "actual": 156
+          "actual": 150
         },
         "pointsAgainst": {
           "expected": 281,
-          "actual": 284
+          "actual": 243
         }
       }
     },
@@ -6846,9 +6858,21 @@
       "team": "MONTICELLO",
       "season": "2022",
       "mismatches": {
+        "games": {
+          "expected": 12,
+          "actual": 11
+        },
+        "wins": {
+          "expected": 8,
+          "actual": 7
+        },
         "pointsFor": {
           "expected": 465,
-          "actual": 464
+          "actual": 423
+        },
+        "pointsAgainst": {
+          "expected": 274,
+          "actual": 254
         }
       }
     },
@@ -7063,9 +7087,21 @@
       "team": "NORTH SEVIER",
       "season": "1998",
       "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "losses": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 165,
+          "actual": 152
+        },
         "pointsAgainst": {
           "expected": 257,
-          "actual": 267
+          "actual": 237
         }
       }
     },
@@ -7625,9 +7661,21 @@
       "team": "RICH",
       "season": "2003",
       "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "losses": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 200,
+          "actual": 194
+        },
         "pointsAgainst": {
           "expected": 251,
-          "actual": 271
+          "actual": 223
         }
       }
     },
@@ -7636,9 +7684,21 @@
       "team": "RICH",
       "season": "2008",
       "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 10
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 339,
+          "actual": 293
+        },
         "pointsAgainst": {
           "expected": 233,
-          "actual": 234
+          "actual": 213
         }
       }
     },
@@ -7673,9 +7733,21 @@
       "team": "RICHFIELD",
       "season": "2005",
       "mismatches": {
+        "games": {
+          "expected": 9,
+          "actual": 8
+        },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
           "expected": 160,
-          "actual": 148
+          "actual": 141
+        },
+        "pointsAgainst": {
+          "expected": 266,
+          "actual": 239
         }
       }
     },
@@ -9653,18 +9725,7 @@
           "index": 7
         }
       ],
-      "sideB": [
-        {
-          "team": "RICH",
-          "opponent": "ALTAMONT",
-          "date": "10/10/2003",
-          "teamScore": 6,
-          "opponentScore": 48,
-          "result": "L",
-          "season": "2003",
-          "index": 6
-        }
-      ]
+      "sideB": []
     },
     {
       "type": "reciprocal-mismatch",
@@ -15555,18 +15616,7 @@
           "index": 10
         }
       ],
-      "sideB": [
-        {
-          "team": "RICH",
-          "opponent": "ENTERPRISE",
-          "date": "10/31/2008",
-          "teamScore": 46,
-          "opponentScore": 21,
-          "result": "W",
-          "season": "2008",
-          "index": 9
-        }
-      ]
+      "sideB": []
     },
     {
       "type": "reciprocal-mismatch",
@@ -16678,18 +16728,7 @@
           "index": 0
         }
       ],
-      "sideB": [
-        {
-          "team": "NORTH SEVIER",
-          "opponent": "GUNNISON VALLEY",
-          "date": "8/28/1998",
-          "teamScore": 13,
-          "opponentScore": 30,
-          "result": "L",
-          "season": "1998",
-          "index": 0
-        }
-      ]
+      "sideB": []
     },
     {
       "type": "reciprocal-mismatch",
@@ -16729,49 +16768,7 @@
           "index": 2
         }
       ],
-      "sideB": [
-        {
-          "team": "KANAB",
-          "opponent": "GUNNISON VALLEY",
-          "date": "9/7/2001",
-          "teamScore": 20,
-          "opponentScore": 16,
-          "result": "W",
-          "season": "2001",
-          "index": 2
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "GUNNISON VALLEY",
-      "teamB": "JUAB",
-      "date": "9/21/2001",
-      "season": "2001",
-      "sideA": [
-        {
-          "team": "GUNNISON VALLEY",
-          "opponent": "JUAB",
-          "date": "9/21/2001",
-          "teamScore": 19,
-          "opponentScore": 14,
-          "result": "W",
-          "season": "2001",
-          "index": 4
-        }
-      ],
-      "sideB": [
-        {
-          "team": "JUAB",
-          "opponent": "GUNNISON VALLEY",
-          "date": "9/21/2001",
-          "teamScore": 19,
-          "opponentScore": 14,
-          "result": "W",
-          "season": "2001",
-          "index": 4
-        }
-      ]
+      "sideB": []
     },
     {
       "type": "reciprocal-mismatch",
@@ -16788,21 +16785,10 @@
           "opponentScore": 39,
           "result": "L",
           "season": "2001",
-          "index": 8
-        }
-      ],
-      "sideB": [
-        {
-          "team": "MANTI",
-          "opponent": "GUNNISON VALLEY",
-          "date": "10/18/2001",
-          "teamScore": 12,
-          "opponentScore": 39,
-          "result": "L",
-          "season": "2001",
           "index": 7
         }
-      ]
+      ],
+      "sideB": []
     },
     {
       "type": "reciprocal-mismatch",
@@ -16822,18 +16808,7 @@
           "index": 2
         }
       ],
-      "sideB": [
-        {
-          "team": "RICHFIELD",
-          "opponent": "GUNNISON VALLEY",
-          "date": "9/2/2005",
-          "teamScore": 7,
-          "opponentScore": 27,
-          "result": "L",
-          "season": "2005",
-          "index": 1
-        }
-      ]
+      "sideB": []
     },
     {
       "type": "reciprocal-mismatch",
@@ -16853,18 +16828,7 @@
           "index": 3
         }
       ],
-      "sideB": [
-        {
-          "team": "LAYTON CHRISTIAN",
-          "opponent": "GUNNISON VALLEY",
-          "date": "9/12/2014",
-          "teamScore": 47,
-          "opponentScore": 20,
-          "result": "W",
-          "season": "2014",
-          "index": 3
-        }
-      ]
+      "sideB": []
     },
     {
       "type": "reciprocal-mismatch",
@@ -16904,18 +16868,7 @@
           "index": 7
         }
       ],
-      "sideB": [
-        {
-          "team": "MILLARD",
-          "opponent": "GUNNISON VALLEY",
-          "date": "10/18/2024",
-          "teamScore": 6,
-          "opponentScore": 41,
-          "result": "L",
-          "season": "2024",
-          "index": 9
-        }
-      ]
+      "sideB": []
     },
     {
       "type": "reciprocal-mismatch",
@@ -17811,6 +17764,26 @@
           "result": "W",
           "season": "1981",
           "index": 8
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "GUNNISON VALLEY",
+      "teamB": "JUAB",
+      "date": "9/21/2001",
+      "season": "2001",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "JUAB",
+          "opponent": "GUNNISON VALLEY",
+          "date": "9/21/2001",
+          "teamScore": 19,
+          "opponentScore": 14,
+          "result": "W",
+          "season": "2001",
+          "index": 4
         }
       ]
     },
@@ -19747,7 +19720,7 @@
           "opponentScore": 7,
           "result": "W",
           "season": "2001",
-          "index": 8
+          "index": 7
         }
       ],
       "sideB": []
@@ -20685,37 +20658,6 @@
     {
       "type": "reciprocal-mismatch",
       "teamA": "MONTICELLO",
-      "teamB": "MONUMENT VALLEY",
-      "date": "9/30/2022",
-      "season": "2022",
-      "sideA": [
-        {
-          "team": "MONTICELLO",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/30/2022",
-          "teamScore": 41,
-          "opponentScore": 20,
-          "result": "W",
-          "season": "2022",
-          "index": 6
-        }
-      ],
-      "sideB": [
-        {
-          "team": "MONUMENT VALLEY",
-          "opponent": "MONTICELLO",
-          "date": "9/30/2022",
-          "teamScore": 20,
-          "opponentScore": 42,
-          "result": "L",
-          "season": "2022",
-          "index": 5
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "MONTICELLO",
       "teamB": "WATER CANYON",
       "date": "9/8/2023",
       "season": "2023",
@@ -20903,6 +20845,26 @@
         }
       ],
       "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "MONTICELLO",
+      "teamB": "MONUMENT VALLEY",
+      "date": "9/30/2022",
+      "season": "2022",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "MONUMENT VALLEY",
+          "opponent": "MONTICELLO",
+          "date": "9/30/2022",
+          "teamScore": 20,
+          "opponentScore": 42,
+          "result": "L",
+          "season": "2022",
+          "index": 5
+        }
+      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -22200,7 +22162,7 @@
           "opponentScore": 20,
           "result": "W",
           "season": "1998",
-          "index": 8
+          "index": 7
         }
       ],
       "sideB": [
@@ -24535,7 +24497,7 @@
           "opponentScore": 36,
           "result": "L",
           "season": "2003",
-          "index": 9
+          "index": 8
         }
       ]
     },
@@ -30932,7 +30894,7 @@
       "team": "GUNNISON VALLEY",
       "file": "gunnison-valley.json",
       "seasons": 37,
-      "totalGames": 357
+      "totalGames": 356
     },
     {
       "team": "HERRIMAN",
@@ -30992,7 +30954,7 @@
       "team": "KANAB",
       "file": "kanab.json",
       "seasons": 77,
-      "totalGames": 773
+      "totalGames": 772
     },
     {
       "team": "KEARNS",
@@ -31004,7 +30966,7 @@
       "team": "LAYTON CHRISTIAN",
       "file": "layton-christian.json",
       "seasons": 23,
-      "totalGames": 235
+      "totalGames": 234
     },
     {
       "team": "LAYTON",
@@ -31034,7 +30996,7 @@
       "team": "MANTI",
       "file": "manti.json",
       "seasons": 59,
-      "totalGames": 591
+      "totalGames": 590
     },
     {
       "team": "MAPLE MOUNTAIN",
@@ -31052,13 +31014,13 @@
       "team": "MILLARD",
       "file": "millard.json",
       "seasons": 101,
-      "totalGames": 958
+      "totalGames": 957
     },
     {
       "team": "MONTICELLO",
       "file": "monticello.json",
       "seasons": 74,
-      "totalGames": 729
+      "totalGames": 728
     },
     {
       "team": "MONUMENT VALLEY",
@@ -31106,7 +31068,7 @@
       "team": "NORTH SEVIER",
       "file": "north-sevier.json",
       "seasons": 68,
-      "totalGames": 587
+      "totalGames": 586
     },
     {
       "team": "NORTH SUMMIT",
@@ -31190,13 +31152,13 @@
       "team": "RICH",
       "file": "rich.json",
       "seasons": 42,
-      "totalGames": 445
+      "totalGames": 443
     },
     {
       "team": "RICHFIELD",
       "file": "richfield.json",
       "seasons": 97,
-      "totalGames": 853
+      "totalGames": 852
     },
     {
       "team": "RIDGELINE",
