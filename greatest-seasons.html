@@ -269,6 +269,24 @@
       color: #F14D07;
     }
 
+    .current-season-row {
+      background: rgba(241, 77, 7, 0.08);
+      box-shadow: inset 4px 0 0 #F14D07;
+    }
+
+    .live-season-tag {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #F14D07;
+      color: #000000;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: .5px;
+      vertical-align: middle;
+    }
+
     .top-one {
       box-shadow:
         inset 4px 0 0 #FFD700;
@@ -855,6 +873,518 @@ async function loadData() {
       await seasonsResponse.json();
 
 
+    /*
+      Add a live 2026 snapshot using the exact historical
+      RUS Greatest Seasons formula:
+      40% winning + 30% dominance + 20% opponent WP + 10% season length.
+    */
+    try {
+
+      const stamp = Date.now();
+
+      const [
+        standingsResponse,
+        rpiResponse,
+        oosResponse
+      ] = await Promise.all([
+        fetch("standings-2026.json?v=" + stamp, { cache: "no-store" }),
+        fetch("rpi-standings-2026.json?v=" + stamp, { cache: "no-store" }),
+        fetch("rpi-oos-2026.json?v=" + stamp, { cache: "no-store" })
+      ]);
+
+
+      if (standingsResponse.ok) {
+
+        const standings = await standingsResponse.json();
+
+        const rpi =
+          rpiResponse.ok
+            ? await rpiResponse.json()
+            : {};
+
+        const oos =
+          oosResponse.ok
+            ? await oosResponse.json()
+            : { teams: {} };
+
+
+        const currentTeams =
+          Object.values(
+            standings.byClassification || {}
+          ).flat();
+
+
+        const rpiRows =
+          Object.values(
+            rpi.classifications || {}
+          ).flat();
+
+
+        const recordMap =
+          new Map(
+            currentTeams.map(
+              team => [
+                normalizeTeamName(team.team),
+                team
+              ]
+            )
+          );
+
+
+        const oosEntries =
+          Object.entries(
+            oos.teams || {}
+          );
+
+
+        const oosFor =
+          name => {
+
+            const wanted =
+              normalizeTeamName(name);
+
+            const found =
+              oosEntries.find(
+                ([candidate]) =>
+                  normalizeTeamName(candidate) ===
+                  wanted
+              );
+
+            return found
+              ? found[1]
+              : null;
+
+          };
+
+
+        const fallbackOwp =
+          current => {
+
+            const teamKey =
+              normalizeTeamName(
+                current.team
+              );
+
+
+            const played =
+              (standings.games || [])
+                .filter(
+                  game =>
+                    normalizeTeamName(
+                      game.awayTeam
+                    ) === teamKey ||
+                    normalizeTeamName(
+                      game.homeTeam
+                    ) === teamKey
+                );
+
+
+            const values =
+              played.map(
+                game => {
+
+                  const awayKey =
+                    normalizeTeamName(
+                      game.awayTeam
+                    );
+
+
+                  const opponent =
+                    awayKey === teamKey
+                      ? game.homeTeam
+                      : game.awayTeam;
+
+
+                  const record =
+                    recordMap.get(
+                      normalizeTeamName(
+                        opponent
+                      )
+                    );
+
+
+                  if (record) {
+
+                    let wins =
+                      Number(
+                        record.wins || 0
+                      );
+
+                    let losses =
+                      Number(
+                        record.losses || 0
+                      );
+
+                    let ties =
+                      Number(
+                        record.ties || 0
+                      );
+
+
+                    const opponentHome =
+                      normalizeTeamName(
+                        game.homeTeam
+                      ) ===
+                      normalizeTeamName(
+                        opponent
+                      );
+
+
+                    const opponentScore =
+                      Number(
+                        opponentHome
+                          ? game.actualHome
+                          : game.actualAway
+                      );
+
+
+                    const teamScore =
+                      Number(
+                        opponentHome
+                          ? game.actualAway
+                          : game.actualHome
+                      );
+
+
+                    if (
+                      Number.isFinite(
+                        opponentScore
+                      ) &&
+                      Number.isFinite(
+                        teamScore
+                      )
+                    ) {
+
+                      if (
+                        opponentScore >
+                        teamScore
+                      ) {
+
+                        wins =
+                          Math.max(
+                            0,
+                            wins - 1
+                          );
+
+                      }
+
+                      else if (
+                        opponentScore <
+                        teamScore
+                      ) {
+
+                        losses =
+                          Math.max(
+                            0,
+                            losses - 1
+                          );
+
+                      }
+
+                      else {
+
+                        ties =
+                          Math.max(
+                            0,
+                            ties - 1
+                          );
+
+                      }
+
+                    }
+
+
+                    const games =
+                      wins +
+                      losses +
+                      ties;
+
+
+                    return games
+                      ? (
+                          wins +
+                          ties * 0.5
+                        ) / games
+                      : 0.5;
+
+                  }
+
+
+                  const external =
+                    oosFor(
+                      opponent
+                    );
+
+
+                  const direct =
+                    external
+                      ?.wpByUtahTeam
+                      ?.[teamKey] ??
+                    external
+                      ?.wpByUtahTeam
+                      ?.[String(
+                        current.team
+                      ).toUpperCase()];
+
+
+                  if (
+                    Number.isFinite(
+                      Number(
+                        direct
+                      )
+                    )
+                  ) {
+
+                    return Number(
+                      direct
+                    );
+
+                  }
+
+
+                  if (
+                    Number.isFinite(
+                      Number(
+                        external?.wp
+                      )
+                    )
+                  ) {
+
+                    return Number(
+                      external.wp
+                    );
+
+                  }
+
+
+                  return 0.5;
+
+                }
+              );
+
+
+            return values.length
+              ? values.reduce(
+                  (sum, value) =>
+                    sum + value,
+                  0
+                ) / values.length
+              : 0;
+
+          };
+
+
+        const liveRows =
+          currentTeams
+            .map(
+              current => {
+
+                const wins =
+                  Number(
+                    current.wins || 0
+                  );
+
+                const losses =
+                  Number(
+                    current.losses || 0
+                  );
+
+                const ties =
+                  Number(
+                    current.ties || 0
+                  );
+
+                const games =
+                  wins +
+                  losses +
+                  ties;
+
+
+                if (!games) {
+
+                  return null;
+
+                }
+
+
+                const pointsFor =
+                  Number(
+                    current.pointsFor || 0
+                  );
+
+                const pointsAgainst =
+                  Number(
+                    current.pointsAgainst || 0
+                  );
+
+                const winPct =
+                  (
+                    wins +
+                    ties * 0.5
+                  ) / games;
+
+
+                const ppg =
+                  pointsFor /
+                  games;
+
+
+                const papg =
+                  pointsAgainst /
+                  games;
+
+
+                const margin =
+                  (
+                    pointsFor -
+                    pointsAgainst
+                  ) / games;
+
+
+                const rpiRow =
+                  rpiRows.find(
+                    row =>
+                      normalizeTeamName(
+                        row.team
+                      ) ===
+                      normalizeTeamName(
+                        current.team
+                      )
+                  );
+
+
+                const opponentWinPct =
+                  Number.isFinite(
+                    Number(
+                      rpiRow?.owp
+                    )
+                  )
+                    ? Number(
+                        rpiRow.owp
+                      )
+                    : fallbackOwp(
+                        current
+                      );
+
+
+                const opponentOpponentWinPct =
+                  Number.isFinite(
+                    Number(
+                      rpiRow?.oowp
+                    )
+                  )
+                    ? Number(
+                        rpiRow.oowp
+                      )
+                    : null;
+
+
+                const sos =
+                  opponentWinPct *
+                  20;
+
+
+                const dominance =
+                  (
+                    Math.max(
+                      0,
+                      Math.min(
+                        margin,
+                        50
+                      )
+                    ) /
+                    50
+                  ) *
+                  30;
+
+
+                const seasonLength =
+                  Math.min(
+                    games / 14,
+                    1
+                  ) *
+                  10;
+
+
+                const rating =
+                  winPct * 40 +
+                  dominance +
+                  sos +
+                  seasonLength;
+
+
+                return {
+                  Rank: 0,
+                  Team: current.team,
+                  Year: 2026,
+                  Rating: rating,
+                  Wins: wins,
+                  Losses: losses,
+                  Ties: ties,
+                  "Win %": winPct,
+                  Games: games,
+                  "Points For": pointsFor,
+                  "Points Against": pointsAgainst,
+                  PPG: ppg,
+                  PAPG: papg,
+                  "Avg Margin": margin,
+                  "Opponent Win %": opponentWinPct,
+                  "Opponents' Opponent Win %": opponentOpponentWinPct,
+                  SOS: sos,
+                  Current: true
+                };
+
+              }
+            )
+            .filter(Boolean);
+
+
+        allSeasons =
+          allSeasons
+            .filter(
+              season =>
+                Number(
+                  season["Year"]
+                ) !== 2026
+            )
+            .concat(
+              liveRows
+            );
+
+
+        allSeasons
+          .sort(
+            (a, b) =>
+              Number(
+                b["Rating"]
+              ) -
+              Number(
+                a["Rating"]
+              )
+          )
+          .forEach(
+            (season, index) => {
+
+              season["Rank"] =
+                index + 1;
+
+            }
+          );
+
+      }
+
+    }
+
+    catch (liveError) {
+
+      console.warn(
+        "Live 2026 Greatest Seasons data unavailable.",
+        liveError
+      );
+
+    }
+
+
     const colorsResponse =
       await fetch(
         "team-colors-exact.json"
@@ -1434,7 +1964,14 @@ function displaySeasons(
 
 
       row.className =
-        topClass;
+        [
+          topClass,
+          season.Current
+            ? "current-season-row"
+            : ""
+        ]
+          .filter(Boolean)
+          .join(" ");
 
 
       let badgeStyle =
@@ -1487,6 +2024,7 @@ function displaySeasons(
 
         <td>
           ${season["Year"] ?? ""}
+          ${season.Current ? '<span class="live-season-tag">LIVE</span>' : ''}
         </td>
 
         <td>
