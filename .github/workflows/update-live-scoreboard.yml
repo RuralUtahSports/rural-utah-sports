@@ -57,6 +57,13 @@ jobs:
             exit 0
           fi
           git commit -m "Refresh data from verified finals"
+
+          # The build steps can reserialize supporting JSON files that this workflow
+          # does not publish. Clear those unstaged tracked changes before rebasing,
+          # otherwise git pull --rebase refuses to run and the verified finals never
+          # reach team pages/standings.
+          git restore --worktree .
+
           ok=0
           for attempt in 1 2 3 4; do
             if git pull --rebase origin main && git push; then
