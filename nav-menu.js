@@ -178,7 +178,7 @@
     const loadDeviceOptimizations = () => {
       if (mobileMedia.matches) {
         addScript(
-          "mobile-optimizations.js?v=20260921-search-runtime1",
+          "mobile-optimizations.js?v=20260925-team-logo-mobile1",
           "rusMobileOptimizations",
           true,
         );
