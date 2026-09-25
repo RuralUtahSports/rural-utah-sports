@@ -13,7 +13,11 @@
     ['2026-08-21|BEAVERDAMAZ|WATERCANYON', { away: 34, home: 50 }],
     ['2026-08-22|OREM|SKYRIDGE', { away: 14, home: 21 }],
     ['2026-08-31|UMALEHI|SAINTJOSEPH', { away: 28, home: 47 }],
-    ['2026-09-03|BOUNTIFUL|MORGAN', { away: 14, home: 37 }]
+    ['2026-09-03|BOUNTIFUL|MORGAN', { away: 14, home: 37 }],
+    ['2026-09-24|AMERICANFORK|LONEPEAK', { away: 28, home: 24 }],
+    ['2026-09-24|MONUMENTVAL|GRAND', { away: 6, home: 54 }],
+    ['2026-09-24|SPANISHFORK|PAYSON', { away: 49, home: 21 }],
+    ['2026-09-24|WEST|TAYLORSVILLE', { away: 71, home: 7 }]
   ]);
 
   const clean = value => String(value ?? '').trim();
@@ -516,9 +520,20 @@
     if (syncing) return false;
     syncing = true;
     try {
-      await refreshWeeklyFeed();
+      const weeklyUpdated = await refreshWeeklyFeed();
+
+      // The weekly feed contains authoritative verified finals. Render it
+      // immediately even if the compact live-detail cache is unavailable or
+      // has rolled yesterday's games out. Previously a missing live payload
+      // threw before render(), leaving stale blank cards on screen.
+      if (weeklyUpdated && typeof render === 'function') render();
+
       const payload = await fetchLivePayload(LIVE_DETAILS);
-      if (!payload) throw new Error('final-score details payload unavailable');
+      if (!payload) {
+        const note = document.querySelector('.scoreboard-refresh-note');
+        if (note) note.textContent = 'Verified final scores loaded • live detail cache unavailable';
+        return weeklyUpdated;
+      }
 
       const finalGames = Object.fromEntries(
         Object.entries(payload.games || {}).filter(([, detail]) => detail?.final === true)
