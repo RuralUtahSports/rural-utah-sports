@@ -25,13 +25,22 @@ const CUSTOM_LOGOS={
   'RANCHO BERNARDO':'school-logos/rancho-bernardo-ca.png?v=20260910-2',
   'SOUTH SUMMIT':'school-logos/south-summit.webp?v=20260817-1','VIEWMONT':'school-logos/viewmont.svg'
 };
+const LOGO_DISCS={
+  'BRYCE VALLEY':{color:'#FFFFFF',size:72},
+  'CEDAR VALLEY':{color:'#FFFFFF',size:104},
+  'KEARNS':{color:'#FFD54A',size:86},
+  'STANSBURY':{color:'#FFFFFF',size:86},
+  'WEBER':{color:'#FFFFFF',size:92},
+  'WESTLAKE':{color:'#FFFFFF',size:92},
+  'WENDOVER':{color:'#FFFFFF',size:86}
+};
 const BAD=new Set(['ESCALANTE','USDB','UTAH SCH DEAF']);
 const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
 const logoKey=v=>norm(v).replace(/\s*,\s*[A-Z]{2}$/,'').replace(/\s*\([A-Z]{2}\)$/,'').trim();
 const title=v=>String(v??'').trim().toLowerCase().replace(/(^|[\s-])([a-z])/g,(_,a,b)=>a+b.toUpperCase());
 A.norm=norm;A.isFootballTeam=team=>!BAD.has(norm(team));A.uhsaaName=team=>ALIASES[norm(team)]||title(team);
 A.fallbackLogo=team=>`https://www.uhsaa.org/Logos/portfolio150/${encodeURIComponent(A.uhsaaName(team))}.png`;
-A.customLogo=team=>CUSTOM_LOGOS[norm(team)]||CUSTOM_LOGOS[logoKey(team)]||'';A.hasCustomLogo=team=>!!A.customLogo(team);
+A.customLogo=team=>CUSTOM_LOGOS[norm(team)]||CUSTOM_LOGOS[logoKey(team)]||'';A.hasCustomLogo=team=>!!A.customLogo(team);A.logoDisc=team=>LOGO_DISCS[norm(team)]||LOGO_DISCS[logoKey(team)]||null;
 let directory=null,promise=null;
 A.load=async()=>{if(directory)return directory;if(promise)return promise;promise=fetch(`school-directory.json?v=${Date.now()}`).then(r=>r.ok?r.json():{}).catch(()=>({})).then(data=>{directory=data&&typeof data==='object'?data:{};return directory});return promise};
 A.get=team=>directory?.[norm(team)]||null;A.logoUrl=(team,entry)=>A.customLogo(team)||entry?.logoUrl||A.get(team)?.logoUrl||A.fallbackLogo(team);A.address=(team,entry)=>entry?.address||A.get(team)?.address||'';
