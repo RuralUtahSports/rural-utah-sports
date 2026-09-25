@@ -229,10 +229,10 @@
       const assetScript =
         path === "scoreboard.html"
           ? "school-assets-bundle.js?v=20260818-perf2"
-          : "school-assets-core.js?v=20260818-perf2";
+          : "school-assets-core.js?v=20260925-shared-logo-discs1";
       addScript(assetScript, "rusSchoolAssets", true);
       addScript(
-        "school-logo-integration.js?v=20260921-search-runtime1",
+        "school-logo-integration.js?v=20260925-shared-logo-discs1",
         "rusSchoolLogoIntegration",
         true,
       );
@@ -254,7 +254,7 @@
         "rusTeamGreatestPaths",
         true,
       );
-      addScript("team-tabs.js?v=20260925-tab-click-fix1", "rusTeamTabs", true);
+      addScript("team-tabs.js?v=20260925-tab-click-fix2", "rusTeamTabs", true);
       addScript(
         "player-profile-links.js?v=20260814a",
         "rusPlayerProfileLinks",
