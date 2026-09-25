@@ -217,8 +217,8 @@ for (const [key, detail] of Object.entries(details.games || {})) {
   const date = detail?.date || parts[0];
   const awayTeam = detail?.awayTeam || parts[1];
   const homeTeam = detail?.homeTeam || parts[2];
-  const away = activeTeam(awayTeam), home = activeTeam(homeTeam);
-  if (!date || !away || !home) continue;
+  const away = activeTeam(awayTeam) || clean(awayTeam), home = activeTeam(homeTeam) || clean(homeTeam);
+  if (!date || (!activeTeam(awayTeam) && !activeTeam(homeTeam))) continue;
   const rows = detail?.boxScore?.rows;
   if (!Array.isArray(rows) || rows.length < 2) continue;
   const quarters0 = Array.isArray(rows[0]?.quarters) ? rows[0].quarters : [];
@@ -250,9 +250,9 @@ for (const [key, detail] of Object.entries(details.games || {})) {
 // and half calculations use the same path as scraped detail rows.
 for (const correction of scoringCorrections || []) {
   const date = correction?.date;
-  const away = activeTeam(correction?.awayTeam);
-  const home = activeTeam(correction?.homeTeam);
-  if (!date || !away || !home) continue;
+  const away = activeTeam(correction?.awayTeam) || clean(correction?.awayTeam);
+  const home = activeTeam(correction?.homeTeam) || clean(correction?.homeTeam);
+  if (!date || (!activeTeam(correction?.awayTeam) && !activeTeam(correction?.homeTeam))) continue;
   const awayQuarters = Array.isArray(correction.awayQuarters) ? correction.awayQuarters.slice(0, 4) : [];
   const homeQuarters = Array.isArray(correction.homeQuarters) ? correction.homeQuarters.slice(0, 4) : [];
   const numericCells = [...awayQuarters, ...homeQuarters].filter(v => finite(v) !== null).length;
