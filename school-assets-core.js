@@ -40,7 +40,7 @@ const logoKey=v=>norm(v).replace(/\s*,\s*[A-Z]{2}$/,'').replace(/\s*\([A-Z]{2}\)
 const title=v=>String(v??'').trim().toLowerCase().replace(/(^|[\s-])([a-z])/g,(_,a,b)=>a+b.toUpperCase());
 A.norm=norm;A.isFootballTeam=team=>!BAD.has(norm(team));A.uhsaaName=team=>ALIASES[norm(team)]||title(team);
 A.fallbackLogo=team=>`https://www.uhsaa.org/Logos/portfolio150/${encodeURIComponent(A.uhsaaName(team))}.png`;
-A.customLogo=team=>CUSTOM_LOGOS[norm(team)]||CUSTOM_LOGOS[logoKey(team)]||'';A.hasCustomLogo=team=>!!A.customLogo(team);A.logoDisc=team=>LOGO_DISCS[norm(team)]||LOGO_DISCS[logoKey(team)]||null;
+A.customLogo=team=>CUSTOM_LOGOS[norm(team)]||CUSTOM_LOGOS[logoKey(team)]||'';A.hasCustomLogo=team=>!!A.customLogo(team);A.logoDisc=team=>LOGO_DISCS[norm(team)]||LOGO_DISCS[logoKey(team)]||{color:'#FFFFFF',size:86};
 let directory=null,promise=null;
 A.load=async()=>{if(directory)return directory;if(promise)return promise;promise=fetch(`school-directory.json?v=${Date.now()}`).then(r=>r.ok?r.json():{}).catch(()=>({})).then(data=>{directory=data&&typeof data==='object'?data:{};return directory});return promise};
 A.get=team=>directory?.[norm(team)]||null;A.logoUrl=(team,entry)=>A.customLogo(team)||entry?.logoUrl||A.get(team)?.logoUrl||A.fallbackLogo(team);A.address=(team,entry)=>entry?.address||A.get(team)?.address||'';
