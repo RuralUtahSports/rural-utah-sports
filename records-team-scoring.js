@@ -80,7 +80,7 @@ function teamInfo(name){return teamMap.get(norm(name))||null}
 function logoUrl(name){try{return window.RUSSchoolAssets?.logoUrl?.(name)||''}catch{return''}}
 function teamBadge(e){
   const info=teamInfo(e.team),bg=safeHex(info?.backgroundColor,'#222222'),fg=safeHex(info?.textColor,'#FFFFFF'),logo=logoUrl(e.team);
-  return `<a class="rus-tsr-team-badge" style="background:${bg};color:${fg}" href="team.html?team=${encodeURIComponent(e.team)}&tab=games">${logo?`<img class="rus-tsr-logo" src="${esc(logo)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`:''}<span class="rus-tsr-badge-name"><strong>${esc(e.team)}</strong><span class="rus-tsr-meta">${esc(e.classification||'')}${clean(e.record)?` • <span class="rus-tsr-record">${esc(e.record)}</span>`:''}</span></span></a>`;
+  return `<a class="rus-tsr-team-badge" style="background:${bg};color:${fg}" href="team.html?team=${encodeURIComponent(e.team)}&tab=games">${logo?`<img class="rus-tsr-logo" src="${esc(logo)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`:''}<span class="rus-tsr-badge-name"><strong>${esc(e.team)}</strong><span class="rus-tsr-meta">${esc(e.classification||'')}</span></span></a>`;
 }
 function opponentBadge(name){
   const info=teamInfo(name),bg=safeHex(info?.backgroundColor,'#1f1f1f'),fg=safeHex(info?.textColor,'#FFFFFF'),logo=logoUrl(name);
@@ -190,7 +190,7 @@ async function install(){
       <div class="rus-tsr-control"><label for="rusTsrClass">Current Classification</label><select id="rusTsrClass"><option value="all">All Classes</option></select></div>
       <div class="rus-tsr-control"><label for="rusTsrSearch">Team / Opponent</label><input id="rusTsrSearch" type="search" placeholder="Search..."></div>
     </div>
-    <div class="rus-tsr-wrap"><table class="rus-tsr-table"><thead><tr><th>Rank</th><th>Team / Record</th><th>Opponent</th><th>Points</th><th>Game</th></tr></thead><tbody id="rusTsrBody"><tr><td colspan="5"><div class="rus-tsr-empty">Loading team scoring records…</div></td></tr></tbody></table></div>
+    <div class="rus-tsr-wrap"><table class="rus-tsr-table"><thead><tr><th>Rank</th><th>Team</th><th>Opponent</th><th>Points</th><th>Game</th></tr></thead><tbody id="rusTsrBody"><tr><td colspan="5"><div class="rus-tsr-empty">Loading team scoring records…</div></td></tr></tbody></table></div>
     <div class="rus-tsr-source" id="rusTsrStatus">Loading quarter, half and game scoring data…</div>
   `;
   anchor.insertAdjacentElement('afterend',section);
