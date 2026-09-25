@@ -6,7 +6,7 @@ const team=new URLSearchParams(location.search).get('team')||'';if(!team)return;
 function addStyles(){
   if(document.getElementById('rus-team-logo-header-style'))return;
   const style=document.createElement('style');style.id='rus-team-logo-header-style';style.textContent=`
-.rus-team-brand-head{display:flex;align-items:center;gap:18px;min-width:0;max-width:100%}.rus-team-page-logo{display:block;width:92px;height:92px;object-fit:contain;flex:0 0 92px;max-width:none;background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:8px}.rus-team-brand-copy{min-width:0;max-width:100%}@media(max-width:600px){.rus-team-brand-head{align-items:center;gap:12px;width:100%}.rus-team-page-logo{display:block!important;visibility:visible!important;opacity:1!important;width:68px;height:68px;flex-basis:68px;max-width:none!important;padding:6px}.rus-team-brand-copy{flex:1 1 0;overflow:hidden}.rus-team-brand-copy .team-title{font-size:28px;overflow-wrap:anywhere}}
+.rus-team-brand-head{display:flex;align-items:center;gap:18px;min-width:0;max-width:100%}.rus-team-page-logo{display:block;width:92px;height:92px;object-fit:contain;flex:0 0 92px;max-width:none;background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.2);border-radius:50%;padding:8px}.rus-team-brand-copy{min-width:0;max-width:100%}@media(max-width:600px){.rus-team-brand-head{align-items:center;gap:12px;width:100%}.rus-team-page-logo{display:block!important;visibility:visible!important;opacity:1!important;width:68px;height:68px;flex-basis:68px;max-width:none!important;padding:6px}.rus-team-brand-copy{flex:1 1 0;overflow:hidden}.rus-team-brand-copy .team-title{font-size:28px;overflow-wrap:anywhere}}
 `;document.head.appendChild(style);
 }
 async function assets(){
@@ -35,7 +35,7 @@ async function insert(){
   const url=api.logoUrl?.(team)||'';if(!url)return false;
   const title=hero.querySelector('.team-title'),subtitle=hero.querySelector('.team-subtitle');if(!title||!subtitle)return false;
   const wrap=document.createElement('div');wrap.className='rus-team-brand-head';
-  const img=document.createElement('img');img.className='rus-team-page-logo';img.src=url;img.alt=`${team} logo`;img.width=92;img.height=92;img.loading='eager';img.decoding='async';img.fetchPriority='high';img.dataset.rusTeamLogo='1';const disc=api.logoDisc?.(team);if(disc){img.style.background=disc.color;img.style.borderRadius='50%';img.style.padding='6px';}
+  const img=document.createElement('img');img.className='rus-team-page-logo';img.src=url;img.alt=`${team} logo`;img.width=92;img.height=92;img.loading='eager';img.decoding='async';img.fetchPriority='high';img.dataset.rusTeamLogo='1';const disc=api.logoDisc?.(team)||{color:'#FFFFFF'};img.style.background=disc.color||'#FFFFFF';img.style.borderRadius='50%';img.style.padding='6px';
   let triedFallback=false;img.addEventListener('error',()=>{if(triedFallback)return;triedFallback=true;const fallback=api.fallbackLogo?.(team)||'';if(fallback&&srcKey(fallback)!==srcKey(img.src))img.src=fallback});
   const copy=document.createElement('div');copy.className='rus-team-brand-copy';title.parentNode.insertBefore(wrap,title);wrap.append(img,copy);copy.append(title,subtitle);dedupe(hero,img);return true;
 }
