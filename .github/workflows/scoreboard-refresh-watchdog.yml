@@ -1,0 +1,47 @@
+name: Scoreboard Refresh Watchdog
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Offset from the main scoreboard cron so GitHub scheduler delays/drops do
+    # not leave the scoreboard frozen for hours.
+    - cron: '7,17,27,37,47,57 22-23 * 8-11 4-6'
+    - cron: '7,17,27,37,47,57 0-6 * 8-11 5,6,0'
+    - cron: '7,17,27,37,47,57 16-21 * 8-11 6'
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  ensure-refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch scoreboard refresh if stale
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          latest="$(
+            gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/update-live-scoreboard-fast.yml/runs?per_page=10" \
+              --jq '.workflow_runs[0].created_at // ""'
+          )"
+
+          now_epoch="$(date -u +%s)"
+          latest_epoch=0
+          if [ -n "$latest" ]; then
+            latest_epoch="$(date -ud "$latest" +%s 2>/dev/null || echo 0)"
+          fi
+
+          age=$((now_epoch - latest_epoch))
+          echo "Latest scoreboard refresh: ${latest:-none} (age ${age}s)"
+
+          # The primary workflow is meant to run every 10 minutes. If it has
+          # not started in the last 12 minutes, force a refresh.
+          if [ "$latest_epoch" -eq 0 ] || [ "$age" -ge 720 ]; then
+            echo "Scoreboard refresh is stale; dispatching backup run."
+            gh workflow run update-live-scoreboard-fast.yml --ref main
+          else
+            echo "Scoreboard refresh is current; no backup run needed."
+          fi
