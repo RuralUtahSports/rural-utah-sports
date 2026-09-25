@@ -144,6 +144,35 @@ jobs:
             m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
             return m ? m[1] + '-' + String(m[2]).padStart(2, '0') + '-' + String(m[3]).padStart(2, '0') : s;
           };
+
+          // A sheet rebuild must never erase a final that was already verified by
+          // the scoreboard pipeline. The sheet often leaves Actual columns blank
+          // overnight even after deseret-live-details has produced a trustworthy
+          // final. Preserve the prior verified result only when the freshly
+          // downloaded sheet row has no actual score at all; any nonblank sheet
+          // score still wins and can correct a prior result.
+          try {
+            const previousWeekly = JSON.parse(fs.readFileSync('/tmp/rus-previous-weekly.json','utf8')).games || [];
+            const keyFor = g => dateKey(g.date) + '|' + norm(g.awayTeam) + '|' + norm(g.homeTeam);
+            const previousByKey = new Map(previousWeekly.map(g => [keyFor(g), g]));
+            let preservedFinals = 0;
+            for (const g of weekly) {
+              if (g.actualAway !== null || g.actualHome !== null || clean(g.actualWinner)) continue;
+              const prior = previousByKey.get(keyFor(g));
+              const priorAway = n(prior?.actualAway);
+              const priorHome = n(prior?.actualHome);
+              if (priorAway === null || priorHome === null || !clean(prior?.actualWinner)) continue;
+              g.actualAway = priorAway;
+              g.actualHome = priorHome;
+              g.actualWinner = clean(prior.actualWinner);
+              g.wl = clean(prior.wl);
+              preservedFinals++;
+            }
+            console.log('Preserved previously verified finals across sheet rebuild: ' + preservedFinals);
+          } catch (error) {
+            console.warn('Could not preserve previous weekly finals: ' + error.message);
+          }
+
           for (const correction of manualCorrections) {
             if (!correction.finalScore) continue;
             const targetDate = dateKey(correction.scheduledDate || correction.date);
