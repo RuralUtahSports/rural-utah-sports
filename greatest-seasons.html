@@ -1329,7 +1329,7 @@ async function loadData() {
                   PAPG: papg,
                   "Avg Margin": margin,
                   "Opponent Win %": opponentWinPct,
-                  "Opponents' Opponent Win %": opponentOpponentWinPct,
+                  "Opponents' Opponent Win %": opponentOpponentWinPct === null ? undefined : opponentOpponentWinPct,
                   SOS: sos,
                   Current: true
                 };
