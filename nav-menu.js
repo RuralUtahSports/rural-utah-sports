@@ -250,7 +250,7 @@
       );
       addScript("program-timeline.js?v=20260812a", "rusProgramTimeline", true);
       addScript(
-        "team-greatest-paths.js?v=20260818-perf1",
+        "team-greatest-paths.js?v=20260925-current-season1",
         "rusTeamGreatestPaths",
         true,
       );
