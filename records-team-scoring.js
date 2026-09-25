@@ -5,7 +5,8 @@ if(window.__RUS_TEAM_SCORING_RECORDS__)return;window.__RUS_TEAM_SCORING_RECORDS_
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
-let data=null;
+const safeHex=(v,fallback)=>/^#[0-9A-F]{6}$/i.test(clean(v))?clean(v):fallback;
+let data=null,teamMap=new Map();
 
 const categories={
   quarter:[
@@ -55,12 +56,13 @@ function addStyles(){
 .rus-tsr-wrap{overflow:auto;max-height:760px}.rus-tsr-table{width:100%;min-width:820px;border-collapse:collapse}.rus-tsr-table thead{position:sticky;top:0;z-index:2}
 .rus-tsr-table th{background:#F14D07;color:#000;padding:11px 9px;font-size:10px;text-transform:uppercase;text-align:left}.rus-tsr-table th:first-child,.rus-tsr-table th:nth-child(4){text-align:center}
 .rus-tsr-table td{padding:10px 9px;border-bottom:1px solid #252525;vertical-align:middle}.rus-tsr-table tbody tr:hover{background:#151515}
-.rus-tsr-rank{width:58px;text-align:center;color:#F14D07;font-size:18px;font-weight:900}.rus-tsr-team a{color:#fff;text-decoration:none;font-weight:900}.rus-tsr-team a:hover{color:#F14D07}
+.rus-tsr-rank{width:58px;text-align:center;color:#F14D07;font-size:18px;font-weight:900}.rus-tsr-team a{color:inherit;text-decoration:none;font-weight:900}.rus-tsr-team a:hover{filter:brightness(1.12)}
+.rus-tsr-team-badge,.rus-tsr-opponent-badge{display:inline-flex;align-items:center;gap:8px;min-width:170px;padding:7px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}.rus-tsr-opponent-badge{min-width:145px;padding:6px 8px;font-size:11px}.rus-tsr-logo{width:32px;height:32px;flex:0 0 32px;object-fit:contain;background:rgba(255,255,255,.14);border-radius:50%;padding:3px}.rus-tsr-opponent-badge .rus-tsr-logo{width:25px;height:25px;flex-basis:25px;padding:2px}.rus-tsr-badge-name{min-width:0;line-height:1.1}.rus-tsr-badge-name strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rus-tsr-meta{margin-top:4px;color:#8f8f8f;font-size:10px;font-weight:800;white-space:nowrap}.rus-tsr-record{color:#fff}
 .rus-tsr-value{text-align:center;color:#F14D07;font-size:22px;font-weight:900}.rus-tsr-game{font-size:11px;line-height:1.45;color:#aaa;min-width:250px}.rus-tsr-game strong{display:block;color:#fff}.rus-tsr-game span{display:block;margin-top:2px}
 .rus-tsr-source{padding:13px 20px;color:#777;font-size:11px;line-height:1.5;border-top:1px solid #222}.rus-tsr-empty{padding:45px;text-align:center;color:#999}
 @media(max-width:900px){.rus-tsr-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.rus-tsr-head{padding:16px}.rus-tsr-controls{grid-template-columns:1fr;padding:12px}.rus-tsr-wrap{max-height:620px}.rus-tsr-table{min-width:720px}}
+@media(max-width:700px){.rus-tsr-head{padding:16px}.rus-tsr-controls{grid-template-columns:1fr;padding:12px}.rus-tsr-wrap{max-height:620px}.rus-tsr-table{min-width:760px}.rus-tsr-team-badge{min-width:160px}.rus-tsr-logo{width:30px;height:30px;flex-basis:30px}}
 `;
   document.head.appendChild(s);
 }
@@ -74,10 +76,15 @@ function valueFor(e,category){
   return null;
 }
 
-function recordMeta(e){
-  const bits=[clean(e.classification)];
-  if(clean(e.record))bits.push(clean(e.record));
-  return bits;
+function teamInfo(name){return teamMap.get(norm(name))||null}
+function logoUrl(name){try{return window.RUSSchoolAssets?.logoUrl?.(name)||''}catch{return''}}
+function teamBadge(e){
+  const info=teamInfo(e.team),bg=safeHex(info?.backgroundColor,'#222222'),fg=safeHex(info?.textColor,'#FFFFFF'),logo=logoUrl(e.team);
+  return `<a class="rus-tsr-team-badge" style="background:${bg};color:${fg}" href="team.html?team=${encodeURIComponent(e.team)}&tab=games">${logo?`<img class="rus-tsr-logo" src="${esc(logo)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`:''}<span class="rus-tsr-badge-name"><strong>${esc(e.team)}</strong><span class="rus-tsr-meta">${esc(e.classification||'')}${clean(e.record)?` • <span class="rus-tsr-record">${esc(e.record)}</span>`:''}</span></span></a>`;
+}
+function opponentBadge(name){
+  const info=teamInfo(name),bg=safeHex(info?.backgroundColor,'#1f1f1f'),fg=safeHex(info?.textColor,'#FFFFFF'),logo=logoUrl(name);
+  return `<span class="rus-tsr-opponent-badge" style="background:${bg};color:${fg}">${logo?`<img class="rus-tsr-logo" src="${esc(logo)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`:''}<span class="rus-tsr-badge-name"><strong>${esc(name||'—')}</strong></span></span>`;
 }
 
 function gameContext(e,type){
@@ -152,8 +159,8 @@ function render(){
     body.innerHTML='<tr><td colspan="5"><div class="rus-tsr-empty">No scoring performances match this filter.</div></td></tr>';
   }else{
     body.innerHTML=visible.map(e=>{
-      const meta=recordMeta(e),ctx=gameContext(e,type);
-      return `<tr><td class="rus-tsr-rank">#${e.__rank}</td><td class="rus-tsr-team"><a href="team.html?team=${encodeURIComponent(e.team)}&tab=games">${esc(e.team)}</a><div class="rus-tsr-meta">${esc(meta[0]||'')}${meta[1]?` • <span class="rus-tsr-record">${esc(meta[1])}</span>`:''}</div></td><td>${esc(e.opponent||'—')}</td><td class="rus-tsr-value">${Number(e.__value).toLocaleString()}</td><td class="rus-tsr-game"><strong>${esc(ctx.strong)}</strong><span>${esc(ctx.sub)}</span></td></tr>`;
+      const ctx=gameContext(e,type);
+      return `<tr><td class="rus-tsr-rank">#${e.__rank}</td><td class="rus-tsr-team">${teamBadge(e)}</td><td>${opponentBadge(e.opponent||'—')}</td><td class="rus-tsr-value">${Number(e.__value).toLocaleString()}</td><td class="rus-tsr-game"><strong>${esc(ctx.strong)}</strong><span>${esc(ctx.sub)}</span></td></tr>`;
     }).join('');
   }
   const status=document.getElementById('rusTsrStatus');
@@ -190,9 +197,13 @@ async function install(){
   syncControls();
 
   try{
-    const r=await fetch(`team-scoring-records.json?v=${Date.now()}`,{cache:'no-store'});
+    const stamp=Date.now();
+    const [r,tr]=await Promise.all([fetch(`team-scoring-records.json?v=${stamp}`,{cache:'no-store'}),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'})]);
     if(!r.ok)throw new Error('team scoring records '+r.status);
     data=await r.json();
+    const teams=tr.ok?await tr.json():[];
+    teamMap=new Map((teams||[]).map(team=>[norm(team.team),team]));
+    try{if(window.RUSSchoolAssets?.load)await window.RUSSchoolAssets.load()}catch{}
     populateClasses();
     for(const id of ['rusTsrType','rusTsrCategory','rusTsrSegment','rusTsrView','rusTsrClass']){
       document.getElementById(id)?.addEventListener('change',()=>{
@@ -201,6 +212,7 @@ async function install(){
       });
     }
     document.getElementById('rusTsrSearch')?.addEventListener('input',render);
+    window.addEventListener('rus:school-assets-ready',async()=>{try{await window.RUSSchoolAssets?.load?.()}catch{}render()},{once:true});
     render();
   }catch(error){
     console.error('Team scoring records:',error);
