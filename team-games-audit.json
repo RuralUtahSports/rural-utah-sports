@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T07:56:38.745Z",
+  "updatedAt": "2026-09-25T07:58:13.896Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,41 +8,18 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68323,
+    "scheduleRowsAudited": 68330,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 35,
-    "suspiciousRepeatGames": 11,
+    "sameDayMultipleOpponents": 33,
+    "suspiciousRepeatGames": 9,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 243,
-    "reciprocalMismatches": 989,
+    "seasonSummaryMismatches": 220,
+    "reciprocalMismatches": 986,
     "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 243
+    "recent2025PlusIssues": 213
   },
   "recent2025PlusIssues": [
-    {
-      "type": "season-summary-mismatch",
-      "team": "AMERICAN FORK",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 6,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 207,
-          "actual": 190
-        },
-        "pointsAgainst": {
-          "expected": 110,
-          "actual": 107
-        }
-      }
-    },
     {
       "type": "season-summary-mismatch",
       "team": "BOUNTIFUL",
@@ -117,36 +94,35 @@
       }
     },
     {
-      "type": "season-summary-mismatch",
-      "team": "CARBON",
+      "type": "same-day-multiple-opponents",
+      "team": "CORNER CANYON",
       "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 91,
-          "actual": 95
-        }
-      }
+      "date": "9/11/2026",
+      "opponents": [
+        "EASTWOOD TEXAS",
+        "EASTWOOD, TX"
+      ]
     },
     {
       "type": "season-summary-mismatch",
-      "team": "CEDAR VALLEY",
+      "team": "CORNER CANYON",
       "season": "2026",
       "mismatches": {
-        "wins": {
-          "expected": 0,
-          "actual": 1
+        "games": {
+          "expected": 6,
+          "actual": 7
         },
-        "ties": {
-          "expected": 1,
-          "actual": 0
+        "wins": {
+          "expected": 5,
+          "actual": 6
         },
         "pointsFor": {
-          "expected": 41,
-          "actual": 54
+          "expected": 253,
+          "actual": 305
         },
         "pointsAgainst": {
-          "expected": 224,
-          "actual": 230
+          "expected": 80,
+          "actual": 87
         }
       }
     },
@@ -175,40 +151,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "DAVIS",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 170,
-          "actual": 181
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "DEER CREEK",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 2
-        },
-        "losses": {
-          "expected": 6,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 50,
-          "actual": 19
-        },
-        "pointsAgainst": {
-          "expected": 240,
-          "actual": 89
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "DELTA",
       "season": "2025",
       "mismatches": {
@@ -227,39 +169,6 @@
         "pointsAgainst": {
           "expected": 311,
           "actual": 305
-        }
-      }
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DUCHESNE",
-      "season": "2026",
-      "date": "8/21/2026",
-      "opponents": [
-        "COTTONWOOD",
-        "IGNACIO, CO"
-      ]
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "DUCHESNE",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 1,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 254,
-          "actual": 273
-        },
-        "pointsAgainst": {
-          "expected": 46,
-          "actual": 75
         }
       }
     },
@@ -288,17 +197,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "EMERY",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 220,
-          "actual": 224
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "FREMONT",
       "season": "2025",
       "mismatches": {
@@ -321,40 +219,6 @@
       }
     },
     {
-      "type": "season-summary-mismatch",
-      "team": "GRAND",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 5
-        },
-        "wins": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 150,
-          "actual": 96
-        },
-        "pointsAgainst": {
-          "expected": 165,
-          "actual": 159
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "GRANGER",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 197,
-          "actual": 200
-        }
-      }
-    },
-    {
       "type": "likely-opponent-typo",
       "team": "GREEN CANYON",
       "season": "2025",
@@ -370,17 +234,6 @@
       "distance": 1
     },
     {
-      "type": "season-summary-mismatch",
-      "team": "HILLCREST",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 188,
-          "actual": 191
-        }
-      }
-    },
-    {
       "type": "same-day-multiple-opponents",
       "team": "JUAB",
       "season": "2025",
@@ -389,6 +242,29 @@
         "CEDAR CITY",
         "GRANTSVILLE"
       ]
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "JUAB",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 13,
+          "actual": 12
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 433,
+          "actual": 417
+        },
+        "pointsAgainst": {
+          "expected": 313,
+          "actual": 283
+        }
+      }
     },
     {
       "type": "same-day-multiple-opponents",
@@ -421,61 +297,12 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "KANAB",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 104,
-          "actual": 106
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "LAYTON CHRISTIAN",
       "season": "2025",
       "mismatches": {
         "pointsAgainst": {
           "expected": 238,
           "actual": 230
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "LOGAN",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 210,
-          "actual": 217
-        },
-        "pointsAgainst": {
-          "expected": 139,
-          "actual": 152
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "LONE PEAK",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 171,
-          "actual": 150
-        },
-        "pointsAgainst": {
-          "expected": 165,
-          "actual": 158
         }
       }
     },
@@ -488,103 +315,6 @@
         "CEDAR CITY",
         "MORGAN"
       ]
-    },
-    {
-      "type": "suspicious-repeat",
-      "team": "MILLARD",
-      "season": "2026",
-      "index": 2,
-      "date": "8/21/2026",
-      "opponent": "PAROWAN",
-      "teamScore": 14,
-      "opponentScore": 10,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "8/28/2026",
-      "daysApart": 7
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MILLARD",
-      "season": "2026",
-      "date": "8/21/2026",
-      "opponents": [
-        "DELTA",
-        "PAROWAN"
-      ]
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MILLARD",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 113,
-          "actual": 99
-        },
-        "pointsAgainst": {
-          "expected": 144,
-          "actual": 143
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MONTICELLO",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 227,
-          "actual": 233
-        },
-        "pointsAgainst": {
-          "expected": 132,
-          "actual": 140
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MOUNTAIN RIDGE",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 281,
-          "actual": 292
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MURRAY",
-      "season": "2026",
-      "mismatches": {
-        "wins": {
-          "expected": 5,
-          "actual": 4
-        },
-        "losses": {
-          "expected": 1,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 251,
-          "actual": 203
-        },
-        "pointsAgainst": {
-          "expected": 126,
-          "actual": 174
-        }
-      }
     },
     {
       "type": "season-summary-mismatch",
@@ -608,95 +338,25 @@
       ]
     },
     {
-      "type": "suspicious-repeat",
-      "team": "PAROWAN",
-      "season": "2026",
-      "index": 2,
-      "date": "8/21/2026",
-      "opponent": "MILLARD",
-      "teamScore": 10,
-      "opponentScore": 14,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "8/28/2026",
-      "daysApart": 7
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PAROWAN",
-      "season": "2026",
-      "date": "8/21/2026",
-      "opponents": [
-        "ALA",
-        "MILLARD"
-      ]
-    },
-    {
       "type": "season-summary-mismatch",
-      "team": "PAROWAN",
-      "season": "2026",
+      "team": "PANGUITCH",
+      "season": "2025",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 10,
+          "actual": 9
         },
-        "losses": {
-          "expected": 5,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 105,
-          "actual": 104
-        },
-        "pointsAgainst": {
-          "expected": 176,
-          "actual": 160
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PAYSON",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
+        "wins": {
+          "expected": 1,
+          "actual": 0
         },
         "pointsFor": {
-          "expected": 137,
-          "actual": 116
+          "expected": 180,
+          "actual": 132
         },
         "pointsAgainst": {
-          "expected": 217,
-          "actual": 168
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PROVIDENCE HALL",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 80,
-          "actual": 74
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "ROY",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 146,
-          "actual": 153
+          "expected": 482,
+          "actual": 476
         }
       }
     },
@@ -708,29 +368,6 @@
         "pointsAgainst": {
           "expected": 406,
           "actual": 405
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "SPANISH FORK",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 5,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 235,
-          "actual": 186
-        },
-        "pointsAgainst": {
-          "expected": 220,
-          "actual": 199
         }
       }
     },
@@ -769,33 +406,6 @@
       }
     },
     {
-      "type": "season-summary-mismatch",
-      "team": "TAYLORSVILLE",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 0,
-          "actual": 1
-        },
-        "losses": {
-          "expected": 7,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 49,
-          "actual": 90
-        },
-        "pointsAgainst": {
-          "expected": 350,
-          "actual": 231
-        }
-      }
-    },
-    {
       "type": "same-day-multiple-opponents",
       "team": "VIEWMONT",
       "season": "2025",
@@ -813,67 +423,6 @@
         "pointsAgainst": {
           "expected": 347,
           "actual": 337
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "WEST FIELD",
-      "season": "2026",
-      "mismatches": {
-        "wins": {
-          "expected": 4,
-          "actual": 5
-        },
-        "losses": {
-          "expected": 2,
-          "actual": 1
-        },
-        "pointsAgainst": {
-          "expected": 129,
-          "actual": 123
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "WEST",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 7,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 337,
-          "actual": 266
-        },
-        "pointsAgainst": {
-          "expected": 59,
-          "actual": 52
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "WOODS CROSS",
-      "season": "2026",
-      "mismatches": {
-        "wins": {
-          "expected": 2,
-          "actual": 1
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 133,
-          "actual": 127
         }
       }
     },
@@ -1941,6 +1490,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "GRAND",
+      "teamB": "MONUMENT VALLEY",
+      "date": "9/24/2026",
+      "season": "2026",
+      "sideA": [
+        {
+          "team": "GRAND",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/24/2026",
+          "teamScore": 54,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2026",
+          "index": 5
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "GRANGER",
       "teamB": "HILLCREST",
       "date": "9/5/2025",
@@ -2081,26 +1650,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "HILLCREST",
-      "date": "8/21/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "HILLCREST",
-          "opponent": "DEER CREEK",
-          "date": "8/21/2026",
-          "teamScore": 53,
-          "opponentScore": 7,
-          "result": "W",
-          "season": "2026",
-          "index": 1
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "HIGHLAND",
       "teamB": "HUNTER",
       "date": "8/22/2025",
@@ -2201,46 +1750,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "JORDAN",
-      "date": "8/28/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "JORDAN",
-          "opponent": "DEER CREEK",
-          "date": "8/28/2026",
-          "teamScore": 13,
-          "opponentScore": 10,
-          "result": "W",
-          "season": "2026",
-          "index": 2
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "JUAB",
-      "teamB": "NORTH SANPETE",
-      "date": "10/17/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "JUAB",
-          "opponent": "NORTH SANPETE",
-          "date": "10/17/2025",
-          "teamScore": 16,
-          "opponentScore": 30,
-          "result": "L",
-          "season": "2025",
-          "index": 9
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -2255,7 +1764,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 10
+          "index": 9
         }
       ]
     },
@@ -2672,6 +2181,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "WATER CANYON",
+      "date": "9/18/2026",
+      "season": "2026",
+      "sideA": [
+        {
+          "team": "MONUMENT VALLEY",
+          "opponent": "WATER CANYON",
+          "date": "9/18/2026",
+          "teamScore": 12,
+          "opponentScore": 60,
+          "result": "L",
+          "season": "2026",
+          "index": 3
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BOUNTIFUL",
       "teamB": "MORGAN",
       "date": "9/5/2025",
@@ -2707,26 +2236,6 @@
           "result": "W",
           "season": "2025",
           "index": 6
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "MOUNTAIN CREST",
-      "date": "8/14/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "MOUNTAIN CREST",
-          "opponent": "DEER CREEK",
-          "date": "8/14/2026",
-          "teamScore": 49,
-          "opponentScore": 0,
-          "result": "W",
-          "season": "2026",
-          "index": 0
         }
       ]
     },
@@ -3183,26 +2692,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "PANGUITCH",
-      "date": "9/19/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "PANGUITCH",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/19/2025",
-          "teamScore": 48,
-          "opponentScore": 6,
-          "result": "W",
-          "season": "2025",
-          "index": 5
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -3217,7 +2706,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 7
         }
       ]
     },
@@ -3236,7 +2725,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 9
+          "index": 8
         }
       ],
       "sideB": []
@@ -4154,26 +3643,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "UINTAH",
-      "date": "9/11/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "UINTAH",
-          "opponent": "DEER CREEK",
-          "date": "9/11/2026",
-          "teamScore": 36,
-          "opponentScore": 14,
-          "result": "W",
-          "season": "2026",
-          "index": 4
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "UMA-HILLFIELD",
       "date": "9/18/2025",
@@ -4489,6 +3958,26 @@
           "result": "L",
           "season": "2025",
           "index": 8
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "WATER CANYON",
+      "date": "9/19/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "WATER CANYON",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2026",
+          "teamScore": 60,
+          "opponentScore": 12,
+          "result": "W",
+          "season": "2026",
+          "index": 5
         }
       ]
     },
@@ -4828,22 +4317,22 @@
     },
     {
       "type": "same-day-multiple-opponents",
+      "team": "CORNER CANYON",
+      "season": "2026",
+      "date": "9/11/2026",
+      "opponents": [
+        "EASTWOOD TEXAS",
+        "EASTWOOD, TX"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
       "team": "DAVIS",
       "season": "2022",
       "date": "10/7/2022",
       "opponents": [
         "SKYRIDGE",
         "WEBER"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "DUCHESNE",
-      "season": "2026",
-      "date": "8/21/2026",
-      "opponents": [
-        "COTTONWOOD",
-        "IGNACIO, CO"
       ]
     },
     {
@@ -4904,16 +4393,6 @@
       "opponents": [
         "CEDAR CITY",
         "MORGAN"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "MILLARD",
-      "season": "2026",
-      "date": "8/21/2026",
-      "opponents": [
-        "DELTA",
-        "PAROWAN"
       ]
     },
     {
@@ -4984,16 +4463,6 @@
       "opponents": [
         "CANYON VIEW",
         "CEDAR CITY"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "PAROWAN",
-      "season": "2026",
-      "date": "8/21/2026",
-      "opponents": [
-        "ALA",
-        "MILLARD"
       ]
     },
     {
@@ -5145,21 +4614,6 @@
     },
     {
       "type": "suspicious-repeat",
-      "team": "MILLARD",
-      "season": "2026",
-      "index": 2,
-      "date": "8/21/2026",
-      "opponent": "PAROWAN",
-      "teamScore": 14,
-      "opponentScore": 10,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "8/28/2026",
-      "daysApart": 7
-    },
-    {
-      "type": "suspicious-repeat",
       "team": "NORTH SEVIER",
       "season": "1981",
       "index": 6,
@@ -5202,21 +4656,6 @@
       "notes": "",
       "otherDate": "10/2/1981",
       "daysApart": 5
-    },
-    {
-      "type": "suspicious-repeat",
-      "team": "PAROWAN",
-      "season": "2026",
-      "index": 2,
-      "date": "8/21/2026",
-      "opponent": "MILLARD",
-      "teamScore": 10,
-      "opponentScore": 14,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherDate": "8/28/2026",
-      "daysApart": 7
     },
     {
       "type": "suspicious-repeat",
@@ -5444,29 +4883,6 @@
         "pointsAgainst": {
           "expected": 349,
           "actual": 352
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "AMERICAN FORK",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 6,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 207,
-          "actual": 190
-        },
-        "pointsAgainst": {
-          "expected": 110,
-          "actual": 107
         }
       }
     },
@@ -5713,17 +5129,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "CARBON",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 91,
-          "actual": 95
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "CEDAR CITY",
       "season": "2007",
       "mismatches": {
@@ -5781,29 +5186,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "CEDAR VALLEY",
-      "season": "2026",
-      "mismatches": {
-        "wins": {
-          "expected": 0,
-          "actual": 1
-        },
-        "ties": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 41,
-          "actual": 54
-        },
-        "pointsAgainst": {
-          "expected": 224,
-          "actual": 230
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "CLEARFIELD",
       "season": "2024",
       "mismatches": {
@@ -5843,6 +5225,29 @@
         "pointsAgainst": {
           "expected": 309,
           "actual": 311
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "CORNER CANYON",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "wins": {
+          "expected": 5,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 253,
+          "actual": 305
+        },
+        "pointsAgainst": {
+          "expected": 80,
+          "actual": 87
         }
       }
     },
@@ -5900,40 +5305,6 @@
         "pointsAgainst": {
           "expected": 236,
           "actual": 257
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "DAVIS",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 170,
-          "actual": 181
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "DEER CREEK",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 2
-        },
-        "losses": {
-          "expected": 6,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 50,
-          "actual": 19
-        },
-        "pointsAgainst": {
-          "expected": 240,
-          "actual": 89
         }
       }
     },
@@ -6001,29 +5372,6 @@
         "pointsFor": {
           "expected": 103,
           "actual": 92
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "DUCHESNE",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 1,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 254,
-          "actual": 273
-        },
-        "pointsAgainst": {
-          "expected": 46,
-          "actual": 75
         }
       }
     },
@@ -6105,17 +5453,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "EMERY",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 220,
-          "actual": 224
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "FREMONT",
       "season": "2025",
       "mismatches": {
@@ -6162,29 +5499,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "GRAND",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 5
-        },
-        "wins": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 150,
-          "actual": 96
-        },
-        "pointsAgainst": {
-          "expected": 165,
-          "actual": 159
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "GRANGER",
       "season": "2004",
       "mismatches": {
@@ -6195,17 +5509,6 @@
         "pointsAgainst": {
           "expected": 253,
           "actual": 255
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "GRANGER",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 197,
-          "actual": 200
         }
       }
     },
@@ -6338,17 +5641,6 @@
         "pointsFor": {
           "expected": 203,
           "actual": 202
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "HILLCREST",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 188,
-          "actual": 191
         }
       }
     },
@@ -6504,6 +5796,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "JUAB",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 13,
+          "actual": 12
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 433,
+          "actual": 417
+        },
+        "pointsAgainst": {
+          "expected": 313,
+          "actual": 283
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "JUAN DIEGO",
       "season": "2022",
       "mismatches": {
@@ -6648,17 +5963,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "KANAB",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 104,
-          "actual": 106
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "KEARNS",
       "season": "2017",
       "mismatches": {
@@ -6793,21 +6097,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "LOGAN",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 210,
-          "actual": 217
-        },
-        "pointsAgainst": {
-          "expected": 139,
-          "actual": 152
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "LONE PEAK",
       "season": "2019",
       "mismatches": {
@@ -6845,29 +6134,6 @@
         "pointsFor": {
           "expected": 439,
           "actual": 449
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "LONE PEAK",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 171,
-          "actual": 150
-        },
-        "pointsAgainst": {
-          "expected": 165,
-          "actual": 158
         }
       }
     },
@@ -6983,29 +6249,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "MILLARD",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 113,
-          "actual": 99
-        },
-        "pointsAgainst": {
-          "expected": 144,
-          "actual": 143
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "MONTICELLO",
       "season": "2017",
       "mismatches": {
@@ -7035,21 +6278,6 @@
         "pointsAgainst": {
           "expected": 254,
           "actual": 274
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MONTICELLO",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 227,
-          "actual": 233
-        },
-        "pointsAgainst": {
-          "expected": 132,
-          "actual": 140
         }
       }
     },
@@ -7148,17 +6376,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "MOUNTAIN RIDGE",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 281,
-          "actual": 292
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "MURRAY",
       "season": "1999",
       "mismatches": {
@@ -7177,29 +6394,6 @@
         "pointsAgainst": {
           "expected": 203,
           "actual": 184
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MURRAY",
-      "season": "2026",
-      "mismatches": {
-        "wins": {
-          "expected": 5,
-          "actual": 4
-        },
-        "losses": {
-          "expected": 1,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 251,
-          "actual": 203
-        },
-        "pointsAgainst": {
-          "expected": 126,
-          "actual": 174
         }
       }
     },
@@ -7544,6 +6738,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "PANGUITCH",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 1,
+          "actual": 0
+        },
+        "pointsFor": {
+          "expected": 180,
+          "actual": 132
+        },
+        "pointsAgainst": {
+          "expected": 482,
+          "actual": 476
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "PARK CITY",
       "season": "1926",
       "mismatches": {
@@ -7657,29 +6874,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "PAROWAN",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 105,
-          "actual": 104
-        },
-        "pointsAgainst": {
-          "expected": 176,
-          "actual": 160
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "PAYSON",
       "season": "2004",
       "mismatches": {
@@ -7709,29 +6903,6 @@
         "pointsFor": {
           "expected": 221,
           "actual": 222
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PAYSON",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 137,
-          "actual": 116
-        },
-        "pointsAgainst": {
-          "expected": 217,
-          "actual": 168
         }
       }
     },
@@ -7800,17 +6971,6 @@
         "pointsAgainst": {
           "expected": 257,
           "actual": 247
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PROVIDENCE HALL",
-      "season": "2026",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 80,
-          "actual": 74
         }
       }
     },
@@ -7930,17 +7090,6 @@
         "pointsFor": {
           "expected": 246,
           "actual": 248
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "ROY",
-      "season": "2026",
-      "mismatches": {
-        "pointsAgainst": {
-          "expected": 146,
-          "actual": 153
         }
       }
     },
@@ -8411,29 +7560,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "SPANISH FORK",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 5,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 235,
-          "actual": 186
-        },
-        "pointsAgainst": {
-          "expected": 220,
-          "actual": 199
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "SPRINGVILLE",
       "season": "1997",
       "mismatches": {
@@ -8560,33 +7686,6 @@
         "pointsAgainst": {
           "expected": 161,
           "actual": 171
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "TAYLORSVILLE",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 0,
-          "actual": 1
-        },
-        "losses": {
-          "expected": 7,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 49,
-          "actual": 90
-        },
-        "pointsAgainst": {
-          "expected": 350,
-          "actual": 231
         }
       }
     },
@@ -8976,25 +8075,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "WEST FIELD",
-      "season": "2026",
-      "mismatches": {
-        "wins": {
-          "expected": 4,
-          "actual": 5
-        },
-        "losses": {
-          "expected": 2,
-          "actual": 1
-        },
-        "pointsAgainst": {
-          "expected": 129,
-          "actual": 123
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "WEST JORDAN",
       "season": "1997",
       "mismatches": {
@@ -9139,29 +8219,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "WEST",
-      "season": "2026",
-      "mismatches": {
-        "games": {
-          "expected": 7,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 7,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 337,
-          "actual": 266
-        },
-        "pointsAgainst": {
-          "expected": 59,
-          "actual": 52
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "WESTLAKE",
       "season": "2019",
       "mismatches": {
@@ -9292,25 +8349,6 @@
         "pointsAgainst": {
           "expected": 354,
           "actual": 336
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "WOODS CROSS",
-      "season": "2026",
-      "mismatches": {
-        "wins": {
-          "expected": 2,
-          "actual": 1
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 133,
-          "actual": 127
         }
       }
     }
@@ -16598,6 +15636,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "GRAND",
+      "teamB": "MONUMENT VALLEY",
+      "date": "9/24/2026",
+      "season": "2026",
+      "sideA": [
+        {
+          "team": "GRAND",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/24/2026",
+          "teamScore": 54,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2026",
+          "index": 5
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "GRANGER",
       "teamB": "HILLCREST",
       "date": "10/30/1998",
@@ -17585,26 +16643,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "HILLCREST",
-      "date": "8/21/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "HILLCREST",
-          "opponent": "DEER CREEK",
-          "date": "8/21/2026",
-          "teamScore": 53,
-          "opponentScore": 7,
-          "result": "W",
-          "season": "2026",
-          "index": 1
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "HUNTER",
       "teamB": "KEARNS",
       "date": "10/9/1999",
@@ -18058,26 +17096,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "JORDAN",
-      "date": "8/28/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "JORDAN",
-          "opponent": "DEER CREEK",
-          "date": "8/28/2026",
-          "teamScore": 13,
-          "opponentScore": 10,
-          "result": "W",
-          "season": "2026",
-          "index": 2
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "GRAND",
       "teamB": "JUAB",
       "date": "10/23/1981",
@@ -18169,26 +17187,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "JUAB",
-      "teamB": "NORTH SANPETE",
-      "date": "10/17/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "JUAB",
-          "opponent": "NORTH SANPETE",
-          "date": "10/17/2025",
-          "teamScore": 16,
-          "opponentScore": 30,
-          "result": "L",
-          "season": "2025",
-          "index": 9
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -18203,7 +17201,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 10
+          "index": 9
         }
       ]
     },
@@ -21288,6 +20286,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "WATER CANYON",
+      "date": "9/18/2026",
+      "season": "2026",
+      "sideA": [
+        {
+          "team": "MONUMENT VALLEY",
+          "opponent": "WATER CANYON",
+          "date": "9/18/2026",
+          "teamScore": 12,
+          "opponentScore": 60,
+          "result": "L",
+          "season": "2026",
+          "index": 3
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "MORGAN",
       "teamB": "WASATCH",
       "date": "10/7/1998",
@@ -21700,26 +20718,6 @@
         }
       ],
       "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "MOUNTAIN CREST",
-      "date": "8/14/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "MOUNTAIN CREST",
-          "opponent": "DEER CREEK",
-          "date": "8/14/2026",
-          "teamScore": 49,
-          "opponentScore": 0,
-          "result": "W",
-          "season": "2026",
-          "index": 0
-        }
-      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -23777,26 +22775,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "PANGUITCH",
-      "date": "9/19/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "PANGUITCH",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/19/2025",
-          "teamScore": 48,
-          "opponentScore": 6,
-          "result": "W",
-          "season": "2025",
-          "index": 5
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -23811,7 +22789,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 7
         }
       ]
     },
@@ -23830,7 +22808,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 9
+          "index": 8
         }
       ],
       "sideB": []
@@ -28764,26 +27742,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "DEER CREEK",
-      "teamB": "UINTAH",
-      "date": "9/11/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "UINTAH",
-          "opponent": "DEER CREEK",
-          "date": "9/11/2026",
-          "teamScore": 36,
-          "opponentScore": 14,
-          "result": "W",
-          "season": "2026",
-          "index": 4
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "UMA-HILLFIELD",
       "teamB": "UMA-LEHI",
       "date": "10/3/2024",
@@ -29890,6 +28848,26 @@
           "result": "L",
           "season": "2025",
           "index": 8
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "WATER CANYON",
+      "date": "9/19/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "WATER CANYON",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2026",
+          "teamScore": 60,
+          "opponentScore": 12,
+          "result": "W",
+          "season": "2026",
+          "index": 5
         }
       ]
     },
@@ -31004,7 +29982,7 @@
       "team": "AMERICAN FORK",
       "file": "american-fork.json",
       "seasons": 101,
-      "totalGames": 927
+      "totalGames": 928
     },
     {
       "team": "BEAR RIVER",
@@ -31094,7 +30072,7 @@
       "team": "CORNER CANYON",
       "file": "corner-canyon.json",
       "seasons": 14,
-      "totalGames": 175
+      "totalGames": 176
     },
     {
       "team": "COTTONWOOD",
@@ -31124,7 +30102,7 @@
       "team": "DEER CREEK",
       "file": "deer-creek.json",
       "seasons": 1,
-      "totalGames": 2
+      "totalGames": 6
     },
     {
       "team": "DELTA",
@@ -31154,7 +30132,7 @@
       "team": "DUCHESNE",
       "file": "duchesne.json",
       "seasons": 57,
-      "totalGames": 569
+      "totalGames": 568
     },
     {
       "team": "EAST",
@@ -31190,7 +30168,7 @@
       "team": "GRAND",
       "file": "grand.json",
       "seasons": 106,
-      "totalGames": 913
+      "totalGames": 914
     },
     {
       "team": "GRANGER",
@@ -31256,7 +30234,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 72,
-      "totalGames": 724
+      "totalGames": 723
     },
     {
       "team": "JUAN DIEGO",
@@ -31310,7 +30288,7 @@
       "team": "LONE PEAK",
       "file": "lone-peak.json",
       "seasons": 30,
-      "totalGames": 362
+      "totalGames": 363
     },
     {
       "team": "MANTI",
@@ -31334,7 +30312,7 @@
       "team": "MILLARD",
       "file": "millard.json",
       "seasons": 101,
-      "totalGames": 958
+      "totalGames": 957
     },
     {
       "team": "MONTICELLO",
@@ -31424,7 +30402,7 @@
       "team": "PANGUITCH",
       "file": "panguitch.json",
       "seasons": 8,
-      "totalGames": 70
+      "totalGames": 69
     },
     {
       "team": "PARK CITY",
@@ -31436,13 +30414,13 @@
       "team": "PAROWAN",
       "file": "parowan.json",
       "seasons": 78,
-      "totalGames": 697
+      "totalGames": 696
     },
     {
       "team": "PAYSON",
       "file": "payson.json",
       "seasons": 116,
-      "totalGames": 977
+      "totalGames": 978
     },
     {
       "team": "PINE VIEW",
@@ -31556,7 +30534,7 @@
       "team": "SPANISH FORK",
       "file": "spanish-fork.json",
       "seasons": 107,
-      "totalGames": 935
+      "totalGames": 936
     },
     {
       "team": "SPRINGVILLE",
@@ -31586,7 +30564,7 @@
       "team": "TAYLORSVILLE",
       "file": "taylorsville.json",
       "seasons": 46,
-      "totalGames": 452
+      "totalGames": 453
     },
     {
       "team": "TIMPANOGOS",
@@ -31670,7 +30648,7 @@
       "team": "WEST",
       "file": "west.json",
       "seasons": 128,
-      "totalGames": 1096
+      "totalGames": 1097
     },
     {
       "team": "WESTLAKE",
