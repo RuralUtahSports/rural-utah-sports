@@ -444,8 +444,8 @@
         if (!element.open) return;
         const key = element.dataset.detailKey || '';
         if (!key || loadedFullDetails.has(key)) return;
-        const current = detailMap?.get?.(key) || null;
-        if (current?.final === true && Array.isArray(current?.boxScore?.rows) && current.boxScore.rows.length >= 2) return;
+        // A compact final can contain only totals. Always load the full detail
+        // on first expansion so missing quarters and player stats can be filled.
         const payload = await loadFullDetails();
         const detail = payload?.games?.[key];
         if (!detail || detail.final !== true) return;

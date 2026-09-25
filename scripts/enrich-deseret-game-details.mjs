@@ -542,7 +542,10 @@ async function runBrowserOnly(weekly, details, linkIndex) {
     // A newly discovered direct URL may not have a detail row yet. Fetch it
     // on game day so out-of-state matchups can enter the live feed instead of
     // requiring an impossible pre-existing live status.
-    if (!priorActive && dayDelta !== 0) continue;
+    const weeklyFinal = [game.actualAway, game.actualHome].every(value =>
+      value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value))
+    );
+    if (!priorActive && !weeklyFinal && dayDelta !== 0) continue;
 
     // Full pages are expensive to render. Revisit partial/final pages often
     // enough for late-arriving stats, but avoid fetching the same page every
