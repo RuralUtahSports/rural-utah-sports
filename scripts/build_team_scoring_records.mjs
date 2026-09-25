@@ -6,11 +6,13 @@ const FILES = {
   seasons: 'season-records.json',
   weekly: 'weekly-simulation.json',
   details: 'deseret-game-details.json',
-  scorigami: 'scorigami.json'
+  scorigami: 'scorigami.json',
+  scoringCorrections: 'manual-team-scoring-corrections-2026.json'
 };
 const OUTPUT = 'team-scoring-records.json';
 
-for (const file of Object.values(FILES)) {
+for (const [key, file] of Object.entries(FILES)) {
+  if (key === 'scoringCorrections') continue;
   if (!fs.existsSync(file)) throw new Error(file + ' not found');
 }
 
@@ -20,6 +22,9 @@ const seasons = JSON.parse(fs.readFileSync(FILES.seasons, 'utf8'));
 const weekly = JSON.parse(fs.readFileSync(FILES.weekly, 'utf8'));
 const details = JSON.parse(fs.readFileSync(FILES.details, 'utf8'));
 const scorigami = JSON.parse(fs.readFileSync(FILES.scorigami, 'utf8'));
+const scoringCorrections = fs.existsSync(FILES.scoringCorrections)
+  ? JSON.parse(fs.readFileSync(FILES.scoringCorrections, 'utf8'))
+  : [];
 
 const clean = value => String(value ?? '').trim().replace(/\s+/g, ' ');
 const norm = value => clean(value).toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -237,6 +242,36 @@ for (const [key, detail] of Object.entries(details.games || {})) {
       url: detail?.url || detail?.deseretUrl || ''
     });
   }
+}
+
+
+// Verified quarter-table corrections override or fill games that the local
+// Deseret detail cache missed. Keep these game-shaped so the normal quarter
+// and half calculations use the same path as scraped detail rows.
+for (const correction of scoringCorrections || []) {
+  const date = correction?.date;
+  const away = activeTeam(correction?.awayTeam);
+  const home = activeTeam(correction?.homeTeam);
+  if (!date || !away || !home) continue;
+  const awayQuarters = Array.isArray(correction.awayQuarters) ? correction.awayQuarters.slice(0, 4) : [];
+  const homeQuarters = Array.isArray(correction.homeQuarters) ? correction.homeQuarters.slice(0, 4) : [];
+  const numericCells = [...awayQuarters, ...homeQuarters].filter(v => finite(v) !== null).length;
+  if (!numericCells) continue;
+  const id = isoDate(date) + '|' + norm(away) + '|' + norm(home);
+  detailByGame.set(id, {
+    quality: 10000 + numericCells,
+    date,
+    awayTeam: away,
+    homeTeam: home,
+    awayTotal: finite(correction.awayTotal),
+    homeTotal: finite(correction.homeTotal),
+    awayQuarters,
+    homeQuarters,
+    url: clean(correction.url || ''),
+    source: clean(correction.source || 'verified-manual-quarter-correction'),
+    note: clean(correction.note || '')
+  });
+  console.log('Applied verified scoring correction:', id);
 }
 
 const currentQuarter = [], currentHalf = [];
