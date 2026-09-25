@@ -55,18 +55,44 @@ function finishClass(v){return clean(v).toLowerCase().replace(/[^a-z]+/g,'-').re
 function pathCell(run){if(!run)return'<span class="rus-path-loading">No recorded bracket</span>';return `<details><summary>View path</summary>${run.path.map(x=>{const r=x.rec,rec=r?`${Number(r.wins||0)}-${Number(r.losses||0)}${Number(r.ties||0)?'-'+Number(r.ties):''}, ${(Number(r.winPct||0)*100).toFixed(1)}%`:'record unavailable';return `<div class="rus-path-line"><b>${esc(x.round)}</b> — ${esc(x.opp)} (${esc(rec)})</div>`}).join('')}</details>`}
 async function enhance(){styles();let tries=0;const wait=async()=>{const table=findTable();if(!table||!table.tBodies[0]?.rows.length){if(++tries<100)setTimeout(wait,100);return}if(table.dataset.rusPaths==='1')return;table.dataset.rusPaths='1';table.classList.add('rus-greatest-path-table');const team=key(new URLSearchParams(location.search).get('team')||document.querySelector('.team-title')?.textContent||'');if(!team)return;
       try{
-        const sr=await fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'});
+        const stamp=Date.now(),[sr,rr,or]=await Promise.all([
+          fetch(`standings-2026.json?v=${stamp}`,{cache:'no-store'}),
+          fetch(`rpi-standings-2026.json?v=${stamp}`,{cache:'no-store'}),
+          fetch(`rpi-oos-2026.json?v=${stamp}`,{cache:'no-store'})
+        ]);
         if(sr.ok){
-          const standings=await sr.json(),all=[...Object.values(standings.byClassification||{}).flat()],current=all.find(x=>key(x.team)===team);
+          const standings=await sr.json(),rpi=rr.ok?await rr.json():{},oos=or.ok?await or.json():{teams:{}};
+          const all=[...Object.values(standings.byClassification||{}).flat()],current=all.find(x=>key(x.team)===team);
+          const rpiRows=[...Object.values(rpi.classifications||{}).flat()],rpiRow=rpiRows.find(x=>key(x.team)===team);
+          const recordMap=new Map(all.map(x=>[key(x.team),x])),oosEntries=Object.entries(oos.teams||{});
+          const oosFor=name=>{const k=key(name);return oosEntries.find(([n])=>key(n)===k)?.[1]||null};
+          const fallbackOwp=()=>{
+            const played=(standings.games||[]).filter(g=>key(g.awayTeam)===team||key(g.homeTeam)===team);
+            const vals=played.map(g=>{
+              const opp=key(g.awayTeam)===team?g.homeTeam:g.awayTeam,rec=recordMap.get(key(opp));
+              if(rec){
+                let w=Number(rec.wins||0),l=Number(rec.losses||0),t=Number(rec.ties||0);
+                const oppHome=key(g.homeTeam)===key(opp),os=Number(oppHome?g.actualHome:g.actualAway),ts=Number(oppHome?g.actualAway:g.actualHome);
+                if(Number.isFinite(os)&&Number.isFinite(ts)){if(os>ts)w=Math.max(0,w-1);else if(os<ts)l=Math.max(0,l-1);else t=Math.max(0,t-1)}
+                const n=w+l+t;return n?(w+t*.5)/n:.5;
+              }
+              const ext=oosFor(opp),direct=ext?.wpByUtahTeam?.[team]??ext?.wpByUtahTeam?.[String(current?.team||'').toUpperCase()];
+              return Number.isFinite(Number(direct))?Number(direct):(Number.isFinite(Number(ext?.wp))?Number(ext.wp):.5);
+            });
+            return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+          };
           if(current&&!table.tBodies[0].querySelector('[data-rus-current-season="2026"]')){
             const games=Number(current.wins||0)+Number(current.losses||0)+Number(current.ties||0);
             if(games>0){
-              const pf=Number(current.pointsFor||0),pa=Number(current.pointsAgainst||0),pct=(Number(current.wins||0)+Number(current.ties||0)*.5)/games;
+              const pf=Number(current.pointsFor||0),pa=Number(current.pointsAgainst||0),pct=(Number(current.wins||0)+Number(current.ties||0)*.5)/games,margin=(pf-pa)/games;
+              const owp=Number.isFinite(Number(rpiRow?.owp))?Number(rpiRow.owp):fallbackOwp(),sos=owp*20;
+              const dominance=Math.max(0,Math.min(margin,50))/50*30,seasonLength=Math.min(games/14,1)*10;
+              const rating=pct*40+dominance+sos+seasonLength;
               const row=document.createElement('tr');row.className='rus-current-greatest-row';row.dataset.rusCurrentSeason='2026';
-              row.innerHTML=`<td><span class="rus-current-season-tag">2026</span></td><td>${Number(current.wins||0)}-${Number(current.losses||0)}${Number(current.ties||0)?'-'+Number(current.ties):''}</td><td>${(pct*100).toFixed(1)}%</td><td>${(pf/games).toFixed(1)}</td><td>${(pa/games).toFixed(1)}</td><td>${((pf-pa)/games>0?'+':'')+((pf-pa)/games).toFixed(1)}</td><td>—</td><td class="rus-current-in-progress">In progress</td>`;
+              row.innerHTML=`<td><span class="rus-current-season-tag">2026</span></td><td>${Number(current.wins||0)}-${Number(current.losses||0)}${Number(current.ties||0)?'-'+Number(current.ties):''}</td><td>${(pct*100).toFixed(1)}%</td><td>${(pf/games).toFixed(1)}</td><td>${(pa/games).toFixed(1)}</td><td>${(margin>0?'+':'')+margin.toFixed(1)}</td><td>${sos.toFixed(2)}</td><td class="rus-current-in-progress">${rating.toFixed(2)}</td>`;
               table.tBodies[0].prepend(row);
               const wrap=table.closest('.table-wrap');
-              if(wrap&&!wrap.nextElementSibling?.classList.contains('rus-current-season-note'))wrap.insertAdjacentHTML('afterend','<p class="rus-current-season-note">2026 is shown as a live in-progress season. Record and scoring numbers update from current finals; the historical SOS/rating stays unranked until the season comparison is finalized.</p>');
+              if(wrap&&!wrap.nextElementSibling?.classList.contains('rus-current-season-note'))wrap.insertAdjacentHTML('afterend','<p class="rus-current-season-note">2026 is a live in-progress season. Its rating uses the same RUS formula as the historical seasons and updates as final scores and opponent records change.</p>');
             }
           }
         }
