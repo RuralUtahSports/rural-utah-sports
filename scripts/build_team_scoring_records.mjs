@@ -76,14 +76,42 @@ for (const rows of Object.values(standings?.byClassification || {})) {
   for (const row of rows || []) currentRecords.set(norm(row.team), row);
 }
 
+// For current-season leader rows, show the team's record immediately after
+// that specific game rather than today's later record.
+const recordAfterGameMap = new Map();
+const runningRecords = new Map(teams.map(team => [norm(team.team), { wins: 0, losses: 0, ties: 0 }]));
+const currentGames = [...(standings?.games || [])].sort((a, b) =>
+  Date.parse(isoDate(a.date)) - Date.parse(isoDate(b.date)) ||
+  clean(a.awayTeam).localeCompare(clean(b.awayTeam))
+);
+for (const game of currentGames) {
+  const awayTeam = activeTeam(game.awayTeam);
+  const homeTeam = activeTeam(game.homeTeam);
+  const awayScore = finite(game.actualAway);
+  const homeScore = finite(game.actualHome);
+  if (awayScore === null || homeScore === null) continue;
+  for (const [team, pf, pa] of [[awayTeam, awayScore, homeScore], [homeTeam, homeScore, awayScore]]) {
+    if (!team) continue;
+    const key = norm(team);
+    const record = runningRecords.get(key) || { wins: 0, losses: 0, ties: 0 };
+    if (pf > pa) record.wins++;
+    else if (pf < pa) record.losses++;
+    else record.ties++;
+    runningRecords.set(key, record);
+    recordAfterGameMap.set(isoDate(game.date) + '|' + key, { ...record });
+  }
+}
+
 const seasonRecordMap = new Map();
 for (const [year, rows] of Object.entries(seasons?.seasons || {})) {
   for (const row of rows || []) seasonRecordMap.set(Number(year) + '|' + norm(row.team), row);
 }
 
-function recordString(team, year) {
+function recordString(team, year, date = '') {
   const source = Number(year) === 2026
-    ? currentRecords.get(norm(team)) || seasonRecordMap.get('2026|' + norm(team))
+    ? recordAfterGameMap.get(isoDate(date) + '|' + norm(team)) ||
+      currentRecords.get(norm(team)) ||
+      seasonRecordMap.get('2026|' + norm(team))
     : seasonRecordMap.get(Number(year) + '|' + norm(team));
   if (!source) return '';
   const w = Number(source.wins), l = Number(source.losses), t = Number(source.ties || 0);
@@ -114,7 +142,7 @@ function makeEvent({
   return {
     team: canonicalTeam,
     classification: classification(canonicalTeam),
-    record: recordString(canonicalTeam, year),
+    record: recordString(canonicalTeam, year, date),
     opponent: canonicalOpponent,
     date: isoDate(date),
     season: year,
