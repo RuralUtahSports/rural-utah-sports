@@ -56,12 +56,22 @@ const dayNumber = value => {
 };
 const sameMovedMatchup = (left, right) => {
   const leftDay = dayNumber(left[0]), rightDay = dayNumber(right[0]);
-  return leftDay !== null && rightDay !== null &&
-    Math.abs(leftDay - rightDay) <= 3 &&
-    canonicalTeam(left[1]) === canonicalTeam(right[1]) &&
-    canonicalTeam(left[2]) === canonicalTeam(right[2]);
+  if (leftDay === null || rightDay === null || Math.abs(leftDay - rightDay) > 3) return false;
+  const leftAway = canonicalTeam(left[1]), leftHome = canonicalTeam(left[2]);
+  const rightAway = canonicalTeam(right[1]), rightHome = canonicalTeam(right[2]);
+  return (leftAway === rightAway && leftHome === rightHome) ||
+    (leftAway === rightHome && leftHome === rightAway);
 };
 const hasRowScore = row => n(row[7]) !== null && n(row[8]) !== null;
+const sameScoreForMovedMatchup = (left, right) => {
+  if (!hasRowScore(left) || !hasRowScore(right)) return false;
+  const leftAway = canonicalTeam(left[1]), leftHome = canonicalTeam(left[2]);
+  const rightAway = canonicalTeam(right[1]), rightHome = canonicalTeam(right[2]);
+  const la = n(left[7]), lh = n(left[8]), ra = n(right[7]), rh = n(right[8]);
+  if (leftAway === rightAway && leftHome === rightHome) return la === ra && lh === rh;
+  if (leftAway === rightHome && leftHome === rightAway) return la === rh && lh === ra;
+  return false;
+};
 const rows = [];
 const addMergedRow = row => {
   const duplicateIndex = rows.findIndex(existing => sameMovedMatchup(existing, row));
@@ -71,6 +81,15 @@ const addMergedRow = row => {
   }
   const existing = rows[duplicateIndex];
   if (hasRowScore(row) && !hasRowScore(existing)) {
+    rows[duplicateIndex] = row;
+    return;
+  }
+  if (hasRowScore(row) && hasRowScore(existing) &&
+      sameScoreForMovedMatchup(existing, row) &&
+      dateStamp(row[0]) > dateStamp(existing[0])) {
+    // Weather moves can flip home/away orientation and date while representing
+    // the same completed game. Prefer the later official row when the score is
+    // equivalent from the opposite perspective.
     rows[duplicateIndex] = row;
     return;
   }
