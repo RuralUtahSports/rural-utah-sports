@@ -223,6 +223,12 @@ jobs:
           fi
           git add simulator-data.json weekly-simulation.json spread-upsets-history.json
           git commit -m "Auto-sync simulator data"
+
+          # Other build steps can touch tracked support files that are not part
+          # of this publish. Clear those unstaged changes so a concurrent push
+          # can be rebased cleanly instead of killing the simulator refresh.
+          git restore --worktree .
+
           ok=0
           for attempt in 1 2 3 4; do
             if git push; then
