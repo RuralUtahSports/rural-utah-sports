@@ -1,0 +1,76 @@
+name: Build Team Scoring Records
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_team_scoring_records.mjs'
+      - 'deseret-game-details.json'
+      - 'weekly-simulation.json'
+      - 'standings-2026.json'
+      - 'season-records.json'
+      - 'scorigami.json'
+      - 'teams-data.json'
+      - '.github/workflows/build-team-scoring-records.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: team-scoring-records
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build team scoring records
+        run: node scripts/build_team_scoring_records.mjs
+
+      - name: Validate output
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const data = JSON.parse(fs.readFileSync('team-scoring-records.json','utf8'));
+          if (!Array.isArray(data?.current?.game) || data.current.game.length < 100) {
+            throw new Error('Current full-game scoring leaders are incomplete');
+          }
+          if (!Array.isArray(data?.records?.game) || data.records.game.length < 100) {
+            throw new Error('Historical full-game scoring records are incomplete');
+          }
+          console.log(data.summary);
+          console.log(data.coverage);
+          NODE
+
+      - name: Publish team scoring records
+        run: |
+          git config user.name "RuralUtahSports"
+          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git add team-scoring-records.json
+          if git diff --cached --quiet; then
+            echo "Team scoring records are already current."
+            exit 0
+          fi
+          git commit -m "Auto-sync team scoring records"
+          git restore --worktree .
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              ok=1
+              break
+            fi
+            git rebase --abort || true
+            sleep $((attempt * 5))
+          done
+          if [ "$ok" -ne 1 ]; then exit 1; fi
