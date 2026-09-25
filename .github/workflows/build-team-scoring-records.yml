@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/build_team_scoring_records.mjs'
+      - 'manual-team-scoring-corrections-2026.json'
       - 'deseret-game-details.json'
       - 'weekly-simulation.json'
       - 'standings-2026.json'
@@ -49,6 +50,10 @@ jobs:
           if (!Array.isArray(data?.records?.game) || data.records.game.length < 100) {
             throw new Error('Historical full-game scoring records are incomplete');
           }
+          const duchesne50 = (data?.current?.quarter || []).some(row =>
+            row.team === 'DUCHESNE' && row.date === '2026-08-28' && row.segment === 'Q1' && Number(row.teamPoints) === 50
+          );
+          if (!duchesne50) throw new Error('Verified Duchesne 50-point Q1 is missing');
           console.log(data.summary);
           console.log(data.coverage);
           NODE
