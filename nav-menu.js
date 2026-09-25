@@ -254,7 +254,7 @@
         "rusTeamGreatestPaths",
         true,
       );
-      addScript("team-tabs.js?v=20260818-games1", "rusTeamTabs", true);
+      addScript("team-tabs.js?v=20260925-tab-click-fix1", "rusTeamTabs", true);
       addScript(
         "player-profile-links.js?v=20260814a",
         "rusPlayerProfileLinks",
