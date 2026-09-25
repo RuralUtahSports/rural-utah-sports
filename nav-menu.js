@@ -228,11 +228,11 @@
     if (oneOf(...schoolAssetPages)) {
       const assetScript =
         path === "scoreboard.html"
-          ? "school-assets-bundle.js?v=20260818-perf2"
-          : "school-assets-core.js?v=20260925-shared-logo-discs1";
+          ? "school-assets-bundle.js?v=20260925-all-logo-discs1"
+          : "school-assets-core.js?v=20260925-all-logo-discs1";
       addScript(assetScript, "rusSchoolAssets", true);
       addScript(
-        "school-logo-integration.js?v=20260925-shared-logo-discs1",
+        "school-logo-integration.js?v=20260925-all-logo-discs1",
         "rusSchoolLogoIntegration",
         true,
       );
