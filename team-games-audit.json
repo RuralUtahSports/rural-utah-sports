@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T13:53:16.104Z",
+  "updatedAt": "2026-09-25T13:56:29.574Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,18 +8,87 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68420,
+    "scheduleRowsAudited": 68405,
     "exactDuplicates": 0,
-    "sameDateOpponentConflicts": 18,
+    "sameDateOpponentConflicts": 0,
     "sameDayMultipleOpponents": 53,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
-    "seasonSummaryMismatches": 0,
-    "reciprocalMismatches": 34,
+    "seasonSummaryMismatches": 7,
+    "reciprocalMismatches": 31,
     "likelyOpponentTypos": 1,
-    "recent2025PlusIssues": 9
+    "recent2025PlusIssues": 13
   },
   "recent2025PlusIssues": [
+    {
+      "type": "season-summary-mismatch",
+      "team": "AMERICAN FORK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "wins": {
+          "expected": 5,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 179,
+          "actual": 207
+        },
+        "pointsAgainst": {
+          "expected": 86,
+          "actual": 110
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "GRAND",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 5,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 3,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 96,
+          "actual": 150
+        },
+        "pointsAgainst": {
+          "expected": 159,
+          "actual": 165
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "LONE PEAK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "losses": {
+          "expected": 3,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 147,
+          "actual": 171
+        },
+        "pointsAgainst": {
+          "expected": 137,
+          "actual": 165
+        }
+      }
+    },
     {
       "type": "same-day-multiple-opponents",
       "team": "PANGUITCH",
@@ -31,84 +100,116 @@
       ]
     },
     {
+      "type": "season-summary-mismatch",
+      "team": "PAYSON",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "losses": {
+          "expected": 3,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 116,
+          "actual": 137
+        },
+        "pointsAgainst": {
+          "expected": 168,
+          "actual": 217
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "SPANISH FORK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "wins": {
+          "expected": 4,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 186,
+          "actual": 235
+        },
+        "pointsAgainst": {
+          "expected": 199,
+          "actual": 220
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "TAYLORSVILLE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "losses": {
+          "expected": 6,
+          "actual": 7
+        },
+        "pointsFor": {
+          "expected": 42,
+          "actual": 49
+        },
+        "pointsAgainst": {
+          "expected": 279,
+          "actual": 350
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "WEST",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 7
+        },
+        "pointsFor": {
+          "expected": 266,
+          "actual": 337
+        },
+        "pointsAgainst": {
+          "expected": 52,
+          "actual": 59
+        }
+      }
+    },
+    {
       "type": "reciprocal-mismatch",
-      "teamA": "BONNEVILLE",
-      "teamB": "CLEARFIELD",
-      "date": "10/3/2025",
-      "season": "2025",
+      "teamA": "GRAND",
+      "teamB": "MONUMENT VALLEY",
+      "date": "9/24/2026",
+      "season": "2026",
       "sideA": [
         {
-          "team": "BONNEVILLE",
-          "opponent": "CLEARFIELD",
-          "date": "10/3/2025",
-          "teamScore": 19,
-          "opponentScore": 35,
-          "result": "L",
-          "season": "2025",
-          "index": 7
+          "team": "GRAND",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/24/2026",
+          "teamScore": 54,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2026",
+          "index": 5
         }
       ],
       "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "BOX ELDER",
-      "teamB": "CLEARFIELD",
-      "date": "10/10/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "BOX ELDER",
-          "opponent": "CLEARFIELD",
-          "date": "10/10/2025",
-          "teamScore": 24,
-          "opponentScore": 7,
-          "result": "W",
-          "season": "2025",
-          "index": 8
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "BONNEVILLE",
-      "teamB": "CLEARFIELD",
-      "date": "10/4/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "CLEARFIELD",
-          "opponent": "BONNEVILLE",
-          "date": "10/4/2025",
-          "teamScore": 35,
-          "opponentScore": 19,
-          "result": "W",
-          "season": "2025",
-          "index": 7
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "BOX ELDER",
-      "teamB": "CLEARFIELD",
-      "date": "10/9/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "CLEARFIELD",
-          "opponent": "BOX ELDER",
-          "date": "10/9/2025",
-          "teamScore": 7,
-          "opponentScore": 24,
-          "result": "L",
-          "season": "2025",
-          "index": 8
-        }
-      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -192,278 +293,7 @@
     }
   ],
   "exactDuplicates": [],
-  "sameDateOpponentConflicts": [
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "ALTAMONT",
-      "season": "2003",
-      "index": 8,
-      "date": "10/10/2003",
-      "opponent": "RICH",
-      "teamScore": 48,
-      "opponentScore": 6,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 7,
-      "otherScore": "28|6|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "ENTERPRISE",
-      "season": "2008",
-      "index": 11,
-      "date": "10/31/2008",
-      "opponent": "RICH",
-      "teamScore": 21,
-      "opponentScore": 46,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 10,
-      "otherScore": "20|46|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "GUNNISON VALLEY",
-      "season": "1998",
-      "index": 1,
-      "date": "8/28/1998",
-      "opponent": "NORTH SEVIER",
-      "teamScore": 30,
-      "opponentScore": 13,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 0,
-      "otherScore": "20|13|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "GUNNISON VALLEY",
-      "season": "2001",
-      "index": 3,
-      "date": "9/7/2001",
-      "opponent": "KANAB",
-      "teamScore": 16,
-      "opponentScore": 20,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 2,
-      "otherScore": "20|16|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "GUNNISON VALLEY",
-      "season": "2001",
-      "index": 6,
-      "date": "9/21/2001",
-      "opponent": "JUAB",
-      "teamScore": 14,
-      "opponentScore": 19,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 5,
-      "otherScore": "19|14|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "GUNNISON VALLEY",
-      "season": "2001",
-      "index": 11,
-      "date": "10/18/2001",
-      "opponent": "MANTI",
-      "teamScore": 39,
-      "opponentScore": 12,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 10,
-      "otherScore": "12|39|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "GUNNISON VALLEY",
-      "season": "2005",
-      "index": 3,
-      "date": "9/2/2005",
-      "opponent": "RICHFIELD",
-      "teamScore": 27,
-      "opponentScore": 7,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 2,
-      "otherScore": "27|19|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "GUNNISON VALLEY",
-      "season": "2014",
-      "index": 4,
-      "date": "9/12/2014",
-      "opponent": "LAYTON CHRISTIAN",
-      "teamScore": 20,
-      "opponentScore": 47,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 3,
-      "otherScore": "27|40|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "JUAB",
-      "season": "2001",
-      "index": 5,
-      "date": "9/21/2001",
-      "opponent": "GUNNISON VALLEY",
-      "teamScore": 19,
-      "opponentScore": 14,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 4,
-      "otherScore": "14|19|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "KANAB",
-      "season": "2001",
-      "index": 3,
-      "date": "9/7/2001",
-      "opponent": "GUNNISON VALLEY",
-      "teamScore": 20,
-      "opponentScore": 16,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 2,
-      "otherScore": "16|20|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "LAYTON CHRISTIAN",
-      "season": "2014",
-      "index": 4,
-      "date": "9/12/2014",
-      "opponent": "GUNNISON VALLEY",
-      "teamScore": 47,
-      "opponentScore": 20,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 3,
-      "otherScore": "40|27|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "MANTI",
-      "season": "2001",
-      "index": 8,
-      "date": "10/18/2001",
-      "opponent": "GUNNISON VALLEY",
-      "teamScore": 12,
-      "opponentScore": 39,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 7,
-      "otherScore": "39|12|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "MONTICELLO",
-      "season": "2022",
-      "index": 7,
-      "date": "9/30/2022",
-      "opponent": "MONUMENT VALLEY",
-      "teamScore": 42,
-      "opponentScore": 20,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 6,
-      "otherScore": "41|20|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "MONUMENT VALLEY",
-      "season": "2022",
-      "index": 6,
-      "date": "9/30/2022",
-      "opponent": "MONTICELLO",
-      "teamScore": 20,
-      "opponentScore": 42,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 5,
-      "otherScore": "20|41|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "NORTH SEVIER",
-      "season": "1998",
-      "index": 1,
-      "date": "8/28/1998",
-      "opponent": "GUNNISON VALLEY",
-      "teamScore": 13,
-      "opponentScore": 30,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 0,
-      "otherScore": "13|20|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "RICH",
-      "season": "2003",
-      "index": 7,
-      "date": "10/10/2003",
-      "opponent": "ALTAMONT",
-      "teamScore": 6,
-      "opponentScore": 48,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 6,
-      "otherScore": "6|28|L"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "RICH",
-      "season": "2008",
-      "index": 10,
-      "date": "10/31/2008",
-      "opponent": "ENTERPRISE",
-      "teamScore": 46,
-      "opponentScore": 21,
-      "result": "W",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 9,
-      "otherScore": "46|20|W"
-    },
-    {
-      "type": "same-date-opponent-conflict",
-      "team": "RICHFIELD",
-      "season": "2005",
-      "index": 2,
-      "date": "9/2/2005",
-      "opponent": "GUNNISON VALLEY",
-      "teamScore": 7,
-      "opponentScore": 27,
-      "result": "L",
-      "playoff": false,
-      "notes": "",
-      "otherIndex": 1,
-      "otherScore": "19|27|L"
-    }
-  ],
+  "sameDateOpponentConflicts": [],
   "sameDayMultipleOpponents": [
     {
       "type": "same-day-multiple-opponents",
@@ -1044,7 +874,169 @@
     }
   ],
   "invalidRows": [],
-  "seasonSummaryMismatches": [],
+  "seasonSummaryMismatches": [
+    {
+      "type": "season-summary-mismatch",
+      "team": "AMERICAN FORK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "wins": {
+          "expected": 5,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 179,
+          "actual": 207
+        },
+        "pointsAgainst": {
+          "expected": 86,
+          "actual": 110
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "GRAND",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 5,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 3,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 96,
+          "actual": 150
+        },
+        "pointsAgainst": {
+          "expected": 159,
+          "actual": 165
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "LONE PEAK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "losses": {
+          "expected": 3,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 147,
+          "actual": 171
+        },
+        "pointsAgainst": {
+          "expected": 137,
+          "actual": 165
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "PAYSON",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "losses": {
+          "expected": 3,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 116,
+          "actual": 137
+        },
+        "pointsAgainst": {
+          "expected": 168,
+          "actual": 217
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "SPANISH FORK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "wins": {
+          "expected": 4,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 186,
+          "actual": 235
+        },
+        "pointsAgainst": {
+          "expected": 199,
+          "actual": 220
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "TAYLORSVILLE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "losses": {
+          "expected": 6,
+          "actual": 7
+        },
+        "pointsFor": {
+          "expected": 42,
+          "actual": 49
+        },
+        "pointsAgainst": {
+          "expected": 279,
+          "actual": 350
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "WEST",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 6,
+          "actual": 7
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 7
+        },
+        "pointsFor": {
+          "expected": 266,
+          "actual": 337
+        },
+        "pointsAgainst": {
+          "expected": 52,
+          "actual": 59
+        }
+      }
+    }
+  ],
   "reciprocalMismatches": [
     {
       "type": "reciprocal-mismatch",
@@ -1068,26 +1060,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "BONNEVILLE",
-      "teamB": "CLEARFIELD",
-      "date": "10/3/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "BONNEVILLE",
-          "opponent": "CLEARFIELD",
-          "date": "10/3/2025",
-          "teamScore": 19,
-          "opponentScore": 35,
-          "result": "L",
-          "season": "2025",
-          "index": 7
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "BOUNTIFUL",
       "teamB": "MAPLE MOUNTAIN",
       "date": "11/8/2024",
@@ -1102,26 +1074,6 @@
           "result": "W",
           "season": "2024",
           "index": 11
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "BOX ELDER",
-      "teamB": "CLEARFIELD",
-      "date": "10/10/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "BOX ELDER",
-          "opponent": "CLEARFIELD",
-          "date": "10/10/2025",
-          "teamScore": 24,
-          "opponentScore": 7,
-          "result": "W",
-          "season": "2025",
-          "index": 8
         }
       ],
       "sideB": []
@@ -1168,46 +1120,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "BONNEVILLE",
-      "teamB": "CLEARFIELD",
-      "date": "10/4/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "CLEARFIELD",
-          "opponent": "BONNEVILLE",
-          "date": "10/4/2025",
-          "teamScore": 35,
-          "opponentScore": 19,
-          "result": "W",
-          "season": "2025",
-          "index": 7
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "BOX ELDER",
-      "teamB": "CLEARFIELD",
-      "date": "10/9/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "CLEARFIELD",
-          "opponent": "BOX ELDER",
-          "date": "10/9/2025",
-          "teamScore": 7,
-          "opponentScore": 24,
-          "result": "L",
-          "season": "2025",
-          "index": 8
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "COPPER HILLS",
       "teamB": "WESTLAKE",
       "date": "10/25/2024",
@@ -1222,6 +1134,26 @@
           "result": "L",
           "season": "2024",
           "index": 10
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "GRAND",
+      "teamB": "MONUMENT VALLEY",
+      "date": "9/24/2026",
+      "season": "2026",
+      "sideA": [
+        {
+          "team": "GRAND",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/24/2026",
+          "teamScore": 54,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2026",
+          "index": 5
         }
       ],
       "sideB": []
@@ -1761,13 +1693,13 @@
       "team": "ALTAMONT",
       "file": "altamont.json",
       "seasons": 53,
-      "totalGames": 500
+      "totalGames": 499
     },
     {
       "team": "AMERICAN FORK",
       "file": "american-fork.json",
       "seasons": 101,
-      "totalGames": 928
+      "totalGames": 929
     },
     {
       "team": "BEAR RIVER",
@@ -1935,7 +1867,7 @@
       "team": "ENTERPRISE",
       "file": "enterprise.json",
       "seasons": 30,
-      "totalGames": 323
+      "totalGames": 322
     },
     {
       "team": "FARMINGTON",
@@ -1953,7 +1885,7 @@
       "team": "GRAND",
       "file": "grand.json",
       "seasons": 106,
-      "totalGames": 915
+      "totalGames": 916
     },
     {
       "team": "GRANGER",
@@ -1977,7 +1909,7 @@
       "team": "GUNNISON VALLEY",
       "file": "gunnison-valley.json",
       "seasons": 37,
-      "totalGames": 363
+      "totalGames": 356
     },
     {
       "team": "HERRIMAN",
@@ -2019,7 +1951,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 72,
-      "totalGames": 727
+      "totalGames": 725
     },
     {
       "team": "JUAN DIEGO",
@@ -2037,7 +1969,7 @@
       "team": "KANAB",
       "file": "kanab.json",
       "seasons": 77,
-      "totalGames": 777
+      "totalGames": 776
     },
     {
       "team": "KEARNS",
@@ -2049,7 +1981,7 @@
       "team": "LAYTON CHRISTIAN",
       "file": "layton-christian.json",
       "seasons": 23,
-      "totalGames": 236
+      "totalGames": 235
     },
     {
       "team": "LAYTON",
@@ -2073,13 +2005,13 @@
       "team": "LONE PEAK",
       "file": "lone-peak.json",
       "seasons": 30,
-      "totalGames": 362
+      "totalGames": 363
     },
     {
       "team": "MANTI",
       "file": "manti.json",
       "seasons": 59,
-      "totalGames": 592
+      "totalGames": 591
     },
     {
       "team": "MAPLE MOUNTAIN",
@@ -2103,13 +2035,13 @@
       "team": "MONTICELLO",
       "file": "monticello.json",
       "seasons": 74,
-      "totalGames": 730
+      "totalGames": 728
     },
     {
       "team": "MONUMENT VALLEY",
       "file": "monument-valley.json",
       "seasons": 37,
-      "totalGames": 297
+      "totalGames": 295
     },
     {
       "team": "MORGAN",
@@ -2151,7 +2083,7 @@
       "team": "NORTH SEVIER",
       "file": "north-sevier.json",
       "seasons": 68,
-      "totalGames": 588
+      "totalGames": 587
     },
     {
       "team": "NORTH SUMMIT",
@@ -2205,7 +2137,7 @@
       "team": "PAYSON",
       "file": "payson.json",
       "seasons": 116,
-      "totalGames": 977
+      "totalGames": 978
     },
     {
       "team": "PINE VIEW",
@@ -2235,13 +2167,13 @@
       "team": "RICH",
       "file": "rich.json",
       "seasons": 42,
-      "totalGames": 451
+      "totalGames": 449
     },
     {
       "team": "RICHFIELD",
       "file": "richfield.json",
       "seasons": 97,
-      "totalGames": 854
+      "totalGames": 853
     },
     {
       "team": "RIDGELINE",
@@ -2319,7 +2251,7 @@
       "team": "SPANISH FORK",
       "file": "spanish-fork.json",
       "seasons": 107,
-      "totalGames": 935
+      "totalGames": 936
     },
     {
       "team": "SPRINGVILLE",
@@ -2349,7 +2281,7 @@
       "team": "TAYLORSVILLE",
       "file": "taylorsville.json",
       "seasons": 46,
-      "totalGames": 452
+      "totalGames": 453
     },
     {
       "team": "TIMPANOGOS",
@@ -2433,7 +2365,7 @@
       "team": "WEST",
       "file": "west.json",
       "seasons": 133,
-      "totalGames": 1111
+      "totalGames": 1112
     },
     {
       "team": "WESTLAKE",
