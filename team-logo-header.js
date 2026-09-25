@@ -12,7 +12,7 @@ function addStyles(){
 async function assets(){
   if(window.RUSSchoolAssets)return window.RUSSchoolAssets;
   let script=[...document.scripts].find(s=>/school-assets-core\.js(?:\?|$)/.test(s.getAttribute('src')||''));
-  if(!script){script=document.createElement('script');script.src='school-assets-core.js?v=20260819-teamfix2';script.async=true;document.head.appendChild(script)}
+  if(!script){script=document.createElement('script');script.src='school-assets-core.js?v=20260925-shared-logo-discs1';script.async=true;document.head.appendChild(script)}
   await new Promise(resolve=>{
     let done=false,timer=0,timeout=0;
     const finish=()=>{if(done)return;done=true;clearInterval(timer);clearTimeout(timeout);window.removeEventListener('rus:school-assets-ready',ready);resolve()};
