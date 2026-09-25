@@ -117,10 +117,10 @@ for (const g of weeklyGames) {
 const st={};
 for(const t of teams){
   const name=t.team;
-  st[name]={team:name,classification:clean(t.classification),region:clean(t.region),backgroundColor:clean(t.backgroundColor),textColor:clean(t.textColor),wins:0,losses:0,ties:0,regionWins:0,regionLosses:0,regionTies:0,pointsFor:0,pointsAgainst:0,results:[]};
+  st[name]={team:name,classification:clean(t.classification),region:clean(t.region),backgroundColor:clean(t.backgroundColor),textColor:clean(t.textColor),wins:0,losses:0,ties:0,regionWins:0,regionLosses:0,regionTies:0,nonRegionWins:0,nonRegionLosses:0,nonRegionTies:0,nonRegionPointsFor:0,nonRegionPointsAgainst:0,pointsFor:0,pointsAgainst:0,results:[]};
 }
 
-function apply(name,pf,pa,date,isRegion){const x=st[name];if(!x)return;x.pointsFor+=pf;x.pointsAgainst+=pa;let result='T';if(pf>pa){x.wins++;result='W';if(isRegion)x.regionWins++}else if(pf<pa){x.losses++;result='L';if(isRegion)x.regionLosses++}else{x.ties++;if(isRegion)x.regionTies++}x.results.push({date,result})}
+function apply(name,pf,pa,date,isRegion){const x=st[name];if(!x)return;x.pointsFor+=pf;x.pointsAgainst+=pa;if(!isRegion){x.nonRegionPointsFor+=pf;x.nonRegionPointsAgainst+=pa}let result='T';if(pf>pa){x.wins++;result='W';if(isRegion)x.regionWins++;else x.nonRegionWins++}else if(pf<pa){x.losses++;result='L';if(isRegion)x.regionLosses++;else x.nonRegionLosses++}else{x.ties++;if(isRegion)x.regionTies++;else x.nonRegionTies++}x.results.push({date,result})}
 let completed=0,sheetFinals=0,weeklyFinals=0,deseretFinals=0;
 const candidates=[];
 for(const r of rows){
