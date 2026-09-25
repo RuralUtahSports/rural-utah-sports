@@ -35,7 +35,7 @@ if(window.RUSSchoolAssets){
 }
 
 let core=[...document.scripts].find(s=>(s.getAttribute('src')||'').split('?')[0].endsWith('school-assets-core.js'));
-if(!core)core=add('school-assets-core.js?v=20260821-emery-exact4','rusSchoolAssetsCore');
+if(!core)core=add('school-assets-core.js?v=20260925-shared-logo-discs1','rusSchoolAssetsCore');
 core?.addEventListener('load',loadExtras,{once:true});
 window.addEventListener('rus:school-assets-ready',loadExtras,{once:true});
 })();
