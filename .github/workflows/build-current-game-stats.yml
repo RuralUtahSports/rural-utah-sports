@@ -12,7 +12,9 @@ on:
       - 'scripts/build_player_game_stats.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
+      - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/build_weekly_awards.mjs'
+      - 'scripts/build_team_current_shards.mjs'
       - 'award-scoring-core.js'
       - '.github/workflows/build-current-game-stats.yml'
 
@@ -37,31 +39,50 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Build current player game stats
+      - name: Build current game stats and season totals
         run: |
           node scripts/build_player_game_stats.mjs
           node scripts/merge_maxpreps_game_logs.mjs
+          node scripts/reconcile_season_stats_from_game_logs.mjs
+          node scripts/build_deseret_stat_metrics.mjs
           node scripts/build_weekly_awards.mjs
-      - name: Verify current game stats
+          node scripts/build_team_current_shards.mjs
+      - name: Verify current game stats and season totals
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          const data=JSON.parse(fs.readFileSync('player-game-stats-2026.json','utf8'));
-          if(!data.summary||data.summary.teamGames<400) throw new Error('Current game stat output is incomplete');
-          const age=Date.now()-Date.parse(data.updatedAt);
-          if(!Number.isFinite(age)||age>15*60*1000) throw new Error('Current game stat output was not rebuilt');
-          console.log(data.summary);
+
+          const games=JSON.parse(fs.readFileSync('player-game-stats-2026.json','utf8'));
+          if(!games.summary||games.summary.teamGames<400) throw new Error('Current game stat output is incomplete');
+          const gameAge=Date.now()-Date.parse(games.updatedAt);
+          if(!Number.isFinite(gameAge)||gameAge>15*60*1000) throw new Error('Current game stat output was not rebuilt');
+
+          const season=JSON.parse(fs.readFileSync('deseret-rosters-stats-2026.json','utf8'));
+          const seasonAge=Date.now()-Date.parse(season.updatedAt);
+          if(!Number.isFinite(seasonAge)||seasonAge>15*60*1000) throw new Error('Season stat totals were not reconciled');
+          const reconciliation=season.summary?.gameLogSeasonReconciliation;
+          if(!reconciliation||!Number.isFinite(reconciliation.teams)) throw new Error('Season reconciliation summary is missing');
+
+          const metrics=JSON.parse(fs.readFileSync('deseret-stat-metrics-2026.json','utf8'));
+          if(Object.keys(metrics.teams||{}).length!==Object.keys(season.teams||{}).length) throw new Error('Compact stat metrics do not match season team coverage');
+
           const weeklyAwards=JSON.parse(fs.readFileSync('weekly-awards-2026.json','utf8'));
           if(!weeklyAwards.weeks?.length) throw new Error('Weekly awards output is empty');
-          console.log(`Verified ${weeklyAwards.weeks.length} weekly award slate(s)`);
+
+          const shards=fs.readdirSync('team-current-data').filter(name=>name.endsWith('.json'));
+          if(shards.length<100) throw new Error('Per-team current-data output is incomplete');
+
+          console.log(games.summary);
+          console.log(`Season reconciliation: ${reconciliation.teams-reconciliation.skippedTeams} complete teams rebuilt, ${reconciliation.skippedTeams} incomplete teams preserved.`);
+          console.log(`Verified ${weeklyAwards.weeks.length} weekly award slate(s) and ${shards.length} per-team shards.`);
           NODE
-      - name: Publish current game stats
+      - name: Publish current game stats and season totals
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add player-game-stats-2026.json weekly-awards-2026.json
-          if git diff --cached --quiet; then echo "Current game stats already published."; exit 0; fi
-          git commit -m "Auto-sync current player game stats"
+          git add player-game-stats-2026.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json weekly-awards-2026.json team-current-data
+          if git diff --cached --quiet; then echo "Current game stats and season totals already published."; exit 0; fi
+          git commit -m "Auto-sync current game stats and season totals"
           for attempt in 1 2 3 4; do
             if git pull --rebase origin main && git push origin HEAD:main; then
               exit 0
