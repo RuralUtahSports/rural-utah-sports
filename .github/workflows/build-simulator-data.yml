@@ -11,6 +11,7 @@ on:
       - 'elo-summary.json'
       - 'scripts/normalize-weekly-team-names.mjs'
       - 'scripts/fill-weekly-projections.mjs'
+      - 'scripts/build_spread_upsets_history.mjs'
       - 'simulators.html'
       - '.github/workflows/build-simulator-data.yml'
 
@@ -177,6 +178,9 @@ jobs:
       - name: Fill missing projections after Sunday morning release
         run: node scripts/fill-weekly-projections.mjs /tmp/rus-previous-weekly.json
 
+      - name: Build point-spread upset history
+        run: node scripts/build_spread_upsets_history.mjs
+
       - name: Validate simulator data before publish
         run: node scripts/audit-football-data.mjs
 
@@ -184,11 +188,11 @@ jobs:
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          if [ -z "$(git status --porcelain -- simulator-data.json weekly-simulation.json)" ]; then
+          if [ -z "$(git status --porcelain -- simulator-data.json weekly-simulation.json spread-upsets-history.json)" ]; then
             echo "Simulator data is already current."
             exit 0
           fi
-          git add simulator-data.json weekly-simulation.json
+          git add simulator-data.json weekly-simulation.json spread-upsets-history.json
           git commit -m "Auto-sync simulator data"
           ok=0
           for attempt in 1 2 3 4; do
