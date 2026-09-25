@@ -50,10 +50,15 @@ jobs:
           if (!Array.isArray(data?.records?.game) || data.records.game.length < 100) {
             throw new Error('Historical full-game scoring records are incomplete');
           }
-          const duchesne50 = (data?.current?.quarter || []).some(row =>
+          const quarterRows = data?.current?.quarter || [];
+          const duchesne50 = quarterRows.some(row =>
             row.team === 'DUCHESNE' && row.date === '2026-08-28' && row.segment === 'Q1' && Number(row.teamPoints) === 50
           );
           if (!duchesne50) throw new Error('Verified Duchesne 50-point Q1 is missing');
+          const west57 = quarterRows.some(row =>
+            row.team === 'WEST' && row.date === '2026-09-24' && row.segment === 'Q1' && Number(row.teamPoints) === 57
+          );
+          if (!west57) throw new Error('Verified West 57-point Q1 is missing');
           console.log(data.summary);
           console.log(data.coverage);
           NODE
