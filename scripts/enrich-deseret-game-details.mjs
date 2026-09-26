@@ -547,16 +547,17 @@ async function runBrowserOnly(weekly, details, linkIndex) {
     );
     if (!priorActive && !weeklyFinal && dayDelta !== 0) continue;
 
-    // Full pages are expensive to render. Revisit partial/final pages often
-    // enough for late-arriving stats, but avoid fetching the same page every
-    // minute when it is already complete.
+    // Quarter-by-quarter is now a required retained field. Revisit any game
+    // that does not yet have a complete Q1-Q4 box score, even when its final
+    // and player stats are otherwise complete.
+    const needsQuarterBackfill = !hasCompleteBoxScore(prior);
     const browserAge = hoursSince(prior?.browserFetchedAt);
     const priorStats = prior?.statsAvailability || statsAvailability(prior?.stats || []);
     const priorLive = /^(?:live|q[1-4]|halftime|half|ot)$/i.test(clean(prior?.status));
     // Never rate-limit an in-progress game just because all four quarter cells exist.
     // Deseret can pre-render numeric quarter cells, so treating that as complete can
     // freeze a live game for 2-12 hours and miss the final score/status.
-    if (!priorLive && prior?.browserFetchedAt && browserAge < (priorStats.status === 'full' ? 12 : 2) && hasCompleteBoxScore(prior)) continue;
+    if (!needsQuarterBackfill && !priorLive && prior?.browserFetchedAt && browserAge < (priorStats.status === 'full' ? 12 : 2)) continue;
     candidates.push({ game: { ...game, deseretUrl: directUrl }, key, prior, browserAge });
   }
 
@@ -566,7 +567,9 @@ async function runBrowserOnly(weekly, details, linkIndex) {
     return aLive - bLive || b.browserAge - a.browserAge || String(a.key).localeCompare(String(b.key));
   });
 
-  const limit = 24;
+  // Process the whole active window so every available final can receive its
+  // quarter-by-quarter box score in the same run instead of deferring games.
+  const limit = candidates.length;
   let fetched = 0, failures = 0;
   for (const candidate of candidates.slice(0, limit)) {
     try {
