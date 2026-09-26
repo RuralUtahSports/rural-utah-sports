@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-26T05:36:20.951Z",
+  "updatedAt": "2026-09-26T05:38:28.562Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,16 +8,16 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68439,
+    "scheduleRowsAudited": 68323,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
-    "sameDayMultipleOpponents": 33,
-    "suspiciousRepeatGames": 9,
+    "sameDayMultipleOpponents": 35,
+    "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 326,
-    "reciprocalMismatches": 986,
+    "seasonSummaryMismatches": 331,
+    "reciprocalMismatches": 989,
     "likelyOpponentTypos": 3,
-    "recent2025PlusIssues": 321
+    "recent2025PlusIssues": 333
   },
   "recent2025PlusIssues": [
     {
@@ -26,20 +26,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 108,
-          "actual": 142
+          "expected": 142,
+          "actual": 108
         },
         "pointsAgainst": {
-          "expected": 135,
-          "actual": 163
+          "expected": 163,
+          "actual": 135
         }
       }
     },
@@ -49,20 +49,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 136,
-          "actual": 163
+          "expected": 163,
+          "actual": 136
         },
         "pointsAgainst": {
-          "expected": 112,
-          "actual": 133
+          "expected": 133,
+          "actual": 112
         }
       }
     },
@@ -72,20 +72,43 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 148,
-          "actual": 167
+          "expected": 167,
+          "actual": 148
         },
         "pointsAgainst": {
-          "expected": 318,
-          "actual": 357
+          "expected": 357,
+          "actual": 318
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "AMERICAN FORK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 207,
+          "actual": 190
+        },
+        "pointsAgainst": {
+          "expected": 110,
+          "actual": 107
         }
       }
     },
@@ -95,20 +118,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 208,
-          "actual": 236
+          "expected": 236,
+          "actual": 208
         },
         "pointsAgainst": {
-          "expected": 215,
-          "actual": 236
+          "expected": 236,
+          "actual": 215
         }
       }
     },
@@ -118,20 +141,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 147,
-          "actual": 177
+          "expected": 177,
+          "actual": 147
         },
         "pointsAgainst": {
-          "expected": 177,
-          "actual": 183
+          "expected": 183,
+          "actual": 177
         }
       }
     },
@@ -141,16 +164,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsAgainst": {
-          "expected": 153,
-          "actual": 209
+          "expected": 209,
+          "actual": 153
         }
       }
     },
@@ -160,20 +183,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 102,
-          "actual": 151
+          "expected": 151,
+          "actual": 102
         },
         "pointsAgainst": {
-          "expected": 109,
-          "actual": 116
+          "expected": 116,
+          "actual": 109
         }
       }
     },
@@ -183,20 +206,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 63,
-          "actual": 70
+          "expected": 70,
+          "actual": 63
         },
         "pointsAgainst": {
-          "expected": 166,
-          "actual": 209
+          "expected": 209,
+          "actual": 166
         }
       }
     },
@@ -233,20 +256,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 127,
-          "actual": 155
+          "expected": 155,
+          "actual": 127
         },
         "pointsAgainst": {
-          "expected": 112,
-          "actual": 131
+          "expected": 131,
+          "actual": 112
         }
       }
     },
@@ -279,20 +302,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 224,
-          "actual": 267
+          "expected": 267,
+          "actual": 224
         },
         "pointsAgainst": {
-          "expected": 106,
-          "actual": 113
+          "expected": 113,
+          "actual": 106
         }
       }
     },
@@ -325,20 +348,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 129,
-          "actual": 156
+          "expected": 156,
+          "actual": 129
         },
         "pointsAgainst": {
-          "expected": 201,
-          "actual": 243
+          "expected": 243,
+          "actual": 201
         }
       }
     },
@@ -348,20 +371,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 239,
-          "actual": 253
+          "expected": 253,
+          "actual": 239
         },
         "pointsAgainst": {
-          "expected": 74,
-          "actual": 102
+          "expected": 102,
+          "actual": 74
         }
       }
     },
@@ -371,20 +394,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 91,
-          "actual": 105
+          "expected": 105,
+          "actual": 95
         },
         "pointsAgainst": {
-          "expected": 262,
-          "actual": 304
+          "expected": 304,
+          "actual": 262
         }
       }
     },
@@ -394,20 +417,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 189,
-          "actual": 196
+          "expected": 196,
+          "actual": 189
         },
         "pointsAgainst": {
-          "expected": 146,
-          "actual": 184
+          "expected": 184,
+          "actual": 146
         }
       }
     },
@@ -417,20 +440,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 54,
-          "actual": 61
+          "expected": 61,
+          "actual": 54
         },
         "pointsAgainst": {
-          "expected": 230,
-          "actual": 279
+          "expected": 279,
+          "actual": 230
         }
       }
     },
@@ -440,20 +463,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 103,
-          "actual": 123
+          "expected": 123,
+          "actual": 103
         },
         "pointsAgainst": {
-          "expected": 194,
-          "actual": 221
+          "expected": 221,
+          "actual": 194
         }
       }
     },
@@ -463,32 +486,22 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 219,
-          "actual": 228
+          "expected": 228,
+          "actual": 219
         },
         "pointsAgainst": {
-          "expected": 82,
-          "actual": 97
+          "expected": 97,
+          "actual": 82
         }
       }
-    },
-    {
-      "type": "same-day-multiple-opponents",
-      "team": "CORNER CANYON",
-      "season": "2026",
-      "date": "9/11/2026",
-      "opponents": [
-        "EASTWOOD TEXAS",
-        "EASTWOOD, TX"
-      ]
     },
     {
       "type": "season-summary-mismatch",
@@ -496,20 +509,24 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 7,
-          "actual": 8
+          "expected": 8,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 305,
-          "actual": 332
+          "expected": 332,
+          "actual": 253
         },
         "pointsAgainst": {
-          "expected": 87,
-          "actual": 124
+          "expected": 124,
+          "actual": 80
         }
       }
     },
@@ -519,16 +536,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsAgainst": {
-          "expected": 335,
-          "actual": 391
+          "expected": 391,
+          "actual": 335
         }
       }
     },
@@ -538,20 +555,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 178,
-          "actual": 216
+          "expected": 216,
+          "actual": 178
         },
         "pointsAgainst": {
-          "expected": 77,
-          "actual": 93
+          "expected": 93,
+          "actual": 77
         }
       }
     },
@@ -561,20 +578,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 114,
-          "actual": 131
+          "expected": 131,
+          "actual": 114
         },
         "pointsAgainst": {
-          "expected": 148,
-          "actual": 184
+          "expected": 184,
+          "actual": 148
         }
       }
     },
@@ -607,20 +624,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 172,
-          "actual": 221
+          "expected": 221,
+          "actual": 172
         },
         "pointsAgainst": {
-          "expected": 170,
-          "actual": 205
+          "expected": 205,
+          "actual": 181
         }
       }
     },
@@ -630,16 +647,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 2
         },
         "losses": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 2
+        },
+        "pointsFor": {
+          "expected": 50,
+          "actual": 19
         },
         "pointsAgainst": {
-          "expected": 240,
-          "actual": 277
+          "expected": 277,
+          "actual": 89
         }
       }
     },
@@ -672,20 +693,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 160,
-          "actual": 218
+          "expected": 218,
+          "actual": 160
         },
         "pointsAgainst": {
-          "expected": 114,
-          "actual": 134
+          "expected": 134,
+          "actual": 114
         }
       }
     },
@@ -695,20 +716,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsFor": {
-          "expected": 48,
-          "actual": 55
+          "expected": 55,
+          "actual": 48
         },
         "pointsAgainst": {
-          "expected": 250,
-          "actual": 293
+          "expected": 293,
+          "actual": 250
         }
       }
     },
@@ -718,20 +739,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 102,
-          "actual": 149
+          "expected": 149,
+          "actual": 102
         },
         "pointsAgainst": {
-          "expected": 123,
-          "actual": 148
+          "expected": 148,
+          "actual": 123
         }
       }
     },
@@ -741,43 +762,53 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 135,
-          "actual": 160
+          "expected": 160,
+          "actual": 135
         },
         "pointsAgainst": {
-          "expected": 283,
-          "actual": 330
+          "expected": 330,
+          "actual": 283
         }
       }
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "DUCHESNE",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "COTTONWOOD",
+        "IGNACIO, CO"
+      ]
     },
     {
       "type": "season-summary-mismatch",
       "team": "DUCHESNE",
       "season": "2026",
       "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
         "wins": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
+        },
+        "losses": {
+          "expected": 1,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 254,
-          "actual": 317
+          "expected": 317,
+          "actual": 273
         },
         "pointsAgainst": {
-          "expected": 46,
-          "actual": 60
+          "expected": 60,
+          "actual": 75
         }
       }
     },
@@ -810,20 +841,31 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "wins": {
-          "expected": 0,
-          "actual": 1
+          "expected": 1,
+          "actual": 0
         },
         "pointsFor": {
-          "expected": 21,
-          "actual": 75
+          "expected": 75,
+          "actual": 21
         },
         "pointsAgainst": {
-          "expected": 229,
-          "actual": 235
+          "expected": 235,
+          "actual": 229
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "EMERY",
+      "season": "2026",
+      "mismatches": {
+        "pointsAgainst": {
+          "expected": 220,
+          "actual": 224
         }
       }
     },
@@ -833,20 +875,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 124,
-          "actual": 135
+          "expected": 135,
+          "actual": 124
         },
         "pointsAgainst": {
-          "expected": 144,
-          "actual": 158
+          "expected": 158,
+          "actual": 144
         }
       }
     },
@@ -879,20 +921,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 191,
-          "actual": 205
+          "expected": 205,
+          "actual": 191
         },
         "pointsAgainst": {
-          "expected": 137,
-          "actual": 148
+          "expected": 148,
+          "actual": 137
         }
       }
     },
@@ -902,16 +944,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 4,
+          "expected": 7,
           "actual": 5
         },
+        "wins": {
+          "expected": 5,
+          "actual": 3
+        },
         "pointsFor": {
-          "expected": 150,
-          "actual": 195
+          "expected": 195,
+          "actual": 96
+        },
+        "pointsAgainst": {
+          "expected": 165,
+          "actual": 159
         }
       }
     },
@@ -921,20 +967,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 96,
-          "actual": 132
+          "expected": 132,
+          "actual": 96
         },
         "pointsAgainst": {
-          "expected": 197,
-          "actual": 214
+          "expected": 214,
+          "actual": 200
         }
       }
     },
@@ -944,20 +990,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 196,
-          "actual": 217
+          "expected": 217,
+          "actual": 196
         },
         "pointsAgainst": {
-          "expected": 146,
-          "actual": 170
+          "expected": 170,
+          "actual": 146
         }
       }
     },
@@ -982,20 +1028,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 93,
-          "actual": 114
+          "expected": 114,
+          "actual": 93
         },
         "pointsAgainst": {
-          "expected": 120,
-          "actual": 148
+          "expected": 148,
+          "actual": 120
         }
       }
     },
@@ -1005,20 +1051,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 128,
-          "actual": 142
+          "expected": 142,
+          "actual": 128
         },
         "pointsAgainst": {
-          "expected": 120,
-          "actual": 183
+          "expected": 183,
+          "actual": 120
         }
       }
     },
@@ -1028,20 +1074,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 0,
-          "actual": 1
+          "expected": 1,
+          "actual": 0
         },
         "pointsFor": {
-          "expected": 259,
-          "actual": 279
+          "expected": 279,
+          "actual": 259
         },
         "pointsAgainst": {
-          "expected": 67,
-          "actual": 89
+          "expected": 89,
+          "actual": 67
         }
       }
     },
@@ -1051,20 +1097,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 4,
+          "expected": 6,
           "actual": 5
         },
+        "wins": {
+          "expected": 5,
+          "actual": 4
+        },
         "pointsFor": {
-          "expected": 192,
-          "actual": 226
+          "expected": 226,
+          "actual": 192
         },
         "pointsAgainst": {
-          "expected": 86,
-          "actual": 115
+          "expected": 115,
+          "actual": 86
         }
       }
     },
@@ -1074,20 +1120,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 188,
-          "actual": 236
+          "expected": 236,
+          "actual": 191
         },
         "pointsAgainst": {
-          "expected": 132,
-          "actual": 140
+          "expected": 140,
+          "actual": 132
         }
       }
     },
@@ -1097,16 +1143,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 90,
-          "actual": 135
+          "expected": 135,
+          "actual": 90
         }
       }
     },
@@ -1116,20 +1162,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsFor": {
-          "expected": 248,
-          "actual": 286
+          "expected": 286,
+          "actual": 248
         },
         "pointsAgainst": {
-          "expected": 83,
-          "actual": 104
+          "expected": 104,
+          "actual": 83
         }
       }
     },
@@ -1139,20 +1185,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 76,
-          "actual": 100
+          "expected": 100,
+          "actual": 76
         },
         "pointsAgainst": {
-          "expected": 192,
-          "actual": 208
+          "expected": 208,
+          "actual": 192
         }
       }
     },
@@ -1169,46 +1215,23 @@
     {
       "type": "season-summary-mismatch",
       "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 211,
-          "actual": 239
+          "expected": 239,
+          "actual": 211
         },
         "pointsAgainst": {
-          "expected": 140,
-          "actual": 154
+          "expected": 154,
+          "actual": 140
         }
       }
     },
@@ -1228,20 +1251,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 106,
-          "actual": 112
+          "expected": 112,
+          "actual": 106
         },
         "pointsAgainst": {
-          "expected": 246,
-          "actual": 300
+          "expected": 300,
+          "actual": 246
         }
       }
     },
@@ -1251,20 +1274,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 4,
-          "actual": 5
-        },
-        "losses": {
-          "expected": 3,
+          "expected": 5,
           "actual": 4
         },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
         "pointsFor": {
-          "expected": 61,
-          "actual": 77
+          "expected": 77,
+          "actual": 61
         },
         "pointsAgainst": {
-          "expected": 123,
-          "actual": 147
+          "expected": 147,
+          "actual": 123
         }
       }
     },
@@ -1293,16 +1316,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 191,
-          "actual": 240
+          "expected": 240,
+          "actual": 191
+        },
+        "pointsAgainst": {
+          "expected": 104,
+          "actual": 106
         }
       }
     },
@@ -1312,16 +1339,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "pointsAgainst": {
-          "expected": 209,
-          "actual": 254
+          "expected": 254,
+          "actual": 209
         }
       }
     },
@@ -1342,20 +1369,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 0,
-          "actual": 1
+          "expected": 1,
+          "actual": 0
         },
         "pointsFor": {
-          "expected": 224,
-          "actual": 239
+          "expected": 239,
+          "actual": 224
         },
         "pointsAgainst": {
-          "expected": 28,
-          "actual": 51
+          "expected": 51,
+          "actual": 28
         }
       }
     },
@@ -1365,20 +1392,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 127,
-          "actual": 150
+          "expected": 150,
+          "actual": 127
         },
         "pointsAgainst": {
-          "expected": 148,
-          "actual": 178
+          "expected": 178,
+          "actual": 148
         }
       }
     },
@@ -1388,20 +1415,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 110,
-          "actual": 132
+          "expected": 132,
+          "actual": 110
         },
         "pointsAgainst": {
-          "expected": 175,
-          "actual": 195
+          "expected": 195,
+          "actual": 175
         }
       }
     },
@@ -1411,20 +1438,43 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 210,
-          "actual": 265
+          "expected": 265,
+          "actual": 217
         },
         "pointsAgainst": {
-          "expected": 139,
-          "actual": 163
+          "expected": 163,
+          "actual": 152
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "LONE PEAK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 171,
+          "actual": 150
+        },
+        "pointsAgainst": {
+          "expected": 165,
+          "actual": 158
         }
       }
     },
@@ -1444,20 +1494,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 192,
-          "actual": 230
+          "expected": 230,
+          "actual": 192
         },
         "pointsAgainst": {
-          "expected": 243,
-          "actual": 304
+          "expected": 304,
+          "actual": 243
         }
       }
     },
@@ -1467,20 +1517,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 125,
-          "actual": 131
+          "expected": 131,
+          "actual": 125
         },
         "pointsAgainst": {
-          "expected": 180,
-          "actual": 212
+          "expected": 212,
+          "actual": 180
         }
       }
     },
@@ -1490,43 +1540,60 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 134,
-          "actual": 187
+          "expected": 187,
+          "actual": 134
         },
         "pointsAgainst": {
-          "expected": 205,
-          "actual": 223
+          "expected": 223,
+          "actual": 205
         }
       }
+    },
+    {
+      "type": "suspicious-repeat",
+      "team": "MILLARD",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "PAROWAN",
+      "teamScore": 14,
+      "opponentScore": 10,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "MILLARD",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "DELTA",
+        "PAROWAN"
+      ]
     },
     {
       "type": "season-summary-mismatch",
       "team": "MILLARD",
       "season": "2026",
       "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 4
-        },
         "pointsFor": {
-          "expected": 113,
-          "actual": 164
+          "expected": 164,
+          "actual": 99
         },
         "pointsAgainst": {
-          "expected": 144,
-          "actual": 157
+          "expected": 157,
+          "actual": 143
         }
       }
     },
@@ -1536,20 +1603,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 4,
+          "expected": 6,
           "actual": 5
         },
+        "wins": {
+          "expected": 5,
+          "actual": 4
+        },
         "pointsFor": {
-          "expected": 227,
-          "actual": 266
+          "expected": 266,
+          "actual": 233
         },
         "pointsAgainst": {
-          "expected": 132,
-          "actual": 151
+          "expected": 151,
+          "actual": 140
         }
       }
     },
@@ -1559,16 +1626,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 249,
-          "actual": 305
+          "expected": 305,
+          "actual": 249
         }
       }
     },
@@ -1578,20 +1645,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 178,
-          "actual": 221
+          "expected": 221,
+          "actual": 178
         },
         "pointsAgainst": {
-          "expected": 137,
-          "actual": 144
+          "expected": 144,
+          "actual": 137
         }
       }
     },
@@ -1601,20 +1668,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsFor": {
-          "expected": 281,
-          "actual": 337
+          "expected": 337,
+          "actual": 292
         },
         "pointsAgainst": {
-          "expected": 81,
-          "actual": 88
+          "expected": 88,
+          "actual": 81
         }
       }
     },
@@ -1624,20 +1691,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 166,
-          "actual": 197
+          "expected": 197,
+          "actual": 166
         },
         "pointsAgainst": {
-          "expected": 132,
-          "actual": 172
+          "expected": 172,
+          "actual": 132
         }
       }
     },
@@ -1647,20 +1714,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
-        "losses": {
-          "expected": 1,
-          "actual": 2
+        "wins": {
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 251,
-          "actual": 280
+          "expected": 280,
+          "actual": 203
         },
         "pointsAgainst": {
-          "expected": 126,
-          "actual": 160
+          "expected": 160,
+          "actual": 174
         }
       }
     },
@@ -1670,20 +1737,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 152,
-          "actual": 194
+          "expected": 194,
+          "actual": 152
         },
         "pointsAgainst": {
-          "expected": 132,
-          "actual": 146
+          "expected": 146,
+          "actual": 132
         }
       }
     },
@@ -1704,20 +1771,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 124,
-          "actual": 137
+          "expected": 137,
+          "actual": 124
         },
         "pointsAgainst": {
-          "expected": 262,
-          "actual": 313
+          "expected": 313,
+          "actual": 262
         }
       }
     },
@@ -1727,20 +1794,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 172,
-          "actual": 178
+          "expected": 178,
+          "actual": 172
         },
         "pointsAgainst": {
-          "expected": 107,
-          "actual": 137
+          "expected": 137,
+          "actual": 107
         }
       }
     },
@@ -1750,20 +1817,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 83,
-          "actual": 90
+          "expected": 90,
+          "actual": 83
         },
         "pointsAgainst": {
-          "expected": 160,
-          "actual": 203
+          "expected": 203,
+          "actual": 160
         }
       }
     },
@@ -1783,20 +1850,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 128,
-          "actual": 152
+          "expected": 152,
+          "actual": 128
         },
         "pointsAgainst": {
-          "expected": 87,
-          "actual": 108
+          "expected": 108,
+          "actual": 87
         }
       }
     },
@@ -1806,20 +1873,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 131,
-          "actual": 173
+          "expected": 173,
+          "actual": 131
         },
         "pointsAgainst": {
-          "expected": 133,
-          "actual": 160
+          "expected": 160,
+          "actual": 133
         }
       }
     },
@@ -1829,43 +1896,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 146,
-          "actual": 163
+          "expected": 163,
+          "actual": 146
         },
         "pointsAgainst": {
-          "expected": 74,
-          "actual": 88
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
+          "expected": 88,
+          "actual": 74
         }
       }
     },
@@ -1875,20 +1919,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 130,
-          "actual": 152
+          "expected": 152,
+          "actual": 130
         },
         "pointsAgainst": {
-          "expected": 122,
-          "actual": 146
+          "expected": 146,
+          "actual": 122
         }
       }
     },
@@ -1898,39 +1942,83 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 81,
-          "actual": 123
+          "expected": 123,
+          "actual": 81
         },
         "pointsAgainst": {
-          "expected": 142,
-          "actual": 163
+          "expected": 163,
+          "actual": 142
         }
       }
+    },
+    {
+      "type": "suspicious-repeat",
+      "team": "PAROWAN",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "MILLARD",
+      "teamScore": 10,
+      "opponentScore": 14,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "PAROWAN",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "ALA",
+        "MILLARD"
+      ]
     },
     {
       "type": "season-summary-mismatch",
       "team": "PAROWAN",
       "season": "2026",
       "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
-          "actual": 6
+        "pointsFor": {
+          "expected": 105,
+          "actual": 104
         },
         "pointsAgainst": {
-          "expected": 176,
-          "actual": 225
+          "expected": 225,
+          "actual": 160
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "PAYSON",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 137,
+          "actual": 116
+        },
+        "pointsAgainst": {
+          "expected": 217,
+          "actual": 168
         }
       }
     },
@@ -1940,20 +2028,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 258,
-          "actual": 279
+          "expected": 279,
+          "actual": 258
         },
         "pointsAgainst": {
-          "expected": 191,
-          "actual": 229
+          "expected": 229,
+          "actual": 191
         }
       }
     },
@@ -1963,20 +2051,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 127,
-          "actual": 150
+          "expected": 150,
+          "actual": 127
         },
         "pointsAgainst": {
-          "expected": 135,
-          "actual": 150
+          "expected": 150,
+          "actual": 135
         }
       }
     },
@@ -1986,20 +2074,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 80,
-          "actual": 108
+          "expected": 108,
+          "actual": 74
         },
         "pointsAgainst": {
-          "expected": 188,
-          "actual": 222
+          "expected": 222,
+          "actual": 188
         }
       }
     },
@@ -2009,16 +2097,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 125,
-          "actual": 173
+          "expected": 173,
+          "actual": 125
         }
       }
     },
@@ -2028,20 +2116,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 214,
-          "actual": 247
+          "expected": 247,
+          "actual": 214
         },
         "pointsAgainst": {
-          "expected": 107,
-          "actual": 119
+          "expected": 119,
+          "actual": 107
         }
       }
     },
@@ -2051,20 +2139,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 267,
-          "actual": 305
+          "expected": 305,
+          "actual": 267
         },
         "pointsAgainst": {
-          "expected": 65,
-          "actual": 72
+          "expected": 72,
+          "actual": 65
         }
       }
     },
@@ -2074,20 +2162,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsFor": {
-          "expected": 284,
-          "actual": 325
+          "expected": 325,
+          "actual": 284
         },
         "pointsAgainst": {
-          "expected": 82,
-          "actual": 85
+          "expected": 85,
+          "actual": 82
         }
       }
     },
@@ -2097,20 +2185,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 90,
-          "actual": 97
+          "expected": 97,
+          "actual": 90
         },
         "pointsAgainst": {
-          "expected": 156,
-          "actual": 212
+          "expected": 212,
+          "actual": 156
         }
       }
     },
@@ -2120,20 +2208,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 168,
-          "actual": 195
+          "expected": 195,
+          "actual": 168
         },
         "pointsAgainst": {
-          "expected": 146,
-          "actual": 166
+          "expected": 166,
+          "actual": 153
         }
       }
     },
@@ -2154,20 +2242,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 196,
-          "actual": 257
+          "expected": 257,
+          "actual": 196
         },
         "pointsAgainst": {
-          "expected": 204,
-          "actual": 298
+          "expected": 298,
+          "actual": 204
         }
       }
     },
@@ -2177,20 +2265,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 145,
-          "actual": 185
+          "expected": 185,
+          "actual": 145
         },
         "pointsAgainst": {
-          "expected": 106,
-          "actual": 137
+          "expected": 137,
+          "actual": 106
         }
       }
     },
@@ -2200,20 +2288,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 266,
-          "actual": 327
+          "expected": 327,
+          "actual": 266
         },
         "pointsAgainst": {
-          "expected": 128,
-          "actual": 166
+          "expected": 166,
+          "actual": 128
         }
       }
     },
@@ -2223,20 +2311,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 112,
-          "actual": 115
+          "expected": 115,
+          "actual": 112
         },
         "pointsAgainst": {
-          "expected": 150,
-          "actual": 191
+          "expected": 191,
+          "actual": 150
         }
       }
     },
@@ -2246,16 +2334,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 165,
-          "actual": 221
+          "expected": 221,
+          "actual": 165
         }
       }
     },
@@ -2265,20 +2353,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 172,
-          "actual": 209
+          "expected": 209,
+          "actual": 172
         },
         "pointsAgainst": {
-          "expected": 126,
-          "actual": 153
+          "expected": 153,
+          "actual": 126
         }
       }
     },
@@ -2288,20 +2376,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 166,
-          "actual": 182
+          "expected": 182,
+          "actual": 166
         },
         "pointsAgainst": {
-          "expected": 160,
-          "actual": 198
+          "expected": 198,
+          "actual": 160
         }
       }
     },
@@ -2311,20 +2399,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 4,
+          "expected": 6,
           "actual": 5
         },
+        "losses": {
+          "expected": 5,
+          "actual": 4
+        },
         "pointsFor": {
-          "expected": 87,
-          "actual": 107
+          "expected": 107,
+          "actual": 87
         },
         "pointsAgainst": {
-          "expected": 142,
-          "actual": 200
+          "expected": 200,
+          "actual": 142
         }
       }
     },
@@ -2334,20 +2422,43 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 173,
+          "actual": 147
+        },
+        "pointsAgainst": {
+          "expected": 159,
+          "actual": 128
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "SPANISH FORK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 5,
           "actual": 4
         },
         "pointsFor": {
-          "expected": 147,
-          "actual": 173
+          "expected": 235,
+          "actual": 186
         },
         "pointsAgainst": {
-          "expected": 128,
-          "actual": 159
+          "expected": 220,
+          "actual": 199
         }
       }
     },
@@ -2380,20 +2491,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 186,
-          "actual": 218
+          "expected": 218,
+          "actual": 186
         },
         "pointsAgainst": {
-          "expected": 102,
-          "actual": 108
+          "expected": 108,
+          "actual": 102
         }
       }
     },
@@ -2403,20 +2514,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 215,
-          "actual": 266
+          "expected": 266,
+          "actual": 215
         },
         "pointsAgainst": {
-          "expected": 126,
-          "actual": 145
+          "expected": 145,
+          "actual": 126
         }
       }
     },
@@ -2437,20 +2548,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 163,
-          "actual": 194
+          "expected": 194,
+          "actual": 163
         },
         "pointsAgainst": {
-          "expected": 106,
-          "actual": 132
+          "expected": 132,
+          "actual": 106
         }
       }
     },
@@ -2460,20 +2571,47 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 183,
-          "actual": 218
+          "expected": 218,
+          "actual": 183
         },
         "pointsAgainst": {
-          "expected": 104,
-          "actual": 153
+          "expected": 153,
+          "actual": 104
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "TAYLORSVILLE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 0,
+          "actual": 1
+        },
+        "losses": {
+          "expected": 7,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 49,
+          "actual": 90
+        },
+        "pointsAgainst": {
+          "expected": 350,
+          "actual": 231
         }
       }
     },
@@ -2483,16 +2621,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 146,
-          "actual": 183
+          "expected": 183,
+          "actual": 146
         }
       }
     },
@@ -2502,20 +2640,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 177,
-          "actual": 191
+          "expected": 191,
+          "actual": 177
         },
         "pointsAgainst": {
-          "expected": 146,
-          "actual": 163
+          "expected": 163,
+          "actual": 146
         }
       }
     },
@@ -2525,20 +2663,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 133,
-          "actual": 152
+          "expected": 152,
+          "actual": 133
         },
         "pointsAgainst": {
-          "expected": 194,
-          "actual": 245
+          "expected": 245,
+          "actual": 194
         }
       }
     },
@@ -2548,20 +2686,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 181,
-          "actual": 202
+          "expected": 202,
+          "actual": 181
         },
         "pointsAgainst": {
-          "expected": 143,
-          "actual": 185
+          "expected": 185,
+          "actual": 143
         }
       }
     },
@@ -2571,20 +2709,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 110,
-          "actual": 134
+          "expected": 134,
+          "actual": 110
         },
         "pointsAgainst": {
-          "expected": 136,
-          "actual": 158
+          "expected": 158,
+          "actual": 136
         }
       }
     },
@@ -2594,20 +2732,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 217,
-          "actual": 235
+          "expected": 235,
+          "actual": 217
         },
         "pointsAgainst": {
-          "expected": 217,
-          "actual": 270
+          "expected": 270,
+          "actual": 217
         }
       }
     },
@@ -2617,20 +2755,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 99,
-          "actual": 123
+          "expected": 123,
+          "actual": 99
         },
         "pointsAgainst": {
-          "expected": 125,
-          "actual": 180
+          "expected": 180,
+          "actual": 125
         }
       }
     },
@@ -2650,20 +2788,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 158,
-          "actual": 177
+          "expected": 177,
+          "actual": 158
         },
         "pointsAgainst": {
-          "expected": 142,
-          "actual": 170
+          "expected": 170,
+          "actual": 142
         }
       }
     },
@@ -2673,16 +2811,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsAgainst": {
-          "expected": 163,
-          "actual": 211
+          "expected": 211,
+          "actual": 163
         }
       }
     },
@@ -2692,20 +2830,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 254,
-          "actual": 348
+          "expected": 348,
+          "actual": 254
         },
         "pointsAgainst": {
-          "expected": 226,
-          "actual": 287
+          "expected": 287,
+          "actual": 226
         }
       }
     },
@@ -2726,20 +2864,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 149,
-          "actual": 179
+          "expected": 179,
+          "actual": 149
         },
         "pointsAgainst": {
-          "expected": 179,
-          "actual": 202
+          "expected": 202,
+          "actual": 179
         }
       }
     },
@@ -2749,20 +2887,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
-        "wins": {
-          "expected": 4,
-          "actual": 5
+        "losses": {
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 136,
-          "actual": 179
+          "expected": 179,
+          "actual": 136
         },
         "pointsAgainst": {
-          "expected": 129,
-          "actual": 136
+          "expected": 136,
+          "actual": 123
         }
       }
     },
@@ -2772,20 +2910,43 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 126,
-          "actual": 134
+          "expected": 134,
+          "actual": 126
         },
         "pointsAgainst": {
-          "expected": 208,
-          "actual": 256
+          "expected": 256,
+          "actual": 208
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "WEST",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 337,
+          "actual": 266
+        },
+        "pointsAgainst": {
+          "expected": 59,
+          "actual": 52
         }
       }
     },
@@ -2795,20 +2956,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 108,
-          "actual": 123
+          "expected": 123,
+          "actual": 108
         },
         "pointsAgainst": {
-          "expected": 116,
-          "actual": 125
+          "expected": 125,
+          "actual": 116
         }
       }
     },
@@ -2818,16 +2979,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsAgainst": {
-          "expected": 162,
-          "actual": 207
+          "expected": 207,
+          "actual": 162
         }
       }
     },
@@ -2837,20 +2998,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
-        "losses": {
-          "expected": 4,
-          "actual": 5
+        "wins": {
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 133,
-          "actual": 154
+          "expected": 154,
+          "actual": 127
         },
         "pointsAgainst": {
-          "expected": 196,
-          "actual": 223
+          "expected": 223,
+          "actual": 196
         }
       }
     },
@@ -3918,26 +4079,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "GRAND",
-      "teamB": "MONUMENT VALLEY",
-      "date": "9/24/2026",
-      "season": "2026",
-      "sideA": [
-        {
-          "team": "GRAND",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/24/2026",
-          "teamScore": 54,
-          "opponentScore": 6,
-          "result": "W",
-          "season": "2026",
-          "index": 5
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "GRANGER",
       "teamB": "HILLCREST",
       "date": "9/5/2025",
@@ -4078,6 +4219,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "HILLCREST",
+      "date": "8/21/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "HILLCREST",
+          "opponent": "DEER CREEK",
+          "date": "8/21/2026",
+          "teamScore": 53,
+          "opponentScore": 7,
+          "result": "W",
+          "season": "2026",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "HIGHLAND",
       "teamB": "HUNTER",
       "date": "8/22/2025",
@@ -4178,6 +4339,46 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "JORDAN",
+      "date": "8/28/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "JORDAN",
+          "opponent": "DEER CREEK",
+          "date": "8/28/2026",
+          "teamScore": 13,
+          "opponentScore": 10,
+          "result": "W",
+          "season": "2026",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -4192,7 +4393,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -4609,26 +4810,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "WATER CANYON",
-      "date": "9/18/2026",
-      "season": "2026",
-      "sideA": [
-        {
-          "team": "MONUMENT VALLEY",
-          "opponent": "WATER CANYON",
-          "date": "9/18/2026",
-          "teamScore": 12,
-          "opponentScore": 60,
-          "result": "L",
-          "season": "2026",
-          "index": 3
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "BOUNTIFUL",
       "teamB": "MORGAN",
       "date": "9/5/2025",
@@ -4664,6 +4845,26 @@
           "result": "W",
           "season": "2025",
           "index": 6
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "MOUNTAIN CREST",
+      "date": "8/14/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "MOUNTAIN CREST",
+          "opponent": "DEER CREEK",
+          "date": "8/14/2026",
+          "teamScore": 49,
+          "opponentScore": 0,
+          "result": "W",
+          "season": "2026",
+          "index": 0
         }
       ]
     },
@@ -5120,6 +5321,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -5134,7 +5355,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -5153,7 +5374,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -6071,6 +6292,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "UINTAH",
+      "date": "9/11/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "UINTAH",
+          "opponent": "DEER CREEK",
+          "date": "9/11/2026",
+          "teamScore": 36,
+          "opponentScore": 14,
+          "result": "W",
+          "season": "2026",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "UMA-HILLFIELD",
       "date": "9/18/2025",
@@ -6386,26 +6627,6 @@
           "result": "L",
           "season": "2025",
           "index": 8
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "WATER CANYON",
-      "date": "9/19/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "WATER CANYON",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/19/2026",
-          "teamScore": 60,
-          "opponentScore": 12,
-          "result": "W",
-          "season": "2026",
-          "index": 5
         }
       ]
     },
@@ -6745,22 +6966,22 @@
     },
     {
       "type": "same-day-multiple-opponents",
-      "team": "CORNER CANYON",
-      "season": "2026",
-      "date": "9/11/2026",
-      "opponents": [
-        "EASTWOOD TEXAS",
-        "EASTWOOD, TX"
-      ]
-    },
-    {
-      "type": "same-day-multiple-opponents",
       "team": "DAVIS",
       "season": "2022",
       "date": "10/7/2022",
       "opponents": [
         "SKYRIDGE",
         "WEBER"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "DUCHESNE",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "COTTONWOOD",
+        "IGNACIO, CO"
       ]
     },
     {
@@ -6821,6 +7042,16 @@
       "opponents": [
         "CEDAR CITY",
         "MORGAN"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "MILLARD",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "DELTA",
+        "PAROWAN"
       ]
     },
     {
@@ -6891,6 +7122,16 @@
       "opponents": [
         "CANYON VIEW",
         "CEDAR CITY"
+      ]
+    },
+    {
+      "type": "same-day-multiple-opponents",
+      "team": "PAROWAN",
+      "season": "2026",
+      "date": "8/21/2026",
+      "opponents": [
+        "ALA",
+        "MILLARD"
       ]
     },
     {
@@ -7042,6 +7283,21 @@
     },
     {
       "type": "suspicious-repeat",
+      "team": "MILLARD",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "PAROWAN",
+      "teamScore": 14,
+      "opponentScore": 10,
+      "result": "W",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
+    },
+    {
+      "type": "suspicious-repeat",
       "team": "NORTH SEVIER",
       "season": "1981",
       "index": 6,
@@ -7084,6 +7340,21 @@
       "notes": "",
       "otherDate": "10/2/1981",
       "daysApart": 5
+    },
+    {
+      "type": "suspicious-repeat",
+      "team": "PAROWAN",
+      "season": "2026",
+      "index": 2,
+      "date": "8/21/2026",
+      "opponent": "MILLARD",
+      "teamScore": 10,
+      "opponentScore": 14,
+      "result": "L",
+      "playoff": false,
+      "notes": "",
+      "otherDate": "8/28/2026",
+      "daysApart": 7
     },
     {
       "type": "suspicious-repeat",
@@ -7282,20 +7553,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 108,
-          "actual": 142
+          "expected": 142,
+          "actual": 108
         },
         "pointsAgainst": {
-          "expected": 135,
-          "actual": 163
+          "expected": 163,
+          "actual": 135
         }
       }
     },
@@ -7305,20 +7576,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 136,
-          "actual": 163
+          "expected": 163,
+          "actual": 136
         },
         "pointsAgainst": {
-          "expected": 112,
-          "actual": 133
+          "expected": 133,
+          "actual": 112
         }
       }
     },
@@ -7366,20 +7637,43 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 148,
-          "actual": 167
+          "expected": 167,
+          "actual": 148
         },
         "pointsAgainst": {
-          "expected": 318,
-          "actual": 357
+          "expected": 357,
+          "actual": 318
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "AMERICAN FORK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 207,
+          "actual": 190
+        },
+        "pointsAgainst": {
+          "expected": 110,
+          "actual": 107
         }
       }
     },
@@ -7412,20 +7706,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 208,
-          "actual": 236
+          "expected": 236,
+          "actual": 208
         },
         "pointsAgainst": {
-          "expected": 215,
-          "actual": 236
+          "expected": 236,
+          "actual": 215
         }
       }
     },
@@ -7435,20 +7729,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 147,
-          "actual": 177
+          "expected": 177,
+          "actual": 147
         },
         "pointsAgainst": {
-          "expected": 177,
-          "actual": 183
+          "expected": 183,
+          "actual": 177
         }
       }
     },
@@ -7458,16 +7752,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsAgainst": {
-          "expected": 153,
-          "actual": 209
+          "expected": 209,
+          "actual": 153
         }
       }
     },
@@ -7500,20 +7794,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 102,
-          "actual": 151
+          "expected": 151,
+          "actual": 102
         },
         "pointsAgainst": {
-          "expected": 109,
-          "actual": 116
+          "expected": 116,
+          "actual": 109
         }
       }
     },
@@ -7542,20 +7836,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 63,
-          "actual": 70
+          "expected": 70,
+          "actual": 63
         },
         "pointsAgainst": {
-          "expected": 166,
-          "actual": 209
+          "expected": 209,
+          "actual": 166
         }
       }
     },
@@ -7615,20 +7909,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 127,
-          "actual": 155
+          "expected": 155,
+          "actual": 127
         },
         "pointsAgainst": {
-          "expected": 112,
-          "actual": 131
+          "expected": 131,
+          "actual": 112
         }
       }
     },
@@ -7684,20 +7978,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 224,
-          "actual": 267
+          "expected": 267,
+          "actual": 224
         },
         "pointsAgainst": {
-          "expected": 106,
-          "actual": 113
+          "expected": 113,
+          "actual": 106
         }
       }
     },
@@ -7753,20 +8047,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 129,
-          "actual": 156
+          "expected": 156,
+          "actual": 129
         },
         "pointsAgainst": {
-          "expected": 201,
-          "actual": 243
+          "expected": 243,
+          "actual": 201
         }
       }
     },
@@ -7776,20 +8070,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 239,
-          "actual": 253
+          "expected": 253,
+          "actual": 239
         },
         "pointsAgainst": {
-          "expected": 74,
-          "actual": 102
+          "expected": 102,
+          "actual": 74
         }
       }
     },
@@ -7833,20 +8127,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 91,
-          "actual": 105
+          "expected": 105,
+          "actual": 95
         },
         "pointsAgainst": {
-          "expected": 262,
-          "actual": 304
+          "expected": 304,
+          "actual": 262
         }
       }
     },
@@ -7867,20 +8161,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 189,
-          "actual": 196
+          "expected": 196,
+          "actual": 189
         },
         "pointsAgainst": {
-          "expected": 146,
-          "actual": 184
+          "expected": 184,
+          "actual": 146
         }
       }
     },
@@ -7936,20 +8230,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 54,
-          "actual": 61
+          "expected": 61,
+          "actual": 54
         },
         "pointsAgainst": {
-          "expected": 230,
-          "actual": 279
+          "expected": 279,
+          "actual": 230
         }
       }
     },
@@ -7970,20 +8264,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 103,
-          "actual": 123
+          "expected": 123,
+          "actual": 103
         },
         "pointsAgainst": {
-          "expected": 194,
-          "actual": 221
+          "expected": 221,
+          "actual": 194
         }
       }
     },
@@ -8015,20 +8309,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 219,
-          "actual": 228
+          "expected": 228,
+          "actual": 219
         },
         "pointsAgainst": {
-          "expected": 82,
-          "actual": 97
+          "expected": 97,
+          "actual": 82
         }
       }
     },
@@ -8049,20 +8343,24 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 7,
-          "actual": 8
+          "expected": 8,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 305,
-          "actual": 332
+          "expected": 332,
+          "actual": 253
         },
         "pointsAgainst": {
-          "expected": 87,
-          "actual": 124
+          "expected": 124,
+          "actual": 80
         }
       }
     },
@@ -8072,16 +8370,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsAgainst": {
-          "expected": 335,
-          "actual": 391
+          "expected": 391,
+          "actual": 335
         }
       }
     },
@@ -8091,20 +8389,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 178,
-          "actual": 216
+          "expected": 216,
+          "actual": 178
         },
         "pointsAgainst": {
-          "expected": 77,
-          "actual": 93
+          "expected": 93,
+          "actual": 77
         }
       }
     },
@@ -8137,20 +8435,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 114,
-          "actual": 131
+          "expected": 131,
+          "actual": 114
         },
         "pointsAgainst": {
-          "expected": 148,
-          "actual": 184
+          "expected": 184,
+          "actual": 148
         }
       }
     },
@@ -8194,20 +8492,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 172,
-          "actual": 221
+          "expected": 221,
+          "actual": 172
         },
         "pointsAgainst": {
-          "expected": 170,
-          "actual": 205
+          "expected": 205,
+          "actual": 181
         }
       }
     },
@@ -8217,16 +8515,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 2
         },
         "losses": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 2
+        },
+        "pointsFor": {
+          "expected": 50,
+          "actual": 19
         },
         "pointsAgainst": {
-          "expected": 240,
-          "actual": 277
+          "expected": 277,
+          "actual": 89
         }
       }
     },
@@ -8259,20 +8561,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 160,
-          "actual": 218
+          "expected": 218,
+          "actual": 160
         },
         "pointsAgainst": {
-          "expected": 114,
-          "actual": 134
+          "expected": 134,
+          "actual": 114
         }
       }
     },
@@ -8282,20 +8584,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsFor": {
-          "expected": 48,
-          "actual": 55
+          "expected": 55,
+          "actual": 48
         },
         "pointsAgainst": {
-          "expected": 250,
-          "actual": 293
+          "expected": 293,
+          "actual": 250
         }
       }
     },
@@ -8316,20 +8618,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 102,
-          "actual": 149
+          "expected": 149,
+          "actual": 102
         },
         "pointsAgainst": {
-          "expected": 123,
-          "actual": 148
+          "expected": 148,
+          "actual": 123
         }
       }
     },
@@ -8361,20 +8663,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 135,
-          "actual": 160
+          "expected": 160,
+          "actual": 135
         },
         "pointsAgainst": {
-          "expected": 283,
-          "actual": 330
+          "expected": 330,
+          "actual": 283
         }
       }
     },
@@ -8394,21 +8696,21 @@
       "team": "DUCHESNE",
       "season": "2026",
       "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
         "wins": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
+        },
+        "losses": {
+          "expected": 1,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 254,
-          "actual": 317
+          "expected": 317,
+          "actual": 273
         },
         "pointsAgainst": {
-          "expected": 46,
-          "actual": 60
+          "expected": 60,
+          "actual": 75
         }
       }
     },
@@ -8483,20 +8785,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "wins": {
-          "expected": 0,
-          "actual": 1
+          "expected": 1,
+          "actual": 0
         },
         "pointsFor": {
-          "expected": 21,
-          "actual": 75
+          "expected": 75,
+          "actual": 21
         },
         "pointsAgainst": {
-          "expected": 229,
-          "actual": 235
+          "expected": 235,
+          "actual": 229
         }
       }
     },
@@ -8513,24 +8815,35 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "EMERY",
+      "season": "2026",
+      "mismatches": {
+        "pointsAgainst": {
+          "expected": 220,
+          "actual": 224
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "FARMINGTON",
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 124,
-          "actual": 135
+          "expected": 135,
+          "actual": 124
         },
         "pointsAgainst": {
-          "expected": 144,
-          "actual": 158
+          "expected": 158,
+          "actual": 144
         }
       }
     },
@@ -8563,20 +8876,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 191,
-          "actual": 205
+          "expected": 205,
+          "actual": 191
         },
         "pointsAgainst": {
-          "expected": 137,
-          "actual": 148
+          "expected": 148,
+          "actual": 137
         }
       }
     },
@@ -8609,16 +8922,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 4,
+          "expected": 7,
           "actual": 5
         },
+        "wins": {
+          "expected": 5,
+          "actual": 3
+        },
         "pointsFor": {
-          "expected": 150,
-          "actual": 195
+          "expected": 195,
+          "actual": 96
+        },
+        "pointsAgainst": {
+          "expected": 165,
+          "actual": 159
         }
       }
     },
@@ -8643,20 +8960,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 96,
-          "actual": 132
+          "expected": 132,
+          "actual": 96
         },
         "pointsAgainst": {
-          "expected": 197,
-          "actual": 214
+          "expected": 214,
+          "actual": 200
         }
       }
     },
@@ -8696,20 +9013,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 196,
-          "actual": 217
+          "expected": 217,
+          "actual": 196
         },
         "pointsAgainst": {
-          "expected": 146,
-          "actual": 170
+          "expected": 170,
+          "actual": 146
         }
       }
     },
@@ -8719,20 +9036,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 93,
-          "actual": 114
+          "expected": 114,
+          "actual": 93
         },
         "pointsAgainst": {
-          "expected": 120,
-          "actual": 148
+          "expected": 148,
+          "actual": 120
         }
       }
     },
@@ -8765,20 +9082,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 128,
-          "actual": 142
+          "expected": 142,
+          "actual": 128
         },
         "pointsAgainst": {
-          "expected": 120,
-          "actual": 183
+          "expected": 183,
+          "actual": 120
         }
       }
     },
@@ -8788,20 +9105,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 0,
-          "actual": 1
+          "expected": 1,
+          "actual": 0
         },
         "pointsFor": {
-          "expected": 259,
-          "actual": 279
+          "expected": 279,
+          "actual": 259
         },
         "pointsAgainst": {
-          "expected": 67,
-          "actual": 89
+          "expected": 89,
+          "actual": 67
         }
       }
     },
@@ -8845,20 +9162,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 4,
+          "expected": 6,
           "actual": 5
         },
+        "wins": {
+          "expected": 5,
+          "actual": 4
+        },
         "pointsFor": {
-          "expected": 192,
-          "actual": 226
+          "expected": 226,
+          "actual": 192
         },
         "pointsAgainst": {
-          "expected": 86,
-          "actual": 115
+          "expected": 115,
+          "actual": 86
         }
       }
     },
@@ -8913,20 +9230,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 188,
-          "actual": 236
+          "expected": 236,
+          "actual": 191
         },
         "pointsAgainst": {
-          "expected": 132,
-          "actual": 140
+          "expected": 140,
+          "actual": 132
         }
       }
     },
@@ -8969,16 +9286,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 1,
-          "actual": 2
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 90,
-          "actual": 135
+          "expected": 135,
+          "actual": 90
         }
       }
     },
@@ -9003,20 +9320,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsFor": {
-          "expected": 248,
-          "actual": 286
+          "expected": 286,
+          "actual": 248
         },
         "pointsAgainst": {
-          "expected": 83,
-          "actual": 104
+          "expected": 104,
+          "actual": 83
         }
       }
     },
@@ -9060,20 +9377,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 76,
-          "actual": 100
+          "expected": 100,
+          "actual": 76
         },
         "pointsAgainst": {
-          "expected": 192,
-          "actual": 208
+          "expected": 208,
+          "actual": 192
         }
       }
     },
@@ -9125,46 +9442,23 @@
     {
       "type": "season-summary-mismatch",
       "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 211,
-          "actual": 239
+          "expected": 239,
+          "actual": 211
         },
         "pointsAgainst": {
-          "expected": 140,
-          "actual": 154
+          "expected": 154,
+          "actual": 140
         }
       }
     },
@@ -9185,20 +9479,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 106,
-          "actual": 112
+          "expected": 112,
+          "actual": 106
         },
         "pointsAgainst": {
-          "expected": 246,
-          "actual": 300
+          "expected": 300,
+          "actual": 246
         }
       }
     },
@@ -9231,20 +9525,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 4,
-          "actual": 5
-        },
-        "losses": {
-          "expected": 3,
+          "expected": 5,
           "actual": 4
         },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
         "pointsFor": {
-          "expected": 61,
-          "actual": 77
+          "expected": 77,
+          "actual": 61
         },
         "pointsAgainst": {
-          "expected": 123,
-          "actual": 147
+          "expected": 147,
+          "actual": 123
         }
       }
     },
@@ -9364,16 +9658,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 191,
-          "actual": 240
+          "expected": 240,
+          "actual": 191
+        },
+        "pointsAgainst": {
+          "expected": 104,
+          "actual": 106
         }
       }
     },
@@ -9394,16 +9692,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "pointsAgainst": {
-          "expected": 209,
-          "actual": 254
+          "expected": 254,
+          "actual": 209
         }
       }
     },
@@ -9439,20 +9737,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 0,
-          "actual": 1
+          "expected": 1,
+          "actual": 0
         },
         "pointsFor": {
-          "expected": 224,
-          "actual": 239
+          "expected": 239,
+          "actual": 224
         },
         "pointsAgainst": {
-          "expected": 28,
-          "actual": 51
+          "expected": 51,
+          "actual": 28
         }
       }
     },
@@ -9506,20 +9804,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 127,
-          "actual": 150
+          "expected": 150,
+          "actual": 127
         },
         "pointsAgainst": {
-          "expected": 148,
-          "actual": 178
+          "expected": 178,
+          "actual": 148
         }
       }
     },
@@ -9548,20 +9846,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 110,
-          "actual": 132
+          "expected": 132,
+          "actual": 110
         },
         "pointsAgainst": {
-          "expected": 175,
-          "actual": 195
+          "expected": 195,
+          "actual": 175
         }
       }
     },
@@ -9605,20 +9903,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 210,
-          "actual": 265
+          "expected": 265,
+          "actual": 217
         },
         "pointsAgainst": {
-          "expected": 139,
-          "actual": 163
+          "expected": 163,
+          "actual": 152
         }
       }
     },
@@ -9666,6 +9964,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "LONE PEAK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 171,
+          "actual": 150
+        },
+        "pointsAgainst": {
+          "expected": 165,
+          "actual": 158
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "MANTI",
       "season": "2001",
       "mismatches": {
@@ -9693,20 +10014,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 192,
-          "actual": 230
+          "expected": 230,
+          "actual": 192
         },
         "pointsAgainst": {
-          "expected": 243,
-          "actual": 304
+          "expected": 304,
+          "actual": 243
         }
       }
     },
@@ -9716,20 +10037,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 125,
-          "actual": 131
+          "expected": 131,
+          "actual": 125
         },
         "pointsAgainst": {
-          "expected": 180,
-          "actual": 212
+          "expected": 212,
+          "actual": 180
         }
       }
     },
@@ -9765,20 +10086,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 134,
-          "actual": 187
+          "expected": 187,
+          "actual": 134
         },
         "pointsAgainst": {
-          "expected": 205,
-          "actual": 223
+          "expected": 223,
+          "actual": 205
         }
       }
     },
@@ -9848,21 +10169,13 @@
       "team": "MILLARD",
       "season": "2026",
       "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 4
-        },
         "pointsFor": {
-          "expected": 113,
-          "actual": 164
+          "expected": 164,
+          "actual": 99
         },
         "pointsAgainst": {
-          "expected": 144,
-          "actual": 157
+          "expected": 157,
+          "actual": 143
         }
       }
     },
@@ -9894,20 +10207,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "wins": {
-          "expected": 4,
+          "expected": 6,
           "actual": 5
         },
+        "wins": {
+          "expected": 5,
+          "actual": 4
+        },
         "pointsFor": {
-          "expected": 227,
-          "actual": 266
+          "expected": 266,
+          "actual": 233
         },
         "pointsAgainst": {
-          "expected": 132,
-          "actual": 151
+          "expected": 151,
+          "actual": 140
         }
       }
     },
@@ -9954,16 +10267,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 249,
-          "actual": 305
+          "expected": 305,
+          "actual": 249
         }
       }
     },
@@ -9995,20 +10308,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 178,
-          "actual": 221
+          "expected": 221,
+          "actual": 178
         },
         "pointsAgainst": {
-          "expected": 137,
-          "actual": 144
+          "expected": 144,
+          "actual": 137
         }
       }
     },
@@ -10029,20 +10342,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsFor": {
-          "expected": 281,
-          "actual": 337
+          "expected": 337,
+          "actual": 292
         },
         "pointsAgainst": {
-          "expected": 81,
-          "actual": 88
+          "expected": 88,
+          "actual": 81
         }
       }
     },
@@ -10052,20 +10365,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 166,
-          "actual": 197
+          "expected": 197,
+          "actual": 166
         },
         "pointsAgainst": {
-          "expected": 132,
-          "actual": 172
+          "expected": 172,
+          "actual": 132
         }
       }
     },
@@ -10098,20 +10411,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
-        "losses": {
-          "expected": 1,
-          "actual": 2
+        "wins": {
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 251,
-          "actual": 280
+          "expected": 280,
+          "actual": 203
         },
         "pointsAgainst": {
-          "expected": 126,
-          "actual": 160
+          "expected": 160,
+          "actual": 174
         }
       }
     },
@@ -10166,20 +10479,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 152,
-          "actual": 194
+          "expected": 194,
+          "actual": 152
         },
         "pointsAgainst": {
-          "expected": 132,
-          "actual": 146
+          "expected": 146,
+          "actual": 132
         }
       }
     },
@@ -10276,20 +10589,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 124,
-          "actual": 137
+          "expected": 137,
+          "actual": 124
         },
         "pointsAgainst": {
-          "expected": 262,
-          "actual": 313
+          "expected": 313,
+          "actual": 262
         }
       }
     },
@@ -10333,20 +10646,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 172,
-          "actual": 178
+          "expected": 178,
+          "actual": 172
         },
         "pointsAgainst": {
-          "expected": 107,
-          "actual": 137
+          "expected": 137,
+          "actual": 107
         }
       }
     },
@@ -10367,20 +10680,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 83,
-          "actual": 90
+          "expected": 90,
+          "actual": 83
         },
         "pointsAgainst": {
-          "expected": 160,
-          "actual": 203
+          "expected": 203,
+          "actual": 160
         }
       }
     },
@@ -10463,20 +10776,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 128,
-          "actual": 152
+          "expected": 152,
+          "actual": 128
         },
         "pointsAgainst": {
-          "expected": 87,
-          "actual": 108
+          "expected": 108,
+          "actual": 87
         }
       }
     },
@@ -10508,20 +10821,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 131,
-          "actual": 173
+          "expected": 173,
+          "actual": 131
         },
         "pointsAgainst": {
-          "expected": 133,
-          "actual": 160
+          "expected": 160,
+          "actual": 133
         }
       }
     },
@@ -10575,20 +10888,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 146,
-          "actual": 163
+          "expected": 163,
+          "actual": 146
         },
         "pointsAgainst": {
-          "expected": 74,
-          "actual": 88
+          "expected": 88,
+          "actual": 74
         }
       }
     },
@@ -10618,46 +10931,23 @@
     {
       "type": "season-summary-mismatch",
       "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 130,
-          "actual": 152
+          "expected": 152,
+          "actual": 130
         },
         "pointsAgainst": {
-          "expected": 122,
-          "actual": 146
+          "expected": 146,
+          "actual": 122
         }
       }
     },
@@ -10735,20 +11025,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 81,
-          "actual": 123
+          "expected": 123,
+          "actual": 81
         },
         "pointsAgainst": {
-          "expected": 142,
-          "actual": 163
+          "expected": 163,
+          "actual": 142
         }
       }
     },
@@ -10802,17 +11092,13 @@
       "team": "PAROWAN",
       "season": "2026",
       "mismatches": {
-        "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
-          "actual": 6
+        "pointsFor": {
+          "expected": 105,
+          "actual": 104
         },
         "pointsAgainst": {
-          "expected": 176,
-          "actual": 225
+          "expected": 225,
+          "actual": 160
         }
       }
     },
@@ -10852,6 +11138,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "PAYSON",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 137,
+          "actual": 116
+        },
+        "pointsAgainst": {
+          "expected": 217,
+          "actual": 168
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "PINE VIEW",
       "season": "2023",
       "mismatches": {
@@ -10867,20 +11176,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 258,
-          "actual": 279
+          "expected": 279,
+          "actual": 258
         },
         "pointsAgainst": {
-          "expected": 191,
-          "actual": 229
+          "expected": 229,
+          "actual": 191
         }
       }
     },
@@ -10924,20 +11233,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 127,
-          "actual": 150
+          "expected": 150,
+          "actual": 127
         },
         "pointsAgainst": {
-          "expected": 135,
-          "actual": 150
+          "expected": 150,
+          "actual": 135
         }
       }
     },
@@ -10970,20 +11279,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 80,
-          "actual": 108
+          "expected": 108,
+          "actual": 74
         },
         "pointsAgainst": {
-          "expected": 188,
-          "actual": 222
+          "expected": 222,
+          "actual": 188
         }
       }
     },
@@ -11031,16 +11340,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 125,
-          "actual": 173
+          "expected": 173,
+          "actual": 125
         }
       }
     },
@@ -11087,20 +11396,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 214,
-          "actual": 247
+          "expected": 247,
+          "actual": 214
         },
         "pointsAgainst": {
-          "expected": 107,
-          "actual": 119
+          "expected": 119,
+          "actual": 107
         }
       }
     },
@@ -11132,20 +11441,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 267,
-          "actual": 305
+          "expected": 305,
+          "actual": 267
         },
         "pointsAgainst": {
-          "expected": 65,
-          "actual": 72
+          "expected": 72,
+          "actual": 65
         }
       }
     },
@@ -11155,20 +11464,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "pointsFor": {
-          "expected": 284,
-          "actual": 325
+          "expected": 325,
+          "actual": 284
         },
         "pointsAgainst": {
-          "expected": 82,
-          "actual": 85
+          "expected": 85,
+          "actual": 82
         }
       }
     },
@@ -11189,20 +11498,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 90,
-          "actual": 97
+          "expected": 97,
+          "actual": 90
         },
         "pointsAgainst": {
-          "expected": 156,
-          "actual": 212
+          "expected": 212,
+          "actual": 156
         }
       }
     },
@@ -11223,20 +11532,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 168,
-          "actual": 195
+          "expected": 195,
+          "actual": 168
         },
         "pointsAgainst": {
-          "expected": 146,
-          "actual": 166
+          "expected": 166,
+          "actual": 153
         }
       }
     },
@@ -11257,20 +11566,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 196,
-          "actual": 257
+          "expected": 257,
+          "actual": 196
         },
         "pointsAgainst": {
-          "expected": 204,
-          "actual": 298
+          "expected": 298,
+          "actual": 204
         }
       }
     },
@@ -11280,20 +11589,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 145,
-          "actual": 185
+          "expected": 185,
+          "actual": 145
         },
         "pointsAgainst": {
-          "expected": 106,
-          "actual": 137
+          "expected": 137,
+          "actual": 106
         }
       }
     },
@@ -11356,20 +11665,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 266,
-          "actual": 327
+          "expected": 327,
+          "actual": 266
         },
         "pointsAgainst": {
-          "expected": 128,
-          "actual": 166
+          "expected": 166,
+          "actual": 128
         }
       }
     },
@@ -11435,20 +11744,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 112,
-          "actual": 115
+          "expected": 115,
+          "actual": 112
         },
         "pointsAgainst": {
-          "expected": 150,
-          "actual": 191
+          "expected": 191,
+          "actual": 150
         }
       }
     },
@@ -11503,16 +11812,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 165,
-          "actual": 221
+          "expected": 221,
+          "actual": 165
         }
       }
     },
@@ -11545,20 +11854,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 172,
-          "actual": 209
+          "expected": 209,
+          "actual": 172
         },
         "pointsAgainst": {
-          "expected": 126,
-          "actual": 153
+          "expected": 153,
+          "actual": 126
         }
       }
     },
@@ -11647,20 +11956,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 166,
-          "actual": 182
+          "expected": 182,
+          "actual": 166
         },
         "pointsAgainst": {
-          "expected": 160,
-          "actual": 198
+          "expected": 198,
+          "actual": 160
         }
       }
     },
@@ -11726,20 +12035,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
-        },
-        "losses": {
-          "expected": 4,
+          "expected": 6,
           "actual": 5
         },
+        "losses": {
+          "expected": 5,
+          "actual": 4
+        },
         "pointsFor": {
-          "expected": 87,
-          "actual": 107
+          "expected": 107,
+          "actual": 87
         },
         "pointsAgainst": {
-          "expected": 142,
-          "actual": 200
+          "expected": 200,
+          "actual": 142
         }
       }
     },
@@ -11812,20 +12121,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 147,
-          "actual": 173
+          "expected": 173,
+          "actual": 147
         },
         "pointsAgainst": {
-          "expected": 128,
-          "actual": 159
+          "expected": 159,
+          "actual": 128
         }
       }
     },
@@ -11910,6 +12219,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "SPANISH FORK",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 5,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 235,
+          "actual": 186
+        },
+        "pointsAgainst": {
+          "expected": 220,
+          "actual": 199
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "SPRINGVILLE",
       "season": "1997",
       "mismatches": {
@@ -11959,20 +12291,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 186,
-          "actual": 218
+          "expected": 218,
+          "actual": 186
         },
         "pointsAgainst": {
-          "expected": 102,
-          "actual": 108
+          "expected": 108,
+          "actual": 102
         }
       }
     },
@@ -11993,20 +12325,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "wins": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsFor": {
-          "expected": 215,
-          "actual": 266
+          "expected": 266,
+          "actual": 215
         },
         "pointsAgainst": {
-          "expected": 126,
-          "actual": 145
+          "expected": 145,
+          "actual": 126
         }
       }
     },
@@ -12042,20 +12374,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 163,
-          "actual": 194
+          "expected": 194,
+          "actual": 163
         },
         "pointsAgainst": {
-          "expected": 106,
-          "actual": 132
+          "expected": 132,
+          "actual": 106
         }
       }
     },
@@ -12088,20 +12420,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 183,
-          "actual": 218
+          "expected": 218,
+          "actual": 183
         },
         "pointsAgainst": {
-          "expected": 104,
-          "actual": 153
+          "expected": 153,
+          "actual": 104
         }
       }
     },
@@ -12133,20 +12465,47 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "TAYLORSVILLE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 0,
+          "actual": 1
+        },
+        "losses": {
+          "expected": 7,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 49,
+          "actual": 90
+        },
+        "pointsAgainst": {
+          "expected": 350,
+          "actual": 231
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "TIMPANOGOS",
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 146,
-          "actual": 183
+          "expected": 183,
+          "actual": 146
         }
       }
     },
@@ -12223,20 +12582,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 177,
-          "actual": 191
+          "expected": 191,
+          "actual": 177
         },
         "pointsAgainst": {
-          "expected": 146,
-          "actual": 163
+          "expected": 163,
+          "actual": 146
         }
       }
     },
@@ -12246,20 +12605,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 133,
-          "actual": 152
+          "expected": 152,
+          "actual": 133
         },
         "pointsAgainst": {
-          "expected": 194,
-          "actual": 245
+          "expected": 245,
+          "actual": 194
         }
       }
     },
@@ -12329,20 +12688,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 181,
-          "actual": 202
+          "expected": 202,
+          "actual": 181
         },
         "pointsAgainst": {
-          "expected": 143,
-          "actual": 185
+          "expected": 185,
+          "actual": 143
         }
       }
     },
@@ -12363,20 +12722,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "wins": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsFor": {
-          "expected": 110,
-          "actual": 134
+          "expected": 134,
+          "actual": 110
         },
         "pointsAgainst": {
-          "expected": 136,
-          "actual": 158
+          "expected": 158,
+          "actual": 136
         }
       }
     },
@@ -12386,20 +12745,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 217,
-          "actual": 235
+          "expected": 235,
+          "actual": 217
         },
         "pointsAgainst": {
-          "expected": 217,
-          "actual": 270
+          "expected": 270,
+          "actual": 217
         }
       }
     },
@@ -12502,20 +12861,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 5,
-          "actual": 6
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 99,
-          "actual": 123
+          "expected": 123,
+          "actual": 99
         },
         "pointsAgainst": {
-          "expected": 125,
-          "actual": 180
+          "expected": 180,
+          "actual": 125
         }
       }
     },
@@ -12562,20 +12921,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 158,
-          "actual": 177
+          "expected": 177,
+          "actual": 158
         },
         "pointsAgainst": {
-          "expected": 142,
-          "actual": 170
+          "expected": 170,
+          "actual": 142
         }
       }
     },
@@ -12657,16 +13016,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
-        },
-        "losses": {
-          "expected": 5,
+          "expected": 7,
           "actual": 6
         },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
         "pointsAgainst": {
-          "expected": 163,
-          "actual": 211
+          "expected": 211,
+          "actual": 163
         }
       }
     },
@@ -12687,20 +13046,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 254,
-          "actual": 348
+          "expected": 348,
+          "actual": 254
         },
         "pointsAgainst": {
-          "expected": 226,
-          "actual": 287
+          "expected": 287,
+          "actual": 226
         }
       }
     },
@@ -12743,20 +13102,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 3,
-          "actual": 4
+          "expected": 4,
+          "actual": 3
         },
         "pointsFor": {
-          "expected": 149,
-          "actual": 179
+          "expected": 179,
+          "actual": 149
         },
         "pointsAgainst": {
-          "expected": 179,
-          "actual": 202
+          "expected": 202,
+          "actual": 179
         }
       }
     },
@@ -12766,20 +13125,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
-        "wins": {
-          "expected": 4,
-          "actual": 5
+        "losses": {
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 136,
-          "actual": 179
+          "expected": 179,
+          "actual": 136
         },
         "pointsAgainst": {
-          "expected": 129,
-          "actual": 136
+          "expected": 136,
+          "actual": 123
         }
       }
     },
@@ -12819,20 +13178,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 126,
-          "actual": 134
+          "expected": 134,
+          "actual": 126
         },
         "pointsAgainst": {
-          "expected": 208,
-          "actual": 256
+          "expected": 256,
+          "actual": 208
         }
       }
     },
@@ -12952,6 +13311,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "WEST",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 7,
+          "actual": 6
+        },
+        "wins": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 337,
+          "actual": 266
+        },
+        "pointsAgainst": {
+          "expected": 59,
+          "actual": 52
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "WESTLAKE",
       "season": "2019",
       "mismatches": {
@@ -12979,20 +13361,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "wins": {
-          "expected": 4,
-          "actual": 5
+          "expected": 5,
+          "actual": 4
         },
         "pointsFor": {
-          "expected": 108,
-          "actual": 123
+          "expected": 123,
+          "actual": 108
         },
         "pointsAgainst": {
-          "expected": 116,
-          "actual": 125
+          "expected": 125,
+          "actual": 116
         }
       }
     },
@@ -13070,16 +13452,16 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
         "losses": {
-          "expected": 2,
-          "actual": 3
+          "expected": 3,
+          "actual": 2
         },
         "pointsAgainst": {
-          "expected": 162,
-          "actual": 207
+          "expected": 207,
+          "actual": 162
         }
       }
     },
@@ -13133,20 +13515,20 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 6,
-          "actual": 7
+          "expected": 7,
+          "actual": 6
         },
-        "losses": {
-          "expected": 4,
-          "actual": 5
+        "wins": {
+          "expected": 2,
+          "actual": 1
         },
         "pointsFor": {
-          "expected": 133,
-          "actual": 154
+          "expected": 154,
+          "actual": 127
         },
         "pointsAgainst": {
-          "expected": 196,
-          "actual": 223
+          "expected": 223,
+          "actual": 196
         }
       }
     }
@@ -20434,26 +20816,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "GRAND",
-      "teamB": "MONUMENT VALLEY",
-      "date": "9/24/2026",
-      "season": "2026",
-      "sideA": [
-        {
-          "team": "GRAND",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/24/2026",
-          "teamScore": 54,
-          "opponentScore": 6,
-          "result": "W",
-          "season": "2026",
-          "index": 5
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "GRANGER",
       "teamB": "HILLCREST",
       "date": "10/30/1998",
@@ -21441,6 +21803,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "HILLCREST",
+      "date": "8/21/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "HILLCREST",
+          "opponent": "DEER CREEK",
+          "date": "8/21/2026",
+          "teamScore": 53,
+          "opponentScore": 7,
+          "result": "W",
+          "season": "2026",
+          "index": 1
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "HUNTER",
       "teamB": "KEARNS",
       "date": "10/9/1999",
@@ -21894,6 +22276,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "JORDAN",
+      "date": "8/28/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "JORDAN",
+          "opponent": "DEER CREEK",
+          "date": "8/28/2026",
+          "teamScore": 13,
+          "opponentScore": 10,
+          "result": "W",
+          "season": "2026",
+          "index": 2
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "GRAND",
       "teamB": "JUAB",
       "date": "10/23/1981",
@@ -21985,6 +22387,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -21999,7 +22421,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -25084,26 +25506,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "WATER CANYON",
-      "date": "9/18/2026",
-      "season": "2026",
-      "sideA": [
-        {
-          "team": "MONUMENT VALLEY",
-          "opponent": "WATER CANYON",
-          "date": "9/18/2026",
-          "teamScore": 12,
-          "opponentScore": 60,
-          "result": "L",
-          "season": "2026",
-          "index": 3
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "MORGAN",
       "teamB": "WASATCH",
       "date": "10/7/1998",
@@ -25516,6 +25918,26 @@
         }
       ],
       "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "MOUNTAIN CREST",
+      "date": "8/14/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "MOUNTAIN CREST",
+          "opponent": "DEER CREEK",
+          "date": "8/14/2026",
+          "teamScore": 49,
+          "opponentScore": 0,
+          "result": "W",
+          "season": "2026",
+          "index": 0
+        }
+      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -27573,6 +27995,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -27587,7 +28029,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -27606,7 +28048,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -32540,6 +32982,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "DEER CREEK",
+      "teamB": "UINTAH",
+      "date": "9/11/2026",
+      "season": "2026",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "UINTAH",
+          "opponent": "DEER CREEK",
+          "date": "9/11/2026",
+          "teamScore": 36,
+          "opponentScore": 14,
+          "result": "W",
+          "season": "2026",
+          "index": 4
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "UMA-HILLFIELD",
       "teamB": "UMA-LEHI",
       "date": "10/3/2024",
@@ -33651,26 +34113,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "WATER CANYON",
-      "date": "9/19/2026",
-      "season": "2026",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "WATER CANYON",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/19/2026",
-          "teamScore": 60,
-          "opponentScore": 12,
-          "result": "W",
-          "season": "2026",
-          "index": 5
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "PAYSON",
       "teamB": "WEBER",
       "date": "9/11/1948",
@@ -34762,169 +35204,169 @@
       "team": "ALA",
       "file": "ala.json",
       "seasons": 21,
-      "totalGames": 214
+      "totalGames": 213
     },
     {
       "team": "ALTA",
       "file": "alta.json",
       "seasons": 49,
-      "totalGames": 540
+      "totalGames": 539
     },
     {
       "team": "ALTAMONT",
       "file": "altamont.json",
       "seasons": 53,
-      "totalGames": 499
+      "totalGames": 498
     },
     {
       "team": "AMERICAN FORK",
       "file": "american-fork.json",
       "seasons": 101,
-      "totalGames": 928
+      "totalGames": 927
     },
     {
       "team": "BEAR RIVER",
       "file": "bear-river.json",
       "seasons": 105,
-      "totalGames": 949
+      "totalGames": 948
     },
     {
       "team": "BEAVER",
       "file": "beaver.json",
       "seasons": 87,
-      "totalGames": 835
+      "totalGames": 834
     },
     {
       "team": "BEN LOMOND",
       "file": "ben-lomond.json",
       "seasons": 74,
-      "totalGames": 707
+      "totalGames": 706
     },
     {
       "team": "BINGHAM",
       "file": "bingham.json",
       "seasons": 103,
-      "totalGames": 995
+      "totalGames": 994
     },
     {
       "team": "BONNEVILLE",
       "file": "bonneville.json",
       "seasons": 67,
-      "totalGames": 694
+      "totalGames": 693
     },
     {
       "team": "BOUNTIFUL",
       "file": "bountiful.json",
       "seasons": 71,
-      "totalGames": 755
+      "totalGames": 754
     },
     {
       "team": "BOX ELDER",
       "file": "box-elder.json",
       "seasons": 110,
-      "totalGames": 1028
+      "totalGames": 1027
     },
     {
       "team": "BRIGHTON",
       "file": "brighton.json",
       "seasons": 58,
-      "totalGames": 627
+      "totalGames": 626
     },
     {
       "team": "CANYON VIEW",
       "file": "canyon-view.json",
       "seasons": 30,
-      "totalGames": 304
+      "totalGames": 303
     },
     {
       "team": "CARBON",
       "file": "carbon.json",
       "seasons": 108,
-      "totalGames": 947
+      "totalGames": 946
     },
     {
       "team": "CEDAR CITY",
       "file": "cedar-city.json",
       "seasons": 78,
-      "totalGames": 775
+      "totalGames": 774
     },
     {
       "team": "CEDAR VALLEY",
       "file": "cedar-valley.json",
       "seasons": 8,
-      "totalGames": 85
+      "totalGames": 84
     },
     {
       "team": "CLEARFIELD",
       "file": "clearfield.json",
       "seasons": 66,
-      "totalGames": 666
+      "totalGames": 665
     },
     {
       "team": "COPPER HILLS",
       "file": "copper-hills.json",
       "seasons": 32,
-      "totalGames": 318
+      "totalGames": 317
     },
     {
       "team": "CORNER CANYON",
       "file": "corner-canyon.json",
       "seasons": 14,
-      "totalGames": 177
+      "totalGames": 175
     },
     {
       "team": "COTTONWOOD",
       "file": "cottonwood.json",
       "seasons": 57,
-      "totalGames": 571
+      "totalGames": 570
     },
     {
       "team": "CRIMSON CLIFFS",
       "file": "crimson-cliffs.json",
       "seasons": 8,
-      "totalGames": 94
+      "totalGames": 93
     },
     {
       "team": "CYPRUS",
       "file": "cyprus.json",
       "seasons": 101,
-      "totalGames": 915
+      "totalGames": 914
     },
     {
       "team": "DAVIS",
       "file": "davis.json",
       "seasons": 111,
-      "totalGames": 1081
+      "totalGames": 1080
     },
     {
       "team": "DEER CREEK",
       "file": "deer-creek.json",
       "seasons": 1,
-      "totalGames": 7
+      "totalGames": 2
     },
     {
       "team": "DELTA",
       "file": "delta.json",
       "seasons": 104,
-      "totalGames": 961
+      "totalGames": 960
     },
     {
       "team": "DESERET PEAK",
       "file": "deseret-peak.json",
       "seasons": 2,
-      "totalGames": 17
+      "totalGames": 16
     },
     {
       "team": "DESERT HILLS",
       "file": "desert-hills.json",
       "seasons": 19,
-      "totalGames": 210
+      "totalGames": 209
     },
     {
       "team": "DIXIE",
       "file": "dixie.json",
       "seasons": 82,
-      "totalGames": 806
+      "totalGames": 805
     },
     {
       "team": "DUCHESNE",
@@ -34936,7 +35378,7 @@
       "team": "EAST",
       "file": "east.json",
       "seasons": 113,
-      "totalGames": 1064
+      "totalGames": 1063
     },
     {
       "team": "EMERY",
@@ -34954,79 +35396,79 @@
       "team": "FARMINGTON",
       "file": "farmington.json",
       "seasons": 9,
-      "totalGames": 97
+      "totalGames": 96
     },
     {
       "team": "FREMONT",
       "file": "fremont.json",
       "seasons": 33,
-      "totalGames": 370
+      "totalGames": 369
     },
     {
       "team": "GRAND",
       "file": "grand.json",
       "seasons": 106,
-      "totalGames": 915
+      "totalGames": 913
     },
     {
       "team": "GRANGER",
       "file": "granger.json",
       "seasons": 69,
-      "totalGames": 685
+      "totalGames": 684
     },
     {
       "team": "GRANTSVILLE",
       "file": "grantsville.json",
       "seasons": 110,
-      "totalGames": 966
+      "totalGames": 965
     },
     {
       "team": "GREEN CANYON",
       "file": "green-canyon.json",
       "seasons": 10,
-      "totalGames": 110
+      "totalGames": 109
     },
     {
       "team": "GUNNISON VALLEY",
       "file": "gunnison-valley.json",
       "seasons": 37,
-      "totalGames": 358
+      "totalGames": 357
     },
     {
       "team": "HERRIMAN",
       "file": "herriman.json",
       "seasons": 17,
-      "totalGames": 192
+      "totalGames": 191
     },
     {
       "team": "HIGHLAND",
       "file": "highland.json",
       "seasons": 69,
-      "totalGames": 732
+      "totalGames": 731
     },
     {
       "team": "HILLCREST",
       "file": "hillcrest.json",
       "seasons": 64,
-      "totalGames": 626
+      "totalGames": 625
     },
     {
       "team": "HUNTER",
       "file": "hunter.json",
       "seasons": 37,
-      "totalGames": 401
+      "totalGames": 400
     },
     {
       "team": "HURRICANE",
       "file": "hurricane.json",
       "seasons": 78,
-      "totalGames": 763
+      "totalGames": 762
     },
     {
       "team": "JORDAN",
       "file": "jordan.json",
       "seasons": 117,
-      "totalGames": 1092
+      "totalGames": 1091
     },
     {
       "team": "JUAB",
@@ -35038,73 +35480,73 @@
       "team": "JUAN DIEGO",
       "file": "juan-diego.json",
       "seasons": 27,
-      "totalGames": 316
+      "totalGames": 315
     },
     {
       "team": "JUDGE MEMORIAL",
       "file": "judge-memorial.json",
       "seasons": 100,
-      "totalGames": 923
+      "totalGames": 922
     },
     {
       "team": "KANAB",
       "file": "kanab.json",
       "seasons": 77,
-      "totalGames": 774
+      "totalGames": 773
     },
     {
       "team": "KEARNS",
       "file": "kearns.json",
       "seasons": 61,
-      "totalGames": 606
+      "totalGames": 605
     },
     {
       "team": "LAYTON CHRISTIAN",
       "file": "layton-christian.json",
       "seasons": 23,
-      "totalGames": 236
+      "totalGames": 235
     },
     {
       "team": "LAYTON",
       "file": "layton.json",
       "seasons": 59,
-      "totalGames": 607
+      "totalGames": 606
     },
     {
       "team": "LEHI",
       "file": "lehi.json",
       "seasons": 105,
-      "totalGames": 940
+      "totalGames": 939
     },
     {
       "team": "LOGAN",
       "file": "logan.json",
       "seasons": 108,
-      "totalGames": 1003
+      "totalGames": 1002
     },
     {
       "team": "LONE PEAK",
       "file": "lone-peak.json",
       "seasons": 30,
-      "totalGames": 363
+      "totalGames": 362
     },
     {
       "team": "MANTI",
       "file": "manti.json",
       "seasons": 59,
-      "totalGames": 592
+      "totalGames": 591
     },
     {
       "team": "MAPLE MOUNTAIN",
       "file": "maple-mountain.json",
       "seasons": 18,
-      "totalGames": 195
+      "totalGames": 194
     },
     {
       "team": "MILFORD",
       "file": "milford.json",
       "seasons": 85,
-      "totalGames": 745
+      "totalGames": 744
     },
     {
       "team": "MILLARD",
@@ -35116,7 +35558,7 @@
       "team": "MONTICELLO",
       "file": "monticello.json",
       "seasons": 74,
-      "totalGames": 730
+      "totalGames": 729
     },
     {
       "team": "MONUMENT VALLEY",
@@ -35128,73 +35570,73 @@
       "team": "MORGAN",
       "file": "morgan.json",
       "seasons": 99,
-      "totalGames": 926
+      "totalGames": 925
     },
     {
       "team": "MOUNTAIN CREST",
       "file": "mountain-crest.json",
       "seasons": 44,
-      "totalGames": 486
+      "totalGames": 485
     },
     {
       "team": "MOUNTAIN RIDGE",
       "file": "mountain-ridge.json",
       "seasons": 8,
-      "totalGames": 84
+      "totalGames": 83
     },
     {
       "team": "MOUNTAIN VIEW",
       "file": "mountain-view.json",
       "seasons": 47,
-      "totalGames": 472
+      "totalGames": 471
     },
     {
       "team": "MURRAY",
       "file": "murray.json",
       "seasons": 109,
-      "totalGames": 961
+      "totalGames": 960
     },
     {
       "team": "NORTH SANPETE",
       "file": "north-sanpete.json",
       "seasons": 111,
-      "totalGames": 872
+      "totalGames": 871
     },
     {
       "team": "NORTH SEVIER",
       "file": "north-sevier.json",
       "seasons": 68,
-      "totalGames": 588
+      "totalGames": 587
     },
     {
       "team": "NORTH SUMMIT",
       "file": "north-summit.json",
       "seasons": 101,
-      "totalGames": 938
+      "totalGames": 937
     },
     {
       "team": "NORTHRIDGE",
       "file": "northridge.json",
       "seasons": 35,
-      "totalGames": 370
+      "totalGames": 369
     },
     {
       "team": "OGDEN",
       "file": "ogden.json",
       "seasons": 128,
-      "totalGames": 1110
+      "totalGames": 1109
     },
     {
       "team": "OLYMPUS",
       "file": "olympus.json",
       "seasons": 74,
-      "totalGames": 755
+      "totalGames": 754
     },
     {
       "team": "OREM",
       "file": "orem.json",
       "seasons": 98,
-      "totalGames": 937
+      "totalGames": 936
     },
     {
       "team": "PANGUITCH",
@@ -35206,7 +35648,7 @@
       "team": "PARK CITY",
       "file": "park-city.json",
       "seasons": 119,
-      "totalGames": 986
+      "totalGames": 985
     },
     {
       "team": "PAROWAN",
@@ -35218,253 +35660,253 @@
       "team": "PAYSON",
       "file": "payson.json",
       "seasons": 116,
-      "totalGames": 978
+      "totalGames": 977
     },
     {
       "team": "PINE VIEW",
       "file": "pine-view.json",
       "seasons": 44,
-      "totalGames": 458
+      "totalGames": 457
     },
     {
       "team": "PLEASANT GROVE",
       "file": "pleasant-grove.json",
       "seasons": 99,
-      "totalGames": 883
+      "totalGames": 882
     },
     {
       "team": "PROVIDENCE HALL",
       "file": "providence-hall.json",
       "seasons": 8,
-      "totalGames": 83
+      "totalGames": 82
     },
     {
       "team": "PROVO",
       "file": "provo.json",
       "seasons": 112,
-      "totalGames": 1008
+      "totalGames": 1007
     },
     {
       "team": "RICH",
       "file": "rich.json",
       "seasons": 42,
-      "totalGames": 446
+      "totalGames": 445
     },
     {
       "team": "RICHFIELD",
       "file": "richfield.json",
       "seasons": 97,
-      "totalGames": 854
+      "totalGames": 853
     },
     {
       "team": "RIDGELINE",
       "file": "ridgeline.json",
       "seasons": 11,
-      "totalGames": 130
+      "totalGames": 129
     },
     {
       "team": "RIVERTON",
       "file": "riverton.json",
       "seasons": 28,
-      "totalGames": 300
+      "totalGames": 299
     },
     {
       "team": "ROY",
       "file": "roy.json",
       "seasons": 62,
-      "totalGames": 628
+      "totalGames": 627
     },
     {
       "team": "SAINT JOSEPH",
       "file": "saint-joseph.json",
       "seasons": 4,
-      "totalGames": 36
+      "totalGames": 35
     },
     {
       "team": "SALEM HILLS",
       "file": "salem-hills.json",
       "seasons": 19,
-      "totalGames": 205
+      "totalGames": 204
     },
     {
       "team": "SAN JUAN",
       "file": "san-juan.json",
       "seasons": 71,
-      "totalGames": 749
+      "totalGames": 748
     },
     {
       "team": "SKY VIEW",
       "file": "sky-view.json",
       "seasons": 63,
-      "totalGames": 638
+      "totalGames": 637
     },
     {
       "team": "SKYLINE",
       "file": "skyline.json",
       "seasons": 65,
-      "totalGames": 734
+      "totalGames": 733
     },
     {
       "team": "SKYRIDGE",
       "file": "skyridge.json",
       "seasons": 11,
-      "totalGames": 134
+      "totalGames": 133
     },
     {
       "team": "SNOW CANYON",
       "file": "snow-canyon.json",
       "seasons": 33,
-      "totalGames": 345
+      "totalGames": 344
     },
     {
       "team": "SOUTH SEVIER",
       "file": "south-sevier.json",
       "seasons": 72,
-      "totalGames": 629
+      "totalGames": 628
     },
     {
       "team": "SOUTH SUMMIT",
       "file": "south-summit.json",
       "seasons": 89,
-      "totalGames": 823
+      "totalGames": 822
     },
     {
       "team": "SPANISH FORK",
       "file": "spanish-fork.json",
       "seasons": 107,
-      "totalGames": 936
+      "totalGames": 935
     },
     {
       "team": "SPRINGVILLE",
       "file": "springville.json",
       "seasons": 110,
-      "totalGames": 968
+      "totalGames": 967
     },
     {
       "team": "STANSBURY",
       "file": "stansbury.json",
       "seasons": 18,
-      "totalGames": 202
+      "totalGames": 201
     },
     {
       "team": "SUMMIT ACADEMY",
       "file": "summit-academy.json",
       "seasons": 15,
-      "totalGames": 168
+      "totalGames": 167
     },
     {
       "team": "SYRACUSE",
       "file": "syracuse.json",
       "seasons": 20,
-      "totalGames": 215
+      "totalGames": 214
     },
     {
       "team": "TAYLORSVILLE",
       "file": "taylorsville.json",
       "seasons": 46,
-      "totalGames": 453
+      "totalGames": 452
     },
     {
       "team": "TIMPANOGOS",
       "file": "timpanogos.json",
       "seasons": 31,
-      "totalGames": 317
+      "totalGames": 316
     },
     {
       "team": "TIMPVIEW",
       "file": "timpview.json",
       "seasons": 50,
-      "totalGames": 572
+      "totalGames": 571
     },
     {
       "team": "TOOELE",
       "file": "tooele.json",
       "seasons": 111,
-      "totalGames": 987
+      "totalGames": 986
     },
     {
       "team": "UINTAH",
       "file": "uintah.json",
       "seasons": 82,
-      "totalGames": 724
+      "totalGames": 723
     },
     {
       "team": "UMA-HILLFIELD",
       "file": "uma-hillfield.json",
       "seasons": 3,
-      "totalGames": 23
+      "totalGames": 22
     },
     {
       "team": "UMA-LEHI",
       "file": "uma-lehi.json",
       "seasons": 3,
-      "totalGames": 26
+      "totalGames": 25
     },
     {
       "team": "UNION",
       "file": "union.json",
       "seasons": 76,
-      "totalGames": 719
+      "totalGames": 718
     },
     {
       "team": "VIEWMONT",
       "file": "viewmont.json",
       "seasons": 63,
-      "totalGames": 637
+      "totalGames": 636
     },
     {
       "team": "WASATCH",
       "file": "wasatch.json",
       "seasons": 103,
-      "totalGames": 946
+      "totalGames": 945
     },
     {
       "team": "WATER CANYON",
       "file": "water-canyon.json",
       "seasons": 5,
-      "totalGames": 52
+      "totalGames": 51
     },
     {
       "team": "WEBER",
       "file": "weber.json",
       "seasons": 101,
-      "totalGames": 911
+      "totalGames": 910
     },
     {
       "team": "WEST FIELD",
       "file": "west-field.json",
       "seasons": 3,
-      "totalGames": 30
+      "totalGames": 29
     },
     {
       "team": "WEST JORDAN",
       "file": "west-jordan.json",
       "seasons": 46,
-      "totalGames": 461
+      "totalGames": 460
     },
     {
       "team": "WEST",
       "file": "west.json",
       "seasons": 128,
-      "totalGames": 1097
+      "totalGames": 1096
     },
     {
       "team": "WESTLAKE",
       "file": "westlake.json",
       "seasons": 18,
-      "totalGames": 188
+      "totalGames": 187
     },
     {
       "team": "WHITEHORSE",
       "file": "whitehorse.json",
       "seasons": 43,
-      "totalGames": 359
+      "totalGames": 358
     },
     {
       "team": "WOODS CROSS",
       "file": "woods-cross.json",
       "seasons": 50,
-      "totalGames": 508
+      "totalGames": 507
     }
   ]
 }
