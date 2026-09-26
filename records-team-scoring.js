@@ -207,7 +207,7 @@ async function install(){
     </div>
     <div class="rus-tsr-wrap"><table class="rus-tsr-table"><thead><tr><th>Rank</th><th>Team / Record After Game</th><th>Opponent</th><th>Points</th><th>Game</th></tr></thead><tbody id="rusTsrBody"><tr><td colspan="5"><div class="rus-tsr-empty">Loading team scoring records…</div></td></tr></tbody></table></div>
     <div class="rus-tsr-source" id="rusTsrStatus">Loading quarter, half and game scoring data…</div>
-    <div class="rus-milestones"><h4>Scoring Milestones</h4><p>Last time each team scored 80+, 90+ and 100+ points in the 2001–present record data.</p><div class="rus-ms-grid" id="rusTsrMilestones"></div></div>
+    <div class="rus-milestones"><h4>Scoring Milestones</h4><p>Last time each team scored 80+, 90+ and 100+ points across its full recorded program history.</p><div class="rus-ms-grid" id="rusTsrMilestones"></div></div>
   `;
   anchor.insertAdjacentElement('afterend',section);
   syncControls();
