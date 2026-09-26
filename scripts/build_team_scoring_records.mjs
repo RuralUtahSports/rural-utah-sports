@@ -193,21 +193,39 @@ function pushPerspective(target, base, awayPoints, homePoints, segment, type) {
   if (home) target.push(home);
 }
 
-// Current-season full-game leaders come from the verified weekly feed so
-// manual/late finals survive even when quarter details are unavailable.
+// Current-season full-game leaders merge every verified final source.
+// This intentionally does not depend on weekly-simulation containing the game:
+// late-added scoreboard finals can live in standings/details before weekly catches up.
 const currentGame = [];
-for (const game of weekly.games || []) {
-  if (yearOf(game.date) !== 2026) continue;
-  const away = finite(game.actualAway), home = finite(game.actualHome);
-  if (away === null || home === null) continue;
+const currentFinals = new Map();
+const addCurrentFinal = (game, awayScore, homeScore, url = '', priority = 0) => {
+  const awayTeam = activeTeam(game.awayTeam) || clean(game.awayTeam);
+  const homeTeam = activeTeam(game.homeTeam) || clean(game.homeTeam);
+  const date = isoDate(game.date);
+  const away = finite(awayScore), home = finite(homeScore);
+  if (yearOf(date) !== 2026 || !awayTeam || !homeTeam || away === null || home === null) return;
+  const id = date + '|' + norm(awayTeam) + '|' + norm(homeTeam);
+  const prior = currentFinals.get(id);
+  if (!prior || priority >= prior.priority) currentFinals.set(id, {priority,date,awayTeam,homeTeam,away,home,url:clean(url)});
+};
+for (const game of weekly.games || []) addCurrentFinal(game, game.actualAway, game.actualHome, game.deseretUrl || '', 20);
+for (const game of standings?.games || []) addCurrentFinal(game, game.actualAway, game.actualHome, game.deseretUrl || '', 30);
+for (const [key, detail] of Object.entries(details.games || {})) {
+  if (detail?.final !== true && !/^final$/i.test(clean(detail?.status))) continue;
+  const parts = String(key).split('|');
+  const rows = detail?.boxScore?.rows;
+  if (!Array.isArray(rows) || rows.length < 2) continue;
+  addCurrentFinal({
+    date: detail?.date || parts[0],
+    awayTeam: detail?.awayTeam || parts[1],
+    homeTeam: detail?.homeTeam || parts[2]
+  }, rows[0]?.total, rows[1]?.total, detail?.url || detail?.deseretUrl || '', 40);
+}
+for (const game of currentFinals.values()) {
   pushPerspective(currentGame, {
-    awayTeam: game.awayTeam,
-    homeTeam: game.homeTeam,
-    date: game.date,
-    awayTotal: away,
-    homeTotal: home,
-    url: game.deseretUrl || ''
-  }, away, home, 'GAME', 'game');
+    awayTeam: game.awayTeam, homeTeam: game.homeTeam, date: game.date,
+    awayTotal: game.away, homeTotal: game.home, url: game.url
+  }, game.away, game.home, 'GAME', 'game');
 }
 
 // Deduplicate Deseret detail rows before building quarter/half records.
@@ -369,6 +387,26 @@ function recordCandidates(events, type) {
   return [...selected.values()];
 }
 
+// Last time each active team scored 80+, 90+ and 100+ points (2001-present).
+// Include today's merged verified finals even if scorigami has not rebuilt yet.
+const milestoneSource = new Map();
+for (const e of [...historicalGameAll, ...currentGame]) milestoneSource.set(eventId(e), e);
+const scoringMilestones = {};
+for (const team of teams) {
+  const rows = [...milestoneSource.values()]
+    .filter(e => norm(e.team) === norm(team.team))
+    .sort((a,b) => Date.parse(b.date) - Date.parse(a.date));
+  const out = {};
+  for (const threshold of [80,90,100]) {
+    const hit = rows.find(e => Number(e.teamPoints) >= threshold);
+    out[String(threshold)] = hit ? {
+      date: hit.date, opponent: hit.opponent, points: hit.teamPoints,
+      opponentPoints: hit.opponentPoints, result: hit.result, classification: hit.classification
+    } : null;
+  }
+  scoringMilestones[team.team] = out;
+}
+
 const payload = {
   updatedAt: new Date().toISOString(),
   coverage: {
@@ -388,6 +426,7 @@ const payload = {
     quarter: recordCandidates(recordQuarterAll, 'quarter'),
     half: recordCandidates(recordHalfAll, 'half')
   },
+  milestones: scoringMilestones,
   summary: {
     currentGamePerspectives: currentGame.length,
     currentQuarterPerspectives: currentQuarter.length,
