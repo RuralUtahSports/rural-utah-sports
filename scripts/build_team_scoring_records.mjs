@@ -387,10 +387,28 @@ function recordCandidates(events, type) {
   return [...selected.values()];
 }
 
-// Last time each active team scored 80+, 90+ and 100+ points (2001-present).
-// Include today's merged verified finals even if scorigami has not rebuilt yet.
+// Last time each active team scored 80+, 90+ and 100+ points across its full
+// recorded program history. The record-book table remains 2001-present, but
+// milestones intentionally scan every dated game in the historical database.
+const allHistoryGameAll = [];
+for (const scoreGroup of scorigami.scores || []) {
+  for (const game of Array.isArray(scoreGroup.games) ? scoreGroup.games : []) {
+    const year = Number(game.year) || yearOf(game.date);
+    const s1 = finite(game.score1), s2 = finite(game.score2);
+    if (!year || s1 === null || s2 === null) continue;
+    const team1 = activeTeam(game.team1), team2 = activeTeam(game.team2);
+    if (team1) {
+      const e = makeEvent({team:team1,opponent:team2||game.team2,date:game.date,teamScore:s1,opponentScore:s2,teamPoints:s1,opponentPoints:s2,segment:'GAME',type:'game'});
+      if (e) allHistoryGameAll.push(e);
+    }
+    if (team2) {
+      const e = makeEvent({team:team2,opponent:team1||game.team1,date:game.date,teamScore:s2,opponentScore:s1,teamPoints:s2,opponentPoints:s1,segment:'GAME',type:'game'});
+      if (e) allHistoryGameAll.push(e);
+    }
+  }
+}
 const milestoneSource = new Map();
-for (const e of [...historicalGameAll, ...currentGame]) milestoneSource.set(eventId(e), e);
+for (const e of [...allHistoryGameAll, ...currentGame]) milestoneSource.set(eventId(e), e);
 const scoringMilestones = {};
 for (const team of teams) {
   const rows = [...milestoneSource.values()]
