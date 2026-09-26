@@ -15,6 +15,34 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TEAM_DIR = ROOT / "team-page-data"
+RPI_PATH = ROOT / "rpi-standings-2026.json"
+CURRENT_SEASON = 2026
+
+
+def slug(value):
+    import re
+    return re.sub(r"(^-|-$)", "", re.sub(r"[^a-z0-9]+", "-", str(value or "").strip().lower()))
+
+
+def current_rpi_by_slug():
+    if not RPI_PATH.exists():
+        return {}
+    data = json.loads(RPI_PATH.read_text(encoding="utf-8"))
+    rows = []
+    for group in (data.get("classifications") or {}).values():
+        if isinstance(group, list):
+            rows.extend(group)
+    aliases = {"cedar": "cedar-city", "grand-county": "grand", "american-leadership-academy": "ala"}
+    out = {}
+    for row in rows:
+        if not isinstance(row, dict) or not row.get("team"):
+            continue
+        key = aliases.get(slug(row.get("team")), slug(row.get("team")))
+        out[key] = row
+    return out
+
+
+CURRENT_RPI = current_rpi_by_slug()
 
 # Verified from the Deseret News 2025 football score/schedule pages. Keeping
 # these here makes the correction durable: if another generator recreates a
@@ -163,6 +191,30 @@ def rebuild_file(path):
             continue
         rows_by_year[year] = summary
         added_years.append(year)
+
+    # Current seasons use the same RUS Greatest Seasons formula as historical
+    # seasons. RPI OWP supplies the live opponent-strength component, so the
+    # rating can update throughout the season instead of remaining blank.
+    current = rows_by_year.get(CURRENT_SEASON)
+    rpi = CURRENT_RPI.get(path.stem)
+    if isinstance(current, dict) and isinstance(rpi, dict):
+        games = number(current.get("games")) or 0
+        wins = number(current.get("wins")) or 0
+        ties = number(current.get("ties")) or 0
+        margin = number(current.get("avgMargin"))
+        owp = number(rpi.get("owp"))
+        oowp = number(rpi.get("oowp"))
+        if games > 0 and margin is not None and owp is not None:
+            win_pct = (wins + ties * 0.5) / games
+            sos = owp * 20
+            dominance = max(0, min(margin, 50)) / 50 * 30
+            season_length = min(games / 14, 1) * 10
+            current["winPct"] = win_pct
+            current["opponentWinPct"] = owp
+            if oowp is not None:
+                current["opponentsOpponentWinPct"] = oowp
+            current["sos"] = sos
+            current["rating"] = win_pct * 40 + dominance + sos + season_length
 
     rebuilt = [rows_by_year[year] for year in sorted(rows_by_year, reverse=True)]
     rebuilt.extend(passthrough)
