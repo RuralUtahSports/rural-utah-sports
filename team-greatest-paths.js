@@ -81,7 +81,7 @@ async function enhance(){styles();let tries=0;const wait=async()=>{const table=f
             });
             return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
           };
-          if(current&&!table.tBodies[0].querySelector('[data-rus-current-season="2026"]')){
+          if(current){const existingCurrent=table.tBodies[0].querySelector('[data-rus-current-season="2026"]');if(existingCurrent)existingCurrent.remove();
             const games=Number(current.wins||0)+Number(current.losses||0)+Number(current.ties||0);
             if(games>0){
               const pf=Number(current.pointsFor||0),pa=Number(current.pointsAgainst||0),pct=(Number(current.wins||0)+Number(current.ties||0)*.5)/games,margin=(pf-pa)/games;
