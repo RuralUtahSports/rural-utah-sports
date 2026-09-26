@@ -61,6 +61,8 @@ function addStyles(){
 .rus-tsr-meta{margin-top:4px;color:#8f8f8f;font-size:10px;font-weight:800;white-space:nowrap}.rus-tsr-record{color:#fff}
 .rus-tsr-value{text-align:center;color:#F14D07;font-size:22px;font-weight:900}.rus-tsr-game{font-size:11px;line-height:1.45;color:#aaa;min-width:250px}.rus-tsr-game strong{display:block;color:#fff}.rus-tsr-game span{display:block;margin-top:2px}
 .rus-tsr-source{padding:13px 20px;color:#777;font-size:11px;line-height:1.5;border-top:1px solid #222}.rus-tsr-empty{padding:45px;text-align:center;color:#999}
+.rus-milestones{padding:18px 20px 22px;border-top:1px solid #333;background:#080808}.rus-milestones h4{font-size:18px;text-transform:uppercase;margin:0 0 5px}.rus-milestones>p{color:#888;font-size:11px;margin:0 0 13px}.rus-ms-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.rus-ms-card{border:1px solid #333;border-radius:8px;background:#111;padding:12px}.rus-ms-card h5{margin:0 0 9px;color:#F14D07;font-size:17px}.rus-ms-row{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid #252525;font-size:11px}.rus-ms-row:first-of-type{border-top:0}.rus-ms-team{font-weight:900}.rus-ms-game{text-align:right;color:#aaa}.rus-ms-game strong{color:#fff;display:block}
+@media(max-width:800px){.rus-ms-grid{grid-template-columns:1fr}}
 @media(max-width:900px){.rus-tsr-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.rus-tsr-head{padding:16px}.rus-tsr-controls{grid-template-columns:1fr;padding:12px}.rus-tsr-wrap{max-height:620px}.rus-tsr-table{min-width:760px}.rus-tsr-team-badge{min-width:160px}.rus-tsr-logo{width:30px;height:30px;flex-basis:30px}}
 `;
@@ -167,6 +169,19 @@ function render(){
   if(status)status.textContent=statusText(view,type,visible.length,ranked.length);
 }
 
+function renderMilestones(){
+  const host=document.getElementById('rusTsrMilestones');if(!host||!data?.milestones)return;
+  const cls=clean(document.getElementById('rusTsrClass')?.value||'all');
+  const q=norm(document.getElementById('rusTsrSearch')?.value||'');
+  const teams=[...teamMap.values()].filter(t=>(cls==='all'||clean(t.classification)===cls)&&(!q||norm(t.team).includes(q)));
+  const cards=[80,90,100].map(threshold=>{
+    const rows=teams.map(t=>({team:t.team,hit:data.milestones?.[t.team]?.[String(threshold)]||null}))
+      .filter(x=>x.hit).sort((a,b)=>Date.parse(b.hit.date)-Date.parse(a.hit.date)||a.team.localeCompare(b.team));
+    return `<div class="rus-ms-card"><h5>Last ${threshold}+ Point Game</h5>${rows.length?rows.map(x=>`<div class="rus-ms-row"><span class="rus-ms-team">${esc(x.team)}</span><span class="rus-ms-game"><strong>${esc(x.hit.points)}–${esc(x.hit.opponentPoints)} vs ${esc(x.hit.opponent)}</strong>${esc(x.hit.date)}</span></div>`).join(''):'<div class="rus-tsr-empty">No qualifying game in the record data.</div>'}</div>`;
+  });
+  host.innerHTML=cards.join('');
+}
+
 function populateClasses(){
   const select=document.getElementById('rusTsrClass');if(!select)return;
   const rows=[...(data?.current?.game||[]),...(data?.records?.game||[])];
@@ -192,6 +207,7 @@ async function install(){
     </div>
     <div class="rus-tsr-wrap"><table class="rus-tsr-table"><thead><tr><th>Rank</th><th>Team / Record After Game</th><th>Opponent</th><th>Points</th><th>Game</th></tr></thead><tbody id="rusTsrBody"><tr><td colspan="5"><div class="rus-tsr-empty">Loading team scoring records…</div></td></tr></tbody></table></div>
     <div class="rus-tsr-source" id="rusTsrStatus">Loading quarter, half and game scoring data…</div>
+    <div class="rus-milestones"><h4>Scoring Milestones</h4><p>Last time each team scored 80+, 90+ and 100+ points in the 2001–present record data.</p><div class="rus-ms-grid" id="rusTsrMilestones"></div></div>
   `;
   anchor.insertAdjacentElement('afterend',section);
   syncControls();
@@ -208,11 +224,13 @@ async function install(){
     for(const id of ['rusTsrType','rusTsrCategory','rusTsrSegment','rusTsrView','rusTsrClass']){
       document.getElementById(id)?.addEventListener('change',()=>{
         if(id==='rusTsrType')syncControls();
+        renderMilestones();
         render();
       });
     }
-    document.getElementById('rusTsrSearch')?.addEventListener('input',render);
+    document.getElementById('rusTsrSearch')?.addEventListener('input',()=>{renderMilestones();render()});
     window.addEventListener('rus:school-assets-ready',async()=>{try{await window.RUSSchoolAssets?.load?.()}catch{}render()},{once:true});
+    renderMilestones();
     render();
   }catch(error){
     console.error('Team scoring records:',error);
