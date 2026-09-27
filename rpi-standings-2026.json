@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updatedAt": "2026-09-27T02:34:01.418Z",
+  "updatedAt": "2026-09-27T05:25:45.365Z",
   "formula": {
     "rpi": "0.45 × MWP + 0.45 × OWP + 0.10 × OOWP",
     "footballMwp": "Unadjusted game-result winning percentage; football classifications are not weighted.",
@@ -12,7 +12,7 @@
       "LAYTONCHRISTIAN"
     ]
   },
-  "sourceUpdatedAt": "2026-09-26T21:16:41.137Z",
+  "sourceUpdatedAt": "2026-09-27T05:25:43.714Z",
   "classifications": {
     "6A": [
       {
@@ -24,10 +24,10 @@
         "losses": 1,
         "ties": 0,
         "games": 7,
-        "rpi": 0.7993310657596372,
+        "rpi": 0.7995578231292517,
         "mwp": 0.8571428571428571,
         "owp": 0.7761904761904762,
-        "oowp": 0.643310657596372,
+        "oowp": 0.6455782312925171,
         "postseasonEligible": true,
         "rank": 1
       },
@@ -314,9 +314,9 @@
         "losses": 2,
         "ties": 0,
         "games": 6,
-        "rpi": 0.6664285714285715,
+        "rpi": 0.6735714285714286,
         "mwp": 0.6666666666666666,
-        "owp": 0.688888888888889,
+        "owp": 0.7047619047619048,
         "oowp": 0.5642857142857143,
         "postseasonEligible": true,
         "rank": 2
@@ -346,10 +346,10 @@
         "losses": 2,
         "ties": 0,
         "games": 7,
-        "rpi": 0.6462244897959184,
+        "rpi": 0.6464512471655329,
         "mwp": 0.7142857142857143,
         "owp": 0.5904761904761905,
-        "oowp": 0.5908163265306123,
+        "oowp": 0.5930839002267574,
         "postseasonEligible": true,
         "rank": 4
       },
@@ -394,10 +394,10 @@
         "losses": 2,
         "ties": 0,
         "games": 7,
-        "rpi": 0.6009523809523811,
+        "rpi": 0.6011791383219957,
         "mwp": 0.7142857142857143,
         "owp": 0.5047619047619049,
-        "oowp": 0.5238095238095238,
+        "oowp": 0.526077097505669,
         "postseasonEligible": true,
         "rank": 7
       },
@@ -490,10 +490,10 @@
         "losses": 4,
         "ties": 0,
         "games": 7,
-        "rpi": 0.4822562358276644,
+        "rpi": 0.4824829931972789,
         "mwp": 0.42857142857142855,
         "owp": 0.5142857142857143,
-        "oowp": 0.5797052154195013,
+        "oowp": 0.5819727891156463,
         "postseasonEligible": true,
         "rank": 13
       },
@@ -1886,13 +1886,13 @@
     ]
   },
   "comparison": {
-    "officialFetchedAt": "2026-09-27T02:34:00.588Z",
+    "officialFetchedAt": "2026-09-27T05:25:44.726Z",
     "teamsCompared": 116,
     "exactRankMatches": 99,
     "recordMatches": 114,
     "exactRpiMatches": 28,
     "withinOneThousandth": 72,
-    "meanAbsoluteRpiDifference": 0.003025836167800445,
+    "meanAbsoluteRpiDifference": 0.0030578487958401687,
     "rows": [
       {
         "classification": "6A",
@@ -1905,12 +1905,12 @@
         "rusRecord": "6-1",
         "recordMatch": true,
         "officialRpi": 0.803413,
-        "rusRpi": 0.7993310657596372,
-        "rpiDifference": -0.00408193424036285,
+        "rusRpi": 0.7995578231292517,
+        "rpiDifference": -0.0038551768707483225,
         "componentDifference": {
           "mwp": -1.4285714289297147e-7,
           "owp": -0.011904523809523782,
-          "oowp": 0.012754657596371954
+          "oowp": 0.015022231292517119
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2265,11 +2265,11 @@
         "rusRecord": "4-2",
         "recordMatch": true,
         "officialRpi": 0.667877,
-        "rusRpi": 0.6664285714285715,
-        "rpiDifference": -0.0014484285714285727,
+        "rusRpi": 0.6735714285714286,
+        "rpiDifference": 0.005694428571428545,
         "componentDifference": {
           "mwp": -3.33333333379926e-7,
-          "owp": -0.002778111111111037,
+          "owp": 0.01309490476190478,
           "oowp": -0.0019842857142857717
         },
         "likelyCause": "One or more opponent records differ from the official table."
@@ -2305,14 +2305,14 @@
         "rusRecord": "5-2",
         "recordMatch": true,
         "officialRpi": 0.646264,
-        "rusRpi": 0.6462244897959184,
-        "rpiDifference": -0.000039510204081549816,
+        "rusRpi": 0.6464512471655329,
+        "rpiDifference": 0.0001872471655329777,
         "componentDifference": {
           "mwp": -2.8571428567492063e-7,
           "owp": 1.9047619048695452e-7,
-          "oowp": -0.0003966734693876539
+          "oowp": 0.0018709002267573993
         },
-        "likelyCause": null
+        "likelyCause": "One or more second-level opponent records differ from the official table."
       },
       {
         "classification": "5A",
@@ -2365,12 +2365,12 @@
         "rusRecord": "5-2",
         "recordMatch": true,
         "officialRpi": 0.601298,
-        "rusRpi": 0.6009523809523811,
-        "rpiDifference": -0.0003456190476188725,
+        "rusRpi": 0.6011791383219957,
+        "rpiDifference": -0.000118861678004345,
         "componentDifference": {
           "mwp": -2.8571428567492063e-7,
           "owp": -9.523809518796611e-8,
-          "oowp": -0.003458476190476123
+          "oowp": -0.0011909024943309587
         },
         "likelyCause": "One or more second-level opponent records differ from the official table."
       },
@@ -2485,12 +2485,12 @@
         "rusRecord": "3-4",
         "recordMatch": true,
         "officialRpi": 0.483248,
-        "rusRpi": 0.4822562358276644,
-        "rpiDifference": -0.0009917641723355963,
+        "rusRpi": 0.4824829931972789,
+        "rpiDifference": -0.0007650068027211243,
         "componentDifference": {
           "mwp": 4.285714285678921e-7,
           "owp": -2.8571428567492063e-7,
-          "oowp": -0.00992078458049872
+          "oowp": -0.007653210884353667
         },
         "likelyCause": "One or more second-level opponent records differ from the official table."
       },
