@@ -55,6 +55,7 @@ tbody tr:last-child td{border-bottom:0}
 .status{display:inline-flex;border-radius:999px;padding:5px 8px;background:#1b1b1b;color:#bbb;font-size:10px;font-weight:900;text-transform:uppercase}
 .status.live{background:#6b1717;color:#fff}
 .region-tag{display:inline-block;margin-left:6px;border:1px solid #555;border-radius:999px;padding:3px 6px;color:#ccc;font-size:9px;font-weight:900;text-transform:uppercase}
+.state-tag{display:inline-block;margin-left:4px;color:#aaa;font-size:10px;font-weight:700}
 .empty-state,.error-state,.loading-state{background:#080808;border:1px solid #333;border-radius:7px;padding:24px;color:#aaa;line-height:1.6}
 .empty-state strong,.error-state strong{display:block;color:#fff;font-size:15px;margin-bottom:4px}
 footer{background:#000;border-top:3px solid #F14D07;text-align:center;padding:18px;color:#888;font-size:11px}
@@ -135,6 +136,8 @@ function renderSchedule(games,teamName){
   const body=rows.map(game=>{
     const isHome=norm(game.homeTeam)===key;
     const opponent=isHome?game.awayTeam:game.homeTeam;
+    const opponentState=clean(isHome?game.awayTeamState:game.homeTeamState).toUpperCase();
+    const stateTag=opponentState&&opponentState!=="UT"?' <span class="state-tag">('+esc(opponentState)+')</span>':"";
     const location=game.neutralSite===true?"Neutral":isHome?"Home":"Away";
     const region=isRegion(game)?'<span class="region-tag">Region</span>':"";
     let result='<span class="status">'+esc(game.status||"Scheduled")+'</span>';
@@ -151,7 +154,7 @@ function renderSchedule(games,teamName){
       result='<span class="status live">Live '+ours+"–"+theirs+'</span>';
     }
     const when=dateLabel(game.date)+(clean(game.time)?" · "+clean(game.time):"");
-    return'<tr><td>'+esc(when)+'</td><td class="opponent">'+esc(opponent)+region+'</td><td class="location">'+location+'</td><td>'+result+'</td></tr>';
+    return'<tr><td>'+esc(when)+'</td><td class="opponent">'+esc(opponent)+stateTag+region+'</td><td class="location">'+location+'</td><td>'+result+'</td></tr>';
   }).join("");
   return'<div class="table-wrap"><table><thead><tr><th>Date / Time</th><th>Opponent</th><th>Location</th><th>Result / Status</th></tr></thead><tbody>'+body+'</tbody></table></div>';
 }
