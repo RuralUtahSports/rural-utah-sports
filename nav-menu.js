@@ -377,7 +377,7 @@
         true,
       );
       addScript(
-        "rankings-mobile-fix.js?v=20260815a",
+        "rankings-mobile-fix.js?v=20260926-week8-dynamic1",
         "rusRankingsMobileFix",
         true,
       );
