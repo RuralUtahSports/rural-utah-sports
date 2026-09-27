@@ -135,7 +135,7 @@ function renderSchedule(games,teamName){
   const body=rows.map(game=>{
     const isHome=norm(game.homeTeam)===key;
     const opponent=isHome?game.awayTeam:game.homeTeam;
-    const location=isHome?"Home":"Away";
+    const location=game.neutralSite===true?"Neutral":isHome?"Home":"Away";
     const region=isRegion(game)?'<span class="region-tag">Region</span>':"";
     let result='<span class="status">'+esc(game.status||"Scheduled")+'</span>';
     let resultClass="result";
@@ -150,9 +150,10 @@ function renderSchedule(games,teamName){
       const theirs=Number(isHome?game.awayScore:game.homeScore);
       result='<span class="status live">Live '+ours+"–"+theirs+'</span>';
     }
-    return'<tr><td>'+esc(dateLabel(game.date))+'</td><td class="opponent">'+esc(opponent)+region+'</td><td class="location">'+location+'</td><td>'+result+'</td></tr>';
+    const when=dateLabel(game.date)+(clean(game.time)?" · "+clean(game.time):"");
+    return'<tr><td>'+esc(when)+'</td><td class="opponent">'+esc(opponent)+region+'</td><td class="location">'+location+'</td><td>'+result+'</td></tr>';
   }).join("");
-  return'<div class="table-wrap"><table><thead><tr><th>Date</th><th>Opponent</th><th>Location</th><th>Result / Status</th></tr></thead><tbody>'+body+'</tbody></table></div>';
+  return'<div class="table-wrap"><table><thead><tr><th>Date / Time</th><th>Opponent</th><th>Location</th><th>Result / Status</th></tr></thead><tbody>'+body+'</tbody></table></div>';
 }
 function render(team,allTeams,allGames,colorRows){
   const key=norm(team.team);
