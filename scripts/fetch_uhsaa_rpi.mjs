@@ -25,7 +25,7 @@ const decode = (value) => clean(value)
   .replace(/\s+/g, ' ')
   .trim();
 
-function weekOf(date = new Date()) {
+function footballWeekOf(date = new Date()) {
   const parts = Object.fromEntries(
     new Intl.DateTimeFormat('en-US', {
       timeZone: TIME_ZONE,
@@ -35,8 +35,11 @@ function weekOf(date = new Date()) {
     }).formatToParts(date).filter((part) => part.type !== 'literal').map((part) => [part.type, part.value])
   );
   const localDate = new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day)));
-  const daysSinceMonday = (localDate.getUTCDay() + 6) % 7;
-  localDate.setUTCDate(localDate.getUTCDate() - daysSinceMonday);
+  // A football results week begins Thursday, before the main Thu/Fri game window.
+  // This locks movement to the prior week's final official RPI instead of
+  // accumulating changes from the season's first RPI release.
+  const daysSinceThursday = (localDate.getUTCDay() + 3) % 7;
+  localDate.setUTCDate(localDate.getUTCDate() - daysSinceThursday);
   return localDate.toISOString().slice(0, 10);
 }
 
@@ -73,11 +76,14 @@ function parseRows(html, classification) {
 }
 
 const previous = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
-const currentWeek = weekOf();
+const currentWeek = footballWeekOf();
 const sameMovementWeek = previous?.movement?.weekOf === currentWeek;
 const baselineWeekOf = sameMovementWeek
   ? previous?.movement?.baselineWeekOf ?? null
   : previous?.movement?.weekOf ?? null;
+const baselineCapturedAt = sameMovementWeek
+  ? previous?.movement?.baselineCapturedAt ?? null
+  : previous?.fetchedAt ?? null;
 
 function addMovement(rows, classification) {
   const priorRows = previous?.classifications?.[classification]?.rows || [];
@@ -110,7 +116,9 @@ const payload = {
   movement: {
     weekOf: currentWeek,
     baselineWeekOf,
-    label: baselineWeekOf ? `vs. official UHSAA RPI from ${baselineWeekOf}` : 'Official UHSAA week-over-week movement',
+    baselineCapturedAt,
+    cadence: 'Thursday-to-Wednesday football results week',
+    label: baselineWeekOf ? "vs. last week's final official UHSAA RPI" : 'Official UHSAA week-over-week movement',
   },
   classifications: Object.fromEntries(results),
 };
