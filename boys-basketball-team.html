@@ -160,7 +160,7 @@ function calculate(games,teamName){
   });
   return{all,region};
 }
-const TEAM_PAGE_VERSION='20260928-uma-lehi-alias1';
+const TEAM_PAGE_VERSION='20260928-basketball-history2014';
 function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   const key=norm(teamName);
   const rows=games.filter(game=>(matchesTeam(game,"home",key)||matchesTeam(game,"away",key))&&!isZeroZeroFinal(game))
@@ -215,7 +215,7 @@ function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary)
   const candidates=[asset&&asset.customLogo?asset.customLogo(team.team):"",entry&&entry.logoUrl?entry.logoUrl:"",asset&&asset.fallbackLogo?asset.fallbackLogo(team.team):""].filter((url,index,array)=>url&&array.indexOf(url)===index);
   const logo=candidates[0]||"";
   const card='<section class="hero" style="--team-color:'+bg+';--team-text:'+fg+'"><div class="brand-bar"></div><div class="hero-content"><div class="logo-wrap"><img id="teamLogo" class="team-logo" alt="'+esc(team.team)+' logo"></div><div class="team-copy"><h1 class="team-name">'+esc(team.team)+'</h1><div class="team-subtitle">2026–27 Boys Basketball</div><div class="meta-row"><span class="meta-pill classification">'+esc(team.classification)+'</span><span class="meta-pill">'+esc(team.region)+'</span><span class="meta-pill">'+esc(team.association)+'</span></div></div></div></section>';
-  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">2026–27 Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">2026–27 Games Played</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?fullRecordText(allTimeRecord):'—')+'</div><div class="record-label">All-Time Record Since 2017–18</div></div></div><p class="record-note">'+esc(recordNote)+' All-time totals combine available completed results from 2017–18 through the current season.</p>';
+  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">2026–27 Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">2026–27 Games Played</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?fullRecordText(allTimeRecord):'—')+'</div><div class="record-label">All-Time Record Since 2014–15</div></div></div><p class="record-note">'+esc(recordNote)+' All-time totals combine available completed results from 2014–15 through the current season.</p>';
   const scheduleMessage=hasOwnSchedule?"MaxPreps currently lists these 2026–27 games; the schedule may be incomplete.":"The full 2026–27 schedule has not been added yet. Any games shown were listed on an opponent's schedule.";
   root.innerHTML=card+stats+'<h2 class="section-title" style="--team-color:'+bg+'">2026–27 Schedule &amp; Results</h2><p class="schedule-note">'+esc(scheduleMessage)+'</p>'+renderSchedule(games,team.team,allTeams,colorRows,bg);
   document.title=team.team+" Boys Basketball | Rural Utah Sports";
@@ -226,7 +226,7 @@ function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary)
     image.src=logo;
   }
 }
-const ALL_TIME_RECORDS_URL='boys-basketball-all-time-records-2017-26.json?v=20260928-basketball-alltime2017';
+const ALL_TIME_RECORDS_URL='boys-basketball-all-time-records-2014-26.json?v=20260928-basketball-alltime2014';
 const HISTORICAL_RESULTS_URL='boys-basketball-games-2025-26.json?v=20260928-basketball-results1';
 let historicalResultsPromise=null;
 const HISTORICAL_TEAM_ALIASES={
@@ -299,7 +299,10 @@ const HISTORICAL_SEASONS=[
   {id:'2020-21',label:'2020–21',url:'boys-basketball-games-2020-21.json?v=20260928-basketball-history2020'},
   {id:'2019-20',label:'2019–20',url:'boys-basketball-games-2019-20.json?v=20260928-basketball-history2019'},
   {id:'2018-19',label:'2018–19',url:'boys-basketball-games-2018-19.json?v=20260928-basketball-history2018'},
-  {id:'2017-18',label:'2017–18',url:'boys-basketball-games-2017-18.json?v=20260928-basketball-history2017'}
+  {id:'2017-18',label:'2017–18',url:'boys-basketball-games-2017-18.json?v=20260928-basketball-history2017'},
+  {id:'2016-17',label:'2016–17',url:'boys-basketball-games-2016-17.json?v=20260928-basketball-history2016'},
+  {id:'2015-16',label:'2015–16',url:'boys-basketball-games-2015-16.json?v=20260928-basketball-history2015'},
+  {id:'2014-15',label:'2014–15',url:'boys-basketball-games-2014-15.json?v=20260928-basketball-history2014'}
 ];
 function setupHistoricalResults(team,allTeams,colorRows){
   const key=norm(team.team);
