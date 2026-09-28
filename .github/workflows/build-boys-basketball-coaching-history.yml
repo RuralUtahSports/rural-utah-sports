@@ -1,0 +1,46 @@
+name: Build boys basketball coaching history
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_boys_basketball_coaching_history.py'
+      - '.github/workflows/build-boys-basketball-coaching-history.yml'
+      - 'boys-basketball-championships.json'
+      - 'boys-basketball-season-history-2002-26.json'
+      - 'boys-basketball-teams.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install parser
+        run: python3 -m pip install beautifulsoup4
+      - name: Build coaching history
+        run: python3 scripts/build_boys_basketball_coaching_history.py
+      - name: Verify output
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('boys-basketball-coaching-history.json'))
+          print(d['summary'])
+          if d['summary']['teamsChecked'] < 120:
+              raise SystemExit('Too few teams checked')
+          if d['summary']['teamsWithKnownHistory'] < 50:
+              raise SystemExit('Too few teams with known coaching history')
+          PY
+      - name: Commit coaching history
+        run: |
+          git add boys-basketball-coaching-history.json boys-basketball-coaching-history-report.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build basketball coaching history"
+          git pull --rebase origin main
+          git push
