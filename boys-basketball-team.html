@@ -260,7 +260,12 @@ function historicalRecord(entry){
   return record;
 }
 const HISTORICAL_SEASONS=[
-  {id:'2025-26',label:'2025–26',url:'boys-basketball-games-2025-26.json?v=20260928-basketball-results1'}
+  {id:'2025-26',label:'2025–26',url:'boys-basketball-games-2025-26.json?v=20260928-basketball-results1'},
+  {id:'2024-25',label:'2024–25',url:'boys-basketball-games-2024-25.json?v=20260928-basketball-history2024'},
+  {id:'2023-24',label:'2023–24',url:'boys-basketball-games-2023-24.json?v=20260928-basketball-history2023'},
+  {id:'2022-23',label:'2022–23',url:'boys-basketball-games-2022-23.json?v=20260928-basketball-history2022'},
+  {id:'2021-22',label:'2021–22',url:'boys-basketball-games-2021-22.json?v=20260928-basketball-history2021'},
+  {id:'2020-21',label:'2020–21',url:'boys-basketball-games-2020-21.json?v=20260928-basketball-history2020'}
 ];
 function setupHistoricalResults(team,allTeams,colorRows){
   const key=norm(team.team);
