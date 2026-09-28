@@ -38,7 +38,7 @@ nav a:hover,nav a.active{background:#F14D07;color:#000}
 .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
 .meta-pill{display:inline-flex;align-items:center;border-radius:999px;padding:6px 9px;background:#1c1c1c;border:1px solid #393939;color:#ddd;font-size:10px;font-weight:900;text-transform:uppercase}
 .meta-pill.classification{background:var(--team-color,#F14D07);color:var(--team-text,#fff);border-color:var(--team-color,#F14D07)}
-.record-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:28px}
+.record-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:28px}
 .record-card{background:#1c1c1c;border:1px solid #333;border-radius:6px;padding:18px;text-align:center}
 .record-number{font-size:25px;font-weight:900}
 .record-label{font-size:11px;color:#999;text-transform:uppercase;margin-top:5px;font-weight:700;line-height:1.25}
@@ -82,10 +82,10 @@ tbody tr:hover{background:#191919}
 .rus-team-panel{scroll-margin-top:82px}
 .rus-team-panel[hidden]{display:none!important}
 .rus-team-panel:not([hidden]){display:block!important}
-.rus-tab-empty{background:#090909;border:1px solid #333;border-radius:8px;color:#888;padding:35px;text-align:center}
+.rus-tab-empty{background:#090909;border:1px solid #333;border-radius:8px;color:#888;padding:35px;text-align:center}.championship-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}.championship-card{background:#1c1c1c;border:1px solid #333;border-radius:6px;padding:18px;text-align:center}.championship-number{font-size:28px;font-weight:900}.championship-label{font-size:10px;color:#999;text-transform:uppercase;margin-top:5px;font-weight:900}.championship-years{white-space:normal;line-height:1.45}.source-note{color:#888;font-size:12px;line-height:1.5;margin-top:12px}.source-note a{color:#fff;text-decoration:none;border-bottom:1px dotted #777}
 footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}
 footer strong{color:#F14D07}
-@media(max-width:1000px){.record-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1000px){.record-grid{grid-template-columns:repeat(3,1fr)}.championship-summary{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.info-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){
   .header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}
@@ -95,7 +95,7 @@ footer strong{color:#F14D07}
   .team-subtitle{font-size:15px}.record-grid{grid-template-columns:repeat(2,1fr)}
   .record-card{padding:14px 8px}.section-title{font-size:22px}
   .info-grid{grid-template-columns:1fr}.history-controls{align-items:stretch;flex-direction:column}.history-controls select{width:100%}.history-count{padding:0}.history-wrap{max-height:72vh}
-  .rus-team-tabs{padding:6px;gap:5px}.rus-team-tab{min-width:94px;padding:10px 11px;font-size:11px}
+  .rus-team-tabs{padding:6px;gap:5px}.rus-team-tab{min-width:94px;padding:10px 11px;font-size:11px}.championship-summary{grid-template-columns:1fr 1fr}
 }
 @media(max-width:430px){.hero-main{flex-direction:column}.record-grid{grid-template-columns:1fr 1fr}}
 </style>
@@ -105,14 +105,14 @@ footer strong{color:#F14D07}
 <header><div class="header-content"><a href="index.html" aria-label="Rural Utah Sports home"><img class="site-logo" src="RUSlogoNew.png" alt="Rural Utah Sports"></a><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav aria-label="Main navigation"><div class="nav-content"></div></nav>
 <main class="container">
-<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260928-basketball-season-history1">Boys Basketball</a></div>
-<a class="back" href="boys-basketball-teams.html?v=20260928-basketball-season-history1">← All Boys Basketball Teams</a>
+<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260928-basketball-championships1">Boys Basketball</a></div>
+<a class="back" href="boys-basketball-teams.html?v=20260928-basketball-championships1">← All Boys Basketball Teams</a>
 <div id="teamPage" aria-live="polite"><div class="loading-state">Loading team page…</div></div>
 </main>
 <footer><p><strong>RURAL UTAH SPORTS</strong></p><p>2026–27 Boys Basketball</p></footer>
 <script src="pwa.js?v=20260921-shared-runtime3" defer></script>
 <script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260928-basketball-season-history1"></script>
+<script src="nav-menu.js?v=20260928-basketball-championships1"></script>
 <script>
 (()=>{
 'use strict';
@@ -185,7 +185,7 @@ function calculate(games,teamName){
   });
   return{all,region};
 }
-const TEAM_PAGE_VERSION='20260928-basketball-season-history1';
+const TEAM_PAGE_VERSION='20260928-basketball-championships1';
 function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   const key=norm(teamName);
   const rows=games.filter(game=>(matchesTeam(game,"home",key)||matchesTeam(game,"away",key))&&!isZeroZeroFinal(game))
@@ -223,7 +223,8 @@ function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   }).join("");
   return'<div class="table-wrap" style="--team-color:'+safeColor(teamColor,"#333333")+'"><table><thead><tr><th>Date / Time</th><th>Opponent</th><th>Location</th><th>Result / Status</th></tr></thead><tbody>'+body+'</tbody></table></div>';
 }
-function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary){
+function championshipFor(data,teamName){return Object.entries(data&&data.teams||{}).find(([name])=>canonicalTeamKey(name)===canonicalTeamKey(teamName))?.[1]||null}
+function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary,championshipData){
   const key=norm(team.team);
   const brand=brandFor(team.team,colorRows);
   const bg=safeColor(brand.backgroundColor,"#333333");
@@ -240,7 +241,9 @@ function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary)
   const candidates=[asset&&asset.customLogo?asset.customLogo(team.team):"",entry&&entry.logoUrl?entry.logoUrl:"",asset&&asset.fallbackLogo?asset.fallbackLogo(team.team):""].filter((url,index,array)=>url&&array.indexOf(url)===index);
   const logo=candidates[0]||"";
   const allTimeGames=allTimeRecord?allTimeRecord.g:0;
-  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">2026–27 Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">2026–27 Games</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?fullRecordText(allTimeRecord):'—')+'</div><div class="record-label">All-Time Record</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?allTimeGames.toLocaleString():'—')+'</div><div class="record-label">Recorded Games Since 2002–03</div></div></div><p class="record-note">'+esc(recordNote)+' All-time totals combine available completed results from 2002–03 through the current season.</p>';
+  const championship=championshipFor(championshipData,team.team);
+  const championshipCount=Number(championship?.titles||0);
+  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">2026–27 Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">2026–27 Games</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?fullRecordText(allTimeRecord):'—')+'</div><div class="record-label">All-Time Record</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?allTimeGames.toLocaleString():'—')+'</div><div class="record-label">Recorded Games Since 2002–03</div></div><div class="record-card"><div class="record-number">'+championshipCount.toLocaleString()+'</div><div class="record-label">State Championships</div></div></div><p class="record-note">'+esc(recordNote)+' All-time totals combine available completed results from 2002–03 through the current season. State championships use UHSAA records through 2026.</p>';
   const card='<section class="hero" style="--team-color:'+bg+';--team-text:'+fg+'"><div class="brand-bar"></div><div class="hero-content"><div class="hero-main"><div class="logo-wrap"><img id="teamLogo" class="team-logo" alt="'+esc(team.team)+' logo"></div><div class="team-copy"><h1 class="team-name" style="color:'+fg+'">'+esc(team.team)+'</h1><div class="team-subtitle">2026–27 Boys Basketball</div><div class="meta-row"><span class="meta-pill classification">'+esc(team.classification)+'</span><span class="meta-pill">'+esc(team.region)+'</span><span class="meta-pill">'+esc(team.association)+'</span></div></div></div>'+stats+'</div></section>';
   const scheduleMessage=hasOwnSchedule?"MaxPreps currently lists these 2026–27 games; the schedule may be incomplete.":"The full 2026–27 schedule has not been added yet. Any games shown were listed on an opponent's schedule.";
   root.innerHTML=card+'<section class="current-season-section" style="--team-color:'+bg+';--team-text:'+fg+'"><h2 class="section-title">2026–27 Schedule &amp; Results</h2><p class="schedule-note">'+esc(scheduleMessage)+'</p>'+renderSchedule(games,team.team,allTeams,colorRows,bg)+'</section>';
@@ -253,6 +256,7 @@ function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary)
   }
 }
 const ALL_TIME_RECORDS_URL='boys-basketball-all-time-records-2002-26.json?v=20260928-basketball-alltime2002';
+const CHAMPIONSHIPS_URL='boys-basketball-championships.json?v=20260928-basketball-championships1';
 const HISTORICAL_RESULTS_URL='boys-basketball-games-2025-26.json?v=20260928-basketball-results1';
 let historicalResultsPromise=null;
 const HISTORICAL_TEAM_ALIASES={
@@ -316,7 +320,7 @@ function historicalRecord(entry){
   }
   return record;
 }
-const SEASON_HISTORY_URL='boys-basketball-season-history-2002-26.json?v=20260928-basketball-season-history1';
+const SEASON_HISTORY_URL='boys-basketball-season-history-2002-26.json?v=20260928-basketball-championships1';
 let seasonHistorySummaryPromise=null;
 function loadSeasonHistorySummary(){
   if(!seasonHistorySummaryPromise){
@@ -510,7 +514,24 @@ function setupHistoricalResults(team,allTeams,colorRows){
   });
 }
 
-function setupBasketballTabs(team,colorRows){
+function championshipPanelHTML(team,championshipData,bg,fg){
+  const item=championshipFor(championshipData,team.team);
+  const titles=Number(item?.titles||0);
+  const first=item?.firstTitle||'—';
+  const recent=item?.mostRecentTitle||'—';
+  const streak=Number(item?.longestConsecutiveTitles||0);
+  const source=championshipData?.source||{};
+  const sourceUrl=clean(source.url);
+  const sourceText='UHSAA Sports Records Book'+(source.updated?' · Updated '+source.updated:'');
+  const sourceNote=sourceUrl?'<p class="source-note">Source: <a href="'+esc(sourceUrl)+'" target="_blank" rel="noopener noreferrer">'+esc(sourceText)+'</a>. Championship winners are listed through the 2026 season; this section does not imply runner-up appearances.</p>':'';
+  const summary='<div class="championship-summary"><div class="championship-card"><div class="championship-number">'+titles.toLocaleString()+'</div><div class="championship-label">State Championships</div></div><div class="championship-card"><div class="championship-number">'+esc(first)+'</div><div class="championship-label">First Title</div></div><div class="championship-card"><div class="championship-number">'+esc(recent)+'</div><div class="championship-label">Most Recent Title</div></div><div class="championship-card"><div class="championship-number">'+(streak||'—')+'</div><div class="championship-label">Longest Title Streak</div></div></div>';
+  if(!titles)return '<h2 class="section-title">State Championships</h2>'+summary+empty('UHSAA does not list a boys basketball state championship for this school through the 2026 season.','No state championships listed')+sourceNote;
+  const rows=(item.championships||[]).map(champ=>'<tr><td><strong>'+Number(champ.year)+'</strong></td><td>'+(champ.classification?esc(champ.classification):'—')+'</td><td>'+esc(champ.coach||'—')+'</td></tr>').join('');
+  const years=(item.years||[]).join(', ');
+  return '<h2 class="section-title">State Championships</h2>'+summary+'<div class="info-box" style="margin-bottom:16px"><div class="info-label">Championship Years</div><div class="info-value championship-years">'+esc(years)+'</div></div><div class="table-wrap" style="--team-color:'+bg+';--team-text:'+fg+'"><table><thead><tr><th>Year</th><th>Class</th><th>Coach</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+sourceNote;
+}
+
+function setupBasketballTabs(team,colorRows,championshipData){
   const hero=root.querySelector('.hero');
   const current=root.querySelector('.current-season-section');
   const seasons=root.querySelector('.history-section');
@@ -522,7 +543,7 @@ function setupBasketballTabs(team,colorRows){
   shell.className='rus-team-tabs-shell';
   shell.style.setProperty('--team-color',bg);
   shell.style.setProperty('--team-text',fg);
-  const tabs=[['overview','Overview'],['seasons','Seasons'],['games','Games'],['history','History']];
+  const tabs=[['overview','Overview'],['seasons','Seasons'],['games','Games'],['championships','Championships'],['history','History']];
   const bar=document.createElement('div');
   bar.className='rus-team-tabs';
   bar.setAttribute('role','tablist');
@@ -553,6 +574,7 @@ function setupBasketballTabs(team,colorRows){
   map.overview.innerHTML='<h2 class="section-title">Team Information</h2><div class="info-box"><div class="info-grid"><div class="info-item"><div class="info-label">Classification</div><div class="info-value">'+esc(team.classification||'—')+'</div></div><div class="info-item"><div class="info-label">Region</div><div class="info-value">'+esc(team.region||'—')+'</div></div><div class="info-item"><div class="info-label">School Colors</div><div class="info-value">'+esc(colors)+'</div></div></div></div><h2 class="section-title">Basketball History</h2><div class="info-box"><div class="info-grid"><div class="info-item"><div class="info-label">Recorded History Begins</div><div class="info-value">2002–03</div></div><div class="info-item"><div class="info-label">Current Season</div><div class="info-value">2026–27</div></div><div class="info-item"><div class="info-label">Association</div><div class="info-value">'+esc(team.association||'—')+'</div></div></div></div>';
   map.games.appendChild(current);
   map.seasons.appendChild(seasons);
+  map.championships.innerHTML=championshipPanelHTML(team,championshipData,bg,fg);
   map.history.innerHTML='<h2 class="section-title">Historical Coverage</h2><div class="info-box"><div class="info-grid"><div class="info-item"><div class="info-label">All-Time Range</div><div class="info-value">2002–03 to Present</div></div><div class="info-item"><div class="info-label">Early Source</div><div class="info-value">Deseret News</div></div><div class="info-item"><div class="info-label">Recent Source</div><div class="info-value">MaxPreps</div></div></div></div><p class="record-note">Completed results from 2002–03 forward are included where available. Placeholder 0–0 results are excluded.</p>';
   shell.append(bar,panels);
   hero.insertAdjacentElement('afterend',shell);
@@ -601,19 +623,20 @@ async function load(){
     const requested=norm(query.get("team"));
     if(!requested)throw new Error("Select a school from the boys basketball directory.");
     const urls=["boys-basketball-teams.json?v=20260927-basketball-directory-trim","boys-basketball-games-2026-27.json?v=20260927-basketball-all-schedules","team-colors-exact.json?v=20260926-pilot1"];
-    const responses=await Promise.all([...urls.map(url=>fetch(url,{cache:"no-store"})),fetch(ALL_TIME_RECORDS_URL,{cache:"no-store"}).catch(()=>null)]);
+    const responses=await Promise.all([...urls.map(url=>fetch(url,{cache:"no-store"})),fetch(ALL_TIME_RECORDS_URL,{cache:"no-store"}).catch(()=>null),fetch(CHAMPIONSHIPS_URL,{cache:"no-store"}).catch(()=>null)]);
     if(!responses[0].ok)throw new Error("Basketball team list could not be loaded.");
     const teams=await responses[0].json();
     const gameFeed=responses[1].ok?await responses[1].json():{games:[]};
     const colorRows=responses[2].ok?await responses[2].json():[];
     const allTimeSummary=responses[3]&&responses[3].ok?await responses[3].json().catch(()=>null):null;
+    const championshipData=responses[4]&&responses[4].ok?await responses[4].json().catch(()=>({teams:{}})):{teams:{}};
     window.RUSBasketballPreviewData={teams,games:Array.isArray(gameFeed.games)?gameFeed.games:[],colors:Array.isArray(colorRows)?colorRows:[]};
     if(window.RUSSchoolAssets&&window.RUSSchoolAssets.load)await window.RUSSchoolAssets.load();
     const team=teams.find(row=>norm(row.team)===requested&&(row.association==="UHSAA"||row.team==="Utah Prep"));
     if(!team)throw new Error("That school is not in the boys basketball team directory.");
-    render(team,teams,Array.isArray(gameFeed.games)?gameFeed.games:[],Array.isArray(colorRows)?colorRows:[],gameFeed.sources||{},allTimeSummary);
+    render(team,teams,Array.isArray(gameFeed.games)?gameFeed.games:[],Array.isArray(colorRows)?colorRows:[],gameFeed.sources||{},allTimeSummary,championshipData);
     setupHistoricalResults(team,teams,Array.isArray(colorRows)?colorRows:[]);
-    setupBasketballTabs(team,Array.isArray(colorRows)?colorRows:[]);
+    setupBasketballTabs(team,Array.isArray(colorRows)?colorRows:[],championshipData);
   }catch(error){
     root.innerHTML='<div class="error-state"><strong>Unable to load this basketball team page.</strong>'+esc(error&&error.message?error.message:"Please try again.")+'</div>';
   }
