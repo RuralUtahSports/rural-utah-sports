@@ -33,7 +33,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add boys-basketball-games-2025-26.json boys-basketball-results-import-report-2025-26.json boys-basketball-all-time-records-2008-26.json
+          git add boys-basketball-games-2025-26.json boys-basketball-results-import-report-2025-26.json boys-basketball-all-time-records-2005-26.json
           if git diff --cached --quiet; then
             echo "No 2025-26 basketball results or all-time totals changed."
             exit 0
