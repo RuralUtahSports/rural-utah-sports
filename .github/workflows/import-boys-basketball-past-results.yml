@@ -28,7 +28,7 @@ jobs:
           node-version: 20
       - name: Import next archived MaxPreps seasons
         run: |
-          for season in 14-15 15-16 16-17; do
+          for season in 11-12 12-13 13-14; do
             echo "Importing boys basketball $season"
             node scripts/import_boys_basketball_past_results.mjs "$season"
           done
@@ -36,16 +36,16 @@ jobs:
         run: node scripts/build_boys_basketball_all_time_records.mjs
       - name: Commit historical schedules, reports and summary
         run: |
-          for season in 2014-15 2015-16 2016-17; do
+          for season in 2011-12 2012-13 2013-14; do
             git add "boys-basketball-games-$season.json" "boys-basketball-results-import-report-$season.json"
           done
-          git add boys-basketball-all-time-records-2014-26.json
+          git add boys-basketball-all-time-records-2011-26.json
           if git diff --cached --quiet; then
             echo "No archived boys basketball results changed."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Import past boys basketball results back to 2014"
+          git commit -m "Import past boys basketball results back to 2011"
           git pull --rebase origin main
           git push
