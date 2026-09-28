@@ -79,14 +79,14 @@ footer{background:#000;border-top:3px solid #F14D07;text-align:center;padding:18
 <header><div class="header-content"><a href="index.html" aria-label="Rural Utah Sports home"><img class="site-logo" src="RUSlogoNew.png" alt="Rural Utah Sports"></a><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav aria-label="Main navigation"><div class="nav-content"></div></nav>
 <main class="container">
-<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260928-basketball-schedule-team-links">Boys Basketball</a></div>
-<a class="back" href="boys-basketball-teams.html?v=20260928-basketball-schedule-team-links">← All Boys Basketball Teams</a>
+<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260928-basketball-hover-preview1">Boys Basketball</a></div>
+<a class="back" href="boys-basketball-teams.html?v=20260928-basketball-hover-preview1">← All Boys Basketball Teams</a>
 <div id="teamPage" aria-live="polite"><div class="loading-state">Loading team page…</div></div>
 </main>
 <footer>Rural Utah Sports • 2026–27 Boys Basketball</footer>
 <script src="pwa.js?v=20260921-shared-runtime3" defer></script>
 <script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260922-dropdown-fix3"></script>
+<script src="nav-menu.js?v=20260928-basketball-hover-preview1"></script>
 <script>
 (()=>{
 'use strict';
@@ -132,7 +132,7 @@ function calculate(games,teamName){
   });
   return{all,region};
 }
-const TEAM_PAGE_VERSION='20260928-basketball-schedule-team-links';
+const TEAM_PAGE_VERSION='20260928-basketball-hover-preview1';
 function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   const key=norm(teamName);
   const rows=games.filter(game=>matchesTeam(game,"home",key)||matchesTeam(game,"away",key))
@@ -207,6 +207,7 @@ async function load(){
     const teams=await responses[0].json();
     const gameFeed=responses[1].ok?await responses[1].json():{games:[]};
     const colorRows=responses[2].ok?await responses[2].json():[];
+    window.RUSBasketballPreviewData={teams,games:Array.isArray(gameFeed.games)?gameFeed.games:[],colors:Array.isArray(colorRows)?colorRows:[]};
     if(window.RUSSchoolAssets&&window.RUSSchoolAssets.load)await window.RUSSchoolAssets.load();
     const team=teams.find(row=>norm(row.team)===requested&&(row.association==="UHSAA"||row.team==="Utah Prep"));
     if(!team)throw new Error("That school is not in the boys basketball team directory.");
