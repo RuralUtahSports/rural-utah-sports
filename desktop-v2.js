@@ -72,9 +72,88 @@ return{color,html:`<div class="rus-side-head">${logo?`<img class="rus-side-logo"
 async function buildTeamSidebar(){if(path!=='team.html')return;const team=new URLSearchParams(location.search).get('team');if(!team)return;const main=document.querySelector('main.container'),page=document.getElementById('page');if(!main||!page||main.querySelector('.rus-desktop-sidebar'))return;const d=await loadData(),card=teamSidebarHTML(team,d),aside=document.createElement('aside');aside.className='rus-desktop-sidebar';aside.style.setProperty('--rus-side',card.color);aside.innerHTML=card.html;main.classList.add('rus-desktop-layout');main.appendChild(aside);aside.querySelector('[data-rus-side-fav]')?.addEventListener('click',e=>{if(toggleFavorite(team)===false){alert('You can save up to 5 teams.');return}const on=favoriteState(team);e.currentTarget.classList.toggle('on',on);e.currentTarget.textContent=on?'★ Saved to My Teams':'☆ Add to My Teams'})}
 async function buildGameSidebar(){if(path!=='game.html')return;const q=new URLSearchParams(location.search),away=q.get('away')||'',home=q.get('home')||'',date=q.get('date')||'';if(!away||!home)return;const main=document.querySelector('main.container'),page=document.getElementById('page');if(!main||!page||main.querySelector('.rus-desktop-sidebar'))return;const d=await loadData(),g=d.games.find(x=>norm(x.awayTeam)===norm(away)&&norm(x.homeTeam)===norm(home)&&(!date||String(x.date||'')===date))||d.games.find(x=>norm(x.awayTeam)===norm(away)&&norm(x.homeTeam)===norm(home));if(!g)return;const ae=num(d.elo?.[norm(away)]?.currentElo),he=num(d.elo?.[norm(home)]?.currentElo),chance=eloChance(ae,he),ar=d.rankings.get(norm(away)),hr=d.rankings.get(norm(home)),as=d.standings.get(norm(away)),hs=d.standings.get(norm(home)),aa=num(g.actualAway),ah=num(g.actualHome),final=aa!==null&&ah!==null,p=projectedScores(g);const aside=document.createElement('aside');aside.className='rus-desktop-sidebar';aside.innerHTML=`<div class="rus-side-head"><div><h3>${esc(away)} at ${esc(home)}</h3><small>${esc(fmtDate(g.date))}</small></div></div><div class="rus-side-game"><small>${final?'Final':'RUS Projected Line'}</small><b>${final?`${aa}-${ah}`:esc(line(g))}</b>${!final?`<div class="line">Projected score ${p?`${esc(p.away)}–${esc(p.home)}`:'—'} • includes home +3</div>`:''}</div><div class="rus-side-grid"><div class="rus-side-stat"><strong>${ar?'#'+ar.rank:'—'}</strong><span>${esc(away)} Rank</span></div><div class="rus-side-stat"><strong>${hr?'#'+hr.rank:'—'}</strong><span>${esc(home)} Rank</span></div><div class="rus-side-stat"><strong>${chance?Math.round(chance.away*100)+'%':'—'}</strong><span>${esc(away)} ELO</span></div><div class="rus-side-stat"><strong>${chance?Math.round(chance.home*100)+'%':'—'}</strong><span>${esc(home)} ELO</span></div></div><div class="rus-side-game"><small>2026 Records</small><b>${esc(away)} ${as?`${as.wins}-${as.losses}${as.ties?'-'+as.ties:''}`:'—'}<br>${esc(home)} ${hs?`${hs.wins}-${hs.losses}${hs.ties?'-'+hs.ties:''}`:'—'}</b></div><div class="rus-side-actions"><a href="team.html?team=${encodeURIComponent(away)}">${esc(away)}</a><a href="team.html?team=${encodeURIComponent(home)}">${esc(home)}</a><a class="primary" href="scoreboard.html">Scoreboard</a><a href="compare.html?team1=${encodeURIComponent(away)}&team2=${encodeURIComponent(home)}">Compare</a></div>`;main.classList.add('rus-desktop-layout');main.appendChild(aside)}
 function desktopizeHome(){if(path!=='index.html')return false;const dash=document.querySelector('.rus-home-dash');if(!dash||dash.classList.contains('rus-home-desktopized'))return false;const children=[...dash.children].filter(x=>!x.classList.contains('rus-home-dash-head')),main=document.createElement('div'),rail=document.createElement('aside');main.className='rus-home-desktop-main';rail.className='rus-home-desktop-rail';for(const child of children){const text=(child.querySelector('h3')?.textContent||'').toLowerCase();if(child.classList.contains('rus-home-row'))rail.appendChild(child);else if(/my teams/.test(text)){child.classList.add('rus-home-main-teams');main.appendChild(child)}else if(/games tonight|next games/.test(text)){child.classList.add('rus-home-main-games');main.appendChild(child)}else if(/continue/.test(text)){child.classList.add('rus-home-continue');rail.appendChild(child)}else main.appendChild(child)}dash.append(main,rail);dash.classList.add('rus-home-desktopized');return true}
+
+let basketballHoverDataPromise;
+function loadBasketballHoverData(){
+  const current=window.RUSBasketballPreviewData;
+  if(current?.teams?.length&&Array.isArray(current.games)){
+    const active=current.teams.filter(t=>t.association==='UHSAA'||t.team==='Utah Prep');
+    return Promise.resolve({teamMap:new Map(active.map(t=>[norm(t.team),t])),colors:new Map((current.colors||[]).map(c=>[norm(c.team),c])),games:current.games});
+  }
+  return basketballHoverDataPromise||(basketballHoverDataPromise=Promise.all([
+    get('boys-basketball-teams.json',[]),
+    get('boys-basketball-games-2026-27.json',{games:[]}),
+    get('team-colors-exact.json',[])
+  ]).then(([teams,feed,colors])=>{
+    const active=(teams||[]).filter(t=>t.association==='UHSAA'||t.team==='Utah Prep');
+    return{teamMap:new Map(active.map(t=>[norm(t.team),t])),colors:new Map((colors||[]).map(c=>[norm(c.team),c])),games:Array.isArray(feed?.games)?feed.games:[]};
+  }));
+}
+function basketballDateKey(value){
+  const m=String(value||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m?m[0]:'';
+}
+function basketballDateLabel(value){
+  const m=String(value||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m?new Date(Number(m[1]),Number(m[2])-1,Number(m[3])).toLocaleDateString(undefined,{month:'short',day:'numeric'}):String(value||'Date TBA');
+}
+function basketballFinished(game){
+  return /(?:final|completed|complete|forfeit)/i.test(String(game?.status||''))&&num(game?.homeScore)!==null&&num(game?.awayScore)!==null;
+}
+function basketballTeamGames(games,team){
+  const key=norm(team);
+  return(games||[]).filter(game=>
+    (norm(game.homeTeam)===key&&(!game.homeTeamState||String(game.homeTeamState).toUpperCase()==='UT'))||
+    (norm(game.awayTeam)===key&&(!game.awayTeamState||String(game.awayTeamState).toUpperCase()==='UT'))
+  );
+}
+function renderBasketballHover(link,team,data){
+  const school=data.teamMap.get(norm(team));
+  if(!school)return;
+  const rows=basketballTeamGames(data.games,school.team);
+  const finals=rows.filter(basketballFinished);
+  const record={wins:0,losses:0,ties:0};
+  finals.forEach(game=>{
+    const home=norm(game.homeTeam)===norm(school.team);
+    const own=num(home?game.homeScore:game.awayScore),opp=num(home?game.awayScore:game.homeScore);
+    if(own>opp)record.wins++;else if(own<opp)record.losses++;else record.ties++;
+  });
+  const today=new Date();
+  const todayKey=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+  const next=rows.filter(game=>{
+    const date=basketballDateKey(game.date),status=String(game.status||'');
+    return date&&date>=todayKey&&!basketballFinished(game)&&!/cancel|postpon/i.test(status);
+  }).sort((a,b)=>basketballDateKey(a.date).localeCompare(basketballDateKey(b.date)))[0]||null;
+  const key=norm(school.team),colorInfo=data.colors.get(key)||{},assets=window.RUSSchoolAssets;
+  const assetInfo=assets?.get?.(school.team)||{};
+  const color=[colorInfo.backgroundColor,assetInfo.backgroundColor].find(c=>/^#[0-9a-f]{3,6}$/i.test(String(c||'')))||'#F14D07';
+  let logo='';
+  try{logo=assets?.customLogo?.(school.team)||assetInfo.logoUrl||assets?.logoUrl?.(school.team)||''}catch{}
+  const subtitle=['2026–27 Boys Basketball',school.classification,school.region].filter(Boolean).join(' • ');
+  let nextGame='No upcoming game listed';
+  if(next){
+    const home=norm(next.homeTeam)===key,opponent=home?next.awayTeam:next.homeTeam;
+    const state=String((home?next.awayTeamState:next.homeTeamState)||'').trim().toUpperCase();
+    const venue=next.neutralSite===true?'Neutral':home?'Home':'Away';
+    const timing=[basketballDateLabel(next.date),String(next.time||'').trim()].filter(Boolean).join(' · ');
+    nextGame=opponent+(state&&state!=='UT'?' ('+state+')':'')+' · '+timing+' · '+venue;
+  }
+  if(!hoverCard){hoverCard=document.createElement('div');hoverCard.className='rus-team-hover';document.body.appendChild(hoverCard)}
+  hoverCard.dataset.sport='basketball';
+  hoverCard.style.setProperty('--team',color);
+  const recordText=record.wins+'–'+record.losses+(record.ties?'–'+record.ties:'');
+  hoverCard.innerHTML='<div class="rus-team-hover-head">'+(logo?'<img class="rus-team-hover-logo" src="'+esc(logo)+'" alt="">':'')+'<div><h4>'+esc(school.team)+'</h4><p>'+esc(subtitle)+'</p></div></div><div class="rus-team-hover-grid"><div class="rus-team-hover-stat"><strong>'+recordText+'</strong><span>Basketball Record</span></div><div class="rus-team-hover-stat"><strong>'+finals.length+'</strong><span>Games Played</span></div><div class="rus-team-hover-stat"><strong>'+rows.length+'</strong><span>Games Listed</span></div></div><div class="rus-team-hover-next"><b>Next Basketball Game:</b> '+esc(nextGame)+'</div>';
+  const rect=link.getBoundingClientRect(),w=280,gap=10;
+  let left=Math.min(window.innerWidth-w-12,Math.max(12,rect.right+gap));
+  if(rect.right+gap+w>window.innerWidth-12)left=Math.max(12,rect.left-w-gap);
+  const top=Math.max(12,Math.min(window.innerHeight-190,rect.top));
+  hoverCard.style.left=left+'px';hoverCard.style.top=top+'px';
+  requestAnimationFrame(()=>hoverCard.classList.add('show'));
+}
+
 let hoverTimer,hoverCard;
 function hideHover(){clearTimeout(hoverTimer);hoverCard?.classList.remove('show')}
-async function showHover(link){const u=new URL(link.href,location.href),team=u.searchParams.get('team');if(!team)return;const d=await loadData();if(!document.body.contains(link))return;const t=d.teamMap.get(norm(team))||{},s=d.standings.get(norm(team)),r=d.rankings.get(norm(team)),e=num(d.elo?.[norm(team)]?.currentElo),next=nextGame(d.games,team),color=/^#[0-9a-f]{3,6}$/i.test(String(t.backgroundColor||''))?t.backgroundColor:'#F14D07',logo=teamLogo(team);if(!hoverCard){hoverCard=document.createElement('div');hoverCard.className='rus-team-hover';document.body.appendChild(hoverCard)}hoverCard.style.setProperty('--team',color);hoverCard.innerHTML=`<div class="rus-team-hover-head">${logo?`<img class="rus-team-hover-logo" src="${esc(logo)}" alt="">`:''}<div><h4>${esc(team)}</h4><p>${esc([t.classification,t.region?`Region ${t.region}`:''].filter(Boolean).join(' • '))}</p></div></div><div class="rus-team-hover-grid"><div class="rus-team-hover-stat"><strong>${s?`${s.wins}-${s.losses}`:'—'}</strong><span>Record</span></div><div class="rus-team-hover-stat"><strong>${r?'#'+r.rank:'—'}</strong><span>Rank</span></div><div class="rus-team-hover-stat"><strong>${e===null?'—':Math.round(e)}</strong><span>ELO</span></div></div>${next?`<div class="rus-team-hover-next"><b>Next:</b> ${esc(next.awayTeam)} at ${esc(next.homeTeam)} • ${esc(fmtDate(next.date))}<br>${esc(line(next))}</div>`:''}`;const rect=link.getBoundingClientRect(),w=280,gap=10;let left=Math.min(window.innerWidth-w-12,Math.max(12,rect.right+gap));if(rect.right+gap+w>window.innerWidth-12)left=Math.max(12,rect.left-w-gap);let top=Math.max(12,Math.min(window.innerHeight-190,rect.top));hoverCard.style.left=`${left}px`;hoverCard.style.top=`${top}px`;requestAnimationFrame(()=>hoverCard.classList.add('show'))}
+async function showHover(link){const u=new URL(link.href,location.href),team=u.searchParams.get('team');if(!team)return;if(u.pathname.split('/').pop().toLowerCase()==='boys-basketball-team.html'){const data=await loadBasketballHoverData();if(!document.body.contains(link)||!link.matches(':hover'))return;renderBasketballHover(link,team,data);return}const d=await loadData();if(!document.body.contains(link)||!link.matches(':hover'))return;const t=d.teamMap.get(norm(team))||{},s=d.standings.get(norm(team)),r=d.rankings.get(norm(team)),e=num(d.elo?.[norm(team)]?.currentElo),next=nextGame(d.games,team),color=/^#[0-9a-f]{3,6}$/i.test(String(t.backgroundColor||''))?t.backgroundColor:'#F14D07',logo=teamLogo(team);if(!hoverCard){hoverCard=document.createElement('div');hoverCard.className='rus-team-hover';document.body.appendChild(hoverCard)}delete hoverCard.dataset.sport;hoverCard.style.setProperty('--team',color);hoverCard.innerHTML=`<div class="rus-team-hover-head">${logo?`<img class="rus-team-hover-logo" src="${esc(logo)}" alt="">`:''}<div><h4>${esc(team)}</h4><p>${esc([t.classification,t.region?`Region ${t.region}`:''].filter(Boolean).join(' • '))}</p></div></div><div class="rus-team-hover-grid"><div class="rus-team-hover-stat"><strong>${s?`${s.wins}-${s.losses}`:'—'}</strong><span>Record</span></div><div class="rus-team-hover-stat"><strong>${r?'#'+r.rank:'—'}</strong><span>Rank</span></div><div class="rus-team-hover-stat"><strong>${e===null?'—':Math.round(e)}</strong><span>ELO</span></div></div>${next?`<div class="rus-team-hover-next"><b>Next:</b> ${esc(next.awayTeam)} at ${esc(next.homeTeam)} • ${esc(fmtDate(next.date))}<br>${esc(line(next))}</div>`:''}`;const rect=link.getBoundingClientRect(),w=280,gap=10;let left=Math.min(window.innerWidth-w-12,Math.max(12,rect.right+gap));if(rect.right+gap+w>window.innerWidth-12)left=Math.max(12,rect.left-w-gap);let top=Math.max(12,Math.min(window.innerHeight-190,rect.top));hoverCard.style.left=`${left}px`;hoverCard.style.top=`${top}px`;requestAnimationFrame(()=>hoverCard.classList.add('show'))}
 function bindHover(){document.addEventListener('mouseover',e=>{const a=e.target.closest?.('main a[href*="team.html?team="]');if(!a||a.contains(e.relatedTarget))return;clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>showHover(a),180)});document.addEventListener('mouseout',e=>{const a=e.target.closest?.('main a[href*="team.html?team="]');if(!a||a.contains(e.relatedTarget))return;hideHover()});window.addEventListener('scroll',hideHover,{passive:true});window.addEventListener('resize',hideHover,{passive:true})}
 function observe(){const o=new MutationObserver(()=>{enhanceNav();enhanceTables();desktopizeHome()});o.observe(document.body,{childList:true,subtree:true});setTimeout(()=>o.disconnect(),20000)}
 function start(){document.body.setAttribute('data-rus-desktop-v2','1');addStyles();enhanceNav();enhanceTables();desktopizeHome();addGamesPill();buildTeamSidebar();buildGameSidebar();bindHover();observe()}
