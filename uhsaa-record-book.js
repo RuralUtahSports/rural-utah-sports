@@ -4,7 +4,7 @@ const path=(location.pathname.split('/').pop()||'').toLowerCase();
 if(path!=='records.html')return;
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const compact=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
-const aliases={GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',MAPLEMTN:'MAPLEMOUNTAIN'};
+const aliases={STJOSEPH:'SAINTJOSEPH',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',MAPLEMTN:'MAPLEMOUNTAIN'};
 const canon=v=>aliases[compact(v)]||compact(v);
 let data=null,teams=new Map(),group='team-history',category='state-championships',query='',footballFormat='11-player',books={};
 function addStyles(){if(document.getElementById('rus-uhsaa-record-style'))return;const s=document.createElement('style');s.id='rus-uhsaa-record-style';s.textContent=`
@@ -14,7 +14,7 @@ function addStyles(){if(document.getElementById('rus-uhsaa-record-style'))return
 function teamMeta(name){return teams.get(canon(name))||null}
 function safeColor(v,f='#333'){return /^#[0-9a-f]{3,8}$/i.test(String(v||''))?v:f}
 function splitSchools(name){return String(name||'').split(/\s*\/\s*|\s*;\s*/).map(x=>x.trim()).filter(Boolean)}
-function logo(name){try{return window.RUSSchoolAssets?.logoUrl?window.RUSSchoolAssets.logoUrl(name):''}catch{return''}}
+function logo(name){try{return window.RUSSchoolAssets?.logoUrl?window.RUSSchoolAssets.logoUrl(teamMeta(name)?.team||name):''}catch{return''}}
 function schoolHTML(name){if(!name)return'';return splitSchools(name).map(s=>{const m=teamMeta(s),display=m?.team||s;return `<a href="team.html?team=${encodeURIComponent(display)}">${esc(s)}</a>`}).join(' <span aria-hidden="true">/</span> ')}
 function logosHTML(name){const schools=splitSchools(name),seen=new Set(),imgs=[];for(const s of schools){const src=logo(s);if(!src||seen.has(src))continue;seen.add(src);imgs.push(`<img class="rus-official-logo" src="${esc(src)}" alt="${esc(s)} logo" loading="lazy" onerror="this.remove()">`)}return imgs.length?`<div class="rus-official-logos">${imgs.join('')}</div>`:''}
 function rowColors(name){const schools=splitSchools(name),m=schools.map(teamMeta).find(Boolean),bg=safeColor(m?.backgroundColor,'#333');return `--rus-record-team:${bg};--rus-record-tint:${bg}24`}
