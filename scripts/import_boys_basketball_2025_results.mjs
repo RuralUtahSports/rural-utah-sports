@@ -91,11 +91,11 @@ function canonicalOpponentUrl(raw) {
   }
 }
 
-function locationFromRow(row) {
-  const side = clean(row?.[4]).toUpperCase();
-  if (side === '1' || side === 'H' || side === 'HOME') return 'Home';
-  if (side === '2' || side === 'A' || side === 'AWAY') return 'Away';
-  return '';
+function locationFromContest(contest) {
+  const description = clean(contest?.[29]);
+  const match = description.match(/\b(home|away|neutral)\b/i);
+  if (!match) return '';
+  return match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase();
 }
 
 function parseTeamPage(html, sourceUrl) {
@@ -133,7 +133,7 @@ function parseTeamPage(html, sourceUrl) {
       result,
       teamScore,
       opponentScore,
-      location: locationFromRow(mine)
+      location: locationFromContest(contest)
     };
     const key = [date, norm(game.opponent), teamScore, opponentScore, game.location].join('|');
     byKey.set(key, game);
