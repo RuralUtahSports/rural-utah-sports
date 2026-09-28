@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
-const SEASONS = ['2011-12', '2012-13', '2013-14', '2014-15', '2015-16', '2016-17', '2017-18', '2018-19', '2019-20', '2020-21', '2021-22', '2022-23', '2023-24', '2024-25', '2025-26'];
-const OUTPUT = 'boys-basketball-all-time-records-2011-26.json';
+const SEASONS = ['2008-09', '2009-10', '2010-11', '2011-12', '2012-13', '2013-14', '2014-15', '2015-16', '2016-17', '2017-18', '2018-19', '2019-20', '2020-21', '2021-22', '2022-23', '2023-24', '2024-25', '2025-26'];
+const OUTPUT = 'boys-basketball-all-time-records-2008-26.json';
 
 function readJson(path) {
   return JSON.parse(fs.readFileSync(path, 'utf8'));
@@ -42,7 +42,7 @@ const orderedTeams = Object.fromEntries(
 const payload = {
   schemaVersion: 1,
   updatedAt: new Date().toISOString(),
-  range: {start: '2011-12', end: '2025-26'},
+  range: {start: '2008-09', end: '2025-26'},
   source: 'MaxPreps results imported for each season; 0-0 placeholder ties excluded',
   summary: {
     teams: Object.keys(orderedTeams).length,
