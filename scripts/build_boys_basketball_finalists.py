@@ -71,6 +71,27 @@ def classes_for(year):
     if year>=1994: return ["5A","4A","3A","2A","1A"]
     return ["4A","3A","2A","1A"]
 
+def ocr_results_summary(pdf, workdir, year):
+    prefix=workdir/f"summary-{year}"
+    try:
+        subprocess.run(
+            ["pdftoppm","-f","3","-l","5","-r","170","-jpeg","-jpegopt","quality=72",str(pdf),str(prefix)],
+            check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL
+        )
+    except Exception:
+        return ""
+    parts=[]
+    for image in sorted(workdir.glob(f"summary-{year}-*.jpg")):
+        try:
+            out=subprocess.run(
+                ["tesseract",str(image),"stdout","--psm","3"],
+                check=True,capture_output=True,text=True
+            ).stdout
+            parts.append(out)
+        except Exception:
+            pass
+    return "\n".join(parts)
+
 def canonical_from_text(s):
     ns=norm(s)
     if ns in variant_to_site:
@@ -101,56 +122,43 @@ def extract_runner_from_lines(lines):
     return None
 
 def extract_from_summary(text, cls):
-    # Annual PDFs commonly include an all-sports results summary with:
-    # CLASS / 1ST PLACE / 2ND PLACE. Find the BOYS BASKETBALL occurrence
-    # that is actually near those labels (not the table of contents).
     upper=text.upper()
     starts=[m.start() for m in re.finditer(r"BOYS\s+BASKETBALL",upper)]
-    sections=[]
     for idx in starts:
-        chunk=text[idx:idx+18000]
+        chunk=text[idx:idx+14000]
         up=chunk.upper()
-        if "1ST PLACE" in up and "2ND PLACE" in up:
-            stop_candidates=[]
-            for marker in ["GIRLS BASKETBALL","BOYS CROSS COUNTRY","CROSS COUNTRY - BOYS","WRESTLING"]:
-                pos=up.find(marker,200)
-                if pos>0: stop_candidates.append(pos)
-            if stop_candidates: chunk=chunk[:min(stop_candidates)]
-            sections.append(chunk)
+        if not re.search(r"[1I]ST\s+PLACE",up) or not re.search(r"2ND\s+PLACE",up):
+            continue
+        # End at the next major sport heading when it is clearly present.
+        stops=[]
+        for marker in ["GIRLS BASKETBALL","BOYS CROSS COUNTRY","CROSS COUNTRY - BOYS","WRESTLING"]:
+            pos=up.find(marker,200)
+            if pos>0: stops.append(pos)
+        if stops: chunk=chunk[:min(stops)]
 
-    for section in sections:
-        # Search for this class and inspect the text until the next class heading.
-        matches=list(re.finditer(rf"(?im)^\s*{re.escape(cls)}\s*$",section))
-        for m in matches:
-            block=section[m.end():m.end()+1200]
-            # Stop before next classification heading when possible.
-            nxt=re.search(r"(?im)^\s*[1-6]A\s*$",block)
-            if nxt: block=block[:nxt.start()]
-            m2=re.search(r"(?im)2ND\s+PLACE\s*[-—:]?\s*([^\n\r]+)",block)
-            if m2:
-                hit=canonical_from_text(m2.group(1))
-                if hit: return hit
+        # Most UHSAA summaries read:
+        # 2A / 1ST PLACE - SCHOOL / 2ND PLACE - SCHOOL
+        patterns=[
+            rf"(?is)\b{re.escape(cls)}\b.{{0,900}}?2ND\s+PLACE\s*[-—:]?\s*([^\n\r]+)",
+            rf"(?im)^\s*{re.escape(cls)}\s*$[\s\S]{{0,900}}?^\s*2ND\s+PLACE\s*[-—:]?\s*([^\n\r]+)",
+        ]
+        for pat in patterns:
+            m=re.search(pat,chunk)
+            if not m: continue
+            raw=m.group(1)
+            raw=re.split(r"\s{2,}|\b(?:1A|2A|3A|4A|5A|6A)\b",raw)[0]
+            hit=canonical_from_text(raw)
+            if hit: return hit
 
-        # Layout extraction can put class and placing on one line/column.
-        # Search a wider class-local slice and then the first 2ND PLACE after it.
-        m=re.search(rf"\b{re.escape(cls)}\b",section,re.I)
-        if m:
-            block=section[m.start():m.start()+2200]
-            m2=re.search(r"2ND\s+PLACE\s*[-—:]?\s*([^\n\r]+)",block,re.I)
-            if m2:
-                hit=canonical_from_text(m2.group(1))
-                if hit: return hit
-
-    # Last fallback: some PDFs extract as '2ND PLACE TEAM' without clean class lines.
-    # Pair class occurrences with the nearest following placing labels.
-    for section in sections:
-        lines=section.splitlines()
-        for i,line in enumerate(lines):
-            if re.search(rf"(^|\s){re.escape(cls)}(\s|$)",line,re.I):
-                window="\n".join(lines[i:i+12])
-                m2=re.search(r"2ND\s+PLACE\s*[-—:]?\s*([^\n\r]+)",window,re.I)
-                if m2:
-                    hit=canonical_from_text(m2.group(1))
+        # OCR can put the placing label and school on adjacent lines.
+        lines=[ln.strip() for ln in chunk.splitlines() if ln.strip()]
+        class_positions=[i for i,ln in enumerate(lines) if re.fullmatch(re.escape(cls),ln,re.I)]
+        for pos in class_positions:
+            for j in range(pos+1,min(len(lines),pos+12)):
+                if re.search(r"2ND\s+PLACE",lines[j],re.I):
+                    tail=re.sub(r"^.*?2ND\s+PLACE\s*[-—:]?\s*","",lines[j],flags=re.I)
+                    if not tail and j+1<len(lines): tail=lines[j+1]
+                    hit=canonical_from_text(tail)
                     if hit: return hit
     return None
 
@@ -167,12 +175,12 @@ with tempfile.TemporaryDirectory() as td:
             urllib.request.urlretrieve(url,pdf)
             subprocess.run(["pdftotext","-layout",str(pdf),str(txt)],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
             text=txt.read_text(errors="ignore")
-            if year==2001:
-                up=text.upper()
-                print("DEBUG 2001 BOYS BASKETBALL occurrences:", [m.start() for m in re.finditer(r"BOYS\\s+BASKETBALL",up)][:20])
-                print("DEBUG 2001 1ST PLACE occurrences:", [m.start() for m in re.finditer(r"1ST\\s+PLACE",up)][:20])
-                for m in list(re.finditer(r"BOYS\\s+BASKETBALL",up))[:5]:
-                    print("DEBUG 2001 SNIP", repr(text[m.start():m.start()+2500]))
+            summary_text=text
+            up=text.upper()
+            if "BOYS BASKETBALL" not in up or "2ND PLACE" not in up:
+                ocr=ocr_results_summary(pdf,td,year)
+                if ocr:
+                    summary_text=text+"\n"+ocr
             downloads.append({"year":year,"url":url,"ok":True,"bytes":pdf.stat().st_size})
         except Exception as e:
             downloads.append({"year":year,"url":url,"ok":False,"error":str(e)})
@@ -210,7 +218,7 @@ with tempfile.TemporaryDirectory() as td:
                     runner=None
 
             if not runner:
-                runner=extract_from_summary(text,cls)
+                runner=extract_from_summary(summary_text,cls)
                 if runner and norm(runner)!=norm(champion):
                     source_method="uhsaa-results-summary"
                 else:
