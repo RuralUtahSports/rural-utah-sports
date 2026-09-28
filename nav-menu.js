@@ -273,9 +273,9 @@
         "rusRecordWatchFilter",
         true,
       );
-      addScript("uhsaa-record-book.js?v=20260814c", "rusUhsaaRecordBook", true);
+      addScript("uhsaa-record-book.js?v=20260928-football-formats", "rusUhsaaRecordBook", true);
       addScript(
-        "uhsaa-record-watch.js?v=20260814a",
+        "uhsaa-record-watch.js?v=20260928-football-formats",
         "rusUhsaaRecordWatch",
         true,
       );
