@@ -160,7 +160,7 @@ function calculate(games,teamName){
   });
   return{all,region};
 }
-const TEAM_PAGE_VERSION='20260928-basketball-history2008';
+const TEAM_PAGE_VERSION='20260928-basketball-history2005';
 function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   const key=norm(teamName);
   const rows=games.filter(game=>(matchesTeam(game,"home",key)||matchesTeam(game,"away",key))&&!isZeroZeroFinal(game))
@@ -215,7 +215,7 @@ function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary)
   const candidates=[asset&&asset.customLogo?asset.customLogo(team.team):"",entry&&entry.logoUrl?entry.logoUrl:"",asset&&asset.fallbackLogo?asset.fallbackLogo(team.team):""].filter((url,index,array)=>url&&array.indexOf(url)===index);
   const logo=candidates[0]||"";
   const card='<section class="hero" style="--team-color:'+bg+';--team-text:'+fg+'"><div class="brand-bar"></div><div class="hero-content"><div class="logo-wrap"><img id="teamLogo" class="team-logo" alt="'+esc(team.team)+' logo"></div><div class="team-copy"><h1 class="team-name">'+esc(team.team)+'</h1><div class="team-subtitle">2026–27 Boys Basketball</div><div class="meta-row"><span class="meta-pill classification">'+esc(team.classification)+'</span><span class="meta-pill">'+esc(team.region)+'</span><span class="meta-pill">'+esc(team.association)+'</span></div></div></div></section>';
-  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">2026–27 Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">2026–27 Games Played</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?fullRecordText(allTimeRecord):'—')+'</div><div class="record-label">All-Time Record Since 2008–09</div></div></div><p class="record-note">'+esc(recordNote)+' All-time totals combine available completed results from 2008–09 through the current season.</p>';
+  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">2026–27 Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">2026–27 Games Played</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?fullRecordText(allTimeRecord):'—')+'</div><div class="record-label">All-Time Record Since 2005–06</div></div></div><p class="record-note">'+esc(recordNote)+' All-time totals combine available completed results from 2005–06 through the current season.</p>';
   const scheduleMessage=hasOwnSchedule?"MaxPreps currently lists these 2026–27 games; the schedule may be incomplete.":"The full 2026–27 schedule has not been added yet. Any games shown were listed on an opponent's schedule.";
   root.innerHTML=card+stats+'<h2 class="section-title" style="--team-color:'+bg+'">2026–27 Schedule &amp; Results</h2><p class="schedule-note">'+esc(scheduleMessage)+'</p>'+renderSchedule(games,team.team,allTeams,colorRows,bg);
   document.title=team.team+" Boys Basketball | Rural Utah Sports";
@@ -226,7 +226,7 @@ function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary)
     image.src=logo;
   }
 }
-const ALL_TIME_RECORDS_URL='boys-basketball-all-time-records-2008-26.json?v=20260928-basketball-alltime2008';
+const ALL_TIME_RECORDS_URL='boys-basketball-all-time-records-2005-26.json?v=20260928-basketball-alltime2005';
 const HISTORICAL_RESULTS_URL='boys-basketball-games-2025-26.json?v=20260928-basketball-results1';
 let historicalResultsPromise=null;
 const HISTORICAL_TEAM_ALIASES={
@@ -308,7 +308,10 @@ const HISTORICAL_SEASONS=[
   {id:'2011-12',label:'2011–12',url:'boys-basketball-games-2011-12.json?v=20260928-basketball-history2011'},
   {id:'2010-11',label:'2010–11',url:'boys-basketball-games-2010-11.json?v=20260928-basketball-history2010'},
   {id:'2009-10',label:'2009–10',url:'boys-basketball-games-2009-10.json?v=20260928-basketball-history2009'},
-  {id:'2008-09',label:'2008–09',url:'boys-basketball-games-2008-09.json?v=20260928-basketball-history2008'}
+  {id:'2008-09',label:'2008–09',url:'boys-basketball-games-2008-09.json?v=20260928-basketball-history2008'},
+  {id:'2007-08',label:'2007–08',url:'boys-basketball-games-2007-08.json?v=20260928-basketball-history2007'},
+  {id:'2006-07',label:'2006–07',url:'boys-basketball-games-2006-07.json?v=20260928-basketball-history2006'},
+  {id:'2005-06',label:'2005–06',url:'boys-basketball-games-2005-06.json?v=20260928-basketball-history2005'}
 ];
 function setupHistoricalResults(team,allTeams,colorRows){
   const key=norm(team.team);
