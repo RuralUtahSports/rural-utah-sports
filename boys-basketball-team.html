@@ -74,7 +74,7 @@ tbody tr:hover{background:#191919}
 .history-controls label{font-size:11px;font-weight:900;text-transform:uppercase;color:#aaa}
 .history-controls select{background:#1c1c1c;color:#fff;border:1px solid #444;border-radius:5px;padding:10px 38px 10px 12px;font-weight:700;cursor:pointer;min-width:180px}
 .history-controls select:focus{outline:2px solid var(--team-color,#F14D07);outline-offset:1px}
-.history-panel{margin-top:12px}.history-source{margin:10px 2px;color:#888;font-size:12px}.history-source a{color:#fff;border-bottom:1px dotted #777;text-decoration:none}
+.history-panel{margin-top:12px}.history-source{margin:10px 2px;color:#888;font-size:12px}.history-source a{color:#fff;border-bottom:1px dotted #777;text-decoration:none}.history-wrap{max-height:68vh;overflow:auto;background:#000;border:1px solid #333;border-radius:7px}.history-wrap thead th{position:sticky;top:0;z-index:5;box-shadow:0 1px 0 #333}.history-count{color:#888;font-size:12px;padding-bottom:11px}.subsection-title{font-size:18px;text-transform:uppercase;margin:28px 0 10px;color:#ddd}.season-action{background:var(--team-color,#F14D07);color:var(--team-text,#000);border:0;border-radius:4px;padding:7px 10px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer;white-space:nowrap}.season-action:hover{filter:brightness(1.1)}.season-history-row td:first-child{font-weight:900}.season-history-row.current{background:rgba(241,77,7,.08)}
 .rus-team-tabs-shell{margin-top:20px}
 .rus-team-tabs{position:sticky;top:0;z-index:1000;isolation:isolate;display:flex;gap:6px;overflow-x:auto;background:#0b0b0b;border:1px solid #333;border-top:4px solid #F14D07;border-radius:8px;padding:8px;margin-bottom:16px}
 .rus-team-tab{position:relative;z-index:1;pointer-events:auto;flex:1 0 auto;min-width:112px;border:1px solid #333;background:#171717;color:#bbb;border-radius:6px;padding:11px 13px;font-size:12px;font-weight:900;text-transform:uppercase;cursor:pointer;white-space:nowrap}
@@ -94,7 +94,7 @@ footer strong{color:#F14D07}
   .logo-wrap{flex-basis:96px;width:96px;height:96px;padding:8px}.team-name{font-size:32px}
   .team-subtitle{font-size:15px}.record-grid{grid-template-columns:repeat(2,1fr)}
   .record-card{padding:14px 8px}.section-title{font-size:22px}
-  .info-grid{grid-template-columns:1fr}.history-controls{align-items:stretch;flex-direction:column}.history-controls select{width:100%}
+  .info-grid{grid-template-columns:1fr}.history-controls{align-items:stretch;flex-direction:column}.history-controls select{width:100%}.history-count{padding:0}.history-wrap{max-height:72vh}
   .rus-team-tabs{padding:6px;gap:5px}.rus-team-tab{min-width:94px;padding:10px 11px;font-size:11px}
 }
 @media(max-width:430px){.hero-main{flex-direction:column}.record-grid{grid-template-columns:1fr 1fr}}
@@ -105,14 +105,14 @@ footer strong{color:#F14D07}
 <header><div class="header-content"><a href="index.html" aria-label="Rural Utah Sports home"><img class="site-logo" src="RUSlogoNew.png" alt="Rural Utah Sports"></a><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav aria-label="Main navigation"><div class="nav-content"></div></nav>
 <main class="container">
-<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260928-basketball-football-layout1">Boys Basketball</a></div>
-<a class="back" href="boys-basketball-teams.html?v=20260928-basketball-football-layout1">← All Boys Basketball Teams</a>
+<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260928-basketball-season-history1">Boys Basketball</a></div>
+<a class="back" href="boys-basketball-teams.html?v=20260928-basketball-season-history1">← All Boys Basketball Teams</a>
 <div id="teamPage" aria-live="polite"><div class="loading-state">Loading team page…</div></div>
 </main>
 <footer><p><strong>RURAL UTAH SPORTS</strong></p><p>2026–27 Boys Basketball</p></footer>
 <script src="pwa.js?v=20260921-shared-runtime3" defer></script>
 <script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260928-basketball-football-layout1"></script>
+<script src="nav-menu.js?v=20260928-basketball-season-history1"></script>
 <script>
 (()=>{
 'use strict';
@@ -185,7 +185,7 @@ function calculate(games,teamName){
   });
   return{all,region};
 }
-const TEAM_PAGE_VERSION='20260928-basketball-football-layout1';
+const TEAM_PAGE_VERSION='20260928-basketball-season-history1';
 function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   const key=norm(teamName);
   const rows=games.filter(game=>(matchesTeam(game,"home",key)||matchesTeam(game,"away",key))&&!isZeroZeroFinal(game))
@@ -316,6 +316,129 @@ function historicalRecord(entry){
   }
   return record;
 }
+const SEASON_HISTORY_URL='boys-basketball-season-history-2002-26.json?v=20260928-basketball-season-history1';
+let seasonHistorySummaryPromise=null;
+function loadSeasonHistorySummary(){
+  if(!seasonHistorySummaryPromise){
+    seasonHistorySummaryPromise=fetch(SEASON_HISTORY_URL,{cache:'no-store'}).then(response=>{
+      if(!response.ok)throw new Error('The basketball season-history summary could not be loaded.');
+      return response.json();
+    }).catch(error=>{seasonHistorySummaryPromise=null;throw error});
+  }
+  return seasonHistorySummaryPromise;
+}
+function seasonRecordText(row){
+  return Number(row.wins||0)+'–'+Number(row.losses||0)+(Number(row.ties||0)?'–'+Number(row.ties||0):'');
+}
+function seasonPct(value){
+  const n=Number(value);
+  return Number.isFinite(n)?(n*100).toFixed(1)+'%':'—';
+}
+function seasonOne(value){
+  const n=Number(value);
+  return Number.isFinite(n)?n.toFixed(1):'—';
+}
+function seasonSigned(value){
+  const n=Number(value);
+  return Number.isFinite(n)?(n>0?'+':'')+n.toFixed(1):'—';
+}
+function sortBasketballSeasonRows(rows,mode){
+  const newest=(a,b)=>clean(b.season).localeCompare(clean(a.season));
+  const numSort=(key,desc=true)=>(a,b)=>(desc?Number(b[key]||0)-Number(a[key]||0):Number(a[key]||0)-Number(b[key]||0))||newest(a,b);
+  const sorts={
+    'season-desc':newest,
+    'season-asc':(a,b)=>clean(a.season).localeCompare(clean(b.season)),
+    'wins-desc':numSort('wins',true),
+    'wins-asc':numSort('wins',false),
+    'losses-desc':numSort('losses',true),
+    'losses-asc':numSort('losses',false),
+    'winpct-desc':numSort('winPct',true),
+    'winpct-asc':numSort('winPct',false),
+    'pf-desc':numSort('pointsFor',true),
+    'pf-asc':numSort('pointsFor',false),
+    'pa-desc':numSort('pointsAgainst',true),
+    'pa-asc':numSort('pointsAgainst',false),
+    'ppg-desc':numSort('ppg',true),
+    'ppg-asc':numSort('ppg',false),
+    'papg-desc':numSort('papg',true),
+    'papg-asc':numSort('papg',false),
+    'margin-desc':numSort('avgMargin',true),
+    'margin-asc':numSort('avgMargin',false)
+  };
+  return [...rows].sort(sorts[mode]||newest);
+}
+function currentBasketballSeasonRow(team){
+  const games=window.RUSBasketballPreviewData?.games||[];
+  const row=calculate(games,team.team).all;
+  if(!row.g)return null;
+  return {
+    season:'2026-27',
+    wins:row.w,
+    losses:row.l,
+    ties:0,
+    games:row.g,
+    winPct:row.g?row.w/row.g:0,
+    pointsFor:row.pf,
+    pointsAgainst:row.pa,
+    ppg:row.g?row.pf/row.g:0,
+    papg:row.g?row.pa/row.g:0,
+    avgMargin:row.g?(row.pf-row.pa)/row.g:0,
+    current:true
+  };
+}
+function renderBasketballSeasonHistory(holder,rows){
+  const seasons=[...rows].sort((a,b)=>clean(b.season).localeCompare(clean(a.season)));
+  holder.innerHTML='<div class="history-controls"><div class="control-group"><label for="seasonHistoryFilter">Filter by season</label><select id="seasonHistoryFilter"><option value="">All Seasons</option>'+seasons.map(row=>'<option value="'+esc(row.season)+'">'+esc(row.season.replace('-', '–'))+'</option>').join('')+'</select></div><div class="control-group"><label for="seasonHistorySort">Sort by</label><select id="seasonHistorySort"><option value="season-desc">Newest Season</option><option value="season-asc">Oldest Season</option><option value="wins-desc">Most Wins</option><option value="wins-asc">Fewest Wins</option><option value="losses-desc">Most Losses</option><option value="losses-asc">Fewest Losses</option><option value="winpct-desc">Highest Win %</option><option value="winpct-asc">Lowest Win %</option><option value="pf-desc">Most Points For</option><option value="pf-asc">Fewest Points For</option><option value="pa-desc">Most Points Against</option><option value="pa-asc">Fewest Points Against</option><option value="ppg-desc">Highest PPG</option><option value="ppg-asc">Lowest PPG</option><option value="papg-desc">Highest PAPG</option><option value="papg-asc">Lowest PAPG</option><option value="margin-desc">Highest Avg Margin</option><option value="margin-asc">Lowest Avg Margin</option></select></div><span class="history-count" id="seasonHistoryCount"></span></div><div class="history-wrap"><table><thead><tr><th>Season</th><th>Record</th><th>Win %</th><th>Games</th><th>PF</th><th>PA</th><th>PPG</th><th>PAPG</th><th>Avg Margin</th><th>Schedule</th></tr></thead><tbody id="seasonHistoryBody"></tbody></table></div>';
+  const filter=holder.querySelector('#seasonHistoryFilter');
+  const sort=holder.querySelector('#seasonHistorySort');
+  const body=holder.querySelector('#seasonHistoryBody');
+  const count=holder.querySelector('#seasonHistoryCount');
+  const update=()=>{
+    let shown=rows.filter(row=>!filter.value||row.season===filter.value);
+    shown=sortBasketballSeasonRows(shown,sort.value);
+    body.innerHTML=shown.map(row=>'<tr class="season-history-row'+(row.current?' current':'')+'"><td>'+esc(row.season.replace('-', '–'))+'</td><td>'+esc(seasonRecordText(row))+'</td><td>'+seasonPct(row.winPct)+'</td><td>'+Number(row.games||0).toLocaleString()+'</td><td>'+Number(row.pointsFor||0).toLocaleString()+'</td><td>'+Number(row.pointsAgainst||0).toLocaleString()+'</td><td>'+seasonOne(row.ppg)+'</td><td>'+seasonOne(row.papg)+'</td><td>'+seasonSigned(row.avgMargin)+'</td><td><button class="season-action" type="button" data-season="'+esc(row.season)+'">View Schedule</button></td></tr>').join('')||'<tr><td colspan="10">No season history available.</td></tr>';
+    count.textContent=filter.value?shown.length+' season shown':shown.length+' seasons shown';
+  };
+  filter.addEventListener('change',update);
+  sort.addEventListener('change',update);
+  holder.addEventListener('click',event=>{
+    const button=event.target.closest('.season-action');
+    if(!button)return;
+    const season=button.dataset.season||'';
+    if(season==='2026-27'){
+      window.RUSBasketballShowTab?.('games');
+      return;
+    }
+    const select=root.querySelector('#historySeasonSelect');
+    if(select){
+      select.value=season;
+      select.dispatchEvent(new Event('change',{bubbles:true}));
+      requestAnimationFrame(()=>root.querySelector('.history-panel')?.scrollIntoView({behavior:'smooth',block:'start'}));
+    }
+  });
+  update();
+}
+async function ensureBasketballSeasonHistory(team){
+  const holder=root.querySelector('#seasonHistoryTableHolder');
+  if(!holder||holder.dataset.loaded==='true'||holder.dataset.loading==='true')return;
+  holder.dataset.loading='true';
+  holder.innerHTML='<div class="loading-state">Loading season-by-season history…</div>';
+  try{
+    const payload=await loadSeasonHistorySummary();
+    const found=Object.entries(payload.teams||{}).find(([name])=>canonicalTeamKey(name)===canonicalTeamKey(team.team));
+    const rows=found&&Array.isArray(found[1])?[...found[1]]:[];
+    const current=currentBasketballSeasonRow(team);
+    if(current)rows.unshift(current);
+    if(!rows.length)holder.innerHTML=empty('No completed season history is available for this team.','No season history available');
+    else renderBasketballSeasonHistory(holder,rows);
+    holder.dataset.loaded='true';
+  }catch(error){
+    holder.innerHTML=empty(error&&error.message?error.message:'Please try again.','Unable to load season history');
+  }finally{
+    holder.dataset.loading='false';
+  }
+}
+
 const HISTORICAL_SEASONS=[
   {id:'2025-26',label:'2025–26',url:'boys-basketball-games-2025-26.json?v=20260928-basketball-results1'},
   {id:'2024-25',label:'2024–25',url:'boys-basketball-games-2024-25.json?v=20260928-basketball-history2024'},
@@ -347,7 +470,7 @@ function setupHistoricalResults(team,allTeams,colorRows){
   const brand=brandFor(team.team,colorRows);
   const bg=safeColor(brand.backgroundColor,'#333333');
   const options=HISTORICAL_SEASONS.map(season=>'<option value="'+esc(season.id)+'">'+esc(season.label)+'</option>').join('');
-  root.insertAdjacentHTML('beforeend','<section class="history-section" style="--team-color:'+bg+'"><h2 class="section-title">Season-by-Season History</h2><p class="schedule-note">Choose a season to view its record and completed results.</p><div class="history-controls"><div class="control-group"><label for="historySeasonSelect">Season</label><select class="history-season-select" id="historySeasonSelect"><option value="">Choose a season</option>'+options+'</select></div></div><div class="history-panel" hidden></div></section>');
+  root.insertAdjacentHTML('beforeend','<section class="history-section" style="--team-color:'+bg+';--team-text:'+safeColor(brand.textColor,'#000000')+'"><h2 class="section-title">Season-by-Season History</h2><div id="seasonHistoryTableHolder"><div class="loading-state">Open the Seasons tab to load season history.</div></div><h3 class="subsection-title">Season Schedule</h3><p class="schedule-note">Choose a season to view its completed results, or use View Schedule in the table above.</p><div class="history-controls"><div class="control-group"><label for="historySeasonSelect">Season</label><select class="history-season-select" id="historySeasonSelect"><option value="">Choose a season</option>'+options+'</select></div></div><div class="history-panel" hidden></div></section>');
   const select=root.querySelector('#historySeasonSelect');
   const panel=root.querySelector('.history-panel');
   if(!select||!panel)return;
@@ -447,10 +570,12 @@ function setupBasketballTabs(team,colorRows){
       const on=panel.dataset.tab===valid;
       panel.hidden=!on;
     }
+    if(valid==='seasons')ensureBasketballSeasonHistory(team);
     const url=new URL(location.href);
     if(valid==='overview')url.searchParams.delete('tab');else url.searchParams.set('tab',valid);
     history.replaceState({},'',url);
   };
+  window.RUSBasketballShowTab=show;
   bar.addEventListener('click',event=>{
     const button=event.target.closest('.rus-team-tab');
     if(button)show(button.dataset.tab);
