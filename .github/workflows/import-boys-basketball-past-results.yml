@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/import-boys-basketball-past-results.yml'
       - 'scripts/import_boys_basketball_past_results.mjs'
+      - 'scripts/build_boys_basketball_all_time_records.mjs'
       - 'boys-basketball-teams.json'
       - 'boys-basketball-games-2026-27.json'
   workflow_dispatch:
@@ -31,11 +32,14 @@ jobs:
             echo "Importing boys basketball $season"
             node scripts/import_boys_basketball_past_results.mjs "$season"
           done
-      - name: Commit historical schedules and reports
+      - name: Build all-time record summary
+        run: node scripts/build_boys_basketball_all_time_records.mjs
+      - name: Commit historical schedules, reports and summary
         run: |
           for season in 2020-21 2021-22 2022-23 2023-24 2024-25; do
             git add "boys-basketball-games-$season.json" "boys-basketball-results-import-report-$season.json"
           done
+          git add boys-basketball-all-time-records-2020-26.json
           if git diff --cached --quiet; then
             echo "No archived boys basketball results changed."
             exit 0
@@ -43,4 +47,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Import past boys basketball results back to 2020"
+          git pull --rebase origin main
           git push
