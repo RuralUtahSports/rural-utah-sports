@@ -91,11 +91,21 @@ function canonicalOpponentUrl(raw) {
   }
 }
 
-function locationFromContest(contest) {
+function locationFromContest(contest, schoolNames) {
   const description = clean(contest?.[29]);
-  const match = description.match(/\b(home|away|neutral)\b/i);
-  if (!match) return '';
-  return match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase();
+  const locationMatch = description.match(/\b(home|away|neutral)\b/i);
+  if (!locationMatch) return '';
+  const location = locationMatch[1].toLowerCase();
+  if (location === 'neutral') return 'Neutral';
+
+  const subjectMatch = description.match(/,\s*(?:the\s+)?(.+?)\s+varsity basketball team\b/i);
+  const subject = norm(subjectMatch?.[1] || '');
+  const ownNames = (Array.isArray(schoolNames) ? schoolNames : [schoolNames]).map(norm).filter(Boolean);
+  const subjectIsOurSchool = subject && ownNames.some(name =>
+    subject === name || subject.includes(name) || name.includes(subject)
+  );
+  const actualLocation = subjectIsOurSchool ? location : (location === 'home' ? 'away' : 'home');
+  return actualLocation.charAt(0).toUpperCase() + actualLocation.slice(1);
 }
 
 function parseTeamPage(html, sourceUrl) {
@@ -133,7 +143,7 @@ function parseTeamPage(html, sourceUrl) {
       result,
       teamScore,
       opponentScore,
-      location: locationFromContest(contest)
+      location: locationFromContest(contest, [schoolName, clean(context.schoolNameAcronym)])
     };
     const key = [date, norm(game.opponent), teamScore, opponentScore, game.location].join('|');
     byKey.set(key, game);
