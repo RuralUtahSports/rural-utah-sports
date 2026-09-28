@@ -1,0 +1,37 @@
+name: Build 1999-2000 basketball legacy staging
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'boys-basketball-legacy-games-1999-2000.json'
+      - 'scripts/build_boys_basketball_legacy_1999_2000.mjs'
+      - '.github/workflows/build-boys-basketball-legacy-1999-2000.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build team-centric legacy file
+        run: node scripts/build_boys_basketball_legacy_1999_2000.mjs
+      - name: Commit staging output
+        run: |
+          git add boys-basketball-legacy-teams-1999-2000.json
+          if git diff --cached --quiet; then
+            echo "No legacy staging output changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build 1999-2000 basketball legacy staging"
+          git pull --rebase origin main
+          git push
