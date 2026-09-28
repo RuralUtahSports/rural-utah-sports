@@ -10,6 +10,7 @@ on:
       - 'boys-basketball-teams.json'
       - 'boys-basketball-games-2026-27.json'
       - 'boys-basketball-team.html'
+      - 'scripts/build_boys_basketball_all_time_records.mjs'
   workflow_dispatch:
 
 permissions:
@@ -28,14 +29,17 @@ jobs:
           node-version: 20
       - name: Import MaxPreps results
         run: node scripts/import_boys_basketball_2025_results.mjs
-      - name: Commit results and import report
+      - name: Build all-time record summary
+        run: node scripts/build_boys_basketball_all_time_records.mjs
+      - name: Commit results and all-time summary
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add boys-basketball-games-2025-26.json boys-basketball-results-import-report-2025-26.json
+          git add boys-basketball-games-2025-26.json boys-basketball-results-import-report-2025-26.json boys-basketball-all-time-records-2020-26.json
           if git diff --cached --quiet; then
-            echo "No 2025-26 basketball results changed."
+            echo "No 2025-26 basketball results or all-time totals changed."
             exit 0
           fi
           git commit -m "Update 2025-26 boys basketball results"
+          git pull --rebase origin main
           git push
