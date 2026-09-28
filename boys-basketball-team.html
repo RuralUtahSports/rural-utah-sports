@@ -259,46 +259,48 @@ function historicalRecord(entry){
   }
   return record;
 }
+const HISTORICAL_SEASONS=[
+  {id:'2025-26',label:'2025–26',url:'boys-basketball-games-2025-26.json?v=20260928-basketball-results1'}
+];
 function setupHistoricalResults(team,allTeams,colorRows){
   const key=norm(team.team);
   const brand=OVERRIDES[key]||colorRows.find(row=>norm(row.team)===key)||BASKETBALL_COLOR_OVERRIDES[key]||{};
   const bg=safeColor(brand.backgroundColor,'#333333');
-  root.insertAdjacentHTML('beforeend','<section class="history-section"><h2 class="section-title" style="--team-color:'+bg+'">2025–26 Results</h2><p class="schedule-note">Previous season scores from MaxPreps. Results load when you open this section.</p><button type="button" class="history-toggle" aria-expanded="false">Show 2025–26 results</button><div class="history-panel" hidden></div></section>');
-  const button=root.querySelector('.history-toggle');
+  const options=HISTORICAL_SEASONS.map(season=>'<option value="'+esc(season.id)+'">'+esc(season.label)+'</option>').join('');
+  root.insertAdjacentHTML('beforeend','<section class="history-section"><h2 class="section-title" style="--team-color:'+bg+'">Past Seasons</h2><p class="schedule-note">Choose a season to view its record and completed results.</p><label class="record-label" for="historySeasonSelect" style="display:block;margin:0 2px 8px;color:#bbb">Select season</label><select class="history-season-select" id="historySeasonSelect" style="max-width:100%;min-width:190px;border:1px solid #555;border-radius:5px;background:#202020;color:#fff;padding:11px 36px 11px 12px;font-weight:900"><option value="">Choose a season</option>'+options+'</select><div class="history-panel" hidden></div></section>');
+  const select=root.querySelector('#historySeasonSelect');
   const panel=root.querySelector('.history-panel');
-  if(!button||!panel)return;
-  button.addEventListener('click',async()=>{
-    if(!panel.hidden){
-      panel.hidden=true;
-      button.setAttribute('aria-expanded','false');
-      button.textContent='Show 2025–26 results';
-      return;
-    }
+  if(!select||!panel)return;
+  select.addEventListener('change',async()=>{
+    const season=HISTORICAL_SEASONS.find(item=>item.id===select.value);
+    if(!season){panel.hidden=true;panel.innerHTML='';return}
     panel.hidden=false;
-    button.setAttribute('aria-expanded','true');
-    button.textContent='Hide 2025–26 results';
-    if(panel.dataset.loaded==='true')return;
-    panel.innerHTML='<div class="loading-state">Loading 2025–26 results…</div>';
-    button.disabled=true;
+    panel.innerHTML='<div class="loading-state">Loading '+esc(season.label)+' results…</div>';
+    const cacheKey='loaded'+season.id.replace(/[^a-z0-9]/gi,'');
+    if(panel.dataset[cacheKey]==='true')return;
     try{
-      const payload=await loadHistoricalResults();
+      let payload;
+      if(season.id==='2025-26')payload=await loadHistoricalResults();
+      else{
+        const response=await fetch(season.url,{cache:'no-store'});
+        if(!response.ok)throw new Error('The '+season.label+' results file could not be loaded.');
+        payload=await response.json();
+      }
       const found=Object.entries(payload.teams||{}).find(([name])=>norm(name)===key);
       const entry=found?found[1]:null;
-      if(!entry)panel.innerHTML=empty('This team is not in the 2025–26 import yet.','Results not imported');
+      if(!entry)panel.innerHTML=empty('No results are available for this team in '+season.label+'.','No results listed');
       else{
         const record=historicalRecord(entry);
         const tieText=record.t?'–'+record.t:'';
         const source=clean(entry.sourceUrl)?'<p class="history-source">Source: <a href="'+esc(entry.sourceUrl)+'" target="_blank" rel="noopener noreferrer">MaxPreps schedule</a></p>':'';
-        const note=entry.status==='no-results'?'MaxPreps has no final scores listed for this team.':record.g+' completed games listed.';
-        const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+record.w+'–'+record.l+tieText+'</div><div class="record-label">2025–26 Record</div></div><div class="record-card"><div class="record-number">'+record.g+'</div><div class="record-label">Completed Games</div></div></div><p class="record-note">'+esc(note)+'</p>';
+        const note=entry.status==='no-results'?'No completed results were listed for this team in '+season.label+'.':record.g+' completed games listed.';
+        const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+record.w+'–'+record.l+tieText+'</div><div class="record-label">'+esc(season.label)+' Record</div></div><div class="record-card"><div class="record-number">'+record.g+'</div><div class="record-label">Completed Games</div></div></div><p class="record-note">'+esc(note)+'</p>';
         panel.innerHTML=stats+renderHistoricalGames(entry,team,allTeams,colorRows,bg)+source;
       }
-      panel.dataset.loaded='true';
+      panel.dataset[cacheKey]='true';
     }catch(error){
-      panel.innerHTML=empty(error&&error.message?error.message:'Please try again.','Unable to load 2025–26 results');
-      historicalResultsPromise=null;
-    }finally{
-      button.disabled=false;
+      panel.innerHTML=empty(error&&error.message?error.message:'Please try again.','Unable to load '+season.label+' results');
+      if(season.id==='2025-26')historicalResultsPromise=null;
     }
   });
 }
