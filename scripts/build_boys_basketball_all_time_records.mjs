@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
-const SEASONS = ['2005-06', '2006-07', '2007-08', '2008-09', '2009-10', '2010-11', '2011-12', '2012-13', '2013-14', '2014-15', '2015-16', '2016-17', '2017-18', '2018-19', '2019-20', '2020-21', '2021-22', '2022-23', '2023-24', '2024-25', '2025-26'];
-const OUTPUT = 'boys-basketball-all-time-records-2005-26.json';
+const SEASONS = ['2002-03', '2003-04', '2004-05', '2005-06', '2006-07', '2007-08', '2008-09', '2009-10', '2010-11', '2011-12', '2012-13', '2013-14', '2014-15', '2015-16', '2016-17', '2017-18', '2018-19', '2019-20', '2020-21', '2021-22', '2022-23', '2023-24', '2024-25', '2025-26'];
+const OUTPUT = 'boys-basketball-all-time-records-2002-26.json';
 
 function readJson(path) {
   return JSON.parse(fs.readFileSync(path, 'utf8'));
@@ -42,8 +42,8 @@ const orderedTeams = Object.fromEntries(
 const payload = {
   schemaVersion: 1,
   updatedAt: new Date().toISOString(),
-  range: {start: '2005-06', end: '2025-26'},
-  source: 'MaxPreps results imported for each season; 0-0 placeholder ties excluded',
+  range: {start: '2002-03', end: '2025-26'},
+  source: 'Deseret News results for 2002-03 through 2004-05 and imported historical results for later seasons; 0-0 placeholder ties excluded',
   summary: {
     teams: Object.keys(orderedTeams).length,
     completedTeamResults: Object.values(orderedTeams).reduce((sum, row) => sum + row.games, 0)
