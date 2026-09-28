@@ -43,10 +43,11 @@ function contestDate(contest) {
 
 function historicalScheduleUrl(source) {
   const url = new URL(source);
-  url.pathname = url.pathname.replace(/\\/basketball\\/schedule\\/?$/, '/basketball/' + SEASON_LABEL + '/schedule/');
-  if (!url.pathname.endsWith('/basketball/' + SEASON_LABEL + '/schedule/')) {
+  const currentSuffix = '/basketball/schedule/';
+  if (!url.pathname.endsWith(currentSuffix)) {
     throw new Error('Could not convert current schedule URL to ' + FULL_SEASON_LABEL + ': ' + source);
   }
+  url.pathname = url.pathname.slice(0, -currentSuffix.length) + '/basketball/' + SEASON_LABEL + '/schedule/';
   return url.toString();
 }
 
@@ -170,7 +171,7 @@ function parseTeamPage(html, sourceUrl) {
 }
 
 async function main() {
-  if (!/^\\d{2}-\\d{2}$/.test(SEASON_LABEL)) throw new Error('Pass a two-digit MaxPreps season such as 20-21.');
+  if (!/^[0-9]{2}-[0-9]{2}$/.test(SEASON_LABEL)) throw new Error('Pass a two-digit MaxPreps season such as 20-21.');
   const teams = readJson(TEAM_FILE).filter(team => team.association === 'UHSAA' || team.team === 'Utah Prep');
   const scheduleData = readJson(CURRENT_SCHEDULE_FILE);
   const sources = {...(scheduleData.sources || {})};
@@ -203,7 +204,7 @@ async function main() {
         console.log(info.name + ': ' + results[info.name].games.length + ' completed results');
       } catch (error) {
         const message = error?.message || String(error);
-        const notFound = /\\b404\\b/.test(message);
+        const notFound = message.includes('404');
         results[info.name] = {
           status: notFound ? 'no-results' : 'error',
           sourceUrl,
