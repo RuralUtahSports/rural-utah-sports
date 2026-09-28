@@ -61,12 +61,20 @@ for(const [school,item] of Object.entries(champData.teams||{})){
   }
 }
 
-function buildSeasonIndex(payload){
+function seasonWindow(season){
+  const startYear=Number(season.slice(0,4));
+  const endYear=Number('20'+season.slice(-2));
+  return {start:Date.parse(startYear+'-11-01T00:00:00'),end:Date.parse(endYear+'-03-15T23:59:59')};
+}
+function buildSeasonIndex(payload,season){
   const byTeam=new Map();
+  const window=seasonWindow(season);
   for(const [teamName,entry] of Object.entries(payload.teams||{})){
     const arr=[];
     for(const g of Array.isArray(entry?.games)?entry.games:[]){
       if(!validGame(g))continue;
+      const when=dateMs(g.date);
+      if(!when||when<window.start||when>window.end)continue;
       arr.push({
         team:display(teamName),
         teamKey:key(teamName),
@@ -206,7 +214,7 @@ for(const season of SEASONS){
   const year=Number('20'+season.slice(-2));
   const titles=titlesByYear.get(year)||[];
   const payload=read('boys-basketball-games-'+season+'.json');
-  const byTeam=buildSeasonIndex(payload);
+  const byTeam=buildSeasonIndex(payload,season);
   for(const title of titles){
     const tournament=inferTournament(byTeam,title);
     tournaments.push({...tournament,season});
