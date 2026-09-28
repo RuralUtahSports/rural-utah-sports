@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/import_boys_basketball_deseret_history.mjs'
+      - 'scripts/build_boys_basketball_all_time_records.mjs'
       - '.github/workflows/import-boys-basketball-deseret-history.yml'
   workflow_dispatch:
 
@@ -38,11 +39,14 @@ jobs:
             console.log(season,d.summary);
           }
           NODE
+      - name: Rebuild all-time basketball records
+        run: node scripts/build_boys_basketball_all_time_records.mjs
       - name: Commit Deseret historical seasons
         run: |
           for season in 2002-03 2003-04 2004-05; do
             git add "boys-basketball-games-$season.json" "boys-basketball-results-import-report-$season.json"
           done
+          git add boys-basketball-all-time-records-2002-26.json
           if git diff --cached --quiet; then
             echo "No Deseret historical basketball data changed."
             exit 0
