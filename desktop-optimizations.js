@@ -174,7 +174,7 @@ function removeNestedVerticalScroll(root=document){
 function loadDesktopV2(){
   if(!window.matchMedia('(min-width:901px)').matches||document.querySelector('script[data-rus-desktop-v2]'))return;
   const script=document.createElement('script');
-  script.src='desktop-v2.js?v=20260818-tableheaderfix';
+  script.src='desktop-v2.js?v=20260928-basketball-hover-preview1';
   script.async=true;
   script.dataset.rusDesktopV2='1';
   if(path==='scorigami.html'){
