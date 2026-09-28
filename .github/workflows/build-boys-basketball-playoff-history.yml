@@ -1,0 +1,57 @@
+name: Build boys basketball playoff history
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_boys_basketball_playoff_history.mjs'
+      - '.github/workflows/build-boys-basketball-playoff-history.yml'
+      - 'boys-basketball-games-*.json'
+      - 'boys-basketball-championships.json'
+      - 'boys-basketball-teams.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build playoff history
+        run: node scripts/build_boys_basketball_playoff_history.mjs
+      - name: Verify playoff history
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const index=JSON.parse(fs.readFileSync('boys-basketball-playoffs/index.json','utf8'));
+          const finals=JSON.parse(fs.readFileSync('boys-basketball-finals-2003-2026.json','utf8'));
+          const report=JSON.parse(fs.readFileSync('boys-basketball-playoffs/build-report.json','utf8'));
+          console.log('Teams',Object.keys(index.teams||{}).length);
+          console.log('Finals',finals.summary);
+          console.log('Unresolved',report.unresolved?.length||0);
+          if(Object.keys(index.teams||{}).length<140) throw new Error('Too few teams');
+          if((finals.summary?.finals||0)<120) throw new Error('Too few championship games');
+          if((report.unresolved?.length||0)>8) throw new Error('Too many unresolved tournaments');
+          for(const key of ['JUAB','MORGAN','PANGUITCH']){
+            const item=index.teams[key];
+            if(!item?.file||!fs.existsSync(item.file)) throw new Error('Missing playoff file for '+key);
+          }
+          NODE
+      - name: Commit playoff history
+        run: |
+          git add boys-basketball-playoffs boys-basketball-finals-2003-2026.json
+          if git diff --cached --quiet; then
+            echo "No basketball playoff history changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build basketball playoff history"
+          git pull --rebase origin main
+          git push
