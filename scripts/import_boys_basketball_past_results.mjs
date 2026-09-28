@@ -170,6 +170,7 @@ function parseTeamPage(html, sourceUrl) {
 }
 
 async function main() {
+  if (!/^\\d{2}-\\d{2}$/.test(SEASON_LABEL)) throw new Error('Pass a two-digit MaxPreps season such as 20-21.');
   const teams = readJson(TEAM_FILE).filter(team => team.association === 'UHSAA' || team.team === 'Utah Prep');
   const scheduleData = readJson(CURRENT_SCHEDULE_FILE);
   const sources = {...(scheduleData.sources || {})};
@@ -201,15 +202,17 @@ async function main() {
         fetched++;
         console.log(info.name + ': ' + results[info.name].games.length + ' completed results');
       } catch (error) {
+        const message = error?.message || String(error);
+        const notFound = /\\b404\\b/.test(message);
         results[info.name] = {
-          status: 'error',
+          status: notFound ? 'no-results' : 'error',
           sourceUrl,
-          error: error?.message || String(error),
+          error: notFound ? '' : message,
           record: {wins: 0, losses: 0, ties: 0, games: 0},
           games: []
         };
-        failures.push({team: info.name, error: error?.message || String(error), sourceUrl});
-        console.error(info.name + ': ' + (error?.message || error));
+        if (!notFound) failures.push({team: info.name, error: message, sourceUrl});
+        console.error(info.name + ': ' + (notFound ? 'no archived page found' : message));
       }
       await sleep(125);
     }
