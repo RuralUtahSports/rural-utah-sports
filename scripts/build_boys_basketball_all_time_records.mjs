@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
-const SEASONS = ['2020-21', '2021-22', '2022-23', '2023-24', '2024-25', '2025-26'];
-const OUTPUT = 'boys-basketball-all-time-records-2020-26.json';
+const SEASONS = ['2017-18', '2018-19', '2019-20', '2020-21', '2021-22', '2022-23', '2023-24', '2024-25', '2025-26'];
+const OUTPUT = 'boys-basketball-all-time-records-2017-26.json';
 const clean = value => String(value ?? '').trim();
 
 function readJson(path) {
@@ -30,7 +30,7 @@ const orderedTeams = Object.fromEntries(
 const payload = {
   schemaVersion: 1,
   updatedAt: new Date().toISOString(),
-  range: {start: '2020-21', end: '2025-26'},
+  range: {start: '2017-18', end: '2025-26'},
   source: 'MaxPreps results imported for each season',
   summary: {
     teams: Object.keys(orderedTeams).length,
