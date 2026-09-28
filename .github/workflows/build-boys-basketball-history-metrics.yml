@@ -1,0 +1,54 @@
+name: Build boys basketball history metrics
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_boys_basketball_history_metrics.mjs'
+      - '.github/workflows/build-boys-basketball-history-metrics.yml'
+      - 'boys-basketball-games-*.json'
+      - 'boys-basketball-season-history-2002-26.json'
+      - 'boys-basketball-playoffs/**'
+      - 'boys-basketball-championships.json'
+      - 'boys-basketball-finals-2003-2026.json'
+      - 'boys-basketball-teams.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build history metrics
+        run: node scripts/build_boys_basketball_history_metrics.mjs
+      - name: Verify output
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const index=JSON.parse(fs.readFileSync('boys-basketball-history-metrics/index.json','utf8'));
+          const teams=Object.keys(index.teams||{});
+          if(teams.length<140) throw new Error('Too few teams: '+teams.length);
+          for(const key of ['JUAB','MORGAN','PANGUITCH']){
+            const item=index.teams[key];
+            if(!item?.file||!fs.existsSync(item.file)) throw new Error('Missing '+key);
+            const d=JSON.parse(fs.readFileSync(item.file,'utf8'));
+            if(!d.records||!Array.isArray(d.greatestSeasons)) throw new Error('Bad payload '+key);
+          }
+          console.log('Teams',teams.length);
+          NODE
+      - name: Commit history metrics
+        run: |
+          git add boys-basketball-history-metrics
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build basketball records and greatest seasons"
+          git pull --rebase origin main
+          git push
