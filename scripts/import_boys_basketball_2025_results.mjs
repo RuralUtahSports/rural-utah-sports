@@ -34,7 +34,10 @@ function participantRows(contest) {
 }
 
 function contestDate(contest) {
-  return (contest || []).find(value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value)) || '';
+  const scheduled = clean(contest?.[11]);
+  if (/^\d{4}-\d{2}-\d{2}T/.test(scheduled)) return scheduled;
+  const dates = (contest || []).filter(value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value));
+  return dates.length ? dates[dates.length - 1] : '';
 }
 
 function historicalScheduleUrl(source) {
@@ -110,6 +113,8 @@ function parseTeamPage(html, sourceUrl) {
     const mine = rows.find(row => (teamId && clean(row[1]) === teamId) || (schoolName && norm(row[14]) === norm(schoolName)));
     const opponent = rows.find(row => row !== mine && clean(row[14]));
     if (!mine || !opponent) continue;
+    const reportedResult = clean(mine[5]).toUpperCase();
+    if (!['W', 'L', 'T'].includes(reportedResult)) continue;
 
     const dateTime = contestDate(contest);
     const date = dateTime.slice(0, 10);
