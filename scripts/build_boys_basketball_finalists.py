@@ -101,17 +101,57 @@ def extract_runner_from_lines(lines):
     return None
 
 def extract_from_summary(text, cls):
-    # Some older files have an all-sports summary with explicit 1ST/2ND place.
-    up=text.upper()
-    idx=up.find("BOYS BASKETBALL")
-    if idx<0: return None
-    section=text[idx:idx+12000]
-    # Locate class then a 2ND PLACE line shortly after.
-    m=re.search(rf"\b{re.escape(cls)}\b([\s\S]{{0,1200}}?)(?:GIRLS BASKETBALL|BOYS CROSS COUNTRY|CROSS COUNTRY|WRESTLING|BASEBALL)",section,re.I)
-    block=m.group(1) if m else section
-    m2=re.search(r"2ND\s+PLACE\s*[-—:]?\s*([A-Z][A-Z .&'()-]{2,50})",block,re.I)
-    if m2:
-        return canonical_from_text(m2.group(1))
+    # Annual PDFs commonly include an all-sports results summary with:
+    # CLASS / 1ST PLACE / 2ND PLACE. Find the BOYS BASKETBALL occurrence
+    # that is actually near those labels (not the table of contents).
+    upper=text.upper()
+    starts=[m.start() for m in re.finditer(r"BOYS\s+BASKETBALL",upper)]
+    sections=[]
+    for idx in starts:
+        chunk=text[idx:idx+18000]
+        up=chunk.upper()
+        if "1ST PLACE" in up and "2ND PLACE" in up:
+            stop_candidates=[]
+            for marker in ["GIRLS BASKETBALL","BOYS CROSS COUNTRY","CROSS COUNTRY - BOYS","WRESTLING"]:
+                pos=up.find(marker,200)
+                if pos>0: stop_candidates.append(pos)
+            if stop_candidates: chunk=chunk[:min(stop_candidates)]
+            sections.append(chunk)
+
+    for section in sections:
+        # Search for this class and inspect the text until the next class heading.
+        matches=list(re.finditer(rf"(?im)^\s*{re.escape(cls)}\s*$",section))
+        for m in matches:
+            block=section[m.end():m.end()+1200]
+            # Stop before next classification heading when possible.
+            nxt=re.search(r"(?im)^\s*[1-6]A\s*$",block)
+            if nxt: block=block[:nxt.start()]
+            m2=re.search(r"(?im)2ND\s+PLACE\s*[-—:]?\s*([^\n\r]+)",block)
+            if m2:
+                hit=canonical_from_text(m2.group(1))
+                if hit: return hit
+
+        # Layout extraction can put class and placing on one line/column.
+        # Search a wider class-local slice and then the first 2ND PLACE after it.
+        m=re.search(rf"\b{re.escape(cls)}\b",section,re.I)
+        if m:
+            block=section[m.start():m.start()+2200]
+            m2=re.search(r"2ND\s+PLACE\s*[-—:]?\s*([^\n\r]+)",block,re.I)
+            if m2:
+                hit=canonical_from_text(m2.group(1))
+                if hit: return hit
+
+    # Last fallback: some PDFs extract as '2ND PLACE TEAM' without clean class lines.
+    # Pair class occurrences with the nearest following placing labels.
+    for section in sections:
+        lines=section.splitlines()
+        for i,line in enumerate(lines):
+            if re.search(rf"(^|\s){re.escape(cls)}(\s|$)",line,re.I):
+                window="\n".join(lines[i:i+12])
+                m2=re.search(r"2ND\s+PLACE\s*[-—:]?\s*([^\n\r]+)",window,re.I)
+                if m2:
+                    hit=canonical_from_text(m2.group(1))
+                    if hit: return hit
     return None
 
 entries=[]
