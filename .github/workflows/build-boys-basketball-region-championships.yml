@@ -1,0 +1,44 @@
+name: Build boys basketball region championships
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_boys_basketball_region_championships.py'
+      - '.github/workflows/build-boys-basketball-region-championships.yml'
+      - 'boys-basketball-teams.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install parser
+        run: python3 -m pip install beautifulsoup4
+      - name: Build region championship history
+        run: python3 scripts/build_boys_basketball_region_championships.py
+      - name: Verify output
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('boys-basketball-region-championships.json'))
+          print(d['summary'])
+          if d['summary']['matchedRows'] < 150:
+              raise SystemExit('Too few matched region-title rows')
+          if d['summary']['failures'] > 6:
+              raise SystemExit('Too many standings-page failures')
+          PY
+      - name: Commit region history
+        run: |
+          git add boys-basketball-region-championships.json boys-basketball-region-championships-report.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build basketball region championship history"
+          git pull --rebase origin main
+          git push
