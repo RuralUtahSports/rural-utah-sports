@@ -1,0 +1,47 @@
+name: Build boys basketball finalists
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_boys_basketball_finalists.py'
+      - 'boys-basketball-championships.json'
+      - '.github/workflows/build-boys-basketball-finalists.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PDF tools
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - name: Build finalists history
+        run: python3 scripts/build_boys_basketball_finalists.py
+      - name: Verify coverage
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('boys-basketball-finalists-1989-2026.json'))
+          r=json.load(open('boys-basketball-finalists-import-report.json'))
+          print(d['summary'])
+          if d['summary']['resolvedFinals'] < 130:
+              raise SystemExit('Too few resolved finals')
+          print('Unresolved:', len(r['unresolved']))
+          PY
+      - name: Commit finalist history
+        run: |
+          git add boys-basketball-finalists-1989-2026.json boys-basketball-finalists-import-report.json
+          if git diff --cached --quiet; then
+            echo "No basketball finalist data changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build basketball championship appearances"
+          git pull --rebase origin main
+          git push
