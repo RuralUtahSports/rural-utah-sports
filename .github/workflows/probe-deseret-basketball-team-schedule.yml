@@ -1,0 +1,32 @@
+name: Probe Deseret basketball team schedule
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/probe_deseret_basketball_team_schedule.mjs'
+      - '.github/workflows/probe-deseret-basketball-team-schedule.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/probe_deseret_basketball_team_schedule.mjs
+      - name: Commit probe output
+        run: |
+          git add deseret-basketball-team-probe.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Probe Deseret basketball team schedule"
+          git pull --rebase origin main
+          git push
