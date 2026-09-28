@@ -1,6 +1,7 @@
 (()=>{
 'use strict';
 function start(){
+  if((location.pathname.split('/').pop()||'').toLowerCase()==='boys-basketball-teams.html')return;
   if(window.__RUSSchoolLogoIntegrationV3)return;
   const A=window.RUSSchoolAssets;if(!A)return;
   window.__RUSSchoolLogoIntegrationV3=true;
