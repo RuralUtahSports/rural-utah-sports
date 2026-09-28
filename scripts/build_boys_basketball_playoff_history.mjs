@@ -114,15 +114,15 @@ function hasLaterGame(byTeam,teamKey,afterDate){
 function playoffTagged(g){return /state\s+tournament/i.test(clean(g?.tournament))}
 
 function chooseRoundCandidates(byTeam,current,cutoff,depth){
+  const currentSet=new Set(current);
   const candidates=[];
   for(const teamKey of current){
     const g=latestWinBefore(byTeam,teamKey,cutoff);
     if(!g)continue;
     if(g.opponentState&&g.opponentState!=='UT'&&g.opponentState!=='UTAH')continue;
+    if(currentSet.has(g.opponentKey))continue;
     const gap=(dateMs(cutoff)-dateMs(g.date))/86400000;
     if(gap<0||gap>11)continue;
-    const opponentEliminated=!hasLaterGame(byTeam,g.opponentKey,g.date);
-    if(!playoffTagged(g)&&!opponentEliminated)continue;
     candidates.push(g);
   }
   if(!candidates.length)return[];
@@ -133,7 +133,7 @@ function chooseRoundCandidates(byTeam,current,cutoff,depth){
     const cluster=candidates.filter(g=>dayDiff(g.date,anchor)<=1);
     if(cluster.length>best.length||(cluster.length===best.length&&dateMs(anchor)>dateMs(best[0]?.date||'')))best=cluster;
   }
-  const required=depth===1?2:Math.max(2,Math.floor(current.length*.30));
+  const required=depth===1?2:Math.max(2,Math.ceil(current.length*.40));
   if(best.length<required)return[];
 
   const seen=new Set(),out=[];
@@ -152,6 +152,28 @@ function inferTournament(byTeam,title){
   const tagged=champGames.filter(g=>g.result==='W'&&playoffTagged(g));
   if(tagged.length)final=tagged[tagged.length-1];
   else final=champGames.filter(g=>g.result==='W').slice(-1)[0]||null;
+
+  if(!final){
+    const reverse=[];
+    for(const arr of byTeam.values()){
+      for(const g of arr){
+        if(g.opponentKey===champKey&&g.result==='L')reverse.push(g);
+      }
+    }
+    reverse.sort((a,b)=>dateMs(a.date)-dateMs(b.date));
+    const g=reverse.slice(-1)[0]||null;
+    if(g){
+      final={
+        team:display(title.champion),teamKey:champKey,
+        opponent:display(g.team),opponentKey:g.teamKey,
+        opponentState:'UT',date:g.date,
+        teamScore:g.opponentScore,opponentScore:g.teamScore,
+        result:'W',
+        location:g.location==='Home'?'Away':g.location==='Away'?'Home':g.location,
+        tournament:g.tournament,sourceUrl:g.sourceUrl
+      };
+    }
+  }
   if(!final)return{...title,resolved:false,reason:'champion final game missing',rounds:[],games:[]};
 
   const finalGame={
