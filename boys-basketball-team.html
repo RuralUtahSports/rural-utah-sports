@@ -62,6 +62,7 @@ tbody tr:last-child td{border-bottom:0}
 .empty-state,.error-state,.loading-state{background:#080808;border:1px solid #333;border-radius:7px;padding:24px;color:#aaa;line-height:1.6}
 .empty-state strong,.error-state strong{display:block;color:#fff;font-size:15px;margin-bottom:4px}
 footer{background:#000;border-top:3px solid #F14D07;text-align:center;padding:18px;color:#888;font-size:11px}
+.history-toggle{display:inline-flex;align-items:center;justify-content:center;border:1px solid #555;border-radius:5px;background:#202020;color:#fff;padding:10px 14px;font-weight:900;cursor:pointer}.history-toggle:hover,.history-toggle:focus-visible{border-color:var(--team-color,#F14D07);color:var(--team-color,#F14D07)}.history-toggle:disabled{opacity:.65;cursor:wait}.history-panel{margin-top:12px}.history-source{margin:10px 2px;color:#888;font-size:12px}.history-source a{color:#ddd}
 @media(max-width:700px){
   header{padding:11px 14px}.site-logo{width:60px;height:60px}.container{padding:18px 13px 42px}
   .hero-content{padding:18px;gap:15px}.logo-wrap{flex-basis:100px;width:100px;height:100px;padding:8px}
@@ -196,6 +197,108 @@ function render(team,allTeams,allGames,colorRows,scheduleSources){
     image.src=logo;
   }
 }
+const HISTORICAL_RESULTS_URL='boys-basketball-games-2025-26.json?v=20260928-basketball-results1';
+let historicalResultsPromise=null;
+const HISTORICAL_TEAM_ALIASES={
+  UTAHMILITARYACADEMYHILLFIELD:'UMA-Hillfield',
+  UTAHMILITARYACADEMYCAMPWILLIAMS:'UMA-Camp Williams',
+  SAINTJOSEPH:'Saint Joseph',
+  STJOSEPH:'Saint Joseph',
+  AMERICANLEADERSHIPACADEMY:'ALA'
+};
+function historicalTeamMatch(allTeams,name){
+  const canonical=HISTORICAL_TEAM_ALIASES[norm(name)]||name;
+  return (allTeams||[]).find(row=>norm(row.team)===norm(canonical)&&(row.association==='UHSAA'||row.team==='Utah Prep'));
+}
+function loadHistoricalResults(){
+  if(!historicalResultsPromise){
+    historicalResultsPromise=fetch(HISTORICAL_RESULTS_URL,{cache:'no-store'}).then(response=>{
+      if(!response.ok)throw new Error('The 2025–26 results file could not be loaded.');
+      return response.json();
+    });
+  }
+  return historicalResultsPromise;
+}
+function renderHistoricalGames(entry,team,allTeams,colorRows,teamColor){
+  const games=Array.isArray(entry.games)?entry.games.slice().sort((a,b)=>clean(a.date).localeCompare(clean(b.date))):[];
+  if(!games.length){
+    const text=entry.error?'Results were unavailable from the source page: '+entry.error:'No completed results are listed for this team.';
+    return empty(text,'No 2025–26 results available');
+  }
+  const body=games.map(game=>{
+    const opponent=clean(game.opponent)||'Opponent';
+    const state=clean(game.opponentState).toUpperCase();
+    const isOutOfState=state&&state!=='UT';
+    const brand=isOutOfState?{}:OVERRIDES[norm(opponent)]||colorRows.find(row=>norm(row.team)===norm(opponent))||BASKETBALL_COLOR_OVERRIDES[norm(opponent)]||{};
+    const opponentBg=safeColor(brand.backgroundColor,'#1B1B1B');
+    const opponentText=safeColor(brand.textColor,'#FFFFFF');
+    const opponentStyle=' style="--opponent-bg:'+opponentBg+';--opponent-text:'+opponentText+';--opponent-bar:'+opponentBg+'"';
+    const linkedTeam=!isOutOfState?historicalTeamMatch(allTeams,opponent):null;
+    const href=linkedTeam?'boys-basketball-team.html?'+new URLSearchParams({team:linkedTeam.team,v:TEAM_PAGE_VERSION}).toString().replace(/&/g,'&amp;'):'';
+    const label=linkedTeam?'<a class="opponent-badge team-page-link"'+opponentStyle+' href="'+href+'" aria-label="Open '+esc(linkedTeam.team)+' basketball team page">'+esc(opponent)+'</a>':'<span class="opponent-badge"'+opponentStyle+'>'+esc(opponent)+'</span>';
+    const stateTag=isOutOfState?' <span class="state-tag">('+esc(state)+')</span>':'';
+    const location=clean(game.location);
+    const result=clean(game.result).toUpperCase();
+    const resultClass=result==='W'?'result win':result==='L'?'result loss':'result';
+    const score=Number.isFinite(Number(game.teamScore))&&Number.isFinite(Number(game.opponentScore))?Number(game.teamScore)+'–'+Number(game.opponentScore):'';
+    const resultText='<span class="'+resultClass+'">'+esc((result?result+' ':'')+score)+'</span>';
+    return'<tr class="schedule-row"><td>'+esc(dateLabel(game.date))+'</td><td class="opponent">'+label+stateTag+'</td><td class="location">'+esc(location)+'</td><td>'+resultText+'</td></tr>';
+  }).join('');
+  return'<div class="table-wrap" style="--team-color:'+safeColor(teamColor,'#333333')+'"><table><thead><tr><th>Date</th><th>Opponent</th><th>Location</th><th>Result</th></tr></thead><tbody>'+body+'</tbody></table></div>';
+}
+function historicalRecord(entry){
+  const record={w:0,l:0,t:0,g:0};
+  for(const game of Array.isArray(entry.games)?entry.games:[]){
+    const result=clean(game.result).toUpperCase();
+    record.g++;
+    if(result==='W')record.w++;else if(result==='L')record.l++;else if(result==='T')record.t++;
+  }
+  return record;
+}
+function setupHistoricalResults(team,allTeams,colorRows){
+  const key=norm(team.team);
+  const brand=OVERRIDES[key]||colorRows.find(row=>norm(row.team)===key)||BASKETBALL_COLOR_OVERRIDES[key]||{};
+  const bg=safeColor(brand.backgroundColor,'#333333');
+  root.insertAdjacentHTML('beforeend','<section class="history-section"><h2 class="section-title" style="--team-color:'+bg+'">2025–26 Results</h2><p class="schedule-note">Previous season scores from MaxPreps. Results load when you open this section.</p><button type="button" class="history-toggle" aria-expanded="false">Show 2025–26 results</button><div class="history-panel" hidden></div></section>');
+  const button=root.querySelector('.history-toggle');
+  const panel=root.querySelector('.history-panel');
+  if(!button||!panel)return;
+  button.addEventListener('click',async()=>{
+    if(!panel.hidden){
+      panel.hidden=true;
+      button.setAttribute('aria-expanded','false');
+      button.textContent='Show 2025–26 results';
+      return;
+    }
+    panel.hidden=false;
+    button.setAttribute('aria-expanded','true');
+    button.textContent='Hide 2025–26 results';
+    if(panel.dataset.loaded==='true')return;
+    panel.innerHTML='<div class="loading-state">Loading 2025–26 results…</div>';
+    button.disabled=true;
+    try{
+      const payload=await loadHistoricalResults();
+      const found=Object.entries(payload.teams||{}).find(([name])=>norm(name)===key);
+      const entry=found?found[1]:null;
+      if(!entry)panel.innerHTML=empty('This team is not in the 2025–26 import yet.','Results not imported');
+      else{
+        const record=historicalRecord(entry);
+        const tieText=record.t?'–'+record.t:'';
+        const source=clean(entry.sourceUrl)?'<p class="history-source">Source: <a href="'+esc(entry.sourceUrl)+'" target="_blank" rel="noopener noreferrer">MaxPreps schedule</a></p>':'';
+        const note=entry.status==='no-results'?'MaxPreps has no final scores listed for this team.':record.g+' completed games listed.';
+        const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+record.w+'–'+record.l+tieText+'</div><div class="record-label">2025–26 Record</div></div><div class="record-card"><div class="record-number">'+record.g+'</div><div class="record-label">Completed Games</div></div></div><p class="record-note">'+esc(note)+'</p>';
+        panel.innerHTML=stats+renderHistoricalGames(entry,team,allTeams,colorRows,bg)+source;
+      }
+      panel.dataset.loaded='true';
+    }catch(error){
+      panel.innerHTML=empty(error&&error.message?error.message:'Please try again.','Unable to load 2025–26 results');
+      historicalResultsPromise=null;
+    }finally{
+      button.disabled=false;
+    }
+  });
+}
+
 async function load(){
   try{
     const query=new URLSearchParams(location.search);
@@ -212,6 +315,7 @@ async function load(){
     const team=teams.find(row=>norm(row.team)===requested&&(row.association==="UHSAA"||row.team==="Utah Prep"));
     if(!team)throw new Error("That school is not in the boys basketball team directory.");
     render(team,teams,Array.isArray(gameFeed.games)?gameFeed.games:[],Array.isArray(colorRows)?colorRows:[],gameFeed.sources||{});
+    setupHistoricalResults(team,teams,Array.isArray(colorRows)?colorRows:[]);
   }catch(error){
     root.innerHTML='<div class="error-state"><strong>Unable to load this basketball team page.</strong>'+esc(error&&error.message?error.message:"Please try again.")+'</div>';
   }
