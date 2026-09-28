@@ -184,7 +184,7 @@
         );
       } else {
         addScript(
-          "desktop-optimizations.js?v=20260921-shared-runtime2",
+          "desktop-optimizations.js?v=20260928-basketball-hover-preview1",
           "rusDesktopOptimizations",
           true,
         );
