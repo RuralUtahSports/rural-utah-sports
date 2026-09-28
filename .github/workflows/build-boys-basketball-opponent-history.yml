@@ -1,0 +1,52 @@
+name: Build boys basketball opponent history
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_boys_basketball_opponent_history.mjs'
+      - '.github/workflows/build-boys-basketball-opponent-history.yml'
+      - 'boys-basketball-games-*.json'
+      - 'boys-basketball-teams.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build opponent history
+        run: node scripts/build_boys_basketball_opponent_history.mjs
+      - name: Verify opponent history
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const index=JSON.parse(fs.readFileSync('boys-basketball-opponents/index.json','utf8'));
+          const teams=Object.keys(index.teams||{});
+          console.log('Teams:',teams.length);
+          if(teams.length<100) throw new Error('Too few teams in opponent history');
+          const sample=index.teams['JUAB'] || index.teams[teams[0]];
+          if(!sample?.file || !fs.existsSync(sample.file)) throw new Error('Sample opponent file missing');
+          const detail=JSON.parse(fs.readFileSync(sample.file,'utf8'));
+          if(!Array.isArray(detail.opponents)) throw new Error('Opponent rows missing');
+          console.log('Sample:',detail.team,detail.opponentCount,detail.recordedGames);
+          NODE
+      - name: Commit opponent history
+        run: |
+          git add boys-basketball-opponents
+          if git diff --cached --quiet; then
+            echo "No basketball opponent history changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build basketball opponent history"
+          git pull --rebase origin main
+          git push
