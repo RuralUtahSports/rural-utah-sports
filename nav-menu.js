@@ -237,11 +237,12 @@
           ? "school-assets-bundle.js?v=20260925-all-logo-discs1"
           : "school-assets-core.js?v=20260925-all-logo-discs1";
       addScript(assetScript, "rusSchoolAssets", true);
-      addScript(
-        "school-logo-integration.js?v=20260925-all-logo-discs1",
-        "rusSchoolLogoIntegration",
-        true,
-      );
+      if (path !== "boys-basketball-teams.html")
+        addScript(
+          "school-logo-integration.js?v=20260925-all-logo-discs1",
+          "rusSchoolLogoIntegration",
+          true,
+        );
       addScript("school-colors.js?v=20260813c", "rusSchoolColors", true);
     }
     if (oneOf("team.html", "player.html"))
