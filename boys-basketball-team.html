@@ -50,7 +50,7 @@ td{padding:12px 10px;text-align:left;border-bottom:1px solid #242424;font-size:1
 tbody tr:last-child td{border-bottom:0}
 .schedule-row td:first-child{border-left:4px solid var(--team-color,#333333);padding-left:8px}
 .opponent{font-weight:900}
-.opponent-badge{display:inline-flex;align-items:center;max-width:240px;padding:5px 8px;border-left:4px solid var(--opponent-bar,#555);border-radius:4px;background:var(--opponent-bg,#1b1b1b);color:var(--opponent-text,#fff);white-space:normal;line-height:1.2;vertical-align:middle;overflow-wrap:anywhere}
+.opponent-badge{display:inline-flex;align-items:center;max-width:240px;padding:5px 8px;border-left:4px solid var(--opponent-bar,#555);border-radius:4px;background:var(--opponent-bg,#1b1b1b);color:var(--opponent-text,#fff);white-space:normal;line-height:1.2;vertical-align:middle;overflow-wrap:anywhere}.team-page-link{text-decoration:none;transition:filter .15s ease}.team-page-link:hover{filter:brightness(1.12);text-decoration:underline;text-underline-offset:2px}.team-page-link:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .location{color:#aaa}
 .result{font-weight:900}
 .result.win{color:#69d18b}
@@ -79,8 +79,8 @@ footer{background:#000;border-top:3px solid #F14D07;text-align:center;padding:18
 <header><div class="header-content"><a href="index.html" aria-label="Rural Utah Sports home"><img class="site-logo" src="RUSlogoNew.png" alt="Rural Utah Sports"></a><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav aria-label="Main navigation"><div class="nav-content"></div></nav>
 <main class="container">
-<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260927-basketball-directory-trim">Boys Basketball</a></div>
-<a class="back" href="boys-basketball-teams.html?v=20260927-basketball-directory-trim">← All Boys Basketball Teams</a>
+<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260928-basketball-schedule-team-links">Boys Basketball</a></div>
+<a class="back" href="boys-basketball-teams.html?v=20260928-basketball-schedule-team-links">← All Boys Basketball Teams</a>
 <div id="teamPage" aria-live="polite"><div class="loading-state">Loading team page…</div></div>
 </main>
 <footer>Rural Utah Sports • 2026–27 Boys Basketball</footer>
@@ -132,7 +132,8 @@ function calculate(games,teamName){
   });
   return{all,region};
 }
-function renderSchedule(games,teamName,colorRows,teamColor){
+const TEAM_PAGE_VERSION='20260928-basketball-schedule-team-links';
+function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   const key=norm(teamName);
   const rows=games.filter(game=>matchesTeam(game,"home",key)||matchesTeam(game,"away",key))
     .slice().sort((a,b)=>clean(a.date).localeCompare(clean(b.date)));
@@ -145,7 +146,9 @@ function renderSchedule(games,teamName,colorRows,teamColor){
     const opponentBg=safeColor(opponentBrand.backgroundColor,"#1B1B1B");
     const opponentText=safeColor(opponentBrand.textColor,"#FFFFFF");
     const opponentStyle=' style="--opponent-bg:'+opponentBg+';--opponent-text:'+opponentText+';--opponent-bar:'+opponentBg+'"';
-    const opponentLabel='<span class="opponent-badge"'+opponentStyle+'>'+esc(opponent)+'</span>';
+    const linkedTeam=(!opponentState||opponentState==="UT")&&(allTeams||[]).find(row=>norm(row.team)===norm(opponent)&&(row.association==="UHSAA"||row.team==="Utah Prep"));
+    const opponentHref=linkedTeam?"boys-basketball-team.html?"+new URLSearchParams({team:linkedTeam.team,v:TEAM_PAGE_VERSION}).toString().replace(/&/g,"&amp;"):"";
+    const opponentLabel=linkedTeam?'<a class="opponent-badge team-page-link"'+opponentStyle+' href="'+opponentHref+'" aria-label="Open '+esc(linkedTeam.team)+' basketball team page">'+esc(opponent)+'</a>':'<span class="opponent-badge"'+opponentStyle+'>'+esc(opponent)+'</span>';
     const stateTag=opponentState&&opponentState!=="UT"?' <span class="state-tag">('+esc(opponentState)+')</span>':"";
     const location=game.neutralSite===true?"Neutral":isHome?"Home":"Away";
     const region=isRegion(game)?'<span class="region-tag">Region</span>':"";
@@ -184,7 +187,7 @@ function render(team,allTeams,allGames,colorRows,scheduleSources){
   const card='<section class="hero" style="--team-color:'+bg+';--team-text:'+fg+'"><div class="brand-bar"></div><div class="hero-content"><div class="logo-wrap"><img id="teamLogo" class="team-logo" alt="'+esc(team.team)+' logo"></div><div class="team-copy"><h1 class="team-name">'+esc(team.team)+'</h1><div class="team-subtitle">2026–27 Boys Basketball</div><div class="meta-row"><span class="meta-pill classification">'+esc(team.classification)+'</span><span class="meta-pill">'+esc(team.region)+'</span><span class="meta-pill">'+esc(team.association)+'</span></div></div></div></section>';
   const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">Overall Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">Games Played</div></div></div><p class="record-note">'+esc(recordNote)+'</p>';
   const scheduleMessage=hasOwnSchedule?"MaxPreps currently lists these 2026–27 games; the schedule may be incomplete.":"The full 2026–27 schedule has not been added yet. Any games shown were listed on an opponent's schedule.";
-  root.innerHTML=card+stats+'<h2 class="section-title" style="--team-color:'+bg+'">2026–27 Schedule &amp; Results</h2><p class="schedule-note">'+esc(scheduleMessage)+'</p>'+renderSchedule(games,team.team,colorRows,bg);
+  root.innerHTML=card+stats+'<h2 class="section-title" style="--team-color:'+bg+'">2026–27 Schedule &amp; Results</h2><p class="schedule-note">'+esc(scheduleMessage)+'</p>'+renderSchedule(games,team.team,allTeams,colorRows,bg);
   document.title=team.team+" Boys Basketball | Rural Utah Sports";
   const image=document.getElementById("teamLogo");
   if(image&&logo){
