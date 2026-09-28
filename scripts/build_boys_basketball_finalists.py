@@ -167,6 +167,12 @@ with tempfile.TemporaryDirectory() as td:
             urllib.request.urlretrieve(url,pdf)
             subprocess.run(["pdftotext","-layout",str(pdf),str(txt)],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
             text=txt.read_text(errors="ignore")
+            if year==2001:
+                up=text.upper()
+                print("DEBUG 2001 BOYS BASKETBALL occurrences:", [m.start() for m in re.finditer(r"BOYS\\s+BASKETBALL",up)][:20])
+                print("DEBUG 2001 1ST PLACE occurrences:", [m.start() for m in re.finditer(r"1ST\\s+PLACE",up)][:20])
+                for m in list(re.finditer(r"BOYS\\s+BASKETBALL",up))[:5]:
+                    print("DEBUG 2001 SNIP", repr(text[m.start():m.start()+2500]))
             downloads.append({"year":year,"url":url,"ok":True,"bytes":pdf.stat().st_size})
         except Exception as e:
             downloads.append({"year":year,"url":url,"ok":False,"error":str(e)})
