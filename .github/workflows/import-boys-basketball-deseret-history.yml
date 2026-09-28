@@ -14,33 +14,41 @@ permissions:
 jobs:
   import:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Import 2002-03 from Deseret
-        run: node scripts/import_boys_basketball_deseret_history.mjs 2003
-      - name: Verify import
+      - name: Import Deseret seasons
+        run: |
+          for year in 2003 2004 2005; do
+            echo "Importing boys basketball season ending $year"
+            node scripts/import_boys_basketball_deseret_history.mjs "$year"
+          done
+      - name: Verify imports
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          const d=JSON.parse(fs.readFileSync('boys-basketball-games-2002-03.json','utf8'));
-          if(d.season!=='2002-03') throw new Error('Wrong season');
-          if((d.summary?.withResults||0)<60) throw new Error('Too few teams with results: '+(d.summary?.withResults||0));
-          if((d.summary?.completedGames||0)<1000) throw new Error('Too few completed team results: '+(d.summary?.completedGames||0));
-          console.log(d.summary);
+          for (const season of ['2002-03','2003-04','2004-05']) {
+            const d=JSON.parse(fs.readFileSync(`boys-basketball-games-${season}.json`,'utf8'));
+            if(d.season!==season) throw new Error(`Wrong season for ${season}`);
+            if((d.summary?.withResults||0)<60) throw new Error(`Too few teams with results for ${season}: ${d.summary?.withResults||0}`);
+            if((d.summary?.completedGames||0)<1000) throw new Error(`Too few completed team results for ${season}: ${d.summary?.completedGames||0}`);
+            console.log(season,d.summary);
+          }
           NODE
-      - name: Commit Deseret historical season
+      - name: Commit Deseret historical seasons
         run: |
-          git add boys-basketball-games-2002-03.json boys-basketball-results-import-report-2002-03.json
+          for season in 2002-03 2003-04 2004-05; do
+            git add "boys-basketball-games-$season.json" "boys-basketball-results-import-report-$season.json"
+          done
           if git diff --cached --quiet; then
             echo "No Deseret historical basketball data changed."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Import 2002-03 boys basketball from Deseret"
+          git commit -m "Import 2002-05 boys basketball from Deseret"
           git pull --rebase origin main
           git push
