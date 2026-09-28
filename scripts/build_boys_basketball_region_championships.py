@@ -36,6 +36,9 @@ ALIASES={
  "grand-county":"grand",
  "cedar-city":"cedar",
  "st-joseph-catholic":"st-joseph",
+ "apa-west-valley":"american-prep-west-valley",
+ "rsl-academy":"salt-lake-academy",
+ "merit-academy":"merit-prep",
 }
 def team_slug(name): return SLUG_OVERRIDES.get(norm(name),slugify(name))
 teams=json.loads(TEAM_FILE.read_text())
@@ -110,6 +113,8 @@ for year in YEARS:
                 rows.append({"slug":slug,"label":label,"wins":w,"losses":l,"pct":pct})
             if not rows: continue
             best=max(r["pct"] for r in rows)
+            if best<=0 and max((r["wins"]+r["losses"] for r in rows),default=0)==0:
+                continue
             champs=[r for r in rows if abs(r["pct"]-best)<1e-9]
             if not champs: continue
             year_regions+=1
