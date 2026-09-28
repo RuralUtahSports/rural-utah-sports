@@ -9,70 +9,95 @@
 <link rel="manifest" href="manifest.webmanifest?v=20260817-opt1">
 <link rel="apple-touch-icon" href="RUSlogoNew.png">
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif}
 body{min-height:100vh}
-header{background:#000;border-bottom:4px solid #F14D07;padding:14px 22px}
-.header-content{max-width:1400px;margin:auto;display:flex;align-items:center;gap:18px}
-.site-logo{width:74px;height:74px;object-fit:contain}
-.site-title h1{font-size:clamp(22px,3vw,30px);font-weight:900;letter-spacing:1.5px;text-transform:uppercase;margin:0}
-.site-title p{color:#F14D07;font-weight:bold;margin:5px 0 0}
+header{background:#000;border-bottom:4px solid #F14D07;padding:15px 25px}
+.header-content{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px}
+.site-logo{width:80px;height:80px;object-fit:contain}
+.site-title h1{font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+.site-title p{color:#F14D07;font-weight:bold;margin-top:5px}
 nav{background:#000;border-bottom:1px solid #333}
 .nav-content{max-width:1400px;margin:auto;display:flex;flex-wrap:wrap}
-.container{max-width:1120px;margin:auto;padding:26px 20px 60px}
-.sport-switch{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.sport-link{display:inline-flex;align-items:center;justify-content:center;background:#1b1b1b;color:#fff;border:1px solid #3a3a3a;border-radius:999px;padding:10px 16px;text-decoration:none;font-size:12px;font-weight:900;text-transform:uppercase}
+nav a{color:#fff;text-decoration:none;padding:15px 18px;font-size:14px;font-weight:bold;text-transform:uppercase}
+nav a:hover,nav a.active{background:#F14D07;color:#000}
+.container{max-width:1400px;margin:auto;padding:35px 20px 60px}
+.sport-switch{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.sport-link{display:inline-flex;align-items:center;justify-content:center;background:#1c1c1c;color:#fff;border:1px solid #333;border-radius:4px;padding:9px 13px;text-decoration:none;font-size:11px;font-weight:900;text-transform:uppercase}
 .sport-link:hover,.sport-link.active{background:#F14D07;color:#000;border-color:#F14D07}
-.back{display:inline-block;margin:0 0 18px;background:#222;border:1px solid #444;color:#fff;text-decoration:none;border-radius:5px;padding:10px 14px;font-size:12px;font-weight:900;text-transform:uppercase}
-.back:hover{border-color:#F14D07;color:#F14D07}
-.hero{background:#080808;border:1px solid #333;border-radius:10px;overflow:hidden;margin-bottom:22px}
-.brand-bar{height:9px;background:var(--team-color,#F14D07)}
-.hero-content{display:flex;align-items:center;gap:24px;padding:25px}
-.logo-wrap{flex:0 0 142px;width:142px;height:142px;display:flex;align-items:center;justify-content:center;background:#101010;border:1px solid #292929;border-radius:9px;padding:12px}
+.back{display:inline-block;background:#F14D07;color:#000;text-decoration:none;padding:10px 16px;border-radius:4px;font-weight:900;text-transform:uppercase;margin-bottom:20px}
+.hero{background:#000;border:1px solid #333;border-radius:8px;overflow:hidden;margin-bottom:28px}
+.brand-bar{height:14px;background:var(--team-color,#F14D07)}
+.hero-content{padding:30px}
+.hero-main{display:flex;align-items:center;gap:24px}
+.logo-wrap{flex:0 0 132px;width:132px;height:132px;display:flex;align-items:center;justify-content:center;background:#101010;border:1px solid #292929;border-radius:8px;padding:11px}
 .team-logo{width:100%;height:100%;object-fit:contain}
 .team-copy{min-width:0}
-.team-name{font-size:clamp(30px,6vw,52px);line-height:1.05;font-weight:900;text-transform:uppercase;margin:0 0 10px;overflow-wrap:anywhere}
-.team-subtitle{color:#aaa;font-size:15px;line-height:1.5}
-.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
-.meta-pill{display:inline-flex;align-items:center;border-radius:999px;padding:7px 10px;background:#1b1b1b;border:1px solid #393939;color:#ddd;font-size:11px;font-weight:900;text-transform:uppercase}
+.team-name{font-size:46px;line-height:1.05;font-weight:900;text-transform:uppercase;margin-bottom:8px;overflow-wrap:anywhere}
+.team-subtitle{font-size:18px;color:#aaa}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.meta-pill{display:inline-flex;align-items:center;border-radius:999px;padding:6px 9px;background:#1c1c1c;border:1px solid #393939;color:#ddd;font-size:10px;font-weight:900;text-transform:uppercase}
 .meta-pill.classification{background:var(--team-color,#F14D07);color:var(--team-text,#fff);border-color:var(--team-color,#F14D07)}
-.section-title{border-left:5px solid var(--team-color,#F14D07);padding-left:12px;margin:26px 0 12px;font-size:22px;text-transform:uppercase}
-.record-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.record-card{background:#000;border:1px solid #333;border-top:4px solid var(--team-color,#F14D07);border-radius:7px;padding:17px 12px;text-align:center}
-.record-number{font-size:clamp(21px,4vw,30px);font-weight:900}
-.record-label{color:#999;font-size:10px;line-height:1.4;text-transform:uppercase;font-weight:900;margin-top:6px}
-.record-note{color:#888;font-size:12px;line-height:1.5;margin:12px 2px 0}
-.schedule-note{color:#888;font-size:12px;line-height:1.5;margin:12px 2px 10px}
+.record-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:28px}
+.record-card{background:#1c1c1c;border:1px solid #333;border-radius:6px;padding:18px;text-align:center}
+.record-number{font-size:25px;font-weight:900}
+.record-label{font-size:11px;color:#999;text-transform:uppercase;margin-top:5px;font-weight:700;line-height:1.25}
+.record-note{color:#888;font-size:13px;line-height:1.45;margin:12px 2px 0}
+.section-title{border-left:6px solid var(--team-color,#F14D07);padding-left:14px;margin:35px 0 15px;font-size:27px;text-transform:uppercase}
+.info-box{background:#000;border:1px solid #333;border-radius:7px;padding:20px}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.info-item{background:#1c1c1c;border-radius:4px;padding:14px}
+.info-label{color:#888;font-size:10px;text-transform:uppercase;margin-bottom:5px}
+.info-value{font-size:16px;font-weight:bold}
+.schedule-note{color:#888;font-size:13px;line-height:1.45;margin:0 2px 12px}
 .table-wrap{overflow-x:auto;background:#000;border:1px solid #333;border-radius:7px}
-table{width:100%;border-collapse:collapse;min-width:560px}
-th{background:#202020;color:#fff;padding:12px 10px;text-align:left;text-transform:uppercase;font-size:10px;letter-spacing:.4px;border-bottom:3px solid var(--team-color,#F14D07)}
-td{padding:12px 10px;text-align:left;border-bottom:1px solid #242424;font-size:13px;white-space:nowrap}
-tbody tr:last-child td{border-bottom:0}
-.schedule-row td:first-child{border-left:4px solid var(--team-color,#333333);padding-left:8px}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th{background:var(--team-color,#F14D07);color:var(--team-text,#000);padding:12px 10px;text-transform:uppercase;font-size:11px;white-space:nowrap}
+td{padding:11px 10px;text-align:center;border-bottom:1px solid #333;white-space:nowrap}
+tbody tr:hover{background:#191919}
+.schedule-row td:first-child{border-left:4px solid var(--team-color,#333);padding-left:8px}
 .opponent{font-weight:900}
-.opponent-badge{display:inline-flex;align-items:center;max-width:240px;padding:5px 8px;border-left:4px solid var(--opponent-bar,#555);border-radius:4px;background:var(--opponent-bg,#1b1b1b);color:var(--opponent-text,#fff);white-space:normal;line-height:1.2;vertical-align:middle;overflow-wrap:anywhere}.team-page-link{text-decoration:none;transition:filter .15s ease}.team-page-link:hover{filter:brightness(1.12);text-decoration:underline;text-underline-offset:2px}.team-page-link:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.opponent-badge{display:inline-flex;align-items:center;max-width:260px;padding:5px 8px;border-left:4px solid var(--opponent-bar,#555);border-radius:4px;background:var(--opponent-bg,#1b1b1b);color:var(--opponent-text,#fff);white-space:normal;line-height:1.2;vertical-align:middle;overflow-wrap:anywhere}
+.team-page-link{text-decoration:none;transition:filter .15s ease}
+.team-page-link:hover{filter:brightness(1.12);text-decoration:underline;text-underline-offset:2px}
+.team-page-link:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .location{color:#aaa}
-.result{font-weight:900}
-.result.win{color:#69d18b}
-.result.loss{color:#ff7777}
+.result{font-weight:900}.result.win{color:#69d18b}.result.loss{color:#ff7777}
 .status{display:inline-flex;border-radius:999px;padding:5px 8px;background:#1b1b1b;color:#bbb;font-size:10px;font-weight:900;text-transform:uppercase}
 .status.live{background:#6b1717;color:#fff}
 .region-tag{display:inline-block;margin-left:6px;border:1px solid #555;border-radius:999px;padding:3px 6px;color:#ccc;font-size:9px;font-weight:900;text-transform:uppercase}
 .state-tag{display:inline-block;margin-left:4px;color:#aaa;font-size:10px;font-weight:700}
 .empty-state,.error-state,.loading-state{background:#080808;border:1px solid #333;border-radius:7px;padding:24px;color:#aaa;line-height:1.6}
 .empty-state strong,.error-state strong{display:block;color:#fff;font-size:15px;margin-bottom:4px}
-footer{background:#000;border-top:3px solid #F14D07;text-align:center;padding:18px;color:#888;font-size:11px}
-.history-toggle{display:inline-flex;align-items:center;justify-content:center;border:1px solid #555;border-radius:5px;background:#202020;color:#fff;padding:10px 14px;font-weight:900;cursor:pointer}.history-toggle:hover,.history-toggle:focus-visible{border-color:var(--team-color,#F14D07);color:var(--team-color,#F14D07)}.history-toggle:disabled{opacity:.65;cursor:wait}.history-panel{margin-top:12px}.history-source{margin:10px 2px;color:#888;font-size:12px}.history-source a{color:#ddd}
-@media(max-width:700px){
-  header{padding:11px 14px}.site-logo{width:60px;height:60px}.container{padding:18px 13px 42px}
-  .hero-content{padding:18px;gap:15px}.logo-wrap{flex-basis:100px;width:100px;height:100px;padding:8px}
-  .team-subtitle{font-size:13px}.record-grid{gap:8px}.record-card{padding:14px 7px}
-  .record-label{font-size:9px}.section-title{font-size:19px}
+.history-controls{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.control-group{display:flex;flex-direction:column;gap:6px}
+.history-controls label{font-size:11px;font-weight:900;text-transform:uppercase;color:#aaa}
+.history-controls select{background:#1c1c1c;color:#fff;border:1px solid #444;border-radius:5px;padding:10px 38px 10px 12px;font-weight:700;cursor:pointer;min-width:180px}
+.history-controls select:focus{outline:2px solid var(--team-color,#F14D07);outline-offset:1px}
+.history-panel{margin-top:12px}.history-source{margin:10px 2px;color:#888;font-size:12px}.history-source a{color:#fff;border-bottom:1px dotted #777;text-decoration:none}
+.rus-team-tabs-shell{margin-top:20px}
+.rus-team-tabs{position:sticky;top:0;z-index:1000;isolation:isolate;display:flex;gap:6px;overflow-x:auto;background:#0b0b0b;border:1px solid #333;border-top:4px solid #F14D07;border-radius:8px;padding:8px;margin-bottom:16px}
+.rus-team-tab{position:relative;z-index:1;pointer-events:auto;flex:1 0 auto;min-width:112px;border:1px solid #333;background:#171717;color:#bbb;border-radius:6px;padding:11px 13px;font-size:12px;font-weight:900;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.rus-team-tab.active{background:#F14D07;border-color:#F14D07;color:#000}
+.rus-team-panel{scroll-margin-top:82px}
+.rus-team-panel[hidden]{display:none!important}
+.rus-team-panel:not([hidden]){display:block!important}
+.rus-tab-empty{background:#090909;border:1px solid #333;border-radius:8px;color:#888;padding:35px;text-align:center}
+footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}
+footer strong{color:#F14D07}
+@media(max-width:1000px){.record-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.info-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){
+  .header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}
+  nav a{flex:1 1 50%;text-align:center;padding:13px 8px}
+  .container{padding:25px 12px 45px}.hero-content{padding:20px}.hero-main{align-items:flex-start}
+  .logo-wrap{flex-basis:96px;width:96px;height:96px;padding:8px}.team-name{font-size:32px}
+  .team-subtitle{font-size:15px}.record-grid{grid-template-columns:repeat(2,1fr)}
+  .record-card{padding:14px 8px}.section-title{font-size:22px}
+  .info-grid{grid-template-columns:1fr}.history-controls{align-items:stretch;flex-direction:column}.history-controls select{width:100%}
+  .rus-team-tabs{padding:6px;gap:5px}.rus-team-tab{min-width:94px;padding:10px 11px;font-size:11px}
 }
-@media(max-width:430px){
-  .hero-content{align-items:flex-start;flex-direction:column}.logo-wrap{width:92px;height:92px;flex-basis:92px}
-  .record-grid{grid-template-columns:1fr}.record-number{font-size:24px}
-}
+@media(max-width:430px){.hero-main{flex-direction:column}.record-grid{grid-template-columns:1fr 1fr}}
 </style>
 <script src="school-assets-core.js?v=20260925-all-logo-discs1"></script>
 </head>
@@ -80,14 +105,14 @@ footer{background:#000;border-top:3px solid #F14D07;text-align:center;padding:18
 <header><div class="header-content"><a href="index.html" aria-label="Rural Utah Sports home"><img class="site-logo" src="RUSlogoNew.png" alt="Rural Utah Sports"></a><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav aria-label="Main navigation"><div class="nav-content"></div></nav>
 <main class="container">
-<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260928-basketball-history2002-dir1">Boys Basketball</a></div>
-<a class="back" href="boys-basketball-teams.html?v=20260928-basketball-history2002-dir1">← All Boys Basketball Teams</a>
+<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260928-basketball-football-layout1">Boys Basketball</a></div>
+<a class="back" href="boys-basketball-teams.html?v=20260928-basketball-football-layout1">← All Boys Basketball Teams</a>
 <div id="teamPage" aria-live="polite"><div class="loading-state">Loading team page…</div></div>
 </main>
-<footer>Rural Utah Sports • 2026–27 Boys Basketball</footer>
+<footer><p><strong>RURAL UTAH SPORTS</strong></p><p>2026–27 Boys Basketball</p></footer>
 <script src="pwa.js?v=20260921-shared-runtime3" defer></script>
 <script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260928-basketball-history2002-dir1"></script>
+<script src="nav-menu.js?v=20260928-basketball-football-layout1"></script>
 <script>
 (()=>{
 'use strict';
@@ -160,7 +185,7 @@ function calculate(games,teamName){
   });
   return{all,region};
 }
-const TEAM_PAGE_VERSION='20260928-basketball-history2002';
+const TEAM_PAGE_VERSION='20260928-basketball-football-layout1';
 function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   const key=norm(teamName);
   const rows=games.filter(game=>(matchesTeam(game,"home",key)||matchesTeam(game,"away",key))&&!isZeroZeroFinal(game))
@@ -214,10 +239,11 @@ function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary)
   const entry=asset&&asset.get?asset.get(team.team):null;
   const candidates=[asset&&asset.customLogo?asset.customLogo(team.team):"",entry&&entry.logoUrl?entry.logoUrl:"",asset&&asset.fallbackLogo?asset.fallbackLogo(team.team):""].filter((url,index,array)=>url&&array.indexOf(url)===index);
   const logo=candidates[0]||"";
-  const card='<section class="hero" style="--team-color:'+bg+';--team-text:'+fg+'"><div class="brand-bar"></div><div class="hero-content"><div class="logo-wrap"><img id="teamLogo" class="team-logo" alt="'+esc(team.team)+' logo"></div><div class="team-copy"><h1 class="team-name">'+esc(team.team)+'</h1><div class="team-subtitle">2026–27 Boys Basketball</div><div class="meta-row"><span class="meta-pill classification">'+esc(team.classification)+'</span><span class="meta-pill">'+esc(team.region)+'</span><span class="meta-pill">'+esc(team.association)+'</span></div></div></div></section>';
-  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">2026–27 Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">2026–27 Games Played</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?fullRecordText(allTimeRecord):'—')+'</div><div class="record-label">All-Time Record Since 2002–03</div></div></div><p class="record-note">'+esc(recordNote)+' All-time totals combine available completed results from 2002–03 through the current season.</p>';
+  const allTimeGames=allTimeRecord?allTimeRecord.g:0;
+  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">2026–27 Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">2026–27 Games</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?fullRecordText(allTimeRecord):'—')+'</div><div class="record-label">All-Time Record</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?allTimeGames.toLocaleString():'—')+'</div><div class="record-label">Recorded Games Since 2002–03</div></div></div><p class="record-note">'+esc(recordNote)+' All-time totals combine available completed results from 2002–03 through the current season.</p>';
+  const card='<section class="hero" style="--team-color:'+bg+';--team-text:'+fg+'"><div class="brand-bar"></div><div class="hero-content"><div class="hero-main"><div class="logo-wrap"><img id="teamLogo" class="team-logo" alt="'+esc(team.team)+' logo"></div><div class="team-copy"><h1 class="team-name" style="color:'+fg+'">'+esc(team.team)+'</h1><div class="team-subtitle">2026–27 Boys Basketball</div><div class="meta-row"><span class="meta-pill classification">'+esc(team.classification)+'</span><span class="meta-pill">'+esc(team.region)+'</span><span class="meta-pill">'+esc(team.association)+'</span></div></div></div>'+stats+'</div></section>';
   const scheduleMessage=hasOwnSchedule?"MaxPreps currently lists these 2026–27 games; the schedule may be incomplete.":"The full 2026–27 schedule has not been added yet. Any games shown were listed on an opponent's schedule.";
-  root.innerHTML=card+stats+'<h2 class="section-title" style="--team-color:'+bg+'">2026–27 Schedule &amp; Results</h2><p class="schedule-note">'+esc(scheduleMessage)+'</p>'+renderSchedule(games,team.team,allTeams,colorRows,bg);
+  root.innerHTML=card+'<section class="current-season-section" style="--team-color:'+bg+';--team-text:'+fg+'"><h2 class="section-title">2026–27 Schedule &amp; Results</h2><p class="schedule-note">'+esc(scheduleMessage)+'</p>'+renderSchedule(games,team.team,allTeams,colorRows,bg)+'</section>';
   document.title=team.team+" Boys Basketball | Rural Utah Sports";
   const image=document.getElementById("teamLogo");
   if(image&&logo){
@@ -321,7 +347,7 @@ function setupHistoricalResults(team,allTeams,colorRows){
   const brand=brandFor(team.team,colorRows);
   const bg=safeColor(brand.backgroundColor,'#333333');
   const options=HISTORICAL_SEASONS.map(season=>'<option value="'+esc(season.id)+'">'+esc(season.label)+'</option>').join('');
-  root.insertAdjacentHTML('beforeend','<section class="history-section"><h2 class="section-title" style="--team-color:'+bg+'">Past Seasons</h2><p class="schedule-note">Choose a season to view its record and completed results.</p><label class="record-label" for="historySeasonSelect" style="display:block;margin:0 2px 8px;color:#bbb">Select season</label><select class="history-season-select" id="historySeasonSelect" style="max-width:100%;min-width:190px;border:1px solid #555;border-radius:5px;background:#202020;color:#fff;padding:11px 36px 11px 12px;font-weight:900"><option value="">Choose a season</option>'+options+'</select><div class="history-panel" hidden></div></section>');
+  root.insertAdjacentHTML('beforeend','<section class="history-section" style="--team-color:'+bg+'"><h2 class="section-title">Season-by-Season History</h2><p class="schedule-note">Choose a season to view its record and completed results.</p><div class="history-controls"><div class="control-group"><label for="historySeasonSelect">Season</label><select class="history-season-select" id="historySeasonSelect"><option value="">Choose a season</option>'+options+'</select></div></div><div class="history-panel" hidden></div></section>');
   const select=root.querySelector('#historySeasonSelect');
   const panel=root.querySelector('.history-panel');
   if(!select||!panel)return;
@@ -361,6 +387,89 @@ function setupHistoricalResults(team,allTeams,colorRows){
   });
 }
 
+function setupBasketballTabs(team,colorRows){
+  const hero=root.querySelector('.hero');
+  const current=root.querySelector('.current-season-section');
+  const seasons=root.querySelector('.history-section');
+  if(!hero||!current||!seasons)return;
+  const brand=brandFor(team.team,colorRows);
+  const bg=safeColor(brand.backgroundColor,'#F14D07');
+  const fg=safeColor(brand.textColor,'#000000');
+  const shell=document.createElement('section');
+  shell.className='rus-team-tabs-shell';
+  shell.style.setProperty('--team-color',bg);
+  shell.style.setProperty('--team-text',fg);
+  const tabs=[['overview','Overview'],['seasons','Seasons'],['games','Games'],['history','History']];
+  const bar=document.createElement('div');
+  bar.className='rus-team-tabs';
+  bar.setAttribute('role','tablist');
+  bar.setAttribute('aria-label','Basketball team sections');
+  const panels=document.createElement('div');
+  panels.className='rus-team-panels';
+  const map={};
+  for(const [key,label] of tabs){
+    const button=document.createElement('button');
+    button.className='rus-team-tab';
+    button.type='button';
+    button.dataset.tab=key;
+    button.id='rus-basketball-tab-'+key;
+    button.setAttribute('role','tab');
+    button.textContent=label;
+    const panel=document.createElement('section');
+    panel.className='rus-team-panel';
+    panel.dataset.tab=key;
+    panel.id='rus-basketball-panel-'+key;
+    panel.setAttribute('role','tabpanel');
+    panel.setAttribute('aria-labelledby',button.id);
+    panel.hidden=true;
+    bar.appendChild(button);
+    panels.appendChild(panel);
+    map[key]=panel;
+  }
+  const colors=clean(brand.colors)||'—';
+  map.overview.innerHTML='<h2 class="section-title">Team Information</h2><div class="info-box"><div class="info-grid"><div class="info-item"><div class="info-label">Classification</div><div class="info-value">'+esc(team.classification||'—')+'</div></div><div class="info-item"><div class="info-label">Region</div><div class="info-value">'+esc(team.region||'—')+'</div></div><div class="info-item"><div class="info-label">School Colors</div><div class="info-value">'+esc(colors)+'</div></div></div></div><h2 class="section-title">Basketball History</h2><div class="info-box"><div class="info-grid"><div class="info-item"><div class="info-label">Recorded History Begins</div><div class="info-value">2002–03</div></div><div class="info-item"><div class="info-label">Current Season</div><div class="info-value">2026–27</div></div><div class="info-item"><div class="info-label">Association</div><div class="info-value">'+esc(team.association||'—')+'</div></div></div></div>';
+  map.games.appendChild(current);
+  map.seasons.appendChild(seasons);
+  map.history.innerHTML='<h2 class="section-title">Historical Coverage</h2><div class="info-box"><div class="info-grid"><div class="info-item"><div class="info-label">All-Time Range</div><div class="info-value">2002–03 to Present</div></div><div class="info-item"><div class="info-label">Early Source</div><div class="info-value">Deseret News</div></div><div class="info-item"><div class="info-label">Recent Source</div><div class="info-value">MaxPreps</div></div></div></div><p class="record-note">Completed results from 2002–03 forward are included where available. Placeholder 0–0 results are excluded.</p>';
+  shell.append(bar,panels);
+  hero.insertAdjacentElement('afterend',shell);
+  const requested=(new URLSearchParams(location.search).get('tab')||'overview').toLowerCase();
+  const available=new Set(tabs.map(([key])=>key));
+  const show=key=>{
+    const valid=available.has(key)?key:'overview';
+    for(const button of bar.querySelectorAll('.rus-team-tab')){
+      const on=button.dataset.tab===valid;
+      button.classList.toggle('active',on);
+      button.setAttribute('aria-selected',on?'true':'false');
+      button.tabIndex=on?0:-1;
+    }
+    for(const panel of panels.querySelectorAll('.rus-team-panel')){
+      const on=panel.dataset.tab===valid;
+      panel.hidden=!on;
+    }
+    const url=new URL(location.href);
+    if(valid==='overview')url.searchParams.delete('tab');else url.searchParams.set('tab',valid);
+    history.replaceState({},'',url);
+  };
+  bar.addEventListener('click',event=>{
+    const button=event.target.closest('.rus-team-tab');
+    if(button)show(button.dataset.tab);
+  });
+  bar.addEventListener('keydown',event=>{
+    if(!['ArrowLeft','ArrowRight'].includes(event.key))return;
+    const buttons=[...bar.querySelectorAll('.rus-team-tab')];
+    const currentButton=event.target.closest('.rus-team-tab');
+    const index=buttons.indexOf(currentButton);
+    if(index<0)return;
+    event.preventDefault();
+    const step=event.key==='ArrowRight'?1:-1;
+    const next=buttons[(index+step+buttons.length)%buttons.length];
+    next.focus();
+    show(next.dataset.tab);
+  });
+  show(requested);
+}
+
 async function load(){
   try{
     const query=new URLSearchParams(location.search);
@@ -379,6 +488,7 @@ async function load(){
     if(!team)throw new Error("That school is not in the boys basketball team directory.");
     render(team,teams,Array.isArray(gameFeed.games)?gameFeed.games:[],Array.isArray(colorRows)?colorRows:[],gameFeed.sources||{},allTimeSummary);
     setupHistoricalResults(team,teams,Array.isArray(colorRows)?colorRows:[]);
+    setupBasketballTabs(team,Array.isArray(colorRows)?colorRows:[]);
   }catch(error){
     root.innerHTML='<div class="error-state"><strong>Unable to load this basketball team page.</strong>'+esc(error&&error.message?error.message:"Please try again.")+'</div>';
   }
