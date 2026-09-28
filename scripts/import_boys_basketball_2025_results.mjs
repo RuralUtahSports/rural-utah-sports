@@ -131,6 +131,7 @@ function parseTeamPage(html, sourceUrl) {
     const teamScore = number(mine[6]);
     const opponentScore = number(opponent[6]);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || teamScore === null || opponentScore === null) continue;
+    if (teamScore === 0 && opponentScore === 0) continue;
 
     const result = teamScore > opponentScore ? 'W' : teamScore < opponentScore ? 'L' : 'T';
     const opponentUrl = canonicalOpponentUrl(opponent[13]);

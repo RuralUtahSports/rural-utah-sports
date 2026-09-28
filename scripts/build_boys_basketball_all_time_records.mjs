@@ -2,25 +2,37 @@ import fs from 'node:fs';
 
 const SEASONS = ['2017-18', '2018-19', '2019-20', '2020-21', '2021-22', '2022-23', '2023-24', '2024-25', '2025-26'];
 const OUTPUT = 'boys-basketball-all-time-records-2017-26.json';
-const clean = value => String(value ?? '').trim();
 
 function readJson(path) {
   return JSON.parse(fs.readFileSync(path, 'utf8'));
 }
 
+function validGames(team) {
+  return (Array.isArray(team?.games) ? team.games : []).filter(game => {
+    const teamScore = Number(game.teamScore);
+    const opponentScore = Number(game.opponentScore);
+    return Number.isFinite(teamScore) && Number.isFinite(opponentScore) &&
+      !(teamScore === 0 && opponentScore === 0);
+  });
+}
+
 const totals = {};
 for (const season of SEASONS) {
-  const report = readJson('boys-basketball-results-import-report-' + season + '.json');
-  for (const [name, team] of Object.entries(report.teams || {})) {
-    const record = team.record || {};
+  const seasonData = readJson('boys-basketball-games-' + season + '.json');
+  for (const [name, team] of Object.entries(seasonData.teams || {})) {
     const total = totals[name] || (totals[name] = {
       wins: 0, losses: 0, ties: 0, games: 0, seasonsWithResults: 0
     });
-    total.wins += Number(record.wins) || 0;
-    total.losses += Number(record.losses) || 0;
-    total.ties += Number(record.ties) || 0;
-    total.games += Number(record.games) || 0;
-    if ((Number(record.games) || 0) > 0) total.seasonsWithResults++;
+    const games = validGames(team);
+    if (games.length) total.seasonsWithResults++;
+    total.games += games.length;
+    for (const game of games) {
+      const teamScore = Number(game.teamScore);
+      const opponentScore = Number(game.opponentScore);
+      if (teamScore > opponentScore) total.wins++;
+      else if (teamScore < opponentScore) total.losses++;
+      else total.ties++;
+    }
   }
 }
 
@@ -31,7 +43,7 @@ const payload = {
   schemaVersion: 1,
   updatedAt: new Date().toISOString(),
   range: {start: '2017-18', end: '2025-26'},
-  source: 'MaxPreps results imported for each season',
+  source: 'MaxPreps results imported for each season; 0-0 placeholder ties excluded',
   summary: {
     teams: Object.keys(orderedTeams).length,
     completedTeamResults: Object.values(orderedTeams).reduce((sum, row) => sum + row.games, 0)
