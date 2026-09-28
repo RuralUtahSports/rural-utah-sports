@@ -37,7 +37,7 @@ nav{background:#000;border-bottom:1px solid #333}
 .meta-pill{display:inline-flex;align-items:center;border-radius:999px;padding:7px 10px;background:#1b1b1b;border:1px solid #393939;color:#ddd;font-size:11px;font-weight:900;text-transform:uppercase}
 .meta-pill.classification{background:var(--team-color,#F14D07);color:var(--team-text,#fff);border-color:var(--team-color,#F14D07)}
 .section-title{border-left:5px solid var(--team-color,#F14D07);padding-left:12px;margin:26px 0 12px;font-size:22px;text-transform:uppercase}
-.record-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.record-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
 .record-card{background:#000;border:1px solid #333;border-top:4px solid var(--team-color,#F14D07);border-radius:7px;padding:17px 12px;text-align:center}
 .record-number{font-size:clamp(21px,4vw,30px);font-weight:900}
 .record-label{color:#999;font-size:10px;line-height:1.4;text-transform:uppercase;font-weight:900;margin-top:6px}
@@ -113,6 +113,7 @@ function dateLabel(value){
   return new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric"}).format(parsed);
 }
 function recordText(record){return record.w+"–"+record.l}
+function fullRecordText(record){return record.w+"–"+record.l+(record.t?"–"+record.t:"")}
 function empty(text,strong){
   return'<div class="empty-state"><strong>'+esc(strong)+'</strong>'+esc(text)+'</div>';
 }
@@ -171,7 +172,7 @@ function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   }).join("");
   return'<div class="table-wrap" style="--team-color:'+safeColor(teamColor,"#333333")+'"><table><thead><tr><th>Date / Time</th><th>Opponent</th><th>Location</th><th>Result / Status</th></tr></thead><tbody>'+body+'</tbody></table></div>';
 }
-function render(team,allTeams,allGames,colorRows,scheduleSources){
+function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary){
   const key=norm(team.team);
   const brand=OVERRIDES[key]||colorRows.find(row=>norm(row.team)===key)||BASKETBALL_COLOR_OVERRIDES[key]||{};
   const bg=safeColor(brand.backgroundColor,"#333333");
@@ -179,6 +180,8 @@ function render(team,allTeams,allGames,colorRows,scheduleSources){
   const games=allGames.filter(game=>matchesTeam(game,"home",key)||matchesTeam(game,"away",key));
   const hasOwnSchedule=Object.keys(scheduleSources||{}).some(name=>norm(name)===key);
   const records=calculate(games,team.team);
+  const historicalTotals=Object.entries(allTimeSummary&&allTimeSummary.teams||{}).find(([name])=>norm(name)===key)?.[1]||null;
+  const allTimeRecord=historicalTotals?{w:historicalTotals.wins+records.all.w,l:historicalTotals.losses+records.all.l,t:historicalTotals.ties||0,g:historicalTotals.games+records.all.g}:null;
   const gamesPlayed=records.all.g;
   const recordNote=gamesPlayed?"Through "+gamesPlayed+" completed game"+(gamesPlayed===1?"":"s")+".":"No completed 2026–27 games are recorded yet.";
   const asset=window.RUSSchoolAssets;
@@ -186,7 +189,7 @@ function render(team,allTeams,allGames,colorRows,scheduleSources){
   const candidates=[asset&&asset.customLogo?asset.customLogo(team.team):"",entry&&entry.logoUrl?entry.logoUrl:"",asset&&asset.fallbackLogo?asset.fallbackLogo(team.team):""].filter((url,index,array)=>url&&array.indexOf(url)===index);
   const logo=candidates[0]||"";
   const card='<section class="hero" style="--team-color:'+bg+';--team-text:'+fg+'"><div class="brand-bar"></div><div class="hero-content"><div class="logo-wrap"><img id="teamLogo" class="team-logo" alt="'+esc(team.team)+' logo"></div><div class="team-copy"><h1 class="team-name">'+esc(team.team)+'</h1><div class="team-subtitle">2026–27 Boys Basketball</div><div class="meta-row"><span class="meta-pill classification">'+esc(team.classification)+'</span><span class="meta-pill">'+esc(team.region)+'</span><span class="meta-pill">'+esc(team.association)+'</span></div></div></div></section>';
-  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">Overall Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">Games Played</div></div></div><p class="record-note">'+esc(recordNote)+'</p>';
+  const stats='<div class="record-grid" style="--team-color:'+bg+'"><div class="record-card"><div class="record-number">'+recordText(records.all)+'</div><div class="record-label">2026–27 Record</div></div><div class="record-card"><div class="record-number">'+recordText(records.region)+'</div><div class="record-label">Region Record</div></div><div class="record-card"><div class="record-number">'+gamesPlayed+'</div><div class="record-label">2026–27 Games Played</div></div><div class="record-card"><div class="record-number">'+(allTimeRecord?fullRecordText(allTimeRecord):'—')+'</div><div class="record-label">All-Time Record Since 2020–21</div></div></div><p class="record-note">'+esc(recordNote)+' All-time totals combine available completed results from 2020–21 through the current season.</p>';
   const scheduleMessage=hasOwnSchedule?"MaxPreps currently lists these 2026–27 games; the schedule may be incomplete.":"The full 2026–27 schedule has not been added yet. Any games shown were listed on an opponent's schedule.";
   root.innerHTML=card+stats+'<h2 class="section-title" style="--team-color:'+bg+'">2026–27 Schedule &amp; Results</h2><p class="schedule-note">'+esc(scheduleMessage)+'</p>'+renderSchedule(games,team.team,allTeams,colorRows,bg);
   document.title=team.team+" Boys Basketball | Rural Utah Sports";
@@ -197,6 +200,7 @@ function render(team,allTeams,allGames,colorRows,scheduleSources){
     image.src=logo;
   }
 }
+const ALL_TIME_RECORDS_URL='boys-basketball-all-time-records-2020-26.json?v=20260928-basketball-alltime1';
 const HISTORICAL_RESULTS_URL='boys-basketball-games-2025-26.json?v=20260928-basketball-results1';
 let historicalResultsPromise=null;
 const HISTORICAL_TEAM_ALIASES={
@@ -316,16 +320,17 @@ async function load(){
     const requested=norm(query.get("team"));
     if(!requested)throw new Error("Select a school from the boys basketball directory.");
     const urls=["boys-basketball-teams.json?v=20260927-basketball-directory-trim","boys-basketball-games-2026-27.json?v=20260927-basketball-all-schedules","team-colors-exact.json?v=20260926-pilot1"];
-    const responses=await Promise.all(urls.map(url=>fetch(url,{cache:"no-store"})));
+    const responses=await Promise.all([...urls.map(url=>fetch(url,{cache:"no-store"})),fetch(ALL_TIME_RECORDS_URL,{cache:"no-store"}).catch(()=>null)]);
     if(!responses[0].ok)throw new Error("Basketball team list could not be loaded.");
     const teams=await responses[0].json();
     const gameFeed=responses[1].ok?await responses[1].json():{games:[]};
     const colorRows=responses[2].ok?await responses[2].json():[];
+    const allTimeSummary=responses[3]&&responses[3].ok?await responses[3].json().catch(()=>null):null;
     window.RUSBasketballPreviewData={teams,games:Array.isArray(gameFeed.games)?gameFeed.games:[],colors:Array.isArray(colorRows)?colorRows:[]};
     if(window.RUSSchoolAssets&&window.RUSSchoolAssets.load)await window.RUSSchoolAssets.load();
     const team=teams.find(row=>norm(row.team)===requested&&(row.association==="UHSAA"||row.team==="Utah Prep"));
     if(!team)throw new Error("That school is not in the boys basketball team directory.");
-    render(team,teams,Array.isArray(gameFeed.games)?gameFeed.games:[],Array.isArray(colorRows)?colorRows:[],gameFeed.sources||{});
+    render(team,teams,Array.isArray(gameFeed.games)?gameFeed.games:[],Array.isArray(colorRows)?colorRows:[],gameFeed.sources||{},allTimeSummary);
     setupHistoricalResults(team,teams,Array.isArray(colorRows)?colorRows:[]);
   }catch(error){
     root.innerHTML='<div class="error-state"><strong>Unable to load this basketball team page.</strong>'+esc(error&&error.message?error.message:"Please try again.")+'</div>';
