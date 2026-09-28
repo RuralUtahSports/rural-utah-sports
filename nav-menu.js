@@ -62,6 +62,10 @@
     else document.addEventListener("DOMContentLoaded", queue, { once: true });
   }
   const groups = {
+    teams: [
+      ["Football Teams", "teams.html"],
+      ["Boys Basketball Teams", "boys-basketball-teams.html"],
+    ],
     history: [
       ["Championships", "championships.html"],
       ["Season Explorer", "season.html"],
@@ -165,7 +169,7 @@
     addScript("app-shell-polish.js?v=20260921-shared-audit1", "rusAppShellPolish", true);
     const fullSharePages = [
       "records.html","greatest-seasons.html","games.html","championships.html",
-      "teams.html","rankings.html","standings.html","scorigami.html","out-of-state.html",
+      "teams.html","boys-basketball-teams.html","rankings.html","standings.html","scorigami.html","out-of-state.html",
       "compare.html","simulators.html","mvp-race.html","all-state-watch.html",
       "all-utah.html","awards-2025.html","team-stats.html"
     ];
@@ -198,6 +202,8 @@
     const schoolAssetPages = [
       "teams.html",
       "team.html",
+      "boys-basketball-teams.html",
+      "boys-basketball-team.html",
       "scoreboard.html",
       "standings.html",
       "rankings.html",
@@ -465,7 +471,7 @@
       host.innerHTML = [
         link("Home", "index.html", "home-link"),
         link("Game Week", "game-week.html"),
-        link("Teams", "teams.html"),
+        dropdown("Teams", "teams"),
         link("Players", "players.html"),
         link("My Teams", "my-teams.html"),
         link("Games", "games.html"),
