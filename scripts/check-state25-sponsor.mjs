@@ -4,7 +4,7 @@ const fail=message=>{console.error(`STATE TOP 25 SPONSOR CHECK FAILED: ${message
 const read=file=>fs.readFileSync(file,'utf8');
 const config=JSON.parse(read('feature-sponsors.json'));
 const rankings=read('rankings.html');
-const sponsor=read('rankings-sponsor.js');
+const sponsor=read('rankings-sponsor.js?v=20260819-state25-sponsor1');
 const directory=read('sponsors.html');
 const share=read('share-graphic.js');
 const s=config?.stateTop25;
