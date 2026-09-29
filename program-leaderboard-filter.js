@@ -17,6 +17,7 @@
     }catch(e){console.error('Program leaderboard filter:',e)}
 
     const eligible=name=>{
+      if(document.getElementById('sport')?.value==='basketball')return true;
       if(!name||isJV(name)||isOutOfState(name))return false;
       return !allowed.size||allowed.has(norm(name));
     };
