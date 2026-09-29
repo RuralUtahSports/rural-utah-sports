@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-29T02:52:31Z",
+  "updatedAt": "2026-09-29T03:44:48Z",
   "team": "Stansbury",
   "coverage": {
     "startYear": 2020,
@@ -17,182 +17,17 @@
       "players": [],
       "coach": null,
       "status": "no_roster",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2026,
       "season": "2025-26",
       "sourceUrl": "https://sports.deseret.com/high-school/school/stansbury/boys-basketball/roster/2026",
-      "players": [
-        {
-          "number": "1",
-          "name": "Masen Peterson",
-          "class": "2028",
-          "position": "G",
-          "height": "5'9\"",
-          "weight": "-"
-        },
-        {
-          "number": "2",
-          "name": "Dallin Jensen",
-          "class": "2026",
-          "position": "G",
-          "height": "6'0\"",
-          "weight": "140"
-        },
-        {
-          "number": "3",
-          "name": "Ryder Myer",
-          "class": "2028",
-          "position": "G",
-          "height": "5'7\"",
-          "weight": "158"
-        },
-        {
-          "number": "4",
-          "name": "Evan Aldridge",
-          "class": "2028",
-          "position": "F",
-          "height": "6'1\"",
-          "weight": "162"
-        },
-        {
-          "number": "5",
-          "name": "Kade Robbins",
-          "class": "2027",
-          "position": "F",
-          "height": "6'3\"",
-          "weight": "-"
-        },
-        {
-          "number": "10",
-          "name": "Ethan Miller",
-          "class": "2027",
-          "position": "G",
-          "height": "6'3\"",
-          "weight": "160"
-        },
-        {
-          "number": "11",
-          "name": "Porter Hinton",
-          "class": "2026",
-          "position": "G",
-          "height": "6'1\"",
-          "weight": "168"
-        },
-        {
-          "number": "12",
-          "name": "Tyler Hadlock",
-          "class": "2027",
-          "position": "F",
-          "height": "6'0\"",
-          "weight": "175"
-        },
-        {
-          "number": "13",
-          "name": "Hayden Hoffman",
-          "class": "2028",
-          "position": "F",
-          "height": "6'2\"",
-          "weight": "-"
-        },
-        {
-          "number": "14",
-          "name": "Cooper Nelson",
-          "class": "2029",
-          "position": "G",
-          "height": "6'3\"",
-          "weight": "-"
-        },
-        {
-          "number": "15",
-          "name": "Eli Doutt",
-          "class": "2028",
-          "position": "F",
-          "height": "6'0\"",
-          "weight": "-"
-        },
-        {
-          "number": "20",
-          "name": "Cash Bawden",
-          "class": "2027",
-          "position": "F",
-          "height": "6'5\"",
-          "weight": "160"
-        },
-        {
-          "number": "21",
-          "name": "Jaxon Hammond",
-          "class": "2028",
-          "position": "G",
-          "height": "6'2\"",
-          "weight": "164"
-        },
-        {
-          "number": "22",
-          "name": "Jackson Adams",
-          "class": "2028",
-          "position": "F",
-          "height": "6'2\"",
-          "weight": "-"
-        },
-        {
-          "number": "23",
-          "name": "Ladarius Rhodes",
-          "class": "2028",
-          "position": "G",
-          "height": "5'9\"",
-          "weight": "168"
-        },
-        {
-          "number": "24",
-          "name": "Wesley Kellogg",
-          "class": "2027",
-          "position": "F",
-          "height": "6'5\"",
-          "weight": "170"
-        },
-        {
-          "number": "25",
-          "name": "Brodrick Hinton",
-          "class": "2029",
-          "position": "G",
-          "height": "6'0\"",
-          "weight": "-"
-        },
-        {
-          "number": "30",
-          "name": "Reggie Jensen",
-          "class": "-",
-          "position": "-",
-          "height": "-",
-          "weight": "-"
-        },
-        {
-          "number": "35",
-          "name": "Tyler Stapleton",
-          "class": "2028",
-          "position": "F",
-          "height": "6'1\"",
-          "weight": "-"
-        },
-        {
-          "number": "53",
-          "name": "Tegan Johnson",
-          "class": "2026",
-          "position": "C",
-          "height": "6'9\"",
-          "weight": "230"
-        }
-      ],
-      "coach": {
-        "name": "Payton Dastrup",
-        "years": 3,
-        "careerWins": 20,
-        "careerLosses": 49
-      },
-      "status": "ok",
-      "method": "requests"
+      "players": [],
+      "coach": null,
+      "status": "error",
+      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/stansbury/boys-basketball/roster/2026",
+      "method": "chrome"
     },
     {
       "year": 2025,
@@ -963,7 +798,7 @@
         "careerLosses": 86
       },
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2020,
@@ -1106,7 +941,7 @@
         "careerLosses": 86
       },
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     }
   ]
 }

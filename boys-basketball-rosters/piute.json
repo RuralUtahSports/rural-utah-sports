@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-29T02:52:31Z",
+  "updatedAt": "2026-09-29T03:44:48Z",
   "team": "Piute",
   "coverage": {
     "startYear": 2020,
@@ -16,8 +16,9 @@
       "sourceUrl": "https://sports.deseret.com/high-school/school/piute/boys-basketball/roster/2027",
       "players": [],
       "coach": null,
-      "status": "no_roster",
-      "method": "requests"
+      "status": "error",
+      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/piute/boys-basketball/roster/2027",
+      "method": "chrome"
     },
     {
       "year": 2026,
@@ -184,7 +185,7 @@
         "careerLosses": 76
       },
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2025,

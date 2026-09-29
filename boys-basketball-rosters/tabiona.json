@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-29T02:52:31Z",
+  "updatedAt": "2026-09-29T03:44:48Z",
   "team": "Tabiona",
   "coverage": {
     "startYear": 2020,
@@ -17,7 +17,7 @@
       "players": [],
       "coach": null,
       "status": "no_roster",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2026,
@@ -136,7 +136,7 @@
         "careerLosses": 287
       },
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2025,
@@ -412,144 +412,11 @@
       "year": 2023,
       "season": "2022-23",
       "sourceUrl": "https://sports.deseret.com/high-school/school/tabiona/boys-basketball/roster/2023",
-      "players": [
-        {
-          "number": "0",
-          "name": "Payton Laverson",
-          "class": "-",
-          "position": "-",
-          "height": "-",
-          "weight": "-"
-        },
-        {
-          "number": "1",
-          "name": "Easton Peterson",
-          "class": "2024",
-          "position": "G",
-          "height": "5'8\"",
-          "weight": "-"
-        },
-        {
-          "number": "2",
-          "name": "Dayton Giles",
-          "class": "2025",
-          "position": "-",
-          "height": "5'8\"",
-          "weight": "-"
-        },
-        {
-          "number": "5",
-          "name": "Cayse Thomas",
-          "class": "2026",
-          "position": "F",
-          "height": "6'3\"",
-          "weight": "-"
-        },
-        {
-          "number": "10",
-          "name": "Izaiha Aviles",
-          "class": "2025",
-          "position": "G",
-          "height": "5'10\"",
-          "weight": "-"
-        },
-        {
-          "number": "11",
-          "name": "Logan Rhoades",
-          "class": "2024",
-          "position": "F",
-          "height": "6'3\"",
-          "weight": "-"
-        },
-        {
-          "number": "15",
-          "name": "Dallin Park",
-          "class": "2025",
-          "position": "G",
-          "height": "5'8\"",
-          "weight": "-"
-        },
-        {
-          "number": "21",
-          "name": "Tucon Witt",
-          "class": "2025",
-          "position": "F",
-          "height": "6'0\"",
-          "weight": "-"
-        },
-        {
-          "number": "23",
-          "name": "Stran Giles",
-          "class": "2026",
-          "position": "-",
-          "height": "6'0\"",
-          "weight": "-"
-        },
-        {
-          "number": "32",
-          "name": "Gavin Rhoades",
-          "class": "2025",
-          "position": "C",
-          "height": "6'4\"",
-          "weight": "-"
-        },
-        {
-          "number": "34",
-          "name": "Verdis Winder",
-          "class": "2025",
-          "position": "C",
-          "height": "6'2\"",
-          "weight": "-"
-        },
-        {
-          "number": "35",
-          "name": "Banin Lee",
-          "class": "2025",
-          "position": "G",
-          "height": "5'8\"",
-          "weight": "-"
-        },
-        {
-          "number": "42",
-          "name": "Jordan Lucas",
-          "class": "2026",
-          "position": "C",
-          "height": "6'2\"",
-          "weight": "-"
-        },
-        {
-          "number": "-",
-          "name": "Bryson Fabrizio",
-          "class": "2025",
-          "position": "-",
-          "height": "5'10\"",
-          "weight": "-"
-        },
-        {
-          "number": "-",
-          "name": "Lex Giles",
-          "class": "2024",
-          "position": "-",
-          "height": "6'0\"",
-          "weight": "-"
-        },
-        {
-          "number": "-",
-          "name": "Chance Lazenby",
-          "class": "2024",
-          "position": "-",
-          "height": "6'3\"",
-          "weight": "-"
-        }
-      ],
-      "coach": {
-        "name": "Lee Gines",
-        "years": 34,
-        "careerWins": 518,
-        "careerLosses": 287
-      },
-      "status": "ok",
-      "method": "requests"
+      "players": [],
+      "coach": null,
+      "status": "error",
+      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/tabiona/boys-basketball/roster/2023",
+      "method": "chrome"
     },
     {
       "year": 2022,
@@ -652,7 +519,7 @@
         "careerLosses": 287
       },
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2021,
