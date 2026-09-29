@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#F14D07">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif}header{background:#000;border-bottom:4px solid #F14D07;padding:15px 25px}.header-content{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px}.logo{width:80px;height:80px;object-fit:contain}.site-title h1{margin:0;font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.site-title p{margin:5px 0 0;color:#F14D07;font-weight:bold}nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;margin:auto;display:flex;flex-wrap:wrap}.container{max-width:1400px;margin:auto;padding:36px 20px 70px}.sport-switch{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}.sport-switch a{display:inline-block;background:#171717;border:1px solid #444;color:#ddd;text-decoration:none;border-radius:999px;padding:10px 16px;font-size:10px;font-weight:900;text-transform:uppercase}.sport-switch a.active{background:#F14D07;border-color:#F14D07;color:#000}.season-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}.season-bar label{font-size:10px;color:#888;text-transform:uppercase;font-weight:900}.season-bar select{background:#171717;color:#fff;border:1px solid #444;border-radius:6px;padding:10px 34px 10px 12px;font-size:12px;font-weight:900}.season-badge{display:inline-block;background:#171717;border:1px solid #444;color:#ddd;border-radius:999px;padding:6px 10px;font-size:9px;font-weight:900;text-transform:uppercase}.hero{background:#000;border:1px solid #333;border-top:6px solid #F14D07;border-radius:8px;padding:30px;margin-bottom:18px}.hero h2{font-size:38px;text-transform:uppercase;margin:0 0 8px}.hero h2 span{color:#F14D07}.hero p{color:#aaa;line-height:1.55;max-width:950px}.updated{margin-top:10px;color:#666;font-size:11px;text-transform:uppercase;font-weight:800}.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end;background:#000;border:1px solid #333;border-radius:8px;padding:16px;margin-bottom:16px}.control{display:grid;gap:7px}.control label{font-size:10px;color:#888;font-weight:900;text-transform:uppercase}.control select{min-width:190px;background:#171717;color:#fff;border:1px solid #444;border-radius:6px;padding:10px 34px 10px 12px;font-weight:800}.summary{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.pill{background:#171717;border:1px solid #333;border-radius:999px;padding:8px 11px;font-size:10px;color:#aaa;font-weight:900;text-transform:uppercase}.pill strong{color:#fff}.notice{background:#0a0a0a;border:1px solid #333;border-left:4px solid #F14D07;border-radius:7px;padding:12px 14px;margin:0 0 14px;color:#aaa;font-size:11px;line-height:1.5}.notice strong{color:#fff}.table-wrap{overflow-x:auto;background:#000;border:1px solid #333;border-radius:8px}.leaders{width:100%;border-collapse:collapse;min-width:650px}.leaders th{background:#F14D07;color:#000;padding:11px 9px;text-transform:uppercase;font-size:10px;white-space:nowrap}.leaders td{padding:11px 9px;text-align:center;border-bottom:1px solid #292929;font-size:12px;white-space:nowrap}.leaders tbody tr:hover{background:#171717}.rank{font-weight:900;color:#F14D07;font-size:16px}.team{text-align:left!important;font-weight:900}.team a{color:#fff;text-decoration:none}.team a:hover{color:#F14D07}.metric{font-weight:900;font-size:17px;color:#F14D07}.empty{background:#000;border:1px solid #333;border-radius:8px;padding:42px 20px;text-align:center;color:#888;line-height:1.55}footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}footer strong{color:#F14D07}@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}.container{padding:25px 12px 50px}.hero{padding:23px 18px}.hero h2{font-size:30px}.control{width:100%}.control select{width:100%}}
-</style>
+.view-switch{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}.view-switch button{appearance:none;background:#171717;border:1px solid #444;color:#ddd;border-radius:999px;padding:10px 16px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer}.view-switch button[aria-pressed=true]{background:#F14D07;border-color:#F14D07;color:#000}.player-name{font-weight:900;text-align:left!important}.player-detail{font-size:10px;color:#aaa}.leaders.player-leaders{min-width:980px}.leaders.player-leaders td{text-align:center}.leaders.player-leaders .team{text-align:left!important}.</style>
 <link rel="manifest" href="manifest.webmanifest?v=20260817-opt1"><link rel="apple-touch-icon" href="RUSlogoNew.png">
 </head>
 <body>
@@ -17,19 +17,199 @@
 <main class="container">
 <div class="sport-switch" aria-label="Choose a sport"><a href="stat-leaders.html">Football Stats</a><a class="active" href="basketball-stat-leaders.html" aria-current="page">Basketball Stats</a></div>
 <div class="season-bar"><label for="season">Season</label><select id="season"></select><span class="season-badge">Boys Basketball</span></div>
-<section class="hero"><h2><span id="heroSeason">Basketball</span> <span>Team Stats</span></h2><p id="heroCopy">Team scoring leaders calculated from completed game results. Choose a season and statistic to compare Utah boys basketball teams.</p><div class="updated" id="updated">Loading basketball results…</div></section>
+<div class="view-switch" role="group" aria-label="Choose basketball statistics"><button type="button" id="teamStatsMode" aria-pressed="true">Team Stats</button><button type="button" id="playerStatsMode" aria-pressed="false">Player Stats</button></div>
+<section class="hero"><h2><span id="heroSeason">Basketball</span> <span id="heroMode">Team Stats</span></h2><p id="heroCopy">Team scoring leaders calculated from completed game results. Choose a season and statistic to compare Utah boys basketball teams.</p><div class="updated" id="updated">Loading basketball results…</div></section>
 <section class="controls" aria-label="Basketball stat filters"><div class="control"><label for="metric">Statistic</label><select id="metric"><option value="ppg">Points per game</option><option value="oppg">Points allowed per game</option><option value="diff">Scoring margin per game</option><option value="wins">Wins</option><option value="winPct">Win percentage</option></select></div><div class="control"><label for="classification">Classification</label><select id="classification"><option value="">All teams</option></select></div></section>
-<div class="summary" id="summary"></div><div class="notice"><strong>Data scope:</strong> These are team scoring statistics calculated from the archived schedules. The basketball archive has rosters and game scores, but does not yet include individual player box-score stats such as points, rebounds, or assists.</div>
+<div class="summary" id="summary"></div><div class="notice" id="dataNotice"><strong>Data scope:</strong> Team scoring statistics are calculated from completed games in the basketball schedule archive.</div>
 <section id="results"><div class="empty">Loading basketball team statistics…</div></section>
 </main><footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
-<script src="school-assets-bundle.js?v=20260910-oos-5"></script><script src="school-logo-integration.js?v=20260817-ridgeline6"></script><script src="nav-menu.js?v=20260922-dropdown-fix4"></script>
-<script>
-(()=>{'use strict';const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])),compact=v=>String(v??'').toUpperCase().replace(/[^A-Z0-9]/g,''),params=new URLSearchParams(location.search),lastYear=2027,firstYear=2003;let year=Number(params.get('season'))||2026,teams=[],current=[];
-const aliases={GRANDCOUNTY:'GRAND',CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GUNNISON:'GUNNISONVALLEY',MAPLEMTN:'MAPLEMOUNTAIN',STJOSEPH:'SAINTJOSEPH',AMERICANLEADERSHIP:'ALA',AMERICANLEADERSHIPACADEMY:'ALA'};const canon=v=>aliases[compact(v)]||compact(v);function filename(y){return `boys-basketball-games-${y-1}-${String(y).slice(-2)}.json`}function seasonName(y){return `${y-1}-${String(y).slice(-2)}`}function fmt(v,d=1){return Number(v||0).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d})}
-function installSeasons(){const sel=$('season');sel.innerHTML=Array.from({length:lastYear-firstYear+1},(_,i)=>lastYear-i).map(y=>`<option value="${y}">${seasonName(y)}${y===2027?' — Current':''}</option>`).join('');if(year<firstYear||year>lastYear)year=2026;sel.value=String(year);sel.onchange=()=>{year=Number(sel.value);const u=new URL(location.href);if(year===2026)u.searchParams.delete('season');else u.searchParams.set('season',String(year));history.replaceState(null,'',u);loadSeason()}}
-function getRows(){const classFilter=$('classification').value,metric=$('metric').value;return current.map(t=>{const g=t.games,w=g.filter(x=>x.winner==='W').length,l=g.filter(x=>x.winner==='L').length,tie=g.filter(x=>x.winner==='T').length,gp=g.length,pf=g.reduce((a,x)=>a+x.pf,0),pa=g.reduce((a,x)=>a+x.pa,0),diff=pf-pa,wpct=gp?(w+tie*.5)/gp:0;const value=metric==='ppg'?pf/gp:metric==='oppg'?pa/gp:metric==='diff'?diff/gp:metric==='wins'?w:wpct;return {...t,w,l,tie,gp,pf,pa,diff,value,wpct}}).filter(x=>x.gp&&(!classFilter||x.classification===classFilter)).sort((a,b)=>b.value-a.value||a.team.localeCompare(b.team))}
-function render(){const rows=getRows(),metric=$('metric').value,label={ppg:'Points per game',oppg:'Points allowed per game',diff:'Scoring margin per game',wins:'Wins',winPct:'Win percentage'}[metric],count=rows.length;$('summary').innerHTML=`<span class="pill"><strong>${count.toLocaleString()}</strong> teams</span><span class="pill"><strong>${esc(seasonName(year))}</strong></span><span class="pill">Ranked by <strong>${esc(label)}</strong></span><span class="pill"><strong>${rows.reduce((n,x)=>n+x.gp,0).toLocaleString()}</strong> team game entries</span>`;if(!rows.length){$('results').innerHTML='<div class="empty">No completed scored games are available for this season and filter.</div>';return}const shown=rows.slice(0,100);$('results').innerHTML=`<div class="table-wrap"><table class="leaders"><thead><tr><th>Rank</th><th>Team</th><th>Class</th><th>Record</th><th>GP</th><th>Points For</th><th>Points Against</th><th>Scoring Margin</th><th>${esc(label)}</th></tr></thead><tbody>${shown.map((x,i)=>`<tr><td class="rank">${i+1}</td><td class="team"><a href="boys-basketball-team.html?team=${encodeURIComponent(x.team)}">${esc(x.team)}</a></td><td>${esc(x.classification||'—')}</td><td>${x.w}-${x.l}${x.tie?`-${x.tie}`:''}</td><td>${x.gp}</td><td>${x.pf.toLocaleString()}</td><td>${x.pa.toLocaleString()}</td><td>${x.diff>0?'+':''}${x.diff.toLocaleString()}</td><td class="metric">${metric==='wins'?x.w:metric==='winPct'?`${fmt(x.wpct*100)}%`:fmt(x.value)}</td></tr>`).join('')}</tbody></table></div>`}
-async function loadSeason(){current=[];$('results').innerHTML='<div class="empty">Loading basketball team statistics…</div>';try{const [r,tr]=await Promise.all([fetch(`${filename(year)}?v=20260929-basketball-team-stats1`),fetch('boys-basketball-teams.json')]);if(!r.ok)throw Error('Basketball game results unavailable');const data=await r.json();teams=tr.ok?await tr.json():[];const meta=new Map(teams.filter(x=>x.association==='UHSAA'||x.team==='Utah Prep').map(x=>[canon(x.team),x]));for(const [key,t] of Object.entries(data.teams||{})){const m=meta.get(canon(t.schoolName||key));if(!m)continue;const games=[];for(const g of t.games||[]){const pf=Number(g.teamScore),pa=Number(g.opponentScore);if(!Number.isFinite(pf)||!Number.isFinite(pa)||(pf===0&&pa===0))continue;games.push({pf,pa,winner:pf>pa?'W':pf<pa?'L':'T'})}if(!games.length)continue;current.push({team:m.team,classification:m.classification||'',games})}current.sort((a,b)=>a.team.localeCompare(b.team));const cls=[...new Set(current.map(x=>x.classification).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));$('classification').innerHTML='<option value="">All teams</option>'+cls.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');$('classification').onchange=render;$('metric').onchange=render;$('heroSeason').textContent=seasonName(year);$('heroCopy').textContent=`Boys basketball team scoring leaders from completed games in the ${seasonName(year)} schedule archive.`;$('updated').textContent=`Source: ${esc(data.source||'RUS basketball results archive')} • ${data.summary?.completedGames??current.reduce((n,x)=>n+x.games.length,0)} archived game results`;render()}catch(e){console.error(e);$('updated').textContent=`${seasonName(year)} basketball results unavailable`;$('results').innerHTML='<div class="empty">Basketball team scoring statistics could not be loaded for this season.</div>'}}
-installSeasons();loadSeason()})();
+<script src="school-assets-bundle.js?v=20260910-oos-5"></script><script src="school-logo-integration.js?v=20260817-ridgeline6"></script><script src="nav-menu.js?v=20260922-dropdown-fix4"></script><script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const compact=v=>String(v??'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const params=new URLSearchParams(location.search);
+const lastYear=2027,firstYear=2003;
+let year=Number(params.get('season'))||2026,teams=[],current=[],statMode='team',playerArchive=null,playerArchivePromise=null,playerArchiveError=false,seasonLoadId=0;
+const TEAM_METRICS=[
+  {value:'ppg',label:'Points per game'},
+  {value:'oppg',label:'Points allowed per game'},
+  {value:'diff',label:'Scoring margin per game'},
+  {value:'wins',label:'Wins'},
+  {value:'winPct',label:'Win percentage'}
+];
+const PLAYER_METRICS=[
+  {value:'pointsPerGame',label:'Points per game'},
+  {value:'points',label:'Total points'},
+  {value:'threePointers',label:'3-pointers made'},
+  {value:'threePointersPerGame',label:'3-pointers per game'},
+  {value:'reboundsPerGame',label:'Rebounds per game'},
+  {value:'rebounds',label:'Total rebounds'},
+  {value:'assistsPerGame',label:'Assists per game'},
+  {value:'assists',label:'Total assists'},
+  {value:'stealsPerGame',label:'Steals per game'},
+  {value:'steals',label:'Total steals'},
+  {value:'blocksPerGame',label:'Blocks per game'}
+];
+const aliases={GRANDCOUNTY:'GRAND',CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GUNNISON:'GUNNISONVALLEY',MAPLEMTN:'MAPLEMOUNTAIN',STJOSEPH:'SAINTJOSEPH',AMERICANLEADERSHIP:'ALA',AMERICANLEADERSHIPACADEMY:'ALA'};
+const canon=v=>aliases[compact(v)]||compact(v);
+const seasonName=y=>(y-1)+'-'+String(y).slice(-2);
+const fmt=(v,d=1)=>Number(v||0).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
+const show=(v,d=0)=>{
+  if(v===null||v===undefined||v===''||!Number.isFinite(Number(v)))return '—';
+  return Number(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
+};
+function setMetricOptions(){
+  const options=statMode==='players'?PLAYER_METRICS:TEAM_METRICS;
+  const previous=$('metric').value;
+  $('metric').innerHTML=options.map(x=>'<option value="'+esc(x.value)+'">'+esc(x.label)+'</option>').join('');
+  const allowed=options.some(x=>x.value===previous);
+  $('metric').value=allowed?previous:(statMode==='players'?'pointsPerGame':'ppg');
+}
+function setClassificationOptions(){
+  const previous=$('classification').value;
+  const source=statMode==='players'?(playerArchive?.teams||[]):current;
+  const classes=[...new Set(source.filter(x=>statMode!=='players'||(x.players||[]).length).map(x=>x.classification).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  $('classification').innerHTML='<option value="">All teams</option>'+classes.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('');
+  $('classification').value=classes.includes(previous)?previous:'';
+}
+function syncMode(){
+  $('teamStatsMode').setAttribute('aria-pressed',statMode==='team'?'true':'false');
+  $('playerStatsMode').setAttribute('aria-pressed',statMode==='players'?'true':'false');
+  $('heroMode').textContent=statMode==='players'?'Player Stats':'Team Stats';
+  setMetricOptions();
+  setClassificationOptions();
+  $('heroSeason').textContent=seasonName(year);
+  $('heroCopy').textContent=statMode==='players'
+    ?'Boys basketball individual season totals and per-game leaders. Choose a season, statistic, and classification.'
+    :'Team scoring leaders calculated from completed game results. Choose a season and statistic to compare Utah boys basketball teams.';
+  $('dataNotice').innerHTML=statMode==='players'
+    ?'<strong>Data scope:</strong> Player stats are imported from Deseret News boys basketball school stats pages. The 2025–26 archive includes posted season totals and per-game rates; coverage varies by school, and unreported values remain blank.'
+    :'<strong>Data scope:</strong> Team scoring statistics are calculated from completed games in the basketball schedule archive.';
+}
+function installSeasons(){
+  const sel=$('season');
+  sel.innerHTML=Array.from({length:lastYear-firstYear+1},(_,i)=>lastYear-i).map(y=>'<option value="'+y+'">'+seasonName(y)+(y===2027?' — Current':'')+'</option>').join('');
+  if(year<firstYear||year>lastYear)year=2026;
+  sel.value=String(year);
+  sel.onchange=()=>{
+    year=Number(sel.value);
+    const u=new URL(location.href);
+    if(year===2026)u.searchParams.delete('season');else u.searchParams.set('season',String(year));
+    history.replaceState(null,'',u);
+    syncMode();
+    loadSeason();
+  };
+}
+function getTeamRows(){
+  const classFilter=$('classification').value,metric=$('metric').value;
+  return current.map(t=>{
+    const g=t.games,w=g.filter(x=>x.winner==='W').length,l=g.filter(x=>x.winner==='L').length,tie=g.filter(x=>x.winner==='T').length,gp=g.length,pf=g.reduce((a,x)=>a+x.pf,0),pa=g.reduce((a,x)=>a+x.pa,0),diff=pf-pa,wpct=gp?(w+tie*.5)/gp:0;
+    const value=metric==='ppg'?pf/gp:metric==='oppg'?pa/gp:metric==='diff'?diff/gp:metric==='wins'?w:wpct;
+    return {...t,w,l,tie,gp,pf,pa,diff,value,wpct};
+  }).filter(x=>x.gp&&(!classFilter||x.classification===classFilter)).sort((a,b)=>b.value-a.value||a.team.localeCompare(b.team));
+}
+function renderTeams(){
+  const rows=getTeamRows(),metric=$('metric').value,label=TEAM_METRICS.find(x=>x.value===metric)?.label||'Points per game',count=rows.length;
+  $('summary').innerHTML='<span class="pill"><strong>'+count.toLocaleString()+'</strong> teams</span><span class="pill"><strong>'+esc(seasonName(year))+'</strong></span><span class="pill">Ranked by <strong>'+esc(label)+'</strong></span><span class="pill"><strong>'+rows.reduce((n,x)=>n+x.games.length,0).toLocaleString()+'</strong> team game entries</span>';
+  if(!rows.length){$('results').innerHTML='<div class="empty">No completed scored games are available for this season and filter.</div>';return}
+  const shown=rows.slice(0,100);
+  $('results').innerHTML='<div class="table-wrap"><table class="leaders"><thead><tr><th>Rank</th><th>Team</th><th>Class</th><th>Record</th><th>GP</th><th>Points For</th><th>Points Against</th><th>Scoring Margin</th><th>'+esc(label)+'</th></tr></thead><tbody>'+shown.map((x,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="team"><a href="boys-basketball-team.html?team='+encodeURIComponent(x.team)+'">'+esc(x.team)+'</a></td><td>'+esc(x.classification||'—')+'</td><td>'+x.w+'-'+x.l+(x.tie?'-'+x.tie:'')+'</td><td>'+x.gp+'</td><td>'+x.pf.toLocaleString()+'</td><td>'+x.pa.toLocaleString()+'</td><td>'+(x.diff>0?'+':'')+x.diff.toLocaleString()+'</td><td class="metric">'+(metric==='wins'?x.w:metric==='winPct'?fmt(x.wpct*100)+'%':fmt(x.value))+'</td></tr>').join('')+'</tbody></table></div>';
+}
+async function loadPlayerArchive(){
+  if(year!==2026)return null;
+  if(!playerArchivePromise){
+    playerArchivePromise=fetch('boys-basketball-player-stats/2026.json?v=20260929-player-stats1')
+      .then(r=>{if(!r.ok)throw Error('Basketball player stat archive unavailable');return r.json()})
+      .then(data=>{playerArchive=data;playerArchiveError=false;return data})
+      .catch(error=>{playerArchiveError=true;playerArchivePromise=null;console.error(error);return null});
+  }
+  return playerArchive||await playerArchivePromise;
+}
+function renderPlayers(){
+  if(year!==2026){
+    $('summary').innerHTML='<span class="pill"><strong>'+esc(seasonName(year))+'</strong></span><span class="pill">Player stats archive not loaded</span>';
+    $('results').innerHTML='<div class="empty">The 2025–26 player stat archive is loaded. Other basketball seasons do not have imported player stats yet.</div>';
+    return;
+  }
+  if(!playerArchive){
+    $('summary').innerHTML='<span class="pill"><strong>2025–26</strong></span>';
+    $('results').innerHTML='<div class="empty">'+(playerArchiveError?'Player stats could not be loaded. Please try again.':'Loading 2025–26 basketball player stats…')+'</div>';
+    return;
+  }
+  const metric=$('metric').value||'pointsPerGame',classFilter=$('classification').value,label=PLAYER_METRICS.find(x=>x.value===metric)?.label||'Points per game';
+  const rows=(playerArchive.players||[]).map(x=>({...x,value:x[metric]}))
+    .filter(x=>x.value!==null&&x.value!==undefined&&Number.isFinite(Number(x.value))&&(!classFilter||x.classification===classFilter))
+    .sort((a,b)=>Number(b.value)-Number(a.value)||Number(b.points||0)-Number(a.points||0)||a.name.localeCompare(b.name)||a.team.localeCompare(b.team));
+  const teamCount=new Set(rows.map(x=>x.teamKey)).size;
+  $('summary').innerHTML='<span class="pill"><strong>'+rows.length.toLocaleString()+'</strong> players with this stat</span><span class="pill"><strong>'+teamCount.toLocaleString()+'</strong> teams reporting</span><span class="pill"><strong>2025–26</strong></span><span class="pill">Ranked by <strong>'+esc(label)+'</strong></span>';
+  if(!rows.length){$('results').innerHTML='<div class="empty">No player stats were reported for this season, statistic, and classification.</div>';return}
+  const shown=rows.slice(0,100);
+  const body=shown.map((x,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="player-name">'+esc(x.name)+'</td><td class="team"><a href="boys-basketball-team.html?team='+encodeURIComponent(x.team)+'">'+esc(x.team)+'</a></td><td>'+esc(x.classification||'—')+'</td><td>'+show(x.games)+'</td><td>'+show(x.points)+'</td><td class="metric">'+show(x.pointsPerGame,2)+'</td><td>'+show(x.threePointers)+'</td><td>'+show(x.rebounds)+'</td><td>'+show(x.reboundsPerGame,2)+'</td><td>'+show(x.assists)+'</td><td>'+show(x.assistsPerGame,2)+'</td><td>'+show(x.steals)+'</td><td>'+show(x.stealsPerGame,2)+'</td><td>'+show(x.blocksPerGame,2)+'</td></tr>').join('');
+  $('results').innerHTML='<div class="table-wrap"><table class="leaders player-leaders"><thead><tr><th>Rank</th><th>Player</th><th>Team</th><th>Class</th><th>GP</th><th>PTS</th><th>PPG</th><th>3PM</th><th>REB</th><th>RPG</th><th>AST</th><th>APG</th><th>STL</th><th>SPG</th><th>BPG</th></tr></thead><tbody>'+body+'</tbody></table></div><div class="updated">Showing the top '+shown.length+' players for this filter. Data from Deseret News 2025–26 boys basketball stats.</div>';
+}
+function render(){
+  if(statMode==='players'){renderPlayers();return}
+  renderTeams();
+}
+async function loadSeason(){
+  const loadId=++seasonLoadId;
+  current=[];
+  $('results').innerHTML='<div class="empty">Loading basketball statistics…</div>';
+  try{
+    const [r,tr]=await Promise.all([
+      fetch('boys-basketball-games-'+(year-1)+'-'+String(year).slice(-2)+'.json?v=20260929-basketball-team-stats1'),
+      fetch('boys-basketball-teams.json')
+    ]);
+    if(!r.ok)throw Error('Basketball game results unavailable');
+    const data=await r.json();
+    teams=tr.ok?await tr.json():[];
+    const meta=new Map(teams.filter(x=>x.association==='UHSAA'||x.team==='Utah Prep').map(x=>[canon(x.team),x]));
+    for(const [key,t] of Object.entries(data.teams||{})){
+      const m=meta.get(canon(t.schoolName||key));
+      if(!m)continue;
+      const games=[];
+      for(const g of t.games||[]){
+        const pf=Number(g.teamScore),pa=Number(g.opponentScore);
+        if(!Number.isFinite(pf)||!Number.isFinite(pa)||(pf===0&&pa===0))continue;
+        games.push({pf,pa,winner:pf>pa?'W':pf<pa?'L':'T'});
+      }
+      if(!games.length)continue;
+      current.push({team:m.team,classification:m.classification||'',games});
+    }
+    current.sort((a,b)=>a.team.localeCompare(b.team));
+    if(statMode==='players'&&year===2026)await loadPlayerArchive();
+    if(loadId!==seasonLoadId)return;
+    syncMode();
+    render();
+    $('updated').textContent=statMode==='players'
+      ?'Source: Deseret News boys basketball stats • '+(playerArchive?.summary?.players||0).toLocaleString()+' player rows in the 2025–26 archive'
+      :'Source: '+(data.source||'RUS basketball results archive')+' • '+(data.summary?.completedGames??current.reduce((n,x)=>n+x.games.length,0))+' archived game results';
+  }catch(error){
+    if(loadId!==seasonLoadId)return;
+    console.error(error);
+    $('updated').textContent=seasonName(year)+' basketball data unavailable';
+    $('results').innerHTML='<div class="empty">Basketball statistics could not be loaded for this season.</div>';
+  }
+}
+async function selectMode(mode){
+  statMode=mode;
+  syncMode();
+  if(statMode==='players'&&year===2026){
+    const pending=loadPlayerArchive();
+    render();
+    await pending;
+    if(statMode==='players'){setClassificationOptions();render();$('updated').textContent='Source: Deseret News boys basketball stats • '+(playerArchive?.summary?.players||0).toLocaleString()+' player rows in the 2025–26 archive';}
+  }else render();
+}
+$('teamStatsMode').onclick=()=>selectMode('team');
+$('playerStatsMode').onclick=()=>selectMode('players');
+$('classification').onchange=render;
+$('metric').onchange=render;
+installSeasons();
+syncMode();
+loadSeason();
+})();
 </script>
 </body></html>
