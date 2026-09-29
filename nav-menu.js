@@ -70,7 +70,7 @@
       ["Championships", "championships.html"],
       ["Season Explorer", "season.html"],
       ["Past Season Rankings", "historical-rankings.html"],
-      ["Program Leaderboard", "programs.html"],
+      ["All-Time Team Stats", "programs.html"],
       ["Coaches", "coaches.html"],
       ["Active Streaks", "streaks.html"],
       ["Milestone Watch", "milestones.html"],
