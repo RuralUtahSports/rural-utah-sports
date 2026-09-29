@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-29T03:58:59Z",
+  "updatedAt": "2026-09-29T04:28:09Z",
   "team": "Cedar",
   "coverage": {
-    "startYear": 2015,
+    "startYear": 2010,
     "endYear": 2027,
-    "firstSeason": "2014-15",
+    "firstSeason": "2009-10",
     "lastSeason": "2026-27"
   },
   "source": "Deseret News boys basketball roster pages",
@@ -1650,50 +1650,60 @@
       ],
       "coach": null,
       "status": "ok",
-      "method": "chrome"
+      "method": "requests"
     },
     {
       "year": 2015,
       "season": "2014-15",
       "sourceUrl": "https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2015",
+      "players": [],
+      "coach": null,
+      "status": "error",
+      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2015",
+      "method": "chrome"
+    },
+    {
+      "year": 2014,
+      "season": "2013-14",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2014",
       "players": [
         {
           "number": "3",
-          "name": "Jeff Rogers",
-          "class": "2015",
-          "position": "-",
+          "name": "Weston Bettridge",
+          "class": "2014",
+          "position": "Guard",
           "height": "5'9\"",
-          "weight": "140"
+          "weight": "-"
         },
         {
           "number": "4",
           "name": "Austin Obering",
           "class": "2015",
-          "position": "-",
+          "position": "Guard",
           "height": "6'0\"",
           "weight": "150"
         },
         {
           "number": "10",
-          "name": "Braden Garrett",
-          "class": "2017",
-          "position": "-",
-          "height": "-",
+          "name": "Kordan Nielson",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'0\"",
           "weight": "-"
         },
         {
           "number": "11",
-          "name": "Trevor Obering",
-          "class": "2016",
-          "position": "-",
-          "height": "-",
+          "name": "Ty Liston",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'1\"",
           "weight": "-"
         },
         {
           "number": "12",
           "name": "Josh Boyer",
           "class": "2015",
-          "position": "-",
+          "position": "Guard",
           "height": "5'7\"",
           "weight": "-"
         },
@@ -1701,7 +1711,7 @@
           "number": "14",
           "name": "Christian Taylor",
           "class": "2015",
-          "position": "-",
+          "position": "Forward",
           "height": "6'0\"",
           "weight": "165"
         },
@@ -1709,78 +1719,254 @@
           "number": "15",
           "name": "Kyle Wood",
           "class": "2015",
-          "position": "-",
+          "position": "Forward",
           "height": "6'1\"",
           "weight": "-"
         },
         {
+          "number": "20",
+          "name": "Matthew Hofeling",
+          "class": "2015",
+          "position": "Forward",
+          "height": "6'2\"",
+          "weight": "155"
+        },
+        {
           "number": "21",
-          "name": "Keenan Nielson",
-          "class": "2017",
-          "position": "-",
-          "height": "-",
-          "weight": "-"
+          "name": "Jeff Rogers",
+          "class": "2015",
+          "position": "Guard",
+          "height": "5'9\"",
+          "weight": "140"
         },
         {
           "number": "22",
-          "name": "Jacob Carrington",
-          "class": "2016",
-          "position": "-",
-          "height": "-",
-          "weight": "-"
+          "name": "Kole Dotson",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'3\"",
+          "weight": "240"
         },
         {
           "number": "23",
-          "name": "Mason Fakahua",
-          "class": "2017",
-          "position": "-",
-          "height": "6'3\"",
-          "weight": "193"
-        },
-        {
-          "number": "24",
-          "name": "Ben Brinkerhoff",
-          "class": "2016",
-          "position": "-",
-          "height": "-",
-          "weight": "-"
-        },
-        {
-          "number": "32",
           "name": "Jace Wilkerson",
           "class": "2015",
-          "position": "-",
+          "position": "Forward",
           "height": "6'3\"",
           "weight": "180"
         },
         {
+          "number": "24",
+          "name": "Jaren Forsyth",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'2\"",
+          "weight": "175"
+        },
+        {
+          "number": "32",
+          "name": "James Thompson",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
           "number": "33",
-          "name": "Braden Barnes",
-          "class": "2016",
-          "position": "-",
-          "height": "-",
+          "name": "Dustin Staggs",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'8\"",
           "weight": "-"
         },
         {
           "number": "34",
-          "name": "Parker Haynie",
-          "class": "2017",
-          "position": "-",
-          "height": "-",
+          "name": "Greyson Hulet",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'8\"",
+          "weight": "-"
+        },
+        {
+          "number": "42",
+          "name": "Walker Hulet",
+          "class": "2015",
+          "position": "Forward",
+          "height": "6'4\"",
           "weight": "-"
         },
         {
           "number": "44",
           "name": "Ben Brown",
           "class": "2015",
-          "position": "-",
+          "position": "Forward",
           "height": "6'3\"",
           "weight": "-"
         }
       ],
       "coach": null,
       "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2013,
+      "season": "2012-13",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2013",
+      "players": [],
+      "coach": null,
+      "status": "error",
+      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2013",
       "method": "chrome"
+    },
+    {
+      "year": 2012,
+      "season": "2011-12",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2012",
+      "players": [],
+      "coach": null,
+      "status": "error",
+      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2012",
+      "method": "chrome"
+    },
+    {
+      "year": 2011,
+      "season": "2010-11",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2011",
+      "players": [],
+      "coach": null,
+      "status": "error",
+      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2011",
+      "method": "chrome"
+    },
+    {
+      "year": 2010,
+      "season": "2009-10",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/cedar/boys-basketball/roster/2010",
+      "players": [
+        {
+          "number": "2",
+          "name": "Kaden Garrett",
+          "class": "2012",
+          "position": "Guard",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
+          "number": "3",
+          "name": "Andrew Wilson",
+          "class": "2011",
+          "position": "Guard",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "4",
+          "name": "Trent Snow",
+          "class": "2012",
+          "position": "Forward",
+          "height": "6'7\"",
+          "weight": "-"
+        },
+        {
+          "number": "10",
+          "name": "McKay Erickson",
+          "class": "2010",
+          "position": "Forward",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "11",
+          "name": "Erik Nakken",
+          "class": "2011",
+          "position": "Guard",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "14",
+          "name": "Brandon Garrett",
+          "class": "2010",
+          "position": "Forward",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "15",
+          "name": "Kenny Grant",
+          "class": "2010",
+          "position": "Guard",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "20",
+          "name": "Alan Payne",
+          "class": "2011",
+          "position": "Guard",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "23",
+          "name": "Zach Adams",
+          "class": "2011",
+          "position": "Forward",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "24",
+          "name": "Jackson Carter",
+          "class": "-",
+          "position": "Guard",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "32",
+          "name": "Kyler Nielson",
+          "class": "2012",
+          "position": "Guard",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "33",
+          "name": "Taylor Ottenbacher",
+          "class": "2010",
+          "position": "Forward",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "42",
+          "name": "Cameron Armstrong",
+          "class": "2011",
+          "position": "Forward",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "44",
+          "name": "Nolan Foley",
+          "class": "2010",
+          "position": "Forward",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "55",
+          "name": "Chance Bearnson",
+          "class": "2011",
+          "position": "Forward",
+          "height": "-",
+          "weight": "-"
+        }
+      ],
+      "coach": null,
+      "status": "ok",
+      "method": "requests"
     }
   ]
 }

@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-29T03:58:59Z",
+  "updatedAt": "2026-09-29T04:28:09Z",
   "team": "Pleasant Grove",
   "coverage": {
-    "startYear": 2015,
+    "startYear": 2010,
     "endYear": 2027,
-    "firstSeason": "2014-15",
+    "firstSeason": "2009-10",
     "lastSeason": "2026-27"
   },
   "source": "Deseret News boys basketball roster pages",
@@ -16,8 +16,7 @@
       "sourceUrl": "https://sports.deseret.com/high-school/school/pleasant-grove/boys-basketball/roster/2027",
       "players": [],
       "coach": null,
-      "status": "error",
-      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/pleasant-grove/boys-basketball/roster/2027",
+      "status": "no_roster",
       "method": "chrome"
     },
     {
@@ -169,7 +168,7 @@
         "careerLosses": 26
       },
       "status": "ok",
-      "method": "chrome"
+      "method": "requests"
     },
     {
       "year": 2025,
@@ -304,7 +303,7 @@
         "careerLosses": 26
       },
       "status": "ok",
-      "method": "chrome"
+      "method": "requests"
     },
     {
       "year": 2024,
@@ -447,7 +446,7 @@
         "careerLosses": 194
       },
       "status": "ok",
-      "method": "chrome"
+      "method": "requests"
     },
     {
       "year": 2023,
@@ -582,7 +581,7 @@
         "careerLosses": 194
       },
       "status": "ok",
-      "method": "chrome"
+      "method": "requests"
     },
     {
       "year": 2022,
@@ -709,7 +708,7 @@
         "careerLosses": 194
       },
       "status": "ok",
-      "method": "chrome"
+      "method": "requests"
     },
     {
       "year": 2021,
@@ -836,17 +835,142 @@
         "careerLosses": 194
       },
       "status": "ok",
-      "method": "chrome"
+      "method": "requests"
     },
     {
       "year": 2020,
       "season": "2019-20",
       "sourceUrl": "https://sports.deseret.com/high-school/school/pleasant-grove/boys-basketball/roster/2020",
-      "players": [],
-      "coach": null,
-      "status": "error",
-      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/pleasant-grove/boys-basketball/roster/2020",
-      "method": "chrome"
+      "players": [
+        {
+          "number": "3",
+          "name": "Preston Bushman",
+          "class": "12",
+          "position": "G",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "4",
+          "name": "Andrew Williams",
+          "class": "12",
+          "position": "G",
+          "height": "5'11\"",
+          "weight": "-"
+        },
+        {
+          "number": "5",
+          "name": "McCaden Adams",
+          "class": "2022",
+          "position": "G",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
+          "number": "10",
+          "name": "Hunter Powell",
+          "class": "2021",
+          "position": "G",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "12",
+          "name": "Michael Mitton",
+          "class": "2023",
+          "position": "G",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "15",
+          "name": "Jordan Ross",
+          "class": "2023",
+          "position": "G",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "20",
+          "name": "Dylan Jones",
+          "class": "2022",
+          "position": "G",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "21",
+          "name": "Evan Anderson",
+          "class": "2022",
+          "position": "G",
+          "height": "5'10\"",
+          "weight": "-"
+        },
+        {
+          "number": "22",
+          "name": "Isaac Vaha",
+          "class": "2021",
+          "position": "F",
+          "height": "6'7\"",
+          "weight": "-"
+        },
+        {
+          "number": "24",
+          "name": "Kael Mikkelsen",
+          "class": "2020",
+          "position": "G",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "25",
+          "name": "Andrew Keck",
+          "class": "10",
+          "position": "G",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "30",
+          "name": "Tanner Hanks",
+          "class": "2022",
+          "position": "G",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "32",
+          "name": "Jamari Egbert",
+          "class": "12",
+          "position": "G",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
+          "number": "33",
+          "name": "Levi Boggess",
+          "class": "2021",
+          "position": "F",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "42",
+          "name": "Daniel Mitton",
+          "class": "2021",
+          "position": "F",
+          "height": "6'5\"",
+          "weight": "-"
+        }
+      ],
+      "coach": {
+        "name": "Randy McAllister",
+        "years": 22,
+        "careerWins": 336,
+        "careerLosses": 194
+      },
+      "status": "ok",
+      "method": "requests"
     },
     {
       "year": 2019,
@@ -1496,6 +1620,737 @@
           "position": "Forward",
           "height": "6'6\"",
           "weight": "245"
+        }
+      ],
+      "coach": {
+        "name": "Randy McAllister",
+        "years": 22,
+        "careerWins": 336,
+        "careerLosses": 194
+      },
+      "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2014,
+      "season": "2013-14",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/pleasant-grove/boys-basketball/roster/2014",
+      "players": [
+        {
+          "number": "4",
+          "name": "Riley Court",
+          "class": "2015",
+          "position": "Guard",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "10",
+          "name": "Alex James",
+          "class": "2015",
+          "position": "Guard",
+          "height": "5'8\"",
+          "weight": "-"
+        },
+        {
+          "number": "12",
+          "name": "Mark Sheffield",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "15",
+          "name": "Braden Wellman",
+          "class": "2016",
+          "position": "Guard",
+          "height": "5'8\"",
+          "weight": "-"
+        },
+        {
+          "number": "20",
+          "name": "Forrest Pincock",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "21",
+          "name": "Nate Didericksen",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "22",
+          "name": "Hayden deHoyos",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "23",
+          "name": "Mitch Brown",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "24",
+          "name": "Hayden Wall",
+          "class": "2015",
+          "position": "Guard",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "25",
+          "name": "Quin Daly",
+          "class": "2015",
+          "position": "Guard",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "30",
+          "name": "Matt Conway",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'6\"",
+          "weight": "-"
+        },
+        {
+          "number": "33",
+          "name": "Jake Wilson",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
+          "number": "34",
+          "name": "Devon Gethers",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "35",
+          "name": "Daniel Diehl",
+          "class": "2015",
+          "position": "Guard",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "44",
+          "name": "Tylor Bott",
+          "class": "2015",
+          "position": "Center",
+          "height": "6'6\"",
+          "weight": "245"
+        }
+      ],
+      "coach": {
+        "name": "Randy McAllister",
+        "years": 22,
+        "careerWins": 336,
+        "careerLosses": 194
+      },
+      "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2013,
+      "season": "2012-13",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/pleasant-grove/boys-basketball/roster/2013",
+      "players": [
+        {
+          "number": "1",
+          "name": "Riley Court",
+          "class": "2015",
+          "position": "Guard",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "3",
+          "name": "Gavin Bahr",
+          "class": "2014",
+          "position": "Guard",
+          "height": "5'8\"",
+          "weight": "-"
+        },
+        {
+          "number": "10",
+          "name": "Devan Wiggins",
+          "class": "2013",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "12",
+          "name": "Jacob Robley",
+          "class": "2013",
+          "position": "Guard",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "13",
+          "name": "Hayden Clasby",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "20",
+          "name": "Forrest Pincock",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "21",
+          "name": "Nate Didericksen",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "22",
+          "name": "Hayden deHoyos",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "23",
+          "name": "Mitch Brown",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "25",
+          "name": "Matt Conway",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'6\"",
+          "weight": "-"
+        },
+        {
+          "number": "32",
+          "name": "Aaron Sperry",
+          "class": "2016",
+          "position": "Guard",
+          "height": "6'2\"",
+          "weight": "190"
+        },
+        {
+          "number": "33",
+          "name": "Jake Wilson",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
+          "number": "34",
+          "name": "Mark Sheffield",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "42",
+          "name": "Josh Clement",
+          "class": "2013",
+          "position": "Center",
+          "height": "6'7\"",
+          "weight": "-"
+        },
+        {
+          "number": "44",
+          "name": "Ben Lee",
+          "class": "2013",
+          "position": "Center",
+          "height": "6'5\"",
+          "weight": "-"
+        }
+      ],
+      "coach": {
+        "name": "Randy McAllister",
+        "years": 22,
+        "careerWins": 336,
+        "careerLosses": 194
+      },
+      "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2012,
+      "season": "2011-12",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/pleasant-grove/boys-basketball/roster/2012",
+      "players": [
+        {
+          "number": "1",
+          "name": "Riley Court",
+          "class": "2015",
+          "position": "Guard",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "3",
+          "name": "Sawyer Norman",
+          "class": "2013",
+          "position": "Guard",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "5",
+          "name": "Michael Anderson",
+          "class": "2013",
+          "position": "Guard",
+          "height": "6'0\"",
+          "weight": "175"
+        },
+        {
+          "number": "10",
+          "name": "Walker Bischoff",
+          "class": "2012",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "12",
+          "name": "Jacob Robley",
+          "class": "2013",
+          "position": "Guard",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "20",
+          "name": "Spencer Pincock",
+          "class": "2012",
+          "position": "Guard",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
+          "number": "21",
+          "name": "Nate Didericksen",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "22",
+          "name": "Ashton Allridge",
+          "class": "2012",
+          "position": "Guard",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "23",
+          "name": "Markee Jensen",
+          "class": "2012",
+          "position": "Guard",
+          "height": "5'10\"",
+          "weight": "-"
+        },
+        {
+          "number": "25",
+          "name": "Josh Blackhurst",
+          "class": "2015",
+          "position": "Forward",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "32",
+          "name": "Forrest Pincock",
+          "class": "2014",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "33",
+          "name": "Sam Banks",
+          "class": "2012",
+          "position": "Center",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "34",
+          "name": "Mark Sheffield",
+          "class": "2014",
+          "position": "Forward",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "35",
+          "name": "Ben Lee",
+          "class": "2013",
+          "position": "Forward",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "42",
+          "name": "Josh Clement",
+          "class": "2013",
+          "position": "Center",
+          "height": "6'7\"",
+          "weight": "-"
+        },
+        {
+          "number": "44",
+          "name": "Alan Hamson",
+          "class": "2012",
+          "position": "Center",
+          "height": "6'10\"",
+          "weight": "-"
+        },
+        {
+          "number": "45",
+          "name": "Nathan Sampson",
+          "class": "2012",
+          "position": "Forward",
+          "height": "6'2\"",
+          "weight": "235"
+        }
+      ],
+      "coach": {
+        "name": "Randy McAllister",
+        "years": 22,
+        "careerWins": 336,
+        "careerLosses": 194
+      },
+      "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2011,
+      "season": "2010-11",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/pleasant-grove/boys-basketball/roster/2011",
+      "players": [
+        {
+          "number": "1",
+          "name": "Taylor Allred",
+          "class": "2011",
+          "position": "-",
+          "height": "5'10\"",
+          "weight": "-"
+        },
+        {
+          "number": "3",
+          "name": "Zach Faux",
+          "class": "2011",
+          "position": "-",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "5",
+          "name": "Michael Anderson",
+          "class": "2013",
+          "position": "-",
+          "height": "6'0\"",
+          "weight": "175"
+        },
+        {
+          "number": "12",
+          "name": "Walker Bischoff",
+          "class": "2012",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "15",
+          "name": "Wes Meacham",
+          "class": "2012",
+          "position": "-",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "20",
+          "name": "Spencer Pincock",
+          "class": "2012",
+          "position": "-",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
+          "number": "22",
+          "name": "Ashton Allridge",
+          "class": "2012",
+          "position": "-",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "23",
+          "name": "Cory McAllister",
+          "class": "2011",
+          "position": "-",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
+          "number": "24",
+          "name": "Neal Anderson",
+          "class": "2011",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "25",
+          "name": "Cade Wilkes",
+          "class": "2011",
+          "position": "-",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "30",
+          "name": "Jeff Elsey",
+          "class": "2011",
+          "position": "-",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "32",
+          "name": "Forrest Pincock",
+          "class": "2014",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "33",
+          "name": "Sam Banks",
+          "class": "2012",
+          "position": "-",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "42",
+          "name": "Austin Heder",
+          "class": "2011",
+          "position": "-",
+          "height": "6'3\"",
+          "weight": "235"
+        },
+        {
+          "number": "44",
+          "name": "Alan Hamson",
+          "class": "2012",
+          "position": "-",
+          "height": "6'10\"",
+          "weight": "-"
+        },
+        {
+          "number": "45",
+          "name": "Nathan Sampson",
+          "class": "2012",
+          "position": "-",
+          "height": "6'2\"",
+          "weight": "235"
+        }
+      ],
+      "coach": {
+        "name": "Randy McAllister",
+        "years": 22,
+        "careerWins": 336,
+        "careerLosses": 194
+      },
+      "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2010,
+      "season": "2009-10",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/pleasant-grove/boys-basketball/roster/2010",
+      "players": [
+        {
+          "number": "3",
+          "name": "Cade Terris",
+          "class": "2011",
+          "position": "Guard",
+          "height": "5'11\"",
+          "weight": "160"
+        },
+        {
+          "number": "4",
+          "name": "Bryan Sampson",
+          "class": "2010",
+          "position": "Forward",
+          "height": "6'5\"",
+          "weight": "215"
+        },
+        {
+          "number": "5",
+          "name": "Zach Faux",
+          "class": "2011",
+          "position": "Guard",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "10",
+          "name": "Brandon Thurgood",
+          "class": "2010",
+          "position": "Guard",
+          "height": "5'8\"",
+          "weight": "-"
+        },
+        {
+          "number": "12",
+          "name": "Dallas Lloyd",
+          "class": "2010",
+          "position": "Guard",
+          "height": "6'2\"",
+          "weight": "205"
+        },
+        {
+          "number": "20",
+          "name": "Taylor Allred",
+          "class": "2011",
+          "position": "Guard",
+          "height": "5'10\"",
+          "weight": "-"
+        },
+        {
+          "number": "21",
+          "name": "Jordan King",
+          "class": "2011",
+          "position": "Guard",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "23",
+          "name": "Cory McAllister",
+          "class": "2011",
+          "position": "Guard",
+          "height": "6'3\"",
+          "weight": "-"
+        },
+        {
+          "number": "24",
+          "name": "Neal Anderson",
+          "class": "2011",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "25",
+          "name": "Cade Wilkes",
+          "class": "2011",
+          "position": "Guard",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "32",
+          "name": "Payton Peters",
+          "class": "2011",
+          "position": "Guard",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "33",
+          "name": "Brady Hoglund",
+          "class": "2010",
+          "position": "Guard",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "34",
+          "name": "Joe Kruger",
+          "class": "2010",
+          "position": "Center",
+          "height": "6'7\"",
+          "weight": "240"
+        },
+        {
+          "number": "35",
+          "name": "Jeff Elsey",
+          "class": "2011",
+          "position": "Forward",
+          "height": "6'4\"",
+          "weight": "-"
+        },
+        {
+          "number": "42",
+          "name": "Austin Heder",
+          "class": "2011",
+          "position": "Forward",
+          "height": "6'3\"",
+          "weight": "235"
+        },
+        {
+          "number": "43",
+          "name": "Andrew Savage",
+          "class": "2011",
+          "position": "Center",
+          "height": "6'6\"",
+          "weight": "-"
+        },
+        {
+          "number": "44",
+          "name": "Alan Hamson",
+          "class": "2012",
+          "position": "Center",
+          "height": "6'10\"",
+          "weight": "-"
+        },
+        {
+          "number": "45",
+          "name": "Sefa Tanoai",
+          "class": "2010",
+          "position": "Forward",
+          "height": "6'4\"",
+          "weight": "265"
+        },
+        {
+          "number": "55",
+          "name": "Bryce Walker",
+          "class": "2010",
+          "position": "Center",
+          "height": "6'8\"",
+          "weight": "290"
         }
       ],
       "coach": {

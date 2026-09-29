@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-29T03:58:59Z",
+  "updatedAt": "2026-09-29T04:28:09Z",
   "team": "Monticello",
   "coverage": {
-    "startYear": 2015,
+    "startYear": 2010,
     "endYear": 2027,
-    "firstSeason": "2014-15",
+    "firstSeason": "2009-10",
     "lastSeason": "2026-27"
   },
   "source": "Deseret News boys basketball roster pages",
@@ -430,7 +430,7 @@
         "careerLosses": 70
       },
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2023,
@@ -748,7 +748,7 @@
         "careerLosses": 70
       },
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2021,
@@ -859,7 +859,7 @@
         "careerLosses": 70
       },
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2020,
@@ -1045,7 +1045,7 @@
       ],
       "coach": null,
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2019,
@@ -1249,7 +1249,7 @@
       ],
       "coach": null,
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2017,
@@ -1387,7 +1387,7 @@
       ],
       "coach": null,
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2016,
@@ -1485,20 +1485,38 @@
       ],
       "coach": null,
       "status": "ok",
-      "method": "requests"
+      "method": "chrome"
     },
     {
       "year": 2015,
       "season": "2014-15",
       "sourceUrl": "https://sports.deseret.com/high-school/school/monticello/boys-basketball/roster/2015",
+      "players": [],
+      "coach": null,
+      "status": "error",
+      "error": "429 Client Error: Too Many Requests for url: https://sports.deseret.com/high-school/school/monticello/boys-basketball/roster/2015",
+      "method": "chrome"
+    },
+    {
+      "year": 2014,
+      "season": "2013-14",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/monticello/boys-basketball/roster/2014",
       "players": [
         {
           "number": "3",
-          "name": "MaKade Maloy",
-          "class": "2015",
+          "name": "Austin Maloy",
+          "class": "2014",
           "position": "-",
-          "height": "5'9\"",
-          "weight": "145"
+          "height": "5'11\"",
+          "weight": "175"
+        },
+        {
+          "number": "4",
+          "name": "Nolan Freestone",
+          "class": "2016",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "160"
         },
         {
           "number": "5",
@@ -1518,18 +1536,26 @@
         },
         {
           "number": "11",
-          "name": "Nolan Freestone",
-          "class": "2016",
+          "name": "Tanner Eardley",
+          "class": "2014",
           "position": "-",
-          "height": "6'1\"",
-          "weight": "160"
+          "height": "5'11\"",
+          "weight": "-"
+        },
+        {
+          "number": "12",
+          "name": "Easton Neilson",
+          "class": "2014",
+          "position": "-",
+          "height": "6'5\"",
+          "weight": "-"
         },
         {
           "number": "13",
-          "name": "Joe Fellmeth",
+          "name": "Brian Tanner",
           "class": "2016",
           "position": "-",
-          "height": "5'9\"",
+          "height": "6'2\"",
           "weight": "-"
         },
         {
@@ -1541,28 +1567,28 @@
           "weight": "-"
         },
         {
-          "number": "20",
-          "name": "Talon Black",
-          "class": "2017",
-          "position": "-",
-          "height": "6'0\"",
-          "weight": "140"
-        },
-        {
-          "number": "21",
-          "name": "Andrew Torres",
+          "number": "15",
+          "name": "Joe Fellmeth",
           "class": "2016",
           "position": "-",
           "height": "5'9\"",
-          "weight": "125"
+          "weight": "-"
+        },
+        {
+          "number": "21",
+          "name": "Dillon Maughan",
+          "class": "2014",
+          "position": "-",
+          "height": "5'10\"",
+          "weight": "160"
         },
         {
           "number": "23",
-          "name": "Hyrum Johnson",
-          "class": "2020",
+          "name": "MaKade Maloy",
+          "class": "2015",
           "position": "-",
-          "height": "5'8\"",
-          "weight": "-"
+          "height": "5'9\"",
+          "weight": "145"
         },
         {
           "number": "24",
@@ -1581,20 +1607,628 @@
           "weight": "-"
         },
         {
-          "number": "31",
-          "name": "Carson Duncan",
-          "class": "2017",
-          "position": "-",
-          "height": "6'6\"",
-          "weight": "-"
-        },
-        {
           "number": "33",
           "name": "Jens Brewer",
           "class": "2015",
           "position": "-",
           "height": "6'2\"",
           "weight": "-"
+        },
+        {
+          "number": "34",
+          "name": "Kyler Larose",
+          "class": "2015",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "35",
+          "name": "Andrew Torres",
+          "class": "2016",
+          "position": "-",
+          "height": "5'9\"",
+          "weight": "125"
+        },
+        {
+          "number": "45",
+          "name": "Hyrum Johnson",
+          "class": "2020",
+          "position": "-",
+          "height": "5'8\"",
+          "weight": "-"
+        }
+      ],
+      "coach": null,
+      "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2013,
+      "season": "2012-13",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/monticello/boys-basketball/roster/2013",
+      "players": [
+        {
+          "number": "-",
+          "name": "Jens Brewer",
+          "class": "2015",
+          "position": "-",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Easton Neilson",
+          "class": "2014",
+          "position": "-",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Lance Allen",
+          "class": "-",
+          "position": "-",
+          "height": "6'0\"",
+          "weight": "185"
+        },
+        {
+          "number": "-",
+          "name": "Kyler Larose",
+          "class": "2015",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Austin Maloy",
+          "class": "2014",
+          "position": "-",
+          "height": "5'11\"",
+          "weight": "175"
+        },
+        {
+          "number": "-",
+          "name": "Sheldon Black",
+          "class": "2015",
+          "position": "-",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Jake Duncan",
+          "class": "-",
+          "position": "-",
+          "height": "6'4\"",
+          "weight": "185"
+        },
+        {
+          "number": "-",
+          "name": "Tanner Eardley",
+          "class": "2014",
+          "position": "-",
+          "height": "5'11\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Gunnar Hollingsworth",
+          "class": "-",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "175"
+        },
+        {
+          "number": "-",
+          "name": "Dillon Maughan",
+          "class": "2014",
+          "position": "-",
+          "height": "5'10\"",
+          "weight": "160"
+        },
+        {
+          "number": "-",
+          "name": "Nash Freestone",
+          "class": "2013",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Collin Hatch",
+          "class": "2013",
+          "position": "-",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Colby Draper",
+          "class": "-",
+          "position": "-",
+          "height": "-",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Zach Johnson",
+          "class": "-",
+          "position": "-",
+          "height": "6'3\"",
+          "weight": "180"
+        },
+        {
+          "number": "-",
+          "name": "MaKade Maloy",
+          "class": "2015",
+          "position": "-",
+          "height": "5'9\"",
+          "weight": "145"
+        }
+      ],
+      "coach": null,
+      "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2012,
+      "season": "2011-12",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/monticello/boys-basketball/roster/2012",
+      "players": [
+        {
+          "number": "3",
+          "name": "Terek Esplin",
+          "class": "2012",
+          "position": "Guard",
+          "height": "5'10\"",
+          "weight": "150"
+        },
+        {
+          "number": "4",
+          "name": "Chase Doucet",
+          "class": "2012",
+          "position": "Forward",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "5",
+          "name": "Adam Black",
+          "class": "2012",
+          "position": "Forward",
+          "height": "6'1\"",
+          "weight": "190"
+        },
+        {
+          "number": "10",
+          "name": "Jared Smith",
+          "class": "2013",
+          "position": "Guard",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "11",
+          "name": "Tanner Eardley",
+          "class": "2014",
+          "position": "Guard",
+          "height": "5'11\"",
+          "weight": "-"
+        },
+        {
+          "number": "12",
+          "name": "Justin Wright",
+          "class": "70",
+          "position": "Guard",
+          "height": "167'9\"",
+          "weight": "140"
+        },
+        {
+          "number": "15",
+          "name": "Gunnar Hollingsworth",
+          "class": "-",
+          "position": "Forward",
+          "height": "6'1\"",
+          "weight": "175"
+        },
+        {
+          "number": "20",
+          "name": "Collin Hatch",
+          "class": "2013",
+          "position": "Guard",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "21",
+          "name": "Dillon Maughan",
+          "class": "2014",
+          "position": "Guard",
+          "height": "5'10\"",
+          "weight": "160"
+        },
+        {
+          "number": "23",
+          "name": "Austin Maloy",
+          "class": "2014",
+          "position": "Guard",
+          "height": "5'11\"",
+          "weight": "175"
+        },
+        {
+          "number": "30",
+          "name": "Nash Freestone",
+          "class": "2013",
+          "position": "Forward",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "31",
+          "name": "Zach Johnson",
+          "class": "-",
+          "position": "Forward",
+          "height": "6'3\"",
+          "weight": "180"
+        },
+        {
+          "number": "33",
+          "name": "Jake Duncan",
+          "class": "-",
+          "position": "Forward",
+          "height": "6'4\"",
+          "weight": "185"
+        },
+        {
+          "number": "-",
+          "name": "Jens Brewer",
+          "class": "2015",
+          "position": "-",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Easton Neilson",
+          "class": "2014",
+          "position": "-",
+          "height": "6'5\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Lance Allen",
+          "class": "-",
+          "position": "-",
+          "height": "6'0\"",
+          "weight": "185"
+        },
+        {
+          "number": "-",
+          "name": "Kyler Larose",
+          "class": "2015",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        }
+      ],
+      "coach": null,
+      "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2011,
+      "season": "2010-11",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/monticello/boys-basketball/roster/2011",
+      "players": [
+        {
+          "number": "3",
+          "name": "Terek Esplin",
+          "class": "2012",
+          "position": "Guard",
+          "height": "5'10\"",
+          "weight": "150"
+        },
+        {
+          "number": "4",
+          "name": "Cory Young",
+          "class": "2011",
+          "position": "Forward",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "5",
+          "name": "Adam Black",
+          "class": "2012",
+          "position": "Forward",
+          "height": "6'1\"",
+          "weight": "190"
+        },
+        {
+          "number": "10",
+          "name": "Jake Duncan",
+          "class": "-",
+          "position": "Center/Forward",
+          "height": "6'4\"",
+          "weight": "185"
+        },
+        {
+          "number": "12",
+          "name": "Devin Wright",
+          "class": "2011",
+          "position": "Guard/Forward",
+          "height": "5'11\"",
+          "weight": "-"
+        },
+        {
+          "number": "13",
+          "name": "Gunnar Hollingsworth",
+          "class": "-",
+          "position": "Center/Forward",
+          "height": "6'1\"",
+          "weight": "175"
+        },
+        {
+          "number": "14",
+          "name": "Chase Doucet",
+          "class": "2012",
+          "position": "Forward",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "20",
+          "name": "Collin Hatch",
+          "class": "2013",
+          "position": "Guard",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "23",
+          "name": "Kendal Maughan",
+          "class": "2011",
+          "position": "Guard",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "24",
+          "name": "Nash Freestone",
+          "class": "2013",
+          "position": "Forward",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "33",
+          "name": "Dallin Duncan",
+          "class": "2011",
+          "position": "Center/Forward",
+          "height": "6'6\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Zach Johnson",
+          "class": "-",
+          "position": "-",
+          "height": "6'3\"",
+          "weight": "180"
+        },
+        {
+          "number": "-",
+          "name": "Austin Maloy",
+          "class": "2014",
+          "position": "-",
+          "height": "5'11\"",
+          "weight": "175"
+        }
+      ],
+      "coach": null,
+      "status": "ok",
+      "method": "requests"
+    },
+    {
+      "year": 2010,
+      "season": "2009-10",
+      "sourceUrl": "https://sports.deseret.com/high-school/school/monticello/boys-basketball/roster/2010",
+      "players": [
+        {
+          "number": "3",
+          "name": "Sean Getter",
+          "class": "2010",
+          "position": "-",
+          "height": "5'11\"",
+          "weight": "-"
+        },
+        {
+          "number": "4",
+          "name": "Cory Young",
+          "class": "2011",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "4",
+          "name": "Rylan Goodwine",
+          "class": "2013",
+          "position": "-",
+          "height": "5'6\"",
+          "weight": "-"
+        },
+        {
+          "number": "5",
+          "name": "Tyler Ketron",
+          "class": "2010",
+          "position": "-",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "10,5",
+          "name": "Adam Black",
+          "class": "2012",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "190"
+        },
+        {
+          "number": "11",
+          "name": "Jake Duncan",
+          "class": "-",
+          "position": "-",
+          "height": "6'4\"",
+          "weight": "185"
+        },
+        {
+          "number": "12",
+          "name": "Devin Wright",
+          "class": "2011",
+          "position": "-",
+          "height": "5'11\"",
+          "weight": "-"
+        },
+        {
+          "number": "12",
+          "name": "Justin Wright",
+          "class": "70",
+          "position": "-",
+          "height": "167'9\"",
+          "weight": "140"
+        },
+        {
+          "number": "13",
+          "name": "Hendrik Benally",
+          "class": "2010",
+          "position": "-",
+          "height": "5'11\"",
+          "weight": "-"
+        },
+        {
+          "number": "14",
+          "name": "Steven Redd",
+          "class": "2010",
+          "position": "-",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "20,3",
+          "name": "Trey Esplin",
+          "class": "-",
+          "position": "-",
+          "height": "5'10\"",
+          "weight": "-"
+        },
+        {
+          "number": "21",
+          "name": "Josh Anderson",
+          "class": "2010",
+          "position": "-",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "21",
+          "name": "Dallin Anderson",
+          "class": "2012",
+          "position": "-",
+          "height": "5'6\"",
+          "weight": "-"
+        },
+        {
+          "number": "23",
+          "name": "Kendal Maughan",
+          "class": "2011",
+          "position": "-",
+          "height": "5'9\"",
+          "weight": "-"
+        },
+        {
+          "number": "23",
+          "name": "Vance Westcott",
+          "class": "-",
+          "position": "-",
+          "height": "6'2\"",
+          "weight": "170"
+        },
+        {
+          "number": "24",
+          "name": "Collin Hatch",
+          "class": "2013",
+          "position": "-",
+          "height": "6'0\"",
+          "weight": "-"
+        },
+        {
+          "number": "25",
+          "name": "Colby Draper",
+          "class": "2011",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "25",
+          "name": "Dustin Whipple",
+          "class": "2013",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "32",
+          "name": "Gunnar Hollingsworth",
+          "class": "-",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "175"
+        },
+        {
+          "number": "33",
+          "name": "Dallin Duncan",
+          "class": "2011",
+          "position": "-",
+          "height": "6'6\"",
+          "weight": "-"
+        },
+        {
+          "number": "34",
+          "name": "Zach Johnson",
+          "class": "-",
+          "position": "-",
+          "height": "6'3\"",
+          "weight": "180"
+        },
+        {
+          "number": "40",
+          "name": "Chase Doucet",
+          "class": "2012",
+          "position": "-",
+          "height": "6'2\"",
+          "weight": "-"
+        },
+        {
+          "number": "41",
+          "name": "Nash Freestone",
+          "class": "2013",
+          "position": "-",
+          "height": "6'1\"",
+          "weight": "-"
+        },
+        {
+          "number": "-",
+          "name": "Terek Esplin",
+          "class": "2012",
+          "position": "-",
+          "height": "5'10\"",
+          "weight": "150"
         }
       ],
       "coach": null,
