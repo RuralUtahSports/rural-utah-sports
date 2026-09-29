@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>2025–26 Boys Basketball Brackets | Rural Utah Sports</title>
+<meta name="description" content="Completed 2025–26 Utah boys basketball state tournament brackets for 1A–6A: seeds, scores, byes, champions and placement games.">
+<meta name="theme-color" content="#F14D07">
+<link rel="icon" href="RUSlogoNew.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#111;color:#fff}
+header{background:#000;border-bottom:4px solid #F14D07;padding:15px 25px}
+.header-content{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px}
+.logo{width:80px;height:80px;object-fit:contain}
+.site-title h1{font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+.site-title p{color:#F14D07;font-weight:bold;margin-top:5px}
+nav{background:#000;border-bottom:1px solid #333}
+.nav-content{max-width:1400px;margin:auto;display:flex;flex-wrap:wrap}
+nav a{color:#fff;text-decoration:none;padding:15px 18px;font-size:14px;font-weight:bold;text-transform:uppercase}
+nav a:hover,nav a.active{background:#F14D07;color:#000}
+.container{max-width:1400px;margin:auto;padding:35px 20px 60px}
+.page-title{border-left:6px solid #F14D07;padding-left:15px;margin-bottom:10px;font-size:34px;text-transform:uppercase}
+.subtitle{color:#aaa;margin-bottom:25px;line-height:1.55}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:25px}
+.summary-card{background:#000;border:1px solid #333;border-radius:7px;padding:20px;text-align:center}
+.summary-number{font-size:28px;font-weight:900;color:#F14D07}
+.summary-label{font-size:10px;color:#888;text-transform:uppercase;margin-top:5px}
+.filter-panel{background:#000;border:1px solid #333;border-top:4px solid #F14D07;padding:20px;margin-bottom:20px;border-radius:7px}
+.filter-title{color:#F14D07;font-size:18px;font-weight:900;text-transform:uppercase;margin-bottom:15px}
+.filter-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:12px;align-items:end}
+.filter-group{display:flex;flex-direction:column;gap:6px}
+.filter-group label{color:#aaa;font-size:12px;font-weight:bold;text-transform:uppercase}
+.filter-input,.filter-select{width:100%;height:42px;padding:0 12px;background:#222;border:1px solid #444;color:#fff;border-radius:4px;font-size:14px;outline:none}
+.filter-input:focus,.filter-select:focus{border-color:#F14D07}
+.clear-button{height:42px;padding:0 18px;background:#F14D07;color:#000;border:0;border-radius:4px;font-weight:900;cursor:pointer;text-transform:uppercase}
+.result-count{color:#999;margin-bottom:12px;font-size:14px}
+.load-more-wrap{display:flex;justify-content:center;margin:14px 0 0}.load-more-button{height:42px;padding:0 22px;background:#F14D07;color:#000;border:0;border-radius:5px;font-weight:900;cursor:pointer;text-transform:uppercase}.load-more-button:hover{filter:brightness(1.12)}.load-more-button.secondary{background:#222;color:#fff;border:1px solid #555}
+.table-wrap{overflow:auto;max-height:72vh;background:#000;border:1px solid #333;border-radius:7px}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th{position:sticky;top:0;z-index:3;background:#F14D07;color:#000;padding:13px 10px;text-transform:uppercase;font-size:11px;white-space:nowrap}
+td{padding:12px 10px;text-align:center;border-bottom:1px solid #333}
+tbody tr:hover{background:#191919}
+tbody tr.year-break td{border-top:10px solid #111}
+.year{font-weight:900}
+.class-cell{font-weight:900;color:#F14D07}
+.team-cell{text-align:left;font-weight:800}
+.team-link{display:inline-block;padding:5px 9px;border:1px solid transparent;border-radius:5px;text-decoration:none;font-weight:900;line-height:1.1;transition:filter .15s ease,transform .15s ease}
+.team-link:hover{filter:brightness(1.18);transform:translateY(-1px)}
+.score{font-weight:900;white-space:normal;min-width:170px}
+.co-badge,.note-badge{display:inline-block;border-radius:999px;padding:4px 8px;font-size:9px;font-weight:900;text-transform:uppercase;margin-left:6px}
+.co-badge{background:#F14D07;color:#000}
+.note-badge{background:#333;color:#bbb}
+.special-row{background:rgba(241,77,7,.06)}
+.note{margin-top:10px;color:#888;font-size:13px;line-height:1.45}
+.loading,.error{padding:45px;text-align:center;color:#999}
+footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}
+footer strong{color:#F14D07}
+@media(max-width:1000px){.summary-grid{grid-template-columns:repeat(2,1fr)}.filter-grid{grid-template-columns:1fr 1fr}.search-group{grid-column:1/-1}}
+@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.page-title{font-size:28px}.summary-grid,.filter-grid{grid-template-columns:1fr}.search-group{grid-column:auto}}
+
+.bb-links,.bb-controls,.bb-classes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.bb-links a,.bb-controls button,.bb-classes button{display:inline-block;padding:12px 16px;border:1px solid #555;border-radius:6px;background:#191919;color:#fff;text-decoration:none;font-weight:bold;cursor:pointer;min-height:44px}
+.bb-controls button[aria-pressed="true"],.bb-classes button[aria-pressed="true"]{background:#F14D07;color:#000;border-color:#F14D07}
+.bb-controls label{display:flex;align-items:center;gap:8px}.bb-controls select{background:#191919;color:#fff;border:1px solid #555;padding:10px;border-radius:6px;min-height:44px}
+#bbChampion{padding:18px;border:1px solid #555;border-left:5px solid #F14D07;background:#000;border-radius:6px;margin:18px 0;font-size:20px;font-weight:bold}
+#bbChampion small{display:block;color:#aaa;font-size:12px;font-weight:normal;margin-bottom:8px}
+.bb-scroll{overflow:auto;background:#080808;border:1px solid #333;border-radius:8px;padding:16px;max-width:100%}
+.bb-grid{display:flex;gap:28px;width:max-content}.bb-round{width:240px;flex-shrink:0;display:flex;flex-direction:column}.bb-round h3{font-size:14px;text-transform:uppercase;color:#F14D07;margin:0 0 12px}
+.bb-games{display:flex;flex-direction:column;justify-content:space-around;flex:1;gap:12px}
+.bb-game{background:#171717;border:1px solid #444;border-radius:6px;overflow:hidden;min-height:108px}
+.bb-meta{padding:7px 10px;color:#aaa;font-size:11px;line-height:14px}
+.bb-team{display:flex;align-items:center;gap:7px;padding:8px;border-top:1px solid #333;border-left:4px solid var(--school-color,#444);min-height:39px;color:#ddd}
+.bb-team a{color:inherit;text-decoration:none;flex:1;font-size:12px;font-weight:bold;line-height:1.3}.bb-team a:hover{text-decoration:underline}
+.bb-team .seed{font-size:11px;color:#aaa;min-width:18px}.bb-score{font-weight:bold;margin-left:auto;padding:2px 5px;min-width:26px;text-align:center}
+.bb-team.win{color:#fff;background:#242424}.bb-team.win .bb-score{color:#000;background:#D4AF37;border-radius:3px}
+.bb-bye{font-size:12px;padding:9px 12px;color:#aaa}
+.bb-note{font-size:13px;color:#aaa;line-height:1.65;margin:14px 0}.bb-note a{color:#ff854e}
+.bb-placement{margin-top:26px}.bb-placement h2{font-size:20px;margin-bottom:14px}.bb-placement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.bb-placement h3{font-size:14px;color:#F14D07;margin-bottom:10px}.bb-placement .bb-game{margin-bottom:10px}
+.bb-scroll.by-round .bb-grid{width:100%;display:block}.bb-scroll.by-round .bb-round{width:100%;max-width:620px;margin:auto}.bb-scroll.by-round .bb-games{gap:12px}
+[hidden]{display:none!important}button:focus-visible,a:focus-visible,select:focus-visible,.bb-scroll:focus-visible{outline:3px solid #ff9f70;outline-offset:3px}
+@media(max-width:600px){.page-title{font-size:26px}.container{padding:24px 12px 50px}.bb-controls{align-items:center}.bb-controls label{width:100%}.bb-controls select{flex:1;min-width:0}.bb-scroll{padding:10px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-content">
+    <img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo">
+    <div class="site-title">
+      <h1>Rural Utah Sports</h1>
+      <p>Utah High School Sports History &amp; Data</p>
+    </div>
+  </div>
+</header>
+<nav><div class="nav-content"><a href="index.html">Home</a><a href="teams.html">Teams</a><a href="greatest-seasons.html">Greatest Seasons</a><a href="championships.html" class="active">Championships</a><a href="records.html">Records</a><a href="scorigami.html">Scorigami</a><a href="games.html">Games</a><a href="out-of-state.html">Out of State</a><a href="elo.html">ELO</a><a href="rankings.html">Rankings</a><a href="standings.html">Standings</a><a href="simulators.html">Simulators</a></div></nav>
+<main class="container">
+<div class="bb-links"><a href="championships.html">Football championships &amp; brackets</a><a href="boys-basketball-teams.html">Basketball teams</a></div>
+<h2 class="page-title">Boys Basketball Brackets</h2>
+<p class="subtitle">2025–26 state tournaments · Completed results · 1A–6A</p>
+<div id="bbClasses" class="bb-classes" role="group" aria-label="Classification"></div>
+<div id="bbChampion" aria-live="polite">Loading tournament results…</div>
+<div class="bb-controls">
+<button type="button" id="bbFull" aria-pressed="true">Full bracket</button>
+<button type="button" id="bbCompact" aria-pressed="false">By round</button>
+<label id="bbRoundLabel" hidden>Round <select id="bbRound"></select></label>
+</div>
+<p class="bb-note">Gold scores mark winners. Byes are advances, not wins. Swipe sideways for the full bracket, or choose “By round” for a compact view.</p>
+<div id="bbScroller" class="bb-scroll" role="region" aria-label="Tournament bracket" tabindex="0"><div id="bbGrid" class="bb-grid"></div></div>
+<section id="bbPlacement" class="bb-placement"></section>
+<p id="bbSource" class="bb-note"></p>
+<noscript><p class="bb-note">JavaScript is needed for the interactive brackets. <a href="https://www.maxpreps.com/tournament/list/0Xg8sfPQX0myvrnetU2yeA/basketball-25-26/2026-%E2%80%A2-uhsaa-boys-basketball-state-championships.htm">View the official tournament brackets.</a></p></noscript>
+</main>
+<footer><strong>Rural Utah Sports</strong><p>Utah High School Sports History &amp; Data</p></footer>
+<script src="boys-basketball-bracket-brands.js?v=20260929-brackets1" defer></script>
+<script src="boys-basketball-brackets.js?v=20260929-brackets1" defer></script>
+<script src="nav-menu.js?v=20260929-alltime-team-stats1" defer></script>
+</body></html>
