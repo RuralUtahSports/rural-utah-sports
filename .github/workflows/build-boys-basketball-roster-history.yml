@@ -29,8 +29,10 @@ jobs:
           d=json.load(open('boys-basketball-rosters/index.json'))
           s=d['summary']
           print(s)
-          if s['teamsChecked'] < 120:
+          if s['teamsChecked'] < 148:
               raise SystemExit('Too few teams checked')
+          if s['pagesChecked'] < s['teamsChecked'] * 8:
+              raise SystemExit('Not all roster seasons were checked')
           if s['pagesWithRosters'] < 300:
               raise SystemExit('Too few historical roster pages parsed')
           if s['players'] < 3000:
@@ -38,6 +40,13 @@ jobs:
           sample=d['teams'].get('JUAB')
           if not sample or not os.path.exists(sample['file']):
               raise SystemExit('Juab roster history missing')
+          juab=json.load(open(sample['file']))
+          season=next((r for r in juab['seasons'] if r.get('year')==2021),None)
+          if not season or not season.get('players'):
+              raise SystemExit('Juab 2020-21 roster missing')
+          player=season['players'][0]
+          if not player.get('name') or player['name'].strip().isdigit() or not player.get('number'):
+              raise SystemExit('Roster player fields are misaligned')
           PY
       - name: Commit roster history
         run: |

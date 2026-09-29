@@ -29,13 +29,27 @@ SLUG_OVERRIDES={
  "MAESERPREPACADEMY":"maeser-prep",
  "MONUMENTVALLEY":"monument-valley",
  "SAINTJOSEPH":"st-joseph",
- "AMERICANPREPWV":"american-prep-west-valley",
+ "AMERICANPREPWV":"apa-west-valley",
  "UMAHILLFIELD":"utah-military-hillfield",
  "UMALEHI":"utah-military-camp-williams",
  "UMACAMPWILLIAMS":"utah-military-camp-williams",
- "MERITPREP":"merit-prep",
+ "MERITPREP":"merit-academy",
+ "SALTLAKEACADEMY":"rsl-academy",
+ "VANGUARDACADEMY":"vanguard",
 }
 def team_slug(name): return SLUG_OVERRIDES.get(norm(name),slugify(name))
+
+TEAM_KEY_ALIASES={
+ "UTAHMILITARYACADEMYCAMPWILLIAMS":"UMALEHI","UMACAMPWILLIAMS":"UMALEHI",
+ "UTAHMILITARYACADEMYHILLFIELD":"UMAHILLFIELD","STJOSEPH":"SAINTJOSEPH",
+ "GRAND":"GRANDCOUNTY","MERITPREPARATORYACADEMY":"MERITPREP",
+ "AMERICANLEADERSHIPACADEMY":"ALA","AMERICANPREPARATORYACADEMYWESTVALLEY":"AMERICANPREPWV",
+ "MAESERPREPARATORYACADEMY":"MAESERPREPACADEMY","JUANDIEGOCATHOLIC":"JUANDIEGO",
+ "JUDGEMEMORIALCATHOLIC":"JUDGEMEMORIAL","UTAHSCHOOLFORTHEDEAFBLIND":"USDB",
+ "CEDARCITY":"CEDAR","GUNNISON":"GUNNISONVALLEY","LAYTONCHRISTIAN":"LAYTONCHRISTIANACADEMY",
+ "WASATCHACAD":"WASATCHACADEMY"
+}
+def team_key(name): return TEAM_KEY_ALIASES.get(norm(name),norm(name))
 
 def browser():
     for p in ["/usr/bin/google-chrome","/usr/bin/google-chrome-stable","/usr/bin/chromium","/usr/bin/chromium-browser"]:
@@ -44,10 +58,25 @@ def browser():
 BROWSER=browser()
 
 def http_html(url):
-    headers={"User-Agent":"Mozilla/5.0 (compatible; RuralUtahSports/1.0)"}
-    r=requests.get(url,headers=headers,timeout=25)
-    r.raise_for_status()
-    return r.text
+    headers={
+        "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language":"en-US,en;q=0.9"
+    }
+    last_error=None
+    for attempt in range(3):
+        try:
+            r=requests.get(url,headers=headers,timeout=25)
+            if r.status_code in (403,404):
+                r.raise_for_status()
+            r.raise_for_status()
+            return r.text
+        except Exception as e:
+            last_error=e
+            if getattr(getattr(e,"response",None),"status_code",None) in (403,404):
+                break
+            if attempt<2:time.sleep(.5*(attempt+1))
+    raise last_error
 
 def browser_html(url):
     if not BROWSER: raise RuntimeError("Chrome/Chromium not found")
@@ -76,9 +105,19 @@ def title_name(s):
     return " ".join(w.capitalize() for w in re.split(r"[-_]+",s) if w)
 
 def linked_name(cell):
-    txt=clean(cell.get_text(" ",strip=True))
-    if txt:return txt
     a=cell.find("a",href=True)
+    if a:
+        txt=clean(a.get_text(" ",strip=True))
+        desktop_first=next((el for el in a.select(".d-none.d-md-inline") if clean(el.get_text(" ",strip=True))),None)
+        mobile_initial=next((el for el in a.select(".d-inline.d-md-none") if clean(el.get_text(" ",strip=True))),None)
+        if desktop_first and mobile_initial:
+            first=clean(desktop_first.get_text(" ",strip=True))
+            initial=clean(mobile_initial.get_text(" ",strip=True)).rstrip(".")
+            if first and initial and first[0].casefold()==initial[0].casefold():
+                txt=re.sub(r"^[A-Z]\s*\.\s+", "", txt, count=1)
+        if txt:return re.sub(r"\s+([.,])",r"\1",txt)
+    txt=clean(cell.get_text(" ",strip=True))
+    if txt:return re.sub(r"\s+([.,])",r"\1",txt)
     if not a:return ""
     for attr in ["aria-label","title"]:
         if clean(a.get(attr)): return clean(a.get(attr))
@@ -106,7 +145,9 @@ def parse_coach(table):
 
 def parse_players(table):
     if not table:return []
-    headers=[clean(th.get_text(" ",strip=True)).upper() for th in table.find_all("th")]
+    header_row=next((tr for tr in table.find_all("tr") if len(tr.find_all("th"))>=3),None)
+    if not header_row:return []
+    headers=[clean(th.get_text(" ",strip=True)).upper() for th in header_row.find_all("th")]
     # normalize expected header names to indexes
     indexes={}
     for i,h in enumerate(headers):
@@ -139,9 +180,9 @@ def parse_players(table):
 def parse_page(team,year):
     slug=team_slug(team)
     url=f"{BASE}/high-school/school/{slug}/boys-basketball/roster/{year}"
-    html=None;method="requests"
+    html=None;method="requests";fetch_error=None
     try: html=http_html(url)
-    except Exception: html=None
+    except Exception as e:fetch_error=e
     soup=BeautifulSoup(html or "","html.parser")
     players_table=find_table(soup,["PLAYER NAME","CLASS","POSITION"])
     coach_table=find_table(soup,["COACH NAME","YEARS"])
@@ -153,6 +194,8 @@ def parse_page(team,year):
             coach_table=find_table(soup,["COACH NAME","YEARS"])
         except Exception as e:
             return {"year":year,"season":f"{year-1}-{str(year)[-2:]}","sourceUrl":url,"players":[],"coach":None,"status":"error","error":str(e),"method":method}
+    if not players_table and fetch_error:
+        return {"year":year,"season":f"{year-1}-{str(year)[-2:]}","sourceUrl":url,"players":[],"coach":None,"status":"error","error":str(fetch_error),"method":method}
     players=parse_players(players_table)
     coach=parse_coach(coach_table)
     status="ok" if players else "no_roster"
@@ -162,7 +205,7 @@ def parse_page(team,year):
     }
 
 teams=json.loads((ROOT/"boys-basketball-teams.json").read_text())
-target=[r["team"] for r in teams if r.get("association")=="UHSAA"]
+target=[r["team"] for r in teams if r.get("association")=="UHSAA" or r.get("team")=="Utah Prep"]
 OUT_DIR.mkdir(parents=True,exist_ok=True)
 
 work=[(team,year) for team in target for year in range(START_YEAR,END_YEAR+1)]
@@ -197,11 +240,11 @@ for team in target:
       "coverage":index["coverage"],"source":"Deseret News boys basketball roster pages",
       "seasons":seasons
     }
-    filename=slugify(norm(team))+".json"
-    # readable canonical key filename, matching team page's existing file helper
-    filename=norm(team).lower()+".json"
+    # Match canonicalTeamKey() and rosterFileKey() in boys-basketball-team.html.
+    key=team_key(team)
+    filename=key.lower()+".json"
     (OUT_DIR/filename).write_text(json.dumps(payload,indent=2)+"\n")
-    index["teams"][norm(team)]={"team":team,"file":f"boys-basketball-rosters/{filename}","seasonsWithRosters":sum(bool(s["players"]) for s in seasons),"players":sum(len(s["players"]) for s in seasons)}
+    index["teams"][key]={"team":team,"file":f"boys-basketball-rosters/{filename}","seasonsWithRosters":sum(bool(s["players"]) for s in seasons),"players":sum(len(s["players"]) for s in seasons)}
 
 INDEX_FILE.write_text(json.dumps({**index,"summary":summary},indent=2)+"\n")
 REPORT_FILE.write_text(json.dumps({"summary":summary,"errors":errors},indent=2)+"\n")
