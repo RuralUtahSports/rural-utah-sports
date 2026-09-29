@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE="https://sports.deseret.com"
-START_YEAR=2015
+START_YEAR=2010
 END_YEAR=2027
 OUT_DIR=ROOT/"boys-basketball-rosters"
 INDEX_FILE=OUT_DIR/"index.json"
