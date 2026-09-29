@@ -81,19 +81,20 @@ footer strong{color:#F14D07}
 [hidden]{display:none!important}button:focus-visible,a:focus-visible,select:focus-visible,.bb-scroll:focus-visible{outline:3px solid #ff9f70;outline-offset:3px}
 @media(max-width:600px){.page-title{font-size:26px}.container{padding:24px 12px 50px}.bb-controls{align-items:center}.bb-controls label{width:100%}.bb-controls select{flex:1;min-width:0}.bb-scroll{padding:10px}}
 
-/* Keep the complete tournament dense while retaining readable team names. */
-.bb-scroll:not(.by-round){padding:8px 10px}
-.bb-scroll:not(.by-round) .bb-grid{gap:10px}
-.bb-scroll:not(.by-round) .bb-round{width:200px}
-.bb-scroll:not(.by-round) .bb-round h3{margin-bottom:6px;font-size:12px}
-.bb-scroll:not(.by-round) .bb-games{justify-content:center;gap:5px}
-.bb-scroll:not(.by-round) .bb-game{height:72px;min-height:72px}
-.bb-scroll:not(.by-round) .bb-meta{padding:2px 7px;font-size:10px;line-height:12px}
-.bb-scroll:not(.by-round) .bb-team{height:27px;min-height:27px;padding:1px 5px;gap:4px}
-.bb-scroll:not(.by-round) .bb-team a{font-size:11px;line-height:12px}
-.bb-scroll:not(.by-round) .bb-team .seed{font-size:10px;min-width:14px}
-.bb-scroll:not(.by-round) .bb-score{font-size:11px;padding:1px 3px;min-width:23px}
-.bb-scroll:not(.by-round) .bb-bye{padding:4px 8px;font-size:11px;line-height:12px}
+/* Full bracket mirrors the compact football bracket presentation. */
+.bb-scroll:not(.by-round){padding:16px}
+.bb-scroll:not(.by-round) .bb-grid{gap:20px;align-items:stretch}
+.bb-scroll:not(.by-round) .bb-round{width:220px}
+.bb-scroll:not(.by-round) .bb-round h3{text-align:center;color:#F14D07;font-size:11px;font-weight:900;text-transform:uppercase;margin:0 0 10px;min-height:28px;display:flex;align-items:center;justify-content:center}
+.bb-scroll:not(.by-round) .bb-games{flex:1;justify-content:space-around;gap:10px}
+.bb-scroll:not(.by-round) .bb-game{height:auto;min-height:62px;border:1px solid #393939;border-radius:6px;background:#151515}
+.bb-scroll:not(.by-round) .bb-meta{display:none}
+.bb-scroll:not(.by-round) .bb-team{min-height:31px;height:auto;padding:7px 9px;gap:6px;border-left:5px solid var(--school-color,#444)}
+.bb-scroll:not(.by-round) .bb-team a{font-size:12px;line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bb-scroll:not(.by-round) .bb-team .seed{font-size:10px;min-width:16px}
+.bb-scroll:not(.by-round) .bb-score{font-size:12px;padding:2px 6px;min-width:26px}
+.bb-scroll:not(.by-round) .bb-bye{min-height:31px;padding:7px 9px;font-size:11px;line-height:16px;border-top:1px solid #333}
+@media(max-width:600px){.bb-scroll:not(.by-round){padding:12px}.bb-scroll:not(.by-round) .bb-round{width:190px}}
 </style>
 </head>
 <body>
@@ -125,7 +126,7 @@ footer strong{color:#F14D07}
 <noscript><p class="bb-note">JavaScript is needed for the interactive brackets. <a href="https://www.maxpreps.com/tournament/list/0Xg8sfPQX0myvrnetU2yeA/basketball-25-26/2026-%E2%80%A2-uhsaa-boys-basketball-state-championships.htm">View the official tournament brackets.</a></p></noscript>
 </main>
 <footer><strong>Rural Utah Sports</strong><p>Utah High School Sports History &amp; Data</p></footer>
-<script src="boys-basketball-bracket-brands.js?v=20260929-brackets1" defer></script>
-<script src="boys-basketball-brackets.js?v=20260929-brackets1" defer></script>
+<script src="boys-basketball-bracket-brands.js?v=20260929-brackets2" defer></script>
+<script src="boys-basketball-brackets.js?v=20260929-brackets2" defer></script>
 <script src="nav-menu.js?v=20260929-alltime-team-stats1" defer></script>
 </body></html>
