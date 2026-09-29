@@ -148,7 +148,19 @@
       item.innerHTML=`<div class="rus-export-rank-num">${esc(d.rank)}</div>${d.src?`<div class="rus-export-overall-row-logo"><img src="${esc(d.src)}" alt="${esc(d.team)} logo"></div>`:'<div class="rus-export-overall-row-logo"></div>'}<div class="rus-export-overall-row-main"><div class="rus-export-team">${esc(d.team)}</div><div class="rus-export-overall-row-sub">${d.record?`<span class="rus-export-overall-row-record">${esc(d.record)}</span>`:''}${d.cls?`<span>${esc(d.cls)}</span>`:''}${d.elo?`<span>ELO ${esc(d.elo)}</span>`:''}</div></div>${d.move?`<div class="rus-export-move ${d.moveClass}">${esc(d.move)}</div>`:'<div></div>'}`;
       rest.appendChild(item);
     });
-    board.append(top3,rest);document.body.appendChild(board);return {node:board,top,bottom,pad};
+    board.append(top3,rest);document.body.appendChild(board);
+    // Rasterize loaded same-origin SVG logos so html2canvas keeps every school mark.
+    await waitForImages(board);
+    for(const img of board.querySelectorAll('img')){
+      if(!/\.svg(?:[?#]|$)/i.test(img.getAttribute('src')||'')||!img.naturalWidth||!img.naturalHeight)continue;
+      try{
+        if(new URL(img.src,location.href).origin!==location.origin)continue;
+        const raster=document.createElement('canvas');raster.width=img.naturalWidth;raster.height=img.naturalHeight;
+        const ctx=raster.getContext('2d');if(!ctx)continue;
+        ctx.drawImage(img,0,0);img.src=raster.toDataURL('image/png');
+      }catch(error){console.warn('Could not rasterize rankings SVG logo',img.alt,error)}
+    }
+    return {node:board,top,bottom,pad};
   }
   async function rankingSource(el,w,h){
     if(!PAGE.includes('rankings'))return null;
