@@ -10,7 +10,7 @@ const aliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNI
 const canon=v=>aliases[compact(v)]||compact(v);
 const rural=new Set(['3A','2A','1A','8P','8-PLAYER']),big=new Set(['6A','5A','4A']);
 const classWeight={'6A':1.18,'5A':1.14,'4A':1.08,'3A':1,'2A':.95,'1A':.90,'8P':.88,'8-PLAYER':.88};
-const n=v=>{const m=String(v??'').replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0};
+const n=v=>{const m=String(v??'').replace(/,/g,'').match(/-?(?:\d+(?:\.\d+)?|\.\d+)/);return m?Number(m[0]):0};
 function normPos(v){const x=clean(v).toUpperCase();if(/QB/.test(x))return'QB';if(/RB|HB|FB/.test(x))return'RB';if(/WR|SE|FL/.test(x))return'WR';if(/TE/.test(x))return'TE';if(/OL|OT|OG|G\b|T\b|C\b/.test(x))return'OL';if(/DL|DE|DT|NT/.test(x))return'DL';if(/LB/.test(x))return'LB';if(/DB|CB|FS|SS|SAF/.test(x))return'DB';if(/K|P/.test(x))return'K/P';return'ATH'}
 function gradYear(v){const m=clean(v).match(/20\d{2}/);return m?Number(m[0]):null}
 function seasonEligible(v){const y=gradYear(v);return y===null||y>=SEASON+1}

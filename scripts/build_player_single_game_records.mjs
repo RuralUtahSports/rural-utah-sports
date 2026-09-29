@@ -15,7 +15,7 @@ const slug=v=>clean(v).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$
 const decode=s=>String(s||'').replace(/<!--\s*-->/g,'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&quot;/gi,'"').replace(/&#39;|&apos;/gi,"'").replace(/&lt;/gi,'<').replace(/&gt;/gi,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/&#x([0-9a-f]+);/gi,(_,n)=>String.fromCodePoint(parseInt(n,16)));
 const text=html=>clean(decode(String(html||'').replace(/<span\b[^>]*class=["'][^"']*\bd-inline\b[^"']*\bd-md-none\b[^"']*["'][^>]*>[\s\S]*?<\/span>/gi,' ')).replace(/<(script|style|noscript|svg)\b[^>]*>[\s\S]*?<\/\1>/gi,' ').replace(/<[^>]+>/g,' '));
 const cells=row=>{const out=[];const re=/<(?:th|td)\b[^>]*>([\s\S]*?)<\/(?:th|td)>/gi;let m;while((m=re.exec(row)))out.push(text(m[1]));return out};
-const num=v=>{const m=clean(v).replace(/,/g,'').match(/^-?\d+(?:\.\d+)?$/);return m?Number(m[0]):null};
+const num=v=>{const m=clean(v).replace(/,/g,'').match(/^-?(?:\d+(?:\.\d+)?|\.\d+)$/);return m?Number(m[0]):null};
 const isoDate=v=>{const d=new Date(v);return Number.isFinite(d.getTime())?d.toISOString().slice(0,10):clean(v)};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 

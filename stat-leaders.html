@@ -40,7 +40,7 @@ const classes=['11P','6A','5A','4A','3A','2A','1A','8P'];
 const availableSeasons=[2026,2025];
 const params=new URLSearchParams(location.search),requested=Number(params.get('season')),requestedWeek=Number(params.get('week'));
 let season=availableSeasons.includes(requested)?requested:2026,allStats=null,playerGames=null,weeks=[],timeframe='season',teamMeta=new Map(),longFgMap=new Map(),rowCache=new Map(),category='Passing',classification='11P',metric='',visibleCount=5;
-function numValue(v){const s=String(v??'').trim().replace(/,/g,'');if(!s)return null;const m=s.match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null}
+function numValue(v){const s=String(v??'').trim().replace(/,/g,'');if(!s)return null;const m=s.match(/-?(?:\d+(?:\.\d+)?|\.\d+)/);return m?Number(m[0]):null}
 const ELEVEN_PLAYER_CLASSES=new Set(['6A','5A','4A','3A','2A','1A']);
 function isEightPlayerClass(v){const k=compact(v);return k==='8P'||k==='8PLAYER'}
 function scopeMatchesClass(v){const k=compact(v);if(classification==='11P')return ELEVEN_PLAYER_CLASSES.has(k);if(classification==='8P')return isEightPlayerClass(v);return k===compact(classification)}

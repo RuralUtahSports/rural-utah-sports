@@ -5,7 +5,7 @@ if(![2025,2026].includes(season))throw new Error(`Unsupported season ${season}`)
 
 const clean=v=>String(v??'').trim();
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
-const num=v=>{const m=clean(v).replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0};
+const num=v=>{const m=clean(v).replace(/,/g,'').match(/-?(?:\d+(?:\.\d+)?|\.\d+)/);return m?Number(m[0]):0};
 const round=(v,d=2)=>Number.isFinite(Number(v))?+Number(v).toFixed(d):null;
 const aliases={
   CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',
