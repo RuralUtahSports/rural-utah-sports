@@ -1,0 +1,55 @@
+name: Import boys basketball player stats
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/import_boys_basketball_player_stats.py'
+      - '.github/workflows/import-boys-basketball-player-stats.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: boys-basketball-player-stats-import
+  cancel-in-progress: true
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install parser
+        run: python3 -m pip install beautifulsoup4 requests
+      - name: Import 2025-26 player stats
+        run: python3 scripts/import_boys_basketball_player_stats.py
+      - name: Verify imported stats
+        run: |
+          python3 - <<'PY'
+          import json
+          data=json.load(open('boys-basketball-player-stats/2026.json'))
+          summary=data['summary']
+          print(summary)
+          if data.get('season') != '2025-26':
+              raise SystemExit('Wrong basketball season in player stats archive')
+          if summary.get('teamsChecked', 0) < 148:
+              raise SystemExit('Too few boys basketball teams checked')
+          if summary.get('teamsWithStats', 0) < 20:
+              raise SystemExit('Too few team stats pages parsed')
+          if summary.get('players', 0) < 100:
+              raise SystemExit('Too few basketball players parsed')
+          PY
+      - name: Commit player stats archive
+        run: |
+          git add boys-basketball-player-stats
+          if git diff --cached --quiet; then
+            echo "Basketball player stats archive is up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Import 2025-26 boys basketball player stats"
+          git pull --rebase origin main
+          git push
