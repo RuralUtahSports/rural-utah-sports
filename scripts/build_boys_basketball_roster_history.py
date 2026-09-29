@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE="https://sports.deseret.com"
-START_YEAR=2020
+START_YEAR=2015
 END_YEAR=2027
 OUT_DIR=ROOT/"boys-basketball-rosters"
 INDEX_FILE=OUT_DIR/"index.json"
@@ -225,7 +225,7 @@ with ThreadPoolExecutor(max_workers=10) as ex:
         if done%50==0:print("processed",done,"of",len(work))
 
 updated=time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime())
-index={"schemaVersion":1,"updatedAt":updated,"coverage":{"startYear":START_YEAR,"endYear":END_YEAR,"firstSeason":"2019-20","lastSeason":"2026-27"},"source":"Deseret News boys basketball roster pages","teams":{}}
+index={"schemaVersion":1,"updatedAt":updated,"coverage":{"startYear":START_YEAR,"endYear":END_YEAR,"firstSeason":f"{START_YEAR-1}-{str(START_YEAR)[-2:]}","lastSeason":f"{END_YEAR-1}-{str(END_YEAR)[-2:]}"},"source":"Deseret News boys basketball roster pages","teams":{}}
 summary={"teamsChecked":len(target),"pagesChecked":len(work),"pagesWithRosters":0,"players":0,"errors":len(errors),"teamsWithAnyRoster":0}
 
 for team in target:
