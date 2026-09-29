@@ -31,7 +31,7 @@ jobs:
           print(s)
           if s['teamsChecked'] < 148:
               raise SystemExit('Too few teams checked')
-          if s['pagesChecked'] < s['teamsChecked'] * 18:
+          if s['pagesChecked'] < s['teamsChecked'] * 23:
               raise SystemExit('Not all roster seasons were checked')
           if s['pagesWithRosters'] < 300:
               raise SystemExit('Too few historical roster pages parsed')
@@ -47,13 +47,13 @@ jobs:
           player=season['players'][0]
           if not player.get('name') or player['name'].strip().isdigit() or not player.get('number'):
               raise SystemExit('Roster player fields are misaligned')
-          bountiful=d['teams'].get('BOUNTIFUL')
-          if not bountiful:
-              raise SystemExit('Bountiful roster history missing')
-          bountiful=json.load(open(bountiful['file']))
-          season=next((r for r in bountiful['seasons'] if r.get('year')==2010),None)
+          logan=d['teams'].get('LOGAN')
+          if not logan:
+              raise SystemExit('Logan roster history missing')
+          logan=json.load(open(logan['file']))
+          season=next((r for r in logan['seasons'] if r.get('year')==2005),None)
           if not season or not season.get('players'):
-              raise SystemExit('2009-10 roster missing')
+              raise SystemExit('2004-05 roster missing')
           PY
       - name: Commit roster history
         run: |
