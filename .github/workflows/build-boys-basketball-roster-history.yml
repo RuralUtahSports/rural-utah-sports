@@ -1,0 +1,53 @@
+name: Build boys basketball roster history
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_boys_basketball_roster_history.py'
+      - '.github/workflows/build-boys-basketball-roster-history.yml'
+      - 'boys-basketball-teams.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install parser
+        run: python3 -m pip install beautifulsoup4 requests
+      - name: Build roster history
+        run: python3 scripts/build_boys_basketball_roster_history.py
+      - name: Verify output
+        run: |
+          python3 - <<'PY'
+          import json, os
+          d=json.load(open('boys-basketball-rosters/index.json'))
+          s=d['summary']
+          print(s)
+          if s['teamsChecked'] < 120:
+              raise SystemExit('Too few teams checked')
+          if s['pagesWithRosters'] < 300:
+              raise SystemExit('Too few historical roster pages parsed')
+          if s['players'] < 3000:
+              raise SystemExit('Too few roster players parsed')
+          sample=d['teams'].get('JUAB')
+          if not sample or not os.path.exists(sample['file']):
+              raise SystemExit('Juab roster history missing')
+          PY
+      - name: Commit roster history
+        run: |
+          git add boys-basketball-rosters
+          if git diff --cached --quiet; then
+            echo "No roster history changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build basketball roster history"
+          git pull --rebase origin main
+          git push
