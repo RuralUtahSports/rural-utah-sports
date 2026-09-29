@@ -150,8 +150,9 @@
           link.className = "team-link";
           link.href = "boys-basketball-team.html?team=" + encodeURIComponent(row.Team);
           link.textContent = row.Team;
-          link.style.setProperty("--team-bg", safeColor(row.TeamColor, "#333333"));
-          link.style.setProperty("--team-fg", safeColor(row.TextColor, "#FFFFFF"));
+          const isWasatchAcademy = String(row.Team || "").replace(/[^a-z0-9]/gi, "").toUpperCase() === "WASATCHACADEMY";
+          link.style.setProperty("--team-bg", isWasatchAcademy ? "#101820" : safeColor(row.TeamColor, "#333333"));
+          link.style.setProperty("--team-fg", isWasatchAcademy ? "#FB6619" : safeColor(row.TextColor, "#FFFFFF"));
           link.title = "Open " + row.Team + " basketball team page";
           td.appendChild(link);
         } else {
