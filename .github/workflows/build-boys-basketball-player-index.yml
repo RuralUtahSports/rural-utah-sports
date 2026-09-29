@@ -1,0 +1,45 @@
+name: Build boys basketball player index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'boys-basketball-rosters/**'
+      - 'scripts/build_boys_basketball_player_index.py'
+      - '.github/workflows/build-boys-basketball-player-index.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build player index
+        run: python3 scripts/build_boys_basketball_player_index.py
+      - name: Verify player index
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('boys-basketball-player-index.json'))
+          if d['summary']['players'] < 1000:
+              raise SystemExit('Too few basketball players indexed')
+          if d['summary']['rosterEntries'] < 10000:
+              raise SystemExit('Too few basketball roster entries indexed')
+          if not d['coverage'].get('firstSeason'):
+              raise SystemExit('Basketball roster coverage missing')
+          PY
+      - name: Commit player index
+        run: |
+          git add boys-basketball-player-index.json boys-basketball-player-seasons
+          if git diff --cached --quiet; then
+            echo "Basketball player index is up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build boys basketball player index"
+          git pull --rebase origin main
+          git push
