@@ -31,7 +31,7 @@
     $('bbRound').innerHTML = b.rounds.map((r,i) => `<option value="${i}">${escape(r.name)}</option>`).join('');
     roundIndex = Math.min(roundIndex, b.rounds.length - 1);
     $('bbRound').value = String(roundIndex);
-    $('bbGrid').innerHTML = b.rounds.map((r,i) => `<section class="bb-round" ${compact && i !== roundIndex ? 'hidden' : ''}><h3>${escape(r.name)}</h3><div class="bb-games">${r.games.map(gameHTML).join('')}</div></section>`).join('');
+    $('bbGrid').innerHTML = b.rounds.map((r,i) => { const games = compact ? r.games : r.games.filter(g => !g.bye); return `<section class="bb-round" ${compact && i !== roundIndex ? 'hidden' : ''}><h3>${escape(r.name)}</h3><div class="bb-games">${games.map(gameHTML).join('')}</div></section>`; }).join('');
     $('bbPlacement').hidden = !b.placement.length;
     $('bbPlacement').innerHTML = b.placement.length ? `<h2>Consolation &amp; placement</h2><div class="bb-placement-grid">${[...b.placement].sort((a,b) => ['Consolation','5th & 6th Place','3rd & 4th Place'].indexOf(a.name) - ['Consolation','5th & 6th Place','3rd & 4th Place'].indexOf(b.name)).map(r => `<section><h3>${escape(r.name)}</h3>${r.games.map(gameHTML).join('')}</section>`).join('')}</div>` : '';
     $('bbSource').innerHTML = `Source: <a href="${escape(b.sourceUrl)}" target="_blank" rel="noopener">UHSAA/MaxPreps ${escape(classification)} tournament bracket</a>. Scores follow that bracket when other feeds disagree. Championship path and all played placement games are included; unplayed seventh-place placeholders are excluded.`;
