@@ -74,7 +74,7 @@ tbody tr:hover{background:#191919}
 .history-controls label{font-size:11px;font-weight:900;text-transform:uppercase;color:#aaa}
 .history-controls select,.history-controls input{background:#1c1c1c;color:#fff;border:1px solid #444;border-radius:5px;padding:10px 12px;font-weight:700;min-width:180px}.history-controls select{padding-right:38px;cursor:pointer}.history-controls input::placeholder{color:#777}
 .history-controls select:focus,.history-controls input:focus{outline:2px solid var(--team-color,#F14D07);outline-offset:1px}
-.history-panel{margin-top:12px}.history-source{margin:10px 2px;color:#888;font-size:12px}.history-source a{color:#fff;border-bottom:1px dotted #777;text-decoration:none}.history-wrap{max-height:68vh;overflow:auto;background:#000;border:1px solid #333;border-radius:7px}.history-wrap thead th{position:sticky;top:0;z-index:5;box-shadow:0 1px 0 #333}.history-count{color:#888;font-size:12px;padding-bottom:11px}.subsection-title{font-size:18px;text-transform:uppercase;margin:28px 0 10px;color:#ddd}.season-action{background:var(--team-color,#F14D07);color:var(--team-text,#000);border:0;border-radius:4px;padding:7px 10px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer;white-space:nowrap}.season-action:hover{filter:brightness(1.1)}.season-history-row td:first-child{font-weight:900}.season-history-row.current{background:rgba(241,77,7,.08)}
+.history-panel{margin-top:12px}.history-source{margin:10px 2px;color:#888;font-size:12px}.history-source a{color:#fff;border-bottom:1px dotted #777;text-decoration:none}.history-wrap{max-height:68vh;overflow:auto;background:#000;border:1px solid #333;border-radius:7px}.history-wrap .roster-player-link{color:#fff;text-decoration:none;border-bottom:1px dotted #777;font-weight:800}.history-wrap .roster-player-link:hover{color:var(--team-color,#F14D07)}.history-wrap thead th{position:sticky;top:0;z-index:5;box-shadow:0 1px 0 #333}.history-count{color:#888;font-size:12px;padding-bottom:11px}.subsection-title{font-size:18px;text-transform:uppercase;margin:28px 0 10px;color:#ddd}.season-action{background:var(--team-color,#F14D07);color:var(--team-text,#000);border:0;border-radius:4px;padding:7px 10px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer;white-space:nowrap}.season-action:hover{filter:brightness(1.1)}.season-history-row td:first-child{font-weight:900}.season-history-row.current{background:rgba(241,77,7,.08)}
 .rus-team-tabs-shell{margin-top:20px}
 .rus-team-tabs{position:sticky;top:0;z-index:1000;isolation:isolate;display:flex;gap:6px;overflow-x:auto;background:#0b0b0b;border:1px solid #333;border-top:4px solid #F14D07;border-radius:8px;padding:8px;margin-bottom:16px}
 .rus-team-tab{position:relative;z-index:1;pointer-events:auto;flex:1 0 auto;min-width:112px;border:1px solid #333;background:#171717;color:#bbb;border-radius:6px;padding:11px 13px;font-size:12px;font-weight:900;text-transform:uppercase;cursor:pointer;white-space:nowrap}
@@ -955,7 +955,7 @@ function rosterNumberSort(a,b){
   if(aok)return -1;if(bok)return 1;
   return clean(a.name).localeCompare(clean(b.name));
 }
-function renderRosterSeason(holder,season){
+function renderRosterSeason(holder,season,teamName){
   const players=Array.isArray(season?.players)?[...season.players].sort(rosterNumberSort):[];
   const coach=season?.coach||null;
   const coachHtml=coach?'<div class="info-box" style="margin-bottom:16px"><div class="info-grid"><div class="info-item"><div class="info-label">Coach</div><div class="info-value">'+esc(coach.name||'—')+'</div></div><div class="info-item"><div class="info-label">Reported Years</div><div class="info-value">'+(coach.years??'—')+'</div></div><div class="info-item"><div class="info-label">Career Record</div><div class="info-value">'+(Number.isFinite(Number(coach.careerWins))&&Number.isFinite(Number(coach.careerLosses))?Number(coach.careerWins)+'–'+Number(coach.careerLosses):'—')+'</div></div></div></div>':'';
@@ -963,7 +963,13 @@ function renderRosterSeason(holder,season){
     holder.innerHTML=coachHtml+empty('Deseret does not list a player roster for this season.','No roster listed');
     return;
   }
-  const rows=players.map(player=>'<tr><td>'+esc(player.number||'—')+'</td><td><strong>'+esc(player.name||'—')+'</strong></td><td>'+esc(player.class||'—')+'</td><td>'+esc(player.position||'—')+'</td><td>'+esc(player.height||'—')+'</td><td>'+esc(player.weight||'—')+'</td></tr>').join('');
+  const teamKey=canonicalTeamKey(teamName||'');
+  const rosterPath=teamName?'boys-basketball-rosters/'+rosterFileKey(teamName)+'.json':'';
+  const rows=players.map(player=>{
+    const profileUrl=teamKey?'player.html?sport=basketball&team='+encodeURIComponent(teamKey)+'&roster='+encodeURIComponent(rosterPath)+'&name='+encodeURIComponent(player.name||'')+'&number='+encodeURIComponent(player.number||'')+'&classYear='+encodeURIComponent(player.class||'')+'&year='+Number(season.year):'';
+    const playerName=profileUrl?'<a class="roster-player-link" href="'+esc(profileUrl)+'">'+esc(player.name||'—')+'</a>':esc(player.name||'—');
+    return'<tr><td>'+esc(player.number||'—')+'</td><td><strong>'+playerName+'</strong></td><td>'+esc(player.class||'—')+'</td><td>'+esc(player.position||'—')+'</td><td>'+esc(player.height||'—')+'</td><td>'+esc(player.weight||'—')+'</td></tr>';
+  }).join('');
   holder.innerHTML=coachHtml+'<div class="history-wrap"><table><thead><tr><th>No.</th><th>Player</th><th>Class</th><th>Position</th><th>Height</th><th>Weight</th></tr></thead><tbody>'+rows+'</tbody></table></div><p class="source-note">'+players.length+' player'+(players.length===1?'':'s')+' listed by Deseret for '+esc(clean(season.season).replace('-', '–'))+'.'+(season.sourceUrl?' <a href="'+esc(season.sourceUrl)+'" target="_blank" rel="noopener noreferrer">View Deseret roster</a>':'')+'</p>';
 }
 function renderRosterHistory(panel,data){
@@ -980,7 +986,7 @@ function renderRosterHistory(panel,data){
   const show=()=>{
     const season=seasons.find(s=>String(s.year)===select.value)||latestWithRoster;
     status.textContent=season?.players?.length?season.players.length+' players':'No player roster listed';
-    renderRosterSeason(holder,season);
+    renderRosterSeason(holder,season,data.team||'');
   };
   select.addEventListener('change',show);
   show();

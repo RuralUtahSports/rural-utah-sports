@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#F14D07">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#111;color:#fff;font-family:Arial,Helvetica,sans-serif}header{background:#000;border-bottom:4px solid #F14D07;padding:15px 25px}.header-content{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px}.logo{width:80px;height:80px;object-fit:contain}.site-title h1{margin:0;font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.site-title p{margin:5px 0 0;color:#F14D07;font-weight:bold}nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;margin:auto;display:flex;flex-wrap:wrap}.container{max-width:1400px;margin:auto;padding:36px 20px 70px}.sport-switch{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}.sport-switch a{display:inline-block;background:#171717;border:1px solid #444;color:#ddd;text-decoration:none;border-radius:999px;padding:10px 16px;font-size:10px;font-weight:900;text-transform:uppercase}.sport-switch a.active{background:#F14D07;border-color:#F14D07;color:#000}.season-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}.season-bar label{font-size:10px;color:#888;text-transform:uppercase;font-weight:900}.season-bar select{background:#171717;color:#fff;border:1px solid #444;border-radius:6px;padding:10px 34px 10px 12px;font-size:12px;font-weight:900}.season-badge{display:inline-block;background:#171717;border:1px solid #444;color:#ddd;border-radius:999px;padding:6px 10px;font-size:9px;font-weight:900;text-transform:uppercase}.hero{background:#000;border:1px solid #333;border-top:6px solid #F14D07;border-radius:8px;padding:30px;margin-bottom:18px}.hero h2{font-size:38px;text-transform:uppercase;margin:0 0 8px}.hero h2 span{color:#F14D07}.hero p{color:#aaa;line-height:1.55;max-width:950px}.updated{margin-top:10px;color:#666;font-size:11px;text-transform:uppercase;font-weight:800}.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end;background:#000;border:1px solid #333;border-radius:8px;padding:16px;margin-bottom:16px}.control{display:grid;gap:7px}.control label{font-size:10px;color:#888;font-weight:900;text-transform:uppercase}.control select{min-width:190px;background:#171717;color:#fff;border:1px solid #444;border-radius:6px;padding:10px 34px 10px 12px;font-weight:800}.summary{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.pill{background:#171717;border:1px solid #333;border-radius:999px;padding:8px 11px;font-size:10px;color:#aaa;font-weight:900;text-transform:uppercase}.pill strong{color:#fff}.notice{background:#0a0a0a;border:1px solid #333;border-left:4px solid #F14D07;border-radius:7px;padding:12px 14px;margin:0 0 14px;color:#aaa;font-size:11px;line-height:1.5}.notice strong{color:#fff}.table-wrap{overflow-x:auto;background:#000;border:1px solid #333;border-radius:8px}.leaders{width:100%;border-collapse:collapse;min-width:650px}.leaders th{background:#F14D07;color:#000;padding:11px 9px;text-transform:uppercase;font-size:10px;white-space:nowrap}.leaders td{padding:11px 9px;text-align:center;border-bottom:1px solid #292929;font-size:12px;white-space:nowrap}.leaders tbody tr:hover{background:#171717}.rank{font-weight:900;color:#F14D07;font-size:16px}.team{text-align:left!important;font-weight:900}.team a{color:#fff;text-decoration:none}.team a:hover{color:#F14D07}.metric{font-weight:900;font-size:17px;color:#F14D07}.empty{background:#000;border:1px solid #333;border-radius:8px;padding:42px 20px;text-align:center;color:#888;line-height:1.55}footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}footer strong{color:#F14D07}@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}.container{padding:25px 12px 50px}.hero{padding:23px 18px}.hero h2{font-size:30px}.control{width:100%}.control select{width:100%}}
-.view-switch{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}.view-switch button{appearance:none;background:#171717;border:1px solid #444;color:#ddd;border-radius:999px;padding:10px 16px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer}.view-switch button[aria-pressed=true]{background:#F14D07;border-color:#F14D07;color:#000}.player-name{font-weight:900;text-align:left!important}.player-detail{font-size:10px;color:#aaa}.leaders.player-leaders{min-width:980px}.leaders.player-leaders td{text-align:center}.leaders.player-leaders .team{text-align:left!important}.</style>
+.view-switch{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}.view-switch button{appearance:none;background:#171717;border:1px solid #444;color:#ddd;border-radius:999px;padding:10px 16px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer}.view-switch button[aria-pressed=true]{background:#F14D07;border-color:#F14D07;color:#000}.player-name{font-weight:900;text-align:left!important}.player-detail{font-size:10px;color:#aaa}.leaders.player-leaders{min-width:980px}.leaders.player-leaders td{text-align:center}.leaders.player-leaders .team{text-align:left!important}.leaders.player-leaders .player-name a{color:#fff;text-decoration:none;font-weight:900}.leaders.player-leaders .player-name a:hover{color:#F14D07}</style>
 <link rel="manifest" href="manifest.webmanifest?v=20260817-opt1"><link rel="apple-touch-icon" href="RUSlogoNew.png">
 </head>
 <body>
@@ -31,7 +31,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&
 const compact=v=>String(v??'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 const params=new URLSearchParams(location.search);
 const lastYear=2027,firstYear=2003;
-let year=Number(params.get('season'))||2026,teams=[],current=[],statMode='team',playerArchive=null,playerArchivePromise=null,playerArchiveError=false,seasonLoadId=0;
+let year=Number(params.get('season'))||2026,teams=[],current=[],statMode='team',playerArchive=null,playerRosterIndex=null,playerArchivePromise=null,playerArchiveError=false,seasonLoadId=0;
 const TEAM_METRICS=[
   {value:'ppg',label:'Points per game'},
   {value:'oppg',label:'Points allowed per game'},
@@ -120,12 +120,29 @@ function renderTeams(){
 async function loadPlayerArchive(){
   if(year!==2026)return null;
   if(!playerArchivePromise){
-    playerArchivePromise=fetch('boys-basketball-player-stats/2026.json?v=20260929-player-stats1')
-      .then(r=>{if(!r.ok)throw Error('Basketball player stat archive unavailable');return r.json()})
-      .then(data=>{playerArchive=data;playerArchiveError=false;return data})
-      .catch(error=>{playerArchiveError=true;playerArchivePromise=null;console.error(error);return null});
+    playerArchivePromise=(async()=>{
+      const r=await fetch('boys-basketball-player-stats/2026.json?v=20260929-player-stats1');
+      if(!r.ok)throw Error('Basketball player stat archive unavailable');
+      const data=await r.json();
+      let index=null;
+      try{
+        const ir=await fetch('boys-basketball-rosters/index.json?v=20260929-profile-links1');
+        if(ir.ok)index=await ir.json();
+      }catch(error){console.error('Basketball roster profile links could not be loaded',error)}
+      playerArchive=data;
+      playerRosterIndex=index;
+      playerArchiveError=false;
+      return data;
+    })().catch(error=>{playerArchiveError=true;playerArchivePromise=null;console.error(error);return null});
   }
   return playerArchive||await playerArchivePromise;
+}
+function basketballProfileUrl(x){
+  const teamKey=String(x.teamKey||'');
+  let teamEntry=playerRosterIndex?.teams?.[teamKey];
+  if(!teamEntry&&playerRosterIndex?.teams)teamEntry=Object.entries(playerRosterIndex.teams).find(([key])=>compact(key)===compact(teamKey))?.[1];
+  if(!teamEntry?.file)return'';
+  return'player.html?sport=basketball&team='+encodeURIComponent(teamKey)+'&roster='+encodeURIComponent(teamEntry.file)+'&name='+encodeURIComponent(x.name||'')+'&number='+encodeURIComponent(x.number||'')+'&year=2026';
 }
 function renderPlayers(){
   if(year!==2026){
@@ -146,7 +163,7 @@ function renderPlayers(){
   $('summary').innerHTML='<span class="pill"><strong>'+rows.length.toLocaleString()+'</strong> players with this stat</span><span class="pill"><strong>'+teamCount.toLocaleString()+'</strong> teams reporting</span><span class="pill"><strong>2025–26</strong></span><span class="pill">Ranked by <strong>'+esc(label)+'</strong></span>';
   if(!rows.length){$('results').innerHTML='<div class="empty">No player stats were reported for this season, statistic, and classification.</div>';return}
   const shown=rows.slice(0,100);
-  const body=shown.map((x,i)=>'<tr><td class="rank">'+(i+1)+'</td><td class="player-name">'+esc(x.name)+'</td><td class="team"><a href="boys-basketball-team.html?team='+encodeURIComponent(x.team)+'">'+esc(x.team)+'</a></td><td>'+esc(x.classification||'—')+'</td><td>'+show(x.games)+'</td><td>'+show(x.points)+'</td><td class="metric">'+show(x.pointsPerGame,2)+'</td><td>'+show(x.threePointers)+'</td><td>'+show(x.threePointersPerGame,2)+'</td><td>'+show(x.rebounds)+'</td><td>'+show(x.reboundsPerGame,2)+'</td><td>'+show(x.assists)+'</td><td>'+show(x.assistsPerGame,2)+'</td><td>'+show(x.steals)+'</td><td>'+show(x.stealsPerGame,2)+'</td><td>'+show(x.blocksPerGame,2)+'</td></tr>').join('');
+  const body=shown.map((x,i)=>{const url=basketballProfileUrl(x),player=url?'<a href="'+esc(url)+'">'+esc(x.name)+'</a>':esc(x.name);return'<tr><td class="rank">'+(i+1)+'</td><td class="player-name">'+player+'</td><td class="team"><a href="boys-basketball-team.html?team='+encodeURIComponent(x.team)+'">'+esc(x.team)+'</a></td><td>'+esc(x.classification||'—')+'</td><td>'+show(x.games)+'</td><td>'+show(x.points)+'</td><td class="metric">'+show(x.pointsPerGame,2)+'</td><td>'+show(x.threePointers)+'</td><td>'+show(x.threePointersPerGame,2)+'</td><td>'+show(x.rebounds)+'</td><td>'+show(x.reboundsPerGame,2)+'</td><td>'+show(x.assists)+'</td><td>'+show(x.assistsPerGame,2)+'</td><td>'+show(x.steals)+'</td><td>'+show(x.stealsPerGame,2)+'</td><td>'+show(x.blocksPerGame,2)+'</td></tr>'}).join('');
   $('results').innerHTML='<div class="table-wrap"><table class="leaders player-leaders"><thead><tr><th>Rank</th><th>Player</th><th>Team</th><th>Class</th><th>GP</th><th>PTS</th><th>PPG</th><th>3PM</th><th>3PG</th><th>REB</th><th>RPG</th><th>AST</th><th>APG</th><th>STL</th><th>SPG</th><th>BPG</th></tr></thead><tbody>'+body+'</tbody></table></div><div class="updated">Showing the top '+shown.length+' players for this filter. Data from Deseret News 2025–26 boys basketball stats.</div>';
 }
 function render(){
