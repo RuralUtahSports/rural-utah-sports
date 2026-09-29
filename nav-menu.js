@@ -78,6 +78,7 @@
       ["Dynasty Explorer", "dynasty.html"],
       ["History Lab", "history-lab.html"],
       ["Greatest Seasons", "greatest-seasons.html"],
+      ["Basketball Greatest Seasons", "boys-basketball-greatest-seasons.html"],
       ["Records", "records.html"],
     ],
     analytics: [
