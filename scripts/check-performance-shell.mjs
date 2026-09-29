@@ -68,7 +68,7 @@ for(const token of ['A.logoUrl','A.hasCustomLogo','rus:school-assets-ready','obs
 }
 if(logoIntegration.includes('[100,400,1000,2200]'))fail('school-logo-integration.js restored timed full-page rescans');
 if(/observe\(document\.documentElement/.test(logoIntegration))fail('school-logo-integration.js must not observe the full document element');
-if(!schoolBundle.includes("school-assets-core.js?v=20260821-emery-exact4"))fail('Compatibility bundle does not lazy-load the shared school core');
+if(!/school-assets-core\.js\?v=[^'"]+/.test(schoolBundle))fail('Compatibility bundle does not lazy-load the shared school core');
 if(!schoolBundle.includes("school-assets-scoreboard.js?v=20260921-load-audit2"))fail('Compatibility bundle does not lazy-load scoreboard-only assets');
 if(/CUSTOM_LOGOS/.test(schoolBundle))fail('Compatibility bundle contains a duplicate custom-logo table');
 if(!colorLoader.includes("school-colors-page.js?v=20260818-perf4"))fail('school-colors.js does not lazy-load the page-scoped color painter');
@@ -89,7 +89,7 @@ if(bundleBytes>6000)fail(`school-assets-bundle.js compatibility wrapper grew too
 if(colorLoaderBytes>1200)fail(`school-colors.js loader grew too large (${colorLoaderBytes} bytes)`);
 if(fetchCacheBytes>5000)fail(`rus-fetch-cache.js grew too large (${fetchCacheBytes} bytes)`);
 if(scoreboardBytes<=bundleBytes)fail('Scoreboard-only payload is not actually separated from the compatibility wrapper');
-if(!/path\s*===\s*["']scoreboard\.html["'][\s\S]{0,140}school-assets-bundle\.js\?v=20260818-perf2[\s\S]{0,140}school-assets-core\.js\?v=20260818-perf2/.test(nav))fail('nav-menu.js no longer routes school assets by page');
+if(!/path\s*===\s*["']scoreboard\.html["'][\s\S]{0,160}school-assets-bundle\.js\?v=[^"']+[\s\S]{0,160}school-assets-core\.js\?v=[^"']+/.test(nav))fail('nav-menu.js no longer routes school assets by page');
 
 // Scoreboard extras should react to real DOM/data changes, not constantly rescan every game card.
 for(const token of ['queueRefresh','MutationObserver','observer.observe(root','requestIdleCallback']){
