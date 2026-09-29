@@ -295,7 +295,7 @@
     }
     if (path === "programs.html")
       addScript(
-        "program-leaderboard-filter.js?v=20260812a",
+        "program-leaderboard-filter.js?v=20260929-alltime-team-stats1",
         "rusProgramLeaderboardFilter",
         true,
       );
