@@ -31,7 +31,7 @@ jobs:
           print(s)
           if s['teamsChecked'] < 148:
               raise SystemExit('Too few teams checked')
-          if s['pagesChecked'] < s['teamsChecked'] * 23:
+          if s['pagesChecked'] < s['teamsChecked'] * 26:
               raise SystemExit('Not all roster seasons were checked')
           if s['pagesWithRosters'] < 300:
               raise SystemExit('Too few historical roster pages parsed')
@@ -54,6 +54,13 @@ jobs:
           season=next((r for r in logan['seasons'] if r.get('year')==2005),None)
           if not season or not season.get('players'):
               raise SystemExit('2004-05 roster missing')
+          skyview=d['teams'].get('SKYVIEW')
+          if not skyview:
+              raise SystemExit('Sky View roster history missing')
+          skyview=json.load(open(skyview['file']))
+          season=next((r for r in skyview['seasons'] if r.get('year')==2002),None)
+          if not season or not season.get('players'):
+              raise SystemExit('2001-02 roster missing')
           PY
       - name: Commit roster history
         run: |

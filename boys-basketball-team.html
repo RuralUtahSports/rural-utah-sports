@@ -105,14 +105,14 @@ footer strong{color:#F14D07}
 <header><div class="header-content"><a href="index.html" aria-label="Rural Utah Sports home"><img class="site-logo" src="RUSlogoNew.png" alt="Rural Utah Sports"></a><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav aria-label="Main navigation"><div class="nav-content"></div></nav>
 <main class="container">
-<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260929-basketball-rosters2005-1">Boys Basketball</a></div>
-<a class="back" href="boys-basketball-teams.html?v=20260929-basketball-rosters2005-1">← All Boys Basketball Teams</a>
+<div class="sport-switch"><a class="sport-link" href="teams.html">Football Teams</a><a class="sport-link active" href="boys-basketball-teams.html?v=20260929-basketball-rosters2002-1">Boys Basketball</a></div>
+<a class="back" href="boys-basketball-teams.html?v=20260929-basketball-rosters2002-1">← All Boys Basketball Teams</a>
 <div id="teamPage" aria-live="polite"><div class="loading-state">Loading team page…</div></div>
 </main>
 <footer><p><strong>RURAL UTAH SPORTS</strong></p><p>2026–27 Boys Basketball</p></footer>
 <script src="pwa.js?v=20260921-shared-runtime3" defer></script>
 <script src="back-to-top.js" defer></script>
-<script src="nav-menu.js?v=20260929-basketball-rosters2005-1"></script>
+<script src="nav-menu.js?v=20260929-basketball-rosters2002-1"></script>
 <script>
 (()=>{
 'use strict';
@@ -189,7 +189,7 @@ function calculate(games,teamName){
   });
   return{all,region};
 }
-const TEAM_PAGE_VERSION='20260929-basketball-rosters2005-1';
+const TEAM_PAGE_VERSION='20260929-basketball-rosters2002-1';
 function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
   const key=norm(teamName);
   const rows=games.filter(game=>(matchesTeam(game,"home",key)||matchesTeam(game,"away",key))&&!isZeroZeroFinal(game))
@@ -260,13 +260,13 @@ function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary,
   }
 }
 const ALL_TIME_RECORDS_URL='boys-basketball-all-time-records-2002-26.json?v=20260928-basketball-alltime2002';
-const CHAMPIONSHIPS_URL='boys-basketball-championships.json?v=20260929-basketball-rosters2005-1';
-const FINALS_URL='boys-basketball-finals-2003-2026.json?v=20260929-basketball-rosters2005-1';
-const PLAYOFF_HISTORY_VERSION='20260929-basketball-rosters2005-1';
-const HISTORY_METRICS_VERSION='20260929-basketball-rosters2005-1';
-const REGION_CHAMPIONSHIPS_URL='boys-basketball-region-championships.json?v=20260929-basketball-rosters2005-1';
-const COACHING_HISTORY_URL='boys-basketball-coaching-history.json?v=20260929-basketball-rosters2005-1';
-const ROSTER_HISTORY_VERSION='20260929-basketball-rosters2005-1';
+const CHAMPIONSHIPS_URL='boys-basketball-championships.json?v=20260929-basketball-rosters2002-1';
+const FINALS_URL='boys-basketball-finals-2003-2026.json?v=20260929-basketball-rosters2002-1';
+const PLAYOFF_HISTORY_VERSION='20260929-basketball-rosters2002-1';
+const HISTORY_METRICS_VERSION='20260929-basketball-rosters2002-1';
+const REGION_CHAMPIONSHIPS_URL='boys-basketball-region-championships.json?v=20260929-basketball-rosters2002-1';
+const COACHING_HISTORY_URL='boys-basketball-coaching-history.json?v=20260929-basketball-rosters2002-1';
+const ROSTER_HISTORY_VERSION='20260929-basketball-rosters2002-1';
 let basketballRegionTitlesPromise=null;
 let basketballCoachingHistoryPromise=null;
 const basketballMetricsCache=new Map();
@@ -333,7 +333,7 @@ function historicalRecord(entry){
   }
   return record;
 }
-const SEASON_HISTORY_URL='boys-basketball-season-history-2002-26.json?v=20260929-basketball-rosters2005-1';
+const SEASON_HISTORY_URL='boys-basketball-season-history-2002-26.json?v=20260929-basketball-rosters2002-1';
 let seasonHistorySummaryPromise=null;
 function loadSeasonHistorySummary(){
   if(!seasonHistorySummaryPromise){
@@ -528,7 +528,7 @@ function setupHistoricalResults(team,allTeams,colorRows){
 }
 
 
-const OPPONENT_HISTORY_VERSION='20260929-basketball-rosters2005-1';
+const OPPONENT_HISTORY_VERSION='20260929-basketball-rosters2002-1';
 const opponentFileKey=value=>canonicalTeamKey(value).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const opponentFullDate=value=>{
   const raw=clean(value);
@@ -973,7 +973,7 @@ function renderRosterHistory(panel,data){
     return;
   }
   const latestWithRoster=seasons.find(s=>Array.isArray(s.players)&&s.players.length)||seasons[0];
-  panel.innerHTML='<h2 class="section-title">Roster History</h2><p class="record-note">Deseret roster archive coverage: 2004–05 through 2026–27 where available.</p><div class="history-controls"><div class="control-group"><label for="rosterSeasonSelect">Season</label><select id="rosterSeasonSelect">'+seasons.map(s=>'<option value="'+Number(s.year)+'"'+(s.year===latestWithRoster.year?' selected':'')+'>'+esc(clean(s.season).replace('-', '–'))+(s.players?.length?' · '+s.players.length+' players':' · no roster')+'</option>').join('')+'</select></div><span class="history-count" id="rosterStatus"></span></div><div id="rosterSeasonHolder"></div>';
+  panel.innerHTML='<h2 class="section-title">Roster History</h2><p class="record-note">Deseret roster archive coverage: 2001–02 through 2026–27 where available.</p><div class="history-controls"><div class="control-group"><label for="rosterSeasonSelect">Season</label><select id="rosterSeasonSelect">'+seasons.map(s=>'<option value="'+Number(s.year)+'"'+(s.year===latestWithRoster.year?' selected':'')+'>'+esc(clean(s.season).replace('-', '–'))+(s.players?.length?' · '+s.players.length+' players':' · no roster')+'</option>').join('')+'</select></div><span class="history-count" id="rosterStatus"></span></div><div id="rosterSeasonHolder"></div>';
   const select=panel.querySelector('#rosterSeasonSelect');
   const holder=panel.querySelector('#rosterSeasonHolder');
   const status=panel.querySelector('#rosterStatus');
@@ -1044,7 +1044,7 @@ function setupBasketballTabs(team,colorRows,championshipData,finalsData,allTeams
   map.overview.innerHTML='<h2 class="section-title">Team Information</h2><div class="info-box"><div class="info-grid"><div class="info-item"><div class="info-label">Classification</div><div class="info-value">'+esc(team.classification||'—')+'</div></div><div class="info-item"><div class="info-label">Region</div><div class="info-value">'+esc(team.region||'—')+'</div></div><div class="info-item"><div class="info-label">School Colors</div><div class="info-value">'+esc(colors)+'</div></div></div></div><h2 class="section-title">Basketball History</h2><div class="info-box"><div class="info-grid"><div class="info-item"><div class="info-label">Recorded History Begins</div><div class="info-value">2002–03</div></div><div class="info-item"><div class="info-label">Current Season</div><div class="info-value">2026–27</div></div><div class="info-item"><div class="info-label">Association</div><div class="info-value">'+esc(team.association||'—')+'</div></div></div></div>';
   map.games.appendChild(current);
   map.seasons.appendChild(seasons);
-  map.rosters.innerHTML='<div class="loading-state">Open Rosters to load Deseret player rosters back through 2004–05.</div>';
+  map.rosters.innerHTML='<div class="loading-state">Open Rosters to load Deseret player rosters back through 2001–02.</div>';
   map.playoffs.innerHTML='<div class="loading-state">Open the Playoffs tab to load state tournament history.</div>';
   map.opponents.innerHTML='<div class="loading-state">Open the Opponents tab to load head-to-head history.</div>';
   map.championships.innerHTML=championshipPanelHTML(team,championshipData,finalsData,bg,fg,colorRows,allTeams);
