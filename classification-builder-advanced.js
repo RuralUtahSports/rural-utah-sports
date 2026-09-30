@@ -208,12 +208,22 @@
   function desiredCounts(s,classList,eligible){
     const out={},lockedCounts={};
     for(const c of classList){lockedCounts[c]=0;for(const t of eligible){const l=s.teamLocks?.[norm(t)];if(l?.classification===c)lockedCounts[c]++}}
-    let explicit=0;for(const c of classList){const n=Number(s.classTargets?.[c]);if(Number.isFinite(n)&&n>=0){out[c]=n;explicit+=n}}
-    if(explicit!==eligible.length){
+    const supplied=classList.some(c=>Number.isFinite(Number(s.classTargets?.[c])));
+    if(!supplied){
       const base=Math.floor(eligible.length/classList.length),rem=eligible.length%classList.length;
       classList.forEach((c,i)=>out[c]=base+(i<rem?1:0));
+    }else{
+      classList.forEach(c=>out[c]=Math.max(0,Number(s.classTargets?.[c])||0,lockedCounts[c]||0));
+      let total=classList.reduce((n,c)=>n+out[c],0);
+      if(total<eligible.length)out[classList[classList.length-1]]+=eligible.length-total;
+      if(total>eligible.length){
+        let over=total-eligible.length;
+        for(let i=classList.length-1;i>=0&&over>0;i--){
+          const c=classList[i],floor=lockedCounts[c]||0,cut=Math.min(over,Math.max(0,out[c]-floor));
+          out[c]-=cut;over-=cut;
+        }
+      }
     }
-    classList.forEach(c=>out[c]=Math.max(out[c],lockedCounts[c]||0));
     return out;
   }
 
