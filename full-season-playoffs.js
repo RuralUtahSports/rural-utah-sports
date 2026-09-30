@@ -85,12 +85,20 @@
             base = clamp((Number(m?.prob1) || 50) / 100),
             oa = F.initialElo(a.team),
             ob = F.initialElo(b.team),
+            siteMode = String(F.data?.playoffSettings?.[classification]?.siteMode || "higher"),
+            higherA = Number(a.seed) < Number(b.seed),
+            homeLogit = siteMode === "neutral" ? 0 : (higherA ? 35 : -35) / 400 * Math.LN10,
             logit =
               Math.log(base / (1 - base)) +
-              ((ea - oa - (eb - ob)) / 400) * Math.LN10;
+              ((ea - oa - (eb - ob)) / 400) * Math.LN10 +
+              homeLogit;
           chance = clamp(1 / (1 + Math.exp(-logit)));
           p1 = Number(m?.p1) || p1;
           p2 = Number(m?.p2) || p2;
+          if (siteMode !== "neutral") {
+            if (higherA) p1 += 1.5;
+            else p2 += 1.5;
+          }
         }
         const sim = S.score(
             { prob: chance, p1, p2, oe: eb },
