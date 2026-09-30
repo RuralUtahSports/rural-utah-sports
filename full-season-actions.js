@@ -23,7 +23,7 @@
     "full-season-rpi.js?v=20260824-ineligible1",
     "full-season-run.js?v=20260813b",
     "full-season-view.js?v=20260813a",
-    "full-season-playoffs.js?v=20260824-open1",
+    "full-season-playoffs.js?v=20260929-record1",
     "full-season-playoff-view.js?v=20260824-boxscroll1",
     "full-season-stats.js?v=20260824-open1",
     "full-season-awards.js?v=20260824-awards1",
