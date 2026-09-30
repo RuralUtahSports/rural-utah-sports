@@ -132,6 +132,7 @@
           <div class="advanced-field"><label>Teams moved per boundary</label><input id="promotionCount" type="number" min="1" max="8"></div>
           <button class="advanced-btn primary" id="runRealignment" type="button">Run Realignment Now</button>
         </div>
+        <div class="advanced-actions"><button class="advanced-btn" id="markRealignmentComplete" type="button">Keep Current Alignment / Mark Complete</button></div>
         <div id="realignmentDue"></div>
       </section>
       <section class="advanced-card" id="shareTools">
@@ -382,12 +383,13 @@
     }
     for(const m of moves){if(s.teamLocks?.[norm(m.t)])continue;removeTeam(s,m.t);ensureRegion(s,m.to,'Region 1').teams.push(m.t)}
     const k=clamp(Number($('autoRegions')?.value)||2,1,8);for(const c of order)rebuildRegionsForClass(s,c,k);
-    saveState(s);const dyn=A.getDynasty();if(dyn)dyn.realignmentDue=false;
+    saveState(s);A.markRealignmentHandled?.();
   }
 
   function runRealignment(){
     const s=state();
-    if(s.promotionRelegation?.enabled)promotionRealignment();else autoBuild();
+    if(s.promotionRelegation?.enabled)promotionRealignment();else{autoBuild();A.markRealignmentHandled?.()}
+    setTimeout(renderAll,50);
   }
 
   function renderRealignment(){
@@ -412,7 +414,7 @@
     $('realignmentInterval').onchange=()=>{const s=state();s.realignmentInterval=Math.max(1,Number($('realignmentInterval').value)||2);saveState(s)};
     $('promotionEnabled').onchange=()=>{const s=state();s.promotionRelegation=s.promotionRelegation||{};s.promotionRelegation.enabled=$('promotionEnabled').value==='true';saveState(s)};
     $('promotionCount').onchange=()=>{const s=state();s.promotionRelegation=s.promotionRelegation||{};s.promotionRelegation.count=Math.max(1,Number($('promotionCount').value)||2);saveState(s)};
-    $('runRealignment').onclick=runRealignment;$('copyShareLink').onclick=shareLink;$('copySetupCode').onclick=copyCode;$('loadSetupCode').onclick=()=>loadCode($('setupCode').value);
+    $('runRealignment').onclick=runRealignment;$('markRealignmentComplete').onclick=()=>{A.markRealignmentHandled?.();renderAll()};$('copyShareLink').onclick=shareLink;$('copySetupCode').onclick=copyCode;$('loadSetupCode').onclick=()=>loadCode($('setupCode').value);
     document.addEventListener('click',e=>{if(e.target.closest('.team-chip'))setTimeout(renderLocks,0);if(e.target.matches('[data-add-region],[data-delete-region],[data-delete-class]'))setTimeout(renderAll,0)});
   }
 
