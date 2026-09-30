@@ -272,12 +272,15 @@
   }
 
   function autoBuild(){
-    const s=state(),mode=$('autoBuildMode').value,k=clamp(Number($('autoRegions').value)||2,1,8),classList=classes().filter(c=>c!=='8P');
-    const eleven=teams().filter(t=>A.getBaseData()?.meta?.get(norm(t))?.classification!=='8P'),ranked=rankForMode(eleven,mode,s);if(!ranked)return;
-    const counts=desiredCounts(s,classList,eleven),lockedTeams=new Set(Object.keys(s.teamLocks||{}));
+    const s=state(),mode=$('autoBuildMode').value,k=clamp(Number($('autoRegions').value)||2,1,8),has8=classes().includes('8P'),classList=classes().filter(c=>c!=='8P');
+    if(!classList.length){alert('Add at least one non-8-player classification before auto-building.');return}
+    const eight=teams().filter(t=>A.getBaseData()?.meta?.get(norm(t))?.classification==='8P');
+    const eligible=has8?teams().filter(t=>A.getBaseData()?.meta?.get(norm(t))?.classification!=='8P'):teams();
+    const ranked=rankForMode(eligible,mode,s);if(!ranked)return;
+    const counts=desiredCounts(s,classList,eligible);
     for(const c of classList)s.regions[c]=[];
     const assigned=new Set();
-    for(const t of eleven){const l=s.teamLocks?.[norm(t)];if(l&&classList.includes(l.classification)){ensureRegion(s,l.classification,l.region||'Region 1').teams.push(t);assigned.add(norm(t))}}
+    for(const t of eligible){const l=s.teamLocks?.[norm(t)];if(l&&classList.includes(l.classification)){ensureRegion(s,l.classification,l.region||'Region 1').teams.push(t);assigned.add(norm(t))}}
     const pool=ranked.filter(t=>!assigned.has(norm(t)));let p=0;
     for(const c of classList){
       const have=(s.regions[c]||[]).reduce((n,r)=>n+r.teams.length,0),need=Math.max(0,(counts[c]||0)-have);
@@ -285,7 +288,10 @@
     }
     while(p<pool.length){ensureRegion(s,classList[classList.length-1],'Region 1').teams.push(pool[p++])}
     for(const c of classList)rebuildRegionsForClass(s,c,k);
-    if(s.regions['8P']){const eight=(s.regions['8P']||[]).flatMap(r=>r.teams||[]);s.regions['8P']=[{name:'8-Player',teams:eight}]}
+    if(has8){
+      const locked8=eight.filter(t=>s.teamLocks?.[norm(t)]?.classification==='8P'),free8=eight.filter(t=>!locked8.includes(t));
+      s.regions['8P']=[{name:'8-Player',teams:[...free8,...locked8]}];
+    }
     s.unassigned=[];saveState(s);
   }
 
