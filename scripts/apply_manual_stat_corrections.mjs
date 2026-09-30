@@ -67,6 +67,7 @@ export function applyGameDetailCorrections(games){
 export function applyRosterStatCorrections(output){
   let changes=0;
   for(const correction of loadCorrections()){
+    if(correction.gameOnly)continue;
     const team=Object.values(output?.teams||{}).find(entry=>same(entry.team,correction.team));if(!team)continue;const section=(team.stats||[]).find(item=>same(item.category,correction.category));if(!section)continue;
     const target=(section.rows||[]).find(row=>same(row.name,correction.targetPlayer));if(target){const statKey=Object.keys(target.values||{}).find(key=>same(key,correction.stat))||correction.stat,next=correctedValue(target.values?.[statKey],correction);if(next!==clean(target.values?.[statKey])){target.values={...(target.values||{}),[statKey]:next};changes++}}
     if(correction.removeSourceSeasonRowWhenOnlyCorrection){const before=section.rows.length;section.rows=section.rows.filter(row=>{if(!same(row.name,correction.sourcePlayer))return true;const populated=Object.entries(row.values||{}).filter(([,value])=>clean(value)!=='');return !(populated.length===1&&same(populated[0][0],correction.stat)&&Number(populated[0][1])===Number(correction.minimumValue))});changes+=before-section.rows.length}
