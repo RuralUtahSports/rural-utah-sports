@@ -131,15 +131,17 @@
     const ka=norm(a),kb=norm(b),g=(baseData.season.games||[]).find(x=>{const x1=norm(resolveTeam(x.teamA)||x.teamA),x2=norm(resolveTeam(x.teamB)||x.teamB);return(x1===ka&&x2===kb)||(x1===kb&&x2===ka)});if(!g)return null;return{a:resolveTeam(g.teamA)||g.teamA,b:resolveTeam(g.teamB)||g.teamB};
   }
   function rebuildSchedule(meta,year=2026,startElos=null){
-    const dates=seasonWeekDates(year),games=[],busy=new Map(allTeams.map(t=>[norm(t),new Set()])),usedPairs=new Set(),warnings=[],protectedRival=new Set();
+    const dates=seasonWeekDates(year),games=[],busy=new Map(allTeams.map(t=>[norm(t),new Set()])),usedPairs=new Set(),pairCounts=new Map(),warnings=[],protectedRival=new Set();
     const pair=(a,b)=>[norm(a),norm(b)].sort().join('|'),mark=(team,w)=>busy.get(norm(team))?.add(w),free=(team,w)=>!busy.get(norm(team))?.has(w),rating=t=>Number(startElos?.get(norm(t))??baseData.startElos?.get(norm(t))??1500);
     const sameFormat=(a,b)=>{const ma=meta.get(norm(a)),mb=meta.get(norm(b));return !!(ma&&mb&&((ma.classification==='8P')===(mb.classification==='8P')))};
     const sameClass=(a,b)=>meta.get(norm(a))?.classification===meta.get(norm(b))?.classification;
     const sameRegion=(a,b)=>{const ma=meta.get(norm(a)),mb=meta.get(norm(b));return !!(ma&&mb&&ma.classification===mb.classification&&ma.region===mb.region)};
-    const schedulePair=(a,b,w,kind)=>{
-      if(!a||!b||!free(a,w)||!free(b,w)||usedPairs.has(pair(a,b))||!sameFormat(a,b))return false;
-      const known=year===2026?originalOrientation(a,b):null,flip=(year+w+games.length)%2===1,x=known?.a||(flip?b:a),y=known?.b||(flip?a:b);
-      usedPairs.add(pair(x,y));mark(x,w);mark(y,w);games.push({date:dates[w],teamA:x,teamB:y,[kind]:true});return true;
+    const schedulePair=(a,b,w,kind,allowRepeat=false)=>{
+      const k=pair(a,b),meetings=pairCounts.get(k)||0;
+      if(!a||!b||!free(a,w)||!free(b,w)||(!allowRepeat&&usedPairs.has(k))||(allowRepeat&&meetings>=2)||!sameFormat(a,b))return false;
+      const known=year===2026?originalOrientation(a,b):null,prior=allowRepeat?games.find(g=>pair(g.teamA,g.teamB)===k):null,flip=(year+w+games.length)%2===1;
+      const x=prior?prior.teamB:(known?.a||(flip?b:a)),y=prior?prior.teamA:(known?.b||(flip?a:b));
+      usedPairs.add(k);pairCounts.set(k,meetings+1);mark(x,w);mark(y,w);games.push({date:dates[w],teamA:x,teamB:y,[kind]:true,rematch:allowRepeat&&meetings>0});return true;
     };
     // 1) Region round robin always comes first.
     for(const c of CLASSES)for(const r of state.regions[c]||[]){
@@ -189,7 +191,31 @@
       }
     }
     const counts=new Map(allTeams.map(t=>[norm(t),0]));for(const g of games){if(counts.has(norm(g.teamA)))counts.set(norm(g.teamA),counts.get(norm(g.teamA))+1);if(counts.has(norm(g.teamB)))counts.set(norm(g.teamB),counts.get(norm(g.teamB))+1)}
-    const low=allTeams.filter(t=>(counts.get(norm(t))||0)<6);if(low.length)warnings.push(`${low.length} team${low.length===1?'':'s'} ended with fewer than 6 games in the generated ${year} schedule.`);
+    // 5) If unique opponents leave open dates, allow one rematch as a last
+    // resort. Prefer same-class, non-region opponents with matching open weeks
+    // and alternate home/away from the first meeting.
+    for(let w=0;w<10;w++){
+      let pool=allTeams.filter(t=>meta.has(norm(t))&&free(t,w)&&(counts.get(norm(t))||0)<10);
+      pool.sort((a,b)=>(counts.get(norm(a))||0)-(counts.get(norm(b))||0)||a.localeCompare(b));
+      while(pool.length>1){
+        const x=pool.shift(),xk=norm(x);
+        const cand=pool.filter(y=>{
+          const yk=norm(y),n=pairCounts.get(pair(x,y))||0;
+          return free(y,w)&&(counts.get(yk)||0)<10&&sameFormat(x,y)&&!sameRegion(x,y)&&n===1;
+        }).sort((a,b)=>{
+          const classGap=(sameClass(x,b)?1:0)-(sameClass(x,a)?1:0);if(classGap)return classGap;
+          const countGap=(counts.get(norm(a))||0)-(counts.get(norm(b))||0);if(countGap)return countGap;
+          return Math.abs(rating(x)-rating(a))-Math.abs(rating(x)-rating(b))||a.localeCompare(b);
+        });
+        const y=cand[0];if(!y)continue;
+        if(schedulePair(x,y,w,'rematchGame',true)){
+          counts.set(xk,(counts.get(xk)||0)+1);counts.set(norm(y),(counts.get(norm(y))||0)+1);
+          pool=pool.filter(t=>norm(t)!==norm(y));
+        }
+      }
+    }
+    const short=allTeams.filter(t=>(counts.get(norm(t))||0)<10);
+    if(short.length)warnings.push(`${short.length} team${short.length===1?'':'s'} finished with fewer than 10 games in the generated ${year} schedule after unique-opponent and rematch fills.`);
     return{season:{season:year,games:games.sort((x,y)=>Date.parse(x.date)-Date.parse(y.date))},warnings,counts};
   }
   function readDynasty(){try{return JSON.parse(localStorage.getItem(DYNASTY_STORE)||'null')}catch{return null}}
