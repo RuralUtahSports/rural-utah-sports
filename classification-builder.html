@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Create a Classification | Rural Utah Sports</title>
 <meta name="description" content="Build custom Utah high school football classifications and regions, then simulate the season with the Rural Utah Sports model.">
-<link rel="stylesheet" href="classification-builder.css?v=20260929-dynasty1">
+<link rel="stylesheet" href="classification-builder.css?v=20260929-dynasty2">
 <link rel="manifest" href="manifest.webmanifest?v=20260817-opt1">
 <meta name="theme-color" content="#F14D07">
 <link rel="apple-touch-icon" href="RUSlogoNew.png">
@@ -33,6 +33,7 @@
   </div>
   <div class="setup-actions">
     <button class="secondary" id="resetCurrent" type="button">Reset to Current Alignment</button>
+    <button class="secondary" id="addClass" type="button">+ Add Classification</button>
     <button class="secondary" id="clearRegions" type="button">Clear All Regions</button>
     <button class="secondary" id="resumeDynasty" type="button" hidden>Resume Dynasty</button>
     <div class="field mode-field"><label>Season schedule</label><select id="scheduleMode"><option value="real">Keep real 2026 schedule</option><option value="rebuild">Rebuild region games</option></select></div>
@@ -51,7 +52,7 @@
     <button class="action" id="moveTeam" type="button">Move Team</button>
   </div>
   <div class="search-row"><label for="teamSearch">Find team</label><input id="teamSearch" type="search" placeholder="Search teams…"><span id="teamCount"></span></div>
-  <p class="note">Desktop: drag team chips between regions. Mobile: tap a team, choose its destination above, then tap <strong>Move Team</strong>.</p>
+  <p class="note">Desktop: drag team chips between regions. Mobile: tap a team, choose its destination above, then tap <strong>Move Team</strong>. You can also add a new classification or delete an entire classification; deleting one moves its teams to Unassigned.</p>
 </section>
 
 <div id="classGrid" class="class-grid" aria-live="polite"></div>
@@ -79,7 +80,7 @@
 </main>
 <footer><p><strong>RURAL UTAH SPORTS</strong> · Custom Classification Sandbox</p><p>This tool changes only your local what-if setup. It does not modify official UHSAA classifications or the site's source data.</p></footer>
 <script src="classification-builder-engine.js?v=20260929b"></script>
-<script src="classification-builder.js?v=20260929-dynasty7"></script>
+<script src="classification-builder.js?v=20260929-dynasty8"></script>
 <script src="nav-menu.js?v=20260929-classification-builder1"></script>
 </body>
 </html>
