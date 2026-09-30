@@ -99,11 +99,29 @@
     const rows=state.regions[c]||(state.regions[c]=[]),n=String(name||'').trim();
     let r=rows.find(x=>x.name===n);if(!r){r={name:n||`Region ${rows.length+1}`,teams:[]};rows.push(r)}return r;
   }
+  function updateLockPlacement(team,loc){
+    const k=norm(team),lock=state.teamLocks?.[k];if(!lock)return;
+    if(loc){lock.team=team;lock.classification=loc.classification;lock.region=loc.region}
+    else delete state.teamLocks[k];
+  }
   function move(team,c,region){
     const real=resolveTeam(team);if(!real||!classes().includes(c))return;
-    removeTeam(real);ensureRegion(c,region).teams.push(real);selectedTeam=real;render();syncMover();
+    removeTeam(real);ensureRegion(c,region).teams.push(real);updateLockPlacement(real,{classification:c,region});selectedTeam=real;render();syncMover();
   }
-  function unassign(team){const real=resolveTeam(team);if(!real)return;removeTeam(real);state.unassigned.push(real);selectedTeam=real;render();syncMover()}
+  function unassign(team){const real=resolveTeam(team);if(!real)return;removeTeam(real);state.unassigned.push(real);updateLockPlacement(real,null);selectedTeam=real;render();syncMover()}
+  function swapTeams(a,b){
+    const first=resolveTeam(a),second=resolveTeam(b);if(!first||!second||norm(first)===norm(second))return false;
+    const firstLoc=teamLocation(first),secondLoc=teamLocation(second);
+    if(firstLoc&&secondLoc&&firstLoc.classification===secondLoc.classification&&firstLoc.region===secondLoc.region){
+      tapMoveTeam=second;selectedTeam=second;$('teamSelect').value=second;syncMover();render();status(`${first} and ${second} are already in the same region.`,'good');return true;
+    }
+    removeTeam(first);removeTeam(second);
+    if(secondLoc)ensureRegion(secondLoc.classification,secondLoc.region).teams.push(first);else state.unassigned.push(first);
+    if(firstLoc)ensureRegion(firstLoc.classification,firstLoc.region).teams.push(second);else state.unassigned.push(second);
+    updateLockPlacement(first,secondLoc);updateLockPlacement(second,firstLoc);
+    tapMoveTeam='';selectedTeam=second;$('teamSelect').value=second;render();syncMover();
+    status(`Swapped ${first} and ${second}.`,'good');return true;
+  }
   function addClass(){
     const raw=prompt('New classification name (example: 7A):');if(!raw?.trim())return;
     let name=raw.trim().toUpperCase().replace(/\s+/g,' ');
@@ -160,7 +178,7 @@
   function updateTapMoveHint(){
     const hint=$('tapMoveHint');if(!hint)return;
     if(!tapMoveTeam){hint.hidden=true;hint.textContent='';return}
-    hint.hidden=false;hint.innerHTML=`<strong>${esc(tapMoveTeam)}</strong> selected — tap any region below to move it there. Tap the team again to cancel.`;
+    hint.hidden=false;hint.innerHTML=`<strong>${esc(tapMoveTeam)}</strong> selected — tap another school to swap their regions, or tap a region below to move it there. Tap the selected school again to cancel.`;
   }
   function bindRendered(){
     document.querySelectorAll('[data-add-region]').forEach(b=>b.onclick=()=>addRegion(b.dataset.addRegion));
@@ -171,7 +189,12 @@
     document.querySelectorAll('[data-move-unassigned]').forEach(b=>b.onclick=e=>{e.stopPropagation();if(!tapMoveTeam)return;const team=tapMoveTeam;tapMoveTeam='';unassign(team)});
     document.querySelectorAll('.team-chip').forEach(b=>{
       let touched=false;
-      const choose=e=>{e?.stopPropagation?.();const team=b.dataset.team;selectedTeam=team;$('teamSelect').value=selectedTeam;syncMover();tapMoveTeam=tapMoveTeam&&norm(tapMoveTeam)===norm(team)?'':team;render()};
+      const choose=e=>{
+        e?.stopPropagation?.();const team=b.dataset.team;
+        if(tapMoveTeam&&norm(tapMoveTeam)!==norm(team)){swapTeams(tapMoveTeam,team);return}
+        selectedTeam=team;$('teamSelect').value=selectedTeam;syncMover();
+        tapMoveTeam=tapMoveTeam&&norm(tapMoveTeam)===norm(team)?'':team;render();
+      };
       b.onclick=e=>{if(touched){touched=false;e.preventDefault();e.stopPropagation();return}choose(e)};
       b.onpointerup=e=>{if(e.pointerType!=='touch')return;touched=true;e.preventDefault();choose(e)};
       b.ondragstart=e=>{tapMoveTeam='';dragTeam=b.dataset.team;e.dataTransfer.setData('text/plain',dragTeam);e.dataTransfer.effectAllowed='move'};
