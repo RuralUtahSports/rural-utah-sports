@@ -119,7 +119,11 @@ function mergeCategory(data,category,incoming,limit){
   const cat=(data.categories||[]).find(c=>c.key===category);
   if(!cat||!incoming.length)return false;
   const before=JSON.stringify(cat.entries||[]);
-  cat.entries=rankEntries([...(cat.entries||[]).map(e=>({...e,category})),...incoming],limit);
+  const incomingKeys=new Set(incoming.map(recordKey));
+  const existing=(cat.entries||[])
+    .map(e=>({...e,category}))
+    .filter(e=>!incomingKeys.has(recordKey(e)));
+  cat.entries=rankEntries([...existing,...incoming],limit);
   return JSON.stringify(cat.entries)!==before;
 }
 
