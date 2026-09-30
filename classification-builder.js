@@ -263,7 +263,7 @@
       season.season=year;
       const F=window.RUSFullSeason;F.data={...baseData,meta,season,startElos,seasonYear:year};
       simStatus(year===2026&&mode==='real'?'Using the real 2026 schedule. Future seasons will be generated from your regions, same-class matchups and rivalry history…':`Generated ${season.games.length} games for ${year}: region games first, protected rivalries, same-class matchups, then ELO-matched games. Running the RUS model…`);
-      const R=await F.simulate((Date.now()+year*997)%100000);lastResult=R;await F.render(R,$('customSimOutput'));
+      const R=await F.simulate((Date.now()+year*997)%100000);R.playoffs?.delete?.('OPEN');R.playoffs?.delete?.('ALLTEAM');lastResult=R;await F.render(R,$('customSimOutput'));const playoffTitle=$('customSimOutput')?.querySelector('.fsp-title'),playoffSub=$('customSimOutput')?.querySelector('.fsp-sub');if(playoffTitle)playoffTitle.textContent=`${year} Playoff Brackets`;if(playoffSub)playoffSub.textContent='Seven classification playoffs based on your custom alignment.';
       const end=endingElos(R),profiles=nextProfiles(R,end),summary=summarizeSeason(R);
       dynasty.currentYear=year;dynasty.history=(dynasty.history||[]).filter(x=>Number(x.year)!==year);dynasty.history.push(summary);dynasty.nextStartElos=eloMapToObject(end);dynasty.nextProfiles=profiles;dynasty.state=clone(state);dynasty.scheduleMode=$('scheduleMode').value;persistDynasty();
       const warning=rebuilt?.warnings?.length?` ${rebuilt.warnings.join(' ')}`:'';
