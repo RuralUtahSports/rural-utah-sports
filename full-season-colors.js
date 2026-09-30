@@ -7,13 +7,13 @@
     const s=document.createElement('style');
     s.id='fsTeamColorStyle';
     s.textContent=`
-      #full-season .fs-team-pill{display:inline-block;padding:5px 9px;border-radius:6px;font-weight:900;text-decoration:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);white-space:nowrap}
-      #full-season tr.fs-team-row td:first-child{box-shadow:inset 4px 0 0 var(--fs-team-color)}
-      #full-season .fsp-team.fs-team-colored{box-shadow:inset 4px 0 0 var(--fs-team-color);background:linear-gradient(90deg,color-mix(in srgb,var(--fs-team-color) 18%,#151515) 0%,#151515 48%)}
-      #full-season .fsp-team.fs-team-colored.win{background:linear-gradient(90deg,color-mix(in srgb,var(--fs-team-color) 30%,#202020) 0%,#202020 55%)}
-      #full-season .fsp-team .fsp-name.fs-team-pill{padding:4px 7px}
-      #full-season .fsp-champ.fs-team-champ{border-color:var(--fs-team-color)!important;box-shadow:inset 0 4px 0 var(--fs-team-color)}
-      #full-season .fsp-champ.fs-team-champ small{color:var(--fs-team-color)!important}
+      :is(#full-season,#customSimOutput) .fs-team-pill{display:inline-block;padding:5px 9px;border-radius:6px;font-weight:900;text-decoration:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);white-space:nowrap}
+      :is(#full-season,#customSimOutput) tr.fs-team-row td:first-child{box-shadow:inset 4px 0 0 var(--fs-team-color)}
+      :is(#full-season,#customSimOutput) .fsp-team.fs-team-colored{box-shadow:inset 4px 0 0 var(--fs-team-color);background:linear-gradient(90deg,color-mix(in srgb,var(--fs-team-color) 18%,#151515) 0%,#151515 48%)}
+      :is(#full-season,#customSimOutput) .fsp-team.fs-team-colored.win{background:linear-gradient(90deg,color-mix(in srgb,var(--fs-team-color) 30%,#202020) 0%,#202020 55%)}
+      :is(#full-season,#customSimOutput) .fsp-team .fsp-name.fs-team-pill{padding:4px 7px}
+      :is(#full-season,#customSimOutput) .fsp-champ.fs-team-champ{border-color:var(--fs-team-color)!important;box-shadow:inset 0 4px 0 var(--fs-team-color)}
+      :is(#full-season,#customSimOutput) .fsp-champ.fs-team-champ small{color:var(--fs-team-color)!important}
     `;
     document.head.append(s);
   }
