@@ -353,7 +353,7 @@
   function updateDynastyControls(){
     const savedDynasty=readDynasty(),active=!!dynasty,current=Number(dynasty?.currentYear||2025),next=current+1;
     if($('dynastyYear'))$('dynastyYear').textContent=active?String(current):'2026';
-    if($('advanceSeason')){$('advanceSeason').hidden=!active||!(dynasty?.history?.length);$('advanceSeason').disabled=false;$('advanceSeason').textContent=`Advance to ${next}`}
+    if($('advanceSeason')){$('advanceSeason').hidden=!active||!(dynasty?.history?.length);$('advanceSeason').disabled=!!dynasty?.realignmentDue;$('advanceSeason').textContent=dynasty?.realignmentDue?`Realignment Due Before ${next}`:`Advance to ${next}`}
     if($('resetDynasty'))$('resetDynasty').hidden=!active;
     if($('resumeDynasty')){$('resumeDynasty').hidden=active||!savedDynasty;$('resumeDynasty').textContent=savedDynasty?`Resume ${Number(savedDynasty.currentYear||2025)+1}`:'Resume Dynasty'}
     if($('runCustomSeason'))$('runCustomSeason').textContent=active?'Restart From 2026':'Start 2026 Dynasty';
@@ -375,9 +375,13 @@
     if(state.unassigned.length)return updateRunState();
     const btn=year===2026?$('runCustomSeason'):$('advanceSeason'),section=$('simulationSection');btn.disabled=true;btn.textContent='Simulating…';section.hidden=false;section.scrollIntoView({behavior:'smooth',block:'start'});simStatus(`Preparing ${year} alignment and schedule…`);$('customSimOutput').innerHTML='';
     try{
-      if(restart||year===2026){dynasty={currentYear:2025,history:[],nextStartElos:null,nextProfiles:null,state:clone(state),scheduleMode:$('scheduleMode').value};restoreBaselineProfiles()}
+      const rerunSame=!restart&&year!==2026&&Number(dynasty?.currentYear)===Number(year)&&dynasty?.yearStarts?.[year];
+      if(restart||year===2026){dynasty={currentYear:2025,history:[],nextStartElos:null,nextProfiles:null,yearStarts:{},state:clone(state),scheduleMode:$('scheduleMode').value};restoreBaselineProfiles()}
+      else if(rerunSame)applyProfiles(dynasty.yearStarts[year]?.profiles||{});
       else applyProfiles(dynasty?.nextProfiles||{});
-      const meta=metaFromState(),startElos=year===2026?new Map(baseData.startElos):objectToEloMap(dynasty?.nextStartElos||{});
+      const meta=metaFromState(),startElos=year===2026?new Map(baseData.startElos):rerunSame?objectToEloMap(dynasty.yearStarts[year]?.startElos||{}):objectToEloMap(dynasty?.nextStartElos||{});
+      dynasty.yearStarts=dynasty.yearStarts||{};
+      if(!rerunSame)dynasty.yearStarts[year]={startElos:eloMapToObject(startElos),profiles:year===2026?clone(baselineProfiles):clone(dynasty?.nextProfiles||{})};
       const customAlignment=alignmentChanged(),requestedMode=year===2026?$('scheduleMode').value:'rebuild',mode=(year===2026&&!customAlignment)?requestedMode:'rebuild',override=state.scheduleOverrides?.[year],rebuilt=override?{season:{season:year,games:clone(override)},warnings:[],counts:null}:mode==='rebuild'?rebuildSchedule(meta,year,startElos):null,season=rebuilt?.season||clone(baseData.season);
       season.season=year;
       const F=window.RUSFullSeason;F.data={...baseData,meta,season,startElos,seasonYear:year,playoffSettings:clone(state.playoffSettings||{})};
@@ -420,6 +424,7 @@
     rebuildSchedule:(year=2026)=>rebuildSchedule(metaFromState(),Number(year)||2026,Number(year)===2026?new Map(baseData?.startElos||[]):objectToEloMap(dynasty?.nextStartElos||{})),
     setScheduleOverride:(year,games)=>{state.scheduleOverrides=state.scheduleOverrides||{};state.scheduleOverrides[Number(year)]=clone(games||[]);render();},
     clearScheduleOverride:year=>{if(state.scheduleOverrides)delete state.scheduleOverrides[Number(year)]},
+    markRealignmentHandled:()=>{if(dynasty){dynasty.realignmentDue=false;dynasty.state=clone(state);persistDynasty()}},
     saveSetup:saveScenario,
     classLabel,
     norm
