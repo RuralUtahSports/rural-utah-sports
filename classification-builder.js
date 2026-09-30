@@ -129,7 +129,8 @@
     const selected=tapMoveTeam&&norm(team)===norm(tapMoveTeam)?' selected':'',info=window.RUSFullSeason?.info?.(team)||window.simulator?.teams?.[team]||{};
     const bg=/^#[0-9A-F]{6}$/i.test(String(info.backgroundColor||''))?info.backgroundColor:'#1a1a1a';
     const fg=/^#[0-9A-F]{6}$/i.test(String(info.textColor||''))?info.textColor:'#ffffff';
-    return `<button type="button" class="team-chip${selected}" draggable="true" data-team="${esc(team)}" title="Tap to select ${esc(team)}" style="--team-bg:${esc(bg)};--team-fg:${esc(fg)}">${esc(team)}</button>`;
+    const canDrag=window.matchMedia?.('(hover:hover) and (pointer:fine)')?.matches!==false;
+    return `<button type="button" class="team-chip${selected}" draggable="${canDrag?'true':'false'}" aria-pressed="${selected?'true':'false'}" data-team="${esc(team)}" title="Tap to select ${esc(team)}" style="--team-bg:${esc(bg)};--team-fg:${esc(fg)}">${esc(team)}</button>`;
   }
   function render(){
     const q=String($('teamSearch')?.value||'').trim().toUpperCase(),grid=$('classGrid');grid.innerHTML='';
@@ -141,7 +142,7 @@
       for(const r of rows){
         const card=document.createElement('article');card.className='region-card'+(tapMoveTeam?' tap-move-target':'');card.dataset.classification=c;card.dataset.region=r.name;
         const visible=(r.teams||[]).filter(t=>!q||String(t).toUpperCase().includes(q));
-        card.innerHTML=`<div class="region-head"><div><span class="class-kicker">${esc(classLabel(c))}</span><h3>${esc(r.name)}</h3></div><div class="region-actions"><span class="count-pill">${r.teams.length}</span><button type="button" class="tiny-btn" data-rename-region="${esc(c)}|||${esc(r.name)}">Rename</button><button type="button" class="tiny-btn" data-delete-region="${esc(c)}|||${esc(r.name)}">Delete</button></div></div><div class="team-drop" data-drop-class="${esc(c)}" data-drop-region="${esc(r.name)}">${visible.length?visible.sort().map(chip).join(''):`<span class="empty-region">${q?'No matching teams':'Drop teams here'}</span>`}</div>`;
+        card.innerHTML=`<div class="region-head"><div><span class="class-kicker">${esc(classLabel(c))}</span><h3>${esc(r.name)}</h3></div><div class="region-actions"><span class="count-pill">${r.teams.length}</span>${tapMoveTeam?`<button type="button" class="tiny-btn tap-move-button" data-move-selected="${esc(c)}|||${esc(r.name)}">Move Here</button>`:''}<button type="button" class="tiny-btn" data-rename-region="${esc(c)}|||${esc(r.name)}">Rename</button><button type="button" class="tiny-btn" data-delete-region="${esc(c)}|||${esc(r.name)}">Delete</button></div></div><div class="team-drop" data-drop-class="${esc(c)}" data-drop-region="${esc(r.name)}">${visible.length?visible.sort().map(chip).join(''):`<span class="empty-region">${q?'No matching teams':'Drop teams here'}</span>`}</div>`;
         host.append(card);
       }
       if(!rows.length){const e=document.createElement('div');e.className='empty-region';e.textContent='No regions yet. Add a region to begin.';host.append(e)}
@@ -150,7 +151,11 @@
     const un=(state.unassigned||[]).filter(t=>!q||String(t).toUpperCase().includes(q));
     $('unassignedTeams').innerHTML=un.length?un.sort().map(chip).join(''):`<span class="empty-region">${q?'No matching teams':'Every team is assigned.'}</span>`;
     $('unassignedCount').textContent=String(state.unassigned.length);$('teamCount').textContent=`${assigned} assigned • ${state.unassigned.length} unassigned`;
-    $('unassignedCard')?.classList.toggle('tap-move-target',!!tapMoveTeam);updateTapMoveHint();bindRendered();updateRunState();
+    const unCard=$('unassignedCard'),unHead=unCard?.querySelector('.region-head');
+    unCard?.classList.toggle('tap-move-target',!!tapMoveTeam);
+    unHead?.querySelector('.tap-move-button')?.remove();
+    if(tapMoveTeam&&unHead){const b=document.createElement('button');b.type='button';b.className='tiny-btn tap-move-button';b.dataset.moveUnassigned='1';b.textContent='Move Here';unHead.append(b)}
+    updateTapMoveHint();bindRendered();updateRunState();
   }
   function updateTapMoveHint(){
     const hint=$('tapMoveHint');if(!hint)return;
@@ -162,24 +167,19 @@
     document.querySelectorAll('[data-delete-class]').forEach(b=>b.onclick=()=>deleteClass(b.dataset.deleteClass));
     document.querySelectorAll('[data-rename-region]').forEach(b=>b.onclick=()=>{const [c,r]=b.dataset.renameRegion.split('|||');renameRegion(c,r)});
     document.querySelectorAll('[data-delete-region]').forEach(b=>b.onclick=()=>{const [c,r]=b.dataset.deleteRegion.split('|||');deleteRegion(c,r)});
+    document.querySelectorAll('[data-move-selected]').forEach(b=>b.onclick=e=>{e.stopPropagation();if(!tapMoveTeam)return;const [c,r]=b.dataset.moveSelected.split('|||'),team=tapMoveTeam;tapMoveTeam='';move(team,c,r)});
+    document.querySelectorAll('[data-move-unassigned]').forEach(b=>b.onclick=e=>{e.stopPropagation();if(!tapMoveTeam)return;const team=tapMoveTeam;tapMoveTeam='';unassign(team)});
     document.querySelectorAll('.team-chip').forEach(b=>{
-      b.onclick=e=>{
-        e.stopPropagation();
-        const team=b.dataset.team;
-        selectedTeam=team;$('teamSelect').value=selectedTeam;syncMover();
-        tapMoveTeam=tapMoveTeam&&norm(tapMoveTeam)===norm(team)?'':team;
-        render();
-      };
+      let touched=false;
+      const choose=e=>{e?.stopPropagation?.();const team=b.dataset.team;selectedTeam=team;$('teamSelect').value=selectedTeam;syncMover();tapMoveTeam=tapMoveTeam&&norm(tapMoveTeam)===norm(team)?'':team;render()};
+      b.onclick=e=>{if(touched){touched=false;e.preventDefault();e.stopPropagation();return}choose(e)};
+      b.onpointerup=e=>{if(e.pointerType!=='touch')return;touched=true;e.preventDefault();choose(e)};
       b.ondragstart=e=>{tapMoveTeam='';dragTeam=b.dataset.team;e.dataTransfer.setData('text/plain',dragTeam);e.dataTransfer.effectAllowed='move'};
     });
     document.querySelectorAll('.region-card').forEach(card=>{
-      card.onclick=e=>{
-        if(!tapMoveTeam||e.target.closest('button,.team-chip,input,select'))return;
-        const team=tapMoveTeam,c=card.dataset.classification,r=card.dataset.region,loc=teamLocation(team);
-        tapMoveTeam='';
-        if(loc&&loc.classification===c&&loc.region===r){render();return}
-        move(team,c,r);
-      };
+      const send=()=>{if(!tapMoveTeam)return;const team=tapMoveTeam,c=card.dataset.classification,r=card.dataset.region,loc=teamLocation(team);tapMoveTeam='';if(loc&&loc.classification===c&&loc.region===r){render();return}move(team,c,r)};
+      card.onclick=e=>{if(!tapMoveTeam||e.target.closest('button,.team-chip,input,select'))return;send()};
+      card.onpointerup=e=>{if(e.pointerType!=='touch'||!tapMoveTeam||e.target.closest('button,.team-chip,input,select'))return;e.preventDefault();send()};
     });
     const unCard=$('unassignedCard');
     if(unCard)unCard.onclick=e=>{
