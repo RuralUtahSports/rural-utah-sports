@@ -225,10 +225,10 @@ function renderSchedule(games,teamName,allTeams,colorRows,teamColor){
     }
     const when=dateLabel(game.date)+(clean(game.time)?" · "+clean(game.time):"");
     const playoff=game.playoff===true||Boolean(clean(game.postseasonRound||game.playoffRound));
-    const gameType=playoff?'<span class="playoff-badge">Playoff</span>':'<span class="status">Regular</span>';
+    const gameType=playoff?'<span class="playoff-badge">Playoff</span>':'<span class="regular-badge">—</span>';
     return'<tr class="schedule-row'+(playoff?' playoff-row':'')+'"><td>'+esc(when)+'</td><td class="opponent">'+opponentLabel+stateTag+region+'</td><td class="location">'+location+'</td><td>'+result+'</td><td>'+gameType+'</td></tr>';
   }).join("");
-  return'<div class="table-wrap" style="--team-color:'+safeColor(teamColor,"#333333")+'"><table><thead><tr><th>Date / Time</th><th>Opponent</th><th>Location</th><th>Result / Status</th><th>Game Type</th></tr></thead><tbody>'+body+'</tbody></table></div>';
+  return'<div class="table-wrap" style="--team-color:'+safeColor(teamColor,"#333333")+'"><table><thead><tr><th>Date / Time</th><th>Opponent</th><th>Location</th><th>Result / Status</th><th>Playoff</th></tr></thead><tbody>'+body+'</tbody></table></div>';
 }
 function championshipFor(data,teamName){return Object.entries(data&&data.teams||{}).find(([name])=>canonicalTeamKey(name)===canonicalTeamKey(teamName))?.[1]||null}
 function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary,championshipData){
