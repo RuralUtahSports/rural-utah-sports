@@ -96,12 +96,11 @@
     basketball: [
       ["Scoreboard", "boys-basketball-scoreboard.html"],
       ["Teams", "boys-basketball-teams.html"],
-      ["Stat Leaders", "basketball-stat-leaders.html"],
       ["Brackets", "boys-basketball-brackets.html"],
       ["Greatest Seasons", "boys-basketball-greatest-seasons.html"],
     ],
     stats: [
-      ["Stat Leaders", "stat-leaders.html"],
+      ["Stat Leaders", "stat-leaders-hub.html"],
       ["Weekly Awards", "weekly-awards.html"],
       ["Team Stats", "team-stats.html"],
       ["MVP Race", "mvp-race.html"],
