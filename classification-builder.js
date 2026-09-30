@@ -136,68 +136,61 @@
     const sameFormat=(a,b)=>{const ma=meta.get(norm(a)),mb=meta.get(norm(b));return !!(ma&&mb&&((ma.classification==='8P')===(mb.classification==='8P')))};
     const sameClass=(a,b)=>meta.get(norm(a))?.classification===meta.get(norm(b))?.classification;
     const sameRegion=(a,b)=>{const ma=meta.get(norm(a)),mb=meta.get(norm(b));return !!(ma&&mb&&ma.classification===mb.classification&&ma.region===mb.region)};
+    const schedulePair=(a,b,w,kind)=>{
+      if(!a||!b||!free(a,w)||!free(b,w)||usedPairs.has(pair(a,b))||!sameFormat(a,b))return false;
+      const known=year===2026?originalOrientation(a,b):null,flip=(year+w+games.length)%2===1,x=known?.a||(flip?b:a),y=known?.b||(flip?a:b);
+      usedPairs.add(pair(x,y));mark(x,w);mark(y,w);games.push({date:dates[w],teamA:x,teamB:y,[kind]:true});return true;
+    };
+    // 1) Region round robin always comes first.
     for(const c of CLASSES)for(const r of state.regions[c]||[]){
       const rounds=roundRobin(r.teams||[]),take=Math.min(10,rounds.length),startWeek=10-take;
       if(rounds.length>10)warnings.push(`${c} ${r.name} has ${r.teams.length} teams, so a full round robin does not fit in a 10-game season.`);
       for(let ri=0;ri<take;ri++)for(let pi=0;pi<rounds[ri].length;pi++){
-        const [x,y]=rounds[ri][pi],w=startWeek+ri;if(!free(x,w)||!free(y,w))continue;
-        const o=year===2026?originalOrientation(x,y):null,swap=(ri+pi+year)%2===1,a=o?.a||(swap?y:x),b=o?.b||(swap?x:y),sig=pair(a,b);
-        if(usedPairs.has(sig))continue;usedPairs.add(sig);mark(a,w);mark(b,w);games.push({date:dates[w],teamA:a,teamB:b,customRegion:true});
+        const [x,y]=rounds[ri][pi],w=startWeek+ri;
+        if(schedulePair(x,y,w,'customRegion')===false)continue;
       }
     }
-    if(year===2026){
-      const original=[...(baseData.season.games||[])].sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
-      for(const g of original){
-        const a=resolveTeam(g.teamA)||g.teamA,b=resolveTeam(g.teamB)||g.teamB,ma=meta.get(norm(a)),mb=meta.get(norm(b)),sig=pair(a,b);if(usedPairs.has(sig))continue;
-        if(ma&&mb&&ma.classification===mb.classification&&ma.region===mb.region)continue;
-        const ta=ma?norm(a):null,tb=mb?norm(b):null;if(!ta&&!tb)continue;
-        const target=Date.parse(g.date),slots=[0,1,2,3,4,5,6,7,8,9].sort((x,y)=>Math.abs(Date.parse(dates[x])-target)-Math.abs(Date.parse(dates[y])-target));
-        const w=slots.find(i=>(!ma||free(a,i))&&(!mb||free(b,i)));if(w==null)continue;
-        usedPairs.add(sig);if(ma)mark(a,w);if(mb)mark(b,w);games.push({date:dates[w],teamA:a,teamB:b,customNonRegion:true});
-      }
-    }else{
-      const schedulePair=(a,b,w,kind)=>{
-        if(!a||!b||!free(a,w)||!free(b,w)||usedPairs.has(pair(a,b))||!sameFormat(a,b))return false;
-        const flip=(year+w+games.length)%2===1,x=flip?b:a,y=flip?a:b;
-        usedPairs.add(pair(x,y));mark(x,w);mark(y,w);games.push({date:dates[w],teamA:x,teamB:y,[kind]:true});return true;
+    // 2) Protect one historically meaningful rivalry per team when it is not
+    // already a region game. A minimum of 10 recorded meetings avoids treating
+    // ordinary matchups as rivalries.
+    const rivalryCandidates=[];
+    for(let i=0;i<allTeams.length;i++)for(let k=i+1;k<allTeams.length;k++){
+      const x=allTeams[i],y=allTeams[k],meetings=pairMeetings(x,y);
+      if(meetings<10||sameRegion(x,y)||!sameFormat(x,y))continue;
+      rivalryCandidates.push({a:x,b:y,meetings,gap:Math.abs(rating(x)-rating(y))});
+    }
+    rivalryCandidates.sort((x,y)=>y.meetings-x.meetings||x.gap-y.gap);
+    for(const x of rivalryCandidates){
+      if(protectedRival.has(norm(x.a))||protectedRival.has(norm(x.b)))continue;
+      const slots=[0,1,2,3,4,5,6,7,8,9].filter(w=>free(x.a,w)&&free(x.b,w));
+      if(!slots.length)continue;
+      if(schedulePair(x.a,x.b,slots[0],'protectedRivalry')){protectedRival.add(norm(x.a));protectedRival.add(norm(x.b))}
+    }
+    // 3) Fill open weeks with same-class non-region opponents. More historical
+    // meetings are preferred, then closer ELO. 4) If a team still needs a game,
+    // fill it with the closest available ELO opponent in the same football format.
+    for(let w=0;w<10;w++){
+      const takeBest=(team,pool,requireClass)=>{
+        const cand=pool.filter(o=>o!==team&&free(o,w)&&!usedPairs.has(pair(team,o))&&sameFormat(team,o)&&(!requireClass||sameClass(team,o)));
+        cand.sort((x,y)=>{
+          if(requireClass){const history=pairMeetings(team,y)-pairMeetings(team,x);if(history)return history}
+          return Math.abs(rating(team)-rating(x))-Math.abs(rating(team)-rating(y))||x.localeCompare(y);
+        });
+        return cand[0]||null;
       };
-      // Protect one historically meaningful rivalry per team when possible.
-      const rivalryCandidates=[];
-      for(let i=0;i<allTeams.length;i++)for(let k=i+1;k<allTeams.length;k++){
-        const a=allTeams[i],b=allTeams[k],meetings=pairMeetings(a,b);
-        if(meetings<10||sameRegion(a,b)||!sameFormat(a,b))continue;
-        rivalryCandidates.push({a,b,meetings,gap:Math.abs(rating(a)-rating(b))});
-      }
-      rivalryCandidates.sort((x,y)=>y.meetings-x.meetings||x.gap-y.gap);
-      for(const x of rivalryCandidates){
-        if(protectedRival.has(norm(x.a))||protectedRival.has(norm(x.b)))continue;
-        const slots=[0,1,2,3,4,5,6,7,8,9].filter(w=>free(x.a,w)&&free(x.b,w));
-        if(!slots.length)continue;
-        if(schedulePair(x.a,x.b,slots[0],'protectedRivalry')){protectedRival.add(norm(x.a));protectedRival.add(norm(x.b))}
-      }
-      // Fill remaining weeks with same-class opponents first. Historical meetings
-      // break ties, followed by closer ELO so schedules remain competitive.
-      for(let w=0;w<10;w++){
+      for(const requireClass of [true,false]){
         let freeTeams=allTeams.filter(t=>meta.has(norm(t))&&free(t,w));
-        const takeBest=(team,pool,requireClass)=>{
-          const cand=pool.filter(o=>o!==team&&free(o,w)&&!usedPairs.has(pair(team,o))&&sameFormat(team,o)&&(!requireClass||sameClass(team,o)));
-          cand.sort((a,b)=>pairMeetings(team,b)-pairMeetings(team,a)||Math.abs(rating(team)-rating(a))-Math.abs(rating(team)-rating(b))||a.localeCompare(b));
-          return cand[0]||null;
-        };
-        for(const requireClass of [true,false]){
-          freeTeams=allTeams.filter(t=>meta.has(norm(t))&&free(t,w));
-          while(freeTeams.length>1){
-            const a=freeTeams.shift(),b=takeBest(a,freeTeams,requireClass);
-            if(!b)continue;
-            schedulePair(a,b,w,requireClass?'sameClassGame':'eloMatchedGame');
-            freeTeams=freeTeams.filter(t=>norm(t)!==norm(b));
-          }
+        while(freeTeams.length>1){
+          const x=freeTeams.shift(),y=takeBest(x,freeTeams,requireClass);
+          if(!y)continue;
+          schedulePair(x,y,w,requireClass?'sameClassGame':'eloMatchedGame');
+          freeTeams=freeTeams.filter(t=>norm(t)!==norm(y));
         }
       }
     }
     const counts=new Map(allTeams.map(t=>[norm(t),0]));for(const g of games){if(counts.has(norm(g.teamA)))counts.set(norm(g.teamA),counts.get(norm(g.teamA))+1);if(counts.has(norm(g.teamB)))counts.set(norm(g.teamB),counts.get(norm(g.teamB))+1)}
     const low=allTeams.filter(t=>(counts.get(norm(t))||0)<6);if(low.length)warnings.push(`${low.length} team${low.length===1?'':'s'} ended with fewer than 6 games in the generated ${year} schedule.`);
-    return{season:{season:year,games:games.sort((a,b)=>Date.parse(a.date)-Date.parse(b.date))},warnings,counts};
+    return{season:{season:year,games:games.sort((x,y)=>Date.parse(x.date)-Date.parse(y.date))},warnings,counts};
   }
   function readDynasty(){try{return JSON.parse(localStorage.getItem(DYNASTY_STORE)||'null')}catch{return null}}
   function endingElos(R){
@@ -241,7 +234,7 @@
   function updateDynastyControls(){
     const savedDynasty=readDynasty(),active=!!dynasty,current=Number(dynasty?.currentYear||2025),next=current+1;
     if($('dynastyYear'))$('dynastyYear').textContent=active?String(current):'2026';
-    if($('advanceSeason')){$('advanceSeason').hidden=!active||!(dynasty?.history?.length);$('advanceSeason').textContent=`Advance to ${next}`}
+    if($('advanceSeason')){$('advanceSeason').hidden=!active||!(dynasty?.history?.length);$('advanceSeason').disabled=false;$('advanceSeason').textContent=`Advance to ${next}`}
     if($('resetDynasty'))$('resetDynasty').hidden=!active;
     if($('resumeDynasty')){$('resumeDynasty').hidden=active||!savedDynasty;$('resumeDynasty').textContent=savedDynasty?`Resume ${Number(savedDynasty.currentYear||2025)+1}`:'Resume Dynasty'}
     if($('runCustomSeason'))$('runCustomSeason').textContent=active?'Restart From 2026':'Start 2026 Dynasty';
