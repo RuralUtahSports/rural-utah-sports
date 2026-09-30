@@ -102,7 +102,12 @@
   function addRegion(c){const name=prompt(`New ${classLabel(c)} region name:`);if(!name?.trim())return;ensureRegion(c,name.trim());render();syncMover()}
   function renameRegion(c,old){const row=state.regions[c].find(r=>r.name===old);if(!row)return;const name=prompt('Rename region:',old);if(!name?.trim())return;row.name=name.trim();render();syncMover()}
   function deleteRegion(c,name){const i=state.regions[c].findIndex(r=>r.name===name);if(i<0)return;const [r]=state.regions[c].splice(i,1);for(const t of r.teams||[])state.unassigned.push(t);render();syncMover()}
-  function chip(team){const selected=norm(team)===norm(selectedTeam)?' selected':'';return `<button type="button" class="team-chip${selected}" draggable="true" data-team="${esc(team)}" title="Tap to select ${esc(team)}">${esc(team)}</button>`}
+  function chip(team){
+    const selected=norm(team)===norm(selectedTeam)?' selected':'',info=window.RUSFullSeason?.info?.(team)||window.simulator?.teams?.[team]||{};
+    const bg=/^#[0-9A-F]{6}$/i.test(String(info.backgroundColor||''))?info.backgroundColor:'#1a1a1a';
+    const fg=/^#[0-9A-F]{6}$/i.test(String(info.textColor||''))?info.textColor:'#ffffff';
+    return `<button type="button" class="team-chip${selected}" draggable="true" data-team="${esc(team)}" title="Tap to select ${esc(team)}" style="--team-bg:${esc(bg)};--team-fg:${esc(fg)}">${esc(team)}</button>`;
+  }
   function render(){
     const q=String($('teamSearch')?.value||'').trim().toUpperCase(),grid=$('classGrid');grid.innerHTML='';
     let assigned=0;
