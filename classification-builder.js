@@ -10,6 +10,7 @@
   const clone=v=>JSON.parse(JSON.stringify(v));
   const classLabel=c=>c==='8P'?'8-Player':c;
   const classes=()=>state?.classOrder?.length?[...state.classOrder]:Object.keys(state?.regions||{});
+  function ensureRegionForNormalize(s,c,name){s.regions[c]=s.regions[c]||[];let r=s.regions[c].find(x=>x.name===name);if(!r){r={name,teams:[]};s.regions[c].push(r)}return r}
   function normalizeState(raw){
     const s=raw&&typeof raw==='object'?clone(raw):{};
     s.regions=s.regions&&typeof s.regions==='object'?s.regions:{};
@@ -29,6 +30,18 @@
     s.enrollments=s.enrollments&&typeof s.enrollments==='object'?s.enrollments:{};
     s.realignmentInterval=Math.max(1,Number(s.realignmentInterval)||2);
     s.promotionRelegation=s.promotionRelegation&&typeof s.promotionRelegation==='object'?s.promotionRelegation:{enabled:false,count:2};
+    if(s.regions?.['8P']){
+      const independent=s.regions['8P'].find(r=>/^independent$/i.test(String(r.name||'')));
+      const normal=s.regions['8P'].find(r=>!/^(independent)$/i.test(String(r.name||'')))||ensureRegionForNormalize(s,'8P','8-Player');
+      if(independent){
+        const move=(independent.teams||[]).filter(t=>['MONUMENTVAL','MONUMENTVALLEY'].includes(norm(t)));
+        if(move.length){
+          independent.teams=(independent.teams||[]).filter(t=>!['MONUMENTVAL','MONUMENTVALLEY'].includes(norm(t)));
+          for(const t of move)if(!(normal.teams||[]).some(x=>norm(x)===norm(t)))normal.teams.push(t);
+        }
+        if(!(independent.teams||[]).length)s.regions['8P']=s.regions['8P'].filter(r=>r!==independent);
+      }
+    }
     return s;
   }
   function seasonWeekDates(year){
@@ -67,7 +80,9 @@
     return next;
   }
   function resolveTeam(raw){
-    const k=norm(raw),m=baseData?.meta?.get(k);if(m?.team)return m.team;
+    let k=norm(raw);
+    if(k==='MONUMENTVALLEY')k='MONUMENTVAL';
+    const m=baseData?.meta?.get(k);if(m?.team)return m.team;
     return allTeams.find(t=>norm(t)===k)||'';
   }
   function teamLocation(team){
