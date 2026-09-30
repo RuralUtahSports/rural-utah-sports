@@ -139,11 +139,15 @@
         champion: alive[0] || null,
         finalGame: rounds.at(-1)?.games?.[0] || null,
         exhibition,
+        settings: F.data?.playoffSettings?.[classification] || null,
       };
     };
     for (const [classification, rows] of R.rpi.entries()) {
-      const cap =
-        Number(R.season) === 2025
+      const settings = F.data?.playoffSettings?.[classification] || {};
+      const configured = Number(settings.fieldSize);
+      const cap = Number.isFinite(configured) && configured >= 2
+        ? Math.max(2, Math.min(64, Math.round(configured)))
+        : Number(R.season) === 2025
           ? fields[classification] || rows.length
           : Number(R.season) >= 2026
             ? 16
@@ -152,14 +156,39 @@
         r.playoff = false;
         r.playoffSeed = null;
       });
-      const field = rows
-        .filter((r) => r.eligible)
-        .slice(0, cap)
-        .map((r, i) => {
-          r.playoff = true;
-          r.playoffSeed = i + 1;
-          return r;
-        });
+      const eligible = rows.filter((r) => r.eligible);
+      const method = String(settings.seeding || "rpi").toLowerCase();
+      const seedSort = (a, b) => {
+        if (method === "elo")
+          return (Number(R.stats.get(b.team)?.elo) || 0) - (Number(R.stats.get(a.team)?.elo) || 0) || a.team.localeCompare(b.team);
+        if (method === "record") {
+          const sa = R.stats.get(a.team), sb = R.stats.get(b.team),
+            ag = (sa?.w || 0) + (sa?.l || 0), bg = (sb?.w || 0) + (sb?.l || 0),
+            ap = ag ? (sa?.w || 0) / ag : 0, bp = bg ? (sb?.w || 0) / bg : 0;
+          return bp - ap || (Number(sb?.elo) || 0) - (Number(sa?.elo) || 0) || a.team.localeCompare(b.team);
+        }
+        return (Number(a.rank) || 999) - (Number(b.rank) || 999) || a.team.localeCompare(b.team);
+      };
+      let pool = [...eligible].sort(seedSort);
+      if (settings.regionChampions) {
+        const champs = new Map();
+        for (const r of eligible) {
+          const s = R.stats.get(r.team), region = String(s?.region || r.region || "Independent");
+          if (!region || /^independent$/i.test(region)) continue;
+          const gp = (s?.rw || 0) + (s?.rl || 0), pct = gp ? (s?.rw || 0) / gp : -1;
+          const cur = champs.get(region);
+          if (!cur || pct > cur.pct || (Math.abs(pct - cur.pct) < 1e-12 && seedSort(r, cur.row) < 0))
+            champs.set(region, { row: r, pct });
+        }
+        const auto = [...champs.values()].map((x) => x.row).sort(seedSort);
+        const autoKeys = new Set(auto.map((x) => x.team));
+        pool = [...auto, ...pool.filter((x) => !autoKeys.has(x.team))];
+      }
+      const field = pool.slice(0, cap).sort(seedSort).map((r, i) => {
+        r.playoff = true;
+        r.playoffSeed = i + 1;
+        return r;
+      });
       const bracket = simulateBracket(classification, field);
       if (bracket) out.set(classification, bracket);
     }
