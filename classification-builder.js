@@ -85,6 +85,7 @@
     const raw=prompt('New classification name (example: 7A):');if(!raw?.trim())return;
     let name=raw.trim().toUpperCase().replace(/\s+/g,' ');
     if(name==='8-PLAYER'||name==='8 PLAYER')name='8P';
+    if(['OPEN','ALLTEAM','ALL-TEAM'].includes(name)){status('That name is reserved by the simulator. Try “Open Division” or another class name.','warn');return}
     if(classes().some(c=>norm(c)===norm(name))){status(`${name} already exists.`,'warn');return}
     state.classOrder.push(name);state.regions[name]=[];render();fillMover();$('classSelect').value=name;fillRegions();status(`Added ${classLabel(name)}. Add regions, then move teams into it.`,'good');
   }
