@@ -21,6 +21,14 @@
       for(const c of s.classOrder)if(!s.regions[c])s.regions[c]=[];
     }
     s.unassigned=Array.isArray(s.unassigned)?s.unassigned:[];
+    s.teamLocks=s.teamLocks&&typeof s.teamLocks==='object'?s.teamLocks:{};
+    s.protectedRivalries=Array.isArray(s.protectedRivalries)?s.protectedRivalries:[];
+    s.classTargets=s.classTargets&&typeof s.classTargets==='object'?s.classTargets:{};
+    s.playoffSettings=s.playoffSettings&&typeof s.playoffSettings==='object'?s.playoffSettings:{};
+    s.scheduleOverrides=s.scheduleOverrides&&typeof s.scheduleOverrides==='object'?s.scheduleOverrides:{};
+    s.enrollments=s.enrollments&&typeof s.enrollments==='object'?s.enrollments:{};
+    s.realignmentInterval=Math.max(1,Number(s.realignmentInterval)||2);
+    s.promotionRelegation=s.promotionRelegation&&typeof s.promotionRelegation==='object'?s.promotionRelegation:{enabled:false,count:2};
     return s;
   }
   function seasonWeekDates(year){
@@ -39,7 +47,7 @@
   async function loadEngine(){
     for(const src of ['season-simulator-core.js?v=20260813a','season-simulator-score.js?v=20260813e','full-season-core.js?v=20260824b','full-season-run.js?v=20260813b','full-season-view.js?v=20260929-dynamicclass1','full-season-playoffs.js?v=20260929-record1','full-season-playoff-view.js?v=20260824-boxscroll1','full-season-colors.js?v=20260929-builder1']) await script(src);
   }
-  function emptyState(){return{classOrder:[...DEFAULT_CLASSES],regions:Object.fromEntries(DEFAULT_CLASSES.map(c=>[c,[]])),unassigned:[]}}
+  function emptyState(){return{classOrder:[...DEFAULT_CLASSES],regions:Object.fromEntries(DEFAULT_CLASSES.map(c=>[c,[]])),unassigned:[],teamLocks:{},protectedRivalries:[],classTargets:{},playoffSettings:{},scheduleOverrides:{},enrollments:{},realignmentInterval:2,promotionRelegation:{enabled:false,count:2}}}
   function currentState(){
     const next=emptyState(),seen=new Set();
     for(const r of baseData.alignment?.regions||[]){
@@ -200,9 +208,13 @@
         if(schedulePair(x,y,w,'customRegion')===false)continue;
       }
     }
-    // 2) Protect one historically meaningful rivalry per team when it is not
-    // already a region game. A minimum of 10 recorded meetings avoids treating
-    // ordinary matchups as rivalries.
+    // 2) Protect user-locked rivalries first, then one historically meaningful
+    // rivalry per remaining team. Region games already preserve the matchup.
+    for(const row of state.protectedRivalries||[]){
+      const x=resolveTeam(row?.a),y=resolveTeam(row?.b);if(!x||!y||sameRegion(x,y)||!sameFormat(x,y))continue;
+      const slots=[0,1,2,3,4,5,6,7,8,9].filter(w=>free(x,w)&&free(y,w));
+      if(slots.length&&schedulePair(x,y,slots[0],'protectedRivalry')){protectedRival.add(norm(x));protectedRival.add(norm(y))}
+    }
     const rivalryCandidates=[];
     for(let i=0;i<allTeams.length;i++)for(let k=i+1;k<allTeams.length;k++){
       const x=allTeams[i],y=allTeams[k],meetings=pairMeetings(x,y);
@@ -303,9 +315,33 @@
   }
   function restoreBaselineProfiles(){for(const [team,row] of Object.entries(baselineProfiles)){const name=allTeams.find(t=>norm(t)===team),entry=name?window.simulator?.teams?.[name]:null;if(entry)Object.assign(entry,row)}}
   function summarizeSeason(R){
-    const champions={};for(const [c,p] of R.playoffs||[])if(classes().includes(c))champions[c]=p.champion?.team||'—';
-    const top=[...R.stats.values()].sort((a,b)=>b.w-a.w||a.l-b.l||b.elo-a.elo||a.team.localeCompare(b.team))[0];
-    return{year:Number(R.season),classOrder:[...classes()],champions,topRecord:top?`${top.team} ${top.w}-${top.l}`:'—'};
+    const champions={},runnerUps={},playoffTeams={};
+    for(const [c,p] of R.playoffs||[]){
+      if(!classes().includes(c))continue;
+      champions[c]=p.champion?.team||'—';
+      const fg=p.finalGame,runner=fg?.loser?.team||(fg?.winner?.team===fg?.a?.team?fg?.b?.team:fg?.a?.team)||'—';
+      runnerUps[c]=runner;
+      playoffTeams[c]=(p.field||[]).map(x=>x.team);
+    }
+    const rows=[...R.stats.values()],top=rows.slice().sort((a,b)=>b.w-a.w||a.l-b.l||b.elo-a.elo||a.team.localeCompare(b.team))[0];
+    const teamRecords=Object.fromEntries(rows.map(s=>[s.team,{w:s.w,l:s.l,pf:s.pf,pa:s.pa,elo:s.elo,classification:s.classification,region:s.region}]));
+    const streaks={};
+    for(const s of rows){
+      const games=R.results?.get(s.team)||[];let cur=0,best=0;
+      for(const g of games){if(g.won){cur++;best=Math.max(best,cur)}else cur=0}
+      streaks[s.team]=best;
+    }
+    const rivalryRecords={};
+    for(const rv of state.protectedRivalries||[]){
+      const a=resolveTeam(rv?.a),b=resolveTeam(rv?.b);if(!a||!b)continue;
+      const k=[a,b].sort().join('|||'),rec={a,b,aWins:0,bWins:0};
+      for(const g of R.simGames||[]){
+        if(!((norm(g.a)===norm(a)&&norm(g.b)===norm(b))||(norm(g.a)===norm(b)&&norm(g.b)===norm(a))))continue;
+        const aWon=norm(g.a)===norm(a)?g.aWon:!g.aWon;if(aWon)rec.aWins++;else rec.bWins++;
+      }
+      rivalryRecords[k]=rec;
+    }
+    return{year:Number(R.season),classOrder:[...classes()],champions,runnerUps,playoffTeams,teamRecords,streaks,rivalryRecords,topRecord:top?`${top.team} ${top.w}-${top.l}`:'—'};
   }
   function renderDynastyHistory(){
     const host=$('dynastyHistory');if(!host)return;
@@ -342,13 +378,13 @@
       if(restart||year===2026){dynasty={currentYear:2025,history:[],nextStartElos:null,nextProfiles:null,state:clone(state),scheduleMode:$('scheduleMode').value};restoreBaselineProfiles()}
       else applyProfiles(dynasty?.nextProfiles||{});
       const meta=metaFromState(),startElos=year===2026?new Map(baseData.startElos):objectToEloMap(dynasty?.nextStartElos||{});
-      const customAlignment=alignmentChanged(),requestedMode=year===2026?$('scheduleMode').value:'rebuild',mode=(year===2026&&!customAlignment)?requestedMode:'rebuild',rebuilt=mode==='rebuild'?rebuildSchedule(meta,year,startElos):null,season=rebuilt?.season||clone(baseData.season);
+      const customAlignment=alignmentChanged(),requestedMode=year===2026?$('scheduleMode').value:'rebuild',mode=(year===2026&&!customAlignment)?requestedMode:'rebuild',override=state.scheduleOverrides?.[year],rebuilt=override?{season:{season:year,games:clone(override)},warnings:[],counts:null}:mode==='rebuild'?rebuildSchedule(meta,year,startElos):null,season=rebuilt?.season||clone(baseData.season);
       season.season=year;
-      const F=window.RUSFullSeason;F.data={...baseData,meta,season,startElos,seasonYear:year};
-      simStatus(year===2026&&mode==='real'?'Using the real 2026 schedule because the alignment matches the current UHSAA setup.':customAlignment&&year===2026?`Custom alignment detected. Rebuilt ${year} so every region uses the new round-robin first, then rivalries, same-class games and ELO-matched games. Running the RUS model…`:`Generated ${season.games.length} games for ${year}: region games first, protected rivalries, same-class matchups, then ELO-matched games. Running the RUS model…`);
+      const F=window.RUSFullSeason;F.data={...baseData,meta,season,startElos,seasonYear:year,playoffSettings:clone(state.playoffSettings||{})};
+      simStatus(override?`Using your edited ${year} schedule (${season.games.length} games). Running the RUS model…`:year===2026&&mode==='real'?'Using the real 2026 schedule because the alignment matches the current UHSAA setup.':customAlignment&&year===2026?`Custom alignment detected. Rebuilt ${year} so every region uses the new round-robin first, then rivalries, same-class games and ELO-matched games. Running the RUS model…`:`Generated ${season.games.length} games for ${year}: region games first, protected rivalries, same-class matchups, then ELO-matched games. Running the RUS model…`);
       const R=await F.simulate((Date.now()+year*997)%100000);R.playoffs?.delete?.('OPEN');R.playoffs?.delete?.('ALLTEAM');lastResult=R;await F.render(R,$('customSimOutput'));const playoffTitle=$('customSimOutput')?.querySelector('.fsp-title'),playoffSub=$('customSimOutput')?.querySelector('.fsp-sub');if(playoffTitle)playoffTitle.textContent=`${year} Playoff Brackets`;if(playoffSub)playoffSub.textContent=`${classes().length} classification playoff${classes().length===1?'':'s'} based on your custom alignment.`;
       const end=endingElos(R),profiles=nextProfiles(R,end),summary=summarizeSeason(R);
-      dynasty.currentYear=year;dynasty.history=(dynasty.history||[]).filter(x=>Number(x.year)!==year);dynasty.history.push(summary);dynasty.nextStartElos=eloMapToObject(end);dynasty.nextProfiles=profiles;dynasty.state=clone(state);dynasty.scheduleMode=$('scheduleMode').value;persistDynasty();
+      dynasty.currentYear=year;dynasty.history=(dynasty.history||[]).filter(x=>Number(x.year)!==year);dynasty.history.push(summary);dynasty.nextStartElos=eloMapToObject(end);dynasty.nextProfiles=profiles;dynasty.state=clone(state);dynasty.scheduleMode=$('scheduleMode').value;dynasty.lastSchedule=clone(season.games);dynasty.realignmentDue=year%Math.max(1,Number(state.realignmentInterval)||2)===0;persistDynasty();
       const warning=rebuilt?.warnings?.length?` ${rebuilt.warnings.join(' ')}`:'';
       simStatus(`${year} complete • ${R.games} regular-season games • ending ELOs and team form are saved for ${year+1}.${warning}`,warning?'warn':'good');
     }catch(e){console.error(e);simStatus(`The ${year} dynasty season could not be completed.`,'bad')}
@@ -369,5 +405,25 @@
       state=currentState();refreshSaved();bind();render();fillMover();updateDynastyControls();status(`${allTeams.length} Utah football programs loaded. Build your alignment, then start a continuing dynasty.`,'good');
     }catch(e){console.error(e);status('Classification builder data could not be loaded.','bad')}
   }
+  window.RUSClassificationBuilder={
+    getState:()=>clone(state),
+    setState:next=>{state=normalizeState(next);render();fillMover();updateDynastyControls();},
+    getClasses:()=>classes(),
+    getTeams:()=>[...allTeams],
+    getSelectedTeam:()=>selectedTeam,
+    getDynasty:()=>dynasty?clone(dynasty):readDynasty(),
+    getLastResult:()=>lastResult,
+    getBaseData:()=>baseData,
+    getMeta:()=>metaFromState(),
+    render:()=>{render();fillMover();updateDynastyControls()},
+    simulateYear:(year,restart=false)=>simulateYear(Number(year)||2026,!!restart),
+    rebuildSchedule:(year=2026)=>rebuildSchedule(metaFromState(),Number(year)||2026,Number(year)===2026?new Map(baseData?.startElos||[]):objectToEloMap(dynasty?.nextStartElos||{})),
+    setScheduleOverride:(year,games)=>{state.scheduleOverrides=state.scheduleOverrides||{};state.scheduleOverrides[Number(year)]=clone(games||[]);render();},
+    clearScheduleOverride:year=>{if(state.scheduleOverrides)delete state.scheduleOverrides[Number(year)]},
+    saveSetup:saveScenario,
+    classLabel,
+    norm
+  };
+  document.dispatchEvent(new CustomEvent('rus-classification-builder-ready'));
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
