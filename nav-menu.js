@@ -97,10 +97,6 @@
       ["Football Scoreboard", "scoreboard.html"],
       ["Boys Basketball Scoreboard", "boys-basketball-scoreboard.html"],
     ],
-    brackets: [
-      ["Football Playoff Bracket", "playoff-picture.html"],
-      ["Boys Basketball Brackets", "boys-basketball-brackets.html"],
-    ],
     stats: [
       ["Stat Leaders", "stat-leaders-hub.html"],
       ["Weekly Awards", "weekly-awards.html"],
@@ -488,7 +484,6 @@
         link("My Teams", "my-teams.html"),
         link("Games", "games.html"),
         dropdown("Scoreboard", "scoreboard"),
-        dropdown("Brackets", "brackets"),
         link("Rankings", "rankings.html"),
         link("Standings", "standings.html"),
         link("Pick'em", "simulators.html?tab=weekly"),
