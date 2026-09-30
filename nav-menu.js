@@ -93,6 +93,13 @@
       ["Player Comparison", "player-compare.html"],
       ["Football Map", "map.html"],
     ],
+    basketball: [
+      ["Scoreboard", "boys-basketball-scoreboard.html"],
+      ["Teams", "boys-basketball-teams.html"],
+      ["Stat Leaders", "basketball-stat-leaders.html"],
+      ["Brackets", "boys-basketball-brackets.html"],
+      ["Greatest Seasons", "boys-basketball-greatest-seasons.html"],
+    ],
     stats: [
       ["Stat Leaders", "stat-leaders.html"],
       ["Weekly Awards", "weekly-awards.html"],
@@ -171,7 +178,7 @@
     addScript("app-shell-polish.js?v=20260921-shared-audit1", "rusAppShellPolish", true);
     const fullSharePages = [
       "records.html","greatest-seasons.html","games.html","championships.html",
-      "teams.html","boys-basketball-teams.html","rankings.html","standings.html","scorigami.html","out-of-state.html",
+      "teams.html","boys-basketball-teams.html","boys-basketball-scoreboard.html","rankings.html","standings.html","scorigami.html","out-of-state.html",
       "compare.html","simulators.html","mvp-race.html","all-state-watch.html",
       "all-utah.html","awards-2025.html","team-stats.html"
     ];
@@ -206,6 +213,7 @@
       "team.html",
       "boys-basketball-teams.html",
       "boys-basketball-team.html",
+      "boys-basketball-scoreboard.html",
       "scoreboard.html",
       "standings.html",
       "rankings.html",
@@ -479,6 +487,7 @@
         link("My Teams", "my-teams.html"),
         link("Games", "games.html"),
         link("Scoreboard", "scoreboard.html"),
+        dropdown("Basketball", "basketball"),
         link("Rankings", "rankings.html"),
         link("Standings", "standings.html"),
         link("Pick'em", "simulators.html?tab=weekly"),
