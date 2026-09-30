@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Create a Classification | Rural Utah Sports</title>
 <meta name="description" content="Build custom Utah high school football classifications and regions, then simulate the season with the Rural Utah Sports model.">
-<link rel="stylesheet" href="classification-builder.css?v=20260929a">
+<link rel="stylesheet" href="classification-builder.css?v=20260929-dynasty1">
 <link rel="manifest" href="manifest.webmanifest?v=20260817-opt1">
 <meta name="theme-color" content="#F14D07">
 <link rel="apple-touch-icon" href="RUSlogoNew.png">
@@ -18,7 +18,7 @@
   <div>
     <div class="eyebrow">Football Sandbox</div>
     <h2>Create the Classification</h2>
-    <p>Move any Utah football team into any classification and region, save different realignment ideas, then run the current RUS season simulator with your custom setup.</p>
+    <p>Move any Utah football team into any classification and region, then run a continuing RUS dynasty. Each season carries team strength forward and generates the next year's schedule from your alignment and rivalry history.</p>
   </div>
   <a class="secondary-link" href="simulators.html?tab=full-season">Full Season Simulator</a>
 </section>
@@ -34,10 +34,11 @@
   <div class="setup-actions">
     <button class="secondary" id="resetCurrent" type="button">Reset to Current Alignment</button>
     <button class="secondary" id="clearRegions" type="button">Clear All Regions</button>
+    <button class="secondary" id="resumeDynasty" type="button" hidden>Resume Dynasty</button>
     <div class="field mode-field"><label>Season schedule</label><select id="scheduleMode"><option value="real">Keep real 2026 schedule</option><option value="rebuild">Rebuild region games</option></select></div>
-    <button class="action simulate-action" id="runCustomSeason" type="button" disabled>Simulate Custom Season</button>
+    <button class="action simulate-action" id="runCustomSeason" type="button" disabled>Start 2026 Dynasty</button>
   </div>
-  <p class="note"><strong>Keep real schedule:</strong> your new alignment changes region records and playoff classification, but teams keep their actual 2026 opponents. <strong>Rebuild region games:</strong> each region gets a round-robin schedule first, then the simulator keeps as many real non-region games as possible up to 10 games per team.</p>
+  <p class="note"><strong>2026:</strong> keep the real schedule or rebuild it from your custom regions. <strong>2027 and beyond:</strong> schedules are generated automatically with region games first, a protected historical rivalry where possible, same-class non-region games next, then ELO-matched opponents. Ending ELO, win rate, scoring profile and recent form carry into the next season.</p>
   <div id="builderStatus" class="status">Loading teams and simulator…</div>
 </section>
 
@@ -45,7 +46,7 @@
   <h3>Move a Team</h3>
   <div class="move-grid">
     <div class="field"><label>Team</label><select id="teamSelect"></select></div>
-    <div class="field><label>Classification</label><select id="classSelect"></select></div>
+    <div class="field"><label>Classification</label><select id="classSelect"></select></div>
     <div class="field"><label>Region</label><select id="regionSelect"></select></div>
     <button class="action" id="moveTeam" type="button">Move Team</button>
   </div>
@@ -60,14 +61,25 @@
 </section>
 
 <section id="simulationSection" class="simulation-section" hidden>
-  <div class="simulation-head"><div><div class="eyebrow">Simulation Results</div><h2>Custom Season</h2></div><button class="secondary" id="scrollToBuilder" type="button">Back to Builder</button></div>
+  <div class="simulation-head">
+    <div><div class="eyebrow">Simulation Results</div><h2>Custom Dynasty</h2></div>
+    <div class="simulation-actions">
+      <button class="secondary" id="scrollToBuilder" type="button">Back to Builder</button>
+      <button class="danger" id="resetDynasty" type="button" hidden>Restart Dynasty</button>
+      <button class="action" id="advanceSeason" type="button" hidden>Advance to 2027</button>
+    </div>
+  </div>
+  <div class="dynasty-bar">
+    <div><span class="eyebrow">Current Timeline</span><strong id="dynastyYear">2026</strong><small>Ending ELO carries into the next season.</small></div>
+    <div id="dynastyHistory" class="dynasty-history"></div>
+  </div>
   <div id="customSimStatus" class="status"></div>
   <div id="customSimOutput"></div>
 </section>
 </main>
 <footer><p><strong>RURAL UTAH SPORTS</strong> · Custom Classification Sandbox</p><p>This tool changes only your local what-if setup. It does not modify official UHSAA classifications or the site's source data.</p></footer>
 <script src="classification-builder-engine.js?v=20260929a"></script>
-<script src="classification-builder.js?v=20260929a"></script>
+<script src="classification-builder.js?v=20260929-dynasty1"></script>
 <script src="nav-menu.js?v=20260929-classification-builder1"></script>
 </body>
 </html>
