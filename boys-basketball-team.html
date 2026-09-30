@@ -323,10 +323,10 @@ function renderHistoricalGames(entry,team,allTeams,colorRows,teamColor){
     const score=Number.isFinite(Number(game.teamScore))&&Number.isFinite(Number(game.opponentScore))?Number(game.teamScore)+'–'+Number(game.opponentScore):'';
     const resultText='<span class="'+resultClass+'">'+esc((result?result+' ':'')+score)+'</span>';
     const playoff=game.playoff===true||Boolean(clean(game.postseasonRound||game.playoffRound));
-    const gameType=playoff?'<span class="playoff-badge">Playoff</span>':'<span class="status">Regular</span>';
+    const gameType=playoff?'<span class="playoff-badge">Playoff</span>':'<span class="regular-badge">—</span>';
     return'<tr class="schedule-row'+(playoff?' playoff-row':'')+'"><td>'+esc(dateLabel(game.date))+'</td><td class="opponent">'+label+stateTag+'</td><td class="location">'+esc(location)+'</td><td>'+resultText+'</td><td>'+gameType+'</td></tr>';
   }).join('');
-  return'<div class="table-wrap" style="--team-color:'+safeColor(teamColor,'#333333')+'"><table><thead><tr><th>Date</th><th>Opponent</th><th>Location</th><th>Result</th><th>Game Type</th></tr></thead><tbody>'+body+'</tbody></table></div>';
+  return'<div class="table-wrap" style="--team-color:'+safeColor(teamColor,'#333333')+'"><table><thead><tr><th>Date</th><th>Opponent</th><th>Location</th><th>Result</th><th>Playoff</th></tr></thead><tbody>'+body+'</tbody></table></div>';
 }
 function historicalRecord(entry){
   const record={w:0,l:0,t:0,g:0};
