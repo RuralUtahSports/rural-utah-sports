@@ -183,6 +183,48 @@
     const allTeam = simulateBracket("ALLTEAM", everyEligible, true);
     if (allTeam) out.set("ALLTEAM", allTeam);
     R.playoffs = out;
+    // Playoff games count toward each team's overall season record, scoring
+    // totals and carried form, but do not change the already-calculated RPI
+    // or region record.
+    for (const bracket of out.values()) {
+      if (bracket?.exhibition) continue;
+      for (const round of bracket.rounds || []) {
+        for (const g of round.games || []) {
+          if (g?.bye || !g?.a?.team || !g?.b?.team) continue;
+          const a = R.stats.get(g.a.team), b = R.stats.get(g.b.team);
+          if (!a || !b) continue;
+          const aWon = g.winner?.team === g.a.team;
+          a[aWon ? "w" : "l"]++;
+          b[aWon ? "l" : "w"]++;
+          a.pf += Number(g.scoreA) || 0;
+          a.pa += Number(g.scoreB) || 0;
+          b.pf += Number(g.scoreB) || 0;
+          b.pa += Number(g.scoreA) || 0;
+          if (R.results?.get(g.a.team))
+            R.results.get(g.a.team).push({
+              date: `Playoffs • ${round.label}`,
+              opponent: g.b.team,
+              score: `${g.scoreA}-${g.scoreB}`,
+              won: aWon,
+              region: false,
+              postseason: true,
+              round: round.label,
+              prob: Number(g.probA) || 0.5,
+            });
+          if (R.results?.get(g.b.team))
+            R.results.get(g.b.team).push({
+              date: `Playoffs • ${round.label}`,
+              opponent: g.a.team,
+              score: `${g.scoreB}-${g.scoreA}`,
+              won: !aWon,
+              region: false,
+              postseason: true,
+              round: round.label,
+              prob: 1 - (Number(g.probA) || 0.5),
+            });
+        }
+      }
+    }
     return R;
   };
   const base = F.simulate;
