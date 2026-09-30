@@ -33,9 +33,10 @@
     const modelAdj=(prob1-(100-prob1))*.10;p1+=modelAdj;p2-=modelAdj;
     const l1=classLevel(a.classification),l2=classLevel(b.classification),classAdj=(l1==null||l2==null)?0:clamp((l1-l2)*8,-48,48);
     p1+=classAdj/2;p2-=classAdj/2;
-    p1=Math.max(0,Math.round(p1));p2=Math.max(0,Math.round(p2));
+    p1=clamp(Math.max(0,Math.round(p1)),0,70);p2=clamp(Math.max(0,Math.round(p2)),0,70);
     if(p1===1)p1=3;if(p2===1)p2=3;
-    if(prob1>=50&&p1<=p2)p1=p2+3;if(prob1<50&&p2<=p1)p2=p1+3;
+    if(prob1>=50&&p1<=p2){p1=Math.min(70,p2+3);if(p1<=p2)p2=Math.max(0,p1-3)}
+    if(prob1<50&&p2<=p1){p2=Math.min(70,p1+3);if(p2<=p1)p1=Math.max(0,p2-3)}
     return{a,b,ctx,prob1,prob2:100-prob1,p1,p2,winner:prob1>=50?t1:t2};
   };
 })();
