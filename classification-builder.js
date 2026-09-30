@@ -209,14 +209,22 @@
     for(const s of R.stats.values()){
       const rows=R.results?.get(s.team)||[],gp=s.w+s.l,last=rows.slice(-5),recent10=rows.slice(-10);
       const diff=recent10.length?recent10.reduce((n,g)=>{const [pf,pa]=String(g.score||'0-0').split('-').map(Number);return n+(pf-pa)},0)/recent10.length:0;
-      out[norm(s.team)]={elo:Number(endElos.get(norm(s.team)))||Number(s.elo)||1500,winPct:gp?s.w/gp:.5,avgPF:gp?s.pf/gp:0,avgPA:gp?s.pa/gp:0,avgDiff:gp?(s.pf-s.pa)/gp:0,recent10Diff:diff,recentForm:last.map(g=>g.won?'W':'L').join('-')};
+      out[norm(s.team)]={elo:Number(endElos.get(norm(s.team)))||Number(s.elo)||1500,winPct:gp?s.w/gp:.5,avgPF:Math.max(5,Math.min(70,gp?s.pf/gp:24)),avgPA:Math.max(5,Math.min(70,gp?s.pa/gp:21)),avgDiff:Math.max(-50,Math.min(50,gp?(s.pf-s.pa)/gp:0)),recent10Diff:Math.max(-50,Math.min(50,diff)),recentForm:last.map(g=>g.won?'W':'L').join('-')};
     }
     return out;
   }
   function applyProfiles(profiles){
+    const bounded=(v,lo,hi,fallback)=>Math.max(lo,Math.min(hi,Number.isFinite(Number(v))?Number(v):fallback));
     for(const [team,row] of Object.entries(profiles||{})){
       const name=allTeams.find(t=>norm(t)===team),entry=name?window.simulator?.teams?.[name]:null;if(!entry)continue;
-      for(const k of ['elo','winPct','avgPF','avgPA','avgDiff','recent10Diff','recentForm'])if(row[k]!=null)entry[k]=row[k];
+      const base=baselineProfiles[team]||{},blend=(v,b,w=.65)=>bounded(v,-999,999,Number(b)||0)*w+(Number(b)||0)*(1-w);
+      if(row.elo!=null)entry.elo=Number(row.elo)||Number(base.elo)||1500;
+      if(row.winPct!=null)entry.winPct=bounded(blend(row.winPct,base.winPct,.72),.05,.95,.5);
+      if(row.avgPF!=null)entry.avgPF=bounded(blend(row.avgPF,base.avgPF,.62),5,55,24);
+      if(row.avgPA!=null)entry.avgPA=bounded(blend(row.avgPA,base.avgPA,.62),5,55,21);
+      if(row.avgDiff!=null)entry.avgDiff=bounded(blend(row.avgDiff,base.avgDiff,.60),-40,40,0);
+      if(row.recent10Diff!=null)entry.recent10Diff=bounded(blend(row.recent10Diff,base.recent10Diff,.70),-45,45,0);
+      if(row.recentForm!=null)entry.recentForm=row.recentForm;
     }
   }
   function restoreBaselineProfiles(){for(const [team,row] of Object.entries(baselineProfiles)){const name=allTeams.find(t=>norm(t)===team),entry=name?window.simulator?.teams?.[name]:null;if(entry)Object.assign(entry,row)}}
