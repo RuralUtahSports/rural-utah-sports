@@ -182,10 +182,11 @@
       card.onpointerup=e=>{if(e.pointerType!=='touch'||!tapMoveTeam||e.target.closest('button,.team-chip,input,select'))return;e.preventDefault();send()};
     });
     const unCard=$('unassignedCard');
-    if(unCard)unCard.onclick=e=>{
-      if(!tapMoveTeam||e.target.closest('button,.team-chip,input,select'))return;
-      const team=tapMoveTeam;tapMoveTeam='';unassign(team);
-    };
+    if(unCard){
+      const sendUnassigned=()=>{if(!tapMoveTeam)return;const team=tapMoveTeam;tapMoveTeam='';unassign(team)};
+      unCard.onclick=e=>{if(!tapMoveTeam||e.target.closest('button,.team-chip,input,select'))return;sendUnassigned()};
+      unCard.onpointerup=e=>{if(e.pointerType!=='touch'||!tapMoveTeam||e.target.closest('button,.team-chip,input,select'))return;e.preventDefault();sendUnassigned()};
+    }
     document.querySelectorAll('.team-drop').forEach(d=>{d.ondragover=e=>{e.preventDefault();d.classList.add('drag-over')};d.ondragleave=()=>d.classList.remove('drag-over');d.ondrop=e=>{e.preventDefault();e.stopPropagation();d.classList.remove('drag-over');const team=e.dataTransfer.getData('text/plain')||dragTeam;if(!team)return;tapMoveTeam='';if(d.id==='unassignedTeams'||d.classList.contains('unassigned-drop'))unassign(team);else move(team,d.dataset.dropClass,d.dataset.dropRegion);dragTeam=''}});
   }
   function fillMover(){
