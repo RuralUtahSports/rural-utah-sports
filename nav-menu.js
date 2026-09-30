@@ -77,8 +77,8 @@
       ["Rivalry Hub", "rivalry.html"],
       ["Dynasty Explorer", "dynasty.html"],
       ["History Lab", "history-lab.html"],
-      ["Greatest Seasons", "greatest-seasons.html"],
-      ["Basketball Greatest Seasons", "boys-basketball-greatest-seasons.html"],
+      ["Football Greatest Seasons", "greatest-seasons.html"],
+      ["Boys Basketball Greatest Seasons", "boys-basketball-greatest-seasons.html"],
       ["Records", "records.html"],
     ],
     analytics: [
@@ -93,11 +93,13 @@
       ["Player Comparison", "player-compare.html"],
       ["Football Map", "map.html"],
     ],
-    basketball: [
-      ["Scoreboard", "boys-basketball-scoreboard.html"],
-      ["Teams", "boys-basketball-teams.html"],
-      ["Brackets", "boys-basketball-brackets.html"],
-      ["Greatest Seasons", "boys-basketball-greatest-seasons.html"],
+    scoreboard: [
+      ["Football Scoreboard", "scoreboard.html"],
+      ["Boys Basketball Scoreboard", "boys-basketball-scoreboard.html"],
+    ],
+    brackets: [
+      ["Football Playoff Bracket", "playoff-picture.html"],
+      ["Boys Basketball Brackets", "boys-basketball-brackets.html"],
     ],
     stats: [
       ["Stat Leaders", "stat-leaders-hub.html"],
@@ -123,7 +125,7 @@
       location.pathname.split("/").pop() || "index.html"
     ).toLowerCase(),
     active = (href) => path === href.toLowerCase(),
-    groupActive = (items) => items.some(([, href]) => active(href));
+    groupActive = (items) => items.some(([, href]) => active(href)) || (items.some(([label]) => label === "Stat Leaders") && ["stat-leaders.html", "basketball-stat-leaders.html"].includes(path));
   function injectStyles() {
     if (document.getElementById("rus-nav-v2")) return;
     const style = document.createElement("style");
@@ -485,8 +487,8 @@
         link("Players", "players.html"),
         link("My Teams", "my-teams.html"),
         link("Games", "games.html"),
-        link("Scoreboard", "scoreboard.html"),
-        dropdown("Basketball", "basketball"),
+        dropdown("Scoreboard", "scoreboard"),
+        dropdown("Brackets", "brackets"),
         link("Rankings", "rankings.html"),
         link("Standings", "standings.html"),
         link("Pick'em", "simulators.html?tab=weekly"),
