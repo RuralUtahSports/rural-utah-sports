@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const CLASSES=['6A','5A','4A','3A','2A','1A','8P'];
+  const DEFAULT_CLASSES=['6A','5A','4A','3A','2A','1A','8P'];
   const STORE='rus-custom-classifications-v1';
   const DYNASTY_STORE='rus-custom-classification-dynasty-v1';
   let baseData=null,state=null,allTeams=[],dragTeam='',selectedTeam='',dynasty=null,lastResult=null,baselineProfiles={};
@@ -8,6 +8,21 @@
   const norm=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
   const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const clone=v=>JSON.parse(JSON.stringify(v));
+  const classLabel=c=>c==='8P'?'8-Player':c;
+  const classes=()=>state?.classOrder?.length?[...state.classOrder]:Object.keys(state?.regions||{});
+  function normalizeState(raw){
+    const s=raw&&typeof raw==='object'?clone(raw):{};
+    s.regions=s.regions&&typeof s.regions==='object'?s.regions:{};
+    const known=Array.isArray(s.classOrder)?s.classOrder.filter(c=>s.regions[c]):[];
+    const extras=Object.keys(s.regions).filter(c=>!known.includes(c));
+    s.classOrder=[...known,...extras];
+    if(!s.classOrder.length){
+      s.classOrder=[...DEFAULT_CLASSES];
+      for(const c of s.classOrder)if(!s.regions[c])s.regions[c]=[];
+    }
+    s.unassigned=Array.isArray(s.unassigned)?s.unassigned:[];
+    return s;
+  }
   function seasonWeekDates(year){
     const first=new Date(Number(year),7,1),offset=(5-first.getDay()+7)%7,day=1+offset+7;
     return Array.from({length:10},(_,i)=>{const d=new Date(Number(year),7,day+i*7),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');return `${d.getFullYear()}-${m}-${dd}`});
@@ -24,7 +39,7 @@
   async function loadEngine(){
     for(const src of ['season-simulator-core.js?v=20260813a','season-simulator-score.js?v=20260813e','full-season-core.js?v=20260824b','full-season-run.js?v=20260813b','full-season-view.js?v=20260813a','full-season-playoffs.js?v=20260929-record1','full-season-playoff-view.js?v=20260824-boxscroll1','full-season-colors.js?v=20260929-builder1']) await script(src);
   }
-  function emptyState(){return{regions:Object.fromEntries(CLASSES.map(c=>[c,[]])),unassigned:[]}}
+  function emptyState(){return{classOrder:[...DEFAULT_CLASSES],regions:Object.fromEntries(DEFAULT_CLASSES.map(c=>[c,[]])),unassigned:[]}}
   function currentState(){
     const next=emptyState(),seen=new Set();
     for(const r of baseData.alignment?.regions||[]){
@@ -36,7 +51,7 @@
     }
     for(const t of allTeams){
       if(seen.has(norm(t)))continue;
-      const meta=baseData.meta.get(norm(t)),c=CLASSES.includes(meta?.classification)?meta.classification:'6A';
+      const meta=baseData.meta.get(norm(t)),c=DEFAULT_CLASSES.includes(meta?.classification)?meta.classification:'6A';
       let row=next.regions[c].find(r=>r.name==='Independent');
       if(!row){row={name:'Independent',teams:[]};next.regions[c].push(row)}
       row.teams.push(t);seen.add(norm(t));
@@ -49,12 +64,12 @@
   }
   function teamLocation(team){
     const k=norm(team);
-    for(const c of CLASSES)for(const r of state.regions[c]||[])if((r.teams||[]).some(t=>norm(t)===k))return{classification:c,region:r.name};
+    for(const c of classes())for(const r of state.regions[c]||[])if((r.teams||[]).some(t=>norm(t)===k))return{classification:c,region:r.name};
     return null;
   }
   function removeTeam(team){
     const k=norm(team);
-    for(const c of CLASSES)for(const r of state.regions[c]||[])r.teams=(r.teams||[]).filter(t=>norm(t)!==k);
+    for(const c of classes())for(const r of state.regions[c]||[])r.teams=(r.teams||[]).filter(t=>norm(t)!==k);
     state.unassigned=(state.unassigned||[]).filter(t=>norm(t)!==k);
   }
   function ensureRegion(c,name){
@@ -62,25 +77,42 @@
     let r=rows.find(x=>x.name===n);if(!r){r={name:n||`Region ${rows.length+1}`,teams:[]};rows.push(r)}return r;
   }
   function move(team,c,region){
-    const real=resolveTeam(team);if(!real||!CLASSES.includes(c))return;
+    const real=resolveTeam(team);if(!real||!classes().includes(c))return;
     removeTeam(real);ensureRegion(c,region).teams.push(real);selectedTeam=real;render();syncMover();
   }
   function unassign(team){const real=resolveTeam(team);if(!real)return;removeTeam(real);state.unassigned.push(real);selectedTeam=real;render();syncMover()}
-  function addRegion(c){const name=prompt(`New ${c==='8P'?'8-Player':c} region name:`);if(!name?.trim())return;ensureRegion(c,name.trim());render();syncMover()}
+  function addClass(){
+    const raw=prompt('New classification name (example: 7A):');if(!raw?.trim())return;
+    let name=raw.trim().toUpperCase().replace(/\s+/g,' ');
+    if(name==='8-PLAYER'||name==='8 PLAYER')name='8P';
+    if(classes().some(c=>norm(c)===norm(name))){status(`${name} already exists.`,'warn');return}
+    state.classOrder.push(name);state.regions[name]=[];render();fillMover();$('classSelect').value=name;fillRegions();status(`Added ${classLabel(name)}. Add regions, then move teams into it.`,'good');
+  }
+  function deleteClass(c){
+    if(!classes().includes(c))return;
+    if(classes().length<=1){status('Keep at least one classification. Add another class before deleting this one.','warn');return}
+    const teams=(state.regions[c]||[]).flatMap(r=>r.teams||[]);
+    if(!confirm(`Delete ${classLabel(c)}? ${teams.length} team${teams.length===1?'':'s'} will move to Unassigned.`))return;
+    for(const t of teams)state.unassigned.push(t);
+    state.unassigned=[...new Map(state.unassigned.map(t=>[norm(t),t])).values()].sort();
+    delete state.regions[c];state.classOrder=state.classOrder.filter(x=>x!==c);
+    render();fillMover();status(`Deleted ${classLabel(c)}. Its teams were moved to Unassigned.`,'good');
+  }
+  function addRegion(c){const name=prompt(`New ${classLabel(c)} region name:`);if(!name?.trim())return;ensureRegion(c,name.trim());render();syncMover()}
   function renameRegion(c,old){const row=state.regions[c].find(r=>r.name===old);if(!row)return;const name=prompt('Rename region:',old);if(!name?.trim())return;row.name=name.trim();render();syncMover()}
   function deleteRegion(c,name){const i=state.regions[c].findIndex(r=>r.name===name);if(i<0)return;const [r]=state.regions[c].splice(i,1);for(const t of r.teams||[])state.unassigned.push(t);render();syncMover()}
   function chip(team){const selected=norm(team)===norm(selectedTeam)?' selected':'';return `<button type="button" class="team-chip${selected}" draggable="true" data-team="${esc(team)}" title="Tap to select ${esc(team)}">${esc(team)}</button>`}
   function render(){
     const q=String($('teamSearch')?.value||'').trim().toUpperCase(),grid=$('classGrid');grid.innerHTML='';
     let assigned=0;
-    for(const c of CLASSES){
+    for(const c of classes()){
       const rows=state.regions[c]||[],count=rows.reduce((n,r)=>n+(r.teams||[]).length,0);assigned+=count;
-      const section=document.createElement('section');section.className='class-section';section.innerHTML=`<div class="class-head"><div><span class="class-kicker">${c==='6A'?'Open-capable division':c==='8P'?'Eight-player':'Football classification'}</span><h2>${c==='8P'?'8-Player':c}</h2></div><div class="class-tools"><span class="count-pill">${count}</span><button type="button" class="tiny-btn" data-add-region="${c}">+ Region</button></div></div><div class="regions"></div>`;
+      const section=document.createElement('section');section.className='class-section';section.innerHTML=`<div class="class-head"><div><span class="class-kicker">${c==='8P'?'Eight-player':'Football classification'}</span><h2>${esc(classLabel(c))}</h2></div><div class="class-tools"><span class="count-pill">${count}</span><button type="button" class="tiny-btn" data-add-region="${esc(c)}">+ Region</button><button type="button" class="tiny-btn class-delete" data-delete-class="${esc(c)}">Delete Class</button></div></div><div class="regions"></div>`;
       const host=section.querySelector('.regions');
       for(const r of rows){
         const card=document.createElement('article');card.className='region-card';card.dataset.classification=c;card.dataset.region=r.name;
         const visible=(r.teams||[]).filter(t=>!q||String(t).toUpperCase().includes(q));
-        card.innerHTML=`<div class="region-head"><div><span class="class-kicker">${c==='8P'?'8-Player':c}</span><h3>${esc(r.name)}</h3></div><div class="region-actions"><span class="count-pill">${r.teams.length}</span><button type="button" class="tiny-btn" data-rename-region="${esc(c)}|||${esc(r.name)}">Rename</button><button type="button" class="tiny-btn" data-delete-region="${esc(c)}|||${esc(r.name)}">Delete</button></div></div><div class="team-drop" data-drop-class="${esc(c)}" data-drop-region="${esc(r.name)}">${visible.length?visible.sort().map(chip).join(''):`<span class="empty-region">${q?'No matching teams':'Drop teams here'}</span>`}</div>`;
+        card.innerHTML=`<div class="region-head"><div><span class="class-kicker">${esc(classLabel(c))}</span><h3>${esc(r.name)}</h3></div><div class="region-actions"><span class="count-pill">${r.teams.length}</span><button type="button" class="tiny-btn" data-rename-region="${esc(c)}|||${esc(r.name)}">Rename</button><button type="button" class="tiny-btn" data-delete-region="${esc(c)}|||${esc(r.name)}">Delete</button></div></div><div class="team-drop" data-drop-class="${esc(c)}" data-drop-region="${esc(r.name)}">${visible.length?visible.sort().map(chip).join(''):`<span class="empty-region">${q?'No matching teams':'Drop teams here'}</span>`}</div>`;
         host.append(card);
       }
       if(!rows.length){const e=document.createElement('div');e.className='empty-region';e.textContent='No regions yet. Add a region to begin.';host.append(e)}
@@ -93,6 +125,7 @@
   }
   function bindRendered(){
     document.querySelectorAll('[data-add-region]').forEach(b=>b.onclick=()=>addRegion(b.dataset.addRegion));
+    document.querySelectorAll('[data-delete-class]').forEach(b=>b.onclick=()=>deleteClass(b.dataset.deleteClass));
     document.querySelectorAll('[data-rename-region]').forEach(b=>b.onclick=()=>{const [c,r]=b.dataset.renameRegion.split('|||');renameRegion(c,r)});
     document.querySelectorAll('[data-delete-region]').forEach(b=>b.onclick=()=>{const [c,r]=b.dataset.deleteRegion.split('|||');deleteRegion(c,r)});
     document.querySelectorAll('.team-chip').forEach(b=>{
@@ -103,7 +136,7 @@
   }
   function fillMover(){
     $('teamSelect').innerHTML=allTeams.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
-    $('classSelect').innerHTML=CLASSES.map(c=>`<option value="${c}">${c==='8P'?'8-Player':c}</option>`).join('');
+    $('classSelect').innerHTML=classes().map(c=>`<option value="${esc(c)}">${esc(classLabel(c))}</option>`).join('');
     selectedTeam=selectedTeam||allTeams[0]||'';$('teamSelect').value=selectedTeam;syncMover();
   }
   function fillRegions(){
@@ -118,10 +151,10 @@
   function saved(){try{return JSON.parse(localStorage.getItem(STORE)||'[]')}catch{return[]}}
   function refreshSaved(){const list=saved();$('scenarioSelect').innerHTML=list.length?list.map((x,i)=>`<option value="${i}">${esc(x.name)}</option>`).join(''):'<option value="">No saved setups</option>'}
   function saveScenario(){const name=$('scenarioName').value.trim()||`Custom Alignment ${new Date().toLocaleDateString()}`,list=saved(),payload={name,savedAt:new Date().toISOString(),state:clone(state),scheduleMode:$('scheduleMode').value};const i=list.findIndex(x=>x.name.toLowerCase()===name.toLowerCase());if(i>=0)list[i]=payload;else list.push(payload);localStorage.setItem(STORE,JSON.stringify(list.slice(-20)));refreshSaved();$('scenarioSelect').value=String(i>=0?i:list.length-1);status(`Saved “${name}” on this device.`,'good')}
-  function loadScenario(){const i=Number($('scenarioSelect').value),row=saved()[i];if(!row)return;state=clone(row.state);$('scenarioName').value=row.name;$('scheduleMode').value=row.scheduleMode||'real';render();fillMover();status(`Loaded “${row.name}”.`,'good')}
+  function loadScenario(){const i=Number($('scenarioSelect').value),row=saved()[i];if(!row)return;state=normalizeState(row.state);$('scenarioName').value=row.name;$('scheduleMode').value=row.scheduleMode||'real';render();fillMover();status(`Loaded “${row.name}”.`,'good')}
   function deleteScenario(){const i=Number($('scenarioSelect').value),list=saved();if(!Number.isInteger(i)||!list[i])return;const name=list[i].name;list.splice(i,1);localStorage.setItem(STORE,JSON.stringify(list));refreshSaved();status(`Deleted saved setup “${name}”.`)}
-  function clearAllRegions(){for(const c of CLASSES)for(const r of state.regions[c]||[])for(const t of r.teams||[])state.unassigned.push(t);for(const c of CLASSES)state.regions[c]=[];state.unassigned=[...new Map(state.unassigned.map(t=>[norm(t),t])).values()].sort();render();fillMover()}
-  function metaFromState(){const map=new Map();for(const c of CLASSES)for(const r of state.regions[c]||[])for(const t of r.teams||[])map.set(norm(t),{team:t,classification:c,region:r.name});return map}
+  function clearAllRegions(){for(const c of classes())for(const r of state.regions[c]||[])for(const t of r.teams||[])state.unassigned.push(t);for(const c of classes())state.regions[c]=[];state.unassigned=[...new Map(state.unassigned.map(t=>[norm(t),t])).values()].sort();render();fillMover()}
+  function metaFromState(){const map=new Map();for(const c of classes())for(const r of state.regions[c]||[])for(const t of r.teams||[])map.set(norm(t),{team:t,classification:c,region:r.name});return map}
   function alignmentChanged(){
     const custom=metaFromState(),base=baseData?.meta||new Map();
     if(custom.size!==base.size)return true;
@@ -153,7 +186,7 @@
       usedPairs.add(k);pairCounts.set(k,meetings+1);mark(x,w);mark(y,w);games.push({date:dates[w],teamA:x,teamB:y,[kind]:true,rematch:allowRepeat&&meetings>0});return true;
     };
     // 1) Region round robin always comes first.
-    for(const c of CLASSES)for(const r of state.regions[c]||[]){
+    for(const c of classes())for(const r of state.regions[c]||[]){
       const rounds=roundRobin(r.teams||[]),take=Math.min(10,rounds.length),startWeek=10-take;
       if(rounds.length>10)warnings.push(`${c} ${r.name} has ${r.teams.length} teams, so a full round robin does not fit in a 10-game season.`);
       for(let ri=0;ri<take;ri++)for(let pi=0;pi<rounds[ri].length;pi++){
@@ -230,7 +263,7 @@
   function readDynasty(){try{return JSON.parse(localStorage.getItem(DYNASTY_STORE)||'null')}catch{return null}}
   function endingElos(R){
     const out=new Map([...R.stats.values()].map(s=>[norm(s.team),Number(s.elo)||1500]));
-    for(const c of CLASSES){
+    for(const c of classes()){
       const p=R.playoffs?.get(c);if(!p)continue;
       for(const round of p.rounds||[])for(const g of round.games||[]){
         if(g?.a?.team&&Number.isFinite(Number(g.eloAfterA)))out.set(norm(g.a.team),Number(g.eloAfterA));
@@ -264,15 +297,16 @@
   }
   function restoreBaselineProfiles(){for(const [team,row] of Object.entries(baselineProfiles)){const name=allTeams.find(t=>norm(t)===team),entry=name?window.simulator?.teams?.[name]:null;if(entry)Object.assign(entry,row)}}
   function summarizeSeason(R){
-    const champions={};for(const [c,p] of R.playoffs||[])if(CLASSES.includes(c))champions[c]=p.champion?.team||'—';
+    const champions={};for(const [c,p] of R.playoffs||[])if(classes().includes(c))champions[c]=p.champion?.team||'—';
     const top=[...R.stats.values()].sort((a,b)=>b.w-a.w||a.l-b.l||b.elo-a.elo||a.team.localeCompare(b.team))[0];
-    return{year:Number(R.season),champions,topRecord:top?`${top.team} ${top.w}-${top.l}`:'—'};
+    return{year:Number(R.season),classOrder:[...classes()],champions,topRecord:top?`${top.team} ${top.w}-${top.l}`:'—'};
   }
   function renderDynastyHistory(){
     const host=$('dynastyHistory');if(!host)return;
     const rows=dynasty?.history||[];
     if(!rows.length){host.innerHTML='<span class="empty-region">No completed seasons yet.</span>';return}
-    host.innerHTML=`<table><thead><tr><th>Year</th><th>6A</th><th>5A</th><th>4A</th><th>3A</th><th>2A</th><th>1A</th><th>8P</th><th>Best Record</th></tr></thead><tbody>${rows.slice().reverse().map(r=>`<tr><td>${r.year}</td>${CLASSES.map(c=>`<td>${esc(r.champions?.[c]||'—')}</td>`).join('')}<td>${esc(r.topRecord||'—')}</td></tr>`).join('')}</tbody></table>`;
+    const cols=classes();
+    host.innerHTML=`<table><thead><tr><th>Year</th>${cols.map(c=>`<th>${esc(classLabel(c))}</th>`).join('')}<th>Best Record</th></tr></thead><tbody>${rows.slice().reverse().map(r=>`<tr><td>${r.year}</td>${cols.map(c=>`<td>${esc(r.champions?.[c]||'—')}</td>`).join('')}<td>${esc(r.topRecord||'—')}</td></tr>`).join('')}</tbody></table>`;
   }
   function updateDynastyControls(){
     const savedDynasty=readDynasty(),active=!!dynasty,current=Number(dynasty?.currentYear||2025),next=current+1;
@@ -290,7 +324,7 @@
   }
   function resumeDynasty(){
     const row=readDynasty();if(!row)return;
-    dynasty=row;state=clone(row.state||state);$('scheduleMode').value=row.scheduleMode||'rebuild';applyProfiles(row.nextProfiles||{});render();fillMover();$('simulationSection').hidden=false;updateDynastyControls();simStatus(`Dynasty restored through ${row.currentYear}. Advance to ${Number(row.currentYear)+1} when ready.`,'good');$('simulationSection').scrollIntoView({behavior:'smooth',block:'start'});
+    dynasty=row;state=normalizeState(row.state||state);$('scheduleMode').value=row.scheduleMode||'rebuild';applyProfiles(row.nextProfiles||{});render();fillMover();$('simulationSection').hidden=false;updateDynastyControls();simStatus(`Dynasty restored through ${row.currentYear}. Advance to ${Number(row.currentYear)+1} when ready.`,'good');$('simulationSection').scrollIntoView({behavior:'smooth',block:'start'});
   }
   function resetDynasty(){
     localStorage.removeItem(DYNASTY_STORE);dynasty=null;lastResult=null;restoreBaselineProfiles();window.RUSFullSeason.data=baseData;updateDynastyControls();simStatus('Dynasty reset. Your classification layout is still here.','good');$('customSimOutput').innerHTML='';
@@ -306,7 +340,7 @@
       season.season=year;
       const F=window.RUSFullSeason;F.data={...baseData,meta,season,startElos,seasonYear:year};
       simStatus(year===2026&&mode==='real'?'Using the real 2026 schedule because the alignment matches the current UHSAA setup.':customAlignment&&year===2026?`Custom alignment detected. Rebuilt ${year} so every region uses the new round-robin first, then rivalries, same-class games and ELO-matched games. Running the RUS model…`:`Generated ${season.games.length} games for ${year}: region games first, protected rivalries, same-class matchups, then ELO-matched games. Running the RUS model…`);
-      const R=await F.simulate((Date.now()+year*997)%100000);R.playoffs?.delete?.('OPEN');R.playoffs?.delete?.('ALLTEAM');lastResult=R;await F.render(R,$('customSimOutput'));const playoffTitle=$('customSimOutput')?.querySelector('.fsp-title'),playoffSub=$('customSimOutput')?.querySelector('.fsp-sub');if(playoffTitle)playoffTitle.textContent=`${year} Playoff Brackets`;if(playoffSub)playoffSub.textContent='Seven classification playoffs based on your custom alignment.';
+      const R=await F.simulate((Date.now()+year*997)%100000);R.playoffs?.delete?.('OPEN');R.playoffs?.delete?.('ALLTEAM');lastResult=R;await F.render(R,$('customSimOutput'));const playoffTitle=$('customSimOutput')?.querySelector('.fsp-title'),playoffSub=$('customSimOutput')?.querySelector('.fsp-sub');if(playoffTitle)playoffTitle.textContent=`${year} Playoff Brackets`;if(playoffSub)playoffSub.textContent=`${classes().length} classification playoff${classes().length===1?'':'s'} based on your custom alignment.`;
       const end=endingElos(R),profiles=nextProfiles(R,end),summary=summarizeSeason(R);
       dynasty.currentYear=year;dynasty.history=(dynasty.history||[]).filter(x=>Number(x.year)!==year);dynasty.history.push(summary);dynasty.nextStartElos=eloMapToObject(end);dynasty.nextProfiles=profiles;dynasty.state=clone(state);dynasty.scheduleMode=$('scheduleMode').value;persistDynasty();
       const warning=rebuilt?.warnings?.length?` ${rebuilt.warnings.join(' ')}`:'';
@@ -318,7 +352,7 @@
   async function advanceSeason(){if(!dynasty?.history?.length)return;await simulateYear(Number(dynasty.currentYear)+1,false)}
   function bind(){
     $('teamSelect').onchange=()=>{selectedTeam=$('teamSelect').value;syncMover();render()};$('classSelect').onchange=fillRegions;$('moveTeam').onclick=()=>{const t=$('teamSelect').value,c=$('classSelect').value,r=$('regionSelect').value;if(!r){addRegion(c);return}move(t,c,r)};
-    $('teamSearch').oninput=render;$('resetCurrent').onclick=()=>{state=currentState();render();fillMover();status('Reset to the current UHSAA football alignment.','good')};$('clearRegions').onclick=clearAllRegions;$('saveScenario').onclick=saveScenario;$('loadScenario').onclick=loadScenario;$('deleteScenario').onclick=deleteScenario;$('runCustomSeason').onclick=runSeason;$('advanceSeason').onclick=advanceSeason;$('resetDynasty').onclick=resetDynasty;$('resumeDynasty').onclick=resumeDynasty;$('scrollToBuilder').onclick=()=>document.querySelector('.builder-hero')?.scrollIntoView({behavior:'smooth'});$('scheduleMode').onchange=()=>status($('scheduleMode').value==='rebuild'?'2026 region games will be rebuilt. Future dynasty seasons always generate region, rivalry and same-class schedules.':'2026 keeps the real schedule. Future dynasty seasons still generate region, rivalry and same-class schedules.','good');
+    $('teamSearch').oninput=render;$('addClass').onclick=addClass;$('resetCurrent').onclick=()=>{state=currentState();render();fillMover();status('Reset to the current UHSAA football alignment.','good')};$('clearRegions').onclick=clearAllRegions;$('saveScenario').onclick=saveScenario;$('loadScenario').onclick=loadScenario;$('deleteScenario').onclick=deleteScenario;$('runCustomSeason').onclick=runSeason;$('advanceSeason').onclick=advanceSeason;$('resetDynasty').onclick=resetDynasty;$('resumeDynasty').onclick=resumeDynasty;$('scrollToBuilder').onclick=()=>document.querySelector('.builder-hero')?.scrollIntoView({behavior:'smooth'});$('scheduleMode').onchange=()=>status($('scheduleMode').value==='rebuild'?'2026 region games will be rebuilt. Future dynasty seasons always generate region, rivalry and same-class schedules.':'2026 keeps the real schedule. Future dynasty seasons still generate region, rivalry and same-class schedules.','good');
   }
   async function init(){
     try{
