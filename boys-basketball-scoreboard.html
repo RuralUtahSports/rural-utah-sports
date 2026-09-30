@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Boys Basketball Scoreboard | Rural Utah Sports</title>
+<meta name="description" content="Utah boys high school basketball schedules, scores, records and game-day matchups from Rural Utah Sports.">
+<meta name="theme-color" content="#F14D07">
+<link rel="manifest" href="manifest.webmanifest?v=20260817-opt1">
+<link rel="apple-touch-icon" href="RUSlogoNew.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,Helvetica,sans-serif;background:#111;color:#fff}button,input,select{font:inherit}
+header{background:#000;border-bottom:4px solid #F14D07;padding:15px 25px}.header-content{max-width:1450px;margin:auto;display:flex;align-items:center;gap:18px}.logo{width:76px;height:76px;object-fit:contain}.site-title h1{font-size:29px;font-weight:900;letter-spacing:2px;text-transform:uppercase}.site-title p{color:#F14D07;font-weight:800;margin-top:4px}
+nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1450px;margin:auto;display:flex;flex-wrap:wrap}
+.container{max-width:1450px;margin:auto;padding:28px 18px 60px}.sport-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}.sport-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;border-radius:999px;border:1px solid #3b3b3b;background:#181818;color:#ddd;text-decoration:none;font-size:10px;font-weight:900;text-transform:uppercase}.sport-nav a.active,.sport-nav a:hover{background:#F14D07;border-color:#F14D07;color:#000}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:18px}.eyebrow{color:#F14D07;font-size:10px;font-weight:900;letter-spacing:1px;text-transform:uppercase}.hero h2{font-size:38px;line-height:1.05;text-transform:uppercase;margin:4px 0 7px}.hero p{color:#999;max-width:850px;line-height:1.5}.hero-count{min-width:145px;background:#050505;border:1px solid #333;border-top:4px solid #F14D07;border-radius:8px;padding:14px;text-align:center}.hero-count strong{display:block;font-size:29px}.hero-count span{display:block;color:#888;font-size:9px;font-weight:900;text-transform:uppercase;margin-top:4px}
+.controls{background:#050505;border:1px solid #333;border-radius:9px;padding:15px;margin-bottom:16px}.date-controls{display:grid;grid-template-columns:auto auto minmax(170px,1fr) auto auto;gap:8px;align-items:end}.filters{display:grid;grid-template-columns:1.4fr 1fr 1fr auto auto;gap:9px;align-items:end;margin-top:12px;padding-top:12px;border-top:1px solid #292929}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:9px;color:#888;font-weight:900;text-transform:uppercase}.field input,.field select{height:42px;background:#1b1b1b;color:#fff;border:1px solid #444;border-radius:6px;padding:0 10px}.btn{height:42px;border-radius:6px;border:1px solid #444;background:#1b1b1b;color:#fff;font-weight:900;text-transform:uppercase;padding:0 13px;cursor:pointer}.btn:hover{border-color:#F14D07;color:#F14D07}.btn.primary{background:#F14D07;border-color:#F14D07;color:#000}.btn.primary:hover{background:#fff;border-color:#fff}.rural-toggle{display:flex;align-items:center;gap:8px;height:42px;padding:0 11px;border:1px solid #444;background:#171717;border-radius:6px;color:#ddd;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer}.rural-toggle input{accent-color:#F14D07}
+.day-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:22px 0 10px}.day-head h3{font-size:25px;text-transform:uppercase}.day-meta{color:#888;font-size:11px;font-weight:800}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px}.summary-card{background:#090909;border:1px solid #333;border-radius:7px;padding:12px;text-align:center}.summary-card strong{display:block;font-size:22px}.summary-card span{display:block;color:#777;font-size:9px;text-transform:uppercase;font-weight:900;margin-top:3px}
+.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.game{background:#050505;border:1px solid #333;border-radius:9px;overflow:hidden}.game:hover{border-color:#555}.game-top{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;background:#111;border-bottom:1px solid #292929}.time{font-size:10px;color:#bbb;font-weight:900;text-transform:uppercase}.badges{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.badge{display:inline-flex;align-items:center;padding:4px 7px;border-radius:999px;border:1px solid #444;background:#181818;color:#aaa;font-size:8px;font-weight:900;text-transform:uppercase}.badge.region{border-color:#F14D07;color:#F14D07}.badge.live{background:#6d1111;border-color:#a52929;color:#fff}.badge.final{border-color:#3c734d;color:#8ce2a9}
+.team-row{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:9px;align-items:center;padding:12px 12px;border-left:6px solid var(--team-color,#555);border-bottom:1px solid #242424;background:linear-gradient(90deg,var(--team-wash,rgba(255,255,255,.03)),transparent 44%)}.team-row:last-of-type{border-bottom:0}.team-logo-wrap{width:42px;height:42px;display:flex;align-items:center;justify-content:center;position:relative}.team-logo{max-width:42px;max-height:42px;object-fit:contain;position:relative;z-index:1}.team-info{min-width:0}.team-name{color:#fff;text-decoration:none;font-size:15px;font-weight:900;line-height:1.15}.team-name:hover{color:#F14D07}.team-meta{color:#777;font-size:9px;font-weight:800;text-transform:uppercase;margin-top:4px}.score{font-size:27px;font-weight:900;min-width:40px;text-align:right}.record{display:inline;color:#aaa}
+.game-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 11px;background:#0b0b0b}.game-status{font-size:9px;color:#888;font-weight:900;text-transform:uppercase}.source-link{color:#888;text-decoration:none;font-size:9px;font-weight:900;text-transform:uppercase}.source-link:hover{color:#F14D07}.empty{grid-column:1/-1;background:#050505;border:1px solid #333;border-radius:9px;padding:36px;text-align:center;color:#888}.empty strong{display:block;color:#fff;font-size:18px;margin-bottom:6px}
+footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:26px 16px;color:#777;font-size:10px;line-height:1.5}footer strong{color:#F14D07}
+@media(max-width:950px){.games{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr 1fr}.filters .rural-toggle,.filters .btn{grid-column:auto}.date-controls{grid-template-columns:auto minmax(160px,1fr) auto}.date-controls .skip-mobile{display:none}}
+@media(max-width:650px){header{padding:10px 12px}.header-content{gap:10px}.logo{width:50px;height:50px}.site-title h1{font-size:20px}.site-title p{font-size:9px}.container{padding:18px 9px 42px}.hero{align-items:flex-start;flex-direction:column}.hero h2{font-size:30px}.hero-count{width:100%;display:flex;align-items:center;justify-content:space-between;text-align:left}.hero-count span{margin:0}.sport-nav{display:grid;grid-template-columns:1fr 1fr}.sport-nav a{padding:8px 6px;min-height:40px}.date-controls{grid-template-columns:1fr 1fr}.date-controls .field{grid-column:1/-1;order:-1}.filters{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}.day-head{align-items:flex-start;flex-direction:column}.team-row{grid-template-columns:38px minmax(0,1fr) auto;padding:11px 9px}.team-logo-wrap{width:38px;height:38px}.team-logo{max-width:38px;max-height:38px}.team-name{font-size:14px}.score{font-size:24px}.game-foot{align-items:flex-start;flex-direction:column}}
+</style>
+<script src="school-assets-core.js?v=20260925-all-logo-discs1"></script>
+<script src="boys-basketball-bracket-brands.js?v=20260930-scoreboard1"></script>
+</head>
+<body>
+<header><div class="header-content"><a href="index.html"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"></a><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
+<nav><div class="nav-content"></div></nav>
+<main class="container">
+<div class="sport-nav">
+  <a href="boys-basketball-scoreboard.html" class="active">Scoreboard</a>
+  <a href="boys-basketball-teams.html">Teams</a>
+  <a href="basketball-stat-leaders.html">Stat Leaders</a>
+  <a href="boys-basketball-brackets.html">Brackets</a>
+  <a href="boys-basketball-greatest-seasons.html">Greatest Seasons</a>
+</div>
+<section class="hero">
+  <div><div class="eyebrow">2026–27 Boys Basketball</div><h2>Basketball Scoreboard</h2><p>Statewide schedules and scores with team records, classifications and direct links into the RUS basketball database. The page automatically opens to the next date with games.</p></div>
+  <div class="hero-count"><strong id="heroGameCount">—</strong><span>Games shown</span></div>
+</section>
+<section class="controls">
+  <div class="date-controls">
+    <button class="btn skip-mobile" id="prevGameDate" type="button">← Previous</button>
+    <button class="btn" id="todayButton" type="button">Today</button>
+    <div class="field"><label for="datePicker">Game date</label><input id="datePicker" type="date"></div>
+    <button class="btn primary" id="nextGamesButton" type="button">Next Games</button>
+    <button class="btn skip-mobile" id="nextGameDate" type="button">Next →</button>
+  </div>
+  <div class="filters">
+    <div class="field"><label for="teamFilter">Team</label><select id="teamFilter"><option value="">All Teams</option></select></div>
+    <div class="field"><label for="classFilter">Classification</label><select id="classFilter"><option value="">All Classes</option></select></div>
+    <div class="field"><label for="regionFilter">Region</label><select id="regionFilter"><option value="">All Regions</option></select></div>
+    <label class="rural-toggle"><input id="ruralOnly" type="checkbox"> 3A and below</label>
+    <button class="btn" id="clearFilters" type="button">Clear</button>
+  </div>
+</section>
+<div class="day-head"><div><div class="eyebrow">Selected Date</div><h3 id="dateHeading">Loading…</h3></div><div id="dayMeta" class="day-meta"></div></div>
+<div class="summary">
+  <div class="summary-card"><strong id="scheduledCount">0</strong><span>Scheduled</span></div>
+  <div class="summary-card"><strong id="liveCount">0</strong><span>Live</span></div>
+  <div class="summary-card"><strong id="finalCount">0</strong><span>Final</span></div>
+  <div class="summary-card"><strong id="regionCount">0</strong><span>Region Games</span></div>
+</div>
+<section id="games" class="games" aria-live="polite"><div class="empty">Loading basketball games…</div></section>
+</main>
+<footer><p><strong>RURAL UTAH SPORTS</strong> · Boys Basketball Scoreboard</p><p>Schedules and scores are compiled from the RUS basketball data pipeline.</p></footer>
+<script src="boys-basketball-scoreboard.js?v=20260930-scoreboard1"></script>
+<script src="nav-menu.js?v=20260930-basketball-scoreboard1"></script>
+</body>
+</html>
