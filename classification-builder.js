@@ -22,7 +22,7 @@
   const simStatus=(text,kind='')=>{const el=$('customSimStatus');if(!el)return;el.textContent=text;el.className='status'+(kind?' '+kind:'')};
   function script(src){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.async=false;s.onload=resolve;s.onerror=()=>reject(new Error(src));document.body.appendChild(s)})}
   async function loadEngine(){
-    for(const src of ['season-simulator-core.js?v=20260813a','season-simulator-score.js?v=20260813e','full-season-core.js?v=20260824b','full-season-run.js?v=20260813b','full-season-view.js?v=20260813a','full-season-playoffs.js?v=20260824-open1','full-season-playoff-view.js?v=20260824-boxscroll1','full-season-colors.js?v=20260929-builder1']) await script(src);
+    for(const src of ['season-simulator-core.js?v=20260813a','season-simulator-score.js?v=20260813e','full-season-core.js?v=20260824b','full-season-run.js?v=20260813b','full-season-view.js?v=20260813a','full-season-playoffs.js?v=20260929-record1','full-season-playoff-view.js?v=20260824-boxscroll1','full-season-colors.js?v=20260929-builder1']) await script(src);
   }
   function emptyState(){return{regions:Object.fromEntries(CLASSES.map(c=>[c,[]])),unassigned:[]}}
   function currentState(){
