@@ -3,7 +3,7 @@
   const DEFAULT_CLASSES=['6A','5A','4A','3A','2A','1A','8P'];
   const STORE='rus-custom-classifications-v1';
   const DYNASTY_STORE='rus-custom-classification-dynasty-v1';
-  let baseData=null,state=null,allTeams=[],dragTeam='',selectedTeam='',dynasty=null,lastResult=null,baselineProfiles={};
+  let baseData=null,state=null,allTeams=[],dragTeam='',selectedTeam='',tapMoveTeam='',dynasty=null,lastResult=null,baselineProfiles={};
   const $=id=>document.getElementById(id);
   const norm=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
   const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -126,7 +126,7 @@
   function renameRegion(c,old){const row=state.regions[c].find(r=>r.name===old);if(!row)return;const name=prompt('Rename region:',old);if(!name?.trim())return;row.name=name.trim();render();syncMover()}
   function deleteRegion(c,name){const i=state.regions[c].findIndex(r=>r.name===name);if(i<0)return;const [r]=state.regions[c].splice(i,1);for(const t of r.teams||[])state.unassigned.push(t);render();syncMover()}
   function chip(team){
-    const selected=norm(team)===norm(selectedTeam)?' selected':'',info=window.RUSFullSeason?.info?.(team)||window.simulator?.teams?.[team]||{};
+    const selected=tapMoveTeam&&norm(team)===norm(tapMoveTeam)?' selected':'',info=window.RUSFullSeason?.info?.(team)||window.simulator?.teams?.[team]||{};
     const bg=/^#[0-9A-F]{6}$/i.test(String(info.backgroundColor||''))?info.backgroundColor:'#1a1a1a';
     const fg=/^#[0-9A-F]{6}$/i.test(String(info.textColor||''))?info.textColor:'#ffffff';
     return `<button type="button" class="team-chip${selected}" draggable="true" data-team="${esc(team)}" title="Tap to select ${esc(team)}" style="--team-bg:${esc(bg)};--team-fg:${esc(fg)}">${esc(team)}</button>`;
@@ -139,7 +139,7 @@
       const section=document.createElement('section');section.className='class-section';section.innerHTML=`<div class="class-head"><div><span class="class-kicker">${c==='8P'?'Eight-player':'Football classification'}</span><h2>${esc(classLabel(c))}</h2></div><div class="class-tools"><span class="count-pill">${count}</span><button type="button" class="tiny-btn" data-add-region="${esc(c)}">+ Region</button><button type="button" class="tiny-btn class-delete" data-delete-class="${esc(c)}">Delete Class</button></div></div><div class="regions"></div>`;
       const host=section.querySelector('.regions');
       for(const r of rows){
-        const card=document.createElement('article');card.className='region-card';card.dataset.classification=c;card.dataset.region=r.name;
+        const card=document.createElement('article');card.className='region-card'+(tapMoveTeam?' tap-move-target':'');card.dataset.classification=c;card.dataset.region=r.name;
         const visible=(r.teams||[]).filter(t=>!q||String(t).toUpperCase().includes(q));
         card.innerHTML=`<div class="region-head"><div><span class="class-kicker">${esc(classLabel(c))}</span><h3>${esc(r.name)}</h3></div><div class="region-actions"><span class="count-pill">${r.teams.length}</span><button type="button" class="tiny-btn" data-rename-region="${esc(c)}|||${esc(r.name)}">Rename</button><button type="button" class="tiny-btn" data-delete-region="${esc(c)}|||${esc(r.name)}">Delete</button></div></div><div class="team-drop" data-drop-class="${esc(c)}" data-drop-region="${esc(r.name)}">${visible.length?visible.sort().map(chip).join(''):`<span class="empty-region">${q?'No matching teams':'Drop teams here'}</span>`}</div>`;
         host.append(card);
@@ -150,7 +150,12 @@
     const un=(state.unassigned||[]).filter(t=>!q||String(t).toUpperCase().includes(q));
     $('unassignedTeams').innerHTML=un.length?un.sort().map(chip).join(''):`<span class="empty-region">${q?'No matching teams':'Every team is assigned.'}</span>`;
     $('unassignedCount').textContent=String(state.unassigned.length);$('teamCount').textContent=`${assigned} assigned • ${state.unassigned.length} unassigned`;
-    bindRendered();updateRunState();
+    $('unassignedCard')?.classList.toggle('tap-move-target',!!tapMoveTeam);updateTapMoveHint();bindRendered();updateRunState();
+  }
+  function updateTapMoveHint(){
+    const hint=$('tapMoveHint');if(!hint)return;
+    if(!tapMoveTeam){hint.hidden=true;hint.textContent='';return}
+    hint.hidden=false;hint.innerHTML=`<strong>${esc(tapMoveTeam)}</strong> selected — tap any region below to move it there. Tap the team again to cancel.`;
   }
   function bindRendered(){
     document.querySelectorAll('[data-add-region]').forEach(b=>b.onclick=()=>addRegion(b.dataset.addRegion));
@@ -158,10 +163,30 @@
     document.querySelectorAll('[data-rename-region]').forEach(b=>b.onclick=()=>{const [c,r]=b.dataset.renameRegion.split('|||');renameRegion(c,r)});
     document.querySelectorAll('[data-delete-region]').forEach(b=>b.onclick=()=>{const [c,r]=b.dataset.deleteRegion.split('|||');deleteRegion(c,r)});
     document.querySelectorAll('.team-chip').forEach(b=>{
-      b.onclick=()=>{selectedTeam=b.dataset.team;$('teamSelect').value=selectedTeam;syncMover();render()};
-      b.ondragstart=e=>{dragTeam=b.dataset.team;e.dataTransfer.setData('text/plain',dragTeam);e.dataTransfer.effectAllowed='move'};
+      b.onclick=e=>{
+        e.stopPropagation();
+        const team=b.dataset.team;
+        selectedTeam=team;$('teamSelect').value=selectedTeam;syncMover();
+        tapMoveTeam=tapMoveTeam&&norm(tapMoveTeam)===norm(team)?'':team;
+        render();
+      };
+      b.ondragstart=e=>{tapMoveTeam='';dragTeam=b.dataset.team;e.dataTransfer.setData('text/plain',dragTeam);e.dataTransfer.effectAllowed='move'};
     });
-    document.querySelectorAll('.team-drop').forEach(d=>{d.ondragover=e=>{e.preventDefault();d.classList.add('drag-over')};d.ondragleave=()=>d.classList.remove('drag-over');d.ondrop=e=>{e.preventDefault();d.classList.remove('drag-over');const team=e.dataTransfer.getData('text/plain')||dragTeam;if(!team)return;if(d.id==='unassignedTeams'||d.classList.contains('unassigned-drop'))unassign(team);else move(team,d.dataset.dropClass,d.dataset.dropRegion);dragTeam=''}});
+    document.querySelectorAll('.region-card').forEach(card=>{
+      card.onclick=e=>{
+        if(!tapMoveTeam||e.target.closest('button,.team-chip,input,select'))return;
+        const team=tapMoveTeam,c=card.dataset.classification,r=card.dataset.region,loc=teamLocation(team);
+        tapMoveTeam='';
+        if(loc&&loc.classification===c&&loc.region===r){render();return}
+        move(team,c,r);
+      };
+    });
+    const unCard=$('unassignedCard');
+    if(unCard)unCard.onclick=e=>{
+      if(!tapMoveTeam||e.target.closest('button,.team-chip,input,select'))return;
+      const team=tapMoveTeam;tapMoveTeam='';unassign(team);
+    };
+    document.querySelectorAll('.team-drop').forEach(d=>{d.ondragover=e=>{e.preventDefault();d.classList.add('drag-over')};d.ondragleave=()=>d.classList.remove('drag-over');d.ondrop=e=>{e.preventDefault();e.stopPropagation();d.classList.remove('drag-over');const team=e.dataTransfer.getData('text/plain')||dragTeam;if(!team)return;tapMoveTeam='';if(d.id==='unassignedTeams'||d.classList.contains('unassigned-drop'))unassign(team);else move(team,d.dataset.dropClass,d.dataset.dropRegion);dragTeam=''}});
   }
   function fillMover(){
     $('teamSelect').innerHTML=allTeams.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
@@ -180,9 +205,9 @@
   function saved(){try{return JSON.parse(localStorage.getItem(STORE)||'[]')}catch{return[]}}
   function refreshSaved(){const list=saved();$('scenarioSelect').innerHTML=list.length?list.map((x,i)=>`<option value="${i}">${esc(x.name)}</option>`).join(''):'<option value="">No saved setups</option>'}
   function saveScenario(){const name=$('scenarioName').value.trim()||`Custom Alignment ${new Date().toLocaleDateString()}`,list=saved(),payload={name,savedAt:new Date().toISOString(),state:clone(state),scheduleMode:$('scheduleMode').value};const i=list.findIndex(x=>x.name.toLowerCase()===name.toLowerCase());if(i>=0)list[i]=payload;else list.push(payload);localStorage.setItem(STORE,JSON.stringify(list.slice(-20)));refreshSaved();$('scenarioSelect').value=String(i>=0?i:list.length-1);status(`Saved “${name}” on this device.`,'good')}
-  function loadScenario(){const i=Number($('scenarioSelect').value),row=saved()[i];if(!row)return;state=normalizeState(row.state);$('scenarioName').value=row.name;$('scheduleMode').value=row.scheduleMode||'real';render();fillMover();status(`Loaded “${row.name}”.`,'good')}
+  function loadScenario(){const i=Number($('scenarioSelect').value),row=saved()[i];if(!row)return;tapMoveTeam='';state=normalizeState(row.state);$('scenarioName').value=row.name;$('scheduleMode').value=row.scheduleMode||'real';render();fillMover();status(`Loaded “${row.name}”.`,'good')}
   function deleteScenario(){const i=Number($('scenarioSelect').value),list=saved();if(!Number.isInteger(i)||!list[i])return;const name=list[i].name;list.splice(i,1);localStorage.setItem(STORE,JSON.stringify(list));refreshSaved();status(`Deleted saved setup “${name}”.`)}
-  function clearAllRegions(){for(const c of classes())for(const r of state.regions[c]||[])for(const t of r.teams||[])state.unassigned.push(t);for(const c of classes())state.regions[c]=[];state.unassigned=[...new Map(state.unassigned.map(t=>[norm(t),t])).values()].sort();render();fillMover()}
+  function clearAllRegions(){tapMoveTeam='';for(const c of classes())for(const r of state.regions[c]||[])for(const t of r.teams||[])state.unassigned.push(t);for(const c of classes())state.regions[c]=[];state.unassigned=[...new Map(state.unassigned.map(t=>[norm(t),t])).values()].sort();render();fillMover()}
   function metaFromState(){const map=new Map();for(const c of classes())for(const r of state.regions[c]||[])for(const t of r.teams||[])map.set(norm(t),{team:t,classification:c,region:r.name});return map}
   function alignmentChanged(){
     const custom=metaFromState(),base=baseData?.meta||new Map();
@@ -412,8 +437,8 @@
   async function runSeason(){await simulateYear(2026,true)}
   async function advanceSeason(){if(!dynasty?.history?.length)return;await simulateYear(Number(dynasty.currentYear)+1,false)}
   function bind(){
-    $('teamSelect').onchange=()=>{selectedTeam=$('teamSelect').value;syncMover();render()};$('classSelect').onchange=fillRegions;$('moveTeam').onclick=()=>{const t=$('teamSelect').value,c=$('classSelect').value,r=$('regionSelect').value;if(!r){addRegion(c);return}move(t,c,r)};
-    $('teamSearch').oninput=render;$('addClass').onclick=addClass;$('resetCurrent').onclick=()=>{state=currentState();render();fillMover();status('Reset to the current UHSAA football alignment.','good')};$('clearRegions').onclick=clearAllRegions;$('saveScenario').onclick=saveScenario;$('loadScenario').onclick=loadScenario;$('deleteScenario').onclick=deleteScenario;$('runCustomSeason').onclick=runSeason;$('advanceSeason').onclick=advanceSeason;$('resetDynasty').onclick=resetDynasty;$('resumeDynasty').onclick=resumeDynasty;$('scrollToBuilder').onclick=()=>document.querySelector('.builder-hero')?.scrollIntoView({behavior:'smooth'});$('scheduleMode').onchange=()=>status($('scheduleMode').value==='rebuild'?'2026 region games will be rebuilt. Future dynasty seasons always generate region, rivalry and same-class schedules.':'2026 keeps the real schedule. Future dynasty seasons still generate region, rivalry and same-class schedules.','good');
+    $('teamSelect').onchange=()=>{selectedTeam=$('teamSelect').value;syncMover();render()};$('classSelect').onchange=fillRegions;$('moveTeam').onclick=()=>{const t=$('teamSelect').value,c=$('classSelect').value,r=$('regionSelect').value;if(!r){addRegion(c);return}tapMoveTeam='';move(t,c,r)};
+    $('teamSearch').oninput=render;$('addClass').onclick=addClass;$('resetCurrent').onclick=()=>{tapMoveTeam='';state=currentState();render();fillMover();status('Reset to the current UHSAA football alignment.','good')};$('clearRegions').onclick=clearAllRegions;$('saveScenario').onclick=saveScenario;$('loadScenario').onclick=loadScenario;$('deleteScenario').onclick=deleteScenario;$('runCustomSeason').onclick=runSeason;$('advanceSeason').onclick=advanceSeason;$('resetDynasty').onclick=resetDynasty;$('resumeDynasty').onclick=resumeDynasty;$('scrollToBuilder').onclick=()=>document.querySelector('.builder-hero')?.scrollIntoView({behavior:'smooth'});$('scheduleMode').onchange=()=>status($('scheduleMode').value==='rebuild'?'2026 region games will be rebuilt. Future dynasty seasons always generate region, rivalry and same-class schedules.':'2026 keeps the real schedule. Future dynasty seasons still generate region, rivalry and same-class schedules.','good');
   }
   async function init(){
     try{
