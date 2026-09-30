@@ -171,6 +171,31 @@ function parseTeamPage(html, sourceUrl) {
   };
 }
 
+function preserveGameMetadata(results, outputPath) {
+  if (!fs.existsSync(outputPath)) return 0;
+  let previous;
+  try { previous = readJson(outputPath); } catch { return 0; }
+
+  const oldTeams = new Map(Object.entries(previous.teams || {}).map(([name, entry]) => [norm(name), entry]));
+  let preserved = 0;
+  for (const [name, entry] of Object.entries(results || {})) {
+    const oldEntry = oldTeams.get(norm(name));
+    if (!oldEntry) continue;
+    const oldGames = new Map((oldEntry.games || []).map(game => [
+      [clean(game.date), norm(game.opponent), Number(game.teamScore), Number(game.opponentScore)].join('|'),
+      game
+    ]));
+    for (const game of entry.games || []) {
+      const old = oldGames.get([clean(game.date), norm(game.opponent), Number(game.teamScore), Number(game.opponentScore)].join('|'));
+      if (!old) continue;
+      if (old.playoff === true) game.playoff = true;
+      if (clean(old.notes)) game.notes = old.notes;
+      if (old.playoff === true || clean(old.notes)) preserved++;
+    }
+  }
+  return preserved;
+}
+
 async function main() {
   if (!/^[0-9]{2}-[0-9]{2}$/.test(SEASON_LABEL)) throw new Error('Pass a two-digit MaxPreps season such as 20-21.');
   const teams = readJson(TEAM_FILE).filter(team => team.association === 'UHSAA' || team.team === 'Utah Prep');
@@ -222,6 +247,8 @@ async function main() {
 
   await Promise.all(Array.from({length: MAX_CONCURRENCY}, () => worker()));
 
+  const preservedMetadata = preserveGameMetadata(results, OUTPUT_FILE);
+  if (preservedMetadata) console.log('Preserved playoff labels/notes on ' + preservedMetadata + ' imported game rows.');
   const orderedTeams = Object.fromEntries(Object.entries(results).sort(([a], [b]) => a.localeCompare(b)));
   const payload = {
     schemaVersion: 1,
