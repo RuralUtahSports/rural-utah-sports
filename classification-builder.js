@@ -122,6 +122,15 @@
   function deleteScenario(){const i=Number($('scenarioSelect').value),list=saved();if(!Number.isInteger(i)||!list[i])return;const name=list[i].name;list.splice(i,1);localStorage.setItem(STORE,JSON.stringify(list));refreshSaved();status(`Deleted saved setup “${name}”.`)}
   function clearAllRegions(){for(const c of CLASSES)for(const r of state.regions[c]||[])for(const t of r.teams||[])state.unassigned.push(t);for(const c of CLASSES)state.regions[c]=[];state.unassigned=[...new Map(state.unassigned.map(t=>[norm(t),t])).values()].sort();render();fillMover()}
   function metaFromState(){const map=new Map();for(const c of CLASSES)for(const r of state.regions[c]||[])for(const t of r.teams||[])map.set(norm(t),{team:t,classification:c,region:r.name});return map}
+  function alignmentChanged(){
+    const custom=metaFromState(),base=baseData?.meta||new Map();
+    if(custom.size!==base.size)return true;
+    for(const [k,m] of custom){
+      const b=base.get(k);
+      if(!b||String(b.classification||'')!==String(m.classification||'')||String(b.region||'')!==String(m.region||''))return true;
+    }
+    return false;
+  }
   function roundRobin(teams){
     let a=[...teams];if(a.length<2)return[];if(a.length%2)a.push(null);const n=a.length,rounds=[];
     for(let r=0;r<n-1;r++){const pairs=[];for(let i=0;i<n/2;i++){const x=a[i],y=a[n-1-i];if(x&&y)pairs.push([x,y])}rounds.push(pairs);a=[a[0],a[n-1],...a.slice(1,n-1)]}
@@ -293,10 +302,10 @@
       if(restart||year===2026){dynasty={currentYear:2025,history:[],nextStartElos:null,nextProfiles:null,state:clone(state),scheduleMode:$('scheduleMode').value};restoreBaselineProfiles()}
       else applyProfiles(dynasty?.nextProfiles||{});
       const meta=metaFromState(),startElos=year===2026?new Map(baseData.startElos):objectToEloMap(dynasty?.nextStartElos||{});
-      const mode=year===2026?$('scheduleMode').value:'rebuild',rebuilt=mode==='rebuild'?rebuildSchedule(meta,year,startElos):null,season=rebuilt?.season||clone(baseData.season);
+      const customAlignment=alignmentChanged(),requestedMode=year===2026?$('scheduleMode').value:'rebuild',mode=(year===2026&&!customAlignment)?requestedMode:'rebuild',rebuilt=mode==='rebuild'?rebuildSchedule(meta,year,startElos):null,season=rebuilt?.season||clone(baseData.season);
       season.season=year;
       const F=window.RUSFullSeason;F.data={...baseData,meta,season,startElos,seasonYear:year};
-      simStatus(year===2026&&mode==='real'?'Using the real 2026 schedule. Future seasons will be generated from your regions, same-class matchups and rivalry history…':`Generated ${season.games.length} games for ${year}: region games first, protected rivalries, same-class matchups, then ELO-matched games. Running the RUS model…`);
+      simStatus(year===2026&&mode==='real'?'Using the real 2026 schedule because the alignment matches the current UHSAA setup.':customAlignment&&year===2026?`Custom alignment detected. Rebuilt ${year} so every region uses the new round-robin first, then rivalries, same-class games and ELO-matched games. Running the RUS model…`:`Generated ${season.games.length} games for ${year}: region games first, protected rivalries, same-class matchups, then ELO-matched games. Running the RUS model…`);
       const R=await F.simulate((Date.now()+year*997)%100000);R.playoffs?.delete?.('OPEN');R.playoffs?.delete?.('ALLTEAM');lastResult=R;await F.render(R,$('customSimOutput'));const playoffTitle=$('customSimOutput')?.querySelector('.fsp-title'),playoffSub=$('customSimOutput')?.querySelector('.fsp-sub');if(playoffTitle)playoffTitle.textContent=`${year} Playoff Brackets`;if(playoffSub)playoffSub.textContent='Seven classification playoffs based on your custom alignment.';
       const end=endingElos(R),profiles=nextProfiles(R,end),summary=summarizeSeason(R);
       dynasty.currentYear=year;dynasty.history=(dynasty.history||[]).filter(x=>Number(x.year)!==year);dynasty.history.push(summary);dynasty.nextStartElos=eloMapToObject(end);dynasty.nextProfiles=profiles;dynasty.state=clone(state);dynasty.scheduleMode=$('scheduleMode').value;persistDynasty();
