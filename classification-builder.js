@@ -3,7 +3,7 @@
   const DEFAULT_CLASSES=['6A','5A','4A','3A','2A','1A','8P'];
   const STORE='rus-custom-classifications-v1';
   const DYNASTY_STORE='rus-custom-classification-dynasty-v1';
-  let baseData=null,state=null,allTeams=[],dragTeam='',selectedTeam='',tapMoveTeam='',dynasty=null,lastResult=null,baselineProfiles={};
+  let baseData=null,state=null,allTeams=[],dragTeam='',selectedTeam='',tapMoveTeam='',lastTouchTeam='',lastTouchAt=0,dynasty=null,lastResult=null,baselineProfiles={};
   const $=id=>document.getElementById(id);
   const norm=v=>String(v??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
   const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -188,15 +188,22 @@
     document.querySelectorAll('[data-move-selected]').forEach(b=>b.onclick=e=>{e.stopPropagation();if(!tapMoveTeam)return;const [c,r]=b.dataset.moveSelected.split('|||'),team=tapMoveTeam;tapMoveTeam='';move(team,c,r)});
     document.querySelectorAll('[data-move-unassigned]').forEach(b=>b.onclick=e=>{e.stopPropagation();if(!tapMoveTeam)return;const team=tapMoveTeam;tapMoveTeam='';unassign(team)});
     document.querySelectorAll('.team-chip').forEach(b=>{
-      let touched=false;
       const choose=e=>{
         e?.stopPropagation?.();const team=b.dataset.team;
         if(tapMoveTeam&&norm(tapMoveTeam)!==norm(team)){swapTeams(tapMoveTeam,team);return}
         selectedTeam=team;$('teamSelect').value=selectedTeam;syncMover();
         tapMoveTeam=tapMoveTeam&&norm(tapMoveTeam)===norm(team)?'':team;render();
       };
-      b.onclick=e=>{if(touched){touched=false;e.preventDefault();e.stopPropagation();return}choose(e)};
-      b.onpointerup=e=>{if(e.pointerType!=='touch')return;touched=true;e.preventDefault();choose(e)};
+      b.onclick=e=>{
+        const sameTouch=lastTouchTeam===norm(b.dataset.team)&&Date.now()-lastTouchAt<900;
+        if(sameTouch){e.preventDefault();e.stopPropagation();return}
+        choose(e);
+      };
+      b.onpointerup=e=>{
+        if(e.pointerType!=='touch')return;
+        lastTouchTeam=norm(b.dataset.team);lastTouchAt=Date.now();
+        e.preventDefault();e.stopPropagation();choose(e);
+      };
       b.ondragstart=e=>{tapMoveTeam='';dragTeam=b.dataset.team;e.dataTransfer.setData('text/plain',dragTeam);e.dataTransfer.effectAllowed='move'};
     });
     document.querySelectorAll('.region-card').forEach(card=>{
