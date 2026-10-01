@@ -42,7 +42,7 @@
       const request=RUSRpiPaths.parseQuestion(question.value,data.teams);
       status.textContent=request.mode?`Searching ${request.team}’s ${request.mode==='range'?'seed range':request.mode+' seed'}…`:`Searching ${request.team}’s path to the top ${request.target}…`;
       if(!worker){
-        worker=new Worker(new URL('rpi-paths-worker.js?v=20261001-seeds2',document.baseURI));
+        worker=new Worker(new URL('rpi-paths-worker.js?v=20261001-repeat3',document.baseURI));
         worker.onmessage=event=>{
           const message=event.data;
           if(message.type==='progress')status.textContent=`Preparing the RPI calculation: ${message.done} of ${message.total} remaining games…`;
