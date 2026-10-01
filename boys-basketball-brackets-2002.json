@@ -4,21 +4,212 @@
   "year": 2002,
   "sport": "boys-basketball",
   "updatedAt": "2026-09-30",
-  "source": "Official UHSAA Yearly Results historical state tournament brackets",
+  "source": "Official UHSAA Yearly Results historical state tournament brackets, cross-checked with Deseret News",
   "notes": [
-    "Results are transcribed from the official UHSAA yearly-results archive.",
-    "Classes marked partialHistorical currently show the verified championship game while earlier rounds are still being transcribed.",
-    "No unverified seeds, scores, or matchups are inserted."
+    "Full championship paths are shown for every classification.",
+    "Scores come from the official UHSAA yearly-results bracket where legible; a dash is shown where an old bracket preserves the matchup/winner but not a reliably extractable score.",
+    "The 1A championship score is corrected to Waterford 51, Rich 43 from the contemporaneous Deseret News championship report."
   ],
   "classifications": {
     "1A": {
       "sourceUrl": "https://uhsaa.org/Publications/YearlyResults/YearlyResults20012002.pdf",
       "officialBracket": true,
-      "partialHistorical": true,
       "reconstructed": false,
       "rounds": [
         {
-          "name": "Championship",
+          "name": "Round of 16",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Manila",
+                  "score": 58
+                },
+                {
+                  "seed": null,
+                  "team": "Meridian",
+                  "score": 49
+                }
+              ],
+              "date": "2002-03-06"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "West Ridge Academy",
+                  "score": 60
+                },
+                {
+                  "seed": null,
+                  "team": "Duchesne",
+                  "score": 55
+                }
+              ],
+              "date": "2002-03-06"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Panguitch",
+                  "score": null
+                },
+                {
+                  "seed": null,
+                  "team": "Dugway",
+                  "score": null
+                }
+              ],
+              "date": "2002-03-06",
+              "winner": "Panguitch"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Waterford",
+                  "score": 50
+                },
+                {
+                  "seed": null,
+                  "team": "Tabiona/Wayne",
+                  "score": 40
+                }
+              ],
+              "date": "2002-03-06"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Rich",
+                  "score": 78
+                },
+                {
+                  "seed": null,
+                  "team": "ICS/Wendover",
+                  "score": 52
+                }
+              ],
+              "date": "2002-03-06"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Milford",
+                  "score": 68
+                },
+                {
+                  "seed": null,
+                  "team": "West Desert",
+                  "score": 60
+                }
+              ],
+              "date": "2002-03-06"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Layton Christian Academy",
+                  "score": 73
+                },
+                {
+                  "seed": null,
+                  "team": "Green River",
+                  "score": 46
+                }
+              ],
+              "date": "2002-03-06"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Valley",
+                  "score": 75
+                },
+                {
+                  "seed": null,
+                  "team": "Wasatch Academy/St. Joseph",
+                  "score": 40
+                }
+              ],
+              "date": "2002-03-06"
+            }
+          ]
+        },
+        {
+          "name": "Quarterfinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "West Ridge Academy",
+                  "score": 54
+                },
+                {
+                  "seed": null,
+                  "team": "Manila",
+                  "score": 46
+                }
+              ],
+              "date": "2002-03-07"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Waterford",
+                  "score": 61
+                },
+                {
+                  "seed": null,
+                  "team": "Panguitch",
+                  "score": 41
+                }
+              ],
+              "date": "2002-03-07"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Rich",
+                  "score": 73
+                },
+                {
+                  "seed": null,
+                  "team": "Milford",
+                  "score": 53
+                }
+              ],
+              "date": "2002-03-07"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Valley",
+                  "score": null
+                },
+                {
+                  "seed": null,
+                  "team": "Layton Christian Academy",
+                  "score": null
+                }
+              ],
+              "date": "2002-03-07",
+              "winner": "Valley"
+            }
+          ]
+        },
+        {
+          "name": "Semifinals",
           "games": [
             {
               "teams": [
@@ -29,8 +220,44 @@
                 },
                 {
                   "seed": null,
-                  "team": "Rich",
+                  "team": "West Ridge Academy",
                   "score": 33
+                }
+              ],
+              "date": "2002-03-08"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Rich",
+                  "score": null
+                },
+                {
+                  "seed": null,
+                  "team": "Valley",
+                  "score": null
+                }
+              ],
+              "date": "2002-03-08",
+              "winner": "Rich"
+            }
+          ]
+        },
+        {
+          "name": "Championship",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Waterford",
+                  "score": 51
+                },
+                {
+                  "seed": null,
+                  "team": "Rich",
+                  "score": 43
                 }
               ],
               "date": "2002-03-09"
@@ -43,9 +270,108 @@
     "2A": {
       "sourceUrl": "https://uhsaa.org/Publications/YearlyResults/YearlyResults20012002.pdf",
       "officialBracket": true,
-      "partialHistorical": true,
       "reconstructed": false,
       "rounds": [
+        {
+          "name": "Quarterfinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Millard",
+                  "score": 51
+                },
+                {
+                  "seed": null,
+                  "team": "Parowan",
+                  "score": 41
+                }
+              ],
+              "date": "2002-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Beaver",
+                  "score": 74
+                },
+                {
+                  "seed": null,
+                  "team": "San Juan",
+                  "score": 56
+                }
+              ],
+              "date": "2002-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Juab",
+                  "score": 64
+                },
+                {
+                  "seed": null,
+                  "team": "North Summit",
+                  "score": 61
+                }
+              ],
+              "date": "2002-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Manti",
+                  "score": 82
+                },
+                {
+                  "seed": null,
+                  "team": "Monticello",
+                  "score": 75
+                }
+              ],
+              "date": "2002-02-28"
+            }
+          ]
+        },
+        {
+          "name": "Semifinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Beaver",
+                  "score": 57
+                },
+                {
+                  "seed": null,
+                  "team": "Millard",
+                  "score": 41
+                }
+              ],
+              "date": "2002-03-01"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Juab",
+                  "score": 64
+                },
+                {
+                  "seed": null,
+                  "team": "Manti",
+                  "score": 63
+                }
+              ],
+              "date": "2002-03-01"
+            }
+          ]
+        },
         {
           "name": "Championship",
           "games": [
@@ -72,9 +398,233 @@
     "3A": {
       "sourceUrl": "https://uhsaa.org/Publications/YearlyResults/YearlyResults20012002.pdf",
       "officialBracket": true,
-      "partialHistorical": true,
       "reconstructed": false,
       "rounds": [
+        {
+          "name": "Round of 16",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Lehi",
+                  "score": 61
+                },
+                {
+                  "seed": null,
+                  "team": "Hurricane",
+                  "score": 38
+                }
+              ],
+              "date": "2002-02-22"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Wasatch",
+                  "score": 60
+                },
+                {
+                  "seed": null,
+                  "team": "Ben Lomond",
+                  "score": 56
+                }
+              ],
+              "date": "2002-02-22"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Pine View",
+                  "score": 79
+                },
+                {
+                  "seed": null,
+                  "team": "North Sanpete",
+                  "score": 39
+                }
+              ],
+              "date": "2002-02-22"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Bear River",
+                  "score": 48
+                },
+                {
+                  "seed": null,
+                  "team": "Park City",
+                  "score": 44
+                }
+              ],
+              "date": "2002-02-22"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Judge Memorial",
+                  "score": 51
+                },
+                {
+                  "seed": null,
+                  "team": "Ogden",
+                  "score": 49
+                }
+              ],
+              "date": "2002-02-22"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Dixie",
+                  "score": 92
+                },
+                {
+                  "seed": null,
+                  "team": "Carbon",
+                  "score": 60
+                }
+              ],
+              "date": "2002-02-22"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Union",
+                  "score": 88
+                },
+                {
+                  "seed": null,
+                  "team": "Morgan",
+                  "score": 84
+                }
+              ],
+              "date": "2002-02-22"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Snow Canyon",
+                  "score": 67
+                },
+                {
+                  "seed": null,
+                  "team": "Emery",
+                  "score": 51
+                }
+              ],
+              "date": "2002-02-22"
+            }
+          ]
+        },
+        {
+          "name": "Quarterfinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Lehi",
+                  "score": 61
+                },
+                {
+                  "seed": null,
+                  "team": "Wasatch",
+                  "score": 58
+                }
+              ],
+              "date": "2002-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Pine View",
+                  "score": 47
+                },
+                {
+                  "seed": null,
+                  "team": "Bear River",
+                  "score": 41
+                }
+              ],
+              "date": "2002-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Dixie",
+                  "score": 55
+                },
+                {
+                  "seed": null,
+                  "team": "Judge Memorial",
+                  "score": 49
+                }
+              ],
+              "date": "2002-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Snow Canyon",
+                  "score": 41
+                },
+                {
+                  "seed": null,
+                  "team": "Union",
+                  "score": 38
+                }
+              ],
+              "date": "2002-02-28"
+            }
+          ]
+        },
+        {
+          "name": "Semifinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Pine View",
+                  "score": 57
+                },
+                {
+                  "seed": null,
+                  "team": "Lehi",
+                  "score": 37
+                }
+              ],
+              "date": "2002-03-01"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Snow Canyon",
+                  "score": 61
+                },
+                {
+                  "seed": null,
+                  "team": "Dixie",
+                  "score": 39
+                }
+              ],
+              "date": "2002-03-01"
+            }
+          ]
+        },
         {
           "name": "Championship",
           "games": [
@@ -101,9 +651,235 @@
     "4A": {
       "sourceUrl": "https://uhsaa.org/Publications/YearlyResults/YearlyResults20012002.pdf",
       "officialBracket": true,
-      "partialHistorical": true,
       "reconstructed": false,
       "rounds": [
+        {
+          "name": "Round of 16",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Payson",
+                  "score": 62
+                },
+                {
+                  "seed": null,
+                  "team": "Mountain View",
+                  "score": 57
+                }
+              ],
+              "date": "2002-02-26"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "East",
+                  "score": 53
+                },
+                {
+                  "seed": null,
+                  "team": "Mountain Crest",
+                  "score": 42
+                }
+              ],
+              "date": "2002-02-26"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Highland",
+                  "score": 54
+                },
+                {
+                  "seed": null,
+                  "team": "Provo",
+                  "score": 46
+                }
+              ],
+              "date": "2002-02-26"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Box Elder",
+                  "score": 72
+                },
+                {
+                  "seed": null,
+                  "team": "Bountiful",
+                  "score": 34
+                }
+              ],
+              "date": "2002-02-26"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Timpview",
+                  "score": 68
+                },
+                {
+                  "seed": null,
+                  "team": "Olympus",
+                  "score": 32
+                }
+              ],
+              "date": "2002-02-26"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Logan",
+                  "score": 60
+                },
+                {
+                  "seed": null,
+                  "team": "Orem",
+                  "score": 52
+                }
+              ],
+              "date": "2002-02-26"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Timpanogos",
+                  "score": 73
+                },
+                {
+                  "seed": null,
+                  "team": "Spanish Fork",
+                  "score": 63
+                }
+              ],
+              "date": "2002-02-26"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Lone Peak",
+                  "score": 57
+                },
+                {
+                  "seed": null,
+                  "team": "Murray",
+                  "score": 56
+                }
+              ],
+              "date": "2002-02-26"
+            }
+          ]
+        },
+        {
+          "name": "Quarterfinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "East",
+                  "score": 55
+                },
+                {
+                  "seed": null,
+                  "team": "Payson",
+                  "score": 52
+                }
+              ],
+              "date": "2002-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Highland",
+                  "score": 62
+                },
+                {
+                  "seed": null,
+                  "team": "Box Elder",
+                  "score": 60
+                }
+              ],
+              "date": "2002-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Timpview",
+                  "score": 53
+                },
+                {
+                  "seed": null,
+                  "team": "Logan",
+                  "score": 46
+                }
+              ],
+              "date": "2002-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Lone Peak",
+                  "score": null
+                },
+                {
+                  "seed": null,
+                  "team": "Timpanogos",
+                  "score": null
+                }
+              ],
+              "date": "2002-02-28",
+              "winner": "Lone Peak"
+            }
+          ]
+        },
+        {
+          "name": "Semifinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Highland",
+                  "score": null
+                },
+                {
+                  "seed": null,
+                  "team": "East",
+                  "score": null
+                }
+              ],
+              "date": "2002-03-01",
+              "winner": "Highland"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Lone Peak",
+                  "score": 76
+                },
+                {
+                  "seed": null,
+                  "team": "Timpview",
+                  "score": 72
+                }
+              ],
+              "date": "2002-03-01"
+            }
+          ]
+        },
         {
           "name": "Championship",
           "games": [
@@ -130,9 +906,233 @@
     "5A": {
       "sourceUrl": "https://uhsaa.org/Publications/YearlyResults/YearlyResults20012002.pdf",
       "officialBracket": true,
-      "partialHistorical": true,
       "reconstructed": false,
       "rounds": [
+        {
+          "name": "Round of 16",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Jordan",
+                  "score": 54
+                },
+                {
+                  "seed": null,
+                  "team": "Taylorsville",
+                  "score": 52
+                }
+              ],
+              "date": "2002-02-25"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Riverton",
+                  "score": 56
+                },
+                {
+                  "seed": null,
+                  "team": "Layton",
+                  "score": 40
+                }
+              ],
+              "date": "2002-02-25"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Davis",
+                  "score": 46
+                },
+                {
+                  "seed": null,
+                  "team": "Skyline",
+                  "score": 30
+                }
+              ],
+              "date": "2002-02-25"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Viewmont",
+                  "score": 62
+                },
+                {
+                  "seed": null,
+                  "team": "Copper Hills",
+                  "score": 44
+                }
+              ],
+              "date": "2002-02-25"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "West Jordan",
+                  "score": 67
+                },
+                {
+                  "seed": null,
+                  "team": "Clearfield",
+                  "score": 52
+                }
+              ],
+              "date": "2002-02-25"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Bingham",
+                  "score": 55
+                },
+                {
+                  "seed": null,
+                  "team": "Granger",
+                  "score": 45
+                }
+              ],
+              "date": "2002-02-25"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Cottonwood",
+                  "score": 61
+                },
+                {
+                  "seed": null,
+                  "team": "Fremont",
+                  "score": 33
+                }
+              ],
+              "date": "2002-02-25"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Alta",
+                  "score": 66
+                },
+                {
+                  "seed": null,
+                  "team": "Northridge",
+                  "score": 64
+                }
+              ],
+              "date": "2002-02-25"
+            }
+          ]
+        },
+        {
+          "name": "Quarterfinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Riverton",
+                  "score": 65
+                },
+                {
+                  "seed": null,
+                  "team": "Jordan",
+                  "score": 56
+                }
+              ],
+              "date": "2002-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Davis",
+                  "score": 67
+                },
+                {
+                  "seed": null,
+                  "team": "Viewmont",
+                  "score": 45
+                }
+              ],
+              "date": "2002-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "West Jordan",
+                  "score": 53
+                },
+                {
+                  "seed": null,
+                  "team": "Bingham",
+                  "score": 50
+                }
+              ],
+              "date": "2002-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Alta",
+                  "score": 51
+                },
+                {
+                  "seed": null,
+                  "team": "Cottonwood",
+                  "score": 37
+                }
+              ],
+              "date": "2002-02-27"
+            }
+          ]
+        },
+        {
+          "name": "Semifinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Davis",
+                  "score": 56
+                },
+                {
+                  "seed": null,
+                  "team": "Riverton",
+                  "score": 51
+                }
+              ],
+              "date": "2002-03-01"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "West Jordan",
+                  "score": 49
+                },
+                {
+                  "seed": null,
+                  "team": "Alta",
+                  "score": 46
+                }
+              ],
+              "date": "2002-03-01"
+            }
+          ]
+        },
         {
           "name": "Championship",
           "games": [
