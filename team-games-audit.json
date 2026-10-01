@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-01T13:26:08.371Z",
+  "updatedAt": "2026-10-01T13:27:36.895Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,14 +8,14 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68321,
+    "scheduleRowsAudited": 68323,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 352,
-    "reciprocalMismatches": 987,
+    "seasonSummaryMismatches": 331,
+    "reciprocalMismatches": 989,
     "likelyOpponentTypos": 3,
     "recent2025PlusIssues": 333
   },
@@ -509,19 +509,23 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 7,
+          "expected": 8,
           "actual": 6
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
           "expected": 2,
           "actual": 1
         },
         "pointsFor": {
-          "expected": 280,
+          "expected": 332,
           "actual": 253
         },
         "pointsAgainst": {
-          "expected": 117,
+          "expected": 124,
           "actual": 80
         }
       }
@@ -1207,29 +1211,6 @@
         "CEDAR CITY",
         "GRANTSVILLE"
       ]
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
-        }
-      }
     },
     {
       "type": "season-summary-mismatch",
@@ -1929,29 +1910,6 @@
         "pointsAgainst": {
           "expected": 88,
           "actual": 74
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
         }
       }
     },
@@ -4401,6 +4359,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -4415,7 +4393,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -5343,6 +5321,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -5357,7 +5355,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -5376,7 +5374,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -7598,29 +7596,6 @@
     {
       "type": "season-summary-mismatch",
       "team": "ALTAMONT",
-      "season": "2003",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "wins": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 355,
-          "actual": 307
-        },
-        "pointsAgainst": {
-          "expected": 136,
-          "actual": 130
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "ALTAMONT",
       "season": "2011",
       "mismatches": {
         "games": {
@@ -7676,29 +7651,6 @@
         "pointsAgainst": {
           "expected": 357,
           "actual": 318
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "AMERICAN FORK",
-      "season": "2019",
-      "mismatches": {
-        "games": {
-          "expected": 16,
-          "actual": 15
-        },
-        "wins": {
-          "expected": 11,
-          "actual": 10
-        },
-        "pointsFor": {
-          "expected": 625,
-          "actual": 571
-        },
-        "pointsAgainst": {
-          "expected": 506,
-          "actual": 479
         }
       }
     },
@@ -7774,56 +7726,6 @@
     {
       "type": "season-summary-mismatch",
       "team": "BEAVER",
-      "season": "2002",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 11
-        },
-        "wins": {
-          "expected": 10,
-          "actual": 9
-        },
-        "losses": {
-          "expected": 3,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 439,
-          "actual": 384
-        },
-        "pointsAgainst": {
-          "expected": 223,
-          "actual": 151
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "BEAVER",
-      "season": "2004",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "wins": {
-          "expected": 5,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 228,
-          "actual": 193
-        },
-        "pointsAgainst": {
-          "expected": 335,
-          "actual": 328
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "BEAVER",
       "season": "2026",
       "mismatches": {
         "games": {
@@ -7841,52 +7743,6 @@
         "pointsAgainst": {
           "expected": 183,
           "actual": 177
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "BEN LOMOND",
-      "season": "1960",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 123,
-          "actual": 97
-        },
-        "pointsAgainst": {
-          "expected": 127,
-          "actual": 121
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "BEN LOMOND",
-      "season": "2016",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "wins": {
-          "expected": 6,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 402,
-          "actual": 362
-        },
-        "pointsAgainst": {
-          "expected": 403,
-          "actual": 386
         }
       }
     },
@@ -7961,19 +7817,15 @@
       "season": "1960",
       "mismatches": {
         "games": {
-          "expected": 9,
+          "expected": 8,
           "actual": 7
         },
         "losses": {
-          "expected": 9,
+          "expected": 8,
           "actual": 7
         },
-        "pointsFor": {
-          "expected": 46,
-          "actual": 40
-        },
         "pointsAgainst": {
-          "expected": 232,
+          "expected": 206,
           "actual": 172
         }
       }
@@ -8306,29 +8158,6 @@
     {
       "type": "season-summary-mismatch",
       "team": "CEDAR CITY",
-      "season": "2021",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 204,
-          "actual": 197
-        },
-        "pointsAgainst": {
-          "expected": 399,
-          "actual": 364
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "CEDAR CITY",
       "season": "2026",
       "mismatches": {
         "games": {
@@ -8514,19 +8343,23 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 7,
+          "expected": 8,
           "actual": 6
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 5
         },
         "losses": {
           "expected": 2,
           "actual": 1
         },
         "pointsFor": {
-          "expected": 280,
+          "expected": 332,
           "actual": 253
         },
         "pointsAgainst": {
-          "expected": 117,
+          "expected": 124,
           "actual": 80
         }
       }
@@ -8627,29 +8460,6 @@
         "pointsAgainst": {
           "expected": 199,
           "actual": 189
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "DAVIS",
-      "season": "2022",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 5,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 329,
-          "actual": 307
-        },
-        "pointsAgainst": {
-          "expected": 393,
-          "actual": 346
         }
       }
     },
@@ -8926,6 +8736,29 @@
     {
       "type": "season-summary-mismatch",
       "team": "EAST",
+      "season": "2021",
+      "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 12
+        },
+        "wins": {
+          "expected": 4,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 286,
+          "actual": 321
+        },
+        "pointsAgainst": {
+          "expected": 273,
+          "actual": 280
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "EAST",
       "season": "2025",
       "mismatches": {
         "games": {
@@ -8993,52 +8826,6 @@
     },
     {
       "type": "season-summary-mismatch",
-      "team": "ENTERPRISE",
-      "season": "2004",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 5,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 383,
-          "actual": 376
-        },
-        "pointsAgainst": {
-          "expected": 181,
-          "actual": 167
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "ENTERPRISE",
-      "season": "2008",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "losses": {
-          "expected": 8,
-          "actual": 7
-        },
-        "pointsFor": {
-          "expected": 189,
-          "actual": 168
-        },
-        "pointsAgainst": {
-          "expected": 318,
-          "actual": 272
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
       "team": "FARMINGTON",
       "season": "2026",
       "mismatches": {
@@ -9057,29 +8844,6 @@
         "pointsAgainst": {
           "expected": 158,
           "actual": 144
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "FREMONT",
-      "season": "2001",
-      "mismatches": {
-        "games": {
-          "expected": 14,
-          "actual": 13
-        },
-        "wins": {
-          "expected": 10,
-          "actual": 9
-        },
-        "pointsFor": {
-          "expected": 352,
-          "actual": 309
-        },
-        "pointsAgainst": {
-          "expected": 163,
-          "actual": 160
         }
       }
     },
@@ -9292,96 +9056,23 @@
     {
       "type": "season-summary-mismatch",
       "team": "GUNNISON VALLEY",
-      "season": "1998",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 170,
-          "actual": 140
-        },
-        "pointsAgainst": {
-          "expected": 283,
-          "actual": 270
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "GUNNISON VALLEY",
       "season": "2001",
       "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 9
-        },
         "wins": {
-          "expected": 6,
+          "expected": 4,
           "actual": 5
         },
         "losses": {
-          "expected": 6,
+          "expected": 5,
           "actual": 4
         },
         "pointsFor": {
-          "expected": 236,
+          "expected": 162,
           "actual": 167
         },
         "pointsAgainst": {
-          "expected": 253,
+          "expected": 207,
           "actual": 202
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "GUNNISON VALLEY",
-      "season": "2005",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "wins": {
-          "expected": 8,
-          "actual": 7
-        },
-        "pointsFor": {
-          "expected": 307,
-          "actual": 280
-        },
-        "pointsAgainst": {
-          "expected": 201,
-          "actual": 194
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "GUNNISON VALLEY",
-      "season": "2014",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 193,
-          "actual": 173
-        },
-        "pointsAgainst": {
-          "expected": 455,
-          "actual": 408
         }
       }
     },
@@ -9717,56 +9408,6 @@
     {
       "type": "season-summary-mismatch",
       "team": "JUAB",
-      "season": "2001",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 6,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 186,
-          "actual": 172
-        },
-        "pointsAgainst": {
-          "expected": 189,
-          "actual": 170
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2002",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 10
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 2
-        },
-        "losses": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 197,
-          "actual": 125
-        },
-        "pointsAgainst": {
-          "expected": 274,
-          "actual": 219
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
       "season": "2005",
       "mismatches": {
         "pointsFor": {
@@ -9795,29 +9436,6 @@
         "pointsAgainst": {
           "expected": 255,
           "actual": 225
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 433,
-          "actual": 417
-        },
-        "pointsAgainst": {
-          "expected": 313,
-          "actual": 283
         }
       }
     },
@@ -9975,20 +9593,20 @@
       "team": "KANAB",
       "season": "2001",
       "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
+        "wins": {
+          "expected": 2,
+          "actual": 3
         },
         "losses": {
           "expected": 7,
           "actual": 6
         },
         "pointsFor": {
-          "expected": 159,
+          "expected": 139,
           "actual": 143
         },
         "pointsAgainst": {
-          "expected": 234,
+          "expected": 218,
           "actual": 214
         }
       }
@@ -10092,20 +9710,12 @@
       "team": "LAYTON CHRISTIAN",
       "season": "2014",
       "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "wins": {
-          "expected": 4,
-          "actual": 3
-        },
         "pointsFor": {
-          "expected": 234,
+          "expected": 187,
           "actual": 194
         },
         "pointsAgainst": {
-          "expected": 331,
+          "expected": 311,
           "actual": 304
         }
       }
@@ -10380,20 +9990,20 @@
       "team": "MANTI",
       "season": "2001",
       "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
         "wins": {
           "expected": 8,
           "actual": 7
         },
+        "losses": {
+          "expected": 2,
+          "actual": 3
+        },
         "pointsFor": {
-          "expected": 273,
+          "expected": 261,
           "actual": 234
         },
         "pointsAgainst": {
-          "expected": 131,
+          "expected": 92,
           "actual": 119
         }
       }
@@ -10519,6 +10129,21 @@
     {
       "type": "season-summary-mismatch",
       "team": "MILLARD",
+      "season": "1998",
+      "mismatches": {
+        "pointsFor": {
+          "expected": 468,
+          "actual": 479
+        },
+        "pointsAgainst": {
+          "expected": 98,
+          "actual": 117
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "MILLARD",
       "season": "2024",
       "mismatches": {
         "games": {
@@ -10570,21 +10195,9 @@
       "team": "MONTICELLO",
       "season": "2022",
       "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "wins": {
-          "expected": 9,
-          "actual": 8
-        },
         "pointsFor": {
-          "expected": 506,
+          "expected": 465,
           "actual": 464
-        },
-        "pointsAgainst": {
-          "expected": 294,
-          "actual": 274
         }
       }
     },
@@ -10608,29 +10221,6 @@
         "pointsAgainst": {
           "expected": 148,
           "actual": 140
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MONUMENT VALLEY",
-      "season": "2022",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "losses": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 178,
-          "actual": 158
-        },
-        "pointsAgainst": {
-          "expected": 528,
-          "actual": 487
         }
       }
     },
@@ -10930,20 +10520,8 @@
       "team": "NORTH SEVIER",
       "season": "1998",
       "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 8,
-          "actual": 7
-        },
-        "pointsFor": {
-          "expected": 178,
-          "actual": 165
-        },
         "pointsAgainst": {
-          "expected": 287,
+          "expected": 257,
           "actual": 267
         }
       }
@@ -10968,29 +10546,6 @@
         "pointsAgainst": {
           "expected": 230,
           "actual": 227
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "NORTH SEVIER",
-      "season": "2004",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 176,
-          "actual": 162
-        },
-        "pointsAgainst": {
-          "expected": 310,
-          "actual": 303
         }
       }
     },
@@ -11376,29 +10931,6 @@
     {
       "type": "season-summary-mismatch",
       "team": "PANGUITCH",
-      "season": "2025",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 1,
-          "actual": 0
-        },
-        "pointsFor": {
-          "expected": 180,
-          "actual": 132
-        },
-        "pointsAgainst": {
-          "expected": 482,
-          "actual": 476
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PANGUITCH",
       "season": "2026",
       "mismatches": {
         "games": {
@@ -11532,21 +11064,6 @@
     {
       "type": "season-summary-mismatch",
       "team": "PAROWAN",
-      "season": "1998",
-      "mismatches": {
-        "pointsFor": {
-          "expected": 130,
-          "actual": 111
-        },
-        "pointsAgainst": {
-          "expected": 175,
-          "actual": 164
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "PAROWAN",
       "season": "1999",
       "mismatches": {
         "pointsFor": {
@@ -11582,6 +11099,29 @@
         "pointsAgainst": {
           "expected": 225,
           "actual": 160
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "PAYSON",
+      "season": "2004",
+      "mismatches": {
+        "games": {
+          "expected": 9,
+          "actual": 10
+        },
+        "losses": {
+          "expected": 8,
+          "actual": 9
+        },
+        "pointsFor": {
+          "expected": 135,
+          "actual": 141
+        },
+        "pointsAgainst": {
+          "expected": 313,
+          "actual": 320
         }
       }
     },
@@ -11770,23 +11310,27 @@
     {
       "type": "season-summary-mismatch",
       "team": "PROVO",
-      "season": "2016",
+      "season": "2004",
       "mismatches": {
         "games": {
-          "expected": 13,
-          "actual": 12
+          "expected": 9,
+          "actual": 11
         },
         "wins": {
-          "expected": 8,
+          "expected": 3,
+          "actual": 4
+        },
+        "losses": {
+          "expected": 6,
           "actual": 7
         },
         "pointsFor": {
-          "expected": 355,
-          "actual": 331
+          "expected": 133,
+          "actual": 140
         },
         "pointsAgainst": {
-          "expected": 294,
-          "actual": 278
+          "expected": 253,
+          "actual": 265
         }
       }
     },
@@ -11812,69 +11356,11 @@
     {
       "type": "season-summary-mismatch",
       "team": "RICH",
-      "season": "1993",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "losses": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 230,
-          "actual": 206
-        },
-        "pointsAgainst": {
-          "expected": 274,
-          "actual": 227
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "RICH",
       "season": "2003",
       "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 8,
-          "actual": 7
-        },
-        "pointsFor": {
-          "expected": 206,
-          "actual": 200
-        },
         "pointsAgainst": {
-          "expected": 299,
+          "expected": 251,
           "actual": 271
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "RICH",
-      "season": "2004",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 431,
-          "actual": 424
-        },
-        "pointsAgainst": {
-          "expected": 273,
-          "actual": 238
         }
       }
     },
@@ -11883,44 +11369,9 @@
       "team": "RICH",
       "season": "2008",
       "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "wins": {
-          "expected": 7,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 385,
-          "actual": 339
-        },
         "pointsAgainst": {
-          "expected": 254,
+          "expected": 233,
           "actual": 234
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "RICH",
-      "season": "2016",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "losses": {
-          "expected": 6,
-          "actual": 5
-        },
-        "pointsFor": {
-          "expected": 214,
-          "actual": 197
-        },
-        "pointsAgainst": {
-          "expected": 170,
-          "actual": 130
         }
       }
     },
@@ -11929,25 +11380,13 @@
       "team": "RICH",
       "season": "2022",
       "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
         "wins": {
-          "expected": 6,
+          "expected": 5,
           "actual": 9
         },
         "losses": {
           "expected": 7,
           "actual": 3
-        },
-        "pointsFor": {
-          "expected": 306,
-          "actual": 259
-        },
-        "pointsAgainst": {
-          "expected": 203,
-          "actual": 191
         }
       }
     },
@@ -11990,21 +11429,9 @@
       "team": "RICHFIELD",
       "season": "2005",
       "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "losses": {
-          "expected": 7,
-          "actual": 6
-        },
         "pointsFor": {
-          "expected": 167,
+          "expected": 160,
           "actual": 148
-        },
-        "pointsAgainst": {
-          "expected": 293,
-          "actual": 266
         }
       }
     },
@@ -12401,29 +11828,6 @@
     {
       "type": "season-summary-mismatch",
       "team": "SKYRIDGE",
-      "season": "2022",
-      "mismatches": {
-        "games": {
-          "expected": 15,
-          "actual": 14
-        },
-        "wins": {
-          "expected": 14,
-          "actual": 13
-        },
-        "pointsFor": {
-          "expected": 599,
-          "actual": 552
-        },
-        "pointsAgainst": {
-          "expected": 162,
-          "actual": 140
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "SKYRIDGE",
       "season": "2024",
       "mismatches": {
         "wins": {
@@ -12520,6 +11924,29 @@
         "pointsAgainst": {
           "expected": 272,
           "actual": 262
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "SNOW CANYON",
+      "season": "2016",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 11
+        },
+        "losses": {
+          "expected": 7,
+          "actual": 8
+        },
+        "pointsFor": {
+          "expected": 214,
+          "actual": 230
+        },
+        "pointsAgainst": {
+          "expected": 230,
+          "actual": 254
         }
       }
     },
@@ -12757,6 +12184,25 @@
         "pointsFor": {
           "expected": 121,
           "actual": 103
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "SPANISH FORK",
+      "season": "2004",
+      "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 12
+        },
+        "wins": {
+          "expected": 5,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 189,
+          "actual": 195
         }
       }
     },
@@ -13060,29 +12506,6 @@
         "pointsFor": {
           "expected": 183,
           "actual": 146
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "TIMPVIEW",
-      "season": "2001",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "losses": {
-          "expected": 5,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 415,
-          "actual": 412
-        },
-        "pointsAgainst": {
-          "expected": 218,
-          "actual": 175
         }
       }
     },
@@ -13518,29 +12941,6 @@
     {
       "type": "season-summary-mismatch",
       "team": "WASATCH",
-      "season": "1993",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "wins": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 413,
-          "actual": 366
-        },
-        "pointsAgainst": {
-          "expected": 234,
-          "actual": 210
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "WASATCH",
       "season": "1998",
       "mismatches": {
         "pointsFor": {
@@ -13821,6 +13221,52 @@
     {
       "type": "season-summary-mismatch",
       "team": "WEST",
+      "season": "1998",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 11
+        },
+        "losses": {
+          "expected": 6,
+          "actual": 7
+        },
+        "pointsFor": {
+          "expected": 191,
+          "actual": 204
+        },
+        "pointsAgainst": {
+          "expected": 282,
+          "actual": 338
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "WEST",
+      "season": "1999",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "losses": {
+          "expected": 6,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 192,
+          "actual": 179
+        },
+        "pointsAgainst": {
+          "expected": 274,
+          "actual": 218
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "WEST",
       "season": "2004",
       "mismatches": {
         "pointsAgainst": {
@@ -13860,29 +13306,6 @@
         "pointsFor": {
           "expected": 299,
           "actual": 266
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "WEST",
-      "season": "2019",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 7,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 316,
-          "actual": 289
-        },
-        "pointsAgainst": {
-          "expected": 306,
-          "actual": 252
         }
       }
     },
@@ -22964,6 +22387,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "JUAB",
+      "teamB": "NORTH SANPETE",
+      "date": "10/17/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "JUAB",
+          "opponent": "NORTH SANPETE",
+          "date": "10/17/2025",
+          "teamScore": 16,
+          "opponentScore": 30,
+          "result": "L",
+          "season": "2025",
+          "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -22978,7 +22421,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 9
+          "index": 10
         }
       ]
     },
@@ -28552,6 +27995,26 @@
     },
     {
       "type": "reciprocal-mismatch",
+      "teamA": "MONUMENT VALLEY",
+      "teamB": "PANGUITCH",
+      "date": "9/19/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "PANGUITCH",
+          "opponent": "MONUMENT VALLEY",
+          "date": "9/19/2025",
+          "teamScore": 48,
+          "opponentScore": 6,
+          "result": "W",
+          "season": "2025",
+          "index": 5
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -28566,7 +28029,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 7
+          "index": 8
         }
       ]
     },
@@ -28585,7 +28048,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 9
         }
       ],
       "sideB": []
@@ -36011,7 +35474,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 72,
-      "totalGames": 723
+      "totalGames": 724
     },
     {
       "team": "JUAN DIEGO",
@@ -36179,7 +35642,7 @@
       "team": "PANGUITCH",
       "file": "panguitch.json",
       "seasons": 8,
-      "totalGames": 69
+      "totalGames": 70
     },
     {
       "team": "PARK CITY",
