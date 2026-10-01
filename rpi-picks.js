@@ -66,6 +66,12 @@
     } catch { body.innerHTML = '<p role="alert">The schedule could not load. Press Pick Remaining Games to try again.</p>'; }
     finally { loading = false; }
   });
+  window.addEventListener('rus-rpi-scenario', event => {
+    if (!loaded) return;
+    const imported = event.detail || {};
+    picks = Object.fromEntries(remaining.filter(g => [g.awayTeam,g.homeTeam].includes(imported[id(g)])).map(g => [id(g),imported[id(g)]]));
+    result = null; save(); render(); body.hidden = false; open.setAttribute('aria-expanded','true');
+  });
   open.setAttribute('aria-expanded','false'); open.setAttribute('aria-controls','rpiPicksBody');
   body.addEventListener('click', event => {
     const button = event.target.closest('button'); if (!button) return;
