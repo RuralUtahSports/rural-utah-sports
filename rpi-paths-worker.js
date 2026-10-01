@@ -1,4 +1,4 @@
-importScripts('rpi-picks-core.js?v=20261001-paths1','rpi-paths-core.js?v=20261001-repeat3');
+importScripts('rpi-picks-core.js?v=20261001-paths1','rpi-paths-core.js?v=20261001-conditions4');
 let prepared,source;
 self.onmessage=event=>{
   try {
