@@ -7,14 +7,241 @@
   "source": "RUS completed game history matched to UHSAA champions; MaxPreps schedule archives used as game references",
   "notes": [
     "Historical championship paths are reconstructed from completed Utah state-tournament game results.",
-    "Seed numbers and bye placeholders are omitted where they were not stored in the RUS historical results archive.",
-    "Championship winners are cross-checked against the UHSAA boys basketball championship record."
+    "Championship winners are cross-checked against the UHSAA boys basketball championship record.",
+    "1A and 3A brackets are transcribed from the official UHSAA historical brackets."
   ],
   "classifications": {
     "1A": {
-      "sourceUrl": "https://www.maxpreps.com/ut/tropic/bryce-valley-mustangs/basketball/12-13/schedule/",
-      "reconstructed": true,
+      "sourceUrl": "https://www.uhsaa.org/bbasketball/2013/1A.pdf",
+      "reconstructed": false,
+      "officialBracket": true,
+      "placement": [],
       "rounds": [
+        {
+          "name": "Round of 16",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Valley",
+                  "score": 51
+                },
+                {
+                  "seed": null,
+                  "team": "Layton Christian Academy",
+                  "score": 47
+                }
+              ],
+              "date": "2013-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Bryce Valley",
+                  "score": 87
+                },
+                {
+                  "seed": null,
+                  "team": "Pinnacle",
+                  "score": 69
+                }
+              ],
+              "date": "2013-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Tintic",
+                  "score": 68
+                },
+                {
+                  "seed": null,
+                  "team": "Green River",
+                  "score": 57
+                }
+              ],
+              "date": "2013-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Rich",
+                  "score": 66
+                },
+                {
+                  "seed": null,
+                  "team": "Piute",
+                  "score": 47
+                }
+              ],
+              "date": "2013-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Monticello",
+                  "score": 56
+                },
+                {
+                  "seed": null,
+                  "team": "Wayne",
+                  "score": 35
+                }
+              ],
+              "date": "2013-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Tabiona",
+                  "score": 71
+                },
+                {
+                  "seed": null,
+                  "team": "Saint Joseph",
+                  "score": 66
+                }
+              ],
+              "date": "2013-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Duchesne",
+                  "score": 66
+                },
+                {
+                  "seed": null,
+                  "team": "Rockwell",
+                  "score": 40
+                }
+              ],
+              "date": "2013-02-27"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Panguitch",
+                  "score": 46
+                },
+                {
+                  "seed": null,
+                  "team": "Legacy Prep Academy",
+                  "score": 37
+                }
+              ],
+              "date": "2013-02-27"
+            }
+          ]
+        },
+        {
+          "name": "Quarterfinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Bryce Valley",
+                  "score": 63
+                },
+                {
+                  "seed": null,
+                  "team": "Valley",
+                  "score": 39
+                }
+              ],
+              "date": "2013-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Rich",
+                  "score": 56
+                },
+                {
+                  "seed": null,
+                  "team": "Tintic",
+                  "score": 41
+                }
+              ],
+              "date": "2013-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Monticello",
+                  "score": 55
+                },
+                {
+                  "seed": null,
+                  "team": "Tabiona",
+                  "score": 47
+                }
+              ],
+              "date": "2013-02-28"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Duchesne",
+                  "score": 52
+                },
+                {
+                  "seed": null,
+                  "team": "Panguitch",
+                  "score": 45
+                }
+              ],
+              "date": "2013-02-28"
+            }
+          ]
+        },
+        {
+          "name": "Semifinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Bryce Valley",
+                  "score": 71
+                },
+                {
+                  "seed": null,
+                  "team": "Rich",
+                  "score": 60
+                }
+              ],
+              "date": "2013-03-01"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Duchesne",
+                  "score": 52
+                },
+                {
+                  "seed": null,
+                  "team": "Monticello",
+                  "score": 42
+                }
+              ],
+              "date": "2013-03-01"
+            }
+          ]
+        },
         {
           "name": "Championship",
           "games": [
@@ -35,8 +262,7 @@
             }
           ]
         }
-      ],
-      "placement": []
+      ]
     },
     "2A": {
       "sourceUrl": "https://www.maxpreps.com/ut/mt-pleasant/wasatch-academy-tigers/basketball/12-13/schedule/",
@@ -216,9 +442,236 @@
       "placement": []
     },
     "3A": {
-      "sourceUrl": "https://www.maxpreps.com/ut/morgan/morgan-trojans/basketball/12-13/schedule/",
-      "reconstructed": true,
+      "sourceUrl": "https://www.uhsaa.org/bbasketball/2013/3A.pdf",
+      "reconstructed": false,
+      "officialBracket": true,
+      "placement": [],
       "rounds": [
+        {
+          "name": "Round of 16",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Ben Lomond",
+                  "score": 58
+                },
+                {
+                  "seed": null,
+                  "team": "Delta",
+                  "score": 45
+                }
+              ],
+              "date": "2013-02-15"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Snow Canyon",
+                  "score": 77
+                },
+                {
+                  "seed": null,
+                  "team": "Park City",
+                  "score": 62
+                }
+              ],
+              "date": "2013-02-15"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Judge Memorial",
+                  "score": 54
+                },
+                {
+                  "seed": null,
+                  "team": "Dixie",
+                  "score": 40
+                }
+              ],
+              "date": "2013-02-15"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Bear River",
+                  "score": 67
+                },
+                {
+                  "seed": null,
+                  "team": "Payson",
+                  "score": 60
+                }
+              ],
+              "date": "2013-02-15"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Wasatch",
+                  "score": 52
+                },
+                {
+                  "seed": null,
+                  "team": "Desert Hills",
+                  "score": 46
+                }
+              ],
+              "date": "2013-02-15"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Spanish Fork",
+                  "score": 61
+                },
+                {
+                  "seed": null,
+                  "team": "Ogden",
+                  "score": 57
+                }
+              ],
+              "date": "2013-02-15"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Morgan",
+                  "score": 86
+                },
+                {
+                  "seed": null,
+                  "team": "Carbon",
+                  "score": 49
+                }
+              ],
+              "date": "2013-02-15"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Cedar",
+                  "score": 58
+                },
+                {
+                  "seed": null,
+                  "team": "Union",
+                  "score": 41
+                }
+              ],
+              "date": "2013-02-15"
+            }
+          ]
+        },
+        {
+          "name": "Quarterfinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Snow Canyon",
+                  "score": 67
+                },
+                {
+                  "seed": null,
+                  "team": "Ben Lomond",
+                  "score": 66
+                }
+              ],
+              "date": "2013-02-21"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Bear River",
+                  "score": 66
+                },
+                {
+                  "seed": null,
+                  "team": "Judge Memorial",
+                  "score": 61
+                }
+              ],
+              "date": "2013-02-21"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Wasatch",
+                  "score": 46
+                },
+                {
+                  "seed": null,
+                  "team": "Spanish Fork",
+                  "score": 36
+                }
+              ],
+              "date": "2013-02-21"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Morgan",
+                  "score": 69
+                },
+                {
+                  "seed": null,
+                  "team": "Cedar",
+                  "score": 57
+                }
+              ],
+              "date": "2013-02-21"
+            }
+          ]
+        },
+        {
+          "name": "Semifinals",
+          "games": [
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Bear River",
+                  "score": 83
+                },
+                {
+                  "seed": null,
+                  "team": "Snow Canyon",
+                  "score": 55
+                }
+              ],
+              "date": "2013-02-22"
+            },
+            {
+              "teams": [
+                {
+                  "seed": null,
+                  "team": "Morgan",
+                  "score": 52
+                },
+                {
+                  "seed": null,
+                  "team": "Wasatch",
+                  "score": 50
+                }
+              ],
+              "date": "2013-02-22"
+            }
+          ]
+        },
         {
           "name": "Championship",
           "games": [
@@ -239,8 +692,7 @@
             }
           ]
         }
-      ],
-      "placement": []
+      ]
     },
     "4A": {
       "sourceUrl": "https://www.maxpreps.com/ut/smithfield/sky-view-bobcats/basketball/12-13/schedule/",
