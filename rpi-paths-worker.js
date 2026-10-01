@@ -1,9 +1,13 @@
-importScripts('rpi-picks-core.js?v=20261001-paths1','rpi-paths-core.js?v=20261001-seeds2');
-let prepared;
+importScripts('rpi-picks-core.js?v=20261001-paths1','rpi-paths-core.js?v=20261001-repeat3');
+let prepared,source;
 self.onmessage=event=>{
   try {
-    const {teams,games,oos,request}=event.data;
-    if(!prepared)prepared=RUSRpiPaths.model(teams,games,oos,RUSRpiPicks.calculate,(done,total)=>self.postMessage({type:'progress',done,total}));
+    const {request}=event.data;
+    if(!prepared){
+      source={teams:event.data.teams,games:event.data.games,oos:event.data.oos};
+      prepared=RUSRpiPaths.model(source.teams,source.games,source.oos,RUSRpiPicks.calculate,(done,total)=>self.postMessage({type:'progress',done,total}));
+    }
+    const {teams,games,oos}=source;
     const attach=result=>{
     if(result.paths.length){
       const example=result.paths[0];
