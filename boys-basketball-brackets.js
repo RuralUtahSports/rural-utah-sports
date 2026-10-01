@@ -67,10 +67,11 @@
     }).join('');
     $('bbPlacement').hidden = !b.placement?.length;
     $('bbPlacement').innerHTML = b.placement?.length ? `<h2>Consolation &amp; placement</h2><div class="bb-placement-grid">${[...b.placement].sort((a,b) => ['Consolation','5th & 6th Place','3rd & 4th Place'].indexOf(a.name) - ['Consolation','5th & 6th Place','3rd & 4th Place'].indexOf(b.name)).map(r => `<section><h3>${escape(r.name)}</h3>${r.games.map(gameHTML).join('')}</section>`).join('')}</div>` : '';
-    const historical = b.reconstructed || data.year < 2026;
-    const historyNote = historical
-      ? ' Historical path reconstructed from completed RUS state-tournament results; seed numbers and bye placeholders are omitted where they were not preserved in the archive.'
-      : ' Scores follow that bracket when other feeds disagree. Championship path and all played placement games are included; unplayed seventh-place placeholders are excluded.';
+    const historyNote = b.officialBracket
+      ? ' Historical path transcribed from the official UHSAA bracket.'
+      : b.reconstructed
+        ? ' Historical path reconstructed from completed RUS state-tournament results; seed numbers and bye placeholders are omitted where they were not preserved in the archive.'
+        : ' Scores follow that bracket when other feeds disagree. Championship path and all played placement games are included; unplayed seventh-place placeholders are excluded.';
     $('bbSource').innerHTML = `Source: <a href="${escape(b.sourceUrl)}" target="_blank" rel="noopener">UHSAA/MaxPreps ${escape(data.year)} tournament bracket</a>.${historyNote}`;
     $('bbScroller').scrollLeft = 0;
     const url = new URL(location.href);
