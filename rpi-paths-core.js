@@ -27,8 +27,15 @@
     return {team:team.team,classification,target};
   }
   function project(games, remaining, bits) {
-    const chosen=new Map(remaining.map((g,i)=>[g,bits[i]]));
-    return games.map(g=>final(g)?g:{...g,actualAway:chosen.get(g)?1:0,actualHome:chosen.get(g)?0:1});
+    // Worker messages clone objects. Match schedule rows by value across messages.
+    const gameKey=g=>JSON.stringify([g.date,teamKey(g.awayTeam),teamKey(g.homeTeam)]);
+    const chosen=new Map(remaining.map((g,i)=>[gameKey(g),bits[i]]));
+    return games.map(g=>{
+      if(final(g))return g;
+      const key=gameKey(g);
+      if(!chosen.has(key))throw new Error('The scenario does not match the loaded schedule. Please try again.');
+      return {...g,actualAway:chosen.get(key)?1:0,actualHome:chosen.get(key)?0:1};
+    });
   }
   function model(teams,games,oos,calculate,progress=()=>{}) {
     const remaining=games.filter(g=>!final(g)),bits=new Uint8Array(remaining.length),base=calculate(teams,{games:project(games,remaining,bits)},oos);
