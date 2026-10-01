@@ -52,6 +52,8 @@ const stateFor = (name) => clean(name).toUpperCase().match(/,\s*([A-Z]{2})\s*$/)
 
 const teamByKey = new Map(teams.map((team) => [alias(team.team), team]));
 const memberKeys = new Set(teamByKey.keys());
+const wpCache = new Map(), owpCache = new Map();
+const oosByKey = new Map(Object.entries(oosData.teams || {}).map(([name,entry]) => [compact(name),entry]));
 const eligibleTeams = teams.filter((team) => !INDEPENDENT.has(alias(team.team)));
 const gamesByTeam = new Map();
 
@@ -70,18 +72,18 @@ for (const game of weekly.games || []) {
   if (memberKeys.has(home)) addGame(game.homeTeam, game);
 }
 
-function oosEntry(name) {
-  const wanted = compact(name);
-  const key = Object.keys(oosData.teams || {}).find((candidate) => compact(candidate) === wanted);
-  return key ? oosData.teams[key] : null;
-}
+function oosEntry(name) { return oosByKey.get(compact(name)) || null; }
 
 function wp(team, excludeOpponent = '') {
   const key = alias(team);
   if (!memberKeys.has(key)) return null;
   const excluded = alias(excludeOpponent);
+  const cacheKey = key + '|' + excluded;
+  if (wpCache.has(cacheKey)) return wpCache.get(cacheKey);
   const games = (gamesByTeam.get(key) || []).filter((game) => !excluded || alias(opponentFor(game, team)) !== excluded);
-  return average(games.map((game) => resultFor(game, team)));
+  const value = average(games.map((game) => resultFor(game, team)));
+  wpCache.set(cacheKey, value);
+  return value;
 }
 
 function opponentWp(opponent, versusTeam) {
@@ -101,8 +103,11 @@ function opponentOwp(opponent, versusTeam) {
     const direct = entry.owpByUtahTeam?.[alias(versusTeam)] ?? entry.owpByUtahTeam?.[clean(versusTeam).toUpperCase()];
     return number(direct) ?? number(entry.owp) ?? 0.5;
   }
+  if (owpCache.has(opponentKey)) return owpCache.get(opponentKey);
   const rows = gamesByTeam.get(opponentKey) || [];
-  return average(rows.map((game) => opponentWp(opponentFor(game, opponent), opponent))) ?? 0.5;
+  const value = average(rows.map((game) => opponentWp(opponentFor(game, opponent), opponent))) ?? 0.5;
+  owpCache.set(opponentKey, value);
+  return value;
 }
 
 function calculate(team) {
