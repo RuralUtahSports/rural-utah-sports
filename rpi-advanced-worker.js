@@ -1,0 +1,2 @@
+importScripts('rpi-picks-core.js?v=20261001-advanced1','rpi-paths-core.js?v=20261001-advanced1','rpi-advanced-core.js?v=20261001-advanced1');
+onmessage=({data:d})=>{try{const m=RUSRpiPaths.model(d.teams,d.games,d.oos,RUSRpiPicks.calculate,(n,total)=>postMessage({progress:`Preparing schedule: ${n}/${total}`}));postMessage({result:RUSRpiAdvanced.analyze(m,d.team,d.classification,d.elo,d.target,message=>postMessage({progress:message}))});}catch(e){postMessage({error:e.message});}};
