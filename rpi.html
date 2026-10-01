@@ -19,7 +19,7 @@
   <meta property="og:url" content="https://ruralutahsports.com/rpi.html">
   <meta property="og:image" content="https://ruralutahsports.com/RUSlogoNew.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="rpi-picks.css?v=20261001-paths1">
+  <link rel="stylesheet" href="rpi-picks.css?v=20261001-lab5">
 </head>
 <body data-feature-page="rpi">
   <header><div class="header-content"><img src="RUSlogoNew.png" class="logo" alt="Rural Utah Sports"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
@@ -32,18 +32,34 @@
         <label for="rpiPathQuestion">Ask about a team’s seed or playoff path</label>
         <div class="rpi-path-question"><input id="rpiPathQuestion" type="text" required maxlength="200" placeholder="What is Uintah’s path to a top 16 seed?"><button type="submit">Calculate Answer</button><button type="button" id="rpiPathCancel" hidden>Cancel</button></div>
       </form>
-      <p class="rpi-picks-note">Try “What’s Uintah’s highest seed if they win out?”, “Can Juab make the playoffs if they lose Friday?” or “Where could North Sanpete finish if they go 2–1?” Conditions apply to the remaining schedule; all other games are explored. Completed scores stay fixed. Your manual simulator picks are not treated as fixed results.</p>
+      <p class="rpi-picks-note">Try “Who should Uintah root for?”, “What needs to happen for Uintah to finish ahead of Payson?” or “What is Uintah’s highest seed if they beat Provo but lose to Wasatch?” Conditions apply to the remaining schedule; all other games are explored. Completed scores stay fixed. Your manual simulator picks are not treated as fixed results.</p>
       <p id="rpiPathStatus" role="status" aria-live="polite"></p>
       <div id="rpiPathResult"></div>
+    </section>
+    <section class="rpi-picks rpi-lab" aria-labelledby="rpiLabTitle">
+      <h2 id="rpiLabTitle">Playoff Lab</h2>
+      <form id="rpiLabForm">
+        <div class="rpi-scenario-controls">
+          <label>Class<select id="rpiLabClass"><option>6A</option><option>5A</option><option selected>4A</option><option>3A</option><option>2A</option><option>1A</option><option value="8P">8-Player</option></select></label>
+          <label>Team<select id="rpiLabTeam" aria-label="Team for playoff analysis"></select></label>
+          <label>Seed-race opponent<select id="rpiLabRival" aria-label="Opponent for seed race"></select></label>
+          <button type="submit">Analyze Playoff Picture</button><button type="button" id="rpiLabCancel" hidden>Cancel</button>
+        </div>
+      </form>
+      <p class="rpi-picks-note">Rooting guide, important games, next-game comparisons, proven playoff status, minimum wins, seed races, bubble teams and weekly movement.</p>
+      <p id="rpiLabStatus" role="status" aria-live="polite"></p>
+      <div id="rpiLabResult"></div>
     </section>
     <section id="rpiPicks" class="rpi-picks"><h2>RPI Simulator</h2><p>Pick the winner of every remaining game, then calculate the projected final RPI.</p><button type="button" id="rpiPicksOpen">Pick Remaining Games</button><div id="rpiPicksBody" hidden></div></section>
     <div id="featureRoot"><div class="loading">Loading RPI standings…</div></div>
   </main>
   <footer><strong>RURAL UTAH SPORTS</strong><p>Standings sourced directly from UHSAA.</p></footer>
   <script src="rpi-picks-core.js?v=20261001-paths1" defer></script>
-  <script src="rpi-picks.js?v=20261001-paths1" defer></script>
-  <script src="rpi-paths-core.js?v=20261001-conditions4" defer></script>
-  <script src="rpi-paths.js?v=20261001-conditions4" defer></script>
+  <script src="rpi-paths-core.js?v=20261001-lab5" defer></script>
+  <script src="rpi-scenarios.js?v=20261001-lab5" defer></script>
+  <script src="rpi-lab.js?v=20261001-lab5" defer></script>
+  <script src="rpi-picks.js?v=20261001-lab5" defer></script>
+  <script src="rpi-paths.js?v=20261001-lab5" defer></script>
   <script src="rpi-standings.js?v=20260921-movement1" defer></script>
   <script src="rpi-bracket-share.js?v=20260915-bracketfix1" defer></script>
   <script src="rpi-standings-share.js?v=20260922-movement-spacing2" defer></script>
