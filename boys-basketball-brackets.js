@@ -10,7 +10,10 @@
   let selectedYear = Number(params.get('year')) || 2026;
   let classification = params.get('class') || '1A';
   let compact = matchMedia('(max-width:700px)').matches, roundIndex = 0;
-  const winner = g => g.teams.length === 1 ? g.teams[0] : g.teams.reduce((a,b) => Number(a.score) > Number(b.score) ? a : b);
+  const winner = g => {
+    if (g.winner) return g.teams.find(t => t.team === g.winner) || g.teams[0];
+    return g.teams.length === 1 ? g.teams[0] : g.teams.reduce((a,b) => Number(a.score) > Number(b.score) ? a : b);
+  };
 
   function seedHTML(seed) {
     return seed === null || seed === undefined || seed === '' ? '' : `<span class="seed">${escape(seed)}</span>`;
@@ -88,7 +91,7 @@
     $('bbPlacement').innerHTML = '';
     $('bbSource').textContent = '';
     try {
-      const response = await fetch(`boys-basketball-brackets-${selectedYear}.json?v=20260930-history3`);
+      const response = await fetch(`boys-basketball-brackets-${selectedYear}.json?v=20260930-history4`);
       if (!response.ok) throw new Error('Bracket data unavailable');
       data = await response.json();
       selectedYear = Number(data.year);
