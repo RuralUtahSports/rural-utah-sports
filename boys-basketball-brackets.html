@@ -59,10 +59,10 @@ footer strong{color:#F14D07}
 @media(max-width:1000px){.summary-grid{grid-template-columns:repeat(2,1fr)}.filter-grid{grid-template-columns:1fr 1fr}.search-group{grid-column:1/-1}}
 @media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.page-title{font-size:28px}.summary-grid,.filter-grid{grid-template-columns:1fr}.search-group{grid-column:auto}}
 
-.bb-links,.bb-controls,.bb-classes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.bb-links,.bb-controls,.bb-classes,.bb-season{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
 .bb-links a,.bb-controls button,.bb-classes button{display:inline-block;padding:12px 16px;border:1px solid #555;border-radius:6px;background:#191919;color:#fff;text-decoration:none;font-weight:bold;cursor:pointer;min-height:44px}
 .bb-controls button[aria-pressed="true"],.bb-classes button[aria-pressed="true"]{background:#F14D07;color:#000;border-color:#F14D07}
-.bb-controls label{display:flex;align-items:center;gap:8px}.bb-controls select{background:#191919;color:#fff;border:1px solid #555;padding:10px;border-radius:6px;min-height:44px}
+.bb-controls label,.bb-season label{display:flex;align-items:center;gap:8px}.bb-controls select,.bb-season select{background:#191919;color:#fff;border:1px solid #555;padding:10px;border-radius:6px;min-height:44px}.bb-season label{font-weight:900;text-transform:uppercase;font-size:12px;color:#aaa}.bb-season select{min-width:150px;font-weight:900}
 #bbChampion{padding:18px;border:1px solid #555;border-left:5px solid #F14D07;background:#000;border-radius:6px;margin:18px 0;font-size:20px;font-weight:bold}
 #bbChampion small{display:block;color:#aaa;font-size:12px;font-weight:normal;margin-bottom:8px}
 .bb-scroll{overflow:auto;background:#080808;border:1px solid #333;border-radius:8px;padding:16px;max-width:100%}
@@ -111,7 +111,16 @@ footer strong{color:#F14D07}
 <main class="container">
 <div class="bb-links"><a href="championships.html">Football championships &amp; brackets</a><a href="boys-basketball-teams.html">Basketball teams</a></div>
 <h2 class="page-title">Boys Basketball Brackets</h2>
-<p class="subtitle">2025–26 state tournaments · Completed results · 1A–6A</p>
+<p id="bbSubtitle" class="subtitle">2025–26 state tournaments · Completed results · 1A–6A</p>
+<div class="bb-season"><label for="bbSeason">Season <select id="bbSeason" aria-label="Basketball bracket season">
+<option value="2026">2025–26</option>
+<option value="2025">2024–25</option>
+<option value="2024">2023–24</option>
+<option value="2023">2022–23</option>
+<option value="2022">2021–22</option>
+<option value="2021">2020–21</option>
+<option value="2020">2019–20</option>
+</select></label></div>
 <div id="bbClasses" class="bb-classes" role="group" aria-label="Classification"></div>
 <div id="bbChampion" aria-live="polite">Loading tournament results…</div>
 <div class="bb-controls">
@@ -127,6 +136,6 @@ footer strong{color:#F14D07}
 </main>
 <footer><strong>Rural Utah Sports</strong><p>Utah High School Sports History &amp; Data</p></footer>
 <script src="boys-basketball-bracket-brands.js?v=20260929-brackets2" defer></script>
-<script src="boys-basketball-brackets.js?v=20260929-brackets2" defer></script>
+<script src="boys-basketball-brackets.js?v=20260930-history1" defer></script>
 <script src="nav-menu.js?v=20260929-alltime-team-stats1"></script>
 </body></html>
