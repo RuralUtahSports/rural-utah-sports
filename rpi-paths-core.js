@@ -12,11 +12,17 @@
     const team=matches[0], classification=teamKey(team.team)==='enterprise'?'1A':team.classification;
     if(['grand','grandcounty','laytonchristian'].includes(teamKey(team.team))) throw new Error('This team is excluded from the current RPI postseason calculation.');
     const cap={'6A':16,'5A':16,'4A':16,'3A':13,'2A':9,'1A':9,'8P':11}[classification];
+    if(/\b(highest|best|ceiling|maximum)\b/.test(q)) return {team:team.team,classification,target:1,mode:'highest'};
+    if(/\b(lowest|worst|floor|minimum)\b/.test(q)) return {team:team.team,classification,target:64,mode:'lowest'};
+    if(/\b(range|seeds possible|possible seeds)\b/.test(q)) return {team:team.team,classification,target:1,mode:'range'};
     let target;
     const m=q.match(/\btop\s*(\d+)\b/) || q.match(/\b(?:seed|rank)\s*(\d+)\b/) || q.match(/\b(\d+)(?:st|nd|rd|th)?\s+seed\b/) || q.match(/\bnumber\s*(\d+)\b/);
     if(m) target=Number(m[1]);
     else if(/\b(playoff|playoffs|postseason)\b/.test(q)) target=cap;
-    else throw new Error('Include a target, such as “top 16,” “top 8,” or “make the playoffs.”');
+    else if(/\b(highest|best|ceiling|maximum)\b/.test(q)) return {team:team.team,classification,target:1,mode:'highest'};
+    else if(/\b(lowest|worst|floor|minimum)\b/.test(q)) return {team:team.team,classification,target:64,mode:'lowest'};
+    else if(/\b(range|seeds possible|possible seeds)\b/.test(q)) return {team:team.team,classification,target:1,mode:'range'};
+    else throw new Error('Ask for a target seed, the highest or lowest possible seed, or a team’s seed range.');
     if(!Number.isInteger(target)||target<1||target>64) throw new Error('Please choose a target seed from 1 to 64.');
     return {team:team.team,classification,target};
   }
@@ -41,6 +47,7 @@
     return {teams,games,oos,remaining,names,indices,values,coefficients,rows};
   }
   function search(m, request, options={}) {
+    const mode=request.mode||'target';
     const targetIndex=m.indices.get(request.team);
     if(targetIndex===undefined) throw new Error('This team is not available in the current RPI calculation.');
     const competitors=m.names.map((name,index)=>({name,index,row:m.rows.get(name)})).filter(t=>t.row.classification===request.classification && t.index!==targetIndex);
@@ -50,21 +57,31 @@
     const ownWinBit=j=>teamKey(m.remaining[j].awayTeam)===teamKey(request.team)?1:0;
     let state=239019;
     const random=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296;};
-    const eps=1e-10, witnesses=new Map(); let evaluated=0,bestRank=Infinity,worstRank=0;
+    const eps=1e-10, witnesses=new Map(); let evaluated=0,bestRank=Infinity,worstRank=0,worstSafeRank=0,best=null,worst=null;
+    let optimisticBound=1,pessimisticBound=1;
+    for(const t of competitors){
+      let min=m.values[t.index]-m.values[targetIndex],max=min;
+      for(const c of m.coefficients){const d=c[t.index]-c[targetIndex];min+=Math.min(0,d);max+=Math.max(0,d);}
+      if(min>eps)optimisticBound++;
+      if(max>=-eps)pessimisticBound++;
+    }
     const assess=(bits,values)=> {
       evaluated++;
       const rank=1+competitors.filter(t=>values[t.index]>values[targetIndex]+eps).length;
       const safeRank=1+competitors.filter(t=>values[t.index]>=values[targetIndex]-eps).length;
-      bestRank=Math.min(bestRank,rank);worstRank=Math.max(worstRank,rank);
+      bestRank=Math.min(bestRank,rank);worstRank=Math.max(worstRank,rank);worstSafeRank=Math.max(worstSafeRank,safeRank);
       const other=competitors.map(t=>values[t.index]).sort((a,b)=>b-a);
-      const threshold=other[request.target-1], margin=threshold===undefined?1:values[targetIndex]-threshold;
+      const threshold=mode==='lowest'?other[other.length-1]:other[request.target-1], margin=threshold===undefined?1:mode==='lowest'?threshold-values[targetIndex]:values[targetIndex]-threshold;
       const wins=own.filter(j=>bits[j]===ownWinBit(j)).length;
-      if(safeRank<=request.target && m.rows.get(request.team).postseasonEligible) {
+      const candidate={bits:Array.from(bits),rank,safeRank,margin,wins,rpi:values[targetIndex]};
+      if(!best || safeRank<best.safeRank || (safeRank===best.safeRank && values[targetIndex]>best.rpi+eps))best=candidate;
+      if(!worst || rank>worst.rank || (rank===worst.rank && values[targetIndex]<worst.rpi-eps))worst=candidate;
+      if(mode==='target' && safeRank<=request.target && m.rows.get(request.team).postseasonEligible) {
         const signature=own.map(j=>bits[j]).join(''),prev=witnesses.get(signature);
         if(!prev || margin>prev.margin) witnesses.set(signature,{bits:Array.from(bits),rank,safeRank,margin,wins,rpi:values[targetIndex]});
       }
       // Smooth margin helps the search cross seed boundaries without claiming probabilities.
-      return {rank,safeRank,margin,wins,fitness:-safeRank+Math.max(-.49,Math.min(.49,margin))};
+      return {rank,safeRank,margin,wins,fitness:(mode==='lowest'?rank:-safeRank)+Math.max(-.49,Math.min(.49,margin))};
     };
     const valuesFor=bits=>{const v=Float64Array.from(m.values);for(let j=0;j<bits.length;j++)if(bits[j])for(let i=0;i<v.length;i++)v[i]+=m.coefficients[j][i];return v;};
     let exhaustive=false;
@@ -86,7 +103,7 @@
         for(let trial=0;trial<(options.trials||80);trial++) {
           free.forEach(j=>{bits[j]=random()<.5?1:0;});
           let values=valuesFor(bits),current=assess(bits,values);
-          if(trial>=8 && current.safeRank<=request.target) continue;
+          if(mode==='target' && trial>=8 && current.safeRank<=request.target) continue;
           // Coordinate search preserves this team's outcome pattern and improves its seed margin.
           for(let pass=0;pass<3;pass++) {
             let improved=false;
@@ -103,8 +120,9 @@
         }
       }
     }
-    const paths=[...witnesses.values()].sort((a,b)=>a.wins-b.wins||b.margin-a.margin);
-    return {request,evaluated,exhaustive,relevantGames:relevant.length,bestRank,worstRank,own,paths};
+    const paths=mode==='highest'?[best]:mode==='lowest'?[worst]:[...witnesses.values()].sort((a,b)=>a.wins-b.wins||b.margin-a.margin);
+    const proven=mode==='highest'?best.rank===best.safeRank && ((exhaustive && best.rank===bestRank) || best.rank===optimisticBound):mode==='lowest'?worst.rank===worst.safeRank && ((exhaustive && worst.rank===worstSafeRank) || worst.rank===pessimisticBound):exhaustive;
+    return {request,evaluated,exhaustive,proven,optimisticBound,pessimisticBound,relevantGames:relevant.length,bestRank,worstRank,own,paths};
   }
   const api={parseQuestion,model,search,project,final};
   if(typeof module==='object' && module.exports)module.exports=api;else scope.RUSRpiPaths=api;
