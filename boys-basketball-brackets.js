@@ -67,11 +67,13 @@
     }).join('');
     $('bbPlacement').hidden = !b.placement?.length;
     $('bbPlacement').innerHTML = b.placement?.length ? `<h2>Consolation &amp; placement</h2><div class="bb-placement-grid">${[...b.placement].sort((a,b) => ['Consolation','5th & 6th Place','3rd & 4th Place'].indexOf(a.name) - ['Consolation','5th & 6th Place','3rd & 4th Place'].indexOf(b.name)).map(r => `<section><h3>${escape(r.name)}</h3>${r.games.map(gameHTML).join('')}</section>`).join('')}</div>` : '';
-    const historyNote = b.officialBracket
-      ? ' Historical path transcribed from the official UHSAA bracket.'
-      : b.reconstructed
-        ? ' Historical path reconstructed from completed RUS state-tournament results; seed numbers and bye placeholders are omitted where they were not preserved in the archive.'
-        : ' Scores follow that bracket when other feeds disagree. Championship path and all played placement games are included; unplayed seventh-place placeholders are excluded.';
+    const historyNote = b.partialHistorical
+      ? ' Official UHSAA historical result. This older class currently shows the verified championship game while earlier rounds are still being transcribed.'
+      : b.officialBracket
+        ? ' Historical path transcribed from the official UHSAA bracket.'
+        : b.reconstructed
+          ? ' Historical path reconstructed from completed RUS state-tournament results; seed numbers and bye placeholders are omitted where they were not preserved in the archive.'
+          : ' Scores follow that bracket when other feeds disagree. Championship path and all played placement games are included; unplayed seventh-place placeholders are excluded.';
     $('bbSource').innerHTML = `Source: <a href="${escape(b.sourceUrl)}" target="_blank" rel="noopener">UHSAA/MaxPreps ${escape(data.year)} tournament bracket</a>.${historyNote}`;
     $('bbScroller').scrollLeft = 0;
     const url = new URL(location.href);
@@ -86,7 +88,7 @@
     $('bbPlacement').innerHTML = '';
     $('bbSource').textContent = '';
     try {
-      const response = await fetch(`boys-basketball-brackets-${selectedYear}.json?v=20260930-history1`);
+      const response = await fetch(`boys-basketball-brackets-${selectedYear}.json?v=20260930-history3`);
       if (!response.ok) throw new Error('Bracket data unavailable');
       data = await response.json();
       selectedYear = Number(data.year);
