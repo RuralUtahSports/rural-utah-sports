@@ -44,12 +44,15 @@ let refreshQueued=false,refreshDelayTimer=null;
 
 function teamFromLink(link){let team='';try{team=new URL(link.href,location.href).searchParams.get('team')||link.textContent||''}catch{team=link.textContent||''}return team}
 function applyTeamRecords(){
-  if(!recordMap.size)return;
   document.querySelectorAll('.team-row').forEach(row=>{
     const link=row.querySelector('.team-name'),meta=row.querySelector('.team-meta');if(!link||!meta)return;
-    const holder=link.parentElement;if(!holder||holder.querySelector('.rus-team-record'))return;
-    const rec=recordMap.get(rankKey(teamFromLink(link)));if(!rec)return;
-    const badge=document.createElement('div');badge.className='rus-team-record';badge.textContent=rec;badge.title=`Current 2026 record: ${rec}`;holder.insertBefore(badge,meta);
+    const holder=link.parentElement;if(!holder)return;
+    const rec=recordMap.get(rankKey(teamFromLink(link))),existing=holder.querySelector('.rus-team-record');
+    if(!rec){existing?.remove();return}
+    const badge=existing||document.createElement('div');
+    if(!existing){badge.className='rus-team-record';holder.insertBefore(badge,meta)}
+    if(badge.textContent!==rec)badge.textContent=rec;
+    badge.title=`Current 2026 record: ${rec}`;
   });
 }
 function applyScoreboardRanks(){
@@ -103,12 +106,34 @@ function applyFinalEloChanges(){
   });
 }
 function recordText(row){const w=Number(row?.wins||0),l=Number(row?.losses||0),t=Number(row?.ties||0);return t?`${w}-${l}-${t}`:`${w}-${l}`}
+let recordRefreshPromise=null;
+async function refreshTeamRecords(){
+  if(recordRefreshPromise)return recordRefreshPromise;
+  recordRefreshPromise=fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'})
+    .then(r=>{if(!r.ok)throw new Error(`standings-2026.json ${r.status}`);return r.json()})
+    .then(data=>{
+      const next=new Map();
+      for(const teams of Object.values(data?.byClassification||{}))for(const row of teams||[])if(row?.team)next.set(rankKey(row.team),recordText(row));
+      recordMap=next;
+      window.RUSScoreboardStandingsData=data;
+      queueRefresh(10);
+      return true;
+    })
+    .catch(error=>{console.warn('Scoreboard records refresh failed',error);return false})
+    .finally(()=>{recordRefreshPromise=null});
+  return recordRefreshPromise;
+}
+window.RUSScoreboardRefreshRecords=refreshTeamRecords;
 function applyFinalBoxRecords(){
-  if(!recordMap.size)return;
   document.querySelectorAll('.game.final-game .box-table tbody tr').forEach(row=>{
-    const cell=row.querySelector('td:first-child');if(!cell||cell.querySelector('.rus-box-record'))return;
-    const team=[...cell.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE).map(n=>n.textContent).join(' ').trim()||cell.textContent.trim(),rec=recordMap.get(rankKey(team));if(!rec)return;
-    const badge=document.createElement('span');badge.className='rus-box-record';badge.textContent=rec;badge.title=`Current 2026 record: ${rec}`;cell.appendChild(badge);
+    const cell=row.querySelector('td:first-child');if(!cell)return;
+    const existing=cell.querySelector('.rus-box-record');
+    const team=[...cell.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE).map(n=>n.textContent).join(' ').trim()||cell.textContent.trim(),rec=recordMap.get(rankKey(team));
+    if(!rec){existing?.remove();return}
+    const badge=existing||document.createElement('span');
+    if(!existing){badge.className='rus-box-record';cell.appendChild(badge)}
+    if(badge.textContent!==rec)badge.textContent=rec;
+    badge.title=`Current 2026 record: ${rec}`;
   });
 }
 function applyLiveMercyBadges(){
@@ -162,10 +187,7 @@ Promise.all([
   });
   rankMap=nextClass;stateRankMap=nextState;queueRefresh(30);
 }).catch(()=>{});
-(window.RUSScoreboardStandingsData?Promise.resolve(window.RUSScoreboardStandingsData):fetch(`standings-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null)).then(data=>{
-  const next=new Map();for(const teams of Object.values(data?.byClassification||{}))for(const row of teams||[])if(row?.team)next.set(rankKey(row.team),recordText(row));
-  recordMap=next;queueRefresh(30);
-}).catch(()=>{});
+refreshTeamRecords();
 fetch(`elo-game-changes-2026.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>{
   const next=new Map();for(const game of Object.values(data?.games||{})){if(!game?.awayTeam||!game?.homeTeam)continue;const key=pairKey(game.awayTeam,game.homeTeam),prior=next.get(key);if(!prior||String(game.date||'')>String(prior.date||''))next.set(key,game)}
   eloPairMap=next;queueRefresh(30);
@@ -183,7 +205,8 @@ fetch(`weekly-simulation.json?v=${Date.now()}`,{cache:'no-store'}).then(r=>r.ok?
 document.addEventListener('change',e=>{if(e.target?.id==='classFilter'||e.target?.id==='statusFilter')queueRefresh(20)});
 document.addEventListener('input',e=>{if(e.target?.id==='search')queueRefresh(20)});
 document.addEventListener('click',e=>{if(e.target?.closest('.game-details>summary'))queueRefresh(20)});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)queueRefresh()});
-window.addEventListener('pageshow',()=>queueRefresh(),{passive:true});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){refreshTeamRecords();queueRefresh()}});
+window.addEventListener('pageshow',()=>{refreshTeamRecords();queueRefresh()},{passive:true});
+setInterval(refreshTeamRecords,60000);
 watchScoreboard();queueRefresh(60);
 })();
