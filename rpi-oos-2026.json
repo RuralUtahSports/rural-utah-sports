@@ -1,13 +1,13 @@
 {
   "season": 2026,
-  "updatedAt": "2026-10-02T05:44:39.992Z",
+  "updatedAt": "2026-10-02T12:44:19.955Z",
   "note": "Out-of-state opponent records refreshed from public MaxPreps football schedule pages. Border states use direct WP and opponent WP; non-bordering states use direct WP with .500 assigned for OOWP. Null values fall back to .500 until an external record is available.",
   "source": "MaxPreps public football schedule pages",
   "summary": {
     "teams": 44,
-    "fetched": 0,
-    "failures": 44,
-    "borderFetched": 0
+    "fetched": 38,
+    "failures": 6,
+    "borderFetched": 27
   },
   "teams": {
     "ALA QUEEN CREEK, AZ": {
@@ -22,8 +22,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/az/queen-creek/ala-queen-creek-patriots/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:10.046Z",
-      "checkedAt": "2026-10-02T05:44:01.657Z",
+      "lastUpdated": "2026-10-02T12:43:22.243Z",
+      "checkedAt": "2026-10-02T12:43:22.243Z",
       "record": {
         "wins": 1,
         "losses": 4,
@@ -45,8 +45,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/las-vegas/arbor-view-aggies/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:05.212Z",
-      "checkedAt": "2026-10-02T05:42:48.542Z",
+      "lastUpdated": "2026-10-02T12:41:12.587Z",
+      "checkedAt": "2026-10-02T12:41:12.587Z",
       "record": {
         "wins": 3,
         "losses": 3,
@@ -64,8 +64,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/ca/san-francisco/archbishop-riordan-crusaders/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:10.008Z",
-      "checkedAt": "2026-10-02T05:43:35.671Z",
+      "lastUpdated": "2026-10-02T12:42:18.011Z",
+      "checkedAt": "2026-10-02T12:42:18.011Z",
       "record": {
         "wins": 2,
         "losses": 2,
@@ -87,8 +87,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/id/montpelier/bear-lake-bears/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:47:07.483Z",
-      "checkedAt": "2026-10-02T05:44:39.825Z",
+      "lastUpdated": "2026-10-02T12:44:19.643Z",
+      "checkedAt": "2026-10-02T12:44:19.643Z",
       "record": {
         "wins": 3,
         "losses": 2,
@@ -110,8 +110,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/az/littlefield/beaver-dam-diamondback/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:32.120Z",
-      "checkedAt": "2026-10-02T05:43:05.600Z",
+      "lastUpdated": "2026-10-02T12:41:38.729Z",
+      "checkedAt": "2026-10-02T12:41:38.729Z",
       "record": {
         "wins": 1,
         "losses": 4,
@@ -133,8 +133,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/las-vegas/bishop-gorman-gaels/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:18.946Z",
-      "checkedAt": "2026-10-02T05:44:09.699Z",
+      "lastUpdated": "2026-10-02T12:43:26.888Z",
+      "checkedAt": "2026-10-02T12:43:26.888Z",
       "record": {
         "wins": 5,
         "losses": 1,
@@ -146,24 +146,24 @@
     },
     "BUCKEYE, AZ": {
       "state": "AZ",
-      "wp": 0.6,
+      "wp": 0.6666666666666666,
       "owp": 0.5714285714285714,
       "wpByUtahTeam": {
-        "SUMMIT ACADEMY": 0.75
+        "SUMMIT ACADEMY": 0.8
       },
       "owpByUtahTeam": {
         "SUMMIT ACADEMY": 0.5714285714285714
       },
       "maxprepsUrl": "https://www.maxpreps.com/az/buckeye/buckeye-hawks/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:31.602Z",
-      "checkedAt": "2026-10-02T05:43:39.686Z",
+      "lastUpdated": "2026-10-02T12:42:43.393Z",
+      "checkedAt": "2026-10-02T12:42:43.393Z",
       "record": {
-        "wins": 3,
+        "wins": 4,
         "losses": 2,
         "ties": 0,
-        "games": 5,
-        "wp": 0.6
+        "games": 6,
+        "wp": 0.6666666666666666
       },
       "error": "403 Forbidden"
     },
@@ -175,8 +175,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/hi/ewa-beach/campbell-sabers/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:30.787Z",
-      "checkedAt": "2026-10-02T05:43:44.248Z",
+      "lastUpdated": "2026-10-02T12:42:39.864Z",
+      "checkedAt": "2026-10-02T12:42:39.864Z",
       "record": {
         "wins": 5,
         "losses": 2,
@@ -188,45 +188,45 @@
     },
     "CHAPARRAL, CA": {
       "state": "CA",
-      "wp": 0.4,
+      "wp": 0.5,
       "owp": 0.5,
       "wpByUtahTeam": {},
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/ca/temecula/chaparral-pumas/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:45.405Z",
-      "checkedAt": "2026-10-02T05:44:31.559Z",
+      "lastUpdated": "2026-10-02T12:43:56.904Z",
+      "checkedAt": "2026-10-02T12:43:56.904Z",
       "record": {
-        "wins": 2,
+        "wins": 3,
         "losses": 3,
         "ties": 0,
-        "games": 5,
-        "wp": 0.4
+        "games": 6,
+        "wp": 0.5
       },
       "error": "403 Forbidden"
     },
     "DOLORES, CO": {
       "state": "CO",
       "source": "MaxPreps public football schedule",
-      "checkedAt": "2026-10-02T05:43:09.939Z",
-      "error": "403 Forbidden"
+      "checkedAt": "2026-10-02T12:41:39.204Z",
+      "error": "no matching 2026-27 MaxPreps football page"
     },
     "EASTWOOD, TX": {
       "state": "TX",
-      "wp": 0.8,
+      "wp": 0.6666666666666666,
       "owp": 0.5,
       "wpByUtahTeam": {},
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/tx/el-paso/eastwood-troopers/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:31.413Z",
-      "checkedAt": "2026-10-02T05:44:23.035Z",
+      "lastUpdated": "2026-10-02T12:43:42.111Z",
+      "checkedAt": "2026-10-02T12:43:42.111Z",
       "record": {
         "wins": 4,
-        "losses": 1,
+        "losses": 2,
         "ties": 0,
-        "games": 5,
-        "wp": 0.8
+        "games": 6,
+        "wp": 0.6666666666666666
       },
       "error": "403 Forbidden"
     },
@@ -242,8 +242,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/elko/elko-indians/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:46.218Z",
-      "checkedAt": "2026-10-02T05:43:05.926Z",
+      "lastUpdated": "2026-10-02T12:41:54.513Z",
+      "checkedAt": "2026-10-02T12:41:54.513Z",
       "record": {
         "wins": 4,
         "losses": 1,
@@ -265,8 +265,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/wy/evanston/evanston-red-devils/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:48.005Z",
-      "checkedAt": "2026-10-02T05:43:44.503Z",
+      "lastUpdated": "2026-10-02T12:42:59.409Z",
+      "checkedAt": "2026-10-02T12:42:59.409Z",
       "record": {
         "wins": 5,
         "losses": 0,
@@ -288,8 +288,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/las-vegas/faith-lutheran-crusaders/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:57.776Z",
-      "checkedAt": "2026-10-02T05:44:31.200Z",
+      "lastUpdated": "2026-10-02T12:44:08.216Z",
+      "checkedAt": "2026-10-02T12:44:08.216Z",
       "record": {
         "wins": 3,
         "losses": 4,
@@ -302,8 +302,8 @@
     "HAYDEN, CO": {
       "state": "CO",
       "source": "MaxPreps public football schedule",
-      "checkedAt": "2026-10-02T05:44:05.993Z",
-      "error": "403 Forbidden"
+      "checkedAt": "2026-10-02T12:43:22.753Z",
+      "error": "no matching 2026-27 MaxPreps football page"
     },
     "HIGHLAND, ID": {
       "state": "ID",
@@ -317,8 +317,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/id/pocatello/highland-rams/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:26.042Z",
-      "checkedAt": "2026-10-02T05:43:35.815Z",
+      "lastUpdated": "2026-10-02T12:42:37.539Z",
+      "checkedAt": "2026-10-02T12:42:37.539Z",
       "record": {
         "wins": 2,
         "losses": 3,
@@ -336,8 +336,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/nj/princeton/hun-raiders/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:41.138Z",
-      "checkedAt": "2026-10-02T05:43:53.135Z",
+      "lastUpdated": "2026-10-02T12:42:53.300Z",
+      "checkedAt": "2026-10-02T12:42:53.300Z",
       "record": {
         "wins": 4,
         "losses": 2,
@@ -350,8 +350,8 @@
     "IGNACIO, CO": {
       "state": "CO",
       "source": "MaxPreps public football schedule",
-      "checkedAt": "2026-10-02T05:43:44.135Z",
-      "error": "403 Forbidden"
+      "checkedAt": "2026-10-02T12:42:40.380Z",
+      "error": "no matching 2026-27 MaxPreps football page"
     },
     "IMG ACADEMY, FL": {
       "state": "FL",
@@ -361,8 +361,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/fl/bradenton/img-academy-ascenders/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:35.330Z",
-      "checkedAt": "2026-10-02T05:43:14.123Z",
+      "lastUpdated": "2026-10-02T12:41:43.638Z",
+      "checkedAt": "2026-10-02T12:41:43.638Z",
       "record": {
         "wins": 5,
         "losses": 1,
@@ -380,8 +380,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/hi/honolulu/kamehameha-kapalama-warriors/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:05.512Z",
-      "checkedAt": "2026-10-02T05:42:57.075Z",
+      "lastUpdated": "2026-10-02T12:41:12.316Z",
+      "checkedAt": "2026-10-02T12:41:12.316Z",
       "record": {
         "wins": 3,
         "losses": 4,
@@ -399,8 +399,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/id/kimberly/kimberly-bulldogs/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:56.933Z",
-      "checkedAt": "2026-10-02T05:43:52.654Z",
+      "lastUpdated": "2026-10-02T12:43:05.705Z",
+      "checkedAt": "2026-10-02T12:43:05.705Z",
       "record": {
         "wins": 1,
         "losses": 4,
@@ -422,8 +422,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/henderson/lake-mead-christian-academy-eagles/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:59.147Z",
-      "checkedAt": "2026-10-02T05:44:01.179Z",
+      "lastUpdated": "2026-10-02T12:43:10.481Z",
+      "checkedAt": "2026-10-02T12:43:10.481Z",
       "record": {
         "wins": 2,
         "losses": 2,
@@ -447,8 +447,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/az/peoria/liberty-lions/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:13.530Z",
-      "checkedAt": "2026-10-02T05:44:09.869Z",
+      "lastUpdated": "2026-10-02T12:43:23.907Z",
+      "checkedAt": "2026-10-02T12:43:23.907Z",
       "record": {
         "wins": 4,
         "losses": 1,
@@ -470,8 +470,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/henderson/liberty-patriots/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:44.191Z",
-      "checkedAt": "2026-10-02T05:44:18.446Z",
+      "lastUpdated": "2026-10-02T12:43:52.173Z",
+      "checkedAt": "2026-10-02T12:43:52.173Z",
       "record": {
         "wins": 4,
         "losses": 2,
@@ -495,8 +495,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/panaca/lincoln-county-lynx/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:25.279Z",
-      "checkedAt": "2026-10-02T05:42:57.076Z",
+      "lastUpdated": "2026-10-02T12:41:33.271Z",
+      "checkedAt": "2026-10-02T12:41:33.271Z",
       "record": {
         "wins": 6,
         "losses": 0,
@@ -522,8 +522,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/id/rexburg/madison-bobcats/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:03.929Z",
-      "checkedAt": "2026-10-02T05:43:22.963Z",
+      "lastUpdated": "2026-10-02T12:42:12.250Z",
+      "checkedAt": "2026-10-02T12:42:12.250Z",
       "record": {
         "wins": 5,
         "losses": 1,
@@ -541,8 +541,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/ca/santa-ana/mater-dei-monarchs/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:10.091Z",
-      "checkedAt": "2026-10-02T05:43:05.601Z",
+      "lastUpdated": "2026-10-02T12:41:17.330Z",
+      "checkedAt": "2026-10-02T12:41:17.330Z",
       "record": {
         "wins": 4,
         "losses": 1,
@@ -566,8 +566,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/overton/moapa-valley-pirates/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:00.300Z",
-      "checkedAt": "2026-10-02T05:42:48.547Z",
+      "lastUpdated": "2026-10-02T12:41:07.522Z",
+      "checkedAt": "2026-10-02T12:41:07.525Z",
       "record": {
         "wins": 4,
         "losses": 2,
@@ -580,8 +580,8 @@
     "MOFFAT, CO": {
       "state": "CO",
       "source": "MaxPreps public football schedule",
-      "checkedAt": "2026-10-02T05:44:22.676Z",
-      "error": "403 Forbidden"
+      "checkedAt": "2026-10-02T12:43:42.558Z",
+      "error": "no matching 2026-27 MaxPreps football page"
     },
     "MOUNTAIN VIEW, WY": {
       "state": "WY",
@@ -595,8 +595,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/wy/mountain-view/mountain-view-buffalos/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:26.564Z",
-      "checkedAt": "2026-10-02T05:44:18.281Z",
+      "lastUpdated": "2026-10-02T12:43:37.399Z",
+      "checkedAt": "2026-10-02T12:43:37.399Z",
       "record": {
         "wins": 3,
         "losses": 0,
@@ -618,8 +618,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/id/bancroft/north-gem-cowboys/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:00.258Z",
-      "checkedAt": "2026-10-02T05:43:18.628Z",
+      "lastUpdated": "2026-10-02T12:42:09.327Z",
+      "checkedAt": "2026-10-02T12:42:09.327Z",
       "record": {
         "wins": 3,
         "losses": 3,
@@ -632,8 +632,8 @@
     "NORWOOD, CO": {
       "state": "CO",
       "source": "MaxPreps public football schedule",
-      "checkedAt": "2026-10-02T05:44:22.782Z",
-      "error": "403 Forbidden"
+      "checkedAt": "2026-10-02T12:43:43.032Z",
+      "error": "no matching 2026-27 MaxPreps football page"
     },
     "PAHRUMP, NV": {
       "state": "NV",
@@ -647,8 +647,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/pahrump/pahrump-valley-trojans/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:30.436Z",
-      "checkedAt": "2026-10-02T05:42:57.407Z",
+      "lastUpdated": "2026-10-02T12:41:39.135Z",
+      "checkedAt": "2026-10-02T12:41:39.135Z",
       "record": {
         "wins": 4,
         "losses": 3,
@@ -672,8 +672,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nm/farmington/piedra-vista-panthers/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:35.654Z",
-      "checkedAt": "2026-10-02T05:44:14.517Z",
+      "lastUpdated": "2026-10-02T12:43:48.693Z",
+      "checkedAt": "2026-10-02T12:43:48.693Z",
       "record": {
         "wins": 6,
         "losses": 1,
@@ -697,8 +697,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/id/preston/preston-indians/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:45.351Z",
-      "checkedAt": "2026-10-02T05:43:14.449Z",
+      "lastUpdated": "2026-10-02T12:41:53.045Z",
+      "checkedAt": "2026-10-02T12:41:53.045Z",
       "record": {
         "wins": 0,
         "losses": 4,
@@ -716,8 +716,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/ca/san-diego/rancho-bernardo-broncos/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:40.446Z",
-      "checkedAt": "2026-10-02T05:44:31.303Z",
+      "lastUpdated": "2026-10-02T12:43:53.743Z",
+      "checkedAt": "2026-10-02T12:43:53.743Z",
       "record": {
         "wins": 4,
         "losses": 1,
@@ -730,18 +730,18 @@
     "RANGELY, CO": {
       "state": "CO",
       "source": "MaxPreps public football schedule",
-      "checkedAt": "2026-10-02T05:43:27.296Z",
-      "error": "403 Forbidden"
+      "checkedAt": "2026-10-02T12:42:12.831Z",
+      "error": "no matching 2026-27 MaxPreps football page"
     },
     "RIGBY, ID": {
       "state": "ID",
-      "wp": 1,
+      "wp": 0.8333333333333334,
       "owp": 0.5357142857142857,
       "wpByUtahTeam": {
-        "ROY": 1,
-        "FARMINGTON": 1,
-        "SYRACUSE": 1,
-        "BOX ELDER": 1
+        "ROY": 0.8,
+        "FARMINGTON": 0.8,
+        "SYRACUSE": 0.8,
+        "BOX ELDER": 0.8
       },
       "owpByUtahTeam": {
         "ROY": 0.5357142857142857,
@@ -751,14 +751,14 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/id/rigby/rigby-trojans/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:55.219Z",
-      "checkedAt": "2026-10-02T05:43:22.643Z",
+      "lastUpdated": "2026-10-02T12:42:06.606Z",
+      "checkedAt": "2026-10-02T12:42:06.606Z",
       "record": {
         "wins": 5,
-        "losses": 0,
+        "losses": 1,
         "ties": 0,
-        "games": 5,
-        "wp": 1
+        "games": 6,
+        "wp": 0.8333333333333334
       },
       "error": "403 Forbidden"
     },
@@ -770,8 +770,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/ca/south-pasadena/south-pasadena-tigers/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:36.383Z",
-      "checkedAt": "2026-10-02T05:43:52.824Z",
+      "lastUpdated": "2026-10-02T12:42:48.273Z",
+      "checkedAt": "2026-10-02T12:42:48.273Z",
       "record": {
         "wins": 3,
         "losses": 2,
@@ -789,8 +789,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/va/springfield/the-st-james-performance-academy-strivers/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:52.481Z",
-      "checkedAt": "2026-10-02T05:44:01.346Z",
+      "lastUpdated": "2026-10-02T12:43:04.236Z",
+      "checkedAt": "2026-10-02T12:43:04.236Z",
       "record": {
         "wins": 4,
         "losses": 0,
@@ -818,8 +818,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/id/idaho-falls/thunder-ridge-titans/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:05.148Z",
-      "checkedAt": "2026-10-02T05:43:27.149Z",
+      "lastUpdated": "2026-10-02T12:42:16.202Z",
+      "checkedAt": "2026-10-02T12:42:16.202Z",
       "record": {
         "wins": 3,
         "losses": 2,
@@ -841,8 +841,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/nv/mesquite/virgin-valley-bulldogs/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:44:03.418Z",
-      "checkedAt": "2026-10-02T05:42:48.889Z",
+      "lastUpdated": "2026-10-02T12:41:11.822Z",
+      "checkedAt": "2026-10-02T12:41:11.822Z",
       "record": {
         "wins": 0,
         "losses": 6,
@@ -866,8 +866,8 @@
       },
       "maxprepsUrl": "https://www.maxpreps.com/id/idaho-falls/watersprings-warriors/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:46:57.457Z",
-      "checkedAt": "2026-10-02T05:44:39.720Z",
+      "lastUpdated": "2026-10-02T12:44:06.613Z",
+      "checkedAt": "2026-10-02T12:44:06.613Z",
       "record": {
         "wins": 3,
         "losses": 1,
@@ -885,8 +885,8 @@
       "owpByUtahTeam": {},
       "maxprepsUrl": "https://www.maxpreps.com/nv/ely/white-pine-bobcats/football/",
       "source": "MaxPreps public football schedule",
-      "lastUpdated": "2026-10-01T22:45:26.479Z",
-      "checkedAt": "2026-10-02T05:43:31.163Z",
+      "lastUpdated": "2026-10-02T12:42:34.961Z",
+      "checkedAt": "2026-10-02T12:42:34.961Z",
       "record": {
         "wins": 2,
         "losses": 3,
