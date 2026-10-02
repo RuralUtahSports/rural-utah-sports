@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-02T01:43:52.800Z",
+  "updatedAt": "2026-10-02T07:22:13.108Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -166704,8 +166704,8 @@
     },
     "2026-10-01|STANSBURY|RIDGELINE": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-10-01/stansbury-football-vs-ridgeline-football/273617",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -166721,27 +166721,37 @@
             "team": "STANSBURY",
             "quarters": [
               7,
-              null,
-              null,
-              null
+              14,
+              10,
+              8
             ],
-            "total": 7
+            "total": 39
           },
           {
             "team": "RIDGELINE",
             "quarters": [
               7,
-              null,
-              null,
-              null
+              21,
+              7,
+              7
             ],
-            "total": 7
+            "total": 42
           }
         ]
       },
       "scoringPlays": [
         "Ridgeline — (8:09 1Q) Noah Fiefia , 5-yard run (kick from Hayden Miller )",
-        "Stansbury — (5:01 1Q) Brighton Reutzel , 1-yard run (kick from Seth Wilcox )"
+        "Stansbury — (5:01 1Q) Brighton Reutzel , 1-yard run (kick from Seth Wilcox )",
+        "Ridgeline — (11:29 2Q) Noah Fiefia , 8-yard run (kick from Hayden Miller )",
+        "Ridgeline — (5:40 2Q) Noah Fiefia , 24-yard run (kick from Hayden Miller )",
+        "Stansbury — (3:57 2Q) Brighton Reutzel , 13-yard run (kick from Seth Wilcox )",
+        "Ridgeline — (3:43 2Q) Hudson Parry , 94-yard kick return (kick from Hayden Miller )",
+        "Stansbury — (0:46 2Q) Lincoln Reutzel , 10-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
+        "Stansbury — (9:04 3Q) Lincoln Reutzel , 28-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
+        "Stansbury — (4:35 3Q) Seth Wilcox , 30-yard FG",
+        "Ridgeline — (2:08 3Q) Noah Fiefia , 7-yard run (kick from Hayden Miller )",
+        "Ridgeline — (10:41 4Q) Owen Leishman , 26-yard pass from Crew Cox (kick from Hayden Miller )",
+        "Stansbury — (4:11 4Q) Vikia Vaka , 2-yard run (pass from Mapa Helu )"
       ],
       "stats": [
         {
@@ -166760,7 +166770,7 @@
               "Noah Fiefia",
               "",
               "",
-              "1"
+              "4"
             ]
           ]
         },
@@ -166776,11 +166786,106 @@
           ],
           "rows": [
             [
+              "83",
+              "Vikia Vaka",
+              "",
+              "",
+              "1"
+            ],
+            [
               "3",
               "Brighton Reutzel",
               "",
               "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "Crew Cox",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "Brighton Reutzel",
+              "",
+              "",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "Owen Leishman",
+              "",
+              "",
               "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "5",
+              "Lincoln Reutzel",
+              "",
+              "",
+              "2"
             ]
           ]
         },
@@ -166799,8 +166904,15 @@
               "11",
               "Hayden Miller",
               "",
-              "1",
+              "6",
               ""
+            ],
+            [
+              "28",
+              "Hudson Parry",
+              "",
+              "",
+              "1"
             ]
           ]
         },
@@ -166818,8 +166930,8 @@
             [
               "11",
               "Seth Wilcox",
-              "",
               "1",
+              "4",
               ""
             ]
           ]
@@ -166827,23 +166939,24 @@
       ],
       "statsAvailability": {
         "status": "partial",
-        "blocks": 4,
-        "rows": 4,
-        "coreCells": 4,
+        "blocks": 8,
+        "rows": 10,
+        "coreCells": 18,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 2
+        "emptyCoreBlocks": 6
       },
-      "fetchedAt": "2026-10-02T01:43:42.546Z",
+      "fetchedAt": "2026-10-02T07:06:58.480Z",
       "date": "10/01/2026",
       "awayTeam": "STANSBURY",
       "homeTeam": "RIDGELINE",
-      "browserFetchedAt": "2026-10-02T01:43:42.546Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-10-02T07:06:58.480Z",
+      "detailSource": "deseret-browser-game-page",
+      "finalRefreshCount": 1
     },
     "2026-10-01|WEST|WESTJORDAN": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-10-01/west-football-vs-west-jordan-football/274372",
-      "status": "Live",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -166859,18 +166972,18 @@
             "team": "WEST",
             "quarters": [
               36,
-              null,
-              null,
+              27,
+              0,
               null
             ],
-            "total": 36
+            "total": 63
           },
           {
             "team": "WEST JORDAN",
             "quarters": [
               0,
-              null,
-              null,
+              0,
+              0,
               null
             ],
             "total": 0
@@ -166882,7 +166995,11 @@
         "West — (7:18 1Q) Naeata Hamilton , 50-yard pass from Kamden Lopati (run from Fine Vailahi )",
         "West — (4:53 1Q) Naeata Hamilton , 5-yard run (kick from Dominic Jones )",
         "West — (3:45 1Q) Mani Tu'uao , 46-yard pass from Kamden Lopati (kick from Dominic Jones )",
-        "West — (1:33 1Q) Lester Falatea , 86-yard punt return (kick from Dominic Jones )"
+        "West — (1:33 1Q) Lester Falatea , 86-yard punt return (kick from Dominic Jones )",
+        "West — (2Q) Derendrick Dixon , 4-yard run (kick failed)",
+        "West — (9:10 2Q) Kaufana Vaenuku , 22-yard pass from Kamden Lopati (kick from Dominic Jones )",
+        "West — (6:49 2Q) Kamden Lopati , 23-yard run (kick from Dominic Jones )",
+        "West — (2:20 2Q) Kaufana Vaenuku , 2-yard run (kick from Dominic Jones )"
       ],
       "stats": [
         {
@@ -166897,8 +167014,29 @@
           ],
           "rows": [
             [
+              "-",
+              "Kaufana Vaenuku",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "2",
+              "Derendrick Dixon",
+              "",
+              "",
+              "1"
+            ],
+            [
               "22",
               "Naeata Hamilton",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "0",
+              "Kamden Lopati",
               "",
               "",
               "1"
@@ -166924,7 +167062,7 @@
               "",
               "",
               "",
-              "3",
+              "4",
               ""
             ]
           ]
@@ -166940,6 +167078,13 @@
             "TD"
           ],
           "rows": [
+            [
+              "-",
+              "Kaufana Vaenuku",
+              "",
+              "",
+              "1"
+            ],
             [
               "22",
               "Naeata Hamilton",
@@ -166971,7 +167116,7 @@
               "15",
               "Dominic Jones",
               "",
-              "4",
+              "7",
               ""
             ],
             [
@@ -166987,17 +167132,18 @@
       "statsAvailability": {
         "status": "partial",
         "blocks": 4,
-        "rows": 6,
-        "coreCells": 10,
+        "rows": 10,
+        "coreCells": 18,
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-10-02T01:43:52.700Z",
+      "fetchedAt": "2026-10-02T07:07:14.233Z",
       "date": "10/01/2026",
       "awayTeam": "WEST",
       "homeTeam": "WEST JORDAN",
-      "browserFetchedAt": "2026-10-02T01:43:52.700Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-10-02T07:07:14.233Z",
+      "detailSource": "deseret-browser-game-page",
+      "finalRefreshCount": 1
     },
     "2026-10-01|NORTHSANPETE|MANTI": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/north-sanpete-football-vs-manti-football/273333",
@@ -167024,6 +167170,1206 @@
       "detailSource": "deseret-browser-game-page",
       "scheduleOverride": "User-confirmed schedule correction: North Sanpete at Manti moved from Friday Oct. 2 to Thursday Oct. 1",
       "statusSource": "schedule-override"
+    },
+    "2026-10-02|BEARRIVER|MOUNTAINCREST": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/bear-river-football-vs-mountain-crest-football/273564",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:07:29.811Z",
+      "date": "10/02/2026",
+      "awayTeam": "BEAR RIVER",
+      "homeTeam": "MOUNTAIN CREST",
+      "browserFetchedAt": "2026-10-02T07:07:29.811Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|BENLOMOND|LOGAN": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/ben-lomond-football-vs-logan-football/273420",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:07:41.872Z",
+      "date": "10/02/2026",
+      "awayTeam": "BEN LOMOND",
+      "homeTeam": "LOGAN",
+      "browserFetchedAt": "2026-10-02T07:07:41.872Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|BONNEVILLE|CLEARFIELD": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/bonneville-football-vs-clearfield-football/273503",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:07:53.469Z",
+      "date": "10/02/2026",
+      "awayTeam": "BONNEVILLE",
+      "homeTeam": "CLEARFIELD",
+      "browserFetchedAt": "2026-10-02T07:07:53.469Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|BOUNTIFUL|ALTA": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/bountiful-football-vs-alta-football/274364",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:08:04.539Z",
+      "date": "10/02/2026",
+      "awayTeam": "BOUNTIFUL",
+      "homeTeam": "ALTA",
+      "browserFetchedAt": "2026-10-02T07:08:04.539Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|BOXELDER|FREMONT": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/box-elder-football-vs-fremont-football/273512",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:08:20.303Z",
+      "date": "10/02/2026",
+      "awayTeam": "BOX ELDER",
+      "homeTeam": "FREMONT",
+      "browserFetchedAt": "2026-10-02T07:08:20.303Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|CEDARCITY|CANYONVIEW": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/cedar-city-football-vs-canyon-view-football/273401",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:08:36.309Z",
+      "date": "10/02/2026",
+      "awayTeam": "CEDAR CITY",
+      "homeTeam": "CANYON VIEW",
+      "browserFetchedAt": "2026-10-02T07:08:36.309Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|CEDARVALLEY|CORNERCANYON": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/cedar-valley-football-vs-corner-canyon-football/273481",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:08:52.350Z",
+      "date": "10/02/2026",
+      "awayTeam": "CEDAR VALLEY",
+      "homeTeam": "CORNER CANYON",
+      "browserFetchedAt": "2026-10-02T07:08:52.350Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|COPPERHILLS|BINGHAM": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/copper-hills-football-vs-bingham-football/273554",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:09:10.154Z",
+      "date": "10/02/2026",
+      "awayTeam": "COPPER HILLS",
+      "homeTeam": "BINGHAM",
+      "browserFetchedAt": "2026-10-02T07:09:10.154Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|DELTA|CARBON": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/delta-football-vs-carbon-football/273384",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:10:26.511Z",
+      "date": "10/02/2026",
+      "awayTeam": "DELTA",
+      "homeTeam": "CARBON",
+      "browserFetchedAt": "2026-10-02T07:10:26.511Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|DESERETPEAK|SKYVIEW": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/deseret-peak-football-football-vs-sky-view-football/273610",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:10:45.274Z",
+      "date": "10/02/2026",
+      "awayTeam": "DESERET PEAK",
+      "homeTeam": "SKY VIEW",
+      "browserFetchedAt": "2026-10-02T07:10:45.274Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|DUCHESNE|MILLARD": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/duchesne-football-vs-millard-football/273665",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:11:01.243Z",
+      "date": "10/02/2026",
+      "awayTeam": "DUCHESNE",
+      "homeTeam": "MILLARD",
+      "browserFetchedAt": "2026-10-02T07:11:01.243Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|EAST|SKYLINE": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/east-football-vs-skyline-football/274341",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:11:12.201Z",
+      "date": "10/02/2026",
+      "awayTeam": "EAST",
+      "homeTeam": "SKYLINE",
+      "browserFetchedAt": "2026-10-02T07:11:12.201Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|EMERY|SOUTHSEVIER": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/emery-football-vs-south-sevier-football/273702",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:11:28.090Z",
+      "date": "10/02/2026",
+      "awayTeam": "EMERY",
+      "homeTeam": "SOUTH SEVIER",
+      "browserFetchedAt": "2026-10-02T07:11:28.090Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|FARMINGTON|DAVIS": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/farmington-football-vs-davis-football/273742",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:11:43.915Z",
+      "date": "10/02/2026",
+      "awayTeam": "FARMINGTON",
+      "homeTeam": "DAVIS",
+      "browserFetchedAt": "2026-10-02T07:11:43.915Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|GRAND|ALTAMONT": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/grand-football-vs-altamont-football/273697",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:11:59.158Z",
+      "date": "10/02/2026",
+      "awayTeam": "GRAND",
+      "homeTeam": "ALTAMONT",
+      "browserFetchedAt": "2026-10-02T07:11:59.158Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|GRANGER|HUNTER": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/granger-football-vs-hunter-football/273765",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:12:16.659Z",
+      "date": "10/02/2026",
+      "awayTeam": "GRANGER",
+      "homeTeam": "HUNTER",
+      "browserFetchedAt": "2026-10-02T07:12:16.659Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|GRANTSVILLE|MORGAN": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/grantsville-football-vs-morgan-football/273295",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:12:27.690Z",
+      "date": "10/02/2026",
+      "awayTeam": "GRANTSVILLE",
+      "homeTeam": "MORGAN",
+      "browserFetchedAt": "2026-10-02T07:12:27.690Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|HERRIMAN|MOUNTAINRIDGE": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/herriman-football-vs-mountain-ridge-football/273542",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:12:39.293Z",
+      "date": "10/02/2026",
+      "awayTeam": "HERRIMAN",
+      "homeTeam": "MOUNTAIN RIDGE",
+      "browserFetchedAt": "2026-10-02T07:12:39.293Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|HIGHLAND|JUANDIEGO": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/highland-football-vs-juan-diego-football/273761",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:12:51.553Z",
+      "date": "10/02/2026",
+      "awayTeam": "HIGHLAND",
+      "homeTeam": "JUAN DIEGO",
+      "browserFetchedAt": "2026-10-02T07:12:51.553Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|HILLCREST|CYPRUS": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/hillcrest-football-vs-cyprus-football/273601",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:13:07.213Z",
+      "date": "10/02/2026",
+      "awayTeam": "HILLCREST",
+      "homeTeam": "CYPRUS",
+      "browserFetchedAt": "2026-10-02T07:13:07.213Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|HURRICANE|SNOWCANYON": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/hurricane-football-vs-snow-canyon-football/273715",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:13:24.050Z",
+      "date": "10/02/2026",
+      "awayTeam": "HURRICANE",
+      "homeTeam": "SNOW CANYON",
+      "browserFetchedAt": "2026-10-02T07:13:24.050Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|KANAB|ENTERPRISE": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/kanab-football-vs-enterprise-football/273320",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:13:39.360Z",
+      "date": "10/02/2026",
+      "awayTeam": "KANAB",
+      "homeTeam": "ENTERPRISE",
+      "browserFetchedAt": "2026-10-02T07:13:39.360Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|KEARNS|TAYLORSVILLE": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/kearns-football-vs-taylorsville-football/274381",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:14:02.677Z",
+      "date": "10/02/2026",
+      "awayTeam": "KEARNS",
+      "homeTeam": "TAYLORSVILLE",
+      "browserFetchedAt": "2026-10-02T07:14:02.677Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|MAPLEMOUNTAIN|SPANISHFORK": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/maple-mountain-football-vs-spanish-fork-football/273645",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:14:51.826Z",
+      "date": "10/02/2026",
+      "awayTeam": "MAPLE MOUNTAIN",
+      "homeTeam": "SPANISH FORK",
+      "browserFetchedAt": "2026-10-02T07:14:51.826Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|MILFORD|MONTICELLO": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/milford-football-vs-monticello-football/274413",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:15:04.321Z",
+      "date": "10/02/2026",
+      "awayTeam": "MILFORD",
+      "homeTeam": "MONTICELLO",
+      "browserFetchedAt": "2026-10-02T07:15:04.321Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|MURRAY|PROVIDENCEHALL": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/murray-football-vs-providence-hall-football/274332",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:15:21.468Z",
+      "date": "10/02/2026",
+      "awayTeam": "MURRAY",
+      "homeTeam": "PROVIDENCE HALL",
+      "browserFetchedAt": "2026-10-02T07:15:21.468Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|NORTHSUMMIT|NORTHSEVIER": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/north-summit-football-vs-north-sevier-football/273357",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:15:35.320Z",
+      "date": "10/02/2026",
+      "awayTeam": "NORTH SUMMIT",
+      "homeTeam": "NORTH SEVIER",
+      "browserFetchedAt": "2026-10-02T07:15:35.320Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|OLYMPUS|VIEWMONT": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/olympus-football-vs-viewmont-football/273587",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:15:48.533Z",
+      "date": "10/02/2026",
+      "awayTeam": "OLYMPUS",
+      "homeTeam": "VIEWMONT",
+      "browserFetchedAt": "2026-10-02T07:15:48.533Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|PARKCITY|WASATCH": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/park-city-football-vs-wasatch-football/273387",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:16:04.851Z",
+      "date": "10/02/2026",
+      "awayTeam": "PARK CITY",
+      "homeTeam": "WASATCH",
+      "browserFetchedAt": "2026-10-02T07:16:04.851Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|PAROWAN|BEAVER": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/parowan-football-vs-beaver-football/273349",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:16:21.011Z",
+      "date": "10/02/2026",
+      "awayTeam": "PAROWAN",
+      "homeTeam": "BEAVER",
+      "browserFetchedAt": "2026-10-02T07:16:21.011Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|PAYSON|LAYTONCHRISTIAN": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/payson-football-vs-layton-christian-football/273445",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:16:41.956Z",
+      "date": "10/02/2026",
+      "awayTeam": "PAYSON",
+      "homeTeam": "LAYTON CHRISTIAN",
+      "browserFetchedAt": "2026-10-02T07:16:41.956Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|PINEVIEW|DESERTHILLS": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/pine-view-football-vs-desert-hills-football/273487",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:16:59.173Z",
+      "date": "10/02/2026",
+      "awayTeam": "PINE VIEW",
+      "homeTeam": "DESERT HILLS",
+      "browserFetchedAt": "2026-10-02T07:16:59.173Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|PLEASANTGROVE|OREM": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/pleasant-grove-football-vs-orem-football/274359",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:17:15.826Z",
+      "date": "10/02/2026",
+      "awayTeam": "PLEASANT GROVE",
+      "homeTeam": "OREM",
+      "browserFetchedAt": "2026-10-02T07:17:15.826Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|PROVO|UINTAH": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/provo-football-vs-uintah-football/273315",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:17:44.437Z",
+      "date": "10/02/2026",
+      "awayTeam": "PROVO",
+      "homeTeam": "UINTAH",
+      "browserFetchedAt": "2026-10-02T07:17:44.437Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|RICH|GRACEID": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/rich-football-vs-grace-idaho-football/274409",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:18:00.818Z",
+      "date": "10/02/2026",
+      "awayTeam": "RICH",
+      "homeTeam": "GRACE, ID",
+      "browserFetchedAt": "2026-10-02T07:18:00.818Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|RICHFIELD|JUAB": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/richfield-football-vs-juab-football/273305",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:18:17.757Z",
+      "date": "10/02/2026",
+      "awayTeam": "RICHFIELD",
+      "homeTeam": "JUAB",
+      "browserFetchedAt": "2026-10-02T07:18:17.757Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|ROCKLANDID|SAINTJOSEPH": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/rockland-idaho-football-football-vs-st-joseph-football-football/274432",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:18:34.879Z",
+      "date": "10/02/2026",
+      "awayTeam": "ROCKLAND, ID",
+      "homeTeam": "SAINT JOSEPH",
+      "browserFetchedAt": "2026-10-02T07:18:34.879Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|ROY|NORTHRIDGE": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/roy-football-vs-northridge-football/273527",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:18:51.689Z",
+      "date": "10/02/2026",
+      "awayTeam": "ROY",
+      "homeTeam": "NORTHRIDGE",
+      "browserFetchedAt": "2026-10-02T07:18:51.689Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|SALEMHILLS|DEERCREEK": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/salem-hills-football-vs-deer-creek-football-football/273345",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:19:11.658Z",
+      "date": "10/02/2026",
+      "awayTeam": "SALEM HILLS",
+      "homeTeam": "DEER CREEK",
+      "browserFetchedAt": "2026-10-02T07:19:11.658Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|SKYRIDGE|LONEPEAK": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/skyridge-football-vs-lone-peak-football/273468",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:19:28.735Z",
+      "date": "10/02/2026",
+      "awayTeam": "SKYRIDGE",
+      "homeTeam": "LONE PEAK",
+      "browserFetchedAt": "2026-10-02T07:19:28.735Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|SOUTHSUMMIT|ALA": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/south-summit-football-vs-american-leadership-football/273411",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:19:46.564Z",
+      "date": "10/02/2026",
+      "awayTeam": "SOUTH SUMMIT",
+      "homeTeam": "ALA",
+      "browserFetchedAt": "2026-10-02T07:19:46.564Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|SUMMITACADEMY|JUDGEMEMORIAL": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/summit-academy-football-vs-judge-memorial-football/273907",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:20:03.162Z",
+      "date": "10/02/2026",
+      "awayTeam": "SUMMIT ACADEMY",
+      "homeTeam": "JUDGE MEMORIAL",
+      "browserFetchedAt": "2026-10-02T07:20:03.162Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|TIMPANOGOS|MOUNTAINVIEW": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/timpanogos-football-vs-mountain-view-football/273367",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:20:19.320Z",
+      "date": "10/02/2026",
+      "awayTeam": "TIMPANOGOS",
+      "homeTeam": "MOUNTAIN VIEW",
+      "browserFetchedAt": "2026-10-02T07:20:19.320Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|TIMPVIEW|SPRINGVILLE": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/timpview-football-vs-springville-football/273772",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:20:38.892Z",
+      "date": "10/02/2026",
+      "awayTeam": "TIMPVIEW",
+      "homeTeam": "SPRINGVILLE",
+      "browserFetchedAt": "2026-10-02T07:20:38.892Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|UNION|OGDEN": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/union-football-vs-ogden-football/273397",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:20:56.056Z",
+      "date": "10/02/2026",
+      "awayTeam": "UNION",
+      "homeTeam": "OGDEN",
+      "browserFetchedAt": "2026-10-02T07:20:56.056Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|WEBER|SYRACUSE": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/weber-football-vs-syracuse-football/274392",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:21:13.120Z",
+      "date": "10/02/2026",
+      "awayTeam": "WEBER",
+      "homeTeam": "SYRACUSE",
+      "browserFetchedAt": "2026-10-02T07:21:13.120Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|WESTFIELD|LAYTON": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/west-field-football-football-vs-layton-football/273523",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:21:28.834Z",
+      "date": "10/02/2026",
+      "awayTeam": "WEST FIELD",
+      "homeTeam": "LAYTON",
+      "browserFetchedAt": "2026-10-02T07:21:28.834Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|WESTLAKE|RIVERTON": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/westlake-football-vs-riverton-football/273571",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:21:46.084Z",
+      "date": "10/02/2026",
+      "awayTeam": "WESTLAKE",
+      "homeTeam": "RIVERTON",
+      "browserFetchedAt": "2026-10-02T07:21:46.084Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|WHITEHORSE|UMALEHI": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/whitehorse-football-vs-utah-military-camp-williams-football-football/274433",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:22:01.203Z",
+      "date": "10/02/2026",
+      "awayTeam": "WHITEHORSE",
+      "homeTeam": "UMA-LEHI",
+      "browserFetchedAt": "2026-10-02T07:22:01.203Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-02|WOODSCROSS|BRIGHTON": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/woods-cross-football-vs-brighton-football/273745",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-02T07:22:13.008Z",
+      "date": "10/02/2026",
+      "awayTeam": "WOODS CROSS",
+      "homeTeam": "BRIGHTON",
+      "browserFetchedAt": "2026-10-02T07:22:13.008Z",
+      "detailSource": "deseret-browser-game-page"
     }
   }
 }
