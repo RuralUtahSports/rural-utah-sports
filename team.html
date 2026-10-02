@@ -30,7 +30,7 @@
     .then(async html=>{
       html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20260914-record-audit1');
       html=html.replace(/<script src="nav-menu\.js\?v=[^"]+"(?: defer)?><\/script>/,'<script src="nav-menu.js?v=20260929-alltime-team-stats1"><\/script>');
-      html=html.replace('</body>','<script src="team-tabs.js?v='+VERSION+'" data-rus-team-tabs="1"><\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\/script></body>');
+      html=html.replace('</body>','<script src="team-tabs.js?v='+VERSION+'" data-rus-team-tabs="1"><\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\/script><script src="team-coaches.js?v=20261001-coach-loader1"><\/script><script src="team-coaches-tab.js?v=20261001-coach-loader1"><\/script></body>');
 
       const parsed=new DOMParser().parseFromString(html,'text/html');
       document.documentElement.lang=parsed.documentElement.lang||'en';
