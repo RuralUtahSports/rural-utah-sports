@@ -1,5 +1,5 @@
 (() => {
-  const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20260910-sunday1';
+  const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20261002-fresh-finals1';
   const LIVE_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-live-details-2026.json';
   const SUPABASE_DETAILS = 'https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/live-scoreboard';
   const FULL_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
@@ -242,6 +242,9 @@
       games = Number.isInteger(selected)
         ? allGames.filter(g => gameWeekNumber(g) === selected)
         : allGames.slice();
+      if (typeof window.RUSScoreboardSetSeasonGames === 'function') {
+        window.RUSScoreboardSetSeasonGames(allGames);
+      }
       lastWeeklyRefresh = now;
       return true;
     } catch (error) {
