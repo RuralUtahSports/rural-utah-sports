@@ -57,6 +57,20 @@
   let liveRefreshInFlight = false;
   let lastLiveUpdatedAt = '';
 
+  function replaceSeasonGamesFromFeed(list) {
+    if (!Array.isArray(list) || !list.length) return false;
+    const previousWeek = selectedWeekNumber;
+    seasonGames = list.slice();
+    applyPredictions(seasonGames);
+    weekBuckets = [];
+    buildWeekBuckets();
+    if (previousWeek != null && weekBuckets.some(w => w.number === previousWeek)) selectedWeekNumber = previousWeek;
+    else selectedWeekNumber = chooseInitialWeek();
+    return true;
+  }
+
+  window.RUSScoreboardSetSeasonGames = replaceSeasonGamesFromFeed;
+
   function formatLiveUpdatedAt(value) {
     const when = new Date(value);
     if (!Number.isFinite(when.getTime())) return '';
