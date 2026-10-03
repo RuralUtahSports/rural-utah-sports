@@ -502,6 +502,58 @@ function mergeBrowserDetail(prior, parsed, game) {
   return next;
 }
 
+function browserDumpDailyScoreboard(date, browserPath) {
+  const url = new URL(`https://sports.deseret.com/high-school/scores-schedule/${date}`);
+  url.searchParams.set('region', 'all');
+  url.searchParams.set('_rus_live', `${Date.now()}_${Math.random().toString(36).slice(2)}`);
+  const result = spawnSync(browserPath, [
+    '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
+    '--virtual-time-budget=12000', '--dump-dom', url.toString()
+  ], { encoding: 'utf8', timeout: 35000, maxBuffer: 25 * 1024 * 1024 });
+  if (result.error) throw result.error;
+  if (result.status !== 0 || !clean(result.stdout)) throw new Error(`daily scoreboard browser exit ${result.status}`);
+  return result.stdout;
+}
+
+function reconcileRenderedDailyScoreboard(html, date, weekly, details) {
+  const text = htmlText(html);
+  const lines = text.split(/\n+/).map(clean).filter(Boolean);
+  let changed = 0;
+  for (const game of weekly.games || []) {
+    if (isoDate(game.date) !== date) continue;
+    const away = clean(game.awayTeam), home = clean(game.homeTeam);
+    const awayKeys = keysFor(away), homeKeys = keysFor(home);
+    const ai = lines.findIndex(line => awayKeys.some(k => compact(line).includes(k)));
+    if (ai < 0) continue;
+    const hi = lines.findIndex((line, i) => i >= Math.max(0, ai - 8) && i <= ai + 24 && homeKeys.some(k => compact(line).includes(k)));
+    if (hi < 0) continue;
+    const segment = lines.slice(Math.max(0, Math.min(ai, hi) - 6), Math.max(ai, hi) + 10).join(' ');
+    const nums = [...segment.matchAll(/(?:^|\s)(\d{1,3})(?=\s|$)/g)].map(m => Number(m[1]));
+    if (nums.length < 2) continue;
+    const final = /\bFINAL\b/i.test(segment);
+    const live = /\bLIVE\b/i.test(segment);
+    if (!final && !live) continue;
+    const key = gameKey(game);
+    const prior = details[key] || {};
+    const awayScore = nums[nums.length - 2], homeScore = nums[nums.length - 1];
+    details[key] = {
+      ...prior, date, awayTeam: away, homeTeam: home,
+      status: final ? 'Final' : (prior.period || prior.status || 'Live'),
+      final,
+      boxScore: { periods: prior.boxScore?.periods || ['Q1','Q2','Q3','Q4'], rows: [
+        { ...(prior.boxScore?.rows?.[0] || {}), team: away, total: awayScore },
+        { ...(prior.boxScore?.rows?.[1] || {}), team: home, total: homeScore }
+      ]},
+      scoreSource: 'deseret-rendered-daily-scoreboard',
+      statusSource: 'deseret-rendered-daily-scoreboard',
+      fetchedAt: new Date().toISOString()
+    };
+    if (final) details[key].finalSource = 'deseret-browser-live-final';
+    changed++;
+  }
+  return changed;
+}
+
 function browserDumpDom(url, browserPath) {
   const pageUrl = new URL(url);
   pageUrl.searchParams.set('_rus_boxscore', `${Date.now()}_${Math.random().toString(36).slice(2)}`);
@@ -523,6 +575,16 @@ async function runBrowserOnly(weekly, details, linkIndex) {
   }
 
   const today = utahDate();
+  try {
+    const dailyHtml = browserDumpDailyScoreboard(today, browserPath);
+    const dailyChanges = reconcileRenderedDailyScoreboard(dailyHtml, today, weekly, details);
+    if (dailyChanges) {
+      fs.writeFileSync(OUTPUT, JSON.stringify({ updatedAt: new Date().toISOString(), games: details }, null, 2) + '\n');
+      console.log(`Rendered Deseret daily scoreboard reconciled: ${dailyChanges} games.`);
+    }
+  } catch (error) {
+    console.warn(`Rendered Deseret daily scoreboard failed: ${error.message}`);
+  }
   const todayNumber = Date.parse(`${today}T12:00:00Z`);
   const candidates = [];
   for (const game of weekly.games || []) {
