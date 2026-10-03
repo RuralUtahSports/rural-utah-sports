@@ -6,6 +6,7 @@ on:
     - cron: '7,22,37,52 * * * *'
   push:
     paths:
+      - 'weekly-simulation.json'
       - 'scripts/build_rpi_standings.mjs'
       - 'scripts/fetch_uhsaa_rpi.mjs'
       - 'rpi-oos-2026.json'
