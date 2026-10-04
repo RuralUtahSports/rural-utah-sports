@@ -113,6 +113,24 @@ for (const g of weeklyGames) {
     g.wl ?? ''
   ]);
 }
+// Verified finals must also be able to create a missing/moved matchup.
+// Previously corrections only modified games that already existed in the
+// weekly/sheet rows, so a verified result could still disappear entirely.
+for (const correction of corrections) {
+  addMergedRow([
+    correction.date,
+    correction.awayTeam,
+    correction.homeTeam,
+    '',
+    '',
+    '',
+    '',
+    correction.actualAway ?? '',
+    correction.actualHome ?? '',
+    '',
+    ''
+  ]);
+}
 // Include every current Utah team immediately, even before that school appears on the weekly sheet.
 const st={};
 for(const t of teams){
