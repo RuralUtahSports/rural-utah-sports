@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VERSION='2026-08-31-v9';
+  const VERSION='2026-10-05-v10';
   const DEFENSE_SCALE=2.5;
   const QB_RUSHING_SCALE=.55;
   const TEAM_CONTEXT_RECORD_WEIGHT=.50;
@@ -94,6 +94,7 @@
   function isDefense(category){return /Defense/i.test(category||'')}
   function isOffenseLine(category){return isPassing(category)||isRushing(category)||isReceiving(category)}
   function isOffensePosition(position){return ['QB','RB','WR','TE','ATH'].includes(String(position||'').toUpperCase())}
+  function isDefensePosition(position){return ['DL','LB','DB'].includes(String(position||'').toUpperCase())}
   function isKickingPosition(position){return compact(position)==='KP'}
 
   function categoryScore(category,values,position=''){
@@ -108,6 +109,7 @@
 
   function positionLineAllowed(position,category){
     if(isOffensePosition(position))return isOffenseLine(category);
+    if(isDefensePosition(position))return isDefense(category);
     if(isKickingPosition(position))return isKicking(category);
     return true;
   }
@@ -245,5 +247,5 @@
     return applyTeamContext(base,context,award)-base;
   }
 
-  return {VERSION,DEFENSE_SCALE,QB_RUSHING_SCALE,TEAM_CONTEXT_RECORD_WEIGHT,TEAM_CONTEXT_SOS_WEIGHT,TEAM_CONTEXT_QUALITY_WIN_WEIGHT,QUALITY_WIN_RECORD_WEIGHT,QUALITY_WIN_TOP25_WEIGHT,TEAM_CONTEXT_FULL_GAMES,WEAK_SOS_NEUTRAL_PERCENTILE,TEAM_CONTEXT_CAPS,WEAK_SOS_PENALTY_CAPS,compact,n,clamp,teamKey,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore,top25Rows,buildTop25Ranks,top25RankValue,qualityWinOpponentStrength,neutralTeamContext,buildTeamContexts,teamContextFor,teamContextCap,weakSosPenaltyCap,applyTeamContext,teamContextBonus};
+  return {VERSION,DEFENSE_SCALE,QB_RUSHING_SCALE,TEAM_CONTEXT_RECORD_WEIGHT,TEAM_CONTEXT_SOS_WEIGHT,TEAM_CONTEXT_QUALITY_WIN_WEIGHT,QUALITY_WIN_RECORD_WEIGHT,QUALITY_WIN_TOP25_WEIGHT,TEAM_CONTEXT_FULL_GAMES,WEAK_SOS_NEUTRAL_PERCENTILE,TEAM_CONTEXT_CAPS,WEAK_SOS_PENALTY_CAPS,compact,n,clamp,teamKey,statValue,passDetails,passingScore,rushingScore,qbRushingScore,receivingScore,kickingScore,defenseScore,isPassing,isRushing,isReceiving,isKicking,isDefense,isOffenseLine,isOffensePosition,isDefensePosition,isKickingPosition,categoryScore,positionLineAllowed,positionScore,top25Rows,buildTop25Ranks,top25RankValue,qualityWinOpponentStrength,neutralTeamContext,buildTeamContexts,teamContextFor,teamContextCap,weakSosPenaltyCap,applyTeamContext,teamContextBonus};
 });
