@@ -50,6 +50,7 @@ jobs:
           node scripts/build_deseret_rosters_stats.mjs
           node scripts/merge_deseret_stats_endpoints.mjs
           if [ -f maxpreps-stats-fallback-2026.json ]; then node scripts/merge_maxpreps_stats_fallback.mjs --apply-cache; fi
+          node scripts/apply_manual_stat_corrections.mjs
       - name: Connect roster players to individual game box scores
         run: |
           node scripts/build_player_game_stats.mjs
