@@ -41,6 +41,7 @@ jobs:
           node-version: 20
       - name: Build current game stats and season totals
         run: |
+          node scripts/apply_manual_stat_corrections.mjs
           node scripts/build_player_game_stats.mjs
           node scripts/merge_maxpreps_game_logs.mjs
           node scripts/reconcile_season_stats_from_game_logs.mjs
