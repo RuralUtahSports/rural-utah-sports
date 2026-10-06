@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "refreshRequestedAt": "2026-10-04T18:29:00-06:00",
+  "refreshRequestedAt": "2026-10-05T18:30:00-06:00",
   "corrections": [
     {
       "id": "2026-08-14-bear-river-ogden-passer",
@@ -107,6 +107,92 @@
       "exactValue": 5,
       "gameOnly": true,
       "whenValue": 41
+    },
+    {
+      "id": "2026-water-canyon-alma-week8-rush-carries",
+      "note": "Preserve Alma Barlow's verified Week 8 production vs UMA-Hillfield while Water Canyon's Oct. 2 full player box score is absent from the game-log cache.",
+      "team": "WATER CANYON",
+      "category": "Rushing",
+      "targetPlayer": "Alma Barlow",
+      "stat": "CARRIES",
+      "exactValue": 139
+    },
+    {
+      "id": "2026-water-canyon-alma-week8-rush-yards",
+      "note": "Preserve Alma Barlow's verified Week 8 production vs UMA-Hillfield while Water Canyon's Oct. 2 full player box score is absent from the game-log cache.",
+      "team": "WATER CANYON",
+      "category": "Rushing",
+      "targetPlayer": "Alma Barlow",
+      "stat": "YARDS",
+      "exactValue": 1955
+    },
+    {
+      "id": "2026-water-canyon-alma-week8-rush-td",
+      "note": "Preserve Alma Barlow's verified Week 8 production vs UMA-Hillfield while Water Canyon's Oct. 2 full player box score is absent from the game-log cache.",
+      "team": "WATER CANYON",
+      "category": "Rushing",
+      "targetPlayer": "Alma Barlow",
+      "stat": "TD",
+      "exactValue": 27
+    },
+    {
+      "id": "2026-water-canyon-alma-week8-rush-ypc",
+      "note": "Preserve Alma Barlow's verified Week 8 production vs UMA-Hillfield while Water Canyon's Oct. 2 full player box score is absent from the game-log cache.",
+      "team": "WATER CANYON",
+      "category": "Rushing",
+      "targetPlayer": "Alma Barlow",
+      "stat": "YARDS/CARRY",
+      "exactValue": 14.06
+    },
+    {
+      "id": "2026-water-canyon-alma-week8-rec-yards",
+      "note": "Preserve Alma Barlow's verified Week 8 production vs UMA-Hillfield while Water Canyon's Oct. 2 full player box score is absent from the game-log cache.",
+      "team": "WATER CANYON",
+      "category": "Receiving",
+      "targetPlayer": "Alma Barlow",
+      "stat": "YARDS",
+      "exactValue": 100
+    },
+    {
+      "id": "2026-water-canyon-alma-week8-rec-td",
+      "note": "Preserve Alma Barlow's verified Week 8 production vs UMA-Hillfield while Water Canyon's Oct. 2 full player box score is absent from the game-log cache.",
+      "team": "WATER CANYON",
+      "category": "Receiving",
+      "targetPlayer": "Alma Barlow",
+      "stat": "TD",
+      "exactValue": 2
+    }
+  ],
+  "manualGameStats": [
+    {
+      "id": "2026-10-02-water-canyon-alma-barlow-umahf",
+      "note": "MaxPreps published Alma Barlow's Week 8 line after the Water Canyon vs UMA-Hillfield final, but the game was omitted from the MaxPreps game-log cache.",
+      "team": "WATER CANYON",
+      "date": "2026-10-02",
+      "opponent": "UMA-HILLFIELD",
+      "sourceUrl": "https://www.maxpreps.com/news/VMsNT2Ua4kigEhGsnEyPzA/football-recap-alma-barlow-keeps-finding-the-end-zone-on-the-ground.htm",
+      "playerId": "water-canyon-35-alma-barlow",
+      "number": "35",
+      "name": "Alma Barlow",
+      "partial": true,
+      "statLines": [
+        {
+          "category": "Rushing",
+          "values": {
+            "CARRIES": "21",
+            "YARDS": "276",
+            "TD": "6",
+            "YARDS/CARRY": "13.14"
+          }
+        },
+        {
+          "category": "Receiving",
+          "values": {
+            "YARDS": "40",
+            "TD": "1"
+          }
+        }
+      ]
     }
   ]
 }
