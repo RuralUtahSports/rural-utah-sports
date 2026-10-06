@@ -80,8 +80,9 @@ export function reconcileSeasonStats(rosters,games,sources={}){
   for(const [teamKey,gameTeam] of Object.entries(games.teams||{})){
     const rosterKey=Object.keys(rosters.teams||{}).find(key=>canon(key)===canon(teamKey));if(!rosterKey)continue;
     const team=rosters.teams[rosterKey],expected=expectedFinalKeys(rosterKey,sources),available=availableFinalKeys(gameTeam);teams++;
+    const manualPartial=(gameTeam?.games||[]).filter(game=>game?.manualPartialStats);
     const missing=[...expected.entries()].filter(([key])=>!available.has(key));
-    if(missing.length){skippedTeams++;incompleteTeams.push({team:rosterKey,expectedFinalGames:expected.size,availableFinalStatGames:available.size,missing:missing.map(([,label])=>label)});continue}
+    if(missing.length||manualPartial.length){skippedTeams++;incompleteTeams.push({team:rosterKey,expectedFinalGames:expected.size,availableFinalStatGames:available.size,missing:missing.map(([,label])=>label),manualPartialGames:manualPartial.map(game=>`${isoDate(game.date)} vs ${clean(game.opponent)}`)});continue}
     const byPlayer=new Map();
     for(const game of gameTeam.games||[])for(const player of game.players||[]){
       const key=clean(player.playerId)||`${compact(player.name)}|${clean(player.number)}`;
