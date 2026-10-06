@@ -73,7 +73,7 @@ function expectedFinalKeys(teamName,sources={}){
   for(const game of sources.weekly?.games||[]){if(!hasScore(game?.actualAway)||!hasScore(game?.actualHome))continue;const away=canon(game.awayTeam),home=canon(game.homeTeam);if(away!==teamKey&&home!==teamKey)continue;const opponent=away===teamKey?game.homeTeam:game.awayTeam,date=isoDate(game.date);if(date&&opponent)expected.set(`${date}|${canon(opponent)}`,`${date} vs ${opponent}`)}
   return expected;
 }
-function availableFinalKeys(gameTeam){const available=new Set();for(const game of gameTeam?.games||[]){if(!gameFinal(game)||!gameHasStats(game))continue;const date=isoDate(game.date),opponent=clean(game.opponent);if(date&&opponent)available.add(`${date}|${canon(opponent)}`)}return available}
+function availableFinalKeys(gameTeam){const available=new Set();for(const game of gameTeam?.games||[]){if(game?.manualPartialStats||!gameFinal(game)||!gameHasStats(game))continue;const date=isoDate(game.date),opponent=clean(game.opponent);if(date&&opponent)available.add(`${date}|${canon(opponent)}`)}return available}
 
 export function reconcileSeasonStats(rosters,games,sources={}){
   let teams=0,players=0,categories=0,fields=0,skippedTeams=0;const incompleteTeams=[];
