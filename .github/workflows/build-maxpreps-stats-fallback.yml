@@ -12,9 +12,12 @@ on:
       - 'scripts/build_team_current_shards.mjs'
       - '.github/workflows/build-maxpreps-stats-fallback.yml'
   schedule:
-    # Daily at 8:37 a.m. Mountain Daylight Time (2:37 p.m. UTC).
-    # Daily refresh keeps game logs current when Deseret does not publish them.
-    - cron: '37 14 * * *'
+    # Daily at 5:37 a.m. Mountain Daylight Time (11:37 a.m. UTC).
+    # Move the baseline refresh earlier so short/Wednesday game weeks are ready sooner.
+    - cron: '37 11 * * *'
+    # Extra early-week pass Monday and Tuesday at 12:37 p.m. MDT (6:37 p.m. UTC).
+    # This catches MaxPreps stat updates posted after the morning scrape before midweek games.
+    - cron: '37 18 * * 1,2'
 
 permissions:
   contents: write
