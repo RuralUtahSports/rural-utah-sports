@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updatedAt": "2026-10-06T00:29:08.200Z",
+  "updatedAt": "2026-10-06T00:35:23.223Z",
   "summary": {
     "teams": 136,
     "teamGames": 847,
@@ -16,7 +16,13 @@
       "linesAdded": 8722,
       "fieldsFilled": 23133,
       "correctedFields": 20,
-      "unmatchedGames": 179
+      "unmatchedGames": 179,
+      "manualGameStats": {
+        "gamesAdded": 1,
+        "playersAdded": 1,
+        "linesAdded": 2,
+        "fieldsSet": 6
+      }
     }
   },
   "teams": {
@@ -363047,6 +363053,55 @@
           "scoringPlays": [],
           "maxprepsRecovered": true,
           "maxprepsUrl": "https://www.maxpreps.com/ut/football/game/st-joseph-ogden-vs-water-canyon-hildale/9-25-2026/?c=a390c22c-55eb-4279-b812-76d7e6a191ce"
+        },
+        {
+          "gameKey": "2026-10-02|WATERCANYON|UMAHILLFIELD",
+          "date": "2026-10-02",
+          "opponent": "UMA-HILLFIELD",
+          "location": "",
+          "status": "Final",
+          "final": true,
+          "players": [
+            {
+              "playerId": "water-canyon-35-alma-barlow",
+              "number": "35",
+              "name": "Alma Barlow",
+              "position": "",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "CARRIES": "21",
+                    "YARDS": "276",
+                    "TD": "6",
+                    "YARDS/CARRY": "13.14"
+                  },
+                  "statSources": {
+                    "CARRIES": "Manual verified MaxPreps",
+                    "YARDS": "Manual verified MaxPreps",
+                    "TD": "Manual verified MaxPreps",
+                    "YARDS/CARRY": "Manual verified MaxPreps"
+                  }
+                },
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "YARDS": "40",
+                    "TD": "1"
+                  },
+                  "statSources": {
+                    "YARDS": "Manual verified MaxPreps",
+                    "TD": "Manual verified MaxPreps"
+                  }
+                }
+              ],
+              "scoringPlays": []
+            }
+          ],
+          "scoringPlays": [],
+          "manualPartialStats": true,
+          "manualStatSource": "https://www.maxpreps.com/news/VMsNT2Ua4kigEhGsnEyPzA/football-recap-alma-barlow-keeps-finding-the-end-zone-on-the-ground.htm"
         }
       ]
     },
