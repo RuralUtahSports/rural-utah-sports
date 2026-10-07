@@ -3,8 +3,21 @@ import fs from 'node:fs';
 const FILE='player-game-stats-2026.json',CACHE='maxpreps-player-game-stats-2026.json',TEAM_DATA='deseret-team-data-2026.json',WEEKLY='weekly-simulation.json',MANUAL='manual-stat-corrections-2026.json';
 const clean=v=>String(v??'').trim();
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
-const aliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN',STJOSEPH:'SAINTJOSEPH',JUANDIEGOCATHOLIC:'JUANDIEGO'};
-const canon=v=>aliases[compact(v)]||compact(v);
+const aliases={
+  CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',
+  GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN',
+  STJOSEPH:'SAINTJOSEPH',JUANDIEGOCATHOLIC:'JUANDIEGO',
+  AMERICANLEADERSHIPACADEMY:'ALA',AMERICANLEADERSHIP:'ALA',
+  LAYTONCHRISTIANACADEMY:'LAYTONCHRISTIAN',JUDGEMEMORIALCATHOLIC:'JUDGEMEMORIAL',
+  UTAHMILITARYACADEMYCAMPWILLIAMS:'UMALEHI',UTAHMILITARYCAMPWILLIAMS:'UMALEHI',
+  UTAHMILITARYACADEMYHILLFIELD:'UMAHILLFIELD',UTAHMILITARYHILLFIELD:'UMAHILLFIELD',
+  PAHRUMPVALLEY:'PAHRUMP',MOFFATCOUNTY:'MOFFAT',
+  LAKEMEADCHRISTIANACADEMY:'LAKEMEADCHRISTIAN',
+  KAMEHAMEHAKAPALAMA:'KAMEHAMEHA',
+  THESTJAMESPERFORMANCEACADEMY:'STJAMES',STJAMESPERFORMANCEACADEMY:'STJAMES'
+};
+const baseCanon=v=>compact(clean(v).replace(/\s*,\s*(?:[A-Z]{2}|AMERICAN SAMOA)\s*$/i,'').replace(/\s*\((?:AMERICAN SAMOA|[A-Z]{2})\)\s*$/i,''));
+const canon=v=>aliases[baseCanon(v)]||baseCanon(v);
 const nonEmpty=v=>v!==null&&v!==undefined&&clean(v)!=='';
 const numeric=v=>{const n=Number(clean(v).replace(/,/g,'').replace(/%$/,''));return Number.isFinite(n)?n:null};
 const categoryKey=v=>{const key=compact(v);return ['DEFENSE','DEFENSESPECIALTEAMS','DEFENSIVESTATISTICS','TACKLES','SACKS','TOUCHDOWNS'].includes(key)?'DEFENSESPECIALTEAMS':key};
@@ -78,6 +91,7 @@ export function mergeMaxPrepsGameLogs(output,cache,scheduleData=null,weekly=null
 }
 
 function selfTest(){
+  if(canon('Cedar')!==canon('Cedar City')||canon('Preston')!==canon('Preston, ID')||canon('American Leadership Academy')!==canon('ALA')||canon('Utah Military Academy - Camp Williams')!==canon('UMA-Lehi'))throw new Error('School alias normalization self-test failed');
   const output={teams:{MANTI:{games:[{date:'2026-08-14',opponent:'PINE VIEW',players:[{playerId:'wright',number:'1',name:'Kingston Wright',statLines:[{category:'Passing',values:{Yards:'79',TD:'3'}}]},{playerId:'receiver',number:'6',name:'Receiver',statLines:[{category:'Receiving',values:{Yards:'200',TD:'4'}}]}]}]}}};
   const cache={teams:{MANTI:{games:[{date:'2026-08-14',opponent:'Pine View',playerId:'wright',number:'1',name:'Kingston Wright',statLines:[{category:'Passing',values:{'COMP-ATT':'11-14',YARDS:'200',TD:'4',Int:'0'}}]}]}}};
   const result=mergeMaxPrepsGameLogs(output,cache),line=output.teams.MANTI.games[0].players[0].statLines[0];
