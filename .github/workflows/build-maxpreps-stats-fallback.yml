@@ -94,6 +94,11 @@ jobs:
           cp -R team-current-data "$publish_dir/"
           for attempt in 1 2 3 4; do
             git fetch origin main
+            # Generated outputs are safely copied to publish_dir above. Clear the
+            # checkout before switching to latest main so local generated changes
+            # cannot block the branch switch.
+            git reset --hard
+            git clean -fd
             git switch -C maxpreps-publish origin/main
             cp "$publish_dir"/*.json .
             rm -rf team-current-data
