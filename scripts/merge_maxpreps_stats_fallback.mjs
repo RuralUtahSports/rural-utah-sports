@@ -296,25 +296,25 @@ const data=JSON.parse(fs.readFileSync(FILE,'utf8'));
 let cache={season:data.season||2026,updatedAt:'',teams:{}};
 if(fs.existsSync(CACHE)){try{cache=JSON.parse(fs.readFileSync(CACHE,'utf8'))}catch(error){console.warn(`${CACHE}: ${error.message}`)}}
 if(process.argv.includes('--apply-cache')){
-  let addedRows=0,filledFields=0,unmatchedRows=0,available=0;
+  let addedRows=0,filledFields=0,upgradedFields=0,unmatchedRows=0,available=0;
   for(const team of Object.values(data.teams||{})){
     const saved=cache.teams?.[team.team];if(!saved?.rows?.length)continue;
-    available++;const merged=mergeTeam(team,saved.rows,saved.sourceUrl||'');addedRows+=merged.addedRows;filledFields+=merged.filledFields;unmatchedRows+=merged.unmatched;
+    available++;const merged=mergeTeam(team,saved.rows,saved.sourceUrl||'');addedRows+=merged.addedRows;filledFields+=merged.filledFields;upgradedFields+=merged.upgradedFields||0;unmatchedRows+=merged.unmatched;
     team.maxprepsStatsUrl=saved.sourceUrl||'';team.maxprepsPrintUrl=saved.printUrl||'';team.maxprepsLastUpdated=saved.lastUpdated||'';
   }
-  data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked:Object.keys(data.teams||{}).length,available,addedRows,filledFields,unmatchedRows,failures:0,cacheUpdatedAt:cache.updatedAt||'',policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
+  data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked:Object.keys(data.teams||{}).length,available,addedRows,filledFields,upgradedFields,unmatchedRows,failures:0,cacheUpdatedAt:cache.updatedAt||'',policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
   fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
   console.log(`MaxPreps cache: ${available} teams available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped.`);
   process.exit(0);
 }
-const entries=Object.values(data.teams||{});let next=0,checked=0,available=0,addedRows=0,filledFields=0,unmatchedRows=0,failures=0;
+const entries=Object.values(data.teams||{});let next=0,checked=0,available=0,addedRows=0,filledFields=0,upgradedFields=0,unmatchedRows=0,failures=0;
 async function one(team){
   try{
     const page=await loadTeamPage(team);checked++;if(!page){team.maxprepsFallback={checkedAt:new Date().toISOString(),available:false};return}
     available++;const print=await fetchHtml(page.printUrl),rows=parsePrintStats(print),merged=mergeTeam(team,rows,page.statsUrl);
     cache.teams[team.team]={sourceUrl:page.statsUrl,printUrl:page.printUrl,lastUpdated:page.lastUpdated||'',rows};
     team.maxprepsStatsUrl=page.statsUrl;team.maxprepsPrintUrl=page.printUrl;team.maxprepsLastUpdated=page.lastUpdated||'';
-    addedRows+=merged.addedRows;filledFields+=merged.filledFields;unmatchedRows+=merged.unmatched;
+    addedRows+=merged.addedRows;filledFields+=merged.filledFields;upgradedFields+=merged.upgradedFields||0;unmatchedRows+=merged.unmatched;
   }catch(error){failures++;console.warn(`${team.team} MaxPreps fallback: ${error.message}`)}
 }
 async function worker(){while(true){const i=next++;if(i>=entries.length)return;await one(entries[i]);await new Promise(resolve=>setTimeout(resolve,120))}}
@@ -330,7 +330,7 @@ for(const team of entries){
 let gameNext=0,gamePlayersFetched=0,gamePlayersFailed=0,gameRows=0;
 async function gameWorker(){while(true){const i=gameNext++;if(i>=playerTasks.length)return;const task=playerTasks[i];try{const html=await fetchHtml(task.url),games=parsePlayerGameLogs(html,task.player);if(games.length){const bucket=gameCache.teams[task.team.team]||(gameCache.teams[task.team.team]={team:task.team.team,games:[]});bucket.games.push(...games);gameRows+=games.length}gamePlayersFetched++}catch(error){gamePlayersFailed++;console.warn(`${task.team.team} ${task.player.name} game logs: ${error.message}`)}await new Promise(resolve=>setTimeout(resolve,80))}}
 await Promise.all(Array.from({length:Math.min(8,playerTasks.length)},()=>gameWorker()));
-data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,unmatchedRows,failures,policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
+data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,upgradedFields,unmatchedRows,failures,policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
 fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
 cache.updatedAt=new Date().toISOString();fs.writeFileSync(CACHE,JSON.stringify(cache,null,2)+'\n');
 gameCache.updatedAt=new Date().toISOString();gameCache.summary={playersQueued:playerTasks.length,playersFetched:gamePlayersFetched,playersFailed:gamePlayersFailed,playerGames:gameRows};fs.writeFileSync(GAME_CACHE,JSON.stringify(gameCache,null,2)+'\n');
