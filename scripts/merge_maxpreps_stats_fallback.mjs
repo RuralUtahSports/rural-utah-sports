@@ -119,6 +119,16 @@ function sectionBefore(html,index){
   const before=String(html).slice(Math.max(0,index-600),index),matches=[...before.matchAll(/<h3\b[^>]*>([\s\S]*?)<\/h3>/gi)];
   return text(matches.at(-1)?.[1]||'');
 }
+function cleanPlayerName(value){
+  return clean(value).replace(/\s*(?:\([^)]*\)\s*)+$/g,'').replace(/\s+/g,' ').trim();
+}
+function nameBits(value){
+  const normalized=cleanPlayerName(value).replace(/[’]/g,"'").replace(/[^A-Za-z0-9' -]+/g,' ').replace(/\s+/g,' ').trim();
+  const parts=normalized.split(/\s+/).filter(Boolean);
+  while(parts.length>1&&['JR','SR','II','III','IV'].includes(compact(parts.at(-1))))parts.pop();
+  const first=compact(parts[0]||''),last=compact(parts.at(-1)||'');
+  return{full:compact(parts.join(' ')),first,last,initial:first.slice(0,1)};
+}
 const MAP={
   Passing:{category:'Passing',fields:{C:'__COMP',Att:'__ATT',Yds:'YARDS',TD:'TD',Int:'Int'}},
   Rushing:{category:'Rushing',fields:{Car:'CARRIES',Yds:'YARDS',TD:'TD'}},
@@ -138,7 +148,7 @@ function parsePrintStats(html){
     const body=match[1].match(/<tbody\b[^>]*>([\s\S]*?)<\/tbody>/i)?.[1]||'';
     for(const rowMatch of body.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)){
       const row=cells(rowMatch[1]);if(row.length<3)continue;
-      const no=clean(row[0]?.value),name=clean(row[1]?.title||row[1]?.value.replace(/\s*\([^)]*\)\s*$/,''));if(!name)continue;
+      const no=clean(row[0]?.value),name=cleanPlayerName(row[1]?.title||row[1]?.value);if(!name)continue;
       const values={};let comp='',att='';
       for(let i=2;i<Math.min(headers.length,row.length);i++){
         const target=config.fields[headers[i]],value=number(row[i]?.value);if(!target||!value)continue;
@@ -184,19 +194,44 @@ function parsePlayerGameLogs(html,player){
   return [...games.values()].filter(g=>g.statLines.some(line=>Object.keys(line.values).length));
 }
 function rosterMatch(team,row){
-  const roster=team.roster||[],byName=roster.filter(p=>compact(p.name)===compact(row.name));
-  const exact=byName.find(p=>clean(p.number)===clean(row.number));
+  const roster=team.roster||[],incomingName=cleanPlayerName(row.name),incomingNo=clean(row.number),bits=nameBits(incomingName);
+  if(!roster.length||!incomingName)return null;
+  const exactName=roster.filter(p=>compact(cleanPlayerName(p.name))===compact(incomingName));
+  const exact=exactName.find(p=>incomingNo&&clean(p.number)===incomingNo);
   if(exact)return exact;
-  return byName.length===1?byName[0]:null;
+  if(exactName.length===1)return exactName[0];
+
+  const sameLastInitial=p=>{
+    const pb=nameBits(p.name);
+    return !!bits.last&&pb.last===bits.last&&!!bits.initial&&pb.initial===bits.initial;
+  };
+  if(incomingNo){
+    const numbered=roster.filter(p=>clean(p.number)===incomingNo&&sameLastInitial(p));
+    if(numbered.length===1)return numbered[0];
+  }
+  const byLastInitial=roster.filter(sameLastInitial);
+  return byLastInitial.length===1?byLastInitial[0]:null;
+}
+function maxprepsOnlyPlayer(team,row){
+  team.roster||(team.roster=[]);
+  const name=cleanPlayerName(row.name),number=clean(row.number),existing=team.roster.find(p=>compact(cleanPlayerName(p.name))===compact(name)&&clean(p.number)===number);
+  if(existing)return{player:existing,created:false};
+  const player={playerId:`${slug(team.team)}-${slug(number||'x')}-${slug(name||'maxpreps')}`,number,name,class:'',position:'',height:'',weight:'',maxprepsOnly:true};
+  team.roster.push(player);
+  return{player,created:true};
 }
 function mergeTeam(team,rows,sourceUrl){
-  let addedRows=0,filledFields=0,unmatched=0;
+  let addedRows=0,filledFields=0,unmatched=0,matchedRows=0,syntheticPlayers=0;
+  const allowSynthetic=(team.roster||[]).length===0;
   for(const incoming of rows){
-    const player=rosterMatch(team,incoming);if(!player){unmatched++;continue}
+    let player=rosterMatch(team,incoming),synthetic=false;
+    if(!player&&allowSynthetic){const fallback=maxprepsOnlyPlayer(team,incoming);player=fallback.player;synthetic=!!player?.maxprepsOnly;if(fallback.created)syntheticPlayers++}
+    if(!player){unmatched++;continue}
+    matchedRows++;
     let section=(team.stats||[]).find(s=>s.category===incoming.category);
     if(!section){section={category:incoming.category,headers:[],rows:[]};(team.stats||(team.stats=[])).push(section)}
     let row=(section.rows||[]).find(r=>r.playerId===player.playerId)||(section.rows||[]).find(r=>compact(r.name)===compact(player.name)&&clean(r.number)===clean(player.number));
-    if(!row){row={playerId:player.playerId,number:player.number,name:player.name,rosterMatched:true,values:{},statSources:{}};(section.rows||(section.rows=[])).push(row);addedRows++}
+    if(!row){row={playerId:player.playerId,number:player.number,name:player.name,rosterMatched:!synthetic,values:{},statSources:{}};(section.rows||(section.rows=[])).push(row);addedRows++}
     for(const [header,value] of Object.entries(incoming.values)){
       if(nonEmpty(row.values?.[header]))continue;
       row.values||(row.values={});row.values[header]=value;row.statSources||(row.statSources={});row.statSources[header]='MaxPreps';
@@ -204,8 +239,8 @@ function mergeTeam(team,rows,sourceUrl){
     }
     if(row.statSources&&Object.keys(row.statSources).length===0)delete row.statSources;
   }
-  team.maxprepsFallback={sourceUrl,checkedAt:new Date().toISOString(),addedRows,filledFields,unmatchedRows:unmatched};
-  return{addedRows,filledFields,unmatched};
+  team.maxprepsFallback={sourceUrl,checkedAt:new Date().toISOString(),sourceRows:rows.length,matchedRows,addedRows,filledFields,syntheticPlayers,unmatchedRows:unmatched};
+  return{sourceRows:rows.length,matchedRows,addedRows,filledFields,syntheticPlayers,unmatched};
 }
 
 function selfTest(){
@@ -213,6 +248,12 @@ function selfTest(){
   const rows=parsePrintStats(fixture);if(rows[0]?.values?.['COMP-ATT']!=='78-128'||rows[0]?.values?.YARDS!=='1049')throw new Error('MaxPreps parser self-test failed');
   const team={team:'MOUNTAIN RIDGE',roster:[{playerId:'hunt',number:'11',name:'Jaxon Hunt'}],stats:[{category:'Passing',headers:['TD'],rows:[{playerId:'hunt',number:'11',name:'Jaxon Hunt',values:{TD:'10'}}]}]};
   const result=mergeTeam(team,rows,'fixture');if(result.filledFields!==3||team.stats[0].rows[0].values.TD!=='10'||team.stats[0].rows[0].values.YARDS!=='1049')throw new Error('MaxPreps merge self-test failed');
+  const abbreviated={team:'WEBER',roster:[{playerId:'weber-2-carter-payne',number:'2',name:'Carter Payne'}],stats:[]};
+  const abbreviatedResult=mergeTeam(abbreviated,[{category:'Passing',number:'2',name:'C. Payne (Jr) (Junior)',values:{YARDS:'1981',TD:'19'}}],'fixture');
+  if(abbreviatedResult.unmatched!==0||abbreviated.stats[0]?.rows[0]?.name!=='Carter Payne'||abbreviated.stats[0]?.rows[0]?.values?.YARDS!=='1981')throw new Error('MaxPreps initial + last-name roster matching self-test failed');
+  const rosterless={team:'WHITEHORSE',roster:[],stats:[]};
+  const rosterlessResult=mergeTeam(rosterless,[{category:'Rushing',number:'7',name:'M. Begay (Sr)',values:{YARDS:'321'}}],'fixture');
+  if(rosterlessResult.syntheticPlayers!==1||rosterlessResult.unmatched!==0||!rosterless.roster[0]?.maxprepsOnly||rosterless.stats[0]?.rows[0]?.values?.YARDS!=='321')throw new Error('MaxPreps rosterless fallback self-test failed');
   const flightLogs={groups:[{name:'Defense',subgroups:[{name:'Defensive Statistics',stats:[{stamp:'2026-08-28T19:00:00',opponentSchoolName:'Kimberly',score:'48-7',result:'W',contestUrl:'fixture',stats:[{name:'INTs',value:'2'},{name:'INTYards',value:'64'},{name:'YardsPerINT',value:'32.0'},{name:'PassesDefensed',value:'1'}]}]},{name:'Touchdowns',stats:[{stamp:'2026-08-28T19:00:00',opponentSchoolName:'Kimberly',score:'48-7',result:'W',contestUrl:'fixture',stats:[{name:'IntReturnedTDNum',value:'1'}]}]}]}]};
   const flightPayload='6:'+JSON.stringify([String.fromCharCode(36),String.fromCharCode(36)+'L1',null,{pageProps:{statsCardProps:{careerGameLogs:flightLogs}}}]);
   const flightHtml='<script>self.__next_f.push([1,'+JSON.stringify(flightPayload)+'])</script>',game=parsePlayerGameLogs(flightHtml,{playerId:'harvey',number:'5',name:'Synic Harvey'}).find(x=>x.opponent==='Kimberly'),defense=game?.statLines.find(x=>x.category==='Defensive Statistics'),touchdowns=game?.statLines.find(x=>x.category==='Touchdowns');
@@ -232,7 +273,7 @@ if(process.argv.includes('--apply-cache')){
     available++;const merged=mergeTeam(team,saved.rows,saved.sourceUrl||'');addedRows+=merged.addedRows;filledFields+=merged.filledFields;unmatchedRows+=merged.unmatched;
     team.maxprepsStatsUrl=saved.sourceUrl||'';team.maxprepsPrintUrl=saved.printUrl||'';team.maxprepsLastUpdated=saved.lastUpdated||'';
   }
-  data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked:Object.keys(data.teams||{}).length,available,addedRows,filledFields,unmatchedRows,failures:0,cacheUpdatedAt:cache.updatedAt||'',policy:'fill blank fields and missing roster-matched rows only'}};
+  data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked:Object.keys(data.teams||{}).length,available,addedRows,filledFields,unmatchedRows,failures:0,cacheUpdatedAt:cache.updatedAt||'',policy:'fill blank fields using exact or safe jersey/last-name/initial matches; synthesize MaxPreps-only players only when Deseret roster is empty'}};
   fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
   console.log(`MaxPreps cache: ${available} teams available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped.`);
   process.exit(0);
@@ -260,7 +301,7 @@ for(const team of entries){
 let gameNext=0,gamePlayersFetched=0,gamePlayersFailed=0,gameRows=0;
 async function gameWorker(){while(true){const i=gameNext++;if(i>=playerTasks.length)return;const task=playerTasks[i];try{const html=await fetchHtml(task.url),games=parsePlayerGameLogs(html,task.player);if(games.length){const bucket=gameCache.teams[task.team.team]||(gameCache.teams[task.team.team]={team:task.team.team,games:[]});bucket.games.push(...games);gameRows+=games.length}gamePlayersFetched++}catch(error){gamePlayersFailed++;console.warn(`${task.team.team} ${task.player.name} game logs: ${error.message}`)}await new Promise(resolve=>setTimeout(resolve,80))}}
 await Promise.all(Array.from({length:Math.min(8,playerTasks.length)},()=>gameWorker()));
-data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,unmatchedRows,failures,policy:'fill blank fields and missing roster-matched rows only'}};
+data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,unmatchedRows,failures,policy:'fill blank fields using exact or safe jersey/last-name/initial matches; synthesize MaxPreps-only players only when Deseret roster is empty'}};
 fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
 cache.updatedAt=new Date().toISOString();fs.writeFileSync(CACHE,JSON.stringify(cache,null,2)+'\n');
 gameCache.updatedAt=new Date().toISOString();gameCache.summary={playersQueued:playerTasks.length,playersFetched:gamePlayersFetched,playersFailed:gamePlayersFailed,playerGames:gameRows};fs.writeFileSync(GAME_CACHE,JSON.stringify(gameCache,null,2)+'\n');
