@@ -26,6 +26,7 @@ const CATEGORY_FIELDS={
   DEFENSESPECIALTEAMS:['TACKLES','SACKS','PASSINT','DEFENSETD','RETURNTD'],
   KICKING:['PAT','FG','PTS']
 };
+const MAXPREPS_DEFENSE_FLOOR_FIELDS=new Set(['TACKLES','SACKS','PASSINT','DEFENSETD','RETURNTD']);
 
 function addValue(bucket,key,value){
   const number=numeric(value);if(number===null)return;
@@ -99,7 +100,15 @@ export function reconcileSeasonStats(rosters,games,sources={}){
         if(!row){row={playerId:player.playerId,number:player.number,name:player.name,rosterMatched:true,values:{}};(section.rows||(section.rows=[])).push(row)}
         for(const [header,value] of Object.entries(incoming)){
           const target=Object.keys(row.values||{}).find(key=>compact(key)===compact(header))||header;
-          row.values||(row.values={});row.values[target]=value;row.statSources||(row.statSources={});row.statSources[target]='Calculated from complete game logs';
+          row.values||(row.values={});row.statSources||(row.statSources={});
+          const existing=row.values[target],existingSource=clean(row.statSources[target]),fieldKey=headerKey(bucket.category,header);
+          const existingNumber=numeric(existing),calculatedNumber=numeric(value);
+          const preserveMaxPrepsFloor=categoryKey(bucket.category)==='DEFENSESPECIALTEAMS'&&MAXPREPS_DEFENSE_FLOOR_FIELDS.has(fieldKey)&&/^MaxPreps season total/i.test(existingSource)&&existingNumber!==null&&calculatedNumber!==null&&existingNumber>calculatedNumber;
+          if(preserveMaxPrepsFloor){
+            row.statSources[target]=existingSource+'; preserved over lower complete-game sum';
+          }else{
+            row.values[target]=value;row.statSources[target]='Calculated from complete game logs';
+          }
           if(!section.headers.some(key=>compact(key)===compact(target)))section.headers.push(target);fields++;
         }
         categories++;changedPlayer=true;
@@ -108,7 +117,7 @@ export function reconcileSeasonStats(rosters,games,sources={}){
     }
   }
   rosters.updatedAt=new Date().toISOString();
-  rosters.summary={...(rosters.summary||{}),gameLogSeasonReconciliation:{teams,players,categories,fields,skippedTeams,incompleteTeams,policy:'Season totals are recalculated only when every known final game has individual stat data; incomplete game-log sets preserve the existing season source totals.'}};
+  rosters.summary={...(rosters.summary||{}),gameLogSeasonReconciliation:{teams,players,categories,fields,skippedTeams,incompleteTeams,policy:'Season totals are recalculated only when every known final game has individual stat data; incomplete sets preserve source totals, and a verified higher MaxPreps defensive season total is never reduced by a lower game-log sum.'}};
   return{teams,players,categories,fields,skippedTeams,incompleteTeams};
 }
 
@@ -169,6 +178,11 @@ function selfTest(){
   const defenseResult=reconcileSeasonStats(defenseRoster,defenseGames);
   const defenseValues=defenseRoster.teams.LCA.stats[0].rows[0].values;
   if(defenseResult.players!==1||defenseValues['PASS INT.']!=='5')throw new Error('Defensive season reconciliation self-test failed');
+  const floorRoster={teams:{CC:{stats:[{category:'Defense/Special Teams',headers:['TACKLES','SACKS'],rows:[{playerId:'tate',name:'Tate Patterson',number:'8',values:{TACKLES:'69',SACKS:'2.5'},statSources:{TACKLES:'MaxPreps season total (higher than primary source)',SACKS:'MaxPreps season total (higher than primary source)'}}]}]}}};
+  const floorGames={teams:{CC:{games:[{date:'2026-10-02',opponent:'Cedar Valley',status:'Final',final:true,players:[{playerId:'tate',name:'Tate Patterson',number:'8',statLines:[{category:'Defense',values:{Tackles:'68',Sacks:'2'}}]}]}]}}};
+  reconcileSeasonStats(floorRoster,floorGames);
+  const floorValues=floorRoster.teams.CC.stats[0].rows[0].values;
+  if(floorValues.TACKLES!=='69'||floorValues.SACKS!=='2.5')throw new Error('MaxPreps defensive season floor self-test failed');
   console.log('Season reconciliation self-test passed.');
 }
 
