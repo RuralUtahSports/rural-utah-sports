@@ -1,11 +1,1096 @@
 {
-  "generatedAt": "2026-10-07T13:14:13.197Z",
+  "generatedAt": "2026-10-07T13:49:56.534Z",
   "summary": {
     "errors": 0,
-    "warnings": 0,
-    "info": 1
+    "warnings": 66,
+    "info": 2
   },
   "issues": [
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_STATS_NOT_MERGED",
+      "message": "PANGUITCH has 4 MaxPreps stat rows but no season stat rows on the site.",
+      "context": {
+        "sourceRows": 4,
+        "rosterPlayers": 0,
+        "sourceUrl": "https://www.maxpreps.com/ut/panguitch/panguitch-bobcats/football/stats/"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_STATS_NOT_MERGED",
+      "message": "WHITEHORSE has 28 MaxPreps stat rows but no season stat rows on the site.",
+      "context": {
+        "sourceRows": 28,
+        "rosterPlayers": 0,
+        "sourceUrl": "https://www.maxpreps.com/ut/montezuma-creek/whitehorse-raiders/football/stats/"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_HIGH_UNMATCHED",
+      "message": "WHITEHORSE rejected 28 of 28 MaxPreps stat rows during player matching.",
+      "context": {
+        "sourceRows": 28,
+        "unmatchedRows": 28,
+        "rosterPlayers": 0,
+        "sourceUrl": "https://www.maxpreps.com/ut/montezuma-creek/whitehorse-raiders/football/stats/"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "BEN LOMOND has 4 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-28",
+            "opponent": "Evanston"
+          },
+          {
+            "date": "2026-09-04",
+            "opponent": "American Leadership Academy"
+          },
+          {
+            "date": "2026-09-11",
+            "opponent": "Moffat County"
+          },
+          {
+            "date": "2026-08-21",
+            "opponent": "Judge Memorial Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "AMERICAN FORK has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "Mater Dei"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "BEAVER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "Moapa Valley"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "CANYON VIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-10-02",
+            "opponent": "Cedar"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "ALTAMONT has 3 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "St. Joseph"
+          },
+          {
+            "date": "2026-08-28",
+            "opponent": "Rangely"
+          },
+          {
+            "date": "2026-09-04",
+            "opponent": "Utah Military Academy - Camp Williams"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "BEAR RIVER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-27",
+            "opponent": "Thunder Ridge"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "BOX ELDER has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-28",
+            "opponent": "Highland"
+          },
+          {
+            "date": "2026-09-18",
+            "opponent": "Rigby"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "CARBON has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "American Leadership Academy"
+          },
+          {
+            "date": "2026-08-28",
+            "opponent": "Juan Diego Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "CEDAR VALLEY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 5,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "Elko"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "COTTONWOOD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-09-17",
+            "opponent": "Juan Diego Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "CORNER CANYON has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-04",
+            "opponent": "Liberty"
+          },
+          {
+            "date": "2026-09-11",
+            "opponent": "Eastwood"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "EAST has 3 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "Tafuna (American Samoa)"
+          },
+          {
+            "date": "2026-09-04",
+            "opponent": "Layton Christian Academy"
+          },
+          {
+            "date": "2026-09-25",
+            "opponent": "Juan Diego Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "DUCHESNE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-28",
+            "opponent": "Ignacio"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "DIXIE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-04",
+            "opponent": "Cedar"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "EMERY has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-25",
+            "opponent": "Enterprise"
+          },
+          {
+            "date": "2026-09-04",
+            "opponent": "Judge Memorial Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "GUNNISON VALLEY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 6,
+        "missing": [
+          {
+            "date": "2026-08-28",
+            "opponent": "Grand County"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "GRAND has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-09-04",
+            "opponent": "Hayden"
+          },
+          {
+            "date": "2026-09-11",
+            "opponent": "Utah Military Academy - Hill Field"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "HURRICANE has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "Virgin Valley"
+          },
+          {
+            "date": "2026-08-21",
+            "opponent": "Moapa Valley"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "FARMINGTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-28",
+            "opponent": "Rigby"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "HIGHLAND has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-10-02",
+            "opponent": "Juan Diego Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "GREEN CANYON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-10-02",
+            "opponent": "Tooele"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "JORDAN has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-11",
+            "opponent": "Juan Diego Catholic"
+          },
+          {
+            "date": "2026-09-25",
+            "opponent": "Judge Memorial Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "MANTI has 3 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "Juan Diego Catholic"
+          },
+          {
+            "date": "2026-09-11",
+            "opponent": "Cedar"
+          },
+          {
+            "date": "2026-10-01",
+            "opponent": "North Sanpete"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "HUNTER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "Layton Christian Academy"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "MAPLE MOUNTAIN has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-18",
+            "opponent": "Timpview"
+          },
+          {
+            "date": "2026-08-28",
+            "opponent": "South Pasadena"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "LEHI has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-29",
+            "opponent": "The St. James Performance Academy"
+          },
+          {
+            "date": "2026-09-04",
+            "opponent": "ALA - Queen Creek"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "LAYTON CHRISTIAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-08-28",
+            "opponent": "Kimberly"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "LOGAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "Preston"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "MONTICELLO has 3 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 6,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "Utah Military Academy - Camp Williams"
+          },
+          {
+            "date": "2026-09-11",
+            "opponent": "Norwood"
+          },
+          {
+            "date": "2026-09-04",
+            "opponent": "Dolores"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "MORGAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-11",
+            "opponent": "Faith Lutheran"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "LONE PEAK has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "IMG Academy"
+          },
+          {
+            "date": "2026-09-04",
+            "opponent": "Bishop Gorman"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "MILFORD has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-25",
+            "opponent": "Utah Military Academy - Camp Williams"
+          },
+          {
+            "date": "2026-09-11",
+            "opponent": "Lincoln County"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "MOUNTAIN RIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-18",
+            "opponent": "Chaparral"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "NORTH SANPETE has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-10-01",
+            "opponent": "Manti"
+          },
+          {
+            "date": "2026-09-18",
+            "opponent": "Cedar"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "NORTH SEVIER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-28",
+            "opponent": "Judge Memorial Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "NORTHRIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-11",
+            "opponent": "Preston"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "OLYMPUS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-04",
+            "opponent": "Piedra Vista"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "OREM has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "Kamehameha Kapalama"
+          },
+          {
+            "date": "2026-08-29",
+            "opponent": "Mater Dei"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PAROWAN has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "Lincoln County"
+          },
+          {
+            "date": "2026-08-21",
+            "opponent": "American Leadership Academy"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PLEASANT GROVE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-25",
+            "opponent": "Layton Christian Academy"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PINE VIEW has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "Cedar"
+          },
+          {
+            "date": "2026-08-28",
+            "opponent": "Campbell"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "RICH has 3 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-04",
+            "opponent": "Mountain View"
+          },
+          {
+            "date": "2026-09-25",
+            "opponent": "Bear Lake"
+          },
+          {
+            "date": "2026-10-02",
+            "opponent": "Grace"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PROVIDENCE HALL has 4 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-25",
+            "opponent": "American Leadership Academy"
+          },
+          {
+            "date": "2026-08-14",
+            "opponent": "Pahrump Valley"
+          },
+          {
+            "date": "2026-08-29",
+            "opponent": "Lake Mead Christian Academy"
+          },
+          {
+            "date": "2026-09-18",
+            "opponent": "Judge Memorial Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PAYSON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-10-02",
+            "opponent": "Layton Christian Academy"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "ROY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "Rigby"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "RIVERTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-27",
+            "opponent": "Madison"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "RICHFIELD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-25",
+            "opponent": "Cedar"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SALEM HILLS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-18",
+            "opponent": "Timpanogos"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SKYLINE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-04",
+            "opponent": "Juan Diego Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SKYRIDGE has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-29",
+            "opponent": "Hun"
+          },
+          {
+            "date": "2026-09-04",
+            "opponent": "Liberty"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SOUTH SUMMIT has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-10-02",
+            "opponent": "American Leadership Academy"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SOUTH SEVIER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-09-11",
+            "opponent": "American Leadership Academy"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SUMMIT ACADEMY has 3 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-28",
+            "opponent": "Buckeye"
+          },
+          {
+            "date": "2026-09-18",
+            "opponent": "American Leadership Academy"
+          },
+          {
+            "date": "2026-10-02",
+            "opponent": "Judge Memorial Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SNOW CANYON has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "Layton Christian Academy"
+          },
+          {
+            "date": "2026-08-28",
+            "opponent": "Cedar"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "TIMPVIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-18",
+            "opponent": "Maple Mountain"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SYRACUSE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-04",
+            "opponent": "Rigby"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "TOOELE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-10-02",
+            "opponent": "Green Canyon"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "VIEWMONT has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 7,
+        "missing": [
+          {
+            "date": "2026-09-11",
+            "opponent": "Layton Christian Academy"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "TIMPANOGOS has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "Juan Diego Catholic"
+          },
+          {
+            "date": "2026-09-18",
+            "opponent": "Salem Hills"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "WASATCH has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-13",
+            "opponent": "Cedar"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "WATER CANYON has 4 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-21",
+            "opponent": "Beaver Dam"
+          },
+          {
+            "date": "2026-08-14",
+            "opponent": "Grand County"
+          },
+          {
+            "date": "2026-09-25",
+            "opponent": "St. Joseph"
+          },
+          {
+            "date": "2026-10-02",
+            "opponent": "Utah Military Academy - Hill Field"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "WEST has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-08-14",
+            "opponent": "Arbor View"
+          },
+          {
+            "date": "2026-08-28",
+            "opponent": "Archbishop Riordan"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "WESTLAKE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 8,
+        "missing": [
+          {
+            "date": "2026-09-11",
+            "opponent": "Rancho Bernardo"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "MAXPREPS_COVERAGE",
+      "message": "MaxPreps fallback coverage.",
+      "context": {
+        "sourceRows": 8397,
+        "unmatchedRows": 1029,
+        "rosterlessTeams": 2,
+        "sourceGamePairs": 815,
+        "missingGamePairs": 103
+      }
+    },
     {
       "severity": "info",
       "code": "AUDIT_COUNTS",
