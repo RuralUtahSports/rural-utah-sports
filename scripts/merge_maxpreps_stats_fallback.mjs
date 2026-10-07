@@ -135,7 +135,7 @@ const MAP={
   Receiving:{category:'Receiving',fields:{Rec:'RECEPTIONS',Yds:'YARDS',TD:'TD'}},
   Tackles:{category:'Defense/Special Teams',fields:{'Tot Tckls':'TACKLES'}},
   Sacks:{category:'Defense/Special Teams',fields:{Sacks:'SACKS'}},
-  'Defensive Statistics':{category:'Defense/Special Teams',fields:{Int:'PASS INT.','Int Yds':'PASS INT YDS',Avg:'PASS INT AVG',PD:'PD','Fmb Rec':'FUM REC','FR Yds':'FR YDS',Caus:'CAUSED FUM'}},
+  'Defensive Statistics':{category:'Defense/Special Teams',fields:{Int:'PASS INT.','Int Yds':'PASS INT YDS',Avg:'PASS INT AVG',PD:'PD','Fmb Rec':'FUM REC','FR Yds':'FR YDS',Caus:'CAUSED FUM',Hur:'QB HURRIES',QBH:'QB HURRIES','QB Hur':'QB HURRIES','QB Hurries':'QB HURRIES',Hurries:'QB HURRIES'}},
   Touchdowns:{category:'Defense/Special Teams',fields:{'FR TD':'DEFENSE TD','IR TD':'DEFENSE TD','PR TD':'RETURN TD','KOR TD':'RETURN TD'}},
   'PATs and Field Goals':{category:'Kicking',fields:{PAT:'PAT',FG:'FG','Tot Pts':'Pts'}}
 };
@@ -166,7 +166,7 @@ const GAME_FIELD_MAP={
   Receiving:{ReceivingNum:'RECEPTIONS',ReceivingYards:'YARDS',YardsPerReception:'YARDS/RECEP.',ReceivingTDNum:'TD'},
   Tackles:{TotalTackles:'TACKLES'},
   Sacks:{Sacks:'SACKS'},
-  'Defensive Statistics':{Interceptions:'PASS INT.',INTs:'PASS INT.',INT:'PASS INT.',INTYards:'PASS INT YDS',InterceptionYards:'PASS INT YDS',YardsPerINT:'PASS INT AVG',PassesDefensed:'PD',FumbleRecoveries:'FUM REC',FumbleRecoveryYards:'FR YDS',CausedFumbles:'CAUSED FUM'},
+  'Defensive Statistics':{Interceptions:'PASS INT.',INTs:'PASS INT.',INT:'PASS INT.',INTYards:'PASS INT YDS',InterceptionYards:'PASS INT YDS',YardsPerINT:'PASS INT AVG',PassesDefensed:'PD',FumbleRecoveries:'FUM REC',FumbleRecoveryYards:'FR YDS',CausedFumbles:'CAUSED FUM',QuarterbackHurries:'QB HURRIES',QBHurries:'QB HURRIES',Hurries:'QB HURRIES'},
   Touchdowns:{FumbleRecoveryTDNum:'DEFENSE TD',InterceptionTDNum:'DEFENSE TD',IntReturnedTDNum:'DEFENSE TD',PuntReturnTDNum:'RETURN TD',PuntReturnedTDNum:'RETURN TD',KickoffReturnTDNum:'RETURN TD',KickoffsReturnedTDNum:'RETURN TD'},
   'PATs and Field Goals':{PATMade:'PAT',FieldGoalsMade:'FG',KickingPoints:'Pts'}
 };
@@ -232,27 +232,37 @@ function maxprepsOnlyPlayer(team,row){
   team.roster.push(player);
   return{player,created:true};
 }
+const DEFENSE_MAX_FIELDS=new Set(['TACKLES','SACKS','PASSINT','PD','FUMREC','CAUSEDFUM','QBHURRIES','DEFENSETD','RETURNTD']);
 function mergeTeam(team,rows,sourceUrl){
-  let addedRows=0,filledFields=0,unmatched=0,matchedRows=0,syntheticPlayers=0;
+  let addedRows=0,filledFields=0,upgradedFields=0,unmatched=0,matchedRows=0,syntheticPlayers=0;
   const allowSynthetic=(team.roster||[]).length===0;
   for(const incoming of rows){
     let player=rosterMatch(team,incoming),synthetic=false;
     if(!player&&allowSynthetic){const fallback=maxprepsOnlyPlayer(team,incoming);player=fallback.player;synthetic=!!player?.maxprepsOnly;if(fallback.created)syntheticPlayers++}
     if(!player){unmatched++;continue}
     matchedRows++;
-    let section=(team.stats||[]).find(s=>s.category===incoming.category);
+    let section=(team.stats||[]).find(s=>compact(s.category)===compact(incoming.category));
     if(!section){section={category:incoming.category,headers:[],rows:[]};(team.stats||(team.stats=[])).push(section)}
     let row=(section.rows||[]).find(r=>r.playerId===player.playerId)||(section.rows||[]).find(r=>compact(r.name)===compact(player.name)&&clean(r.number)===clean(player.number));
     if(!row){row={playerId:player.playerId,number:player.number,name:player.name,rosterMatched:!synthetic,values:{},statSources:{}};(section.rows||(section.rows=[])).push(row);addedRows++}
     for(const [header,value] of Object.entries(incoming.values)){
-      if(nonEmpty(row.values?.[header]))continue;
-      row.values||(row.values={});row.values[header]=value;row.statSources||(row.statSources={});row.statSources[header]='MaxPreps';
-      if(!section.headers.includes(header))section.headers.push(header);filledFields++;
+      row.values||(row.values={});
+      const target=Object.keys(row.values).find(existing=>compact(existing)===compact(header))||header;
+      const existing=row.values[target],defense=compact(incoming.category)==='DEFENSESPECIALTEAMS',key=compact(header);
+      if(nonEmpty(existing)){
+        const oldNumber=Number(clean(existing).replace(/,/g,'')),newNumber=Number(clean(value).replace(/,/g,''));
+        if(defense&&DEFENSE_MAX_FIELDS.has(key)&&Number.isFinite(oldNumber)&&Number.isFinite(newNumber)&&newNumber>oldNumber){
+          row.values[target]=value;row.statSources||(row.statSources={});row.statSources[target]='MaxPreps season total (higher than primary source)';upgradedFields++;
+        }
+        continue;
+      }
+      row.values[target]=value;row.statSources||(row.statSources={});row.statSources[target]='MaxPreps';
+      if(!section.headers.some(existing=>compact(existing)===compact(target)))section.headers.push(target);filledFields++;
     }
     if(row.statSources&&Object.keys(row.statSources).length===0)delete row.statSources;
   }
-  team.maxprepsFallback={sourceUrl,checkedAt:new Date().toISOString(),sourceRows:rows.length,matchedRows,addedRows,filledFields,syntheticPlayers,unmatchedRows:unmatched};
-  return{sourceRows:rows.length,matchedRows,addedRows,filledFields,syntheticPlayers,unmatched};
+  team.maxprepsFallback={sourceUrl,checkedAt:new Date().toISOString(),sourceRows:rows.length,matchedRows,addedRows,filledFields,upgradedFields,syntheticPlayers,unmatchedRows:unmatched};
+  return{sourceRows:rows.length,matchedRows,addedRows,filledFields,upgradedFields,syntheticPlayers,unmatched};
 }
 
 function selfTest(){
@@ -266,6 +276,10 @@ function selfTest(){
   const statOnly={team:'WEBER',roster:[{playerId:'payne',number:'2',name:'Carter Payne'}],stats:[{category:'Defense/Special Teams',headers:['TACKLES'],rows:[{playerId:'hill',number:'32',name:'Carson Hill',values:{TACKLES:'50'}}]}]};
   const statOnlyResult=mergeTeam(statOnly,[{category:'Defense/Special Teams',number:'32',name:'C. Hill (Sr)',values:{PD:'2'}}],'fixture');
   if(statOnlyResult.unmatched!==0||statOnly.stats[0]?.rows[0]?.values?.PD!=='2')throw new Error('MaxPreps verified stat-row player matching self-test failed');
+  const defenseUpgrade={team:'CORNER CANYON',roster:[{playerId:'tate',number:'8',name:'Tate Patterson'}],stats:[{category:'Defense/Special Teams',headers:['Tackles','Sacks','Caused Fum'],rows:[{playerId:'tate',number:'8',name:'Tate Patterson',values:{Tackles:'68',Sacks:'2.5','CAUSED FUM':'1'}}]}]};
+  const defenseUpgradeResult=mergeTeam(defenseUpgrade,[{category:'Defense/Special Teams',number:'8',name:'T. Patterson',values:{TACKLES:'69',SACKS:'2.5','CAUSED FUM':'2','QB HURRIES':'6'}}],'fixture');
+  const upgraded=defenseUpgrade.stats[0].rows[0];
+  if(defenseUpgradeResult.upgradedFields!==2||upgraded.values.Tackles!=='69'||upgraded.values.Sacks!=='2.5'||upgraded.values['CAUSED FUM']!=='2'||upgraded.values['QB HURRIES']!=='6')throw new Error('MaxPreps defensive season-total upgrade self-test failed');
   const rosterless={team:'WHITEHORSE',roster:[],stats:[]};
   const rosterlessResult=mergeTeam(rosterless,[{category:'Rushing',number:'7',name:'M. Begay (Sr)',values:{YARDS:'321'}}],'fixture');
   if(rosterlessResult.syntheticPlayers!==1||rosterlessResult.unmatched!==0||!rosterless.roster[0]?.maxprepsOnly||rosterless.stats[0]?.rows[0]?.values?.YARDS!=='321')throw new Error('MaxPreps rosterless fallback self-test failed');
@@ -288,7 +302,7 @@ if(process.argv.includes('--apply-cache')){
     available++;const merged=mergeTeam(team,saved.rows,saved.sourceUrl||'');addedRows+=merged.addedRows;filledFields+=merged.filledFields;unmatchedRows+=merged.unmatched;
     team.maxprepsStatsUrl=saved.sourceUrl||'';team.maxprepsPrintUrl=saved.printUrl||'';team.maxprepsLastUpdated=saved.lastUpdated||'';
   }
-  data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked:Object.keys(data.teams||{}).length,available,addedRows,filledFields,unmatchedRows,failures:0,cacheUpdatedAt:cache.updatedAt||'',policy:'fill blank fields using exact or safe jersey/last-name/initial matches; synthesize MaxPreps-only players only when Deseret roster is empty'}};
+  data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked:Object.keys(data.teams||{}).length,available,addedRows,filledFields,unmatchedRows,failures:0,cacheUpdatedAt:cache.updatedAt||'',policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
   fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
   console.log(`MaxPreps cache: ${available} teams available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped.`);
   process.exit(0);
@@ -316,7 +330,7 @@ for(const team of entries){
 let gameNext=0,gamePlayersFetched=0,gamePlayersFailed=0,gameRows=0;
 async function gameWorker(){while(true){const i=gameNext++;if(i>=playerTasks.length)return;const task=playerTasks[i];try{const html=await fetchHtml(task.url),games=parsePlayerGameLogs(html,task.player);if(games.length){const bucket=gameCache.teams[task.team.team]||(gameCache.teams[task.team.team]={team:task.team.team,games:[]});bucket.games.push(...games);gameRows+=games.length}gamePlayersFetched++}catch(error){gamePlayersFailed++;console.warn(`${task.team.team} ${task.player.name} game logs: ${error.message}`)}await new Promise(resolve=>setTimeout(resolve,80))}}
 await Promise.all(Array.from({length:Math.min(8,playerTasks.length)},()=>gameWorker()));
-data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,unmatchedRows,failures,policy:'fill blank fields using exact or safe jersey/last-name/initial matches; synthesize MaxPreps-only players only when Deseret roster is empty'}};
+data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,unmatchedRows,failures,policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
 fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
 cache.updatedAt=new Date().toISOString();fs.writeFileSync(CACHE,JSON.stringify(cache,null,2)+'\n');
 gameCache.updatedAt=new Date().toISOString();gameCache.summary={playersQueued:playerTasks.length,playersFetched:gamePlayersFetched,playersFailed:gamePlayersFailed,playerGames:gameRows};fs.writeFileSync(GAME_CACHE,JSON.stringify(gameCache,null,2)+'\n');
