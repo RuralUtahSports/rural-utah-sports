@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-07T13:53:09.497Z",
+  "generatedAt": "2026-10-07T13:56:42.205Z",
   "summary": {
     "errors": 0,
-    "warnings": 15,
+    "warnings": 13,
     "info": 2
   },
   "issues": [
@@ -35,20 +35,6 @@
         "unmatchedRows": 28,
         "rosterPlayers": 0,
         "sourceUrl": "https://www.maxpreps.com/ut/montezuma-creek/whitehorse-raiders/football/stats/"
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "ALTAMONT has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
-      "context": {
-        "sourceGamePairs": 7,
-        "missing": [
-          {
-            "date": "2026-08-14",
-            "opponent": "St. Joseph"
-          }
-        ]
       }
     },
     {
@@ -192,20 +178,6 @@
       }
     },
     {
-      "severity": "warning",
-      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "WATER CANYON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
-      "context": {
-        "sourceGamePairs": 8,
-        "missing": [
-          {
-            "date": "2026-09-25",
-            "opponent": "St. Joseph"
-          }
-        ]
-      }
-    },
-    {
       "severity": "info",
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
@@ -214,7 +186,7 @@
         "unmatchedRows": 1029,
         "rosterlessTeams": 2,
         "sourceGamePairs": 815,
-        "missingGamePairs": 12
+        "missingGamePairs": 10
       }
     },
     {
