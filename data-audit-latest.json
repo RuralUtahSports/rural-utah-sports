@@ -1,42 +1,11 @@
 {
-  "generatedAt": "2026-10-07T13:56:42.205Z",
+  "generatedAt": "2026-10-07T14:05:17.875Z",
   "summary": {
     "errors": 0,
-    "warnings": 13,
+    "warnings": 10,
     "info": 2
   },
   "issues": [
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_STATS_NOT_MERGED",
-      "message": "PANGUITCH has 4 MaxPreps stat rows but no season stat rows on the site.",
-      "context": {
-        "sourceRows": 4,
-        "rosterPlayers": 0,
-        "sourceUrl": "https://www.maxpreps.com/ut/panguitch/panguitch-bobcats/football/stats/"
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_STATS_NOT_MERGED",
-      "message": "WHITEHORSE has 28 MaxPreps stat rows but no season stat rows on the site.",
-      "context": {
-        "sourceRows": 28,
-        "rosterPlayers": 0,
-        "sourceUrl": "https://www.maxpreps.com/ut/montezuma-creek/whitehorse-raiders/football/stats/"
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_HIGH_UNMATCHED",
-      "message": "WHITEHORSE rejected 28 of 28 MaxPreps stat rows during player matching.",
-      "context": {
-        "sourceRows": 28,
-        "unmatchedRows": 28,
-        "rosterPlayers": 0,
-        "sourceUrl": "https://www.maxpreps.com/ut/montezuma-creek/whitehorse-raiders/football/stats/"
-      }
-    },
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
@@ -182,10 +151,10 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 8397,
-        "unmatchedRows": 1029,
-        "rosterlessTeams": 2,
-        "sourceGamePairs": 815,
+        "sourceRows": 8406,
+        "unmatchedRows": 642,
+        "rosterlessTeams": 0,
+        "sourceGamePairs": 818,
         "missingGamePairs": 10
       }
     },
@@ -198,7 +167,7 @@
         "games": 603,
         "standings": 118,
         "rankedTeams": 68,
-        "playerIds": 6425
+        "playerIds": 6440
       }
     }
   ]
