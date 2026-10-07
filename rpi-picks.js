@@ -8,6 +8,17 @@
   const final = g => score(g.actualAway) && score(g.actualHome);
   const day = value => { if(/^\d{4}-\d{2}-\d{2}/.test(String(value)))return String(value).slice(0,10);const d = new Date(value); return Number.isFinite(d.getTime()) ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}` : value; };
   const id = g => `${day(g.date)}|${[key(g.awayTeam),key(g.homeTeam)].sort().join('|')}`;
+  const pair = g => [key(g.awayTeam),key(g.homeTeam)].sort().join('|');
+  const near = (a,b) => Math.abs(Date.parse(day(a))-Date.parse(day(b))) <= 3*86400000;
+  const verifiedScore = (game, correction) => {
+    const sameOrder = key(game.awayTeam)===key(correction.awayTeam) && key(game.homeTeam)===key(correction.homeTeam);
+    const reverseOrder = key(game.awayTeam)===key(correction.homeTeam) && key(game.homeTeam)===key(correction.awayTeam);
+    if (!sameOrder && !reverseOrder) return null;
+    return {
+      actualAway: Number(sameOrder ? correction.actualAway : correction.actualHome),
+      actualHome: Number(sameOrder ? correction.actualHome : correction.actualAway)
+    };
+  };
   const classes = ['6A','5A','4A','3A','2A','1A','8P'];
   let loaded = false, loading = false, games, remaining, teams, oos, official, picks = {}, result = null;
   const storageKey = 'rus-rpi-picks-2026-v1';
@@ -60,11 +71,35 @@
     if (loaded) { body.hidden = !body.hidden; open.setAttribute('aria-expanded', String(!body.hidden)); return; }
     loading = true; body.hidden = false; open.setAttribute('aria-expanded','true'); body.innerHTML = '<p role="status">Loading remaining games…</p>';
     try {
-      let weekly;
-      [weekly,teams,oos,official] = await Promise.all([get('weekly-simulation.json'),get('teams-data.json'),get('rpi-oos-2026.json'),get('uhsaa-rpi-official-2026.json')]);
-      if (!Array.isArray(weekly.games) || !Array.isArray(teams) || !oos.teams || !official.classifications) throw new Error('Incomplete data');
+      let weekly, verified;
+      [weekly,verified,teams,oos,official] = await Promise.all([get('weekly-simulation.json'),get('verified-finals-2026.json'),get('teams-data.json'),get('rpi-oos-2026.json'),get('uhsaa-rpi-official-2026.json')]);
+      if (!Array.isArray(weekly.games) || !Array.isArray(verified) || !Array.isArray(teams) || !oos.teams || !official.classifications) throw new Error('Incomplete data');
+      const sourceGames = weekly.games.filter(g => g.awayTeam && g.homeTeam && new Date(g.date).getFullYear()===2026).map(g=>({...g}));
+      for (const correction of verified) {
+        if (!correction?.awayTeam || !correction?.homeTeam || !score(correction.actualAway) || !score(correction.actualHome)) continue;
+        const matches = sourceGames.filter(g => pair(g)===pair(correction) && near(g.date, correction.date));
+        const target = matches.length===1 ? matches[0] : matches.find(g => day(g.date)===day(correction.date));
+        if (target) {
+          const fixed = verifiedScore(target, correction);
+          if (fixed) {
+            target.actualAway=fixed.actualAway;
+            target.actualHome=fixed.actualHome;
+            target.date=day(correction.date);
+            target.source='verified';
+          }
+        } else {
+          sourceGames.push({
+            date:day(correction.date),
+            awayTeam:correction.awayTeam,
+            homeTeam:correction.homeTeam,
+            actualAway:Number(correction.actualAway),
+            actualHome:Number(correction.actualHome),
+            source:'verified'
+          });
+        }
+      }
       const unique = new Map();
-      weekly.games.filter(g => g.awayTeam && g.homeTeam && new Date(g.date).getFullYear()===2026).forEach(g => {const prior=unique.get(id(g)); if (!prior || final(g)) unique.set(id(g),g);});
+      sourceGames.forEach(g => {const prior=unique.get(id(g)); if (!prior || final(g)) unique.set(id(g),g);});
       games = [...unique.values()].sort((a,b) => new Date(a.date)-new Date(b.date) || a.awayTeam.localeCompare(b.awayTeam));
       remaining = games.filter(g => !final(g));
       try { const saved=JSON.parse(localStorage.getItem(storageKey)||'{}'); if(saved && typeof saved==='object') picks=saved; } catch {}
