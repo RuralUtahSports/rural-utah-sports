@@ -6,8 +6,32 @@ const warn=(code,message,context={})=>issues.push({severity:'warning',code,messa
 const info=(code,message,context={})=>issues.push({severity:'info',code,message,context});
 const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
 const num=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
-const ALIASES={'MONUMENT VAL':'MONUMENT VALLEY'};
-const canonical=v=>ALIASES[norm(v)]||norm(v);
+const ALIASES={
+  'MONUMENT VAL':'MONUMENT VALLEY',
+  'CEDAR':'CEDAR CITY',
+  'GRAND COUNTY':'GRAND',
+  'GUNNISON':'GUNNISON VALLEY',
+  'ST JOSEPH':'SAINT JOSEPH',
+  'JUAN DIEGO CATHOLIC':'JUAN DIEGO',
+  'AMERICAN LEADERSHIP ACADEMY':'ALA',
+  'AMERICAN LEADERSHIP':'ALA',
+  'LAYTON CHRISTIAN ACADEMY':'LAYTON CHRISTIAN',
+  'JUDGE MEMORIAL CATHOLIC':'JUDGE MEMORIAL',
+  'UTAH MILITARY ACADEMY - CAMP WILLIAMS':'UMA-LEHI',
+  'UTAH MILITARY CAMP WILLIAMS':'UMA-LEHI',
+  'UTAH MILITARY ACADEMY - HILL FIELD':'UMA-HILLFIELD',
+  'UTAH MILITARY HILL FIELD':'UMA-HILLFIELD',
+  'PAHRUMP VALLEY':'PAHRUMP',
+  'MOFFAT COUNTY':'MOFFAT',
+  'LAKE MEAD CHRISTIAN ACADEMY':'LAKE MEAD CHRISTIAN',
+  'KAMEHAMEHA KAPALAMA':'KAMEHAMEHA',
+  'THE ST. JAMES PERFORMANCE ACADEMY':'ST JAMES',
+  'ST. JAMES PERFORMANCE ACADEMY':'ST JAMES'
+};
+const canonical=v=>{
+  const stripped=norm(v).replace(/\s*,\s*(?:[A-Z]{2}|AMERICAN SAMOA)\s*$/i,'').replace(/\s*\((?:AMERICAN SAMOA|[A-Z]{2})\)\s*$/i,'');
+  return ALIASES[stripped]||stripped;
+};
 const isJuniorVarsity=v=>/(^|\s)J\.?V\.?(\s|$)|JUNIOR\s+VARSITY/i.test(norm(v));
 const isOutOfState=v=>/,[ ]?[A-Z]{2}$/.test(norm(v))||/AMERICAN SAMOA|CANADA/i.test(norm(v));
 const parseJSON=file=>{try{return JSON.parse(fs.readFileSync(file,'utf8'))}catch(e){error('INVALID_JSON',`${file} could not be parsed: ${e.message}`);return null}};
