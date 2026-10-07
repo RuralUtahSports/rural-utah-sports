@@ -1,20 +1,20 @@
 {
   "season": 2026,
-  "updatedAt": "2026-10-06T22:51:15.189Z",
+  "updatedAt": "2026-10-07T13:52:56.580Z",
   "summary": {
     "teams": 136,
     "teamGames": 847,
-    "statRows": 14941,
-    "rosterMatchedRows": 14666,
+    "statRows": 15003,
+    "rosterMatchedRows": 14728,
     "preservedFinalGames": 0,
     "replacedEmptyFinalGames": 0,
     "maxprepsFallback": {
       "teamsMatched": 106,
       "gamesMatched": 14011,
       "gamesAdded": 49,
-      "playersAdded": 5155,
-      "linesAdded": 8196,
-      "fieldsFilled": 22124,
+      "playersAdded": 5115,
+      "linesAdded": 8139,
+      "fieldsFilled": 22019,
       "correctedFields": 21,
       "unmatchedGames": 179,
       "manualGameStats": {
@@ -92740,6 +92740,64 @@
           "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/union-football-vs-ogden-football/273397",
           "players": [
             {
+              "playerId": "union-1-cruz-labrum",
+              "number": "1",
+              "name": "Cruz Labrum",
+              "position": "RB/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "14",
+                    "Yards": "38",
+                    "TD": "",
+                    "YARDS/CARRY": "2.7"
+                  },
+                  "statSources": {
+                    "YARDS/CARRY": "MaxPreps"
+                  }
+                },
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "3",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "union-24-brett-meeks",
+              "number": "24",
+              "name": "Brett Meeks",
+              "position": "DL/RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "10",
+                    "Yards": "29",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "4",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
               "playerId": "union-5-dylan-watahomigie",
               "number": "5",
               "name": "Dylan Watahomigie",
@@ -92755,26 +92813,21 @@
                     "YARDS/CARRY": "1.4"
                   },
                   "statSources": {
-                    "Carries": "MaxPreps",
-                    "Yards": "MaxPreps",
                     "YARDS/CARRY": "MaxPreps"
                   }
                 },
                 {
                   "category": "Passing",
                   "values": {
-                    "YARDS": "27",
-                    "COMP%": ".222",
-                    "YARDS/COMP.": "13.5",
+                    "Comp-Att": "2-9",
+                    "Comp %": "22%",
+                    "Yards": "27",
+                    "TD": "",
                     "Int": "1",
-                    "COMP-ATT": "2-9"
+                    "YARDS/COMP.": "13.5"
                   },
                   "statSources": {
-                    "YARDS": "MaxPreps",
-                    "COMP%": "MaxPreps",
-                    "YARDS/COMP.": "MaxPreps",
-                    "Int": "MaxPreps",
-                    "COMP-ATT": "MaxPreps"
+                    "YARDS/COMP.": "MaxPreps"
                   }
                 },
                 {
@@ -92788,62 +92841,31 @@
               ]
             },
             {
-              "playerId": "union-1-cruz-labrum",
-              "number": "1",
-              "name": "Cruz Labrum",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Rushing",
-                  "values": {
-                    "CARRIES": "14",
-                    "YARDS": "38",
-                    "YARDS/CARRY": "2.7"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "3"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
               "playerId": "union-20-reid-burgess",
               "number": "20",
               "name": "Reid Burgess",
-              "position": "",
+              "position": "RB/LB",
               "rosterMatched": true,
               "statLines": [
                 {
                   "category": "Rushing",
                   "values": {
-                    "CARRIES": "4",
-                    "YARDS": "9",
+                    "Carries": "4",
+                    "Yards": "9",
+                    "TD": "",
                     "YARDS/CARRY": "2.3"
                   },
                   "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
                     "YARDS/CARRY": "MaxPreps"
                   }
                 },
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "5",
-                    "PASS INT.": "1",
+                    "Tackles": "5",
+                    "Sacks": "",
+                    "Pass Int.": "1",
+                    "TD": "",
                     "PASS INT YDS": "0",
                     "PASS INT AVG": "0.0",
                     "PD": "1",
@@ -92852,8 +92874,6 @@
                     "CAUSED FUM": "1"
                   },
                   "statSources": {
-                    "TACKLES": "MaxPreps",
-                    "PASS INT.": "MaxPreps",
                     "PASS INT YDS": "MaxPreps",
                     "PASS INT AVG": "MaxPreps",
                     "PD": "MaxPreps",
@@ -92866,65 +92886,34 @@
               "scoringPlays": []
             },
             {
-              "playerId": "union-2-tyce-labrum",
-              "number": "2",
-              "name": "Tyce Labrum",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Rushing",
-                  "values": {
-                    "CARRIES": "2",
-                    "YARDS": "3",
-                    "YARDS/CARRY": "1.5"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "6"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
               "playerId": "union-23-jax-berlin",
               "number": "23",
               "name": "Jax Berlin",
-              "position": "",
+              "position": "RB/DB",
               "rosterMatched": true,
               "statLines": [
                 {
                   "category": "Rushing",
                   "values": {
-                    "CARRIES": "3",
-                    "YARDS": "9",
+                    "Carries": "3",
+                    "Yards": "9",
+                    "TD": "",
                     "YARDS/CARRY": "3.0"
                   },
                   "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
                     "YARDS/CARRY": "MaxPreps"
                   }
                 },
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "1",
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": "",
                     "PD": "1"
                   },
                   "statSources": {
-                    "TACKLES": "MaxPreps",
                     "PD": "MaxPreps"
                   }
                 }
@@ -92932,19 +92921,31 @@
               "scoringPlays": []
             },
             {
-              "playerId": "union-21-teegan-terry",
-              "number": "21",
-              "name": "Teegan Terry",
-              "position": "",
+              "playerId": "union-2-tyce-labrum",
+              "number": "2",
+              "name": "Tyce Labrum",
+              "position": "LB/RB",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Rushing",
                   "values": {
-                    "TACKLES": "1"
+                    "Carries": "2",
+                    "Yards": "3",
+                    "TD": "",
+                    "YARDS/CARRY": "1.5"
                   },
                   "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "YARDS/CARRY": "MaxPreps"
+                  }
+                },
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "6",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -92954,29 +92955,28 @@
               "playerId": "union-14-brayden-fausett",
               "number": "14",
               "name": "Brayden Fausett",
-              "position": "",
+              "position": "DB/WR",
               "rosterMatched": true,
               "statLines": [
                 {
                   "category": "Receiving",
                   "values": {
-                    "RECEPTIONS": "2",
-                    "YARDS": "27"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
+                    "Receptions": "2",
+                    "Yards": "27",
+                    "TD": ""
                   }
                 },
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "2",
+                    "Tackles": "2",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": "",
                     "FUM REC": "1",
                     "FR YDS": "4"
                   },
                   "statSources": {
-                    "TACKLES": "MaxPreps",
                     "FUM REC": "MaxPreps",
                     "FR YDS": "MaxPreps"
                   }
@@ -92988,56 +92988,20 @@
               "playerId": "union-9-jaxson-grimm",
               "number": "9",
               "name": "Jaxson Grimm",
-              "position": "",
+              "position": "DB/WR",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "7",
+                    "Tackles": "7",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": "",
                     "PD": "2"
                   },
                   "statSources": {
-                    "TACKLES": "MaxPreps",
                     "PD": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "union-10-peyton-clayburn",
-              "number": "10",
-              "name": "Peyton Clayburn",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "union-50-brevan-stevens",
-              "number": "50",
-              "name": "Brevan Stevens",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "2"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
                   }
                 }
               ],
@@ -93047,16 +93011,35 @@
               "playerId": "union-13-deegan-harmston",
               "number": "13",
               "name": "Deegan Harmston",
-              "position": "",
+              "position": "LB/TE",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "3"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "3",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "union-50-brevan-stevens",
+              "number": "50",
+              "name": "Brevan Stevens",
+              "position": "OL/DL",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "2",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -93066,16 +93049,16 @@
               "playerId": "union-57-kaden-womack",
               "number": "57",
               "name": "Kaden Womack",
-              "position": "",
+              "position": "OL/DL",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 },
                 {
@@ -93087,19 +93070,76 @@
               "scoringPlays": []
             },
             {
-              "playerId": "union-77-ben-diaz",
-              "number": "77",
-              "name": "Ben Diaz",
-              "position": "",
+              "playerId": "union-21-teegan-terry",
+              "number": "21",
+              "name": "Teegan Terry",
+              "position": "TE/DL",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "union-0-saxton-stratinger",
+              "number": "0",
+              "name": "Saxton Stratinger",
+              "position": "DL/RB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "union-77-ben-diaz",
+              "number": "77",
+              "name": "Ben Diaz",
+              "position": "OL/DL",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "union-10-peyton-clayburn",
+              "number": "10",
+              "name": "Peyton Clayburn",
+              "position": "QB/DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -100641,20 +100681,15 @@
                     "YARDS/CARRY": "5.8"
                   },
                   "statSources": {
-                    "Carries": "MaxPreps",
-                    "Yards": "MaxPreps",
                     "YARDS/CARRY": "MaxPreps"
                   }
                 },
                 {
                   "category": "Receiving",
                   "values": {
-                    "RECEPTIONS": "2",
-                    "YARDS": "80"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
+                    "Receptions": "2",
+                    "Yards": "80",
+                    "TD": ""
                   }
                 },
                 {
@@ -100675,34 +100710,29 @@
               "rosterMatched": true,
               "statLines": [
                 {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "2",
+                    "Yards": "14",
+                    "TD": "",
+                    "YARDS/CARRY": "7.0"
+                  },
+                  "statSources": {
+                    "YARDS/CARRY": "MaxPreps"
+                  }
+                },
+                {
                   "category": "Passing",
                   "values": {
                     "Comp-Att": "11-20",
-                    "Comp %": ".550",
+                    "Comp %": "55%",
                     "Yards": "281",
                     "TD": "2",
                     "Int": "1",
                     "YARDS/COMP.": "25.5"
                   },
                   "statSources": {
-                    "Yards": "MaxPreps",
-                    "Comp %": "MaxPreps",
-                    "YARDS/COMP.": "MaxPreps",
-                    "Int": "MaxPreps",
-                    "Comp-Att": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Rushing",
-                  "values": {
-                    "CARRIES": "2",
-                    "YARDS": "14",
-                    "YARDS/CARRY": "7.0"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
+                    "YARDS/COMP.": "MaxPreps"
                   }
                 }
               ],
@@ -100719,43 +100749,60 @@
               "rosterMatched": true,
               "statLines": [
                 {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "1",
+                    "Yards": "5",
+                    "TD": "",
+                    "YARDS/CARRY": "5.0"
+                  },
+                  "statSources": {
+                    "YARDS/CARRY": "MaxPreps"
+                  }
+                },
+                {
                   "category": "Receiving",
                   "values": {
                     "Receptions": "5",
                     "Yards": "91",
                     "TD": "1"
-                  },
-                  "statSources": {
-                    "Receptions": "MaxPreps",
-                    "Yards": "MaxPreps"
                   }
                 },
                 {
-                  "category": "Rushing",
+                  "category": "Defense",
                   "values": {
-                    "CARRIES": "1",
-                    "YARDS": "5",
-                    "YARDS/CARRY": "5.0"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
               "scoringPlays": [
                 "Canyon View — (8:26 3Q) Preston Higgins , 21-yard pass from Owen Williams (kick from Jackson Beckstrom )"
               ]
+            },
+            {
+              "playerId": "canyon-view-9-crue-urie",
+              "number": "9",
+              "name": "Crue Urie",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "1",
+                    "Yards": "0",
+                    "TD": "",
+                    "YARDS/CARRY": "0.0"
+                  },
+                  "statSources": {
+                    "YARDS/CARRY": "MaxPreps"
+                  }
+                }
+              ],
+              "scoringPlays": []
             },
             {
               "playerId": "canyon-view-12-karson-greenland",
@@ -100770,10 +100817,6 @@
                     "Receptions": "3",
                     "Yards": "96",
                     "TD": "1"
-                  },
-                  "statSources": {
-                    "Receptions": "MaxPreps",
-                    "Yards": "MaxPreps"
                   }
                 },
                 {
@@ -100789,6 +100832,37 @@
               "scoringPlays": [
                 "Canyon View — (0:18 2Q) Karson Greenland , 22-yard pass from Owen Williams (kick failed)"
               ]
+            },
+            {
+              "playerId": "canyon-view-6-bryson-barnes",
+              "number": "6",
+              "name": "Bryson Barnes",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "1",
+                    "Yards": "18",
+                    "TD": ""
+                  }
+                },
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "8",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": "",
+                    "PD": "2"
+                  },
+                  "statSources": {
+                    "PD": "MaxPreps"
+                  }
+                }
+              ],
+              "scoringPlays": []
             },
             {
               "playerId": "canyon-view-13-jackson-beckstrom",
@@ -100811,173 +100885,42 @@
               ]
             },
             {
-              "playerId": "canyon-view-4-gage-miller",
-              "number": "4",
-              "name": "Gage Miller",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "6",
-                    "PD": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps",
-                    "PD": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "canyon-view-6-bryson-barnes",
-              "number": "6",
-              "name": "Bryson Barnes",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Receiving",
-                  "values": {
-                    "RECEPTIONS": "1",
-                    "YARDS": "18"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "8",
-                    "PD": "2"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps",
-                    "PD": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "canyon-view-9-crue-urie",
-              "number": "9",
-              "name": "Crue Urie",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Rushing",
-                  "values": {
-                    "CARRIES": "1",
-                    "YARDS": "0",
-                    "YARDS/CARRY": "0.0"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "canyon-view-7-teegen-stephenson",
-              "number": "7",
-              "name": "Teegen Stephenson",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "4"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "canyon-view-14-kallen-cavalieri",
-              "number": "14",
-              "name": "Kallen Cavalieri",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
               "playerId": "canyon-view-1-chase-jacobsen",
               "number": "1",
               "name": "Chase Jacobsen",
-              "position": "",
+              "position": "-",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "9"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "9",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
               "scoringPlays": []
             },
             {
-              "playerId": "canyon-view-11-maleck-rigby",
-              "number": "11",
-              "name": "Maleck Rigby",
-              "position": "",
+              "playerId": "canyon-view-4-gage-miller",
+              "number": "4",
+              "name": "Gage Miller",
+              "position": "-",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "4",
-                    "SACKS": "2.0"
+                    "Tackles": "6",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": "",
+                    "PD": "1"
                   },
                   "statSources": {
-                    "TACKLES": "MaxPreps",
-                    "SACKS": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "canyon-view-8-asher-ishihara",
-              "number": "8",
-              "name": "Asher Ishihara",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "2"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "PD": "MaxPreps"
                   }
                 }
               ],
@@ -100987,18 +100930,16 @@
               "playerId": "canyon-view-10-wyatt-copp",
               "number": "10",
               "name": "Wyatt Copp",
-              "position": "",
+              "position": "-",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "6",
-                    "SACKS": ".5"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps",
-                    "SACKS": "MaxPreps"
+                    "Tackles": "6",
+                    "Sacks": "0.5",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -101008,58 +100949,54 @@
               "playerId": "canyon-view-18-bridger-bauer",
               "number": "18",
               "name": "Bridger Bauer",
-              "position": "",
+              "position": "-",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "5",
-                    "SACKS": ".5"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps",
-                    "SACKS": "MaxPreps"
+                    "Tackles": "5",
+                    "Sacks": "0.5",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
               "scoringPlays": []
             },
             {
-              "playerId": "canyon-view-22-ari-groft",
-              "number": "22",
-              "name": "Ari Groft",
-              "position": "",
+              "playerId": "canyon-view-7-teegen-stephenson",
+              "number": "7",
+              "name": "Teegen Stephenson",
+              "position": "-",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "4",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
               "scoringPlays": []
             },
             {
-              "playerId": "canyon-view-55-kayl-hutchinson",
-              "number": "55",
-              "name": "Kayl Hutchinson",
-              "position": "",
+              "playerId": "canyon-view-11-maleck-rigby",
+              "number": "11",
+              "name": "Maleck Rigby",
+              "position": "-",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "3",
-                    "SACKS": "1.5"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps",
-                    "SACKS": "MaxPreps"
+                    "Tackles": "4",
+                    "Sacks": "2",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -101069,18 +101006,16 @@
               "playerId": "canyon-view-99-wesley-taylor",
               "number": "99",
               "name": "Wesley Taylor",
-              "position": "",
+              "position": "-",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "3",
-                    "SACKS": "2.0"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps",
-                    "SACKS": "MaxPreps"
+                    "Tackles": "3",
+                    "Sacks": "2",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -101090,16 +101025,92 @@
               "playerId": "canyon-view-62-kody-lloyd",
               "number": "62",
               "name": "Kody Lloyd",
-              "position": "",
+              "position": "-",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "3"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "3",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "canyon-view-55-kayl-hutchinson",
+              "number": "55",
+              "name": "Kayl Hutchinson",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "3",
+                    "Sacks": "1.5",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "canyon-view-8-asher-ishihara",
+              "number": "8",
+              "name": "Asher Ishihara",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "2",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "canyon-view-22-ari-groft",
+              "number": "22",
+              "name": "Ari Groft",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "canyon-view-14-kallen-cavalieri",
+              "number": "14",
+              "name": "Kallen Cavalieri",
+              "position": "-",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -301063,6 +301074,28 @@
           "url": "https://sports.deseret.com/high-school/football/game/2026-10-02/westlake-football-vs-riverton-football/273571",
           "players": [
             {
+              "playerId": "westlake-39-rosko-misa",
+              "number": "39",
+              "name": "Rosko Misa",
+              "position": "RB, LB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "11",
+                    "Yards": "98",
+                    "TD": "",
+                    "YARDS/CARRY": "8.9"
+                  },
+                  "statSources": {
+                    "YARDS/CARRY": "MaxPreps"
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
               "playerId": "westlake-5-ashton-taylor",
               "number": "5",
               "name": "Ashton Taylor",
@@ -301078,29 +301111,24 @@
                     "YARDS/CARRY": "7.2"
                   },
                   "statSources": {
-                    "Carries": "MaxPreps",
-                    "Yards": "MaxPreps",
                     "YARDS/CARRY": "MaxPreps"
                   }
                 },
                 {
                   "category": "Receiving",
                   "values": {
-                    "RECEPTIONS": "1",
-                    "YARDS": "1"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
+                    "Receptions": "1",
+                    "Yards": "1",
+                    "TD": ""
                   }
                 },
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "7"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "7",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -301109,47 +301137,34 @@
               ]
             },
             {
-              "playerId": "westlake-7-silas-taumoepeau",
-              "number": "7",
-              "name": "Silas Taumoepeau",
-              "position": "QV",
+              "playerId": "westlake-24-kylan-xoumphonphackdy",
+              "number": "24",
+              "name": "Kylan Xoumphonphackdy",
+              "position": "WR, RB, OLB",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Passing",
+                  "category": "Rushing",
                   "values": {
-                    "Comp-Att": "7-13",
-                    "Comp %": ".538",
-                    "Yards": "77",
-                    "TD": "1",
-                    "Int": "0",
-                    "YARDS/COMP.": "11.0"
+                    "Carries": "14",
+                    "Yards": "57",
+                    "TD": "",
+                    "YARDS/CARRY": "4.1"
                   },
                   "statSources": {
-                    "Yards": "MaxPreps",
-                    "Comp %": "MaxPreps",
-                    "YARDS/COMP.": "MaxPreps",
-                    "Int": "MaxPreps",
-                    "Comp-Att": "MaxPreps"
+                    "YARDS/CARRY": "MaxPreps"
                   }
                 },
                 {
-                  "category": "Rushing",
+                  "category": "Receiving",
                   "values": {
-                    "CARRIES": "8",
-                    "YARDS": "4",
-                    "YARDS/CARRY": "0.5"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
+                    "Receptions": "4",
+                    "Yards": "63",
+                    "TD": ""
                   }
                 }
               ],
-              "scoringPlays": [
-                "Westlake — (2:00 3Q) Malik Sika , 10-yard pass from Silas Taumoepeau (kick from Logan Sorensen )"
-              ]
+              "scoringPlays": []
             },
             {
               "playerId": "westlake-13-malik-sika",
@@ -301159,28 +301174,23 @@
               "rosterMatched": true,
               "statLines": [
                 {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "2",
+                    "Yards": "9",
+                    "TD": "",
+                    "YARDS/CARRY": "4.5"
+                  },
+                  "statSources": {
+                    "YARDS/CARRY": "MaxPreps"
+                  }
+                },
+                {
                   "category": "Receiving",
                   "values": {
                     "Receptions": "2",
                     "Yards": "21",
                     "TD": "1"
-                  },
-                  "statSources": {
-                    "Receptions": "MaxPreps",
-                    "Yards": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Rushing",
-                  "values": {
-                    "CARRIES": "2",
-                    "YARDS": "9",
-                    "YARDS/CARRY": "4.5"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
                   }
                 },
                 {
@@ -301192,6 +301202,120 @@
               "scoringPlays": [
                 "Westlake — (2:00 3Q) Malik Sika , 10-yard pass from Silas Taumoepeau (kick from Logan Sorensen )"
               ]
+            },
+            {
+              "playerId": "westlake-7-silas-taumoepeau",
+              "number": "7",
+              "name": "Silas Taumoepeau",
+              "position": "QV",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "8",
+                    "Yards": "4",
+                    "TD": "",
+                    "YARDS/CARRY": "0.5"
+                  },
+                  "statSources": {
+                    "YARDS/CARRY": "MaxPreps"
+                  }
+                },
+                {
+                  "category": "Passing",
+                  "values": {
+                    "Comp-Att": "7-13",
+                    "Comp %": "54%",
+                    "Yards": "77",
+                    "TD": "1",
+                    "Int": "0",
+                    "YARDS/COMP.": "11.0"
+                  },
+                  "statSources": {
+                    "YARDS/COMP.": "MaxPreps"
+                  }
+                }
+              ],
+              "scoringPlays": [
+                "Westlake — (2:00 3Q) Malik Sika , 10-yard pass from Silas Taumoepeau (kick from Logan Sorensen )"
+              ]
+            },
+            {
+              "playerId": "westlake-47-ashton-blake",
+              "number": "47",
+              "name": "Ashton Blake",
+              "position": "RB, DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "Carries": "1",
+                    "Yards": "3",
+                    "TD": "",
+                    "YARDS/CARRY": "3.0"
+                  },
+                  "statSources": {
+                    "YARDS/CARRY": "MaxPreps"
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "westlake-10-slone-sua",
+              "number": "10",
+              "name": "Slone Sua",
+              "position": "WR, S",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "2",
+                    "Yards": "31",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "westlake-3-kohen-flinders",
+              "number": "3",
+              "name": "Kohen Flinders",
+              "position": "WR, DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "2",
+                    "Yards": "25",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "westlake-25-dylan-blakey",
+              "number": "25",
+              "name": "Dylan Blakey",
+              "position": "RB, DB",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "Receptions": "1",
+                    "Yards": "18",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
             },
             {
               "playerId": "westlake-68-logan-sorensen",
@@ -301209,12 +301333,12 @@
                   }
                 },
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 },
                 {
@@ -301229,141 +301353,114 @@
               ]
             },
             {
-              "playerId": "westlake-25-dylan-blakey",
-              "number": "25",
-              "name": "Dylan Blakey",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Receiving",
-                  "values": {
-                    "RECEPTIONS": "1",
-                    "YARDS": "18"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
               "playerId": "westlake-8-malakai-leilua",
               "number": "8",
               "name": "Malakai Leilua",
-              "position": "",
+              "position": "DL, OL",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "7"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "7",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
               "scoringPlays": []
             },
             {
-              "playerId": "westlake-39-rosko-misa",
-              "number": "39",
-              "name": "Rosko Misa",
-              "position": "",
+              "playerId": "westlake-15-spencer-dickerson",
+              "number": "15",
+              "name": "Spencer Dickerson",
+              "position": "WR, LB",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Rushing",
+                  "category": "Defense",
                   "values": {
-                    "CARRIES": "11",
-                    "YARDS": "98",
-                    "YARDS/CARRY": "8.9"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
+                    "Tackles": "6",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
               "scoringPlays": []
             },
             {
-              "playerId": "westlake-24-kylan-xoumphonphackdy",
-              "number": "24",
-              "name": "Kylan Xoumphonphackdy",
-              "position": "",
+              "playerId": "westlake-33-linkin-lee",
+              "number": "33",
+              "name": "Linkin Lee",
+              "position": "S, WR",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Rushing",
+                  "category": "Defense",
                   "values": {
-                    "CARRIES": "14",
-                    "YARDS": "57",
-                    "YARDS/CARRY": "4.1"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
-                  }
-                },
-                {
-                  "category": "Receiving",
-                  "values": {
-                    "RECEPTIONS": "4",
-                    "YARDS": "63"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
+                    "Tackles": "5",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
               "scoringPlays": []
             },
             {
-              "playerId": "westlake-47-ashton-blake",
-              "number": "47",
-              "name": "Ashton Blake",
-              "position": "",
+              "playerId": "westlake-44-thor-pili-jr",
+              "number": "44",
+              "name": "Thor Pili Jr",
+              "position": "LB, RB",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Rushing",
+                  "category": "Defense",
                   "values": {
-                    "CARRIES": "1",
-                    "YARDS": "3",
-                    "YARDS/CARRY": "3.0"
-                  },
-                  "statSources": {
-                    "CARRIES": "MaxPreps",
-                    "YARDS": "MaxPreps",
-                    "YARDS/CARRY": "MaxPreps"
+                    "Tackles": "4",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
               "scoringPlays": []
             },
             {
-              "playerId": "westlake-3-kohen-flinders",
-              "number": "3",
-              "name": "Kohen Flinders",
-              "position": "",
+              "playerId": "westlake-21-zealand-afuvai",
+              "number": "21",
+              "name": "Zealand Afuvai",
+              "position": "S",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Receiving",
+                  "category": "Defense",
                   "values": {
-                    "RECEPTIONS": "2",
-                    "YARDS": "25"
-                  },
-                  "statSources": {
-                    "RECEPTIONS": "MaxPreps",
-                    "YARDS": "MaxPreps"
+                    "Tackles": "4",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
+                  }
+                }
+              ],
+              "scoringPlays": []
+            },
+            {
+              "playerId": "westlake-20-cooper-white",
+              "number": "20",
+              "name": "Cooper White",
+              "position": "DE, TE",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Defense",
+                  "values": {
+                    "Tackles": "3",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -301373,17 +301470,19 @@
               "playerId": "westlake-2-daxon-schaugaard",
               "number": "2",
               "name": "Daxon Schaugaard",
-              "position": "",
+              "position": "CB, WR",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "3",
+                    "Tackles": "3",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": "",
                     "PD": "1"
                   },
                   "statSources": {
-                    "TACKLES": "MaxPreps",
                     "PD": "MaxPreps"
                   }
                 }
@@ -301394,92 +301493,16 @@
               "playerId": "westlake-6-lincoln-fraser",
               "number": "6",
               "name": "Lincoln Fraser",
-              "position": "",
+              "position": "DB, WR",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "2"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "westlake-15-spencer-dickerson",
-              "number": "15",
-              "name": "Spencer Dickerson",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "6"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "westlake-20-cooper-white",
-              "number": "20",
-              "name": "Cooper White",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "3"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "westlake-33-linkin-lee",
-              "number": "33",
-              "name": "Linkin Lee",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "5"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
-                  }
-                }
-              ],
-              "scoringPlays": []
-            },
-            {
-              "playerId": "westlake-44-thor-pili-jr",
-              "number": "44",
-              "name": "Thor Pili Jr",
-              "position": "",
-              "rosterMatched": true,
-              "statLines": [
-                {
-                  "category": "Defense/Special Teams",
-                  "values": {
-                    "TACKLES": "4"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "2",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -301489,16 +301512,16 @@
               "playerId": "westlake-67-siosiua-fiefia",
               "number": "67",
               "name": "Siosiua Fiefia",
-              "position": "",
+              "position": "OL, DL",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
@@ -301508,16 +301531,16 @@
               "playerId": "westlake-58-mj-afuvai",
               "number": "58",
               "name": "Mj Afuvai",
-              "position": "",
+              "position": "OL, DL",
               "rosterMatched": true,
               "statLines": [
                 {
-                  "category": "Defense/Special Teams",
+                  "category": "Defense",
                   "values": {
-                    "TACKLES": "1"
-                  },
-                  "statSources": {
-                    "TACKLES": "MaxPreps"
+                    "Tackles": "1",
+                    "Sacks": "",
+                    "Pass Int.": "",
+                    "TD": ""
                   }
                 }
               ],
