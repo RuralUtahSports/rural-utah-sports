@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 
-const FILE='player-game-stats-2026.json',CACHE='maxpreps-player-game-stats-2026.json',TEAM_DATA='deseret-team-data-2026.json',WEEKLY='weekly-simulation.json',MANUAL='manual-stat-corrections-2026.json';
+const FILE='player-game-stats-2026.json',CACHE='maxpreps-player-game-stats-2026.json',TEAM_DATA='deseret-team-data-2026.json',WEEKLY='weekly-simulation.json',VERIFIED='verified-finals-2026.json',MANUAL='manual-stat-corrections-2026.json';
 const clean=v=>String(v??'').trim();
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const aliases={
@@ -24,23 +24,41 @@ const categoryKey=v=>{const key=compact(v);return ['DEFENSE','DEFENSESPECIALTEAM
 const categoryLabel=v=>categoryKey(v)==='DEFENSESPECIALTEAMS'?'Defense/Special Teams':clean(v);
 const headerKey=(category,header)=>{const key=compact(header);if(categoryKey(category)==='DEFENSESPECIALTEAMS'){if(['PASSINT','INTERCEPTIONS','INTS'].includes(key))return'PASSINT';if(['DEFENSETD','DEFENSIVETD','TD'].includes(key))return'DEFENSETD';if(['RETURNTD','RETURNTDS'].includes(key))return'RETURNTD'}return key};
 const isoDate=v=>{const s=clean(v);let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return `${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return `${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;return s};
+const nearDate=(a,b,days=3)=>{const x=Date.parse(isoDate(a)),y=Date.parse(isoDate(b));return Number.isFinite(x)&&Number.isFinite(y)&&Math.abs(x-y)<=days*86400000};
 const hasScore=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
 function gameCategoryTotal(game,category,header){let total=0,found=false;for(const player of game.players||[])for(const line of player.statLines||[]){if(compact(line.category)!==compact(category))continue;const key=Object.keys(line.values||{}).find(k=>compact(k)===compact(header)),value=key?numeric(line.values[key]):null;if(value===null)continue;total+=value;found=true}return found?total:null}
 function scheduleTeam(scheduleData,teamName){return Object.values(scheduleData?.teams||{}).find(team=>canon(team?.team)===canon(teamName))||null}
 function scheduleGameIsFinal(game){const status=clean(game?.rusStatus).toUpperCase(),result=clean(game?.result).toUpperCase();return status.includes('FINAL')||(hasScore(game?.teamScore)&&hasScore(game?.opponentScore))||['W','L','T'].includes(result)}
-function weeklyScheduleGame(weekly,teamName,incoming){const team=canon(teamName),date=isoDate(incoming?.date),games=(weekly?.games||[]).filter(game=>isoDate(game.date)===date&&hasScore(game.actualAway)&&hasScore(game.actualHome)&&(canon(game.awayTeam)===team||canon(game.homeTeam)===team));if(!games.length)return null;const opponentFor=game=>canon(game.awayTeam)===team?game.homeTeam:game.awayTeam,matched=games.find(game=>canon(opponentFor(game))===canon(incoming?.opponent))||(games.length===1?games[0]:null);if(!matched)return null;const away=canon(matched.awayTeam)===team;return{date:isoDate(matched.date),awayTeam:matched.awayTeam,homeTeam:matched.homeTeam,opponent:opponentFor(matched),site:away?'away':'home',teamScore:Number(away?matched.actualAway:matched.actualHome),opponentScore:Number(away?matched.actualHome:matched.actualAway),result:clean(matched.wl)||((away?matched.actualAway:matched.actualHome)>(away?matched.actualHome:matched.actualAway)?'W':'L'),rusStatus:'Final',gameUrl:clean(incoming?.url)}}
-function expectedScheduleGame(scheduleData,weekly,teamName,incoming){const team=scheduleTeam(scheduleData,teamName),date=isoDate(incoming?.date),finals=(team?.schedule||[]).filter(game=>scheduleGameIsFinal(game)&&isoDate(game.date)===date),fromTeam=finals.find(game=>canon(game.opponent)===canon(incoming?.opponent))||(finals.length===1?finals[0]:null);return fromTeam||weeklyScheduleGame(weekly,teamName,incoming)}
+function weeklyScheduleGame(weekly,teamName,incoming){
+  const team=canon(teamName),date=isoDate(incoming?.date),all=(weekly?.games||[]).filter(game=>hasScore(game.actualAway)&&hasScore(game.actualHome)&&(canon(game.awayTeam)===team||canon(game.homeTeam)===team));
+  const opponentFor=game=>canon(game.awayTeam)===team?game.homeTeam:game.awayTeam;
+  const exact=all.find(game=>isoDate(game.date)===date&&canon(opponentFor(game))===canon(incoming?.opponent));
+  const nearby=all.filter(game=>nearDate(game.date,date)&&canon(opponentFor(game))===canon(incoming?.opponent)).sort((a,b)=>Math.abs(Date.parse(isoDate(a.date))-Date.parse(date))-Math.abs(Date.parse(isoDate(b.date))-Date.parse(date)))[0];
+  const matched=exact||nearby;if(!matched)return null;
+  const away=canon(matched.awayTeam)===team;return{date:isoDate(matched.date),awayTeam:matched.awayTeam,homeTeam:matched.homeTeam,opponent:opponentFor(matched),site:away?'away':'home',teamScore:Number(away?matched.actualAway:matched.actualHome),opponentScore:Number(away?matched.actualHome:matched.actualAway),result:clean(matched.wl)||((away?matched.actualAway:matched.actualHome)>(away?matched.actualHome:matched.actualAway)?'W':'L'),rusStatus:'Final',gameUrl:clean(incoming?.url)}
+}
+function verifiedScheduleGame(verified,teamName,incoming){
+  const team=canon(teamName),opponent=canon(incoming?.opponent),date=isoDate(incoming?.date);
+  const matches=(verified||[]).filter(game=>nearDate(game.date,date)&&((canon(game.awayTeam)===team&&canon(game.homeTeam)===opponent)||(canon(game.homeTeam)===team&&canon(game.awayTeam)===opponent))).sort((a,b)=>Math.abs(Date.parse(isoDate(a.date))-Date.parse(date))-Math.abs(Date.parse(isoDate(b.date))-Date.parse(date)));
+  const matched=matches[0];if(!matched||!hasScore(matched.actualAway)||!hasScore(matched.actualHome))return null;
+  const away=canon(matched.awayTeam)===team;return{date:isoDate(matched.date),awayTeam:matched.awayTeam,homeTeam:matched.homeTeam,opponent:away?matched.homeTeam:matched.awayTeam,site:away?'away':'home',teamScore:Number(away?matched.actualAway:matched.actualHome),opponentScore:Number(away?matched.actualHome:matched.actualAway),result:Number(away?matched.actualAway:matched.actualHome)>Number(away?matched.actualHome:matched.actualAway)?'W':'L',rusStatus:'Final',gameUrl:clean(matched.sourceUrl)||clean(incoming?.url)}
+}
+function expectedScheduleGame(scheduleData,weekly,verified,teamName,incoming){
+  const team=scheduleTeam(scheduleData,teamName),date=isoDate(incoming?.date),opponent=canon(incoming?.opponent),finals=(team?.schedule||[]).filter(game=>scheduleGameIsFinal(game)&&nearDate(game.date,date));
+  const exact=finals.find(game=>isoDate(game.date)===date&&canon(game.opponent)===opponent),nearby=finals.filter(game=>canon(game.opponent)===opponent).sort((a,b)=>Math.abs(Date.parse(isoDate(a.date))-Date.parse(date))-Math.abs(Date.parse(isoDate(b.date))-Date.parse(date)))[0];
+  return exact||nearby||weeklyScheduleGame(weekly,teamName,incoming)||verifiedScheduleGame(verified,teamName,incoming)
+}
 function shellFromSchedule(teamName,schedule,incoming){const isAway=canon(schedule.awayTeam)===canon(teamName)||clean(schedule.site).toLowerCase()==='away',opponent=clean(schedule.opponent)||(isAway?schedule.homeTeam:schedule.awayTeam),awayTeam=clean(schedule.awayTeam)||(isAway?teamName:opponent),homeTeam=clean(schedule.homeTeam)||(isAway?opponent:teamName),teamScore=hasScore(schedule.teamScore)?Number(schedule.teamScore):null,opponentScore=hasScore(schedule.opponentScore)?Number(schedule.opponentScore):null;return{gameKey:`${isoDate(schedule.date||incoming.date)}|${compact(awayTeam)}|${compact(homeTeam)}`,date:isoDate(schedule.date||incoming.date),opponent,location:isAway?'Away':'Home',status:'Final',final:true,teamScore,opponentScore,url:clean(schedule.gameUrl)||clean(incoming.url),players:[],scoringPlays:[],maxprepsRecovered:true}}
 
 
-function mergeManualGameStats(output,entries=[],scheduleData=null,weekly=null){
+function mergeManualGameStats(output,entries=[],scheduleData=null,weekly=null,verified=[]){
   let gamesAdded=0,playersAdded=0,linesAdded=0,fieldsSet=0;
   for(const incoming of entries){
     const teamName=clean(incoming.team);if(!teamName)continue;
     output.teams||(output.teams={});
     let outputKey=Object.keys(output.teams).find(k=>canon(k)===canon(teamName));
     let targetTeam=outputKey?output.teams[outputKey]:null;
-    const expected=expectedScheduleGame(scheduleData,weekly,teamName,incoming);
+    const expected=expectedScheduleGame(scheduleData,weekly,verified,teamName,incoming);
     if(!targetTeam){outputKey=teamName;targetTeam={team:teamName,games:[]};output.teams[outputKey]=targetTeam}
     targetTeam.games||(targetTeam.games=[]);
     let game=targetTeam.games.find(g=>isoDate(g.date)===isoDate(incoming.date)&&canon(g.opponent)===canon(incoming.opponent));
@@ -61,19 +79,20 @@ function mergeManualGameStats(output,entries=[],scheduleData=null,weekly=null){
   }
   return{gamesAdded,playersAdded,linesAdded,fieldsSet};
 }
-export function mergeMaxPrepsGameLogs(output,cache,scheduleData=null,weekly=null){
+export function mergeMaxPrepsGameLogs(output,cache,scheduleData=null,weekly=null,verified=[]){
   let teamsMatched=0,gamesMatched=0,gamesAdded=0,playersAdded=0,linesAdded=0,fieldsFilled=0,correctedFields=0,unmatchedGames=0;
   output.teams||(output.teams={});
   for(const [teamName,saved] of Object.entries(cache?.teams||{})){
     let outputKey=Object.keys(output.teams).find(k=>canon(k)===canon(teamName)),targetTeam=outputKey?output.teams[outputKey]:null,matchedTeam=!!targetTeam;
     if(matchedTeam)teamsMatched++;
     for(const incoming of saved.games||[]){
-      const expected=expectedScheduleGame(scheduleData,weekly,teamName,incoming);
+      const expected=expectedScheduleGame(scheduleData,weekly,verified,teamName,incoming);
       if(!targetTeam&&expected){outputKey=teamName;targetTeam={team:teamName,games:[]};output.teams[outputKey]=targetTeam;if(!matchedTeam){teamsMatched++;matchedTeam=true}}
       if(!targetTeam){unmatchedGames++;continue}
       targetTeam.games||(targetTeam.games=[]);
       let game=targetTeam.games.find(g=>isoDate(g.date)===isoDate(incoming.date)&&canon(g.opponent)===canon(incoming.opponent));
-      if(!game&&expected){const sameDate=targetTeam.games.filter(g=>isoDate(g.date)===isoDate(incoming.date));game=sameDate.find(g=>canon(g.opponent)===canon(expected.opponent))||(sameDate.length===1?sameDate[0]:null)}
+      if(!game)game=targetTeam.games.filter(g=>nearDate(g.date,incoming.date)&&canon(g.opponent)===canon(incoming.opponent)).sort((a,b)=>Math.abs(Date.parse(isoDate(a.date))-Date.parse(isoDate(incoming.date)))-Math.abs(Date.parse(isoDate(b.date))-Date.parse(isoDate(incoming.date))))[0]||null;
+      if(!game&&expected){const nearGames=targetTeam.games.filter(g=>nearDate(g.date,expected.date||incoming.date));game=nearGames.find(g=>canon(g.opponent)===canon(expected.opponent))||(nearGames.length===1?nearGames[0]:null)}
       if(!game&&expected){game=shellFromSchedule(teamName,expected,incoming);targetTeam.games.push(game);gamesAdded++}
       if(!game){unmatchedGames++;continue}
       gamesMatched++;let player=(game.players||[]).find(p=>p.playerId===incoming.playerId)||(game.players||[]).find(p=>compact(p.name)===compact(incoming.name)&&clean(p.number)===clean(incoming.number));
@@ -102,6 +121,10 @@ function selfTest(){
   const oosOutput={teams:{LOGAN:{team:'LOGAN',games:[]}}},oosCache={teams:{LOGAN:{games:[{date:'2026-08-21',opponent:'Preston',url:'https://example.test/oos',playerId:'pingree',number:'7',name:'Jase Pingree',statLines:[{category:'Receiving',values:{RECEPTIONS:'9',YARDS:'228',TD:'2'}}]}]}}},unscoredSchedule={teams:{LOGAN:{team:'LOGAN',schedule:[{date:'2026-08-21',awayTeam:'LOGAN',homeTeam:'Preston, ID',opponent:'Preston, ID'}]}}},weekly={games:[{date:'8/21/2026',awayTeam:'LOGAN',homeTeam:'PRESTON, ID',actualAway:49,actualHome:20,wl:'W'}]};
   const oosRecovered=mergeMaxPrepsGameLogs(oosOutput,oosCache,unscoredSchedule,weekly),oosGame=oosOutput.teams.LOGAN.games[0];
   if(oosRecovered.gamesAdded!==1||oosGame?.teamScore!==49||oosGame?.opponentScore!==20||oosGame?.players[0]?.statLines[0]?.values?.YARDS!=='228')throw new Error('Out-of-state missing-final recovery self-test failed');
+  const movedOutput={teams:{TIMPVIEW:{team:'TIMPVIEW',games:[{date:'2026-09-19',opponent:'MAPLE MOUNTAIN',final:true,status:'Final',players:[]}]}}},movedCache={teams:{TIMPVIEW:{games:[{date:'2026-09-18',opponent:'Maple Mountain',playerId:'p1',number:'1',name:'Player One',statLines:[{category:'Rushing',values:{YARDS:'100'}}]}]}}};
+  const movedResult=mergeMaxPrepsGameLogs(movedOutput,movedCache);if(movedResult.gamesMatched!==1||movedOutput.teams.TIMPVIEW.games[0].players[0]?.statLines[0]?.values?.YARDS!=='100')throw new Error('Weather-moved date tolerance self-test failed');
+  const verifiedOutput={teams:{MANTI:{team:'MANTI',games:[]}}},verifiedCache={teams:{MANTI:{games:[{date:'2026-10-01',opponent:'North Sanpete',playerId:'p2',number:'2',name:'Player Two',statLines:[{category:'Defense',values:{TACKLES:'10'}}]}]}}},verifiedFinals=[{date:'2026-10-01',awayTeam:'NORTH SANPETE',homeTeam:'MANTI',actualAway:36,actualHome:21}];
+  const verifiedResult=mergeMaxPrepsGameLogs(verifiedOutput,verifiedCache,null,null,verifiedFinals),verifiedGame=verifiedOutput.teams.MANTI.games[0];if(verifiedResult.gamesAdded!==1||verifiedGame?.teamScore!==21||verifiedGame?.opponentScore!==36||verifiedGame?.players[0]?.statLines[0]?.values?.TACKLES!=='10')throw new Error('Verified-final MaxPreps recovery self-test failed');
   const defensiveOutput={
     teams:{
       'LAYTON CHRISTIAN':{
@@ -146,7 +169,7 @@ function selfTest(){
 }
 if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
 if(!fs.existsSync(FILE)||!fs.existsSync(CACHE)){console.log('MaxPreps game-log inputs missing; skipping.');process.exit(0)}
-const output=JSON.parse(fs.readFileSync(FILE,'utf8')),cache=JSON.parse(fs.readFileSync(CACHE,'utf8')),scheduleData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null,weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):null,manual=fs.existsSync(MANUAL)?JSON.parse(fs.readFileSync(MANUAL,'utf8')).manualGameStats||[]:[],summary=mergeMaxPrepsGameLogs(output,cache,scheduleData,weekly),manualSummary=mergeManualGameStats(output,manual,scheduleData,weekly);
+const output=JSON.parse(fs.readFileSync(FILE,'utf8')),cache=JSON.parse(fs.readFileSync(CACHE,'utf8')),scheduleData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null,weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):null,verified=fs.existsSync(VERIFIED)?JSON.parse(fs.readFileSync(VERIFIED,'utf8')):[],manual=fs.existsSync(MANUAL)?JSON.parse(fs.readFileSync(MANUAL,'utf8')).manualGameStats||[]:[],summary=mergeMaxPrepsGameLogs(output,cache,scheduleData,weekly,verified),manualSummary=mergeManualGameStats(output,manual,scheduleData,weekly,verified);
 for(const team of Object.values(output.teams||{}))team.games?.sort((a,b)=>isoDate(a.date).localeCompare(isoDate(b.date))||clean(a.opponent).localeCompare(clean(b.opponent)));
 output.updatedAt=new Date().toISOString();output.summary={...(output.summary||{}),maxprepsFallback:{...summary,manualGameStats:manualSummary}};fs.writeFileSync(FILE,JSON.stringify(output,null,2)+'\n');
 console.log(`MaxPreps game logs: ${summary.gamesMatched} games matched; ${summary.gamesAdded} missing final games recovered; ${summary.playersAdded} players added; ${summary.linesAdded} stat lines added; ${summary.fieldsFilled} fields filled; ${summary.correctedFields} inconsistent Deseret fields corrected; ${summary.unmatchedGames} games skipped; ${manualSummary.gamesAdded} manual partial game(s) added.`);
