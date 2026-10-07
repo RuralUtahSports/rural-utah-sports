@@ -26,12 +26,14 @@ const ALIASES={
   'LAKE MEAD CHRISTIAN ACADEMY':'LAKE MEAD CHRISTIAN',
   'KAMEHAMEHA KAPALAMA':'KAMEHAMEHA',
   'THE ST. JAMES PERFORMANCE ACADEMY':'ST JAMES',
-  'ST. JAMES PERFORMANCE ACADEMY':'ST JAMES'
+  'ST. JAMES PERFORMANCE ACADEMY':'ST JAMES',
+  'ALA - QUEEN CREEK':'ALA QUEEN CREEK'
 };
 const canonical=v=>{
   const stripped=norm(v).replace(/\s*,\s*(?:[A-Z]{2}|AMERICAN SAMOA)\s*$/i,'').replace(/\s*\((?:AMERICAN SAMOA|[A-Z]{2})\)\s*$/i,'');
   return ALIASES[stripped]||stripped;
 };
+const nearDate=(a,b,days=3)=>{const x=Date.parse(String(a||'')),y=Date.parse(String(b||''));return Number.isFinite(x)&&Number.isFinite(y)&&Math.abs(x-y)<=days*86400000};
 const isJuniorVarsity=v=>/(^|\s)J\.?V\.?(\s|$)|JUNIOR\s+VARSITY/i.test(norm(v));
 const isOutOfState=v=>/,[ ]?[A-Z]{2}$/.test(norm(v))||/AMERICAN SAMOA|CANADA/i.test(norm(v));
 const parseJSON=file=>{try{return JSON.parse(fs.readFileSync(file,'utf8'))}catch(e){error('INVALID_JSON',`${file} could not be parsed: ${e.message}`);return null}};
@@ -131,8 +133,8 @@ for(const [rawTeam,source] of Object.entries(maxprepsGameStats?.teams||{})){
   for(const game of source?.games||[]){const date=String(game?.date||'').slice(0,10),opponent=canonical(game?.opponent);if(date&&opponent)sourcePairs.set(`${date}|${opponent}`,{date,opponent:game?.opponent||''})}
   if(!sourcePairs.size)continue;
   maxprepsGamePairs+=sourcePairs.size;
-  const site=gameStatsByTeam.get(canonical(rawTeam)),sitePairs=new Set((site?.games||[]).map(game=>`${String(game?.date||'').slice(0,10)}|${canonical(game?.opponent)}`));
-  const missing=[...sourcePairs.entries()].filter(([key])=>!sitePairs.has(key)).map(([,value])=>value);
+  const site=gameStatsByTeam.get(canonical(rawTeam)),siteGames=site?.games||[];
+  const missing=[...sourcePairs.values()].filter(source=>!siteGames.some(game=>nearDate(String(game?.date||'').slice(0,10),source.date)&&canonical(game?.opponent)===canonical(source.opponent))).map(value=>value);
   if(missing.length){maxprepsMissingGamePairs+=missing.length;warn('MAXPREPS_GAME_STATS_NOT_MERGED',`${rawTeam} has ${missing.length} MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.`,{sourceGamePairs:sourcePairs.size,missing:missing.slice(0,8)});}
 }
 
