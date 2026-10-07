@@ -12,7 +12,7 @@ const isJuniorVarsity=v=>/(^|\s)J\.?V\.?(\s|$)|JUNIOR\s+VARSITY/i.test(norm(v));
 const isOutOfState=v=>/,[ ]?[A-Z]{2}$/.test(norm(v))||/AMERICAN SAMOA|CANADA/i.test(norm(v));
 const parseJSON=file=>{try{return JSON.parse(fs.readFileSync(file,'utf8'))}catch(e){error('INVALID_JSON',`${file} could not be parsed: ${e.message}`);return null}};
 const exists=file=>fs.existsSync(file);
-const required=['teams-data.json','weekly-simulation.json','standings-2026.json','rankings-current-2026.json','elo-summary.json','deseret-rosters-stats-2026.json'];
+const required=['teams-data.json','weekly-simulation.json','standings-2026.json','rankings-current-2026.json','elo-summary.json','deseret-rosters-stats-2026.json','maxpreps-stats-fallback-2026.json','player-game-stats-2026.json','maxpreps-player-game-stats-2026.json'];
 for(const file of required)if(!exists(file))error('MISSING_FILE',`Required data file is missing: ${file}`);
 
 const teams=exists('teams-data.json')?parseJSON('teams-data.json'):null;
@@ -21,6 +21,9 @@ const standings=exists('standings-2026.json')?parseJSON('standings-2026.json'):n
 const rankings=exists('rankings-current-2026.json')?parseJSON('rankings-current-2026.json'):null;
 const elo=exists('elo-summary.json')?parseJSON('elo-summary.json'):null;
 const rosters=exists('deseret-rosters-stats-2026.json')?parseJSON('deseret-rosters-stats-2026.json'):null;
+const maxpreps=exists('maxpreps-stats-fallback-2026.json')?parseJSON('maxpreps-stats-fallback-2026.json'):null;
+const playerGames=exists('player-game-stats-2026.json')?parseJSON('player-game-stats-2026.json'):null;
+const maxprepsGameStats=exists('maxpreps-player-game-stats-2026.json')?parseJSON('maxpreps-player-game-stats-2026.json'):null;
 
 const teamSet=new Set();
 const teamRows=Array.isArray(teams)?teams:[];
@@ -85,6 +88,31 @@ const rosterTeams=Array.isArray(rosters?.teams)?rosters.teams:Object.values(rost
 const playerIds=new Map();
 for(const rt of rosterTeams){const team=norm(rt?.team||rt?.name||rt?.teamName||rt?.school);for(const p of Array.isArray(rt?.roster)?rt.roster:[]){const id=String(p?.playerId||p?.id||'').trim();if(!id){warn('PLAYER_ID_MISSING',`Roster player has no playerId${team?` for ${team}`:''}.`,{name:p?.name});continue}if(playerIds.has(id)&&playerIds.get(id)!==team)warn('DUPLICATE_PLAYER_ID',`playerId ${id} is used by multiple teams.`,{teams:[playerIds.get(id),team]});else playerIds.set(id,team)}}
 
+const rosterByTeam=new Map(rosterTeams.map(team=>[canonical(team?.team||team?.name||team?.teamName||team?.school),team]));
+let maxprepsSourceRows=0,maxprepsUnmatchedRows=0,maxprepsRosterlessTeams=0;
+for(const [rawTeam,source] of Object.entries(maxpreps?.teams||{})){
+  const team=canonical(rawTeam),sourceRows=Array.isArray(source?.rows)?source.rows.length:0;if(!sourceRows)continue;
+  maxprepsSourceRows+=sourceRows;
+  const site=rosterByTeam.get(team),siteRows=(site?.stats||[]).reduce((sum,section)=>sum+(section?.rows||[]).length,0),rosterCount=(site?.roster||[]).length;
+  const unmatched=Math.max(0,num(site?.maxprepsFallback?.unmatchedRows)||0);maxprepsUnmatchedRows+=unmatched;
+  if(!rosterCount)maxprepsRosterlessTeams++;
+  if(!site||siteRows===0)warn('MAXPREPS_STATS_NOT_MERGED',`${rawTeam} has ${sourceRows} MaxPreps stat rows but no season stat rows on the site.`,{sourceRows,rosterPlayers:rosterCount,sourceUrl:source?.sourceUrl||''});
+  if(sourceRows>=5&&unmatched>=5&&unmatched/sourceRows>=0.5)warn('MAXPREPS_HIGH_UNMATCHED',`${rawTeam} rejected ${unmatched} of ${sourceRows} MaxPreps stat rows during player matching.`,{sourceRows,unmatchedRows:unmatched,rosterPlayers:rosterCount,sourceUrl:source?.sourceUrl||''});
+}
+
+const gameStatsByTeam=new Map(Object.entries(playerGames?.teams||{}).map(([name,value])=>[canonical(name),value]));
+let maxprepsGamePairs=0,maxprepsMissingGamePairs=0;
+for(const [rawTeam,source] of Object.entries(maxprepsGameStats?.teams||{})){
+  const sourcePairs=new Map();
+  for(const game of source?.games||[]){const date=String(game?.date||'').slice(0,10),opponent=canonical(game?.opponent);if(date&&opponent)sourcePairs.set(`${date}|${opponent}`,{date,opponent:game?.opponent||''})}
+  if(!sourcePairs.size)continue;
+  maxprepsGamePairs+=sourcePairs.size;
+  const site=gameStatsByTeam.get(canonical(rawTeam)),sitePairs=new Set((site?.games||[]).map(game=>`${String(game?.date||'').slice(0,10)}|${canonical(game?.opponent)}`));
+  const missing=[...sourcePairs.entries()].filter(([key])=>!sitePairs.has(key)).map(([,value])=>value);
+  if(missing.length){maxprepsMissingGamePairs+=missing.length;warn('MAXPREPS_GAME_STATS_NOT_MERGED',`${rawTeam} has ${missing.length} MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.`,{sourceGamePairs:sourcePairs.size,missing:missing.slice(0,8)});}
+}
+
+info('MAXPREPS_COVERAGE','MaxPreps fallback coverage.',{sourceRows:maxprepsSourceRows,unmatchedRows:maxprepsUnmatchedRows,rosterlessTeams:maxprepsRosterlessTeams,sourceGamePairs:maxprepsGamePairs,missingGamePairs:maxprepsMissingGamePairs});
 info('AUDIT_COUNTS','Audit input counts.',{teams:teamRows.length,games:games.length,standings:standingRows.length,rankedTeams:rankedTeams.size,playerIds:playerIds.size});
 const errors=issues.filter(x=>x.severity==='error'),warnings=issues.filter(x=>x.severity==='warning');
 const report={generatedAt:new Date().toISOString(),summary:{errors:errors.length,warnings:warnings.length,info:issues.filter(x=>x.severity==='info').length},issues};
