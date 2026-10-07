@@ -193,10 +193,22 @@ function parsePlayerGameLogs(html,player){
   }
   return [...games.values()].filter(g=>g.statLines.some(line=>Object.keys(line.values).length));
 }
+function knownPlayers(team){
+  const out=[],seen=new Set();
+  const add=p=>{
+    if(!p?.name)return;
+    const key=clean(p.playerId)||`${clean(p.number)}|${compact(cleanPlayerName(p.name))}`;
+    if(seen.has(key))return;
+    seen.add(key);out.push(p);
+  };
+  for(const p of team.roster||[])add(p);
+  for(const section of team.stats||[])for(const row of section.rows||[])add(row);
+  return out;
+}
 function rosterMatch(team,row){
-  const roster=team.roster||[],incomingName=cleanPlayerName(row.name),incomingNo=clean(row.number),bits=nameBits(incomingName);
-  if(!roster.length||!incomingName)return null;
-  const exactName=roster.filter(p=>compact(cleanPlayerName(p.name))===compact(incomingName));
+  const players=knownPlayers(team),incomingName=cleanPlayerName(row.name),incomingNo=clean(row.number),bits=nameBits(incomingName);
+  if(!players.length||!incomingName)return null;
+  const exactName=players.filter(p=>compact(cleanPlayerName(p.name))===compact(incomingName));
   const exact=exactName.find(p=>incomingNo&&clean(p.number)===incomingNo);
   if(exact)return exact;
   if(exactName.length===1)return exactName[0];
@@ -206,10 +218,10 @@ function rosterMatch(team,row){
     return !!bits.last&&pb.last===bits.last&&!!bits.initial&&pb.initial===bits.initial;
   };
   if(incomingNo){
-    const numbered=roster.filter(p=>clean(p.number)===incomingNo&&sameLastInitial(p));
+    const numbered=players.filter(p=>clean(p.number)===incomingNo&&sameLastInitial(p));
     if(numbered.length===1)return numbered[0];
   }
-  const byLastInitial=roster.filter(sameLastInitial);
+  const byLastInitial=players.filter(sameLastInitial);
   return byLastInitial.length===1?byLastInitial[0]:null;
 }
 function maxprepsOnlyPlayer(team,row){
@@ -251,6 +263,9 @@ function selfTest(){
   const abbreviated={team:'WEBER',roster:[{playerId:'weber-2-carter-payne',number:'2',name:'Carter Payne'}],stats:[]};
   const abbreviatedResult=mergeTeam(abbreviated,[{category:'Passing',number:'2',name:'C. Payne (Jr) (Junior)',values:{YARDS:'1981',TD:'19'}}],'fixture');
   if(abbreviatedResult.unmatched!==0||abbreviated.stats[0]?.rows[0]?.name!=='Carter Payne'||abbreviated.stats[0]?.rows[0]?.values?.YARDS!=='1981')throw new Error('MaxPreps initial + last-name roster matching self-test failed');
+  const statOnly={team:'WEBER',roster:[{playerId:'payne',number:'2',name:'Carter Payne'}],stats:[{category:'Defense/Special Teams',headers:['TACKLES'],rows:[{playerId:'hill',number:'32',name:'Carson Hill',values:{TACKLES:'50'}}]}]};
+  const statOnlyResult=mergeTeam(statOnly,[{category:'Defense/Special Teams',number:'32',name:'C. Hill (Sr)',values:{PD:'2'}}],'fixture');
+  if(statOnlyResult.unmatched!==0||statOnly.stats[0]?.rows[0]?.values?.PD!=='2')throw new Error('MaxPreps verified stat-row player matching self-test failed');
   const rosterless={team:'WHITEHORSE',roster:[],stats:[]};
   const rosterlessResult=mergeTeam(rosterless,[{category:'Rushing',number:'7',name:'M. Begay (Sr)',values:{YARDS:'321'}}],'fixture');
   if(rosterlessResult.syntheticPlayers!==1||rosterlessResult.unmatched!==0||!rosterless.roster[0]?.maxprepsOnly||rosterless.stats[0]?.rows[0]?.values?.YARDS!=='321')throw new Error('MaxPreps rosterless fallback self-test failed');
