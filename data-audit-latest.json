@@ -1,11 +1,20 @@
 {
-  "generatedAt": "2026-10-08T09:44:32.510Z",
+  "generatedAt": "2026-10-08T10:26:49.099Z",
   "summary": {
     "errors": 0,
-    "warnings": 0,
+    "warnings": 1,
     "info": 2
   },
   "issues": [
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "GREEN CANYON standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "3-6-0",
+        "calculated": "2-5-2"
+      }
+    },
     {
       "severity": "info",
       "code": "MAXPREPS_COVERAGE",
