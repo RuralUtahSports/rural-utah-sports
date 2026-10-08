@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-08T11:20:14.450Z",
+  "updatedAt": "2026-10-08T20:11:34.531Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -190195,16 +190195,16 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
-      "fetchedAt": "2026-10-08T11:20:04.534Z",
+      "fetchedAt": "2026-10-08T20:11:20.718Z",
       "date": "10/07/2026",
       "awayTeam": "HURRICANE",
       "homeTeam": "ROY",
-      "browserFetchedAt": "2026-10-08T11:20:04.534Z",
+      "browserFetchedAt": "2026-10-08T20:11:20.718Z",
       "detailSource": "deseret-browser-game-page",
       "scoreSource": "deseret-rendered-daily-scoreboard",
       "statusSource": "deseret-rendered-daily-scoreboard",
       "finalSource": "deseret-browser-live-final",
-      "finalRefreshCount": 2
+      "finalRefreshCount": 3
     },
     "2026-10-07|SKYVIEW|STANSBURY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-10-07/sky-view-football-vs-stansbury-football/273612",
@@ -190223,33 +190223,227 @@
         "rows": [
           {
             "team": "SKY VIEW",
+            "quarters": [
+              6,
+              9,
+              10,
+              0
+            ],
             "total": 44
           },
           {
             "team": "STANSBURY",
-            "total": 12
+            "quarters": [
+              7,
+              14,
+              7,
+              6
+            ],
+            "total": 34
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Sky View — (7:20 1Q) Drake Bohm , 29-yard pass from Tucker Stokes (kick failed)",
+        "Stansbury — (3:58 1Q) Lincoln Reutzel , 4-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
+        "Stansbury — (6:52 2Q) Lincoln Reutzel , 45-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
+        "Sky View — (3:51 2Q) Jordan Hoyt , 25-yard FG",
+        "Stansbury — (1:16 2Q) Peti Vaka , 4-yard run (kick from Seth Wilcox )",
+        "Sky View — (0:01 2Q) Jhet Oman , 4-yard pass from Tucker Stokes (kick failed)",
+        "Stansbury — (11:24 3Q) Junior Helu , 60-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
+        "Sky View — (8:35 3Q) Drake Bohm , 10-yard pass from Tucker Stokes (kick from Jordan Hoyt )",
+        "Sky View — (3:08 3Q) Jordan Hoyt , 30-yard FG",
+        "Stansbury — (5:10 4Q) Boston Rowley , 42-yard pass from Brighton Reutzel (run failed)"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "4",
+              "Peti Vaka",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "Brighton Reutzel",
+              "",
+              "",
+              "",
+              "4",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "SKY VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "Tucker Stokes",
+              "",
+              "",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "Boston Rowley",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "10",
+              "Junior Helu",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "5",
+              "Lincoln Reutzel",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SKY VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "81",
+              "Jhet Oman",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "27",
+              "Drake Bohm",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "Seth Wilcox",
+              "",
+              "4",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SKY VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "25",
+              "Jordan Hoyt",
+              "2",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 7,
+        "rows": 10,
+        "coreCells": 20,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 5
       },
-      "fetchedAt": "2026-10-08T11:20:14.350Z",
+      "fetchedAt": "2026-10-08T20:11:34.431Z",
       "date": "10/07/2026",
       "awayTeam": "SKY VIEW",
       "homeTeam": "STANSBURY",
-      "browserFetchedAt": "2026-10-08T11:20:14.350Z",
+      "browserFetchedAt": "2026-10-08T20:11:34.431Z",
       "detailSource": "deseret-browser-game-page",
       "scoreSource": "deseret-rendered-daily-scoreboard",
       "statusSource": "deseret-rendered-daily-scoreboard",
       "finalSource": "deseret-browser-live-final",
-      "finalRefreshCount": 2
+      "finalRefreshCount": 3
     },
     "2026-10-07|RIDGELINE|GREENCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-10-07/ridgeline-football-vs-green-canyon-football/273621",
@@ -190463,16 +190657,16 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 6
       },
-      "fetchedAt": "2026-10-08T11:19:50.669Z",
+      "fetchedAt": "2026-10-08T20:11:07.772Z",
       "date": "10/07/2026",
       "awayTeam": "RIDGELINE",
       "homeTeam": "GREEN CANYON",
-      "browserFetchedAt": "2026-10-08T11:19:50.669Z",
+      "browserFetchedAt": "2026-10-08T20:11:07.772Z",
       "detailSource": "deseret-browser-game-page",
       "scoreSource": "deseret-rendered-daily-scoreboard",
       "statusSource": "deseret-rendered-daily-scoreboard",
       "finalSource": "deseret-browser-live-final",
-      "finalRefreshCount": 2
+      "finalRefreshCount": 3
     },
     "2026-10-08|ALTA|VIEWMONT": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-10-08/alta-football-vs-viewmont-football/273593",
@@ -190491,11 +190685,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:13:31.398Z",
+      "fetchedAt": "2026-10-08T20:04:57.462Z",
       "date": "10/08/2026",
       "awayTeam": "ALTA",
       "homeTeam": "VIEWMONT",
-      "browserFetchedAt": "2026-10-08T11:13:31.398Z",
+      "browserFetchedAt": "2026-10-08T20:04:57.462Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|BEARRIVER|DESERETPEAK": {
@@ -190515,11 +190709,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:13:41.876Z",
+      "fetchedAt": "2026-10-08T20:05:12.402Z",
       "date": "10/08/2026",
       "awayTeam": "BEAR RIVER",
       "homeTeam": "DESERET PEAK",
-      "browserFetchedAt": "2026-10-08T11:13:41.876Z",
+      "browserFetchedAt": "2026-10-08T20:05:12.402Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|BOXELDER|CLEARFIELD": {
@@ -190539,11 +190733,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:13:51.978Z",
+      "fetchedAt": "2026-10-08T20:05:27.478Z",
       "date": "10/08/2026",
       "awayTeam": "BOX ELDER",
       "homeTeam": "CLEARFIELD",
-      "browserFetchedAt": "2026-10-08T11:13:51.978Z",
+      "browserFetchedAt": "2026-10-08T20:05:27.478Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|BRIGHTON|BOUNTIFUL": {
@@ -190563,11 +190757,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:14:01.904Z",
+      "fetchedAt": "2026-10-08T20:05:43.857Z",
       "date": "10/08/2026",
       "awayTeam": "BRIGHTON",
       "homeTeam": "BOUNTIFUL",
-      "browserFetchedAt": "2026-10-08T11:14:01.904Z",
+      "browserFetchedAt": "2026-10-08T20:05:43.857Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|CORNERCANYON|AMERICANFORK": {
@@ -190587,11 +190781,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:14:25.296Z",
+      "fetchedAt": "2026-10-08T20:06:01.240Z",
       "date": "10/08/2026",
       "awayTeam": "CORNER CANYON",
       "homeTeam": "AMERICAN FORK",
-      "browserFetchedAt": "2026-10-08T11:14:25.296Z",
+      "browserFetchedAt": "2026-10-08T20:06:01.240Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|DEERCREEK|PROVO": {
@@ -190611,11 +190805,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:14:44.622Z",
+      "fetchedAt": "2026-10-08T20:06:15.746Z",
       "date": "10/08/2026",
       "awayTeam": "DEER CREEK",
       "homeTeam": "PROVO",
-      "browserFetchedAt": "2026-10-08T11:14:44.622Z",
+      "browserFetchedAt": "2026-10-08T20:06:15.746Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|FREMONT|WESTFIELD": {
@@ -190635,11 +190829,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:14:56.811Z",
+      "fetchedAt": "2026-10-08T20:06:28.562Z",
       "date": "10/08/2026",
       "awayTeam": "FREMONT",
       "homeTeam": "WEST FIELD",
-      "browserFetchedAt": "2026-10-08T11:14:56.811Z",
+      "browserFetchedAt": "2026-10-08T20:06:28.562Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|JORDAN|EAST": {
@@ -190659,11 +190853,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:15:06.610Z",
+      "fetchedAt": "2026-10-08T20:06:38.728Z",
       "date": "10/08/2026",
       "awayTeam": "JORDAN",
       "homeTeam": "EAST",
-      "browserFetchedAt": "2026-10-08T11:15:06.610Z",
+      "browserFetchedAt": "2026-10-08T20:06:38.728Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|JUANDIEGO|MURRAY": {
@@ -190683,11 +190877,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:15:17.561Z",
+      "fetchedAt": "2026-10-08T20:06:51.346Z",
       "date": "10/08/2026",
       "awayTeam": "JUAN DIEGO",
       "homeTeam": "MURRAY",
-      "browserFetchedAt": "2026-10-08T11:15:17.561Z",
+      "browserFetchedAt": "2026-10-08T20:06:51.346Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|LAYTON|DAVIS": {
@@ -190707,11 +190901,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:15:29.906Z",
+      "fetchedAt": "2026-10-08T20:07:04.210Z",
       "date": "10/08/2026",
       "awayTeam": "LAYTON",
       "homeTeam": "DAVIS",
-      "browserFetchedAt": "2026-10-08T11:15:29.906Z",
+      "browserFetchedAt": "2026-10-08T20:07:04.210Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|LAYTONCHRISTIAN|MAPLEMOUNTAIN": {
@@ -190731,11 +190925,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:15:39.757Z",
+      "fetchedAt": "2026-10-08T20:07:19.570Z",
       "date": "10/08/2026",
       "awayTeam": "LAYTON CHRISTIAN",
       "homeTeam": "MAPLE MOUNTAIN",
-      "browserFetchedAt": "2026-10-08T11:15:39.757Z",
+      "browserFetchedAt": "2026-10-08T20:07:19.570Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|LOGAN|GRANTSVILLE": {
@@ -190755,11 +190949,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:15:50.311Z",
+      "fetchedAt": "2026-10-08T20:07:35.135Z",
       "date": "10/08/2026",
       "awayTeam": "LOGAN",
       "homeTeam": "GRANTSVILLE",
-      "browserFetchedAt": "2026-10-08T11:15:50.311Z",
+      "browserFetchedAt": "2026-10-08T20:07:35.135Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|LONEPEAK|LEHI": {
@@ -190779,11 +190973,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:16:02.059Z",
+      "fetchedAt": "2026-10-08T20:07:45.541Z",
       "date": "10/08/2026",
       "awayTeam": "LONE PEAK",
       "homeTeam": "LEHI",
-      "browserFetchedAt": "2026-10-08T11:16:02.059Z",
+      "browserFetchedAt": "2026-10-08T20:07:45.541Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|MONUMENTVAL|MONTICELLOJV": {
@@ -190803,11 +190997,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:16:14.160Z",
+      "fetchedAt": "2026-10-08T20:07:57.414Z",
       "date": "10/08/2026",
       "awayTeam": "MONUMENT VAL",
       "homeTeam": "MONTICELLO JV",
-      "browserFetchedAt": "2026-10-08T11:16:14.160Z",
+      "browserFetchedAt": "2026-10-08T20:07:57.414Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|MOUNTAINVIEW|UINTAH": {
@@ -190827,11 +191021,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:16:56.108Z",
+      "fetchedAt": "2026-10-08T20:08:11.215Z",
       "date": "10/08/2026",
       "awayTeam": "MOUNTAIN VIEW",
       "homeTeam": "UINTAH",
-      "browserFetchedAt": "2026-10-08T11:16:56.108Z",
+      "browserFetchedAt": "2026-10-08T20:08:11.215Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|NORTHRIDGE|BONNEVILLE": {
@@ -190851,11 +191045,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:17:10.595Z",
+      "fetchedAt": "2026-10-08T20:08:24.300Z",
       "date": "10/08/2026",
       "awayTeam": "NORTHRIDGE",
       "homeTeam": "BONNEVILLE",
-      "browserFetchedAt": "2026-10-08T11:17:10.595Z",
+      "browserFetchedAt": "2026-10-08T20:08:24.300Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|OGDEN|MORGAN": {
@@ -190875,11 +191069,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:17:21.266Z",
+      "fetchedAt": "2026-10-08T20:08:33.746Z",
       "date": "10/08/2026",
       "awayTeam": "OGDEN",
       "homeTeam": "MORGAN",
-      "browserFetchedAt": "2026-10-08T11:17:21.266Z",
+      "browserFetchedAt": "2026-10-08T20:08:33.746Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|OREM|PAYSON": {
@@ -190899,11 +191093,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:17:31.963Z",
+      "fetchedAt": "2026-10-08T20:08:46.355Z",
       "date": "10/08/2026",
       "awayTeam": "OREM",
       "homeTeam": "PAYSON",
-      "browserFetchedAt": "2026-10-08T11:17:31.963Z",
+      "browserFetchedAt": "2026-10-08T20:08:46.355Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|PARKCITY|TIMPANOGOS": {
@@ -190923,11 +191117,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:17:42.047Z",
+      "fetchedAt": "2026-10-08T20:09:02.161Z",
       "date": "10/08/2026",
       "awayTeam": "PARK CITY",
       "homeTeam": "TIMPANOGOS",
-      "browserFetchedAt": "2026-10-08T11:17:42.047Z",
+      "browserFetchedAt": "2026-10-08T20:09:02.161Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|PLEASANTGROVE|TIMPVIEW": {
@@ -190947,11 +191141,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:17:52.367Z",
+      "fetchedAt": "2026-10-08T20:09:11.842Z",
       "date": "10/08/2026",
       "awayTeam": "PLEASANT GROVE",
       "homeTeam": "TIMPVIEW",
-      "browserFetchedAt": "2026-10-08T11:17:52.367Z",
+      "browserFetchedAt": "2026-10-08T20:09:11.842Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|RIVERTON|WEBER": {
@@ -190971,11 +191165,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:18:04.907Z",
+      "fetchedAt": "2026-10-08T20:09:21.132Z",
       "date": "10/08/2026",
       "awayTeam": "RIVERTON",
       "homeTeam": "WEBER",
-      "browserFetchedAt": "2026-10-08T11:18:04.907Z",
+      "browserFetchedAt": "2026-10-08T20:09:21.132Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|SALEMHILLS|WASATCH": {
@@ -191019,11 +191213,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:18:25.637Z",
+      "fetchedAt": "2026-10-08T20:10:05.631Z",
       "date": "10/08/2026",
       "awayTeam": "SKYLINE",
       "homeTeam": "HIGHLAND",
-      "browserFetchedAt": "2026-10-08T11:18:25.637Z",
+      "browserFetchedAt": "2026-10-08T20:10:05.631Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|SPANISHFORK|SPRINGVILLE": {
@@ -191043,11 +191237,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:18:36.141Z",
+      "fetchedAt": "2026-10-08T20:10:16.856Z",
       "date": "10/08/2026",
       "awayTeam": "SPANISH FORK",
       "homeTeam": "SPRINGVILLE",
-      "browserFetchedAt": "2026-10-08T11:18:36.141Z",
+      "browserFetchedAt": "2026-10-08T20:10:16.856Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|SYRACUSE|FARMINGTON": {
@@ -191067,11 +191261,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:18:46.640Z",
+      "fetchedAt": "2026-10-08T20:10:27.031Z",
       "date": "10/08/2026",
       "awayTeam": "SYRACUSE",
       "homeTeam": "FARMINGTON",
-      "browserFetchedAt": "2026-10-08T11:18:46.640Z",
+      "browserFetchedAt": "2026-10-08T20:10:27.031Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|UNION|BENLOMOND": {
@@ -191091,11 +191285,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:19:32.121Z",
+      "fetchedAt": "2026-10-08T20:10:40.583Z",
       "date": "10/08/2026",
       "awayTeam": "UNION",
       "homeTeam": "BEN LOMOND",
-      "browserFetchedAt": "2026-10-08T11:19:32.121Z",
+      "browserFetchedAt": "2026-10-08T20:10:40.583Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-08|WOODSCROSS|OLYMPUS": {
@@ -191115,11 +191309,59 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T11:19:42.283Z",
+      "fetchedAt": "2026-10-08T20:10:57.619Z",
       "date": "10/08/2026",
       "awayTeam": "WOODS CROSS",
       "homeTeam": "OLYMPUS",
-      "browserFetchedAt": "2026-10-08T11:19:42.283Z",
+      "browserFetchedAt": "2026-10-08T20:10:57.619Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-08|MOUNTAINCREST|TOOELE": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-08/mountain-crest-football-vs-tooele-football/274338",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-08T20:04:25.526Z",
+      "date": "10/08/2026",
+      "awayTeam": "MOUNTAIN CREST",
+      "homeTeam": "TOOELE",
+      "browserFetchedAt": "2026-10-08T20:04:25.526Z",
+      "detailSource": "deseret-browser-game-page"
+    },
+    "2026-10-08|TAYLORSVILLE|HILLCREST": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-08/taylorsville-football-vs-hillcrest-football/274382",
+      "status": "Scheduled",
+      "final": false,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": null,
+      "scoringPlays": [],
+      "stats": [],
+      "statsAvailability": {
+        "status": "unavailable",
+        "blocks": 0,
+        "rows": 0,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 0
+      },
+      "fetchedAt": "2026-10-08T20:04:41.033Z",
+      "date": "10/08/2026",
+      "awayTeam": "TAYLORSVILLE",
+      "homeTeam": "HILLCREST",
+      "browserFetchedAt": "2026-10-08T20:04:41.033Z",
       "detailSource": "deseret-browser-game-page"
     }
   }
