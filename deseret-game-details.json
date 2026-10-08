@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-08T01:04:46.916Z",
+  "updatedAt": "2026-10-08T04:24:39.732Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -190020,8 +190020,8 @@
     },
     "2026-10-07|HURRICANE|ROY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-10-07/hurricane-football-vs-roy-football/274367",
-      "status": "Scheduled",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
@@ -190035,11 +190035,199 @@
         "rows": [
           {
             "team": "HURRICANE",
-            "total": 10
+            "quarters": [
+              28,
+              10,
+              7,
+              null
+            ],
+            "total": 45
           },
           {
             "team": "ROY",
-            "total": 11
+            "quarters": [
+              0,
+              0,
+              0,
+              null
+            ],
+            "total": 44
+          }
+        ]
+      },
+      "scoringPlays": [
+        "Hurricane — (7:47 1Q) Cameron Lemmon , 7-yard run (kick from Cameron Lemmon )",
+        "Hurricane — (4:42 1Q) Titan Borchardt , 40-yard run (kick from Cameron Lemmon )",
+        "Hurricane — (2:30 1Q) Kannon Cowan , 29-yard run (kick from Cameron Lemmon )",
+        "Hurricane — (0:27 1Q) Kannon Cowan , 9-yard pass from Titan Borchardt (kick from Cameron Lemmon )",
+        "Hurricane — (6:22 2Q) Parker Rasmussen , 2-yard run (kick from Cameron Lemmon )",
+        "Hurricane — (0:05 2Q) Cameron Lemmon , FG",
+        "Hurricane — (21.5 3Q) Titan Borchardt , 6-yard pass from Kannon Cowan (kick from Cameron Lemmon )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "12",
+              "Parker Rasmussen",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "11",
+              "Kannon Cowan",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "1",
+              "Titan Borchardt",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "7",
+              "Cameron Lemmon",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "11",
+              "Kannon Cowan",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ],
+            [
+              "1",
+              "Titan Borchardt",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "Kannon Cowan",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "1",
+              "Titan Borchardt",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "HURRICANE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "7",
+              "Cameron Lemmon",
+              "1",
+              "6",
+              ""
+            ]
+          ]
+        }
+      ],
+      "statsAvailability": {
+        "status": "partial",
+        "blocks": 4,
+        "rows": 9,
+        "coreCells": 20,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 3
+      },
+      "fetchedAt": "2026-10-08T04:24:30.266Z",
+      "date": "10/07/2026",
+      "awayTeam": "HURRICANE",
+      "homeTeam": "ROY",
+      "browserFetchedAt": "2026-10-08T04:24:30.266Z",
+      "detailSource": "deseret-browser-game-page",
+      "scoreSource": "deseret-rendered-daily-scoreboard",
+      "statusSource": "deseret-rendered-daily-scoreboard",
+      "finalSource": "deseret-browser-live-final",
+      "finalRefreshCount": 1
+    },
+    "2026-10-07|SKYVIEW|STANSBURY": {
+      "url": "https://sports.deseret.com/high-school/football/game/2026-10-07/sky-view-football-vs-stansbury-football/273612",
+      "status": "Final",
+      "final": true,
+      "clock": "",
+      "period": "",
+      "kickoffTime": "",
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "SKY VIEW",
+            "total": 44
+          },
+          {
+            "team": "STANSBURY",
+            "total": 12
           }
         ]
       },
@@ -190052,62 +190240,239 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-08T01:04:31.859Z",
-      "date": "10/07/2026",
-      "awayTeam": "HURRICANE",
-      "homeTeam": "ROY",
-      "browserFetchedAt": "2026-10-08T01:04:31.859Z",
-      "detailSource": "deseret-browser-game-page",
-      "scoreSource": "deseret-rendered-daily-scoreboard",
-      "statusSource": "deseret-rendered-daily-scoreboard"
-    },
-    "2026-10-07|SKYVIEW|STANSBURY": {
-      "url": "https://sports.deseret.com/high-school/football/game/2026-10-07/sky-view-football-vs-stansbury-football/273612",
-      "status": "Scheduled",
-      "final": false,
-      "clock": "",
-      "period": "",
-      "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
-      "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
-      },
-      "fetchedAt": "2026-10-08T01:04:46.816Z",
+      "fetchedAt": "2026-10-08T04:24:39.632Z",
       "date": "10/07/2026",
       "awayTeam": "SKY VIEW",
       "homeTeam": "STANSBURY",
-      "browserFetchedAt": "2026-10-08T01:04:46.816Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-10-08T04:24:39.632Z",
+      "detailSource": "deseret-browser-game-page",
+      "scoreSource": "deseret-rendered-daily-scoreboard",
+      "statusSource": "deseret-rendered-daily-scoreboard",
+      "finalSource": "deseret-browser-live-final",
+      "finalRefreshCount": 1
     },
     "2026-10-07|RIDGELINE|GREENCANYON": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-10-07/ridgeline-football-vs-green-canyon-football/273621",
-      "status": "Scheduled",
-      "final": false,
+      "status": "Final",
+      "final": true,
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
-      "scoringPlays": [],
-      "stats": [],
-      "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
-        "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "RIDGELINE",
+            "quarters": [
+              8,
+              13,
+              8,
+              15
+            ],
+            "total": 44
+          },
+          {
+            "team": "GREEN CANYON",
+            "quarters": [
+              6,
+              0,
+              0,
+              6
+            ],
+            "total": 12
+          }
+        ]
       },
-      "fetchedAt": "2026-10-08T01:04:21.794Z",
+      "scoringPlays": [
+        "Green Canyon — (2:09 1Q) Ethan Munk , 2-yard run (kick failed)",
+        "Ridgeline — (8:39 1Q) Owen Leishman , 30-yard pass from Crew Cox (run from Noah Fiefia )",
+        "Ridgeline — (10:23 2Q) Noah Fiefia , 69-yard run (run failed)",
+        "Ridgeline — (2:05 2Q) Noah Fiefia , 2-yard run (kick from Hayden Miller )",
+        "Ridgeline — (9:41 3Q) Noah Fiefia , 2-yard run (run from Noah Fiefia )",
+        "Ridgeline — (11;13 4Q) Noah Fiefia , 10-yard pass from Crew Cox (kick from Hayden Miller )",
+        "Green Canyon — (4:27 4Q) Tagg Rainey , 6-yard pass from Ethan Munk (run failed)",
+        "Ridgeline — (0:42 4Q) Owen Leishman , 26-yard pass from Crew Cox (run from Taeden Perry )"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "10",
+              "Ethan Munk",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Rushing",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "30",
+              "Noah Fiefia",
+              "",
+              "",
+              "3"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "GREEN CANYON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "10",
+              "Ethan Munk",
+              "",
+              "",
+              "",
+              "1",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "Crew Cox",
+              "",
+              "",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "GREEN CANYON",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "0",
+              "Tagg Rainey",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "30",
+              "Noah Fiefia",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "2",
+              "Owen Leishman",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "RIDGELINE",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "Hayden Miller",
+              "",
+              "2",
+              ""
+            ]
+          ]
+        }
+      ],
+      "statsAvailability": {
+        "status": "partial",
+        "blocks": 7,
+        "rows": 8,
+        "coreCells": 18,
+        "filledCoreCells": 0,
+        "emptyCoreBlocks": 6
+      },
+      "fetchedAt": "2026-10-08T04:24:19.663Z",
       "date": "10/07/2026",
       "awayTeam": "RIDGELINE",
       "homeTeam": "GREEN CANYON",
-      "browserFetchedAt": "2026-10-08T01:04:21.794Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-10-08T04:24:19.663Z",
+      "detailSource": "deseret-browser-game-page",
+      "scoreSource": "deseret-rendered-daily-scoreboard",
+      "statusSource": "deseret-rendered-daily-scoreboard",
+      "finalSource": "deseret-browser-live-final",
+      "finalRefreshCount": 1
     }
   }
 }
