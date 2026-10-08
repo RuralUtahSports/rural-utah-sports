@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-08T04:24:39.925Z",
+  "updatedAt": "2026-10-08T18:07:22.002Z",
   "games": {
     "2026-10-07|RIDGELINE|GREENCANYON": {
       "date": "10/07/2026",
@@ -255,7 +255,7 @@
               0,
               null
             ],
-            "total": 44
+            "total": 0
           }
         ]
       },
@@ -399,8 +399,9 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 3
       },
-      "finalSource": "deseret-browser-live-final",
-      "scoreSource": "deseret-rendered-daily-scoreboard"
+      "finalSource": "verified-manual",
+      "scoreSource": "verified-manual",
+      "manualScoreNote": "User-provided Deseret scoreboard screenshot confirms Hurricane 45-0 Roy; correct erroneous imported 45-44 final."
     },
     "2026-10-07|SKYVIEW|STANSBURY": {
       "date": "10/07/2026",
@@ -422,25 +423,220 @@
         "rows": [
           {
             "team": "SKY VIEW",
-            "total": 44
+            "quarters": [
+              6,
+              9,
+              10,
+              0
+            ],
+            "total": 25
           },
           {
             "team": "STANSBURY",
-            "total": 12
+            "quarters": [
+              7,
+              14,
+              7,
+              6
+            ],
+            "total": 34
           }
         ]
       },
-      "scoringPlays": [],
-      "stats": [],
+      "scoringPlays": [
+        "Sky View — (7:20 1Q) Drake Bohm , 29-yard pass from Tucker Stokes (kick failed)",
+        "Stansbury — (3:58 1Q) Lincoln Reutzel , 4-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
+        "Stansbury — (6:52 2Q) Lincoln Reutzel , 45-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
+        "Sky View — (3:51 2Q) Jordan Hoyt , 25-yard FG",
+        "Stansbury — (1:16 2Q) Peti Vaka , 4-yard run (kick from Seth Wilcox )",
+        "Sky View — (0:01 2Q) Jhet Oman , 4-yard pass from Tucker Stokes (kick failed)",
+        "Stansbury — (11:24 3Q) Junior Helu , 60-yard pass from Brighton Reutzel (kick from Seth Wilcox )",
+        "Sky View — (8:35 3Q) Drake Bohm , 10-yard pass from Tucker Stokes (kick from Jordan Hoyt )",
+        "Sky View — (3:08 3Q) Jordan Hoyt , 30-yard FG",
+        "Stansbury — (5:10 4Q) Boston Rowley , 42-yard pass from Brighton Reutzel (run failed)"
+      ],
+      "stats": [
+        {
+          "category": "Rushing",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Carries",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "4",
+              "P. Peti Vaka",
+              "",
+              "",
+              "1"
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "3",
+              "B. Brighton Reutzel",
+              "",
+              "",
+              "",
+              "4",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Passing",
+          "team": "SKY VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Comp-Att",
+            "Comp %",
+            "Yards",
+            "TD",
+            "Int"
+          ],
+          "rows": [
+            [
+              "2",
+              "T. Tucker Stokes",
+              "",
+              "",
+              "",
+              "3",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "2",
+              "B. Boston Rowley",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "10",
+              "J. Junior Helu",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "5",
+              "L. Lincoln Reutzel",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Receiving",
+          "team": "SKY VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "Receptions",
+            "Yards",
+            "TD"
+          ],
+          "rows": [
+            [
+              "81",
+              "J. Jhet Oman",
+              "",
+              "",
+              "1"
+            ],
+            [
+              "27",
+              "D. Drake Bohm",
+              "",
+              "",
+              "2"
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "STANSBURY",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "11",
+              "S. Seth Wilcox",
+              "",
+              "4",
+              ""
+            ]
+          ]
+        },
+        {
+          "category": "Special Teams",
+          "team": "SKY VIEW",
+          "headers": [
+            "NO",
+            "PLAYER",
+            "FG",
+            "PAT",
+            "Return TD"
+          ],
+          "rows": [
+            [
+              "25",
+              "J. Jordan Hoyt",
+              "2",
+              "1",
+              ""
+            ]
+          ]
+        }
+      ],
       "statsAvailability": {
-        "status": "unavailable",
-        "blocks": 0,
-        "rows": 0,
+        "status": "partial",
+        "blocks": 7,
+        "rows": 10,
+        "coreCells": 20,
         "filledCoreCells": 0,
-        "emptyCoreBlocks": 0
+        "emptyCoreBlocks": 5
       },
-      "finalSource": "deseret-browser-live-final",
-      "scoreSource": "deseret-rendered-daily-scoreboard"
+      "finalSource": "verified-manual",
+      "scoreSource": "verified-manual",
+      "manualScoreNote": "User-confirmed correction: Stansbury defeated Sky View 34-25, not Sky View 44-12."
     }
   }
 }
