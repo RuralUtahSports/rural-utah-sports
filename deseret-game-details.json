@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-07T22:02:35.476Z",
+  "updatedAt": "2026-10-08T01:04:46.916Z",
   "games": {
     "2026-08-13|CEDARCITY|WASATCH": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-08-13/cedar-city-football-vs-wasatch-football/273389",
@@ -190025,7 +190025,24 @@
       "clock": "",
       "period": "",
       "kickoffTime": "",
-      "boxScore": null,
+      "boxScore": {
+        "periods": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "rows": [
+          {
+            "team": "HURRICANE",
+            "total": 10
+          },
+          {
+            "team": "ROY",
+            "total": 11
+          }
+        ]
+      },
       "scoringPlays": [],
       "stats": [],
       "statsAvailability": {
@@ -190035,12 +190052,14 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-07T22:01:49.002Z",
+      "fetchedAt": "2026-10-08T01:04:31.859Z",
       "date": "10/07/2026",
       "awayTeam": "HURRICANE",
       "homeTeam": "ROY",
-      "browserFetchedAt": "2026-10-07T22:01:49.002Z",
-      "detailSource": "deseret-browser-game-page"
+      "browserFetchedAt": "2026-10-08T01:04:31.859Z",
+      "detailSource": "deseret-browser-game-page",
+      "scoreSource": "deseret-rendered-daily-scoreboard",
+      "statusSource": "deseret-rendered-daily-scoreboard"
     },
     "2026-10-07|SKYVIEW|STANSBURY": {
       "url": "https://sports.deseret.com/high-school/football/game/2026-10-07/sky-view-football-vs-stansbury-football/273612",
@@ -190059,11 +190078,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-07T22:02:35.375Z",
+      "fetchedAt": "2026-10-08T01:04:46.816Z",
       "date": "10/07/2026",
       "awayTeam": "SKY VIEW",
       "homeTeam": "STANSBURY",
-      "browserFetchedAt": "2026-10-07T22:02:35.375Z",
+      "browserFetchedAt": "2026-10-08T01:04:46.816Z",
       "detailSource": "deseret-browser-game-page"
     },
     "2026-10-07|RIDGELINE|GREENCANYON": {
@@ -190083,11 +190102,11 @@
         "filledCoreCells": 0,
         "emptyCoreBlocks": 0
       },
-      "fetchedAt": "2026-10-07T20:31:13.534Z",
+      "fetchedAt": "2026-10-08T01:04:21.794Z",
       "date": "10/07/2026",
       "awayTeam": "RIDGELINE",
       "homeTeam": "GREEN CANYON",
-      "browserFetchedAt": "2026-10-07T20:31:13.534Z",
+      "browserFetchedAt": "2026-10-08T01:04:21.794Z",
       "detailSource": "deseret-browser-game-page"
     }
   }
