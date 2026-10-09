@@ -11,6 +11,7 @@ on:
       - 'weekly-simulation.json'
       - 'deseret-game-links.json'
       - 'scripts/enrich-deseret-game-details.mjs'
+      - 'scripts/test-final-score-integrity.mjs'
       - 'scripts/build_live_scoreboard_details.mjs'
       - 'scripts/reconcile-deseret-day-status.mjs'
       - 'scripts/reconcile-deseret-browser-live.mjs'
@@ -38,6 +39,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+
+      - name: Validate final-score integrity
+        run: node scripts/test-final-score-integrity.mjs
 
       - name: Check for newly completed games
         run: |

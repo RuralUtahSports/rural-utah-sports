@@ -357,17 +357,24 @@ function extractStatus(html, box, scoringPlays, clockInfo) {
 
 function parseGameDetails(html, game) {
   const tables = extractTables(html);
-  const boxScore = findBoxScore(tables);
+  const boxScore = normalizeBrowserBoxScore(findBoxScore(tables), game);
   const scoringPlays = extractScoringPlays(html);
   const stats = extractStats(tables, game, scoringPlays);
   const statsInfo = statsAvailability(stats);
   const clockInfo = extractClock(html, game);
   const kickoffTime = extractKickoffTime(html);
   const state = extractStatus(html, boxScore, scoringPlays, clockInfo);
+  // A final requires two matched team rows and an actual winning score.
+  if (state.final && (boxScore?.rows?.length !== 2 || boxScore.rows[0].total === boxScore.rows[1].total)) {
+    state.final = false;
+    state.status = 'Awaiting verification';
+  }
   return {
     url: game.deseretUrl,
     status: state.status,
     final: state.final,
+    finalSource: state.final ? 'deseret-game-page' : undefined,
+    scoreSource: boxScore?.rows?.length === 2 ? 'deseret-game-page' : undefined,
     clock: state.final ? '' : clockInfo.clock,
     period: state.final ? '' : clockInfo.period,
     kickoffTime,
@@ -441,7 +448,7 @@ function normalizeBrowserBoxScore(boxScore, game) {
   const home = mapped.find(row => compact(row.team) === compact(game.homeTeam));
   return {
     ...boxScore,
-    rows: away && home ? [away, home] : mapped
+    rows: away && home && away !== home ? [away, home] : []
   };
 }
 
@@ -487,71 +494,22 @@ function mergeBrowserDetail(prior, parsed, game) {
     next.statusSource = 'deseret-browser-game-page-live-reopen';
   }
 
-  // Do not let a stale rendered page replace a newer total already captured
-  // by the live/manual reconciliation passes.
-  const priorRows = prior?.boxScore?.rows;
-  const nextRows = next?.boxScore?.rows;
-  if (Array.isArray(priorRows) && Array.isArray(nextRows) && priorRows.length >= 2 && nextRows.length >= 2) {
-    for (let i = 0; i < 2; i++) {
-      const oldTotal = Number(priorRows[i]?.total);
-      const newTotal = Number(nextRows[i]?.total);
-      if (Number.isFinite(oldTotal) && Number.isFinite(newTotal)) nextRows[i].total = Math.max(oldTotal, newTotal);
-    }
+  // Scores are atomic pairs; per-team maxima invent scores and block corrections.
+  if (parsed?.final === true && parsed?.boxScore) {
+    next.finalSource = 'deseret-game-page';
+    next.scoreSource = 'deseret-game-page';
+  }
+  if (prior?.finalSource === 'verified-manual') {
+    next.boxScore = structuredClone(prior.boxScore);
+    next.final = true;
+    next.status = 'Final';
+    next.clock = '';
+    next.period = '';
+    next.finalSource = 'verified-manual';
+    next.scoreSource = 'verified-manual';
   }
   if (next.final === true) next.finalRefreshCount = prior?.final ? Number(prior.finalRefreshCount || 0) + 1 : 1;
   return next;
-}
-
-function browserDumpDailyScoreboard(date, browserPath) {
-  const url = new URL(`https://sports.deseret.com/high-school/scores-schedule/${date}`);
-  url.searchParams.set('region', 'all');
-  url.searchParams.set('_rus_live', `${Date.now()}_${Math.random().toString(36).slice(2)}`);
-  const result = spawnSync(browserPath, [
-    '--headless=new', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage',
-    '--virtual-time-budget=12000', '--dump-dom', url.toString()
-  ], { encoding: 'utf8', timeout: 35000, maxBuffer: 25 * 1024 * 1024 });
-  if (result.error) throw result.error;
-  if (result.status !== 0 || !clean(result.stdout)) throw new Error(`daily scoreboard browser exit ${result.status}`);
-  return result.stdout;
-}
-
-function reconcileRenderedDailyScoreboard(html, date, weekly, details) {
-  const text = htmlText(html);
-  const lines = text.split(/\n+/).map(clean).filter(Boolean);
-  let changed = 0;
-  for (const game of weekly.games || []) {
-    if (isoDate(game.date) !== date) continue;
-    const away = clean(game.awayTeam), home = clean(game.homeTeam);
-    const awayKeys = keysFor(away), homeKeys = keysFor(home);
-    const ai = lines.findIndex(line => awayKeys.some(k => compact(line).includes(k)));
-    if (ai < 0) continue;
-    const hi = lines.findIndex((line, i) => i >= Math.max(0, ai - 8) && i <= ai + 24 && homeKeys.some(k => compact(line).includes(k)));
-    if (hi < 0) continue;
-    const segment = lines.slice(Math.max(0, Math.min(ai, hi) - 6), Math.max(ai, hi) + 10).join(' ');
-    const nums = [...segment.matchAll(/(?:^|\s)(\d{1,3})(?=\s|$)/g)].map(m => Number(m[1]));
-    if (nums.length < 2) continue;
-    const final = /\bFINAL\b/i.test(segment);
-    const live = /\bLIVE\b/i.test(segment);
-    if (!final && !live) continue;
-    const key = gameKey(game);
-    const prior = details[key] || {};
-    const awayScore = nums[nums.length - 2], homeScore = nums[nums.length - 1];
-    details[key] = {
-      ...prior, date, awayTeam: away, homeTeam: home,
-      status: final ? 'Final' : (prior.period || prior.status || 'Live'),
-      final,
-      boxScore: { periods: prior.boxScore?.periods || ['Q1','Q2','Q3','Q4'], rows: [
-        { ...(prior.boxScore?.rows?.[0] || {}), team: away, total: awayScore },
-        { ...(prior.boxScore?.rows?.[1] || {}), team: home, total: homeScore }
-      ]},
-      scoreSource: 'deseret-rendered-daily-scoreboard',
-      statusSource: 'deseret-rendered-daily-scoreboard',
-      fetchedAt: new Date().toISOString()
-    };
-    if (final) details[key].finalSource = 'deseret-browser-live-final';
-    changed++;
-  }
-  return changed;
 }
 
 function browserDumpDom(url, browserPath) {
@@ -575,16 +533,7 @@ async function runBrowserOnly(weekly, details, linkIndex) {
   }
 
   const today = utahDate();
-  try {
-    const dailyHtml = browserDumpDailyScoreboard(today, browserPath);
-    const dailyChanges = reconcileRenderedDailyScoreboard(dailyHtml, today, weekly, details);
-    if (dailyChanges) {
-      fs.writeFileSync(OUTPUT, JSON.stringify({ updatedAt: new Date().toISOString(), games: details }, null, 2) + '\n');
-      console.log(`Rendered Deseret daily scoreboard reconciled: ${dailyChanges} games.`);
-    }
-  } catch (error) {
-    console.warn(`Rendered Deseret daily scoreboard failed: ${error.message}`);
-  }
+  // Only individual game pages: whole-page number windows mix different games.
   const todayNumber = Date.parse(`${today}T12:00:00Z`);
   const candidates = [];
   for (const game of weekly.games || []) {

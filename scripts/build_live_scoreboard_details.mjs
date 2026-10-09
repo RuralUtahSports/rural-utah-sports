@@ -143,9 +143,9 @@ function isLiveOrFinal(detail) {
 function scoreTotals(detail) {
   const rows = detail?.boxScore?.rows;
   if (!Array.isArray(rows) || rows.length < 2) return null;
-  const away = Number(rows[0]?.total);
-  const home = Number(rows[1]?.total);
-  return Number.isFinite(away) && Number.isFinite(home) ? { away, home } : null;
+  if (rows.slice(0, 2).some(row => row?.total === null || row?.total === undefined || clean(row.total) === '')) return null;
+  const away = Number(rows[0].total), home = Number(rows[1].total);
+  return Number.isInteger(away) && Number.isInteger(home) && away >= 0 && home >= 0 && away !== home ? { away, home } : null;
 }
 
 function protectPublishedLiveState(key, detail, previous, today) {
