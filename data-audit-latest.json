@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-09T03:50:58.715Z",
+  "generatedAt": "2026-10-09T05:16:11.861Z",
   "summary": {
     "errors": 0,
-    "warnings": 1,
+    "warnings": 2,
     "info": 2
   },
   "issues": [
@@ -13,6 +13,15 @@
       "context": {
         "standings": "3-6-0",
         "calculated": "2-6-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "TOOELE standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "3-6-0",
+        "calculated": "3-5-1"
       }
     },
     {

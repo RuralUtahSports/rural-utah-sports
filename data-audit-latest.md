@@ -1,12 +1,13 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-09T03:50:58.715Z
+Generated: 2026-10-09T05:16:11.861Z
 
-**0 errors • 1 warnings**
+**0 errors • 2 warnings**
 
-## Warnings (1)
+## Warnings (2)
 
 - **RECORD_MISMATCH** — GREEN CANYON standings record does not match completed games in weekly-simulation.json. `{"standings":"3-6-0","calculated":"2-6-1"}`
+- **RECORD_MISMATCH** — TOOELE standings record does not match completed games in weekly-simulation.json. `{"standings":"3-6-0","calculated":"3-5-1"}`
 
 ## Infos (2)
 
