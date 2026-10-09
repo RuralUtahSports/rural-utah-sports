@@ -1,6 +1,6 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-09T17:38:57.019Z
+Generated: 2026-10-09T18:26:34.909Z
 
 **0 errors • 2 warnings**
 
