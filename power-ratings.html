@@ -27,13 +27,13 @@
 <div class="forecast"><div class="score-detail" id="ratingCompare">Loading power ratings…</div><div class="pick" id="spreadDisplay" aria-live="polite">—</div></div>
 </section>
 <section class="panel">
-<h2>2026 Team Power Ratings</h2><p class="muted">PWR is the point-spread rating, not a Madden OVR. Ratings are refreshed from the latest finalized game results when this page loads. All 11-player teams share one statewide scale.</p>
+<h2>2026 Team Power Ratings</h2><p class="muted">Games played includes out-of-state opponents. Games analyzed counts only eligible finalized in-state matchups. PWR is the point-spread rating, not a Madden OVR. Ratings are refreshed from the latest finalized game results when this page loads. All 11-player teams share one statewide scale.</p>
 <div class="filters">
 <label>Football format<select id="format"><option value="11P">11-player statewide</option><option value="8P">8-player (separate scale)</option></select></label>
 <label>Classification<select id="classification"><option value="">All classifications</option></select></label>
 <label style="flex:2">Find a school<input id="teamSearch" type="search" placeholder="Search team name…"></label>
 </div>
-<div class="table-wrap"><table><thead><tr><th>#</th><th>Team</th><th>Class</th><th>Games analyzed</th><th>PWR</th></tr></thead><tbody id="ratingRows"><tr><td colspan="5" class="loading">Loading ratings…</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Team</th><th>Class</th><th>Games played</th><th>Games analyzed</th><th>PWR</th></tr></thead><tbody id="ratingRows"><tr><td colspan="6" class="loading">Loading ratings…</td></tr></tbody></table></div>
 <p id="resultCount" class="count"></p>
 <div class="explain" id="method">Method: Current-season completed Utah-vs-Utah game margins adjusted for opponents, with recent games weighted more, plus a small ELO prior. Blowouts are capped at 55 for fitting. The 0–99 ratings are uniformly compressed only if the full performance range exceeds 99 points; the displayed rating difference is always the displayed neutral-field spread. This is a projection, not a guaranteed final margin. Games with contradictory winner/score data are excluded, and 8-player results are kept separate.</div>
 </section>
@@ -45,6 +45,10 @@
 "use strict";
 const $ = (id) => document.getElementById(id);
 let results=null;
+let playedCounts=new Map();
+function gamesPlayed(team){return playedCounts.get(String(team).toUpperCase())??"—";}
+function setGamesPlayed(standings){playedCounts=new Map();for(const group of Object.values(standings?.byClassification||{})){if(!Array.isArray(group))continue;for(const row of group){const w=Number(row?.wins),l=Number(row?.losses),t=Number(row?.ties||0);if(row?.team&&Number.isFinite(w)&&Number.isFinite(l)&&Number.isFinite(t))playedCounts.set(String(row.team).toUpperCase(),w+l+t)}}}
+
 const format=$("format"),classSel=$("classification"),teamA=$("teamA"),teamB=$("teamB");
 function addOption(select,value,text){
   const el=document.createElement("option");el.value=value;el.textContent=text;select.appendChild(el);
@@ -71,7 +75,7 @@ function showMatch(){
   if(!results)return;
   const all=results[format.value].teams,a=all.find(t=>t.name===teamA.value),b=all.find(t=>t.name===teamB.value);
   if(!a||!b)return;
-  $("ratingCompare").textContent=a.name+" "+a.rating+ " PWR  vs.  "+b.name+" "+b.rating+" OVR";
+  $("ratingCompare").textContent=a.name+" "+a.rating+ " PWR  vs.  "+b.name+" "+b.rating+" PWR";
   $("spreadDisplay").textContent=a.name===b.name?"Choose different teams":window.RUSPowerRatings.matchup(a,b,$("venue").value).label;
 }
 function showTable(){
@@ -79,13 +83,14 @@ function showTable(){
   const all=results[format.value].teams;
   const list=all.filter(t=>(!classSel.value||t.classification===classSel.value)&&t.name.toLowerCase().includes($("teamSearch").value.trim().toLowerCase()));
   const tbody=$("ratingRows");tbody.replaceChildren();
-  if(!list.length){const row=tbody.insertRow();const cell=row.insertCell();cell.colSpan=5;cell.textContent="No teams match those filters.";return;}
+  if(!list.length){const row=tbody.insertRow();const cell=row.insertCell();cell.colSpan=6;cell.textContent="No teams match those filters.";return;}
   list.forEach(t=>{
     const row=tbody.insertRow();
     const rank=row.insertCell();rank.className="rank";rank.textContent=all.indexOf(t)+1;
     const name=row.insertCell();name.className="teamname";
     const color=document.createElement("span");color.className="teamcolor";color.style.backgroundColor=/^#[0-9a-f]{6}$/i.test(t.backgroundColor)?t.backgroundColor:"#F14D07";name.appendChild(color);name.appendChild(document.createTextNode(t.name));
     row.insertCell().textContent=t.classification;
+    row.insertCell().textContent=gamesPlayed(t.name);
     row.insertCell().textContent=t.played;
     const rating=row.insertCell();rating.className="rating";rating.textContent=t.rating;
   });
@@ -110,8 +115,10 @@ function showCounts(){
   }));
   if(!window.RUSPowerRatings)throw new Error("Power ratings model failed to load");
   results=window.RUSPowerRatings.build(games,teams,elo);
+  const season=await fetch("standings-2026.json?v="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
+  setGamesPlayed(season);
   setClasses();setTeams();showTable();showCounts();
- }catch(error){$("ratingRows").innerHTML='<tr><td colspan="5" class="error">Could not load ratings. Refresh the page to try again.</td></tr>';$("spreadDisplay").textContent="Ratings unavailable";console.error(error);}
+ }catch(error){$("ratingRows").innerHTML='<tr><td colspan="6" class="error">Could not load ratings. Refresh the page to try again.</td></tr>';$("spreadDisplay").textContent="Ratings unavailable";console.error(error);}
 })();
 })();
 </script>
