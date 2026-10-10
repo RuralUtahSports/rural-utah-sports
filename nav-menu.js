@@ -264,7 +264,7 @@
       addScript("season-dropdown.js?v=20260814a", "rusSeasonDropdown", true);
     if (path === "team.html") {
       addScript("team-dashboard.js?v=20260817a", "rusTeamDashboard", true);
-      addScript("team-ratings-summary.js?v=20261010-ratings-navigation1", "rusTeamRatingsSummary", true);
+      addScript("team-ratings-summary.js?v=20261010-calibrated2", "rusTeamRatingsSummary", true);
       addScript("ratings-image-share.js?v=20261010-graphic1", "rusRatingsImageShare", true);
       addScript("team-stats.js?v=20260817c", "rusTeamStats", true);
       addScript(
