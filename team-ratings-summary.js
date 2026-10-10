@@ -47,7 +47,7 @@ async function init(){
  const hero=document.querySelector("#page .hero"),name=hero?.querySelector(".team-title")?.textContent;
  if(!name)return false;
  try{
-  await Promise.all([loadJs("power-ratings-core.js?v=20261010-2","RUSPowerRatings"),loadJs("madden-ratings-core.js?v=20261010-2","RUSMaddenRatings")]);
+  await Promise.all([loadJs("power-ratings-core.js?v=20261010-2","RUSPowerRatings"),loadJs("madden-ratings-core.js?v=20261010-calibrated2","RUSMaddenRatings")]);
   const [weekly,teams,elo]=await Promise.all(["weekly-simulation.json","teams-data.json","elo-summary.json"].map(get));
   const powers=window.RUSPowerRatings.build(weekly,teams,elo),maddens=window.RUSMaddenRatings.build(weekly,teams,elo,powers);
   const group=(teams.find(t=>canonical(t.team)===canonical(name))?.classification==="8P")?"8P":"11P";
