@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RUS Power Ratings | Rural Utah Sports</title>
+<meta name="description" content="Utah high school football power ratings calibrated directly to projected neutral-field point spreads.">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101010;color:#f6f6f6;font-family:Arial,Helvetica,sans-serif}header{background:#000;border-bottom:4px solid #F14D07;padding:15px 22px}.header-content{display:flex;align-items:center;gap:16px;max-width:1260px;margin:auto}header img{width:72px;height:72px;object-fit:contain}.header-title{font-size:26px;font-weight:900;letter-spacing:1.5px}.header-sub{margin-top:4px;color:#F14D07;font-size:12px;font-weight:800}nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1260px;display:flex;flex-wrap:wrap;margin:auto}.nav-content a{display:inline-block;padding:13px;color:#fff;font-size:12px;font-weight:900;text-decoration:none;text-transform:uppercase}.nav-content a:hover,.nav-content a.active{color:#111;background:#F14D07}main{max-width:1260px;margin:auto;padding:30px 18px 55px}h1{font-size:33px;text-transform:uppercase;border-left:6px solid #F14D07;padding-left:12px;margin:0 0 12px}h2{font-size:21px;text-transform:uppercase;margin:0 0 9px}.lead{color:#bdbdbd;line-height:1.5;max-width:920px;margin:0 0 18px;font-size:14px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:17px 0 22px}.card,.panel{border:1px solid #323232;background:#050505;border-radius:10px;padding:17px}.card strong{color:#F14D07;font-size:28px;display:block}.card span{font-size:10px;color:#999;text-transform:uppercase;font-weight:900}.panel{margin-bottom:18px}.muted{color:#a0a0a0;font-size:12px;line-height:1.45;margin:0 0 15px}.match-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}label{display:flex;flex-direction:column;color:#bbb;gap:7px;font-size:11px;font-weight:900;text-transform:uppercase}select,input{width:100%;min-height:43px;background:#181818;color:#fff;border:1px solid #444;border-radius:6px;padding:9px 11px;font-size:14px}select:focus,input:focus{outline:2px solid #F14D07;outline-offset:1px}.forecast{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:15px;border-top:1px solid #292929;padding-top:15px}.score-detail{font-size:12px;color:#ccc}.score-detail strong{color:#F14D07;font-size:25px}.pick{font-size:22px;font-weight:900;color:#F14D07}.filters{display:flex;gap:9px;margin-bottom:12px;flex-wrap:wrap}.filters>*{flex:1;min-width:150px}.filters label{flex:0;min-width:170px}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:550px;font-size:13px}thead{background:#1b1b1b;color:#aaa;text-transform:uppercase;font-size:10px}th,td{padding:12px 11px;text-align:left;border-bottom:1px solid #292929}th:last-child,td:last-child{text-align:right}tbody tr:hover{background:#171717}.rank{color:#888;font-weight:900;width:42px}.rating{font-size:18px;color:#F14D07;font-weight:900;font-variant-numeric:tabular-nums}.teamname{font-weight:900}.teamcolor{height:12px;width:5px;border-radius:3px;display:inline-block;vertical-align:middle;margin-right:9px}.explain{background:#161616;border-left:4px solid #F14D07;padding:13px;font-size:12px;color:#b3b3b3;line-height:1.55;margin-top:16px}.loading{color:#aaa}.error{color:#ff7777;font-weight:800}.count{color:#888;font-size:11px;margin:8px 0 0}footer{max-width:1260px;margin:0 auto;padding:18px;color:#777;border-top:1px solid #222;font-size:11px}@media(max-width:700px){h1{font-size:25px}.header-title{font-size:20px}header img{width:56px;height:56px}.cards{grid-template-columns:1fr 1fr}.match-grid{grid-template-columns:1fr}.pick{font-size:18px}.forecast{align-items:flex-start}.panel{padding:13px}}
+</style>
+</head>
+<body>
+<header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports logo"><div><div class="header-title">RURAL UTAH SPORTS</div><div class="header-sub">Utah High School Athletics</div></div></div></header>
+<nav><div class="nav-content"><a href="index.html">Home</a><a href="scoreboard.html">Scoreboard</a><a href="rankings.html">Rankings</a><a href="simulators.html">Simulators</a><a href="power-ratings.html" class="active">Power Ratings</a></div></nav>
+<main>
+<h1>RUS Power Ratings</h1>
+<p class="lead"><strong>Every rating point equals one point on a neutral-field projected spread.</strong> If Team A rates 88 and Team B rates 51, Team A is favored by 37. These are opponent-adjusted 2026 power ratings—not poll rankings or player ratings.</p>
+<div class="cards"><div class="card"><strong id="ratedTeams">—</strong><span>Teams rated</span></div><div class="card"><strong id="gamesUsed">—</strong><span>Completed games analyzed</span></div><div class="card"><strong id="latestGame">—</strong><span>Latest scored game</span></div></div>
+<section class="panel">
+<h2>Matchup Calculator</h2><p class="muted">Pick two teams to see the point spread implied by their power ratings. A 2.5-point home-field adjustment is optional; neutral field is the default. Eleven-player and eight-player teams use different rating pools.</p>
+<div class="match-grid">
+<label>Team A<select id="teamA" aria-label="Team A"></select></label>
+<label>Team B<select id="teamB" aria-label="Team B"></select></label>
+<label>Game site<select id="venue"><option value="neutral">Neutral field</option><option value="a">Team A at home (+2.5)</option><option value="b">Team B at home (+2.5)</option></select></label>
+</div>
+<div class="forecast"><div class="score-detail" id="ratingCompare">Loading power ratings…</div><div class="pick" id="spreadDisplay" aria-live="polite">—</div></div>
+</section>
+<section class="panel">
+<h2>2026 Team Power Ratings</h2><p class="muted">Ratings are refreshed from the latest finalized game results when this page loads. Filter to compare any classification; all 11-player teams share one statewide scale.</p>
+<div class="filters">
+<label>Football format<select id="format"><option value="11P">11-player statewide</option><option value="8P">8-player (separate scale)</option></select></label>
+<label>Classification<select id="classification"><option value="">All classifications</option></select></label>
+<label style="flex:2">Find a school<input id="teamSearch" type="search" placeholder="Search team name…"></label>
+</div>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Team</th><th>Class</th><th>Games analyzed</th><th>OVR</th></tr></thead><tbody id="ratingRows"><tr><td colspan="5" class="loading">Loading ratings…</td></tr></tbody></table></div>
+<p id="resultCount" class="count"></p>
+<div class="explain" id="method">Method: Current-season completed Utah-vs-Utah game margins adjusted for opponents, with recent games weighted more, plus a small ELO prior. Blowouts are capped at 55 for fitting. The 0–99 ratings are uniformly compressed only if the full performance range exceeds 99 points; the displayed rating difference is always the displayed neutral-field spread. This is a projection, not a guaranteed final margin. Games with contradictory winner/score data are excluded, and 8-player results are kept separate.</div>
+</section>
+</main>
+<footer>© Rural Utah Sports · Model estimates, not sportsbook lines · Results must be verified before publication.</footer>
+<script src="power-ratings-core.js?v=20261010-1"></script>
+<script>
+(function(){
+"use strict";
+const $ = (id) => document.getElementById(id);
+let results=null;
+const format=$("format"),classSel=$("classification"),teamA=$("teamA"),teamB=$("teamB");
+function addOption(select,value,text){
+  const el=document.createElement("option");el.value=value;el.textContent=text;select.appendChild(el);
+}
+function setClasses(){
+  classSel.replaceChildren();addOption(classSel,"","All classifications");
+  const names=[...new Set(results[format.value].teams.map(t=>t.classification))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  names.forEach(c=>addOption(classSel,c,c));
+}
+function setTeams(){
+  const all=results[format.value].teams;
+  const oldA=teamA.value,oldB=teamB.value;
+  teamA.replaceChildren();teamB.replaceChildren();
+  all.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(t=>{
+    const label=t.name+" ("+t.rating+")";
+    addOption(teamA,t.name,label);addOption(teamB,t.name,label);
+  });
+  teamA.value=all.some(t=>t.name===oldA)?oldA:(all.some(t=>t.name==="MORGAN")?"MORGAN":all[0]?.name || "");
+  teamB.value=all.some(t=>t.name===oldB)?oldB:(all.some(t=>t.name==="CARBON")?"CARBON":all[1]?.name || "");
+  if(teamA.value===teamB.value && all.length>1)teamB.value=all.find(t=>t.name!==teamA.value).name;
+  showMatch();
+}
+function showMatch(){
+  if(!results)return;
+  const all=results[format.value].teams,a=all.find(t=>t.name===teamA.value),b=all.find(t=>t.name===teamB.value);
+  if(!a||!b)return;
+  $("ratingCompare").textContent=a.name+" "+a.rating+" OVR  vs.  "+b.name+" "+b.rating+" OVR";
+  $("spreadDisplay").textContent=a.name===b.name?"Choose different teams":window.RUSPowerRatings.matchup(a,b,$("venue").value).label;
+}
+function showTable(){
+  if(!results)return;
+  const all=results[format.value].teams;
+  const list=all.filter(t=>(!classSel.value||t.classification===classSel.value)&&t.name.toLowerCase().includes($("teamSearch").value.trim().toLowerCase()));
+  const tbody=$("ratingRows");tbody.replaceChildren();
+  if(!list.length){const row=tbody.insertRow();const cell=row.insertCell();cell.colSpan=5;cell.textContent="No teams match those filters.";return;}
+  list.forEach(t=>{
+    const row=tbody.insertRow();
+    const rank=row.insertCell();rank.className="rank";rank.textContent=all.indexOf(t)+1;
+    const name=row.insertCell();name.className="teamname";
+    const color=document.createElement("span");color.className="teamcolor";color.style.backgroundColor=/^#[0-9a-f]{6}$/i.test(t.backgroundColor)?t.backgroundColor:"#F14D07";name.appendChild(color);name.appendChild(document.createTextNode(t.name));
+    row.insertCell().textContent=t.classification;
+    row.insertCell().textContent=t.played;
+    const rating=row.insertCell();rating.className="rating";rating.textContent=t.rating;
+  });
+  $("resultCount").textContent="Showing "+list.length+" of "+all.length+" teams · "+results[format.value].games+" finalized in-state games used for this format.";
+}
+format.addEventListener("change",()=>{setClasses();setTeams();showTable();showCounts();});
+classSel.addEventListener("change",showTable);
+$("teamSearch").addEventListener("input",showTable);
+[teamA,teamB,$("venue")].forEach(el=>el.addEventListener("change",showMatch));
+function showCounts(){
+  const group=results[format.value];
+  $("ratedTeams").textContent=group.teams.length;
+  $("gamesUsed").textContent=group.games;
+  $("latestGame").textContent=group.updatedThrough || "—";
+}
+(async()=>{
+ try{
+  const [games,teams,elo]=await Promise.all(["weekly-simulation.json","teams-data.json","elo-summary.json"].map(async file=>{
+    const response=await fetch(file+"?v="+Date.now(),{cache:"no-store"});
+    if(!response.ok)throw new Error("Cannot load "+file+" ("+response.status+")");
+    return response.json();
+  }));
+  if(!window.RUSPowerRatings)throw new Error("Power ratings model failed to load");
+  results=window.RUSPowerRatings.build(games,teams,elo);
+  setClasses();setTeams();showTable();showCounts();
+ }catch(error){$("ratingRows").innerHTML='<tr><td colspan="5" class="error">Could not load ratings. Refresh the page to try again.</td></tr>';$("spreadDisplay").textContent="Ratings unavailable";console.error(error);}
+})();
+})();
+</script>
+<script src="school-assets-bundle.js?v=20260910-oos-5"></script>
+<script src="nav-menu.js?v=20260929-alltime-team-stats1"></script>
+</body>
+</html>

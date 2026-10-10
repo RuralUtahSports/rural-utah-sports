@@ -109,6 +109,7 @@
     simulators: [
       ["Weekly Pick'em", "simulators.html?tab=weekly"],
       ["Simulators Hub", "simulators.html"],
+      ["RUS Power Ratings", "power-ratings.html"],
       ["Create Classification", "classification-builder.html"],
       ["Promotion / Relegation", "promotion-relegation.html"],
     ],
