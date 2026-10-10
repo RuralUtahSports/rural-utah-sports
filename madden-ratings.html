@@ -80,14 +80,14 @@ footer{max-width:1260px;margin:0 auto;padding:18px;color:#777;border-top:1px sol
 </section>
 <section class="panel">
 <h2>2026 Madden Team Ratings</h2>
-<p class="muted">Switch between 11-player statewide grades and a separate 8-player pool. Offense and defense grades use opponents' scoring strength, with an ELO-based starting estimate for limited samples. Filter, search or sort the table.</p>
+<p class="muted">Switch between 11-player statewide grades and a separate 8-player pool. Offense and defense grades use opponents' scoring strength, with an ELO-based starting estimate for limited samples. Games played includes out-of-state opponents; games analyzed excludes them. Filter, search or sort the table.</p>
 <div class="filters">
 <label>Football format<select id="format"><option value="11P">11-player statewide</option><option value="8P">8-player (separate)</option></select></label>
 <label>Classification<select id="classification"><option value="">All classes</option></select></label>
 <label>School name<input id="teamSearch" type="search" placeholder="Find a school…"></label>
 <label>Sort by<select id="sortBy"><option value="overall">Overall (OVR)</option><option value="offense">Offense (OFF)</option><option value="defense">Defense (DEF)</option><option value="name">School (A–Z)</option></select></label>
 </div>
-<div class="table-wrap"><table><thead><tr><th>#</th><th>School</th><th>Class</th><th class="numeric" data-sort="overall">OVR</th><th class="numeric" data-sort="offense">OFF</th><th class="numeric" data-sort="defense">DEF</th><th class="numeric">Games</th></tr></thead><tbody id="ratingRows"><tr><td colspan="7" class="loading">Loading ratings…</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>School</th><th>Class</th><th class="numeric" data-sort="overall">OVR</th><th class="numeric" data-sort="offense">OFF</th><th class="numeric" data-sort="defense">DEF</th><th class="numeric">Games played</th><th class="numeric">Games analyzed</th></tr></thead><tbody id="ratingRows"><tr><td colspan="8" class="loading">Loading ratings…</td></tr></tbody></table></div>
 <p id="resultCount" class="count"></p>
 <div class="explain">
 <strong>How Madden Ratings work:</strong> Game-by-game 2026 points scored and allowed are adjusted for opponent quality and recent performance, with a light historical ELO prior for teams with fewer results. Offense and defense are converted into relative 50–99 percentile grades. Overall blends 51% OFF and 49% DEF, with a small record adjustment. Teams with fewer than four completed in-state games are marked provisional.
@@ -103,6 +103,10 @@ footer{max-width:1260px;margin:0 auto;padding:18px;color:#777;border-top:1px sol
 const $=id=>document.getElementById(id);
 const format=$("format"),classes=$("classification"),sort=$("sortBy"),teamA=$("teamA"),teamB=$("teamB");
 let data=null;
+let playedCounts=new Map();
+function gamesPlayed(team){return playedCounts.get(String(team).toUpperCase())??"—";}
+function setGamesPlayed(standings){playedCounts=new Map();for(const group of Object.values(standings?.byClassification||{})){if(!Array.isArray(group))continue;for(const row of group){const w=Number(row?.wins),l=Number(row?.losses),t=Number(row?.ties||0);if(row?.team&&Number.isFinite(w)&&Number.isFinite(l)&&Number.isFinite(t))playedCounts.set(String(row.team).toUpperCase(),w+l+t)}}}
+
 function option(node,value,label){const item=document.createElement("option");item.value=value;item.textContent=label;node.appendChild(item)}
 function list(){return data?.[format.value]?.teams||[]}
 function populateClasses(){
@@ -128,7 +132,7 @@ function compare(){
   if(!t)continue;
   const card=document.createElement("div");card.className="compare-team";
   const title=document.createElement("div");title.className="compare-title";title.textContent=t.name;
-  const sub=document.createElement("div");sub.className="compare-sub";sub.textContent=t.classification+" · "+t.played+" completed games"+(t.provisional?" · Provisional":"");
+  const sub=document.createElement("div");sub.className="compare-sub";sub.textContent=t.classification+" · "+gamesPlayed(t.name)+" played / "+t.played+" analyzed"+(t.provisional?" · Provisional":"");
   card.append(title,sub);
   const group=document.createElement("div");group.className="compare-numbers";
   for(const [label,value] of [["OVR",t.overall],["OFF",t.offense],["DEF",t.defense]]){
@@ -146,7 +150,7 @@ function render(){
  const order=sort.value;
  rows.sort((a,b)=>order==="name"?a.name.localeCompare(b.name):(b[order]-a[order]||b.overall-a.overall||a.name.localeCompare(b.name)));
  const body=$("ratingRows");body.replaceChildren();
- if(!rows.length){const tr=body.insertRow(),cell=tr.insertCell();cell.colSpan=7;cell.textContent="No teams match those filters.";}
+ if(!rows.length){const tr=body.insertRow(),cell=tr.insertCell();cell.colSpan=8;cell.textContent="No teams match those filters.";}
  for(const [index,t] of rows.entries()){
   const tr=body.insertRow(),rank=tr.insertCell();rank.className="rank";rank.textContent=index+1;
   const name=tr.insertCell();name.className="teamname";
@@ -157,6 +161,7 @@ function render(){
   for(const [key,css] of [["overall","overall"],["offense",""],["defense",""]]){
    const cell=tr.insertCell();cell.className="numeric score "+css;cell.textContent=t[key];
   }
+  const played=tr.insertCell();played.className="numeric";played.textContent=gamesPlayed(t.name);
   const games=tr.insertCell();games.className="numeric";games.textContent=t.played;
  }
  $("resultCount").textContent="Showing "+rows.length+" of "+all.length+" teams · "+data[format.value].games+" completed in-state games in this format.";
@@ -182,9 +187,11 @@ document.querySelectorAll("[data-sort]").forEach(th=>th.addEventListener("click"
   }));
   if(!window.RUSMaddenRatings)throw new Error("Rating calculator unavailable");
   data=window.RUSMaddenRatings.build(weekly,teams,elo);
+  const season=await fetch("standings-2026.json?v="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
+  setGamesPlayed(season);
   populateClasses();populateTeams();render();counters();
  }catch(e){
-  const body=$("ratingRows");body.replaceChildren();const tr=body.insertRow(),cell=tr.insertCell();cell.colSpan=7;cell.className="error";cell.textContent="Unable to load ratings. Refresh to try again.";
+  const body=$("ratingRows");body.replaceChildren();const tr=body.insertRow(),cell=tr.insertCell();cell.colSpan=8;cell.className="error";cell.textContent="Unable to load ratings. Refresh to try again.";
   $("compareGrid").textContent="Madden ratings unavailable.";console.error(e);
  }
 })();
