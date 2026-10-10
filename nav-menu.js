@@ -81,6 +81,12 @@
       ["Boys Basketball Greatest Seasons", "boys-basketball-greatest-seasons.html"],
       ["Records", "records.html"],
     ],
+    rankings: [
+      ["Editorial Rankings", "rankings.html"],
+      ["Team Ratings", "rankings.html#team-ratings"],
+      ["Power Ratings & Spreads", "power-ratings.html"],
+      ["Madden Ratings", "madden-ratings.html"],
+    ],
     analytics: [
       ["ELO", "elo.html"],
       ["UHSAA RPI", "rpi.html"],
@@ -258,6 +264,7 @@
       addScript("season-dropdown.js?v=20260814a", "rusSeasonDropdown", true);
     if (path === "team.html") {
       addScript("team-dashboard.js?v=20260817a", "rusTeamDashboard", true);
+      addScript("team-ratings-summary.js?v=20261010-ratings-navigation1", "rusTeamRatingsSummary", true);
       addScript("team-stats.js?v=20260817c", "rusTeamStats", true);
       addScript(
         "team-overview-cleanup.js?v=20260817a",
@@ -486,7 +493,7 @@
         link("My Teams", "my-teams.html"),
         link("Games", "games.html"),
         dropdown("Scoreboard", "scoreboard"),
-        link("Rankings", "rankings.html"),
+        dropdown("Rankings", "rankings"),
         link("Standings", "standings.html"),
         link("Pick'em", "simulators.html?tab=weekly"),
         dropdown("Stats", "stats"),
