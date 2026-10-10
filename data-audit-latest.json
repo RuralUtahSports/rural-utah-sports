@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-10-10T01:34:37.051Z",
+  "generatedAt": "2026-10-10T04:19:05.996Z",
   "summary": {
     "errors": 0,
-    "warnings": 2,
+    "warnings": 4,
     "info": 2
   },
   "issues": [
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "ENTERPRISE standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "5-4-0",
+        "calculated": "4-4-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "EMERY standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "2-7-0",
+        "calculated": "2-6-1"
+      }
+    },
     {
       "severity": "warning",
       "code": "RECORD_MISMATCH",
