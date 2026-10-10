@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-10T05:10:26.102Z",
+  "generatedAt": "2026-10-10T06:27:28.924Z",
   "summary": {
     "errors": 0,
-    "warnings": 5,
+    "warnings": 6,
     "info": 2
   },
   "issues": [
@@ -31,6 +31,15 @@
       "context": {
         "standings": "6-3-0",
         "calculated": "5-3-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "UMA-HILLFIELD standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "3-5-0",
+        "calculated": "3-4-1"
       }
     },
     {
