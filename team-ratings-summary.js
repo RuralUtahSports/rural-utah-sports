@@ -49,7 +49,7 @@ async function init(){
  try{
   await Promise.all([loadJs("power-ratings-core.js?v=20261010-2","RUSPowerRatings"),loadJs("madden-ratings-core.js?v=20261010-2","RUSMaddenRatings")]);
   const [weekly,teams,elo]=await Promise.all(["weekly-simulation.json","teams-data.json","elo-summary.json"].map(get));
-  const powers=window.RUSPowerRatings.build(weekly,teams,elo),maddens=window.RUSMaddenRatings.build(weekly,teams,elo);
+  const powers=window.RUSPowerRatings.build(weekly,teams,elo),maddens=window.RUSMaddenRatings.build(weekly,teams,elo,powers);
   const group=(teams.find(t=>canonical(t.team)===canonical(name))?.classification==="8P")?"8P":"11P";
   const find=(list)=>list.find(t=>canonical(t.name)===canonical(name));
   const power=find(powers[group].teams),madden=find(maddens[group].teams);
