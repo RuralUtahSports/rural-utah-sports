@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-10T04:19:05.996Z",
+  "generatedAt": "2026-10-10T05:10:26.102Z",
   "summary": {
     "errors": 0,
-    "warnings": 4,
+    "warnings": 5,
     "info": 2
   },
   "issues": [
@@ -22,6 +22,15 @@
       "context": {
         "standings": "2-7-0",
         "calculated": "2-6-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "WATER CANYON standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "6-3-0",
+        "calculated": "5-3-1"
       }
     },
     {
