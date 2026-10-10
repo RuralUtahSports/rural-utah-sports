@@ -90,13 +90,14 @@ footer{max-width:1260px;margin:0 auto;padding:18px;color:#777;border-top:1px sol
 <div class="table-wrap"><table><thead><tr><th>#</th><th>School</th><th>Class</th><th class="numeric" data-sort="overall">OVR</th><th class="numeric" data-sort="offense">OFF</th><th class="numeric" data-sort="defense">DEF</th><th class="numeric">Games played</th><th class="numeric">Games analyzed</th></tr></thead><tbody id="ratingRows"><tr><td colspan="8" class="loading">Loading ratings…</td></tr></tbody></table></div>
 <p id="resultCount" class="count"></p>
 <div class="explain">
-<strong>How Madden Ratings work:</strong> Game-by-game 2026 points scored and allowed are adjusted for opponent quality and recent performance, with a light historical ELO prior for teams with fewer results. Offense and defense are converted into relative 50–99 percentile grades. Overall blends 51% OFF and 49% DEF, with a small record adjustment. Teams with fewer than four completed in-state games are marked provisional.
+<strong>How Madden Ratings work:</strong> Game-by-game 2026 points scored and allowed are adjusted for opponent quality and recent performance. To keep small-class dominance from inflating statewide OVR grades, overall team strength blends 75% rescaled statewide opponent-adjusted power, 10% linearly scaled scoring strength, and 15% statewide ELO. The offense/defense split reflects each team’s opponent-adjusted scoring profile. Teams with fewer than four completed in-state games are marked provisional.
 <p style="margin:9px 0 0"><strong>Important:</strong> Madden OVR, OFF and DEF grades do not calculate point spreads. Only the <a href="power-ratings.html" style="color:#F14D07">RUS Power Ratings</a> have the one-rating-point-equals-one-spread-point rule. Both systems are estimates based on game results, not verified scouting assessments of individual players.</p>
 </div>
 </section>
 </main>
 <footer>© Rural Utah Sports · Experimental model grades; not a licensed Madden or EA Sports rating.</footer>
-<script src="madden-ratings-core.js?v=20261010-1"></script>
+<script src="power-ratings-core.js?v=20261010-madden2"></script>
+<script src="madden-ratings-core.js?v=20261010-madden2"></script>
 <script>
 (function(){
 "use strict";
@@ -186,7 +187,7 @@ document.querySelectorAll("[data-sort]").forEach(th=>th.addEventListener("click"
    return response.json();
   }));
   if(!window.RUSMaddenRatings)throw new Error("Rating calculator unavailable");
-  data=window.RUSMaddenRatings.build(weekly,teams,elo);
+  data=window.RUSMaddenRatings.build(weekly,teams,elo,window.RUSPowerRatings.build(weekly,teams,elo));
   const season=await fetch("standings-2026.json?v="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null);
   setGamesPlayed(season);
   populateClasses();populateTeams();render();counters();

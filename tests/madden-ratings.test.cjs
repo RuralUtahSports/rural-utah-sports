@@ -8,6 +8,7 @@ const root=path.resolve(__dirname,"..");
 function read(name){return JSON.parse(fs.readFileSync(path.join(root,name),"utf8"))}
 function model(){
  const window={};
+ vm.runInNewContext(fs.readFileSync(path.join(root,"power-ratings-core.js"),"utf8"),{window});
  vm.runInNewContext(fs.readFileSync(path.join(root,"madden-ratings-core.js"),"utf8"),{window});
  return window.RUSMaddenRatings;
 }

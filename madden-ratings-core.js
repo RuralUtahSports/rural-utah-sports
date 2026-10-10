@@ -1,5 +1,6 @@
-/* RUS Madden-style team grades. Separate from the spread-calibrated power model.
-   This does not estimate point spreads; its OVR/OFF/DEF are relative 50-99 grades. */
+/* RUS Madden-style team grades, 2026 statewide recalibration.
+   Uses opponent-adjusted scoring, current ELO, and a statewide-strength benchmark
+   from the separate spread model; Madden grades NEVER equal point spreads. */
 (function(root){
 "use strict";
 const DAY=86400000;
@@ -10,6 +11,13 @@ const dateOf=(s)=>{
  const m=String(s||"").match(/^(\d{1,2})\/(\d{1,2})\/(20\d{2})$/);
  return m ? Date.UTC(+m[3],+m[1]-1,+m[2]) : NaN;
 };
+// Continuous (rather than percentile) normalization prevents every dominant
+// small-class program from automatically becoming 98-99 overall.
+const linearGrades=(values)=>{
+ if(!values.length)return [];
+ const lo=Math.min(...values),hi=Math.max(...values);
+ return values.map(v=>clamp(Math.round(hi===lo?75:50+49*(v-lo)/(hi-lo)),50,99));
+};
 const rankGrades=(values)=>{
  const sorted=values.slice().sort((a,b)=>a-b);
  return values.map(x=>{
@@ -19,7 +27,12 @@ const rankGrades=(values)=>{
   return clamp(Math.round(50+49*(sorted.length===1?0.5:position/(sorted.length-1))),50,99);
  });
 };
-function build(weeklyData,teamData,eloData){
+function build(weeklyData,teamData,eloData,powerData){
+ // Use the existing statewide opponent-adjusted point-spread model as one
+ // strength benchmark, not as the Madden overall itself. Calculate it here
+ // when the caller has not precomputed it, to keep results deterministic.
+ const benchmark=powerData||(root.RUSPowerRatings&&root.RUSPowerRatings.build(weeklyData,teamData,eloData));
+ if(!benchmark||!benchmark["11P"]||!benchmark["8P"])throw new Error("RUS Madden Ratings require RUS Power Ratings as a statewide strength benchmark.");
  const teams=Array.isArray(teamData)?teamData.filter(t=>t&&t.team&&t.classification):[];
  const school=new Map(teams.map(t=>[t.team,t]));
  const source=Array.isArray(weeklyData?.games)?weeklyData.games:[];
@@ -80,17 +93,36 @@ function build(weeklyData,teamData,eloData){
    offense=newOffense;defense=newDefense;
    if(maxChange<.00001)break;
   }
-  // Madden grades are percentiles, not points: OVR never predicts a margin.
-  const attackGrades=rankGrades(offense),defenseGrades=rankGrades(defense);
+  // Unlike the old all-percentile grading, OVR combines three distinct
+  // strength signals measured across the SAME football format:
+  // - 75% neutral-field opponent-adjusted Power Rating, rescaled to 50-99
+  // - 10% adjusted 2026 scoring margin, normalized linearly (not by rank)
+  // - 15% statewide ELO, normalized linearly for opponent context
+  // This anchors an 88-90-quality program below 98-99 elite programs even
+  // when both dominate their respective classification schedules.
+  const benchmarkRows=benchmark[format].teams||[];
+  const powerByName=new Map(benchmarkRows.map(t=>[t.name,t.rating]));
+  const powerValues=names.map(n=>powerByName.get(n));
+  if(powerValues.some(v=>!Number.isFinite(v)))throw new Error("RUS Power Ratings are missing a team in "+format);
+  const scaledPower=linearGrades(powerValues);
+  const scoringStrength=offense.map((v,i)=>v+defense[i]);
+  const scoredGrade=linearGrades(scoringStrength);
+  const eloGrade=linearGrades(names.map(n=>Number(eloData?.[n]?.currentElo)||1500));
+  // Offense/defense split depends on OPPONENT-ADJUSTED scoring estimates.
+  // Their difference is a tendency, not independent percentile strength.
+  const attackStyle=rankGrades(offense),defenseStyle=rankGrades(defense);
   const ratings=group.map((team,i)=>{
-   const w=counts[i]?wins[i]/counts[i]:.5;
+   const overall=clamp(Math.round(.75*scaledPower[i]+.10*scoredGrade[i]+.15*eloGrade[i]),50,99);
+   const rawBias=Math.round(.55*(attackStyle[i]-defenseStyle[i]));
+   const headroom=Math.min(overall-50,99-overall);
+   const bias=clamp(rawBias,-Math.min(10,headroom),Math.min(10,headroom));
    return {
     name:team.team,
     classification:team.classification,
     region:team.region||"",
-    overall:clamp(Math.round(.51*attackGrades[i]+.49*defenseGrades[i]+2*(w-.5)),50,99),
-    offense:attackGrades[i],
-    defense:defenseGrades[i],
+    overall,
+    offense:overall+bias,
+    defense:overall-bias,
     played:counts[i],
     provisional:counts[i]<4,
     adjustedPF:Number((base+offense[i]).toFixed(1)),
@@ -104,7 +136,7 @@ function build(weeklyData,teamData,eloData){
    teams:ratings,
    games:games.length,
    latestGame:Number.isFinite(latest)?new Date(latest).toISOString().slice(0,10):null,
-   description:"Game-based Madden-style percentile grades (overall, offense, defense) from 2026 opponent-adjusted results with a small Elo prior. Not calibrated to point spreads."
+   description:"Statewide strength-calibrated Madden grades: 75% opponent-adjusted statewide power benchmark, 10% linear adjusted 2026 scoring margin, 15% statewide ELO. Separate opponent-adjusted offensive/defensive tendency; no Madden grade is a predicted point spread."
   };
  }
  return result;

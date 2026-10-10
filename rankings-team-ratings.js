@@ -58,7 +58,8 @@ async function load(){
   const get=async name=>{const r=await fetch(name+"?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error(name);return r.json()};
   const [weekly,teams,elo]=await Promise.all(["weekly-simulation.json","teams-data.json","elo-summary.json"].map(get));
   if(!window.RUSPowerRatings||!window.RUSMaddenRatings)throw Error("Ratings engine missing");
-  data={power:window.RUSPowerRatings.build(weekly,teams,elo),madden:window.RUSMaddenRatings.build(weekly,teams,elo)};
+  const power=window.RUSPowerRatings.build(weekly,teams,elo);
+  data={power,madden:window.RUSMaddenRatings.build(weekly,teams,elo,power)};
   const standings=await get("standings-2026.json").catch(()=>null);
   setGamesPlayed(standings);
   refreshFilters();paint();
