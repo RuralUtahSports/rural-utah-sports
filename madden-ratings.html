@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RUS Madden Ratings | Rural Utah Sports</title>
+<meta name="description" content="Madden-style 2026 Utah high school football team ratings with independent overall, offense and defense grades.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101010;color:#f4f4f4;font-family:Arial,Helvetica,sans-serif}
+header{background:#000;border-bottom:4px solid #F14D07;padding:15px 22px}
+.header-content{display:flex;align-items:center;gap:16px;max-width:1260px;margin:auto}
+header img{width:72px;height:72px;object-fit:contain}
+.header-title{font-size:26px;font-weight:900;letter-spacing:1.5px}
+.header-sub{margin-top:4px;color:#F14D07;font-size:12px;font-weight:800}
+nav{background:#000;border-bottom:1px solid #333}
+.nav-content{max-width:1260px;display:flex;flex-wrap:wrap;margin:auto}
+.nav-content a{display:inline-block;padding:13px;color:#fff;font-size:12px;font-weight:900;text-decoration:none;text-transform:uppercase}
+.nav-content a:hover,.nav-content a.active{color:#111;background:#F14D07}
+main{max-width:1260px;margin:auto;padding:30px 18px 55px}
+h1{font-size:33px;text-transform:uppercase;border-left:6px solid #F14D07;padding-left:12px;margin:0 0 12px}
+h2{font-size:21px;text-transform:uppercase;margin:0 0 9px}
+.lead{color:#bdbdbd;line-height:1.5;max-width:940px;margin:0 0 16px;font-size:14px}
+.mode-switch{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+.mode-switch a{font-size:12px;font-weight:900;text-transform:uppercase;text-decoration:none;border-radius:7px;padding:12px 16px;border:1px solid #555;color:#ddd}
+.mode-switch a.active{background:#F14D07;border-color:#F14D07;color:#000}
+.mode-switch a:not(.active):hover{border-color:#F14D07}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:17px 0 22px}
+.card,.panel{border:1px solid #323232;background:#050505;border-radius:10px;padding:17px}
+.card strong{color:#F14D07;font-size:28px;display:block}.card span{font-size:10px;color:#999;text-transform:uppercase;font-weight:900}
+.panel{margin-bottom:18px}.muted{color:#aaa;font-size:12px;line-height:1.5;margin:0 0 15px}
+label{display:flex;flex-direction:column;color:#bbb;gap:7px;font-size:11px;font-weight:900;text-transform:uppercase}
+select,input{width:100%;min-height:43px;background:#181818;color:#fff;border:1px solid #444;border-radius:6px;padding:9px 11px;font-size:14px}
+select:focus,input:focus{outline:2px solid #F14D07;outline-offset:1px}
+.filters,.compare-pickers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:15px}
+.filters label:nth-child(3){grid-column:span 2}
+.compare-pickers{grid-template-columns:repeat(2,minmax(0,1fr))}
+.compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.compare-team{background:#171717;border:1px solid #333;border-radius:8px;padding:16px}
+.compare-title{font-size:18px;font-weight:900;margin-bottom:12px}
+.compare-sub{color:#999;font-size:11px;text-transform:uppercase;margin-bottom:12px}
+.compare-numbers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center}
+.compare-stat{background:#0d0d0d;padding:11px 4px;border:1px solid #282828;border-radius:6px}
+.compare-stat strong{display:block;font-size:29px;font-weight:900;color:#F14D07;font-variant-numeric:tabular-nums}
+.compare-stat span{display:block;text-transform:uppercase;font-size:9px;color:#aaa;font-weight:900;margin-top:3px}
+.info-note{font-size:11px;color:#999;line-height:1.55;margin-top:12px}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:650px;font-size:13px}
+thead{background:#1b1b1b;color:#aaa;text-transform:uppercase;font-size:10px}
+th,td{padding:11px 12px;text-align:left;border-bottom:1px solid #292929}
+th[data-sort]{cursor:pointer}
+th[data-sort]:hover{color:#F14D07}
+th.numeric,td.numeric{text-align:right}
+tbody tr:hover{background:#171717}
+.rank{color:#888;font-weight:900;width:42px}
+.score{font-size:17px;font-weight:900;font-variant-numeric:tabular-nums}
+.overall{color:#F14D07;font-size:20px}
+.teamname{font-weight:900}
+.teamcolor{height:12px;width:5px;border-radius:3px;display:inline-block;vertical-align:middle;margin-right:9px}
+.provisional{display:inline-block;font-size:9px;font-weight:800;color:#a9a9a9;margin-left:6px}
+.explain{background:#161616;border-left:4px solid #F14D07;padding:14px;font-size:12px;color:#b3b3b3;line-height:1.6;margin-top:16px}
+.loading{color:#aaa}.error{color:#ff7777;font-weight:800}.count{color:#888;font-size:11px;margin:9px 0 0}
+footer{max-width:1260px;margin:0 auto;padding:18px;color:#777;border-top:1px solid #222;font-size:11px}
+@media(max-width:700px){h1{font-size:25px}.header-title{font-size:20px}header img{width:56px;height:56px}.cards{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr 1fr}.filters label:nth-child(3){grid-column:span 2}.compare-grid{grid-template-columns:1fr}.panel{padding:13px}.compare-stat strong{font-size:24px}.compare-title{font-size:16px}.mode-switch a{flex:1;text-align:center}}
+</style>
+</head>
+<body>
+<header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports logo"><div><div class="header-title">RURAL UTAH SPORTS</div><div class="header-sub">Utah High School Athletics</div></div></div></header>
+<nav><div class="nav-content"><a href="index.html">Home</a><a href="scoreboard.html">Scoreboard</a><a href="rankings.html">Rankings</a><a href="simulators.html">Simulators</a><a href="power-ratings.html">Power Ratings</a><a href="madden-ratings.html" class="active">Madden Ratings</a></div></nav>
+<main>
+<h1>RUS Madden Ratings</h1>
+<p class="lead"><strong>OVR / OFF / DEF on a 50–99 Madden-style scale.</strong> The grades measure relative team performance, not point spreads. If Morgan is 98 OVR and Carbon is 54 OVR, that does <strong>not</strong> mean Morgan is favored by 44. Use RUS Power Ratings for projected game margins.</p>
+<div class="mode-switch" aria-label="Ratings systems"><a href="power-ratings.html">Power Ratings · Predicted spread</a><a href="madden-ratings.html" class="active" aria-current="page">Madden Ratings · Team grades</a></div>
+<div class="cards"><div class="card"><strong id="ratedTeams">—</strong><span>Teams graded</span></div><div class="card"><strong id="gamesUsed">—</strong><span>Finals analyzed</span></div><div class="card"><strong id="latestGame">—</strong><span>Results through</span></div></div>
+<section class="panel">
+<h2>Compare Teams</h2>
+<p class="muted">Pick any two schools to compare their Madden-style overall, offensive and defensive grades. The numbers are not point margins.</p>
+<div class="compare-pickers"><label>Team A<select id="teamA" aria-label="Team A"></select></label><label>Team B<select id="teamB" aria-label="Team B"></select></label></div>
+<div class="compare-grid" id="compareGrid"><p class="loading">Loading team grades…</p></div>
+</section>
+<section class="panel">
+<h2>2026 Madden Team Ratings</h2>
+<p class="muted">Switch between 11-player statewide grades and a separate 8-player pool. Offense and defense grades use opponents' scoring strength, with an ELO-based starting estimate for limited samples. Filter, search or sort the table.</p>
+<div class="filters">
+<label>Football format<select id="format"><option value="11P">11-player statewide</option><option value="8P">8-player (separate)</option></select></label>
+<label>Classification<select id="classification"><option value="">All classes</option></select></label>
+<label>School name<input id="teamSearch" type="search" placeholder="Find a school…"></label>
+<label>Sort by<select id="sortBy"><option value="overall">Overall (OVR)</option><option value="offense">Offense (OFF)</option><option value="defense">Defense (DEF)</option><option value="name">School (A–Z)</option></select></label>
+</div>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>School</th><th>Class</th><th class="numeric" data-sort="overall">OVR</th><th class="numeric" data-sort="offense">OFF</th><th class="numeric" data-sort="defense">DEF</th><th class="numeric">Games</th></tr></thead><tbody id="ratingRows"><tr><td colspan="7" class="loading">Loading ratings…</td></tr></tbody></table></div>
+<p id="resultCount" class="count"></p>
+<div class="explain">
+<strong>How Madden Ratings work:</strong> Game-by-game 2026 points scored and allowed are adjusted for opponent quality and recent performance, with a light historical ELO prior for teams with fewer results. Offense and defense are converted into relative 50–99 percentile grades. Overall blends 51% OFF and 49% DEF, with a small record adjustment. Teams with fewer than four completed in-state games are marked provisional.
+<p style="margin:9px 0 0"><strong>Important:</strong> Madden OVR, OFF and DEF grades do not calculate point spreads. Only the <a href="power-ratings.html" style="color:#F14D07">RUS Power Ratings</a> have the one-rating-point-equals-one-spread-point rule. Both systems are estimates based on game results, not verified scouting assessments of individual players.</p>
+</div>
+</section>
+</main>
+<footer>© Rural Utah Sports · Experimental model grades; not a licensed Madden or EA Sports rating.</footer>
+<script src="madden-ratings-core.js?v=20261010-1"></script>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const format=$("format"),classes=$("classification"),sort=$("sortBy"),teamA=$("teamA"),teamB=$("teamB");
+let data=null;
+function option(node,value,label){const item=document.createElement("option");item.value=value;item.textContent=label;node.appendChild(item)}
+function list(){return data?.[format.value]?.teams||[]}
+function populateClasses(){
+ classes.replaceChildren();option(classes,"","All classes");
+ [...new Set(list().map(t=>t.classification))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).forEach(t=>option(classes,t,t));
+}
+function populateTeams(){
+ const all=list(),currentA=teamA.value,currentB=teamB.value;
+ teamA.replaceChildren();teamB.replaceChildren();
+ all.slice().sort((a,b)=>a.name.localeCompare(b.name)).forEach(t=>{
+  const label=t.name+" ("+t.overall+" OVR)";
+  option(teamA,t.name,label);option(teamB,t.name,label);
+ });
+ teamA.value=all.some(t=>t.name===currentA)?currentA:(all.find(t=>t.name==="MORGAN")||all[0])?.name||"";
+ teamB.value=all.some(t=>t.name===currentB)?currentB:(all.find(t=>t.name==="CARBON")||all.find(t=>t.name!==teamA.value))?.name||"";
+ if(teamA.value===teamB.value&&all.length>1)teamB.value=all.find(t=>t.name!==teamA.value).name;
+ compare();
+}
+function compare(){
+ const all=list(),a=all.find(t=>t.name===teamA.value),b=all.find(t=>t.name===teamB.value);
+ const grid=$("compareGrid");grid.replaceChildren();
+ for(const t of [a,b]){
+  if(!t)continue;
+  const card=document.createElement("div");card.className="compare-team";
+  const title=document.createElement("div");title.className="compare-title";title.textContent=t.name;
+  const sub=document.createElement("div");sub.className="compare-sub";sub.textContent=t.classification+" · "+t.played+" completed games"+(t.provisional?" · Provisional":"");
+  card.append(title,sub);
+  const group=document.createElement("div");group.className="compare-numbers";
+  for(const [label,value] of [["OVR",t.overall],["OFF",t.offense],["DEF",t.defense]]){
+   const stat=document.createElement("div");stat.className="compare-stat";
+   const strong=document.createElement("strong");strong.textContent=value;
+   const caption=document.createElement("span");caption.textContent=label;
+   stat.append(strong,caption);group.appendChild(stat);
+  }
+  card.appendChild(group);grid.appendChild(card);
+ }
+}
+function render(){
+ const all=list(),query=$("teamSearch").value.trim().toLowerCase();
+ const rows=all.filter(t=>(!classes.value||t.classification===classes.value)&&t.name.toLowerCase().includes(query));
+ const order=sort.value;
+ rows.sort((a,b)=>order==="name"?a.name.localeCompare(b.name):(b[order]-a[order]||b.overall-a.overall||a.name.localeCompare(b.name)));
+ const body=$("ratingRows");body.replaceChildren();
+ if(!rows.length){const tr=body.insertRow(),cell=tr.insertCell();cell.colSpan=7;cell.textContent="No teams match those filters.";}
+ for(const [index,t] of rows.entries()){
+  const tr=body.insertRow(),rank=tr.insertCell();rank.className="rank";rank.textContent=index+1;
+  const name=tr.insertCell();name.className="teamname";
+  const mark=document.createElement("span");mark.className="teamcolor";mark.style.backgroundColor=/^#[0-9a-f]{6}$/i.test(t.backgroundColor)?t.backgroundColor:"#F14D07";
+  name.append(mark,document.createTextNode(t.name));
+  if(t.provisional){const small=document.createElement("span");small.className="provisional";small.textContent="PROV.";small.title="Fewer than four completed in-state games";name.appendChild(small)}
+  tr.insertCell().textContent=t.classification;
+  for(const [key,css] of [["overall","overall"],["offense",""],["defense",""]]){
+   const cell=tr.insertCell();cell.className="numeric score "+css;cell.textContent=t[key];
+  }
+  const games=tr.insertCell();games.className="numeric";games.textContent=t.played;
+ }
+ $("resultCount").textContent="Showing "+rows.length+" of "+all.length+" teams · "+data[format.value].games+" completed in-state games in this format.";
+}
+function counters(){
+ const group=data[format.value];
+ $("ratedTeams").textContent=group.teams.length;
+ $("gamesUsed").textContent=group.games;
+ $("latestGame").textContent=group.latestGame||"—";
+}
+format.addEventListener("change",()=>{populateClasses();populateTeams();render();counters()});
+classes.addEventListener("change",render);
+sort.addEventListener("change",render);
+$("teamSearch").addEventListener("input",render);
+teamA.addEventListener("change",compare);teamB.addEventListener("change",compare);
+document.querySelectorAll("[data-sort]").forEach(th=>th.addEventListener("click",()=>{sort.value=th.dataset.sort;render()}));
+(async()=>{
+ try{
+  const [weekly,teams,elo]=await Promise.all(["weekly-simulation.json","teams-data.json","elo-summary.json"].map(async path=>{
+   const response=await fetch(path+"?v="+Date.now(),{cache:"no-store"});
+   if(!response.ok)throw new Error("Could not load "+path);
+   return response.json();
+  }));
+  if(!window.RUSMaddenRatings)throw new Error("Rating calculator unavailable");
+  data=window.RUSMaddenRatings.build(weekly,teams,elo);
+  populateClasses();populateTeams();render();counters();
+ }catch(e){
+  const body=$("ratingRows");body.replaceChildren();const tr=body.insertRow(),cell=tr.insertCell();cell.colSpan=7;cell.className="error";cell.textContent="Unable to load ratings. Refresh to try again.";
+  $("compareGrid").textContent="Madden ratings unavailable.";console.error(e);
+ }
+})();
+})();
+</script>
+<script src="school-assets-bundle.js?v=20260910-oos-5"></script>
+<script src="nav-menu.js?v=20260929-alltime-team-stats1"></script>
+</body>
+</html>

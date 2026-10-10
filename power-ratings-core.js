@@ -87,7 +87,7 @@
 
       const top = Math.max(...strength);
       const bottom = Math.min(...strength);
-      // Retain Madden's 0–99 scale. If measured statewide strength exceeds
+      // Retain the power-rating display 0–99 scale. If statewide strength exceeds
       // 99 points, compress ALL teams uniformly instead of clipping bad teams
       // (clipping would break the 1-rating-point = 1-spread-point rule).
       const scale = top - bottom > 99 ? 99 / (top - bottom) : 1;
