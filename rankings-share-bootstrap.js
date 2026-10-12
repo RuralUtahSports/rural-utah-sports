@@ -30,7 +30,7 @@ async function openShare(button){
   await Promise.all([
     load('share-graphic.js?v=20260929-svg-logo-raster1'),
     load('rankings-share-direct.js?v=20260922-3a1a-scope-fix1'),
-    load('rankings-class-share-direct-v3.js?v=20260819-ios3-class-polish-elo'),
+    load('rankings-class-share-direct-v3.js?v=20261012-logo-retry1'),
     load('rankings-overall-share-direct-v3.js?v=20260922-padded-share-logos1')
   ]);
   button?.remove();
