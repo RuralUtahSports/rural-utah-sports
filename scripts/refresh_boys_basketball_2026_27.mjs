@@ -187,28 +187,6 @@ for(const game of next){
   uniq.add(identity);deduped.push(game);
 }
 deduped.sort((a,b)=>a.date.localeCompare(b.date) || trim(a.homeTeam).localeCompare(trim(b.homeTeam)) || trim(a.awayTeam).localeCompare(trim(b.awayTeam)));
-const previousByTeam=new Map(roster.map(s=>[s.team,s]));
-const report={
- season,checkedAt:isoDay(),teamCount:roster.length,checkedTeams:scans.length,games:cleaned.length,
- availableSchedules:scans.filter(s=>s.status==='available').length,duplicatesRemoved:next.length-deduped.length,
- previousGames:previousReport.previousGames??oldGames.length,addedGames:additions.length,changedFields:changes.length,failedChecks:scans.filter(s=>s.status==='failed').length,
- newGames:additions,changes,conflicts:conflicts.slice(0,150),heldForReview:skips.slice(0,200),
- schools:scans.map(s=>({team:s.team,url:s.url,status:s.status,listedGames:s.listedGames,checkedAt:s.checkedAt,...(s.error?{error:s.error}:{})}))
-};
-const previousAdditions=previousReport.newGames || [];
-const availableLinks=new Set(cleaned.map(g=>g.sourceUrl));
-report.newGames=[...previousAdditions,...additions].filter((a,i,all)=>availableLinks.has(a.sourceUrl)&&all.findIndex(b=>b.sourceUrl===a.sourceUrl)===i);
-report.addedGames=report.newGames.length;
-const significant=[...(previousReport.changes||[]),...changes].filter(x=>x.type!=='time'||formatTime(x.from)!==formatTime(x.to));
-report.changes=significant.filter((x,i,all)=>all.findIndex(y=>JSON.stringify(y)===JSON.stringify(x))===i);
-report.changedFields=report.changes.length;
-report.heldForReview=[...(previousReport.heldForReview||[]),...report.heldForReview,...collisionReview].slice(0,500);
-report.removedUnsafeImports=(previousReport.removedUnsafeImports||0)+(previousReport.newGames||[]).filter(g=>!availableLinks.has(g.sourceUrl)).length;
-for(const s of report.schools) {
-  const prev=previousByTeam.get(s.team);
-  if(prev && prev.listedGames>0 && s.listedGames!==null && s.listedGames<prev.listedGames*0.5)
-    report.heldForReview.push({reason:'Significant schedule shrink',team:s.team,before:prev.listedGames,now:s.listedGames});
-}
 // Recheck previously imported games for date collisions; keep the original schedule when uncertain.
 const dates=new Map();
 for(const g of deduped)for(const t of [g.homeTeam,g.awayTeam]) {
@@ -233,6 +211,29 @@ for(const [teamDate,games] of dates){
 const cleaned=deduped.filter(g=>!collisionRemovals.has(g.sourceGameId));
 const originalIdCount=oldGames.filter(x=>x.sourceGameId && !collisionRemovals.has(x.sourceGameId)).length;
 if(cleaned.length<oldGames.length-collisionRemovals.size || cleaned.filter(x=>x.sourceGameId).length<originalIdCount)throw new Error('Unsafe removal of existing source games');
+const previousByTeam=new Map(roster.map(s=>[s.team,s]));
+const report={
+ season,checkedAt:isoDay(),teamCount:roster.length,checkedTeams:scans.length,games:cleaned.length,
+ availableSchedules:scans.filter(s=>s.status==='available').length,duplicatesRemoved:next.length-deduped.length,
+ previousGames:previousReport.previousGames??oldGames.length,addedGames:additions.length,changedFields:changes.length,failedChecks:scans.filter(s=>s.status==='failed').length,
+ newGames:additions,changes,conflicts:conflicts.slice(0,150),heldForReview:skips.slice(0,200),
+ schools:scans.map(s=>({team:s.team,url:s.url,status:s.status,listedGames:s.listedGames,checkedAt:s.checkedAt,...(s.error?{error:s.error}:{})}))
+};
+const previousAdditions=previousReport.newGames || [];
+const availableLinks=new Set(cleaned.map(g=>g.sourceUrl));
+report.newGames=[...previousAdditions,...additions].filter((a,i,all)=>availableLinks.has(a.sourceUrl)&&all.findIndex(b=>b.sourceUrl===a.sourceUrl)===i);
+report.addedGames=report.newGames.length;
+const significant=[...(previousReport.changes||[]),...changes].filter(x=>x.type!=='time'||formatTime(x.from)!==formatTime(x.to));
+report.changes=significant.filter((x,i,all)=>all.findIndex(y=>JSON.stringify(y)===JSON.stringify(x))===i);
+report.changedFields=report.changes.length;
+report.heldForReview=[...(previousReport.heldForReview||[]),...report.heldForReview,...collisionReview].slice(0,500);
+report.removedUnsafeImports=(previousReport.removedUnsafeImports||0)+(previousReport.newGames||[]).filter(g=>!availableLinks.has(g.sourceUrl)).length;
+for(const s of report.schools) {
+  const prev=previousByTeam.get(s.team);
+  if(prev && prev.listedGames>0 && s.listedGames!==null && s.listedGames<prev.listedGames*0.5)
+    report.heldForReview.push({reason:'Significant schedule shrink',team:s.team,before:prev.listedGames,now:s.listedGames});
+}
+
 data.games=cleaned;
 data.updatedAt=isoDay();
 fs.writeFileSync(dataFile,JSON.stringify(data,null,2)+'\n');
