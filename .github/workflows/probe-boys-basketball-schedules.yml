@@ -19,9 +19,9 @@ jobs:
         run: |
           node --input-type=module <<'NODE'
           for(const [team,url] of Object.entries({
-            Valley:'https://www.maxpreps.com/ut/orderville/valley-buffalos/basketball/schedule/',
-            WasatchAcademy:'https://www.maxpreps.com/ut/mt-pleasant/wasatch-academy-tigers/basketball/schedule/',
-            Westlake:'https://www.maxpreps.com/ut/saratoga-springs/westlake-thunder/basketball/schedule/'
+            Alta:'https://www.maxpreps.com/ut/sandy/alta-hawks/basketball/schedule/',
+            Juab:'https://www.maxpreps.com/ut/nephi/juab-wasps/basketball/schedule/',
+            GreenRiver:'https://www.maxpreps.com/ut/green-river/green-river-pirates/basketball/schedule/'
           })){
             try{
               const r=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.com/)'},signal:AbortSignal.timeout(20000)});
@@ -29,8 +29,8 @@ jobs:
               console.log('TEAM',team,'HTTP',r.status,'LENGTH',html.length,'HAS-TABLE',html.includes('<table'),'HAS-ROWS',html.includes('<tr'),'NEXT DATA',html.includes('__next_f.push'));
               const at=html.indexOf('Date/Time');
               console.log('MARKUP AROUND HEADER',html.slice(Math.max(0,at-400),at+2500));
-              const at2=html.indexOf('vsEnterprise');
-              console.log('MARKUP AROUND GAME',html.slice(Math.max(0,at2-900),at2+1100));
+              const at2=html.indexOf('<tbody>');
+              console.log('MARKUP AROUND GAME',html.slice(Math.max(0,at2-900),at2+5500));
               console.log('GAME PAGE LINKS',html.slice(0,200000).includes('/basketball/game/'));
             }catch(e){console.log('ERROR',team,e.message)}
           }
