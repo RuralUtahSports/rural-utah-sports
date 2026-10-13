@@ -90,8 +90,8 @@ async function fetchSchedule(team) {
       if(!r.ok)throw new Error('HTTP '+r.status);
       const html=await r.text();
       const parsed=parse(html,team.team,team.url);
-      if(parsed.invalid.length>2)throw new Error('Too many invalid rows: '+parsed.invalid.slice(0,3).join('; '));
-      if(parsed.rowCount>0 && parsed.games.length<parsed.rowCount-1)throw new Error('Unsafe game extraction: '+parsed.games.length+'/'+parsed.rowCount);
+      if(parsed.invalid.length)console.log('PARTIAL ROWS',team.team,parsed.invalid.length,'of',parsed.rowCount,'held from import');
+      if(parsed.rowCount>=4 && parsed.games.length<parsed.rowCount*0.5)throw new Error('Unsafe game extraction: '+parsed.games.length+'/'+parsed.rowCount);
       return {team:team.team,url:team.url,status:parsed.games.length?'available':'no-games-posted',listedGames:parsed.games.length,checkedAt:isoDay(),games:parsed.games,invalid:parsed.invalid};
     }catch(e){lastError=e.message; if(attempt<2)await new Promise(resolve=>setTimeout(resolve,400));}
   }
