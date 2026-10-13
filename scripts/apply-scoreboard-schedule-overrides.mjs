@@ -21,6 +21,8 @@ const displayDate = iso => {
 
 if (!fs.existsSync(OVERRIDES)) process.exit(0);
 const overrides = JSON.parse(fs.readFileSync(OVERRIDES, 'utf8'));
+const cancellations = overrides.filter(override => override.cancelled === true);
+const reschedules = overrides.filter(override => override.cancelled !== true);
 let changes = 0;
 
 function matchesGame(game, override) {
@@ -36,7 +38,11 @@ function matchesGame(game, override) {
 
 if (fs.existsSync(WEEKLY)) {
   const weekly = JSON.parse(fs.readFileSync(WEEKLY, 'utf8'));
-  for (const override of overrides) {
+  // Cancellations stay excluded even when the upstream Sheet rebuilds the weekly feed.
+  const originalCount = (weekly.games || []).length;
+  weekly.games = (weekly.games || []).filter(game => !cancellations.some(override => matchesGame(game, override)));
+  changes += originalCount - weekly.games.length;
+  for (const override of reschedules) {
     const targetDate = isoDate(override.date);
     if (!targetDate) continue;
     for (const game of weekly.games || []) {
@@ -83,7 +89,21 @@ function applyDetailOverrides(path) {
   const payload = JSON.parse(fs.readFileSync(path, 'utf8'));
   payload.games ||= {};
 
-  for (const override of overrides) {
+  // Also remove cancelled games from cached full and live detail feeds.
+  for (const [key, detail] of Object.entries(payload.games)) {
+    const parts = key.split('|');
+    const game = {
+      date: detail?.date || parts[0],
+      awayTeam: detail?.awayTeam || parts[1],
+      homeTeam: detail?.homeTeam || parts[2]
+    };
+    if (cancellations.some(override => matchesGame(game, override))) {
+      delete payload.games[key];
+      changes++;
+    }
+  }
+
+  for (const override of reschedules) {
     const targetDate = isoDate(override.date);
     if (!targetDate) continue;
     const targetAwayTeam = clean(override.newAwayTeam || override.awayTeam);
