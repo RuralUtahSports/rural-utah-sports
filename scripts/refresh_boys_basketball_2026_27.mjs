@@ -5,6 +5,7 @@ const reportFile = 'boys-basketball-schedule-import-report-2026-27.json';
 const season = '2026-27';
 const isoDay = () => new Date().toISOString().slice(0,10);
 const trim = s => String(s ?? '').trim();
+const cleanTeamName = s => trim(s).replace(/\*+$/g,'').trim();
 const decode = s => trim(s).replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&nbsp;/g,' ').replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
 const canon = s => decode(s).toLowerCase().replace(/[^a-z0-9]/g,'');
 const alias = {
@@ -19,7 +20,7 @@ const key = s => alias[canon(s)] || canon(s);
 const normUrl = s => {try{return new URL(s,'https://www.maxpreps.com').pathname.toLowerCase().replace(/\/schedule\/?$/,'/').replace(/\/$/,'/')}catch{return ''}};
 const data = JSON.parse(fs.readFileSync(dataFile,'utf8'));
 const previousReport = JSON.parse(fs.readFileSync(reportFile,'utf8'));
-const oldGames = (data.games || []).filter(g=>!(g.sourceCheckedAt && g.date<'2026-11-17'));
+const oldGames = (data.games || []).filter(g=>!(g.sourceCheckedAt && g.date<'2026-11-17')).map(g=>({...g,homeTeam:cleanTeamName(g.homeTeam),awayTeam:cleanTeamName(g.awayTeam)}));
 const roster = previousReport.schools || [];
 if(roster.length < 150 || oldGames.length < 1200) throw new Error('Unexpectedly small baseline; refusing to replace data');
 const map = new Map(Object.entries(data.sources || {}).map(([name,url])=>[normUrl(url),name]));
@@ -59,7 +60,8 @@ function parse(html,team,url) {
     const date = dateFromUrl[3]+'-'+dateFromUrl[1].padStart(2,'0')+'-'+dateFromUrl[2].padStart(2,'0');
     if(!safeDate(date)) {invalid.push('Outside season: '+date); continue}
     const schoolHref = decode(cols[1].match(/<a\b[^>]*href="([^"]+)"[^>]*>/i)?.[1] || '');
-    const opponent = decode(cols[1].match(/<span\b[^>]*class="name"[^>]*>([\s\S]*?)<\/span>/i)?.[1] || '');
+    const opponentRaw = decode(cols[1].match(/<span\b[^>]*class="name"[^>]*>([\s\S]*?)<\/span>/i)?.[1] || '');
+    const opponent = cleanTeamName(opponentRaw);
     const hat = decode(cols[1].match(/<span\b[^>]*class="hat"[^>]*>([\s\S]*?)<\/span>/i)?.[1] || '').toLowerCase();
     const away = /^(?:@|at)$/.test(hat);
     const opp = resolveName(opponent,schoolHref);
@@ -71,7 +73,7 @@ function parse(html,team,url) {
     const observedAway = label ? /\s(?:at|@)\s/i.test(label) : away;
     const homeTeam = observedAway ? opp : team;
     const awayTeam = observedAway ? team : opp;
-    const game = {date,time,homeTeam,awayTeam,status:'Scheduled',regionGame:/\*/.test(decode(cols[1])),source:'MaxPreps',sourceGameId:id,sourceUrl:targetUrl,sourceCheckedAt:new Date().toISOString()};
+    const game = {date,time,homeTeam,awayTeam,status:'Scheduled',regionGame:/[^*]\*$/.test(opponentRaw),source:'MaxPreps',sourceGameId:id,sourceUrl:targetUrl,sourceCheckedAt:new Date().toISOString()};
     const oppState = stateCode(schoolHref);
     if(oppState && oppState !== 'UT')game[observedAway?'homeTeamState':'awayTeamState']=oppState;
     out.push(game);
@@ -221,7 +223,7 @@ const report={
 };
 const previousAdditions=previousReport.newGames || [];
 const availableLinks=new Set(cleaned.map(g=>g.sourceUrl));
-report.newGames=[...previousAdditions,...additions].filter((a,i,all)=>availableLinks.has(a.sourceUrl)&&all.findIndex(b=>b.sourceUrl===a.sourceUrl)===i);
+report.newGames=[...previousAdditions,...additions].filter((a,i,all)=>availableLinks.has(a.sourceUrl)&&all.findIndex(b=>b.sourceUrl===a.sourceUrl)===i).map(a=>({...a,homeTeam:cleanTeamName(a.homeTeam),awayTeam:cleanTeamName(a.awayTeam),time:formatTime(a.time)}));
 report.addedGames=report.newGames.length;
 const significant=[...(previousReport.changes||[]),...changes].filter(x=>x.type!=='time'||formatTime(x.from)!==formatTime(x.to));
 report.changes=significant.filter((x,i,all)=>all.findIndex(y=>JSON.stringify(y)===JSON.stringify(x))===i);
