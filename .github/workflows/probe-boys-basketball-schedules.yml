@@ -1,0 +1,37 @@
+name: Probe 2026-27 Boys Basketball Schedules
+on:
+  push:
+    paths:
+      - '.github/workflows/probe-boys-basketball-schedules.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inspect live MaxPreps schedule markup
+        run: |
+          node --input-type=module <<'NODE'
+          for(const [team,url] of Object.entries({
+            Valley:'https://www.maxpreps.com/ut/orderville/valley-buffalos/basketball/schedule/',
+            WasatchAcademy:'https://www.maxpreps.com/ut/mt-pleasant/wasatch-academy-tigers/basketball/schedule/',
+            Westlake:'https://www.maxpreps.com/ut/saratoga-springs/westlake-thunder/basketball/schedule/'
+          })){
+            try{
+              const r=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.com/)'},signal:AbortSignal.timeout(20000)});
+              const html=await r.text();
+              console.log('TEAM',team,'HTTP',r.status,'LENGTH',html.length,'TABLES',(html.match(/<table\\b/gi)||[]).length,'ROWS',(html.match(/<tr\\b/gi)||[]).length);
+              const table=[...html.matchAll(/<table\\b[^>]*>[\\s\\S]*?<\\/table>/gi)].find(m=>/Date\\/Time|Opponent/i.test(m[0]))?.[0];
+              console.log('TABLE HEAD',table?.slice(0,5500)||'NO TABLE');
+              const after=html.indexOf('Date/Time');
+              console.log('MARKUP AROUND HEADER',html.slice(Math.max(0,after-350),after+1000));
+              console.log('NEXT DATA?',html.includes('__next_f.push'),html.includes('__NEXT_DATA__'));
+            }catch(e){console.log('ERROR',team,e.message)}
+          }
+          NODE
