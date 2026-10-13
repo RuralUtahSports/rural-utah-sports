@@ -26,12 +26,12 @@ jobs:
             try{
               const r=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.com/)'},signal:AbortSignal.timeout(20000)});
               const html=await r.text();
-              console.log('TEAM',team,'HTTP',r.status,'LENGTH',html.length,'TABLES',(html.match(/<table\\b/gi)||[]).length,'ROWS',(html.match(/<tr\\b/gi)||[]).length);
-              const table=[...html.matchAll(/<table\\b[^>]*>[\\s\\S]*?<\\/table>/gi)].find(m=>/Date\\/Time|Opponent/i.test(m[0]))?.[0];
-              console.log('TABLE HEAD',table?.slice(0,5500)||'NO TABLE');
-              const after=html.indexOf('Date/Time');
-              console.log('MARKUP AROUND HEADER',html.slice(Math.max(0,after-350),after+1000));
-              console.log('NEXT DATA?',html.includes('__next_f.push'),html.includes('__NEXT_DATA__'));
+              console.log('TEAM',team,'HTTP',r.status,'LENGTH',html.length,'HAS-TABLE',html.includes('<table'),'HAS-ROWS',html.includes('<tr'),'NEXT DATA',html.includes('__next_f.push'));
+              const at=html.indexOf('Date/Time');
+              console.log('MARKUP AROUND HEADER',html.slice(Math.max(0,at-400),at+2500));
+              const at2=html.indexOf('vsEnterprise');
+              console.log('MARKUP AROUND GAME',html.slice(Math.max(0,at2-900),at2+1100));
+              console.log('GAME PAGE LINKS',html.slice(0,200000).includes('/basketball/game/'));
             }catch(e){console.log('ERROR',team,e.message)}
           }
           NODE
