@@ -1,0 +1,42 @@
+name: Refresh 2026-27 Boys Basketball Schedules
+on:
+  push:
+    paths:
+      - 'scripts/refresh_boys_basketball_2026_27.mjs'
+      - '.github/workflows/refresh-boys-basketball-2026-27.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: statewide-boys-basketball-schedules
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify parsing with three live school schedules
+        run: node scripts/refresh_boys_basketball_2026_27.mjs --probe
+      - name: Full statewide refresh
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: node scripts/refresh_boys_basketball_2026_27.mjs
+      - name: Commit verified new schedules
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add boys-basketball-games-2026-27.json boys-basketball-schedule-import-report-2026-27.json
+          if git diff --cached --quiet; then echo "All 2026-27 basketball schedules already current."; exit 0; fi
+          git commit -m "Refresh statewide 2026-27 boys basketball schedules from MaxPreps"
+          for attempt in 1 2 3 4; do
+            if git pull --rebase origin main && git push origin HEAD:main; then exit 0; fi
+            git rebase --abort || true
+            sleep $((attempt*5))
+          done
+          exit 1
