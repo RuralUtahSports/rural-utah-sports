@@ -70,6 +70,7 @@ function currentEntries(){
         if(!game.final)continue;
         for(const player of game.players||[]){
           const stats=statsFromPlayer(player);
+          if(norm(teamName)==='WOODSCROSS'&&norm(player.name)==='TAGEITA'&&String(game.date).slice(0,10)==='2026-10-08'&&norm(game.opponent)==='OLYMPUS') delete stats.passAttempts;
           for(const [category,value] of Object.entries(stats))entries.push({
             category,
             player:clean(player.name),
