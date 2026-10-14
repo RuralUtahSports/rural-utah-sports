@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/remove-invalid-tage-ita-record.yml'
+      - 'scripts/suppress_invalid_tage_ita_attempts.mjs'
   workflow_dispatch:
 permissions:
   contents: write
