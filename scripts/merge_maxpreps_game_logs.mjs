@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {suppressInvalidItaStatInMemory} from './suppress_invalid_tage_ita_attempts.mjs';
 
 const FILE='player-game-stats-2026.json',CACHE='maxpreps-player-game-stats-2026.json',TEAM_DATA='deseret-team-data-2026.json',WEEKLY='weekly-simulation.json',VERIFIED='verified-finals-2026.json',MANUAL='manual-stat-corrections-2026.json';
 const clean=v=>String(v??'').trim();
@@ -171,5 +172,6 @@ if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
 if(!fs.existsSync(FILE)||!fs.existsSync(CACHE)){console.log('MaxPreps game-log inputs missing; skipping.');process.exit(0)}
 const output=JSON.parse(fs.readFileSync(FILE,'utf8')),cache=JSON.parse(fs.readFileSync(CACHE,'utf8')),scheduleData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null,weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):null,verified=fs.existsSync(VERIFIED)?JSON.parse(fs.readFileSync(VERIFIED,'utf8')):[],manual=fs.existsSync(MANUAL)?JSON.parse(fs.readFileSync(MANUAL,'utf8')).manualGameStats||[]:[],summary=mergeMaxPrepsGameLogs(output,cache,scheduleData,weekly,verified),manualSummary=mergeManualGameStats(output,manual,scheduleData,weekly,verified);
 for(const team of Object.values(output.teams||{}))team.games?.sort((a,b)=>isoDate(a.date).localeCompare(isoDate(b.date))||clean(a.opponent).localeCompare(clean(b.opponent)));
+suppressInvalidItaStatInMemory(output);
 output.updatedAt=new Date().toISOString();output.summary={...(output.summary||{}),maxprepsFallback:{...summary,manualGameStats:manualSummary}};fs.writeFileSync(FILE,JSON.stringify(output,null,2)+'\n');
 console.log(`MaxPreps game logs: ${summary.gamesMatched} games matched; ${summary.gamesAdded} missing final games recovered; ${summary.playersAdded} players added; ${summary.linesAdded} stat lines added; ${summary.fieldsFilled} fields filled; ${summary.correctedFields} inconsistent Deseret fields corrected; ${summary.unmatchedGames} games skipped; ${manualSummary.gamesAdded} manual partial game(s) added.`);
