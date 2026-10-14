@@ -51,8 +51,8 @@ function fixSeasonStats(sections){
       const wrongAttempts=correctSeasonAttempts.has(norm(val));
       const stalePct=(!val||wrongAttempts)&&String(row.values?.['COMP%']||'').trim()==='33.67';
       if(!wrongAttempts&&!stalePct)continue;
-      n+=delKeys(row.values,['COMPATT','COMP%','COMPPERCENT']);
-      delKeys(row.statSources,['COMPATT','COMP%','COMPPERCENT']);
+      n+=delKeys(row.values,['COMPATT','COMP','COMPPERCENT']);
+      delKeys(row.statSources,['COMPATT','COMP','COMPPERCENT']);
     }
   return n;
 }
