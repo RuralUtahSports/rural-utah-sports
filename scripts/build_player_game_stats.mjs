@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import {applyGameDetailCorrections} from './apply_manual_stat_corrections.mjs';
+import {suppressInvalidItaStatInMemory} from './suppress_invalid_tage_ita_attempts.mjs';
 
 const DETAILS='deseret-game-details.json';
 const ROSTERS='deseret-rosters-stats-2026.json';
@@ -80,5 +81,6 @@ for(const [priorName,priorTeam] of Object.entries(prior.teams||{})){
 for(const t of Object.values(teams))t.games.sort((a,b)=>a.date.localeCompare(b.date));
 gameCount=Object.values(teams).reduce((sum,team)=>sum+(team.games||[]).length,0);
 const out={season:2026,updatedAt:new Date().toISOString(),summary:{teams:Object.keys(teams).length,teamGames:gameCount,statRows:rowCount,rosterMatchedRows:matched,preservedFinalGames,replacedEmptyFinalGames},teams};
+suppressInvalidItaStatInMemory(out);
 fs.writeFileSync(OUT,JSON.stringify(out,null,2)+'\n');
 console.log(`Player game stats: ${out.summary.teams} teams, ${gameCount} team-games, ${rowCount} stat rows, ${matched} roster-matched; ${preservedFinalGames} prior final game(s) preserved and ${replacedEmptyFinalGames} empty final game(s) restored.`);
