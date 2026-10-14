@@ -48,7 +48,9 @@ function fixSeasonStats(sections){
   for(const section of sections||[])if(isPassing(section))
     for(const row of section.rows||[])if(isIta(row)){
       const val=Object.entries(row.values||{}).find(([k])=>norm(k)==='COMPATT')?.[1];
-      if(!correctSeasonAttempts.has(norm(val)))continue;
+      const wrongAttempts=correctSeasonAttempts.has(norm(val));
+      const stalePct=(!val||wrongAttempts)&&String(row.values?.['COMP%']||'').trim()==='33.67';
+      if(!wrongAttempts&&!stalePct)continue;
       n+=delKeys(row.values,['COMPATT','COMP%','COMPPERCENT']);
       delKeys(row.statSources,['COMPATT','COMP%','COMPPERCENT']);
     }
