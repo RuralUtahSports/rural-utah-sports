@@ -44,6 +44,7 @@ jobs:
         run: |
           node scripts/sync_current_finals_to_team_pages.mjs
           node scripts/build_record_alerts.mjs
+          node scripts/suppress_invalid_tage_ita_attempts.mjs --alerts-only
       - name: Validate alert payload
         run: |
           node - <<'NODE'
