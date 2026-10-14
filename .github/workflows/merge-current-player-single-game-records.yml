@@ -43,6 +43,8 @@ jobs:
           node-version: '22'
       - name: Merge current-season qualifying performances
         run: node scripts/merge_current_player_single_game_records.mjs
+      - name: Remove invalid pass-attempt records
+        run: node scripts/suppress_invalid_tage_ita_attempts.mjs --records-only
       - name: Verify generated JSON
         run: |
           node - <<'NODE'
