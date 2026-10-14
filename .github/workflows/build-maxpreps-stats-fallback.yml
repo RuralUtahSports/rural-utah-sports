@@ -8,6 +8,7 @@ on:
     paths:
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
+      - 'scripts/suppress_invalid_tage_ita_attempts.mjs'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
       - 'scripts/build_team_current_shards.mjs'
       - '.github/workflows/build-maxpreps-stats-fallback.yml'
@@ -54,10 +55,13 @@ jobs:
           node scripts/apply_manual_stat_corrections.mjs
           node scripts/build_player_game_stats.mjs
           node scripts/merge_maxpreps_game_logs.mjs
+          node scripts/suppress_invalid_tage_ita_attempts.mjs --games-only
           node scripts/reconcile_season_stats_from_game_logs.mjs
+          node scripts/suppress_invalid_tage_ita_attempts.mjs --games-only
           node scripts/build_deseret_stat_metrics.mjs
           node scripts/build_weekly_awards.mjs
           node scripts/build_team_current_shards.mjs
+          node scripts/suppress_invalid_tage_ita_attempts.mjs --shards-only
       - name: Verify fallback output
         run: |
           node - <<'NODE'
