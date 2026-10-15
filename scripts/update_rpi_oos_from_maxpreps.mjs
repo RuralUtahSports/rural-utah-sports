@@ -293,7 +293,7 @@ function sameOpponent(game, target) {
 
 async function buildBorderOwp(page, info, standings, utahNames, pageCache) {
   const completed = page.games || [];
-  if (!completed.length) return {owp: null, wpByUtahTeam: {}, byUtahTeam: {}};
+  if (!completed.length) return {owp: null, wpByUtahTeam: {}, byUtahTeam: {}, opponentsResolved: 0, opponentsTotal: 0};
   const values = [];
   const wpByUtahTeam = {};
   const byUtahTeam = {};
@@ -341,7 +341,9 @@ async function buildBorderOwp(page, info, standings, utahNames, pageCache) {
   return {
     owp: values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null,
     wpByUtahTeam,
-    byUtahTeam
+    byUtahTeam,
+    opponentsResolved: values.length,
+    opponentsTotal: completed.length
   };
 }
 
@@ -389,11 +391,15 @@ async function main() {
         let owp = null;
         let wpByUtahTeam = {};
         let byUtahTeam = {};
+        let coverage = { verified: true, opponentsResolved: null, opponentsTotal: null };
         if (BORDER_STATES.has(info.state)) {
           const border = await buildBorderOwp(page, info, standings, utahNames, pageCache);
-          owp = border.owp;
+          const required = Math.max(3, Math.ceil(border.opponentsTotal * 0.7));
+          const verified = border.opponentsResolved >= required;
+          coverage = { verified, opponentsResolved: border.opponentsResolved, opponentsTotal: border.opponentsTotal };
+          owp = verified ? border.owp : null;
           wpByUtahTeam = border.wpByUtahTeam;
-          byUtahTeam = border.byUtahTeam;
+          byUtahTeam = verified ? border.byUtahTeam : {};
           borderFetched++;
         } else {
           owp = 0.5;
@@ -409,7 +415,9 @@ async function main() {
           source: 'MaxPreps public football schedule',
           lastUpdated: page.updatedAt || new Date().toISOString(),
           checkedAt: new Date().toISOString(),
-          record: page.record
+          record: page.record,
+          dataQuality: coverage,
+          error: null
         };
         console.log(`${info.raw}: ${direct === null ? '—' : direct.toFixed(4)} WP${BORDER_STATES.has(info.state) ? `, ${owp === null ? '—' : owp.toFixed(4)} OWP` : ', non-border .500 OOWP'}`);
       } catch (error) {
