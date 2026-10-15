@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   if(window.__rusPlayoffPictureShareBuild)return;
-  window.__rusPlayoffPictureShareBuild='20260907-canvas8';
+  window.__rusPlayoffPictureShareBuild='20261015-official-field1';
 
   const root=document.getElementById('featureRoot');
   if(!root)return;
@@ -97,11 +97,13 @@
         seed:Number.isFinite(seed)?seed:index+1,
         team,
         rpi:cells[6]?.textContent?.trim()||'',
+        status:cells[7]?.textContent?.trim()||'',
         bg:pillColor(pill,'--bg','#2b2b2b'),
         fg:pillColor(pill,'--fg','#ffffff')
       };
     }).filter(Boolean).filter(row=>!INELIGIBLE.has(norm(row.team)));
-    return{cls,rows};
+    const cutoff=cls==='8-Player'?11:cls==='3A'?13:['2A','1A'].includes(cls)?9:16;
+    return{cls,rows,cutoff};
   }
   function injectStyle(){
     if(document.getElementById('rus-playoff-picture-share-style'))return;
@@ -185,7 +187,7 @@
     c.fillStyle='#aaa';c.font=`900 ${sub}px Arial`;
     c.fillText(`${cls.toUpperCase()}  •  IF THE PLAYOFFS STARTED TODAY`,margin,story?184:x?158:166);
     c.fillStyle='#666';c.font=`900 ${story?16:13}px Arial`;
-    c.fillText(kind==='seeds'?'PROVISIONAL RUS RPI  •  UNOFFICIAL PROJECTION':'PROVISIONAL RUS RPI  •  FIRST-ROUND MATCHUPS ONLY',margin,story?213:x?184:192);
+    c.fillText(kind==='seeds'?'OFFICIAL UHSAA RPI  •  UNOFFICIAL PROJECTION':'UHSAA RPI SNAPSHOT  •  BRACKET SLOTS AND BYES',margin,story?213:x?184:192);
   }
   function drawSeedCard(c,data,x,y,w,h,logo){
     c.save();
@@ -202,7 +204,7 @@
     const tx=logoX+logoSize+13,right=x+w-16;
     c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#fff';
     fit(c,data.team,Math.max(80,right-tx-76),Math.min(24,h*.33),10,1000);c.fillText(data.team,tx,y+h*.48);
-    c.fillStyle='#888';c.font=`900 ${Math.max(10,Math.min(14,h*.18))}px Arial`;c.fillText(data.seed<=16?'PROJECTED IN':'PROJECTED OUT',tx,y+h*.73);
+    c.fillStyle='#888';c.font=`900 ${Math.max(10,Math.min(14,h*.18))}px Arial`;c.fillText(data.status||'PROVISIONAL',tx,y+h*.73);
     c.textAlign='right';c.fillStyle=ORANGE;c.font=`1000 ${Math.max(11,Math.min(16,h*.2))}px Arial`;c.fillText(data.rpi?`RPI ${data.rpi}`:'RPI —',right,y+h*.73);
     c.restore();
   }
@@ -275,15 +277,15 @@
     const {canvas,c,w,h}=baseCanvas(format),margin=format==='x'?42:format==='story'?34:30;
     drawHeader(c,w,format,data.cls,kind,margin);
     if(kind==='seeds'){
-      const cols=format==='story'?1:2,top=format==='story'?285:250,bottom=format==='story'?66:48,gap=format==='x'?12:11,rowCount=Math.ceil(rows.length/cols),cutoffSpace=rows.some(row=>row.seed>16)?30:0,usableW=w-margin*2-gap*(cols-1),cardW=usableW/cols,usableH=h-top-bottom-gap*(rowCount-1)-cutoffSpace,cardH=usableH/rowCount;
-      c.fillStyle=ORANGE;c.textAlign='left';c.font='900 15px Arial';c.fillText('PLAYOFF CUTOFF: TOP 16 ELIGIBLE TEAMS',margin,top-17);
+      const cols=format==='story'?1:2,top=format==='story'?285:250,bottom=format==='story'?66:48,gap=format==='x'?12:11,rowCount=Math.ceil(rows.length/cols),cutoffSpace=rows.some(row=>row.seed>data.cutoff)?30:0,usableW=w-margin*2-gap*(cols-1),cardW=usableW/cols,usableH=h-top-bottom-gap*(rowCount-1)-cutoffSpace,cardH=usableH/rowCount;
+      c.fillStyle=ORANGE;c.textAlign='left';c.font='900 15px Arial';c.fillText('PROJECTED FIELD: TOP '+data.cutoff+' (MIN. SIX GAMES)',margin,top-17);
       rows.forEach((row,i)=>{
         const col=Math.floor(i/rowCount),r=i%rowCount,x=margin+col*(cardW+gap);
-        const columnRows=rows.slice(col*rowCount,(col+1)*rowCount),cutIndex=columnRows.findIndex(item=>item.seed>16);
+        const columnRows=rows.slice(col*rowCount,(col+1)*rowCount),cutIndex=columnRows.findIndex(item=>item.seed>data.cutoff);
         const y=top+r*(cardH+gap)+(cutIndex>=0&&r>=cutIndex?cutoffSpace:0);
         if(cutIndex===r){
           c.strokeStyle=ORANGE;c.lineWidth=2;c.setLineDash([7,5]);c.beginPath();c.moveTo(x,y-10);c.lineTo(x+cardW,y-10);c.stroke();c.setLineDash([]);
-          c.fillStyle=ORANGE;c.textAlign='left';c.font='900 12px Arial';c.fillText(row.seed===17?'PLAYOFF CUTOFF — BELOW: PROJECTED OUT':'PROJECTED OUT',x+4,y-19);
+          c.fillStyle=ORANGE;c.textAlign='left';c.font='900 12px Arial';c.fillText(row.seed===data.cutoff+1?'PLAYOFF CUTOFF — BELOW: PROJECTED OUT':'PROJECTED OUT',x+4,y-19);
         }
         drawSeedCard(c,row,x,y,cardW,cardH,row.logo);
       });
