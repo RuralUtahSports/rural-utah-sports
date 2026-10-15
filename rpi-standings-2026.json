@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updatedAt": "2026-10-15T14:56:57.734Z",
+  "updatedAt": "2026-10-15T14:58:39.602Z",
   "formula": {
     "rpi": "0.45 × MWP + 0.45 × OWP + 0.10 × OOWP",
     "footballMwp": "Unadjusted game-result winning percentage; football classifications are not weighted.",
@@ -4234,5 +4234,15 @@
         "likelyCause": "One or more opponent records differ from the official table."
       }
     ]
+  },
+  "snapshotComparison": {
+    "officialFetchedAt": "2026-10-14T05:02:22.133Z",
+    "asOfUtahDate": "2026-10-13",
+    "note": "Date-aligned historical back-test only. Current RUS standings may include newer games and out-of-state records.",
+    "teamsCompared": 116,
+    "exactRankMatches": 116,
+    "recordMatches": 116,
+    "meanAbsoluteRpiDifference": 0.0021513125365039184,
+    "mismatches": []
   }
 }
