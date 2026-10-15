@@ -287,6 +287,62 @@ const payload = {
   } : null,
 };
 
+// A direct comparison to the most recently fetched UHSAA table can be
+// misleading after newer games finish. Reconstruct RUS standings using only
+// games completed by the official snapshot date for an apples-to-apples check.
+if (official?.fetchedAt) {
+  const officialDate = new Date(official.fetchedAt);
+  if (!Number.isNaN(officialDate.getTime())) {
+    const parts = Object.fromEntries(
+      new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Denver', year: 'numeric', month: '2-digit', day: '2-digit'
+      }).formatToParts(officialDate)
+        .filter(part => part.type !== 'literal')
+        .map(part => [part.type, part.value])
+    );
+    const snapshotDay = [parts.year, parts.month, parts.day].join('-');
+    gamesByTeam.clear();
+    for (const game of eligibleSchedule) {
+      if (!gameFinal(game) || isNonVarsity(game) || gameDate(game.date) > snapshotDay) continue;
+      const away = alias(game.awayTeam), home = alias(game.homeTeam);
+      if (INDEPENDENT.has(away) || INDEPENDENT.has(home)) continue;
+      if (memberKeys.has(away)) addGame(game.awayTeam, game);
+      if (memberKeys.has(home)) addGame(game.homeTeam, game);
+    }
+    const asOfRows = CLASS_ORDER.flatMap(classification =>
+      eligibleTeams.map(calculate)
+        .filter(row => row.classification === classification)
+        .sort((a, b) => b.rpi - a.rpi || b.mwp - a.mwp || a.team.localeCompare(b.team))
+        .map((row, index) => ({ ...row, rank: index + 1 }))
+    );
+    const rows = officialRows().map(row => {
+      const rus = asOfRows.find(candidate => alias(candidate.team) === alias(row.team));
+      return {
+        classification: row.classification,
+        team: row.team,
+        officialRank: row.rank,
+        rusRank: rus?.rank ?? null,
+        officialRpi: row.rpi,
+        rusRpi: rus?.rpi ?? null,
+        rankDifference: rus ? rus.rank - row.rank : null,
+        rpiDifference: rus ? rus.rpi - row.rpi : null,
+        officialRecord: row.record,
+        rusRecord: rus?.record ?? null,
+      };
+    });
+    payload.snapshotComparison = {
+      officialFetchedAt: official.fetchedAt,
+      asOfUtahDate: snapshotDay,
+      note: 'Date-aligned historical back-test only. Current RUS standings may include newer games and out-of-state records.',
+      teamsCompared: rows.length,
+      exactRankMatches: rows.filter(row => row.officialRank === row.rusRank).length,
+      recordMatches: rows.filter(row => row.officialRecord === row.rusRecord).length,
+      meanAbsoluteRpiDifference: average(rows.map(row => Math.abs(row.rpiDifference)).filter(Number.isFinite)),
+      mismatches: rows.filter(row => row.officialRank !== row.rusRank),
+    };
+  }
+}
+
 fs.writeFileSync(OUT, `${JSON.stringify(payload, null, 2)}\n`);
 console.log(`Built ${calculatedRows.length} RPI standings rows.`);
 if (payload.comparison) {
