@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updatedAt": "2026-10-15T15:01:46.988Z",
+  "updatedAt": "2026-10-15T17:09:29.241Z",
   "formula": {
     "rpi": "0.45 × MWP + 0.45 × OWP + 0.10 × OOWP",
     "footballMwp": "Unadjusted game-result winning percentage; football classifications are not weighted.",
@@ -12,7 +12,7 @@
       "LAYTONCHRISTIAN"
     ]
   },
-  "sourceUpdatedAt": "2026-10-15T15:01:39.370Z",
+  "sourceUpdatedAt": "2026-10-15T17:09:22.130Z",
   "verifiedGameAudit": {
     "added": 3,
     "filled": 1,
@@ -4233,10 +4233,59 @@
     "asOfUtahDate": "2026-10-13",
     "note": "Date-aligned historical back-test only. Current RUS standings may include newer games and out-of-state records.",
     "teamsCompared": 116,
-    "exactRankMatches": 116,
+    "exactRankMatches": 112,
     "recordMatches": 116,
-    "meanAbsoluteRpiDifference": 0.0021513125365039184,
-    "mismatches": [],
+    "meanAbsoluteRpiDifference": 0.0022068101082018186,
+    "mismatches": [
+      {
+        "classification": "6A",
+        "team": "Lehi",
+        "officialRank": 7,
+        "rusRank": 8,
+        "officialRpi": 0.597334,
+        "rusRpi": 0.5953749632569076,
+        "rankDifference": 1,
+        "rpiDifference": -0.0019590367430923905,
+        "officialRecord": "5-4",
+        "rusRecord": "5-4"
+      },
+      {
+        "classification": "6A",
+        "team": "American Fork",
+        "officialRank": 8,
+        "rusRank": 7,
+        "officialRpi": 0.595749,
+        "rusRpi": 0.5955726410934744,
+        "rankDifference": -1,
+        "rpiDifference": -0.0001763589065255644,
+        "officialRecord": "6-3",
+        "rusRecord": "6-3"
+      },
+      {
+        "classification": "1A",
+        "team": "Beaver",
+        "officialRank": 3,
+        "rusRank": 4,
+        "officialRpi": 0.579714,
+        "rusRpi": 0.580339689888301,
+        "rankDifference": 1,
+        "rpiDifference": 0.0006256898883010287,
+        "officialRecord": "5-4",
+        "rusRecord": "5-4"
+      },
+      {
+        "classification": "1A",
+        "team": "North Summit",
+        "officialRank": 4,
+        "rusRank": 3,
+        "officialRpi": 0.573234,
+        "rusRpi": 0.5822696208112875,
+        "rankDifference": -1,
+        "rpiDifference": 0.009035620811287504,
+        "officialRecord": "6-3",
+        "rusRecord": "6-3"
+      }
+    ],
     "largestRpiDifferences": [
       {
         "classification": "1A",
@@ -4268,9 +4317,9 @@
         "officialRank": 9,
         "rusRank": 9,
         "officialRpi": 0.335889,
-        "rusRpi": 0.36191064079952967,
+        "rusRpi": 0.36376249265138155,
         "rankDifference": 0,
-        "rpiDifference": 0.026021640799529677,
+        "rpiDifference": 0.02787349265138156,
         "officialRecord": "1-8",
         "rusRecord": "1-8"
       },
@@ -4311,28 +4360,40 @@
         "rusRecord": "2-7"
       },
       {
-        "classification": "1A",
-        "team": "North Summit",
-        "officialRank": 4,
-        "rusRank": 4,
-        "officialRpi": 0.573234,
-        "rusRpi": 0.5822696208112875,
-        "rankDifference": 0,
-        "rpiDifference": 0.009035620811287504,
-        "officialRecord": "6-3",
-        "rusRecord": "6-3"
-      },
-      {
         "classification": "8P",
         "team": "St. Joseph",
         "officialRank": 8,
         "rusRank": 8,
         "officialRpi": 0.39257,
-        "rusRpi": 0.4011029915438398,
+        "rusRpi": 0.40381463175548005,
         "rankDifference": 0,
-        "rpiDifference": 0.008532991543839852,
+        "rpiDifference": 0.011244631755480072,
         "officialRecord": "2-6",
         "rusRecord": "2-6"
+      },
+      {
+        "classification": "6A",
+        "team": "Lone Peak",
+        "officialRank": 9,
+        "rusRank": 9,
+        "officialRpi": 0.591857,
+        "rusRpi": 0.5821421222810113,
+        "rankDifference": 0,
+        "rpiDifference": -0.009714877718988713,
+        "officialRecord": "4-5",
+        "rusRecord": "4-5"
+      },
+      {
+        "classification": "1A",
+        "team": "North Summit",
+        "officialRank": 4,
+        "rusRank": 3,
+        "officialRpi": 0.573234,
+        "rusRpi": 0.5822696208112875,
+        "rankDifference": -1,
+        "rpiDifference": 0.009035620811287504,
+        "officialRecord": "6-3",
+        "rusRecord": "6-3"
       },
       {
         "classification": "2A",
@@ -4345,18 +4406,6 @@
         "rpiDifference": 0.008234975529100574,
         "officialRecord": "3-5",
         "rusRecord": "3-5"
-      },
-      {
-        "classification": "6A",
-        "team": "Lone Peak",
-        "officialRank": 9,
-        "rusRank": 9,
-        "officialRpi": 0.591857,
-        "rusRpi": 0.5836853321575544,
-        "rankDifference": 0,
-        "rpiDifference": -0.008171667842445607,
-        "officialRecord": "4-5",
-        "rusRecord": "4-5"
       }
     ]
   }
