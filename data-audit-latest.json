@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-15T15:49:24.127Z",
+  "generatedAt": "2026-10-15T15:50:59.874Z",
   "summary": {
     "errors": 0,
-    "warnings": 5,
+    "warnings": 6,
     "info": 2
   },
   "issues": [
@@ -52,15 +52,29 @@
       }
     },
     {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "FARMINGTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 10,
+        "missing": [
+          {
+            "date": "2026-10-14",
+            "opponent": "Layton"
+          }
+        ]
+      }
+    },
+    {
       "severity": "info",
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 8783,
-        "unmatchedRows": 588,
+        "sourceRows": 8845,
+        "unmatchedRows": 593,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 912,
-        "missingGamePairs": 0
+        "sourceGamePairs": 932,
+        "missingGamePairs": 1
       }
     },
     {
