@@ -102,17 +102,35 @@ function addMovement(rows, classification) {
   });
 }
 
+// If UHSAA temporarily returns an empty class page, keep the last good
+// snapshot for that class without claiming it has been freshly updated.
+const attemptedAt = new Date().toISOString();
 const results = await Promise.all(CLASSES.map(async ([classification, endpoint]) => {
-  const sourceUrl = `${BASE}/${endpoint}.php`;
-  const rows = addMovement(parseRows(await fetchText(sourceUrl), classification), classification);
-  if (!rows.length) throw new Error(`No official ${classification} RPI rows found`);
-  return [classification, {sourceUrl, rows}];
+  const sourceUrl = BASE + '/' + endpoint + '.php';
+  try {
+    let rows = [];
+    for (let attempt = 0; attempt < 3; attempt++) {
+      rows = parseRows(await fetchText(sourceUrl), classification);
+      if (rows.length) break;
+      if (attempt < 2) await new Promise(resolve => setTimeout(resolve, 1250 * (attempt + 1)));
+    }
+    if (!rows.length) throw new Error('No valid RPI rows returned');
+    return [classification, { sourceUrl, fetchedAt: attemptedAt, stale: false, rows: addMovement(rows, classification) }];
+  } catch (error) {
+    const cached = previous?.classifications?.[classification];
+    if (!cached?.rows?.length) throw new Error('Official ' + classification + ' snapshot unavailable without fallback: ' + error.message);
+    console.warn('UHSAA ' + classification + ' unavailable: ' + error.message + '. Retaining last verified snapshot.');
+    return [classification, { ...cached, sourceUrl, fetchedAt: cached.fetchedAt || previous.fetchedAt, stale: true }];
+  }
 }));
-
+const staleClassifications = results.filter(([, group]) => group.stale).map(([classification]) => classification);
 const payload = {
   season: 2026,
-  fetchedAt: new Date().toISOString(),
-  source: `${BASE}/`,
+  // Do not claim a full update when only some classifications were refreshed.
+  fetchedAt: staleClassifications.length ? (previous?.fetchedAt || attemptedAt) : attemptedAt,
+  lastAttemptAt: attemptedAt,
+  staleClassifications,
+  source: BASE + '/',
   movement: {
     weekOf: currentWeek,
     baselineWeekOf,
@@ -123,5 +141,6 @@ const payload = {
   classifications: Object.fromEntries(results),
 };
 
-fs.writeFileSync(OUT, `${JSON.stringify(payload, null, 2)}\n`);
-console.log(`Fetched ${results.reduce((sum, [, group]) => sum + group.rows.length, 0)} official UHSAA football RPI rows.`);
+fs.writeFileSync(OUT, JSON.stringify(payload, null, 2) + '\n');
+console.log('Available ' + results.reduce((sum, [, group]) => sum + group.rows.length, 0)
+  + ' UHSAA rows. Stale classifications: ' + (staleClassifications.join(', ') || 'none') + '.');
