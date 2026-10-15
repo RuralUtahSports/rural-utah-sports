@@ -5,6 +5,7 @@ const GAMES_FILE = 'weekly-simulation.json';
 const TEAMS_FILE = 'teams-data.json';
 const OOS_FILE = 'rpi-oos-2026.json';
 const OFFICIAL_FILE = 'uhsaa-rpi-official-2026.json';
+const VERIFIED_FILE = 'verified-finals-2026.json';
 const OUT = 'rpi-standings-2026.json';
 const CLASS_ORDER = ['6A', '5A', '4A', '3A', '2A', '1A', '8P'];
 const BORDER_STATES = new Set(['AZ', 'CO', 'ID', 'NM', 'NV', 'WY']);
@@ -53,10 +54,44 @@ const teams = JSON.parse(fs.readFileSync(TEAMS_FILE, 'utf8'));
 const weekly = JSON.parse(fs.readFileSync(GAMES_FILE, 'utf8'));
 const oosData = fs.existsSync(OOS_FILE) ? JSON.parse(fs.readFileSync(OOS_FILE, 'utf8')) : {teams: {}};
 const official = fs.existsSync(OFFICIAL_FILE) ? JSON.parse(fs.readFileSync(OFFICIAL_FILE, 'utf8')) : null;
+const verifiedFinals = fs.existsSync(VERIFIED_FILE) ? JSON.parse(fs.readFileSync(VERIFIED_FILE, 'utf8')) : [];
 const teamByKey = new Map(teams.map((team) => [alias(team.team), team]));
 const memberKeys = new Set(teamByKey.keys());
 const eligibleTeams = teams.filter((team) => !INDEPENDENT.has(alias(team.team)));
 const gamesByTeam = new Map();
+// Preserve all results on the main site. UHSAA RPI excludes non-varsity opponents.
+const isNonVarsity = game => /\bJV\b|JUNIOR VARSITY|NON[\s-]?VARSITY/i.test(String(game.awayTeam) + ' ' + String(game.homeTeam))
+  || /\bEXHIBITION\b|\bSCRIMMAGE\b/i.test(String(game.status || game.type || ''));
+const gameDate = value => {
+  const parts = clean(value).split(/[/-]/);
+  if (parts.length !== 3) return '';
+  const [year, month, day] = parts[0].length === 4 ? parts : [parts[2], parts[0], parts[1]];
+  return year + '-' + month.padStart(2, '0') + '-' + day.padStart(2, '0');
+};
+const matchupKey = game => [alias(game.awayTeam), alias(game.homeTeam)].sort().join('|');
+const verifiedGameAudit = { added: 0, filled: 0, excludedNonVarsity: 0, conflictingScores: 0 };
+const eligibleSchedule = (weekly.games || []).map(game => ({ ...game }));
+for (const verified of Array.isArray(verifiedFinals) ? verifiedFinals : []) {
+  if (!gameFinal(verified) || isNonVarsity(verified)) continue;
+  const candidates = eligibleSchedule.filter(game => matchupKey(game) === matchupKey(verified));
+  const existing = candidates.find(game => gameDate(game.date) === gameDate(verified.date));
+  if (existing) {
+    const sameOrientation = alias(existing.awayTeam) === alias(verified.awayTeam);
+    const away = sameOrientation ? verified.actualAway : verified.actualHome;
+    const home = sameOrientation ? verified.actualHome : verified.actualAway;
+    if (!gameFinal(existing)) {
+      existing.actualAway = away;
+      existing.actualHome = home;
+      verifiedGameAudit.filled++;
+    } else if (Number(existing.actualAway) !== Number(away) || Number(existing.actualHome) !== Number(home)) {
+      // Do not overwrite already-entered finals; flag conflicts for manual audit.
+      verifiedGameAudit.conflictingScores++;
+    }
+  } else if (!candidates.length && (memberKeys.has(alias(verified.awayTeam)) || memberKeys.has(alias(verified.homeTeam)))) {
+    eligibleSchedule.push({ ...verified });
+    verifiedGameAudit.added++;
+  }
+}
 
 function addGame(team, game) {
   const key = alias(team);
@@ -64,8 +99,9 @@ function addGame(team, game) {
   gamesByTeam.get(key).push(game);
 }
 
-for (const game of weekly.games || []) {
+for (const game of eligibleSchedule) {
   if (!gameFinal(game)) continue;
+  if (isNonVarsity(game)) { verifiedGameAudit.excludedNonVarsity++; continue; }
   const away = alias(game.awayTeam);
   const home = alias(game.homeTeam);
   if (INDEPENDENT.has(away) || INDEPENDENT.has(home)) continue;
@@ -194,6 +230,11 @@ const payload = {
     excluded: [...INDEPENDENT],
   },
   sourceUpdatedAt: oosData.updatedAt || null,
+  verifiedGameAudit,
+  rpiRules: {
+    nonVarsityGames: 'Excluded from postseason RPI; retained in historical game results.',
+    verifiedFinals: 'Supplement missing finals without overwriting already-entered scoreboard scores.',
+  },
   classifications,
   comparison: official ? {
     officialFetchedAt: official.fetchedAt,
