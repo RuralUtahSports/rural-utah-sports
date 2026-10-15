@@ -123,13 +123,48 @@ function wp(team, excludeOpponent = '') {
   return average(games.map((game) => resultFor(game, team)));
 }
 
+// OWP always excludes the actual head-to-head game. For out-of-state
+// opponents we can derive that adjustment from their cached W/L record even
+// when MaxPreps hasn't supplied an explicit per-Utah-team WP.
+function adjustedExternalWp(entry, opponent, versusTeam) {
+  const record = entry?.record;
+  const wins = number(record?.wins), losses = number(record?.losses);
+  const ties = number(record?.ties) ?? 0, total = number(record?.games);
+  const played = (gamesByTeam.get(alias(versusTeam)) || [])
+    .filter(game => alias(opponentFor(game, versusTeam)) === alias(opponent));
+  if (!played.length || [wins, losses, total].some(value => value === null) || total <= played.length) return null;
+  let opponentWins = 0, opponentLosses = 0, opponentTies = 0;
+  for (const game of played) {
+    const result = resultFor(game, versusTeam);
+    if (result === 0) opponentWins++;
+    else if (result === 1) opponentLosses++;
+    else opponentTies++;
+  }
+  if (wins < opponentWins || losses < opponentLosses || ties < opponentTies) return null;
+  return (wins - opponentWins + (ties - opponentTies) * 0.5) / (total - played.length);
+}
+const uncertainExternalOwp = new Set();
+function borderOpponentOwp(entry, opponent) {
+  const border = BORDER_STATES.has(clean(entry?.state).toUpperCase());
+  if (!entry || !border) return 0.5;
+  const cached = number(entry.owp);
+  const failed = !!entry.error && (!entry.dataQuality || entry.dataQuality.verified !== true);
+  // An extreme OWP from an incomplete/cached MaxPreps scrape can be based
+  // on only one or two opponents, not the full schedule. Neutral fallback is
+  // an estimate, never a claim to know the official Nevada/Idaho/etc. OWP.
+  if (failed && cached !== null && (cached < 0.20 || cached > 0.80)) {
+    uncertainExternalOwp.add(clean(opponent));
+    return 0.5;
+  }
+  return cached;
+}
 function opponentWp(opponent, versusTeam) {
   const opponentKey = alias(opponent);
   if (memberKeys.has(opponentKey)) return wp(opponent, versusTeam);
   const entry = oosEntry(opponent);
   if (!entry) return 0.5;
   const direct = entry.wpByUtahTeam?.[alias(versusTeam)] ?? entry.wpByUtahTeam?.[clean(versusTeam).toUpperCase()];
-  return number(direct) ?? number(entry.wp) ?? 0.5;
+  return number(direct) ?? adjustedExternalWp(entry, opponent, versusTeam) ?? number(entry.wp) ?? 0.5;
 }
 
 function opponentOwp(opponent, versusTeam) {
@@ -137,8 +172,10 @@ function opponentOwp(opponent, versusTeam) {
   if (!memberKeys.has(opponentKey)) {
     const entry = oosEntry(opponent);
     if (!entry || !BORDER_STATES.has(clean(entry.state).toUpperCase())) return 0.5;
+    const fallback = borderOpponentOwp(entry, opponent);
+    if (uncertainExternalOwp.has(clean(opponent))) return fallback;
     const direct = entry.owpByUtahTeam?.[alias(versusTeam)] ?? entry.owpByUtahTeam?.[clean(versusTeam).toUpperCase()];
-    return number(direct) ?? number(entry.owp) ?? 0.5;
+    return number(direct) ?? fallback ?? 0.5;
   }
   const rows = gamesByTeam.get(opponentKey) || [];
   return average(rows.map((game) => opponentWp(opponentFor(game, opponent), opponent))) ?? 0.5;
@@ -231,6 +268,8 @@ const payload = {
   },
   sourceUpdatedAt: oosData.updatedAt || null,
   verifiedGameAudit,
+  provisionalOutOfStateOwp: [...uncertainExternalOwp].sort(),
+  calibrationNotes: 'Failed external opponent scrapes with extreme historical OWP use a clearly tracked neutral .500 estimate; successful verified sources continue to use their actual OWP.',
   rpiRules: {
     nonVarsityGames: 'Excluded from postseason RPI; retained in historical game results.',
     verifiedFinals: 'Supplement missing finals without overwriting already-entered scoreboard scores.',
