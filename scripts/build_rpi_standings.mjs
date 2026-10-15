@@ -339,6 +339,10 @@ if (official?.fetchedAt) {
       recordMatches: rows.filter(row => row.officialRecord === row.rusRecord).length,
       meanAbsoluteRpiDifference: average(rows.map(row => Math.abs(row.rpiDifference)).filter(Number.isFinite)),
       mismatches: rows.filter(row => row.officialRank !== row.rusRank),
+      largestRpiDifferences: [...rows]
+        .filter(row => Number.isFinite(row.rpiDifference))
+        .sort((a, b) => Math.abs(b.rpiDifference) - Math.abs(a.rpiDifference))
+        .slice(0, 10),
     };
   }
 }
