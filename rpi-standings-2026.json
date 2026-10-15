@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "updatedAt": "2026-10-15T14:41:08.108Z",
+  "updatedAt": "2026-10-15T14:56:57.734Z",
   "formula": {
     "rpi": "0.45 × MWP + 0.45 × OWP + 0.10 × OOWP",
     "footballMwp": "Unadjusted game-result winning percentage; football classifications are not weighted.",
@@ -19,6 +19,15 @@
     "excludedNonVarsity": 1,
     "conflictingScores": 4
   },
+  "provisionalOutOfStateOwp": [
+    "ARBOR VIEW, NV",
+    "ELKO, NV",
+    "EVANSTON, WY",
+    "HIGHLAND, ID",
+    "LIBERTY, NV",
+    "VIRGIN VALLEY, NV"
+  ],
+  "calibrationNotes": "Failed external opponent scrapes with extreme historical OWP use a clearly tracked neutral .500 estimate; successful verified sources continue to use their actual OWP.",
   "rpiRules": {
     "nonVarsityGames": "Excluded from postseason RPI; retained in historical game results.",
     "verifiedFinals": "Supplement missing finals without overwriting already-entered scoreboard scores."
@@ -34,10 +43,10 @@
         "losses": 1,
         "ties": 0,
         "games": 9,
-        "rpi": 0.797272437781697,
+        "rpi": 0.7980349304330785,
         "mwp": 0.8888888888888888,
-        "owp": 0.7436067019400352,
-        "oowp": 0.6264942190868117,
+        "owp": 0.7541887125220458,
+        "oowp": 0.5865000979815794,
         "postseasonEligible": true,
         "rank": 1
       },
@@ -50,10 +59,10 @@
         "losses": 0,
         "ties": 0,
         "games": 9,
-        "rpi": 0.7731773466588282,
+        "rpi": 0.7780197922790515,
         "mwp": 1,
-        "owp": 0.5866402116402116,
-        "oowp": 0.591892514207329,
+        "owp": 0.5972222222222222,
+        "oowp": 0.5926979227905154,
         "postseasonEligible": true,
         "rank": 2
       },
@@ -66,10 +75,10 @@
         "losses": 2,
         "ties": 0,
         "games": 10,
-        "rpi": 0.6973126543209877,
+        "rpi": 0.702674823633157,
         "mwp": 0.8,
-        "owp": 0.6125396825396826,
-        "oowp": 0.6166979717813051,
+        "owp": 0.6244444444444445,
+        "oowp": 0.6167482363315697,
         "postseasonEligible": true,
         "rank": 3
       },
@@ -82,10 +91,10 @@
         "losses": 2,
         "ties": 0,
         "games": 9,
-        "rpi": 0.694097638643935,
+        "rpi": 0.6943545463452871,
         "mwp": 0.7777777777777778,
         "owp": 0.6435185185185185,
-        "oowp": 0.5451430531060161,
+        "oowp": 0.5477121301195376,
         "postseasonEligible": true,
         "rank": 4
       },
@@ -98,9 +107,9 @@
         "losses": 2,
         "ties": 0,
         "games": 9,
-        "rpi": 0.6562005193023712,
+        "rpi": 0.6633433764452283,
         "mwp": 0.7777777777777778,
-        "owp": 0.5597442680776015,
+        "owp": 0.5756172839506173,
         "oowp": 0.5431559866745052,
         "postseasonEligible": true,
         "rank": 5
@@ -114,10 +123,10 @@
         "losses": 3,
         "ties": 0,
         "games": 10,
-        "rpi": 0.6453776014109348,
+        "rpi": 0.6455548500881835,
         "mwp": 0.7,
         "owp": 0.6138888888888888,
-        "oowp": 0.5412760141093474,
+        "oowp": 0.5430485008818342,
         "postseasonEligible": true,
         "rank": 6
       },
@@ -130,10 +139,10 @@
         "losses": 4,
         "ties": 0,
         "games": 10,
-        "rpi": 0.5901913580246914,
+        "rpi": 0.5882201940035274,
         "mwp": 0.6,
-        "owp": 0.5783730158730159,
-        "oowp": 0.599235008818342,
+        "owp": 0.5736111111111112,
+        "oowp": 0.6009519400352733,
         "postseasonEligible": true,
         "rank": 7
       },
@@ -146,10 +155,10 @@
         "losses": 5,
         "ties": 0,
         "games": 9,
-        "rpi": 0.586581177738585,
+        "rpi": 0.5858482265334116,
         "mwp": 0.4444444444444444,
-        "owp": 0.7299382716049382,
-        "oowp": 0.5810895551636291,
+        "owp": 0.7279541446208112,
+        "oowp": 0.5826886145404663,
         "postseasonEligible": true,
         "rank": 8
       },
@@ -162,10 +171,10 @@
         "losses": 3,
         "ties": 0,
         "games": 9,
-        "rpi": 0.5799104448363708,
+        "rpi": 0.58020438957476,
         "mwp": 0.6666666666666666,
         "owp": 0.5030864197530864,
-        "oowp": 0.5352155594748188,
+        "oowp": 0.5381550068587104,
         "postseasonEligible": true,
         "rank": 9
       },
@@ -178,10 +187,10 @@
         "losses": 5,
         "ties": 0,
         "games": 10,
-        "rpi": 0.5730526455026456,
+        "rpi": 0.5719481481481481,
         "mwp": 0.5,
-        "owp": 0.6408333333333334,
-        "oowp": 0.596776455026455,
+        "owp": 0.6375,
+        "oowp": 0.6007314814814814,
         "postseasonEligible": true,
         "rank": 10
       },
@@ -210,10 +219,10 @@
         "losses": 6,
         "ties": 0,
         "games": 9,
-        "rpi": 0.4628265236135607,
+        "rpi": 0.4627736135606506,
         "mwp": 0.3333333333333333,
         "owp": 0.574074074074074,
-        "oowp": 0.5449319028022733,
+        "oowp": 0.5444028022731727,
         "postseasonEligible": true,
         "rank": 12
       },
@@ -226,10 +235,10 @@
         "losses": 5,
         "ties": 0,
         "games": 10,
-        "rpi": 0.45631541005291004,
+        "rpi": 0.4562820767195767,
         "mwp": 0.5,
         "owp": 0.390079365079365,
-        "oowp": 0.5577969576719577,
+        "oowp": 0.5574636243386244,
         "postseasonEligible": true,
         "rank": 13
       },
@@ -242,10 +251,10 @@
         "losses": 6,
         "ties": 0,
         "games": 9,
-        "rpi": 0.4526616696061141,
+        "rpi": 0.45295561434450327,
         "mwp": 0.3333333333333333,
         "owp": 0.5524691358024691,
-        "oowp": 0.5405055849500293,
+        "oowp": 0.5434450323339212,
         "postseasonEligible": true,
         "rank": 14
       },
@@ -258,10 +267,10 @@
         "losses": 7,
         "ties": 0,
         "games": 9,
-        "rpi": 0.3844077013521458,
+        "rpi": 0.38484861845972956,
         "mwp": 0.2222222222222222,
         "owp": 0.5123456790123456,
-        "oowp": 0.5385214579659025,
+        "oowp": 0.5429306290417402,
         "postseasonEligible": true,
         "rank": 15
       },
@@ -274,10 +283,10 @@
         "losses": 8,
         "ties": 0,
         "games": 9,
-        "rpi": 0.3773228493043308,
+        "rpi": 0.3820700568293161,
         "mwp": 0.1111111111111111,
         "owp": 0.6172839506172839,
-        "oowp": 0.4954507152655301,
+        "oowp": 0.5429227905153831,
         "postseasonEligible": true,
         "rank": 16
       },
@@ -290,10 +299,10 @@
         "losses": 7,
         "ties": 0,
         "games": 9,
-        "rpi": 0.37536997844405245,
+        "rpi": 0.3753170683911424,
         "mwp": 0.2222222222222222,
         "owp": 0.5046296296296295,
-        "oowp": 0.48286645110719184,
+        "oowp": 0.48233735057809135,
         "postseasonEligible": true,
         "rank": 17
       }
@@ -308,10 +317,10 @@
         "losses": 0,
         "ties": 0,
         "games": 10,
-        "rpi": 0.705289737654321,
+        "rpi": 0.706289737654321,
         "mwp": 1,
-        "owp": 0.4531746031746032,
-        "oowp": 0.5136116622574955,
+        "owp": 0.4665079365079364,
+        "oowp": 0.46361166225749556,
         "postseasonEligible": true,
         "rank": 1
       },
@@ -324,10 +333,10 @@
         "losses": 2,
         "ties": 0,
         "games": 9,
-        "rpi": 0.6709812855183226,
+        "rpi": 0.6724363119733491,
         "mwp": 0.7777777777777778,
-        "owp": 0.591710758377425,
-        "oowp": 0.5471144424848128,
+        "owp": 0.5943562610229276,
+        "oowp": 0.5497599451303155,
         "postseasonEligible": true,
         "rank": 2
       },
@@ -340,10 +349,10 @@
         "losses": 1,
         "ties": 0,
         "games": 9,
-        "rpi": 0.6601627474034881,
+        "rpi": 0.6561504017244758,
         "mwp": 0.8888888888888888,
         "owp": 0.4567901234567901,
-        "oowp": 0.546071918479326,
+        "oowp": 0.5059484616892025,
         "postseasonEligible": true,
         "rank": 3
       },
@@ -372,10 +381,10 @@
         "losses": 2,
         "ties": 0,
         "games": 9,
-        "rpi": 0.6442749363119733,
+        "rpi": 0.6444513031550069,
         "mwp": 0.7777777777777778,
         "owp": 0.5354938271604938,
-        "oowp": 0.5330271408975112,
+        "oowp": 0.5347908093278463,
         "postseasonEligible": true,
         "rank": 5
       },
@@ -404,10 +413,10 @@
         "losses": 4,
         "ties": 0,
         "games": 10,
-        "rpi": 0.5748240189594356,
+        "rpi": 0.5749827491181658,
         "mwp": 0.6,
         "owp": 0.5575396825396826,
-        "oowp": 0.5393116181657848,
+        "oowp": 0.5408989197530863,
         "postseasonEligible": true,
         "rank": 7
       },
@@ -436,10 +445,10 @@
         "losses": 4,
         "ties": 0,
         "games": 10,
-        "rpi": 0.5593501322751324,
+        "rpi": 0.55946917989418,
         "mwp": 0.6,
         "owp": 0.5361111111111112,
-        "oowp": 0.48100132275132274,
+        "oowp": 0.4821917989417989,
         "postseasonEligible": true,
         "rank": 9
       },
@@ -452,10 +461,10 @@
         "losses": 4,
         "ties": 0,
         "games": 9,
-        "rpi": 0.5512918871252205,
+        "rpi": 0.5515917107583774,
         "mwp": 0.5555555555555556,
         "owp": 0.5478395061728395,
-        "oowp": 0.5476410934744267,
+        "oowp": 0.5506393298059965,
         "postseasonEligible": true,
         "rank": 10
       },
@@ -468,10 +477,10 @@
         "losses": 2,
         "ties": 0,
         "games": 10,
-        "rpi": 0.5376549823633158,
+        "rpi": 0.5377883156966491,
         "mwp": 0.8,
         "owp": 0.29444444444444445,
-        "oowp": 0.45154982363315693,
+        "oowp": 0.45288315696649023,
         "postseasonEligible": true,
         "rank": 11
       },
@@ -484,10 +493,10 @@
         "losses": 5,
         "ties": 0,
         "games": 10,
-        "rpi": 0.5292889109347443,
+        "rpi": 0.5294476410934744,
         "mwp": 0.5,
         "owp": 0.553968253968254,
-        "oowp": 0.5500319664902998,
+        "oowp": 0.5516192680776014,
         "postseasonEligible": true,
         "rank": 12
       },
@@ -500,10 +509,10 @@
         "losses": 5,
         "ties": 0,
         "games": 10,
-        "rpi": 0.4871565255731922,
+        "rpi": 0.48728985890652554,
         "mwp": 0.5,
         "owp": 0.4888888888888888,
-        "oowp": 0.4215652557319224,
+        "oowp": 0.4228985890652558,
         "postseasonEligible": true,
         "rank": 13
       },
@@ -516,10 +525,10 @@
         "losses": 6,
         "ties": 0,
         "games": 10,
-        "rpi": 0.4729761463844797,
+        "rpi": 0.4731864638447972,
         "mwp": 0.4,
         "owp": 0.525,
-        "oowp": 0.5672614638447971,
+        "oowp": 0.5693646384479718,
         "postseasonEligible": true,
         "rank": 14
       },
@@ -564,10 +573,10 @@
         "losses": 5,
         "ties": 0,
         "games": 9,
-        "rpi": 0.4542298647854203,
+        "rpi": 0.45437801293356844,
         "mwp": 0.4444444444444444,
         "owp": 0.4737654320987655,
-        "oowp": 0.4103542034097589,
+        "oowp": 0.4118356848912404,
         "postseasonEligible": true,
         "rank": 17
       },
@@ -580,10 +589,10 @@
         "losses": 6,
         "ties": 0,
         "games": 9,
-        "rpi": 0.4288893787967862,
+        "rpi": 0.4290657456398197,
         "mwp": 0.3333333333333333,
         "owp": 0.5092592592592592,
-        "oowp": 0.4972271213011953,
+        "oowp": 0.4989907897315304,
         "postseasonEligible": true,
         "rank": 18
       },
@@ -620,22 +629,6 @@
         "rank": 20
       },
       {
-        "team": "BRIGHTON",
-        "classification": "5A",
-        "region": "6",
-        "record": "1-9",
-        "wins": 1,
-        "losses": 9,
-        "ties": 0,
-        "games": 10,
-        "rpi": 0.3842016093474427,
-        "mwp": 0.1,
-        "owp": 0.6466269841269842,
-        "oowp": 0.4821946649029982,
-        "postseasonEligible": true,
-        "rank": 21
-      },
-      {
         "team": "MAPLE MOUNTAIN",
         "classification": "5A",
         "region": "7",
@@ -644,10 +637,26 @@
         "losses": 7,
         "ties": 0,
         "games": 9,
-        "rpi": 0.38204786400156765,
+        "rpi": 0.38799260239075056,
         "mwp": 0.2222222222222222,
-        "owp": 0.5052910052910052,
-        "oowp": 0.5466691162061532,
+        "owp": 0.5185185185185186,
+        "oowp": 0.546592690574172,
+        "postseasonEligible": true,
+        "rank": 21
+      },
+      {
+        "team": "BRIGHTON",
+        "classification": "5A",
+        "region": "6",
+        "record": "1-9",
+        "wins": 1,
+        "losses": 9,
+        "ties": 0,
+        "games": 10,
+        "rpi": 0.384334942680776,
+        "mwp": 0.1,
+        "owp": 0.6466269841269842,
+        "oowp": 0.4835279982363315,
         "postseasonEligible": true,
         "rank": 22
       },
@@ -660,10 +669,10 @@
         "losses": 7,
         "ties": 0,
         "games": 10,
-        "rpi": 0.37859369488536154,
+        "rpi": 0.37872702821869486,
         "mwp": 0.3,
         "owp": 0.44305555555555554,
-        "oowp": 0.44218694885361554,
+        "oowp": 0.44352028218694883,
         "postseasonEligible": true,
         "rank": 23
       },
@@ -708,10 +717,10 @@
         "losses": 8,
         "ties": 0,
         "games": 10,
-        "rpi": 0.2915408950617284,
+        "rpi": 0.29167422839506174,
         "mwp": 0.2,
         "owp": 0.3549603174603174,
-        "oowp": 0.4180875220458554,
+        "oowp": 0.41942085537918866,
         "postseasonEligible": true,
         "rank": 26
       },
@@ -724,10 +733,10 @@
         "losses": 9,
         "ties": 0,
         "games": 10,
-        "rpi": 0.2730716490299824,
+        "rpi": 0.2732049823633157,
         "mwp": 0.1,
         "owp": 0.41527777777777775,
-        "oowp": 0.41196649029982363,
+        "oowp": 0.4132998236331569,
         "postseasonEligible": true,
         "rank": 27
       },
@@ -774,10 +783,10 @@
         "losses": 1,
         "ties": 0,
         "games": 10,
-        "rpi": 0.7202170965608466,
+        "rpi": 0.7162819113756614,
         "mwp": 0.9,
         "owp": 0.5682539682539682,
-        "oowp": 0.5950281084656085,
+        "oowp": 0.5556762566137567,
         "postseasonEligible": true,
         "rank": 2
       },
@@ -806,10 +815,10 @@
         "losses": 2,
         "ties": 0,
         "games": 8,
-        "rpi": 0.6373214285714286,
+        "rpi": 0.6372635582010582,
         "mwp": 0.75,
         "owp": 0.5434027777777778,
-        "oowp": 0.5529017857142857,
+        "oowp": 0.552323082010582,
         "postseasonEligible": true,
         "rank": 4
       },
@@ -822,10 +831,10 @@
         "losses": 2,
         "ties": 0,
         "games": 9,
-        "rpi": 0.6192724255339996,
+        "rpi": 0.6191989393494023,
         "mwp": 0.7777777777777778,
         "owp": 0.4671516754850088,
-        "oowp": 0.5905417156574564,
+        "oowp": 0.5898068538114833,
         "postseasonEligible": true,
         "rank": 5
       },
@@ -838,10 +847,10 @@
         "losses": 3,
         "ties": 0,
         "games": 10,
-        "rpi": 0.6028133267195768,
+        "rpi": 0.6028993055555556,
         "mwp": 0.7,
         "owp": 0.5234126984126984,
-        "oowp": 0.5227761243386243,
+        "oowp": 0.5236359126984127,
         "postseasonEligible": true,
         "rank": 6
       },
@@ -854,10 +863,10 @@
         "losses": 2,
         "ties": 0,
         "games": 9,
-        "rpi": 0.6025790588869293,
+        "rpi": 0.6027554257299628,
         "mwp": 0.7777777777777778,
         "owp": 0.45789241622574955,
-        "oowp": 0.46527471585341956,
+        "oowp": 0.46703838428375466,
         "postseasonEligible": true,
         "rank": 7
       },
@@ -918,9 +927,9 @@
         "losses": 4,
         "ties": 0,
         "games": 9,
-        "rpi": 0.5627760018616501,
+        "rpi": 0.5606926685283167,
         "mwp": 0.5555555555555556,
-        "owp": 0.5778218694885362,
+        "owp": 0.5731922398589065,
         "oowp": 0.5275616059180874,
         "postseasonEligible": true,
         "rank": 11
@@ -1014,10 +1023,10 @@
         "losses": 7,
         "ties": 0,
         "games": 10,
-        "rpi": 0.467608630952381,
+        "rpi": 0.4675623346560847,
         "mwp": 0.3,
         "owp": 0.6281746031746032,
-        "oowp": 0.4993005952380952,
+        "oowp": 0.49883763227513234,
         "postseasonEligible": true,
         "rank": 17
       },
@@ -1046,10 +1055,10 @@
         "losses": 5,
         "ties": 0,
         "games": 8,
-        "rpi": 0.44723214285714286,
+        "rpi": 0.4473988095238095,
         "mwp": 0.375,
         "owp": 0.5190972222222222,
-        "oowp": 0.44888392857142856,
+        "oowp": 0.4505505952380952,
         "postseasonEligible": true,
         "rank": 19
       },
@@ -1110,10 +1119,10 @@
         "losses": 8,
         "ties": 0,
         "games": 10,
-        "rpi": 0.3789400683421517,
+        "rpi": 0.3788937720458554,
         "mwp": 0.2,
         "owp": 0.5283730158730159,
-        "oowp": 0.5117221119929453,
+        "oowp": 0.5112591490299823,
         "postseasonEligible": true,
         "rank": 23
       },
@@ -1256,10 +1265,10 @@
         "losses": 2,
         "ties": 0,
         "games": 9,
-        "rpi": 0.6203845776993926,
+        "rpi": 0.6203331373701745,
         "mwp": 0.7777777777777778,
         "owp": 0.482716049382716,
-        "oowp": 0.5316235547717029,
+        "oowp": 0.5311091514795218,
         "postseasonEligible": true,
         "rank": 3
       },
@@ -1352,10 +1361,10 @@
         "losses": 5,
         "ties": 0,
         "games": 9,
-        "rpi": 0.4818831447187929,
+        "rpi": 0.4818317043895748,
         "mwp": 0.4444444444444444,
         "owp": 0.5165343915343915,
-        "oowp": 0.4944266852831667,
+        "oowp": 0.49391228199098564,
         "postseasonEligible": true,
         "rank": 9
       },
@@ -1384,10 +1393,10 @@
         "losses": 7,
         "ties": 0,
         "games": 9,
-        "rpi": 0.38251904516950813,
+        "rpi": 0.38246760484029,
         "mwp": 0.2222222222222222,
         "owp": 0.5134479717813051,
-        "oowp": 0.5146745786792084,
+        "oowp": 0.5141601753870273,
         "postseasonEligible": true,
         "rank": 11
       },
@@ -1400,10 +1409,10 @@
         "losses": 8,
         "ties": 0,
         "games": 9,
-        "rpi": 0.3129012345679012,
+        "rpi": 0.3130246913580247,
         "mwp": 0.1111111111111111,
         "owp": 0.48148148148148145,
-        "oowp": 0.46234567901234563,
+        "oowp": 0.4635802469135802,
         "postseasonEligible": true,
         "rank": 12
       },
@@ -1416,10 +1425,10 @@
         "losses": 9,
         "ties": 0,
         "games": 10,
-        "rpi": 0.3041955152431343,
+        "rpi": 0.3081955152431343,
         "mwp": 0.1,
         "owp": 0.47777777777777775,
-        "oowp": 0.44195515243134287,
+        "oowp": 0.48195515243134296,
         "postseasonEligible": true,
         "rank": 13
       }
@@ -1450,10 +1459,10 @@
         "losses": 2,
         "ties": 0,
         "games": 9,
-        "rpi": 0.6509746717617088,
+        "rpi": 0.6510981285518322,
         "mwp": 0.7777777777777778,
         "owp": 0.5533509700176366,
-        "oowp": 0.519667352537723,
+        "oowp": 0.5209019204389576,
         "postseasonEligible": true,
         "rank": 2
       },
@@ -1466,10 +1475,10 @@
         "losses": 3,
         "ties": 0,
         "games": 8,
-        "rpi": 0.6252493543713781,
+        "rpi": 0.625388243260267,
         "mwp": 0.625,
         "owp": 0.6537698412698412,
-        "oowp": 0.4980292579994961,
+        "oowp": 0.499418146888385,
         "postseasonEligible": true,
         "rank": 3
       },
@@ -1482,10 +1491,10 @@
         "losses": 3,
         "ties": 0,
         "games": 9,
-        "rpi": 0.6199019221886286,
+        "rpi": 0.6200253789787521,
         "mwp": 0.6666666666666666,
         "owp": 0.5989858906525574,
-        "oowp": 0.5035827139497774,
+        "oowp": 0.5048172818510119,
         "postseasonEligible": true,
         "rank": 4
       },
@@ -1498,9 +1507,9 @@
         "losses": 4,
         "ties": 0,
         "games": 9,
-        "rpi": 0.47180561679404276,
+        "rpi": 0.4768056167940427,
         "mwp": 0.5555555555555556,
-        "owp": 0.3714726631393298,
+        "owp": 0.3825837742504409,
         "oowp": 0.5464291838134431,
         "postseasonEligible": true,
         "rank": 5
@@ -1514,10 +1523,10 @@
         "losses": 5,
         "ties": 0,
         "games": 8,
-        "rpi": 0.4689125881834215,
+        "rpi": 0.46905147707231043,
         "mwp": 0.375,
         "owp": 0.5558035714285714,
-        "oowp": 0.5005098104056438,
+        "oowp": 0.5018986992945327,
         "postseasonEligible": true,
         "rank": 6
       },
@@ -1530,10 +1539,10 @@
         "losses": 7,
         "ties": 0,
         "games": 9,
-        "rpi": 0.37620146412474453,
+        "rpi": 0.37632492091486797,
         "mwp": 0.2222222222222222,
         "owp": 0.5133597883597883,
-        "oowp": 0.4518955936283979,
+        "oowp": 0.4531301615296324,
         "postseasonEligible": true,
         "rank": 7
       },
@@ -1708,10 +1717,10 @@
         "losses": 8,
         "ties": 0,
         "games": 9,
-        "rpi": 0.361667156574564,
+        "rpi": 0.36179061336468743,
         "mwp": 0.1111111111111111,
         "owp": 0.5833333333333334,
-        "oowp": 0.49167156574563975,
+        "oowp": 0.4929061336468743,
         "postseasonEligible": true,
         "rank": 9
       }
@@ -1898,11 +1907,11 @@
   "comparison": {
     "officialFetchedAt": "2026-10-14T05:02:22.133Z",
     "teamsCompared": 116,
-    "exactRankMatches": 74,
+    "exactRankMatches": 73,
     "recordMatches": 56,
     "exactRpiMatches": 0,
-    "withinOneThousandth": 10,
-    "meanAbsoluteRpiDifference": 0.009152454934687802,
+    "withinOneThousandth": 11,
+    "meanAbsoluteRpiDifference": 0.009127159938336774,
     "rows": [
       {
         "classification": "6A",
@@ -1915,12 +1924,12 @@
         "rusRecord": "8-1",
         "recordMatch": false,
         "officialRpi": 0.804768,
-        "rusRpi": 0.797272437781697,
-        "rpiDifference": -0.0074955622183030535,
+        "rusRpi": 0.7980349304330785,
+        "rpiDifference": -0.006733069566921546,
         "componentDifference": {
           "mwp": 0.01388888888888884,
-          "owp": -0.03317929805996478,
-          "oowp": 0.011847219086811633
+          "owp": -0.022597287477954198,
+          "oowp": -0.028146902018420628
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -1935,12 +1944,12 @@
         "rusRecord": "9-0",
         "recordMatch": true,
         "officialRpi": 0.78064,
-        "rusRpi": 0.7731773466588282,
-        "rpiDifference": -0.007462653341171799,
+        "rusRpi": 0.7780197922790515,
+        "rpiDifference": -0.0026202077209485086,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.015211788359788425,
-          "oowp": -0.006174485792670992
+          "owp": -0.004629777777777844,
+          "oowp": -0.005369077209484652
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -1955,12 +1964,12 @@
         "rusRecord": "7-2",
         "recordMatch": true,
         "officialRpi": 0.698261,
-        "rusRpi": 0.694097638643935,
-        "rpiDifference": -0.004163361356064987,
+        "rusRpi": 0.6943545463452871,
+        "rpiDifference": -0.003906453654712871,
         "componentDifference": {
           "mwp": -2.2222222217926912e-7,
           "owp": -0.007275481481481494,
-          "oowp": -0.008896946893983904
+          "oowp": -0.006327869880462411
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -1975,12 +1984,12 @@
         "rusRecord": "8-2",
         "recordMatch": false,
         "officialRpi": 0.690797,
-        "rusRpi": 0.6973126543209877,
-        "rpiDifference": 0.006515654320987663,
+        "rusRpi": 0.702674823633157,
+        "rpiDifference": 0.011877823633157036,
         "componentDifference": {
           "mwp": 0.022222000000000075,
-          "owp": -0.01140231746031739,
-          "oowp": 0.01646297178130518
+          "owp": 0.000502444444444472,
+          "oowp": 0.01651323633156976
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -1995,11 +2004,11 @@
         "rusRecord": "7-2",
         "recordMatch": true,
         "officialRpi": 0.662298,
-        "rusRpi": 0.6562005193023712,
-        "rpiDifference": -0.006097480697628832,
+        "rusRpi": 0.6633433764452283,
+        "rpiDifference": 0.0010453764452282854,
         "componentDifference": {
           "mwp": -2.2222222217926912e-7,
-          "owp": -0.01366873192239848,
+          "owp": 0.002204283950617336,
           "oowp": 0.0005339866745051047
         },
         "likelyCause": "One or more opponent records differ from the official table."
@@ -2015,12 +2024,12 @@
         "rusRecord": "7-3",
         "recordMatch": false,
         "officialRpi": 0.636728,
-        "rusRpi": 0.6453776014109348,
-        "rpiDifference": 0.008649601410934848,
+        "rusRpi": 0.6455548500881835,
+        "rpiDifference": 0.008826850088183513,
         "componentDifference": {
           "mwp": 0.033332999999999946,
           "owp": -0.011111111111111183,
-          "oowp": -0.013500985890652517
+          "oowp": -0.011728499118165758
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2035,12 +2044,12 @@
         "rusRecord": "5-5",
         "recordMatch": false,
         "officialRpi": 0.597334,
-        "rusRpi": 0.5730526455026456,
-        "rpiDifference": -0.024281354497354468,
+        "rusRpi": 0.5719481481481481,
+        "rpiDifference": -0.025385851851851937,
         "componentDifference": {
           "mwp": -0.05555600000000005,
-          "owp": -0.00003966666666666008,
-          "oowp": 0.007367455026455083
+          "owp": -0.0033730000000000704,
+          "oowp": 0.011322481481481406
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2055,12 +2064,12 @@
         "rusRecord": "6-4",
         "recordMatch": false,
         "officialRpi": 0.595749,
-        "rusRpi": 0.5901913580246914,
-        "rpiDifference": -0.005557641975308614,
+        "rusRpi": 0.5882201940035274,
+        "rpiDifference": -0.007528805996472543,
         "componentDifference": {
           "mwp": -0.06666700000000003,
-          "owp": 0.05191801587301592,
-          "oowp": 0.010793008818341998
+          "owp": 0.047156111111111176,
+          "oowp": 0.012509940035273281
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2075,12 +2084,12 @@
         "rusRecord": "4-5",
         "recordMatch": true,
         "officialRpi": 0.591857,
-        "rusRpi": 0.586581177738585,
-        "rpiDifference": -0.005275822261414986,
+        "rusRpi": 0.5858482265334116,
+        "rpiDifference": -0.006008773466588346,
         "componentDifference": {
           "mwp": 4.444444444140494e-7,
-          "owp": -0.011463728395061823,
-          "oowp": -0.0011734448363708294
+          "owp": -0.0134478553791888,
+          "oowp": 0.00042561454046630143
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2095,12 +2104,12 @@
         "rusRecord": "6-3",
         "recordMatch": true,
         "officialRpi": 0.575926,
-        "rusRpi": 0.5799104448363708,
-        "rpiDifference": 0.003984444836370726,
+        "rusRpi": 0.58020438957476,
+        "rpiDifference": 0.0042783895747599,
         "componentDifference": {
           "mwp": -3.33333333379926e-7,
           "owp": 0.01102341975308646,
-          "oowp": -0.009763440525181188
+          "oowp": -0.006823993141289564
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2135,12 +2144,12 @@
         "rusRecord": "5-5",
         "recordMatch": false,
         "officialRpi": 0.470457,
-        "rusRpi": 0.45631541005291004,
-        "rpiDifference": -0.014141589947089972,
+        "rusRpi": 0.4562820767195767,
+        "rpiDifference": -0.014174923280423302,
         "componentDifference": {
           "mwp": -0.05555600000000005,
           "owp": 0.023016365079365053,
-          "oowp": 0.005015957671957727
+          "oowp": 0.00468262433862443
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2155,12 +2164,12 @@
         "rusRecord": "3-6",
         "recordMatch": true,
         "officialRpi": 0.463756,
-        "rusRpi": 0.4628265236135607,
-        "rpiDifference": -0.0009294763864393096,
+        "rusRpi": 0.4627736135606506,
+        "rpiDifference": -0.000982386439349392,
         "componentDifference": {
           "mwp": 3.3333333332441484e-7,
           "owp": -0.0006609259259260369,
-          "oowp": -0.006315097197726716
+          "oowp": -0.006844197726827317
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2175,12 +2184,12 @@
         "rusRecord": "3-6",
         "recordMatch": true,
         "officialRpi": 0.454571,
-        "rusRpi": 0.4526616696061141,
-        "rpiDifference": -0.0019093303938859107,
+        "rusRpi": 0.45295561434450327,
+        "rpiDifference": -0.0016153856554967372,
         "componentDifference": {
           "mwp": 3.3333333332441484e-7,
           "owp": -0.003086864197530903,
-          "oowp": -0.0052024150499706545
+          "oowp": -0.002262967666078808
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2195,12 +2204,12 @@
         "rusRecord": "2-7",
         "recordMatch": true,
         "officialRpi": 0.389134,
-        "rusRpi": 0.3844077013521458,
-        "rpiDifference": -0.004726298647854177,
+        "rusRpi": 0.38484861845972956,
+        "rpiDifference": -0.0042853815402704165,
         "componentDifference": {
           "mwp": 2.222222222070247e-7,
           "owp": -0.01278632098765442,
-          "oowp": 0.010275457965902457
+          "oowp": 0.014684629041740171
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2215,12 +2224,12 @@
         "rusRecord": "1-8",
         "recordMatch": true,
         "officialRpi": 0.379597,
-        "rusRpi": 0.3773228493043308,
-        "rpiDifference": -0.0022741506956692192,
+        "rusRpi": 0.3820700568293161,
+        "rpiDifference": 0.0024730568293160893,
         "componentDifference": {
           "mwp": 1.1111111110351235e-7,
           "owp": 0.0008819506172839109,
-          "oowp": -0.0267062847344699
+          "oowp": 0.020765790515383076
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2235,12 +2244,12 @@
         "rusRecord": "2-7",
         "recordMatch": true,
         "officialRpi": 0.372407,
-        "rusRpi": 0.37536997844405245,
-        "rpiDifference": 0.0029629784440524665,
+        "rusRpi": 0.3753170683911424,
+        "rpiDifference": 0.0029100683911424396,
         "componentDifference": {
           "mwp": 2.222222222070247e-7,
           "owp": 0.004629629629629539,
-          "oowp": 0.008792451107191845
+          "oowp": 0.008263350578091355
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2255,12 +2264,12 @@
         "rusRecord": "10-0",
         "recordMatch": false,
         "officialRpi": 0.71445,
-        "rusRpi": 0.705289737654321,
-        "rpiDifference": -0.009160262345679016,
+        "rusRpi": 0.706289737654321,
+        "rpiDifference": -0.008160262345679015,
         "componentDifference": {
           "mwp": 0,
-          "owp": -0.021957396825396824,
-          "oowp": 0.007206662257495555
+          "owp": -0.008624063492063572,
+          "oowp": -0.042793337742504434
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2275,12 +2284,12 @@
         "rusRecord": "7-2",
         "recordMatch": false,
         "officialRpi": 0.679965,
-        "rusRpi": 0.6709812855183226,
-        "rpiDifference": -0.008983714481677452,
+        "rusRpi": 0.6724363119733491,
+        "rpiDifference": -0.007528688026650965,
         "componentDifference": {
           "mwp": 0.02777777777777779,
-          "owp": -0.045194241622575015,
-          "oowp": -0.011468557515187272
+          "owp": -0.04254873897707245,
+          "oowp": -0.008823054869684599
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2295,12 +2304,12 @@
         "rusRecord": "8-1",
         "recordMatch": true,
         "officialRpi": 0.657328,
-        "rusRpi": 0.6601627474034881,
-        "rpiDifference": 0.0028347474034881026,
+        "rusRpi": 0.6561504017244758,
+        "rpiDifference": -0.0011775982755242165,
         "componentDifference": {
           "mwp": -1.1111111120065686e-7,
           "owp": 0.003086123456790102,
-          "oowp": 0.014457918479325982
+          "oowp": -0.025665538310797542
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2315,12 +2324,12 @@
         "rusRecord": "7-2",
         "recordMatch": true,
         "officialRpi": 0.641398,
-        "rusRpi": 0.6442749363119733,
-        "rpiDifference": 0.002876936311973277,
+        "rusRpi": 0.6444513031550069,
+        "rpiDifference": 0.003053303155006848,
         "componentDifference": {
           "mwp": -2.2222222217926912e-7,
           "owp": 0.007715827160493793,
-          "oowp": -0.005956859102488776
+          "oowp": -0.004193190672153735
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -2355,12 +2364,12 @@
         "rusRecord": "6-4",
         "recordMatch": false,
         "officialRpi": 0.613904,
-        "rusRpi": 0.5748240189594356,
-        "rpiDifference": -0.03907998104056443,
+        "rusRpi": 0.5749827491181658,
+        "rpiDifference": -0.03892125088183418,
         "componentDifference": {
           "mwp": -0.06666700000000003,
           "owp": -0.016534317460317416,
-          "oowp": -0.016396381834215212
+          "oowp": -0.01480908024691363
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2415,12 +2424,12 @@
         "rusRecord": "8-2",
         "recordMatch": false,
         "officialRpi": 0.543506,
-        "rusRpi": 0.5376549823633158,
-        "rpiDifference": -0.005851017636684275,
+        "rusRpi": 0.5377883156966491,
+        "rpiDifference": -0.005717684303350956,
         "componentDifference": {
           "mwp": 0.022222000000000075,
           "owp": -0.03095255555555554,
-          "oowp": -0.019223176366843064
+          "oowp": -0.017889843033509767
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2435,12 +2444,12 @@
         "rusRecord": "6-4",
         "recordMatch": false,
         "officialRpi": 0.541263,
-        "rusRpi": 0.5593501322751324,
-        "rpiDifference": 0.018087132275132367,
+        "rusRpi": 0.55946917989418,
+        "rpiDifference": 0.01820617989417994,
         "componentDifference": {
           "mwp": 0.04444399999999993,
           "owp": -0.005555888888888805,
-          "oowp": 0.005869322751322736
+          "oowp": 0.007059798941798923
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2455,12 +2464,12 @@
         "rusRecord": "5-4",
         "recordMatch": false,
         "officialRpi": 0.540012,
-        "rusRpi": 0.5512918871252205,
-        "rpiDifference": 0.011279887125220434,
+        "rusRpi": 0.5515917107583774,
+        "rpiDifference": 0.011579710758377382,
         "componentDifference": {
           "mwp": 0.05555555555555558,
           "owp": -0.030285493827160503,
-          "oowp": -0.000917906525573331
+          "oowp": 0.0020803298059964836
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2475,12 +2484,12 @@
         "rusRecord": "5-5",
         "recordMatch": false,
         "officialRpi": 0.537575,
-        "rusRpi": 0.5292889109347443,
-        "rpiDifference": -0.008286089065255742,
+        "rusRpi": 0.5294476410934744,
+        "rpiDifference": -0.008127358906525606,
         "componentDifference": {
           "mwp": -0.05555600000000005,
           "owp": 0.034127253968254,
-          "oowp": 0.013563966490299895
+          "oowp": 0.015151268077601476
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2515,12 +2524,12 @@
         "rusRecord": "5-5",
         "recordMatch": false,
         "officialRpi": 0.463269,
-        "rusRpi": 0.4871565255731922,
-        "rpiDifference": 0.023887525573192236,
+        "rusRpi": 0.48728985890652554,
+        "rpiDifference": 0.024020858906525555,
         "componentDifference": {
           "mwp": 0.055555999999999994,
           "owp": -0.0031741111111111553,
-          "oowp": 0.0031602557319223568
+          "oowp": 0.004493589065255765
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2555,12 +2564,12 @@
         "rusRecord": "3-6",
         "recordMatch": false,
         "officialRpi": 0.442673,
-        "rusRpi": 0.4288893787967862,
-        "rpiDifference": -0.013783621203213803,
+        "rusRpi": 0.4290657456398197,
+        "rpiDifference": -0.013607254360180288,
         "componentDifference": {
           "mwp": -0.041666666666666685,
           "owp": 0.00925925925925919,
-          "oowp": 0.007995121301195285
+          "oowp": 0.009758789731530382
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2575,12 +2584,12 @@
         "rusRecord": "4-5",
         "recordMatch": false,
         "officialRpi": 0.438187,
-        "rusRpi": 0.4542298647854203,
-        "rpiDifference": 0.01604286478542033,
+        "rusRpi": 0.45437801293356844,
+        "rpiDifference": 0.01619101293356845,
         "componentDifference": {
           "mwp": 0.06944444444444442,
           "owp": -0.037395567901234494,
-          "oowp": 0.01620320340975895
+          "oowp": 0.01768468489124042
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2595,12 +2604,12 @@
         "rusRecord": "4-6",
         "recordMatch": false,
         "officialRpi": 0.437301,
-        "rusRpi": 0.4729761463844797,
-        "rpiDifference": 0.03567514638447972,
+        "rusRpi": 0.4731864638447972,
+        "rpiDifference": 0.03588546384479718,
         "componentDifference": {
           "mwp": 0.06666700000000003,
           "owp": 0.013094999999999968,
-          "oowp": -0.0021755361552028285
+          "oowp": -0.00007236155202816619
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2649,18 +2658,18 @@
         "team": "BRIGHTON",
         "officialTeam": "Brighton",
         "officialRank": 21,
-        "rusRank": 21,
-        "rankDifference": 0,
+        "rusRank": 22,
+        "rankDifference": 1,
         "officialRecord": "1-8",
         "rusRecord": "1-9",
         "recordMatch": false,
         "officialRpi": 0.388909,
-        "rusRpi": 0.3842016093474427,
-        "rpiDifference": -0.0047073906525573195,
+        "rusRpi": 0.384334942680776,
+        "rpiDifference": -0.004574057319224001,
         "componentDifference": {
           "mwp": -0.011110999999999996,
           "owp": -0.0021830158730158367,
-          "oowp": 0.012744664902998248
+          "oowp": 0.014077998236331546
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2675,12 +2684,12 @@
         "rusRecord": "3-7",
         "recordMatch": false,
         "officialRpi": 0.388853,
-        "rusRpi": 0.37859369488536154,
-        "rpiDifference": -0.010259305114638462,
+        "rusRpi": 0.37872702821869486,
+        "rpiDifference": -0.010125971781305143,
         "componentDifference": {
           "mwp": -0.033333,
           "owp": 0.008531555555555514,
-          "oowp": 0.009011948853615559
+          "oowp": 0.010345282186948856
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2689,18 +2698,18 @@
         "team": "MAPLE MOUNTAIN",
         "officialTeam": "Maple Mountain",
         "officialRank": 23,
-        "rusRank": 22,
-        "rankDifference": -1,
+        "rusRank": 21,
+        "rankDifference": -2,
         "officialRecord": "2-6",
         "rusRecord": "2-7",
         "recordMatch": false,
         "officialRpi": 0.387621,
-        "rusRpi": 0.38204786400156765,
-        "rpiDifference": -0.005573135998432344,
+        "rusRpi": 0.38799260239075056,
+        "rpiDifference": 0.00037160239075056944,
         "componentDifference": {
           "mwp": -0.02777777777777779,
-          "owp": 0.014964005291005222,
-          "oowp": 0.0019331162061532181
+          "owp": 0.028191518518518588,
+          "oowp": 0.0018566905741720374
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2755,12 +2764,12 @@
         "rusRecord": "1-9",
         "recordMatch": false,
         "officialRpi": 0.282307,
-        "rusRpi": 0.2730716490299824,
-        "rpiDifference": -0.009235350970017597,
+        "rusRpi": 0.2732049823633157,
+        "rpiDifference": -0.009102017636684279,
         "componentDifference": {
           "mwp": -0.011110999999999996,
           "owp": -0.015278222222222249,
-          "oowp": 0.026401490299823638
+          "oowp": 0.027734823633156935
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2775,12 +2784,12 @@
         "rusRecord": "2-8",
         "recordMatch": false,
         "officialRpi": 0.263999,
-        "rusRpi": 0.2915408950617284,
-        "rpiDifference": 0.02754189506172844,
+        "rusRpi": 0.29167422839506174,
+        "rpiDifference": 0.027675228395061757,
         "componentDifference": {
           "mwp": -0.022221999999999992,
           "owp": 0.08313531746031744,
-          "oowp": 0.0013105220458554112
+          "oowp": 0.002643855379188653
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2835,12 +2844,12 @@
         "rusRecord": "9-1",
         "recordMatch": false,
         "officialRpi": 0.729539,
-        "rusRpi": 0.7202170965608466,
-        "rpiDifference": -0.0093219034391534,
+        "rusRpi": 0.7162819113756614,
+        "rpiDifference": -0.013257088624338609,
         "componentDifference": {
           "mwp": 0.011110999999999982,
           "owp": -0.0441800317460318,
-          "oowp": 0.05558710846560855
+          "oowp": 0.0162352566137568
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2875,12 +2884,12 @@
         "rusRecord": "6-2",
         "recordMatch": false,
         "officialRpi": 0.653793,
-        "rusRpi": 0.6373214285714286,
-        "rpiDifference": -0.016471571428571363,
+        "rusRpi": 0.6372635582010582,
+        "rpiDifference": -0.01652944179894178,
         "componentDifference": {
           "mwp": 0.035714000000000024,
           "owp": -0.07139322222222222,
-          "oowp": -0.004165214285714258
+          "oowp": -0.004743917989417978
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2895,12 +2904,12 @@
         "rusRecord": "7-2",
         "recordMatch": false,
         "officialRpi": 0.599112,
-        "rusRpi": 0.6192724255339996,
-        "rpiDifference": 0.02016042553399966,
+        "rusRpi": 0.6191989393494023,
+        "rpiDifference": 0.02008693934940231,
         "componentDifference": {
           "mwp": 0.02777777777777779,
           "owp": 0.01923467548500879,
-          "oowp": -0.009952284342543583
+          "oowp": -0.010687146188516627
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2955,12 +2964,12 @@
         "rusRecord": "7-2",
         "recordMatch": false,
         "officialRpi": 0.586854,
-        "rusRpi": 0.6025790588869293,
-        "rpiDifference": 0.015725058886929322,
+        "rusRpi": 0.6027554257299628,
+        "rpiDifference": 0.01590142572996278,
         "componentDifference": {
           "mwp": 0.02777777777777779,
           "owp": 0.012207416225749557,
-          "oowp": -0.022689284146580446
+          "oowp": -0.02092561571624535
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -2975,11 +2984,11 @@
         "rusRecord": "5-4",
         "recordMatch": false,
         "officialRpi": 0.584472,
-        "rusRpi": 0.5627760018616501,
-        "rpiDifference": -0.02169599813834988,
+        "rusRpi": 0.5606926685283167,
+        "rpiDifference": -0.023779331471683318,
         "componentDifference": {
           "mwp": -0.06944444444444442,
-          "owp": 0.02573886948853621,
+          "owp": 0.02110923985890656,
           "oowp": -0.020286394081912573
         },
         "likelyCause": "Completed-game record differs from the official table."
@@ -2995,12 +3004,12 @@
         "rusRecord": "7-3",
         "recordMatch": false,
         "officialRpi": 0.576162,
-        "rusRpi": 0.6028133267195768,
-        "rpiDifference": 0.026651326719576818,
+        "rusRpi": 0.6028993055555556,
+        "rpiDifference": 0.026737305555555646,
         "componentDifference": {
           "mwp": 0.033332999999999946,
           "owp": 0.032010698412698435,
-          "oowp": -0.027536875661375748
+          "oowp": -0.026677087301587354
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -3135,12 +3144,12 @@
         "rusRecord": "3-7",
         "recordMatch": false,
         "officialRpi": 0.474591,
-        "rusRpi": 0.467608630952381,
-        "rpiDifference": -0.006982369047619008,
+        "rusRpi": 0.4675623346560847,
+        "rpiDifference": -0.007028665343915275,
         "componentDifference": {
           "mwp": -0.033333,
           "owp": 0.01640260317460318,
-          "oowp": 0.006368595238095243
+          "oowp": 0.005905632275132355
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -3175,12 +3184,12 @@
         "rusRecord": "3-5",
         "recordMatch": false,
         "officialRpi": 0.442104,
-        "rusRpi": 0.44723214285714286,
-        "rpiDifference": 0.005128142857142859,
+        "rusRpi": 0.4473988095238095,
+        "rpiDifference": 0.005294809523809507,
         "componentDifference": {
           "mwp": 0.08928599999999998,
           "owp": -0.08294377777777784,
-          "oowp": 0.022742928571428567
+          "oowp": 0.024409595238095216
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -3255,12 +3264,12 @@
         "rusRecord": "2-8",
         "recordMatch": false,
         "officialRpi": 0.378441,
-        "rusRpi": 0.3789400683421517,
-        "rpiDifference": 0.0004990683421516873,
+        "rusRpi": 0.3788937720458554,
+        "rpiDifference": 0.00045277204585536523,
         "componentDifference": {
           "mwp": -0.022221999999999992,
           "owp": 0.02440501587301591,
-          "oowp": -0.004826888007054775
+          "oowp": -0.005289850970017773
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -3435,12 +3444,12 @@
         "rusRecord": "7-2",
         "recordMatch": true,
         "officialRpi": 0.623638,
-        "rusRpi": 0.6203845776993926,
-        "rpiDifference": -0.0032534223006074336,
+        "rusRpi": 0.6203331373701745,
+        "rpiDifference": -0.0033048626298255446,
         "componentDifference": {
           "mwp": -2.2222222217926912e-7,
           "owp": -0.006172950617284012,
-          "oowp": -0.004753445228297126
+          "oowp": -0.0052678485204782355
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3555,12 +3564,12 @@
         "rusRecord": "4-5",
         "recordMatch": true,
         "officialRpi": 0.488109,
-        "rusRpi": 0.4818831447187929,
-        "rpiDifference": -0.0062258552812071155,
+        "rusRpi": 0.4818317043895748,
+        "rpiDifference": -0.0062772956104252264,
         "componentDifference": {
           "mwp": 4.444444444140494e-7,
           "owp": -0.014550608465608517,
-          "oowp": 0.0032216852831666865
+          "oowp": 0.0027072819909856327
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3595,12 +3604,12 @@
         "rusRecord": "2-7",
         "recordMatch": true,
         "officialRpi": 0.384967,
-        "rusRpi": 0.38251904516950813,
-        "rpiDifference": -0.002447954830491872,
+        "rusRpi": 0.38246760484029,
+        "rpiDifference": -0.002499395159709983,
         "componentDifference": {
           "mwp": 2.222222222070247e-7,
           "owp": -0.006393028218694918,
-          "oowp": 0.004285578679208424
+          "oowp": 0.0037711753870273146
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3615,12 +3624,12 @@
         "rusRecord": "1-8",
         "recordMatch": true,
         "officialRpi": 0.31481,
-        "rusRpi": 0.3129012345679012,
-        "rpiDifference": -0.0019087654320987801,
+        "rusRpi": 0.3130246913580247,
+        "rpiDifference": -0.0017853086419752917,
         "componentDifference": {
           "mwp": 1.1111111110351235e-7,
           "owp": -0.0046295185185185606,
-          "oowp": 0.0017486790123456553
+          "oowp": 0.0029832469135802064
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3635,12 +3644,12 @@
         "rusRecord": "1-9",
         "recordMatch": false,
         "officialRpi": 0.301274,
-        "rusRpi": 0.3041955152431343,
-        "rpiDifference": 0.0029215152431343316,
+        "rusRpi": 0.3081955152431343,
+        "rpiDifference": 0.006921515243134335,
         "componentDifference": {
           "mwp": -0.011110999999999996,
           "owp": 0.021957777777777743,
-          "oowp": -0.019589847568657115
+          "oowp": 0.020410152431342976
         },
         "likelyCause": "Completed-game record differs from the official table."
       },
@@ -3675,12 +3684,12 @@
         "rusRecord": "7-2",
         "recordMatch": true,
         "officialRpi": 0.653275,
-        "rusRpi": 0.6509746717617088,
-        "rpiDifference": -0.0023003282382912937,
+        "rusRpi": 0.6510981285518322,
+        "rpiDifference": -0.0021768714481678053,
         "componentDifference": {
           "mwp": -2.2222222217926912e-7,
           "owp": -0.006173029982363465,
-          "oowp": 0.004775352537722988
+          "oowp": 0.006009920438957539
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3695,12 +3704,12 @@
         "rusRecord": "5-3",
         "recordMatch": true,
         "officialRpi": 0.622641,
-        "rusRpi": 0.6252493543713781,
-        "rpiDifference": 0.0026083543713780744,
+        "rusRpi": 0.625388243260267,
+        "rpiDifference": 0.002747243260266985,
         "componentDifference": {
           "mwp": 0,
           "owp": 0.003471841269841125,
-          "oowp": 0.010456257999496121
+          "oowp": 0.011845146888385005
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3715,12 +3724,12 @@
         "rusRecord": "6-3",
         "recordMatch": true,
         "officialRpi": 0.620523,
-        "rusRpi": 0.6199019221886286,
-        "rpiDifference": -0.0006210778113714399,
+        "rusRpi": 0.6200253789787521,
+        "rpiDifference": -0.0004976210212479515,
         "componentDifference": {
           "mwp": -3.33333333379926e-7,
           "owp": -0.00617310934744264,
-          "oowp": 0.02156471394977738
+          "oowp": 0.022799281851011932
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3735,11 +3744,11 @@
         "rusRecord": "5-4",
         "recordMatch": true,
         "officialRpi": 0.475572,
-        "rusRpi": 0.47180561679404276,
-        "rpiDifference": -0.0037663832059572355,
+        "rusRpi": 0.4768056167940427,
+        "rpiDifference": 0.0012336167940427134,
         "componentDifference": {
           "mwp": -4.4444444446956055e-7,
-          "owp": -0.01265433686067019,
+          "owp": -0.0015432257495591184,
           "oowp": 0.01927818381344304
         },
         "likelyCause": "One or more opponent records differ from the official table."
@@ -3755,12 +3764,12 @@
         "rusRecord": "3-5",
         "recordMatch": true,
         "officialRpi": 0.460966,
-        "rusRpi": 0.4689125881834215,
-        "rpiDifference": 0.007946588183421532,
+        "rusRpi": 0.46905147707231043,
+        "rpiDifference": 0.008085477072310443,
         "componentDifference": {
           "mwp": 0,
           "owp": 0.018749571428571365,
-          "oowp": -0.004909189594356156
+          "oowp": -0.003520300705467272
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3775,12 +3784,12 @@
         "rusRecord": "2-7",
         "recordMatch": true,
         "officialRpi": 0.380645,
-        "rusRpi": 0.37620146412474453,
-        "rpiDifference": -0.004443535875255478,
+        "rusRpi": 0.37632492091486797,
+        "rpiDifference": -0.004320079085132045,
         "componentDifference": {
           "mwp": 2.222222222070247e-7,
           "owp": -0.009259211640211595,
-          "oowp": -0.0027694063716021122
+          "oowp": -0.001534838470367561
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
@@ -3995,12 +4004,12 @@
         "rusRecord": "1-8",
         "recordMatch": true,
         "officialRpi": 0.335889,
-        "rusRpi": 0.361667156574564,
-        "rpiDifference": 0.025778156574564004,
+        "rusRpi": 0.36179061336468743,
+        "rpiDifference": 0.025901613364687437,
         "componentDifference": {
           "mwp": 1.1111111110351235e-7,
           "owp": 0.0555553333333334,
-          "oowp": 0.0077775657456397584
+          "oowp": 0.00901213364687431
         },
         "likelyCause": "One or more opponent records differ from the official table."
       },
