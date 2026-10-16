@@ -53,6 +53,10 @@ on:
       - 'deseret-stat-metrics-2026.json'
       - 'deseret-rosters-stats-2025.json'
       - 'uhsaa-football-records.json'
+      - 'uhsaa-football-records-expanded.json'
+      - 'uhsaa-record-book.js'
+      - 'uhsaa-records-*.json'
+      - 'scripts/check-football-record-formats.cjs'
       - 'uhsaa-records-defense.json'
       - 'weekly-simulation.json'
       - 'scripts/build_deseret_stat_metrics.mjs'
@@ -119,6 +123,10 @@ on:
       - 'deseret-stat-metrics-2026.json'
       - 'deseret-rosters-stats-2025.json'
       - 'uhsaa-football-records.json'
+      - 'uhsaa-football-records-expanded.json'
+      - 'uhsaa-record-book.js'
+      - 'uhsaa-records-*.json'
+      - 'scripts/check-football-record-formats.cjs'
       - 'uhsaa-records-defense.json'
       - 'weekly-simulation.json'
       - 'scripts/build_deseret_stat_metrics.mjs'
@@ -198,6 +206,9 @@ jobs:
 
       - name: Verify app shell wiring
         run: node scripts/check-app-shell.mjs
+
+      - name: Verify football records categories and 8-player isolation
+        run: node scripts/check-football-record-formats.cjs
 
       - name: Verify performance shell
         run: node scripts/check-performance-shell.mjs
