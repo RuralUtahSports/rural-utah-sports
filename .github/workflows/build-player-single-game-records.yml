@@ -51,6 +51,8 @@ jobs:
           node-version: '22'
       - name: Test player record parser
         run: node scripts/test_player_single_game_records_parser.mjs
+      - name: Test record duplicate normalization
+        run: node scripts/dedupe_player_single_game_records.mjs --self-test
       - name: Probe historical stats source
         id: historical_source
         run: node scripts/probe_player_records_source.mjs
