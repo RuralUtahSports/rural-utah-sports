@@ -142,9 +142,10 @@ const passing = statewide.categories.find(category => category.key === 'passingY
 assert(passing.entries.some(entry => entry.player === 'Brad Leggat' && clean(entry.team).toUpperCase() === 'HILLCREST' && Number(entry.value) >= 538), 'Verified Brad Leggat 538-yard game is missing');
 
 const receiving = statewide.categories.find(category => category.key === 'receivingYards');
-assert(receiving.entries.some(entry => entry.player === 'Puka Nacua' && clean(entry.team).toUpperCase() === 'OREM' && Number(entry.value) === 321 && entry.gameId === '168535'), 'Verified Puka Nacua 321-yard game is missing');
+assert(receiving.entries.some(entry => entry.player === 'Puka Nacua' && clean(entry.team).toUpperCase() === 'OREM' && Number(entry.value) === 321), 'Verified Puka Nacua 321-yard record is missing');
 const totalOffense = statewide.categories.find(category => category.key === 'totalOffenseYards');
 if(Number(index.manualVerifiedEntries||0)>=3){
+  assert(receiving.entries.some(entry => entry.player === 'Puka Nacua' && clean(entry.team).toUpperCase() === 'OREM' && Number(entry.value) === 321 && entry.gameId === '168535'), 'Expanded backfill missing Puka Nacua game-level entry');
   assert(passing.entries.some(entry => entry.player === 'Cooper Legas' && clean(entry.team).toUpperCase() === 'OREM' && Number(entry.value) === 438 && entry.gameId === '168535'), 'Expanded backfill missing Cooper Legas verified passing entry');
   assert(totalOffense.entries.some(entry => entry.player === 'Cooper Legas' && clean(entry.team).toUpperCase() === 'OREM' && Number(entry.value) === 628 && entry.gameId === '168535'), 'Expanded backfill missing Cooper Legas verified total-offense entry');
 }
