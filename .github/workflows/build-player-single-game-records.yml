@@ -51,14 +51,20 @@ jobs:
           node-version: '22'
       - name: Test player record parser
         run: node scripts/test_player_single_game_records_parser.mjs
+      - name: Probe historical stats source
+        id: historical_source
+        run: node scripts/probe_player_records_source.mjs
       - name: Build 2001-present player single-game records
+        if: steps.historical_source.outputs.available == 'true'
         run: node scripts/build_player_single_game_records.mjs
-      - name: Validate generated historical dataset
+      - name: Validate existing or freshly rebuilt historical dataset
         run: node scripts/validate_player_single_game_records.mjs
       - name: Merge current-season qualifying performances
         run: node scripts/merge_current_player_single_game_records.mjs
       - name: Remove invalid pass-attempt record
         run: node scripts/suppress_invalid_tage_ita_attempts.mjs --records-only
+      - name: Verify merged records before committing
+        run: node scripts/validate_player_single_game_records.mjs
       - name: Commit record data
         run: |
           git config user.name "RuralUtahSports"
