@@ -4,6 +4,8 @@ const root=document.getElementById('featureRoot');if(!root)return;
 const classes=['6A','5A','4A','3A','2A','1A','8P'];
 const cutoffs={'6A':16,'5A':16,'4A':16,'3A':13,'2A':9,'1A':9,'8P':11};
 const pairs=[[1,16],[8,9],[4,13],[5,12],[2,15],[7,10],[3,14],[6,11]];
+let lastRefreshAt=0;
+let refreshing=null;
 const aliases={
   'CEDAR':'CEDAR CITY',
   'AMERICAN LEADERSHIP ACADEMY':'ALA',
@@ -32,7 +34,7 @@ async function run(){
   const dateLabel=asOf&&!Number.isNaN(asOf.valueOf())?asOf.toLocaleString('en-US',{timeZone:'America/Denver',month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'unknown';
   const stale=asOf&&(Date.now()-asOf.valueOf()>4*60*60*1000);
   const nav='<div class="feature-note"><strong>Jump to a classification:</strong> '+classes.map(c=>'<a style="margin-right:12px" href="#playoff-'+c+'">'+(c==='8P'?'8-Player':c)+'</a>').join('')+'</div>';
-  const note='<div class="feature-note"><strong>RUS projected playoff picture — updated through the latest recorded finals.</strong> RUS calculates RPI using 45% team winning percentage, 45% opponents\' winning percentage and 10% opponents\' opponents winning percentage. This page uses our own calculated standings, <strong>not</strong> the older official UHSAA snapshot. <strong>RUS data updated:</strong> '+h(dateLabel)+'. Projected seeds and byes are unofficial, and remaining games may change the bracket. Official UHSAA postseason rankings and brackets are expected Saturday, October 17. <a href="rpi.html">Compare with the separately labeled official UHSAA RPI</a>.'+(stale?' <strong>Heads up:</strong> The RUS RPI data is more than four hours old; recent results may not yet be reflected.':'')+'</div>';
+  const note='<div class="feature-note"><strong>RUS projected playoff picture — updated through the latest recorded finals.</strong> RUS calculates RPI using 45% team winning percentage, 45% opponents\' winning percentage and 10% opponents\' opponents winning percentage. This page uses our own calculated standings, <strong>not</strong> the older official UHSAA snapshot. <strong>RUS data updated:</strong> '+h(dateLabel)+'. Projected seeds and byes are unofficial, and remaining games may change the bracket. Official UHSAA postseason rankings and brackets are expected Saturday, October 17. <a href="rpi.html">Compare with the separately labeled official UHSAA RPI</a>.'+(stale?' <strong>Heads up:</strong> The RUS RPI data is more than four hours old; recent results may not yet be reflected.':'')+' <button type="button" id="rusPlayoffRefresh" style="display:inline-block;margin-top:10px;padding:9px 13px;border:1px solid #F14D07;border-radius:7px;background:#F14D07;color:#080808;font-weight:900;cursor:pointer">Refresh RUS projections</button></div>';
   const sections=classes.map(classification=>{
     const rows=calculated.classifications[classification]||[];
     if(!rows.length)return '';
@@ -53,6 +55,27 @@ async function run(){
       '</div></section></section>';
   }).join('');
   root.innerHTML=note+nav+sections;
+  root.querySelector('#rusPlayoffRefresh')?.addEventListener('click',()=>refresh(true));
 }
-run().catch(error=>{console.error(error);root.innerHTML='<div class="empty">The RUS projected RPI data could not load. Try refreshing in a moment.</div>'});
+function refresh(force=false){
+  if(refreshing)return refreshing;
+  if(!force&&lastRefreshAt&&Date.now()-lastRefreshAt<120000)return Promise.resolve();
+  refreshing=run().then(()=>{lastRefreshAt=Date.now()}).catch(error=>{
+    console.error('RUS playoff RPI refresh failed:',error);
+    if(!root.querySelector('.section-title')){
+      root.innerHTML='<div class="empty">RUS playoff data could not load. Check your connection and reload the page.</div>';
+    }else{
+      const note=root.querySelector('.feature-note');
+      if(note)note.insertAdjacentHTML('beforeend',' <strong>Refresh could not complete; showing last loaded projections.</strong>');
+    }
+  }).finally(()=>{refreshing=null});
+  return refreshing;
+}
+// Installed iPhone web apps can keep the same page alive after a new score or
+// deployment. Recheck on return and periodically while the page is in use.
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
+window.addEventListener('pageshow',()=>refresh());
+window.addEventListener('focus',()=>refresh());
+setInterval(()=>{if(!document.hidden)refresh()},120000);
+refresh(true);
 })();
