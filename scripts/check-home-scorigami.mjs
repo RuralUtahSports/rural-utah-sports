@@ -25,7 +25,7 @@ for(const token of [
   if(!js.includes(token))fail(`home-scorigami-carousel.js is missing ${token}`);
 }
 
-if(!html.includes('home-scorigami-carousel.js?v=20260829-scroll2'))fail('Homepage is not loading the scroll-enabled Scorigami script');
+if(!/<script\b[^>]*\bsrc=["']home-scorigami-carousel\.js\?v=[^"']+["'][^>]*>/.test(html))fail('Homepage is not loading a versioned Scorigami carousel script');
 if(!html.includes('rus-scorigami-mobile-navigation'))fail('Homepage is missing the mobile Scorigami navigation styles');
 if(!html.includes('.rus-scorigami-alert .rus-scorigami-nav{display:flex!important'))fail('Mobile Scorigami navigation controls are not visible');
 if(!html.includes('.rus-scorigami-alert .rus-scorigami-slide-track .rus-scorigami-slide'))fail('Scorigami alert slides are not configured as a scrollable track');
