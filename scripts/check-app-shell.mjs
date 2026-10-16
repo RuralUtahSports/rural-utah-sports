@@ -84,10 +84,20 @@ if (!mobile.includes("if(document.querySelector('nav .rus-nav'))install();")) {
   fail('Mobile navigation no longer installs immediately after the canonical nav is ready.');
 }
 
+// Treat the homepage's navigation version as canonical. The cache key is
+// intentionally bumped with nav changes, so a hard-coded historical version
+// would flag correctly updated pages and miss future drift.
+const indexVersions = [...fs.readFileSync('index.html', 'utf8').matchAll(/nav-menu\.js\?v=([\w-]+)/gi)].map(match => match[1]);
+const navVersion = indexVersions[0] || '';
+if (!/^\d{8}-[a-z0-9-]+$/.test(navVersion)) fail('index.html has no valid canonical nav-menu version.');
 for (const file of fs.readdirSync('.').filter(name => name.endsWith('.html'))) {
   const html = fs.readFileSync(file, 'utf8');
+  const versions = [...html.matchAll(/nav-menu\.js\?v=([\w-]+)/gi)].map(match => match[1]);
+  if (!versions.length) fail(`${file} is missing a versioned nav-menu reference.`);
+  for (const version of versions) {
+    if (version !== navVersion) fail(`${file} uses nav-menu version ${version}; expected ${navVersion}.`);
+  }
   for (const match of html.matchAll(/<script\b[^>]*\bsrc=["']nav-menu\.js\?v=([^"']+)["'][^>]*>/gi)) {
-    if (match[1] !== '20260929-alltime-team-stats1') fail(`${file} uses stale nav-menu version ${match[1]}.`);
     if (/\bdefer\b/i.test(match[0])) fail(`${file} defers the critical navigation script.`);
   }
 }
