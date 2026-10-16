@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   if(window.__rusPlayoffPictureShareBuild)return;
-  window.__rusPlayoffPictureShareBuild='20261015-official-field1';
+  window.__rusPlayoffPictureShareBuild='20261016-rus-live-rpi1';
 
   const root=document.getElementById('featureRoot');
   if(!root)return;
@@ -187,7 +187,7 @@
     c.fillStyle='#aaa';c.font=`900 ${sub}px Arial`;
     c.fillText(`${cls.toUpperCase()}  •  IF THE PLAYOFFS STARTED TODAY`,margin,story?184:x?158:166);
     c.fillStyle='#666';c.font=`900 ${story?16:13}px Arial`;
-    c.fillText(kind==='seeds'?'OFFICIAL UHSAA RPI  •  UNOFFICIAL PROJECTION':'UHSAA RPI SNAPSHOT  •  BRACKET SLOTS AND BYES',margin,story?213:x?184:192);
+    c.fillText(kind==='seeds'?'RUS CALCULATED RPI  •  UNOFFICIAL PROJECTION':'RUS CALCULATED RPI  •  BRACKET SLOTS AND BYES',margin,story?213:x?184:192);
   }
   function drawSeedCard(c,data,x,y,w,h,logo){
     c.save();
@@ -316,7 +316,7 @@
   function preview(canvas,cls,kind,format){
     const label=kind==='seeds'?'Projected Seeds':'Projected Bracket',slug=safeSlug(`${cls}-${kind}`),name=`rus-${slug}-${format}-${Date.now()}.png`,overlay=document.createElement('div');
     overlay.className='rus-playoff-share-preview';
-    overlay.innerHTML=`<div class="rus-playoff-share-preview-card"><h3>${esc(cls)} ${label} graphic is ready</h3><p>Rendered directly in a RUS social format. Later-round boxes are left empty until matchups are known. The official UHSAA playoff bracket may change.</p><div class="rus-playoff-share-preview-host"></div><div class="rus-playoff-share-preview-actions"><button class="primary share">Share PNG</button><button class="save">Save PNG</button><button class="close">Close</button></div></div>`;
+    overlay.innerHTML=`<div class="rus-playoff-share-preview-card"><h3>${esc(cls)} ${label} graphic is ready</h3><p>Rendered directly in a RUS social format. Later-round boxes are left empty until matchups are known. These are RUS projections; the official UHSAA bracket may differ.</p><div class="rus-playoff-share-preview-host"></div><div class="rus-playoff-share-preview-actions"><button class="primary share">Share PNG</button><button class="save">Save PNG</button><button class="close">Close</button></div></div>`;
     overlay.querySelector('.rus-playoff-share-preview-host').appendChild(canvas);
     document.body.appendChild(overlay);
     const close=()=>overlay.remove();
