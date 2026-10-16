@@ -1,12 +1,12 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-16T03:06:18.758Z
+Generated: 2026-10-16T04:02:12.161Z
 
 **0 errors • 6 warnings**
 
 ## Warnings (6)
 
-- **RECORD_MISMATCH** — ENTERPRISE standings record does not match completed games in weekly-simulation.json. `{"standings":"5-4-0","calculated":"4-4-1"}`
+- **RECORD_MISMATCH** — ENTERPRISE standings record does not match completed games in weekly-simulation.json. `{"standings":"5-4-0","calculated":"4-5-0"}`
 - **RECORD_MISMATCH** — EMERY standings record does not match completed games in weekly-simulation.json. `{"standings":"2-7-0","calculated":"2-6-1"}`
 - **RECORD_MISMATCH** — UMA-HILLFIELD standings record does not match completed games in weekly-simulation.json. `{"standings":"3-5-0","calculated":"3-4-1"}`
 - **RECORD_MISMATCH** — GREEN CANYON standings record does not match completed games in weekly-simulation.json. `{"standings":"3-6-0","calculated":"2-6-1"}`
