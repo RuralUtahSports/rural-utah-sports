@@ -48,6 +48,16 @@ const PLAUSIBLE_MAX = {
 const clean = value => String(value ?? '').trim();
 const slug = value => clean(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 const readJson = file => JSON.parse(fs.readFileSync(file, 'utf8'));
+const validGameUrl = value => {
+  try {
+    const url = new URL(clean(value));
+    if (url.protocol !== 'https:') return false;
+    if (url.hostname === 'sports.deseret.com') return /^\/high-school\/football\/game\//.test(url.pathname);
+    if (url.hostname === 'www.maxpreps.com') return /^\/(?:ut|inter-state)\/football\/game\//.test(url.pathname);
+    if (url.hostname === 'www.deseret.com') return /^\/sports\//.test(url.pathname);
+    return false;
+  } catch { return false; }
+};
 const fail = message => { throw new Error(message); };
 const assert = (condition, message) => { if (!condition) fail(message); };
 
@@ -76,7 +86,7 @@ function validateRankedEntries(category, entries, limit, expectedTeam = null) {
       assert(!clean(entry.gameUrl) || /^https:\/\/sports\.deseret\.com\/high-school\/football\/game\//.test(clean(entry.gameUrl)), `${category}: ${entry.player} has invalid official game URL ${entry.gameUrl}`);
     } else {
       assert(Number.isInteger(Number(entry.season)) && Number(entry.season) >= START_SEASON, `${category}: ${entry.player} has invalid season ${entry.season}`);
-      assert(/^https:\/\/sports\.deseret\.com\/high-school\/football\/game\//.test(clean(entry.gameUrl)), `${category}: ${entry.player} has invalid game URL`);
+      assert(validGameUrl(entry.gameUrl), `${category}: ${entry.player} has invalid game URL ${entry.gameUrl}`);
     }
     assert(/^\d{4}-\d{2}-\d{2}$/.test(clean(entry.date)), `${category}: ${entry.player} has invalid date ${entry.date}`);
     assert(clean(entry.gameId), `${category}: ${entry.player} has no game ID`);
