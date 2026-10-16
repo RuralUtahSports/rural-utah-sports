@@ -10,6 +10,8 @@ on:
       - 'scripts/schedule-known-corrections.mjs'
       - 'scripts/sanitize-team-schedules.mjs'
       - 'scripts/rebuild_team_season_history.py'
+      - 'scripts/apply-rus-region-title-overrides.mjs'
+      - 'region-title-overrides-2026.json'
 
 permissions:
   contents: write
@@ -457,6 +459,9 @@ jobs:
             }
           })().catch(err => { console.error(err); process.exit(1); });
           NODE
+
+      - name: Restore RUS football region titles and co-champions
+        run: node scripts/apply-rus-region-title-overrides.mjs
 
       - name: Apply verified schedule corrections
         run: |
