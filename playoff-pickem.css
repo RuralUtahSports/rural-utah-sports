@@ -86,3 +86,14 @@ button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opa
 @media (max-width:380px){
   .rus-pick-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+
+
+/* Save to Photos fallback for browsers without Web Share files support */
+.rus-pick-save-preview{position:fixed;inset:0;z-index:2147483500;background:rgba(0,0,0,.9);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;overscroll-behavior:contain;padding:15px 12px max(28px,env(safe-area-inset-bottom))}
+.rus-pick-save-sheet{background:#111;border:1px solid #F14D07;border-radius:12px;padding:20px;max-width:580px;width:100%;position:relative;display:flex;flex-direction:column;gap:12px;color:#fff}
+.rus-pick-save-sheet h2{font-size:23px;font-weight:900;text-transform:uppercase;margin:0;padding-right:32px}
+.rus-pick-save-sheet p{color:#ccc;font-size:14px;line-height:1.5;margin:0}
+.rus-pick-save-close{position:absolute;top:9px;right:9px;border:1px solid #444;border-radius:50%;height:36px;width:36px;color:#fff;background:#262626;font-size:24px;display:grid;place-items:center}
+.rus-pick-save-image{width:100%;max-width:100%;height:auto;display:block;object-fit:contain;max-height:62dvh;border:1px solid #444;border-radius:4px}
+.rus-pick-save-download{display:block;text-align:center;text-decoration:none}
+@media(max-width:590px){.rus-pick-save-sheet{padding:15px}.rus-pick-save-image{max-height:62dvh}}
