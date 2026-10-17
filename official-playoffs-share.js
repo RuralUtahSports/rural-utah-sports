@@ -172,7 +172,7 @@ function drawBracketSlot(c,team,opening,images,x,y,w,h,sc){
  const name=getName(team)||'TBD',real=!placeholder(name),meta=real?asset(name):{backgroundColor:'#393939'};
  c.fillStyle=real?hexrgba(meta.backgroundColor,.43):'#1b1d21';c.fillRect(x,y,w,h);
  c.fillStyle=real?meta.backgroundColor:'#51535a';c.fillRect(x,y,Math.max(5,7*sc),h);
- const img=real?images.get(name):null,size=img?Math.min(h*.75,66*sc):0;
+ const img=real?images.get(name):null,size=img?Math.min(h*.88,72*sc):0;
  if(img){
   const ix=x+w-size-12*sc,iy=y+(h-size)/2;
   rect(c,ix-3*sc,iy-3*sc,size+6*sc,size+6*sc,8*sc);
@@ -192,14 +192,22 @@ function drawBracketMatch(c,g,opening,images,x,yCenter,w,h,sc){
  drawBracketSlot(c,g.b,opening,images,x+1,y+h/2+1,w-2,h/2-2,sc);
  c.restore();
 }
+// First-round bye teams already appear with their actual seeds and logos
+// in the quarterfinals column. Keep only a brief count to avoid duplication.
 function drawByes(c,quarters,opening,x,y,w,sc){
  const listed=new Set(opening.flatMap(g=>[getName(g.a),getName(g.b)]));
- const teams=quarters.flatMap(g=>[g.a,g.b]).filter(t=>t?.seed&&t?.name&&!listed.has(t.name)).sort((a,b)=>a.seed-b.seed);
- if(!teams.length)return;
- const height=(teams.length>5?380:teams.length>3?295:215)*sc;
- rect(c,x,y,w,height,12*sc);c.fillStyle='rgba(9,13,17,.72)';c.fill();c.strokeStyle='rgba(241,77,7,.65)';c.lineWidth=2*sc;c.stroke();
- fitDraw(c,'FIRST-ROUND BYES',x+22*sc,y+36*sc,w-44*sc,24*sc,16*sc,'left','#ffb48b');
- teams.forEach((team,i)=>fitDraw(c,'#'+team.seed+'  '+brief(team.name),x+22*sc,y+75*sc+i*(teams.length>5?39:teams.length>3?37:43)*sc,w-44*sc,21*sc,15*sc,'left','#f0f0f0'));
+ const byeTeams=quarters.flatMap(g=>[g.a,g.b]).filter(t=>t?.seed&&t?.name&&!listed.has(t.name));
+ const uniqueSeeds=new Set(byeTeams.map(t=>t.seed));
+ const count=uniqueSeeds.size;
+ if(!count)return;
+ const height=124*sc;
+ rect(c,x,y,w,height,12*sc);
+ c.fillStyle='rgba(9,13,17,.75)';c.fill();
+ c.strokeStyle='rgba(241,77,7,.68)';c.lineWidth=2*sc;c.stroke();
+ c.fillStyle=ORANGE;c.fillRect(x+18*sc,y+19*sc,4*sc,29*sc);
+ fitDraw(c,'FIRST-ROUND BYES',x+33*sc,y+34*sc,w-50*sc,24*sc,17*sc,'left','#ffb48b');
+ fitDraw(c,count+' teams advance directly',x+20*sc,y+77*sc,w-40*sc,23*sc,17*sc,'left','#f1f1f1');
+ fitDraw(c,'to the quarterfinals',x+20*sc,y+102*sc,w-40*sc,19*sc,14*sc,'left','#b5b8be');
 }
 function makeFullGraphic(cls,data,images,format=FORMATS.full){
  const w=format.width,h=format.height,sc=Math.min(w/1600,h/1500),view=canvas(w,h),c=view.c;
@@ -208,7 +216,7 @@ function makeFullGraphic(cls,data,images,format=FORMATS.full){
  const first=stages[0].games,qf=stages[1].games,sf=stages[2].games,final=stages[3].games;
  if(!first.length||qf.length!==4||sf.length!==2||final.length!==1)throw Error('Unexpected tournament size');
  const pad=w*.035,gap=w*.018,space=w-2*pad-4*gap;
- const widths=[.333,.224,.181,.145,.117].map(r=>space*r),xs=[pad];
+ const widths=[.325,.215,.171,.121,.168].map(r=>space*r),xs=[pad];
  for(let i=1;i<5;i++)xs.push(xs[i-1]+widths[i-1]+gap);
  c.fillStyle=ORANGE;c.fillRect(pad,22*sc,w-2*pad,3*sc);
  fitDraw(c,'RURAL UTAH SPORTS',pad,64*sc,w-2*pad,30*sc,20*sc,'left',ORANGE);
@@ -234,10 +242,13 @@ function makeFullGraphic(cls,data,images,format=FORMATS.full){
   c.beginPath();c.moveTo(x1,y1);c.lineTo(mid,y1);c.lineTo(mid,y2);c.lineTo(x2,y2);c.stroke();
  });
  groups.forEach((games,r)=>games.forEach((g,i)=>drawBracketMatch(c,g,first,images,xs[r],centers[r][i],widths[r],cardH,sc)));
- if(!compact)drawByes(c,qf,first,xs[0]+9*sc,top+span*.27,widths[0]-18*sc,sc);
- const cX=xs[4],cW=widths[4],cH=cardH*.82,cY=yF[0]-cH/2;
- rect(c,cX,cY,cW,cH,10*sc);c.fillStyle='#2b150e';c.fill();c.strokeStyle=ORANGE;c.lineWidth=3*sc;c.stroke();
- fitDraw(c,'CHAMPION: TBD',cX+cW/2,yF[0],cW-14*sc,21*sc,13*sc,'center',ORANGE);
+ if(!compact)drawByes(c,qf,first,xs[0]+9*sc,top+span*.30,widths[0]-18*sc,sc);
+ const cX=xs[4],cW=widths[4],cH=Math.max(cardH*.98,110*sc),cY=yF[0]-cH/2;
+ rect(c,cX,cY,cW,cH,12*sc);
+ c.fillStyle='#2b160f';c.fill();c.strokeStyle=ORANGE;c.lineWidth=3*sc;c.stroke();
+ fitDraw(c,'CHAMPION',cX+cW/2,yF[0]-21*sc,cW-20*sc,25*sc,17*sc,'center','#ffb38b');
+ c.fillStyle='#b74718';c.fillRect(cX+25*sc,yF[0]-2*sc,cW-50*sc,2*sc);
+ fitDraw(c,'TBD',cX+cW/2,yF[0]+26*sc,cW-20*sc,42*sc,28*sc,'center','#fff');
  c.fillStyle='#414141';c.fillRect(pad,h-77*sc,w-2*pad,2*sc);
  fitDraw(c,'UHSAA / MaxPreps  •  No winners selected',pad,h-44*sc,w*.70,18*sc,13*sc,'left','#a7a7a7');
  fitDraw(c,'@ruralutahsports77',w-pad,h-44*sc,w*.28,20*sc,14*sc,'right',ORANGE);
