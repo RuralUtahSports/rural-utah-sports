@@ -155,7 +155,9 @@
       );
       const selected = Number(document.getElementById('scoreboardWeekSelect')?.value);
       games = Number.isInteger(selected)
-        ? allGames.filter(g => gameWeekNumber(g) === selected)
+        ? (typeof window.RUSScoreboardWeekGames === 'function'
+            ? window.RUSScoreboardWeekGames(selected, allGames)
+            : allGames.filter(g => gameWeekNumber(g) === selected))
         : allGames.slice();
     } catch (error) {
       console.warn('Could not recover full weekly scoreboard feed', error);
@@ -240,7 +242,9 @@
 
       const selected = Number(document.getElementById('scoreboardWeekSelect')?.value);
       games = Number.isInteger(selected)
-        ? allGames.filter(g => gameWeekNumber(g) === selected)
+        ? (typeof window.RUSScoreboardWeekGames === 'function'
+            ? window.RUSScoreboardWeekGames(selected, allGames)
+            : allGames.filter(g => gameWeekNumber(g) === selected))
         : allGames.slice();
       if (typeof window.RUSScoreboardSetSeasonGames === 'function') {
         window.RUSScoreboardSetSeasonGames(allGames);
