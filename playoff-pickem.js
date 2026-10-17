@@ -9,6 +9,9 @@ const escapeHTML=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 const isBye=t=>/^bye$/i.test(t?.name||'');
 const isPlaceholder=t=>/^(?:Winner of|Semifinal|Quarterfinal|TBD)/i.test(t?.name||'');
 let defs={},selected='8-Player',picks={},shared=false,notice='';
+const API='https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/playoff-pickem';
+const NAME_KEY='rus-2026-playoff-fan-name',TOKEN_KEY='rus-2026-playoff-fan-token';
+let leaderboardRows=[],leaderboardStatus='Loading fan standings…',participantCount=0,deadlines={},submitWorking=false;
 function team(t){
  if(!t||!t.name||isBye(t)||isPlaceholder(t))return null;
  return {id:String(t.seed||t.name),name:t.name,seed:t.seed||null};
@@ -77,7 +80,7 @@ function asset(teamData){
  return assets?.resolve(teamData.name)||{logo:'',backgroundColor:'#272727',textColor:'#fff'};
 }
 function side(teamData,game,slot){
- const assigned=teamData&&game.enabled;
+ const assigned=teamData&&game.enabled&&!classLocked(selected);
  const pick=assigned&&game.winner?.id===teamData.id;
  const brand=asset(teamData);
  const safeColor=/^#[0-9a-f]{6}$/i.test(brand.backgroundColor)?brand.backgroundColor:'#292929';
@@ -97,27 +100,100 @@ function renderGame(g){
 function draw(){
  const results=Object.fromEntries(ORDER.map(c=>[c,calculate(c)]));
  const active=results[selected],overall=Object.values(results).reduce((a,x)=>({done:a.done+x.complete,total:a.total+x.total}),{done:0,total:0});
+ const oldScroll=root.querySelector('.rus-pick-visual')?.scrollLeft||0;
+ const isLocked=classLocked(selected);
  const championList=ORDER.map(c=>({classification:c,champion:results[c].champion}));
  let html='<div class="rus-pick-header"><div class="rus-pick-eyebrow">2026 UHSAA FOOTBALL · FAN PREDICTIONS</div><h1>RUS Playoff Pick’em</h1><p>Choose the winners. Build your road to the championship. Share your bracket with friends.</p></div>';
  html+='<div class="rus-pick-progress"><div><b>'+overall.done+' / '+overall.total+'</b> games picked across Utah</div><div class="rus-pick-meter"><span style="width:'+(overall.total?Math.round(overall.done/overall.total*100):0)+'%"></span></div></div>';
  html+='<nav class="rus-pick-tabs" aria-label="Choose classification">'+ORDER.map(c=>'<button type="button" data-class="'+c+'" aria-pressed="'+(c===selected)+'" class="'+(c===selected?'active':'')+'">'+c+'<small>'+(results[c].champion?'Champion picked':results[c].complete+'/'+results[c].total+' picks')+'</small></button>').join('')+'</nav>';
- html+='<section class="rus-pick-panel"><div class="rus-pick-panel-head"><div><div class="rus-pick-eyebrow">BRACKET CHALLENGE</div><h2>'+selected+' · Your Predictions</h2><p>'+active.complete+' of '+active.total+' picks made · Select a winner to advance to the next round.</p></div><button type="button" id="rusPickReset" class="rus-pick-secondary">Reset '+selected+'</button></div>';
+ html+='<section class="rus-pick-panel"><div class="rus-pick-panel-head"><div><div class="rus-pick-eyebrow">INTERACTIVE PLAYOFF BRACKET</div><h2>'+selected+' · Road to State</h2><p>'+active.complete+' of '+active.total+' picks made · '+(isLocked?'Predictions locked for this classification.':'Tap a team to advance them through the bracket.')+'</p></div><button type="button" id="rusPickReset" class="rus-pick-secondary"'+(isLocked?' disabled title="Class predictions have locked"':'')+'>Reset '+selected+'</button></div>';
+ html+='<div class="rus-pick-champion-preview">'+(active.champion?'<span>YOUR '+selected+' CHAMPION</span><strong>'+escapeHTML(active.champion.name)+'</strong>':'<span>STATE CHAMPION</span><strong>Pick your path to the title →</strong>')+'</div>';
  if(shared)html+='<div class="rus-pick-note">Shared bracket preview · Make a pick to create your own copy.</div>';
  if(notice)html+='<p class="rus-pick-alert" role="status">'+escapeHTML(notice)+'</p>';
  const headers=['Opening Round','Quarterfinals','Semifinals','State Championship'];
- for(let r=0;r<4;r++){const games=active.games.filter(g=>g.round===r);if(!games.length)continue;
-  html+='<div class="rus-pick-round"><div class="rus-pick-round-head"><h3>'+headers[r]+'</h3><span>'+games.filter(g=>g.chosen||g.auto).length+' / '+games.length+' decided</span></div><div class="rus-pick-grid">'+games.map(renderGame).join('')+'</div></div>';
+ html+='<div class="rus-pick-help">Swipe sideways to move through the rounds →</div><div class="rus-pick-visual" tabindex="0" role="region" aria-label="'+selected+' interactive playoff bracket"><div class="rus-pick-columns">';
+ for(let r=0;r<4;r++){
+  const games=active.games.filter(g=>g.round===r);if(!games.length)continue;
+  html+='<section class="rus-pick-column rus-pick-stage-'+r+'"><div class="rus-pick-round-head"><h3>'+headers[r]+'</h3><span>'+games.filter(g=>g.chosen||g.auto).length+' / '+games.length+'</span></div><div class="rus-pick-stage-games">'+games.map(renderGame).join('')+'</div></section>';
  }
+ html+='</div></div>';
  html+='</section>';
  html+='<section class="rus-pick-summary"><div><div class="rus-pick-eyebrow">YOUR ROAD TO STATE</div><h2>My 2026 State Champions</h2><p>All seven classifications, from 8-Player to 6A.</p></div><div class="rus-pick-champs">'+championList.map(x=>'<div><small>'+x.classification+'</small><strong>'+escapeHTML(x.champion?.name||'Not picked yet')+'</strong></div>').join('')+'</div>';
- html+='<div class="rus-pick-actions"><button type="button" id="rusPickShare" class="rus-pick-primary">Share My Bracket ↗</button><button type="button" id="rusPickImage" class="rus-pick-secondary">Download Instagram Graphic ↓</button></div><p class="rus-pick-disclaimer">Picks are saved on this device. Shared links contain your selections; no public entries or leaderboard yet. This is a fan prediction tool, not an official UHSAA contest.</p></section>';
+ html+='<div class="rus-pick-actions"><button type="button" id="rusPickShare" class="rus-pick-primary">Share My Bracket ↗</button><button type="button" id="rusPickImage" class="rus-pick-secondary">Download Instagram Graphic ↓</button></div><p class="rus-pick-disclaimer">Picks are saved on this device. Your fan entry is submitted separately for the public leaderboard. Only your fan name and scores appear publicly.</p></section>';
+ html+='<section class="rus-pick-community"><div class="rus-pick-join"><div class="rus-pick-eyebrow">ENTER THE 2026 CHALLENGE</div><h2>Put Your Bracket on the Leaderboard</h2><p>Choose a fan name and submit. You can update open classifications before their playoffs begin; submitted picks lock for each class on its opening game day.</p><form id="rusPickJoin"><label for="rusFanName">Fan name</label><div class="rus-pick-join-row"><input id="rusFanName" name="fanName" maxlength="24" minlength="2" autocomplete="nickname" placeholder="Your fan name" value="'+escapeHTML(readName())+'" required><button type="submit" class="rus-pick-primary"'+(submitWorking?' disabled':'')+'>'+(submitWorking?'Submitting…':'Submit My Picks →')+'</button></div></form><small>No email required. Your private entry token stays on this device, so keep your browser data to update your entry.</small></div>';
+ html+='<div class="rus-pick-standings"><div class="rus-pick-eyebrow">RUS PLAYOFF BRACKET CHALLENGE</div><h2>Fan Leaderboard <small>'+participantCount+' entries</small></h2><p>1 point opening round · 2 quarterfinals · 4 semifinals · 8 championship. Automatic scores use verified results in the RUS feeds.</p><div class="rus-pick-table-wrap">'+leaderboardMarkup()+'</div><button type="button" id="rusReloadStandings" class="rus-pick-secondary">Refresh Standings ↻</button></div></section>';
  root.innerHTML=html;
+ const bracket=root.querySelector('.rus-pick-visual');if(bracket)bracket.scrollLeft=oldScroll;
  root.querySelectorAll('[data-class]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.class;notice='';draw();history.replaceState(null,'',location.pathname+location.search+'#'+encodeURIComponent(selected));}));
  root.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{picks[selected+'|'+b.dataset.game]=b.dataset.team;ORDER.forEach(sanitizeClass);shared=false;notice='Picks saved on this device.';persist();draw();if(location.search){history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(selected));}}));
- root.querySelector('#rusPickReset').addEventListener('click',()=>{if(!confirm('Clear all your '+selected+' picks?'))return;Object.keys(picks).filter(k=>k.startsWith(selected+'|')).forEach(k=>delete picks[k]);persist();shared=false;notice=selected+' picks cleared.';if(location.search)history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(selected));draw();});
+ root.querySelector('#rusPickReset').addEventListener('click',()=>{if(classLocked(selected))return;if(!confirm('Clear all your '+selected+' picks?'))return;Object.keys(picks).filter(k=>k.startsWith(selected+'|')).forEach(k=>delete picks[k]);persist();shared=false;notice=selected+' picks cleared.';if(location.search)history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(selected));draw();});
  root.querySelector('#rusPickShare').addEventListener('click',share);
  root.querySelector('#rusPickImage').addEventListener('click',downloadCard);
+ root.querySelector('#rusPickJoin').addEventListener('submit',submitEntry);
+ root.querySelector('#rusReloadStandings').addEventListener('click',refreshLeaderboard);
 }
+
+function readName(){try{return localStorage.getItem(NAME_KEY)||''}catch{return''}}
+function classLocked(c){
+ const server=deadlines[c];
+ if(server?.locked)return true;
+ const dates=(defs[c]||[]).filter(g=>g.round===0&&!g.auto).map(g=>{
+  const v=String(g.date||''),m=v.match(/^([A-Za-z]{3})\s+(\d{1,2}),?\s+(\d{4})/);
+  if(!m)return '';
+  const n=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[1].toLowerCase());
+  return n<0?'':m[3]+'-'+String(n+1).padStart(2,'0')+'-'+m[2].padStart(2,'0');
+ }).filter(Boolean).sort();
+ const deadline=server?.lockDate||dates[0];
+ if(!deadline)return false;
+ const parts={};
+ for(const p of new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()))parts[p.type]=p.value;
+ return parts.year+'-'+parts.month+'-'+parts.day>=deadline;
+}
+function leaderboardMarkup(){
+ if(!leaderboardRows.length)return '<div class="rus-pick-empty">'+escapeHTML(leaderboardStatus)+'</div>';
+ return '<table class="rus-pick-leaderboard"><thead><tr><th>Rank</th><th>Fan</th><th>Points</th><th>Correct</th><th>Titles</th></tr></thead><tbody>'+
+ leaderboardRows.map(r=>'<tr><td>#'+Number(r.rank)+'</td><td>'+escapeHTML(r.username)+'</td><td><strong>'+Number(r.points)+'</strong></td><td>'+Number(r.correct)+'</td><td>'+Number(r.champions)+'</td></tr>').join('')+'</tbody></table>';
+}
+async function api(payload){
+ const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+ const data=await response.json().catch(()=>({error:'Invalid server response'}));
+ if(!response.ok)throw Error(data?.error||'Service unavailable');
+ return data;
+}
+async function refreshLeaderboard(){
+ try{
+  const data=await api({action:'leaderboard'});
+  leaderboardRows=Array.isArray(data.rows)?data.rows:[];
+  participantCount=Number(data.totalEntries)||0;
+  deadlines=data.deadlines||{};
+  leaderboardStatus='Be the first fan to submit a playoff bracket!';
+ }catch(e){leaderboardStatus='The public leaderboard is temporarily unavailable. Local bracket picks still work.';}
+ draw();
+}
+function entryToken(){
+ let token='';try{token=localStorage.getItem(TOKEN_KEY)||''}catch{}
+ if(/^[a-f0-9]{64}$/i.test(token))return token;
+ const bytes=new Uint8Array(32);crypto.getRandomValues(bytes);
+ token=Array.from(bytes).map(v=>v.toString(16).padStart(2,'0')).join('');
+ localStorage.setItem(TOKEN_KEY,token);return token;
+}
+async function submitEntry(event){
+ event.preventDefault();
+ if(submitWorking)return;
+ const field=root.querySelector('#rusFanName');
+ const username=String(field?.value||'').replace(/[^A-Za-z0-9 _.-]/g,'').replace(/\s+/g,' ').trim().slice(0,24);
+ if(username.length<2){notice='Enter a fan name with at least 2 characters.';draw();return}
+ try{localStorage.setItem(NAME_KEY,username)}catch{}
+ submitWorking=true;notice='Submitting your playoff entry…';draw();
+ try{
+  const data=await api({action:'submit',username,token:entryToken(),picks});
+  notice='You’re entered as '+data.username+'! '+data.picked+' picks submitted. Your fan name will appear in the leaderboard.';
+  submitWorking=false;persist();await refreshLeaderboard();
+ }catch(e){
+  submitWorking=false;notice=String(e.message||'Could not submit picks. You can try again.');draw();
+ }
+}
+
 function encodedPicks(){
  return ORDER.flatMap(c=>(defs[c]||[]).map(g=>picks[c+'|'+g.id]||'')).join('.');
 }
@@ -171,7 +247,7 @@ async function start(){
   if(!response.ok)throw Error('HTTP '+response.status);
   const data=await response.json();
   ORDER.forEach(c=>{if(data.classifications?.[c]?.status!=='official')throw Error(c+' official bracket unavailable');defs[c]=buildClass(data.classifications[c]);});
-  load();draw();assets?.ready.then(draw);
+  load();draw();assets?.ready.then(draw);refreshLeaderboard();setInterval(()=>{if(!document.hidden)refreshLeaderboard()},300000);
  }catch(err){console.error('RUS bracket picker',err);root.innerHTML='<div class="rus-pick-error">The official playoff brackets could not be loaded. Please refresh the page.</div>';}
 }
 start();
