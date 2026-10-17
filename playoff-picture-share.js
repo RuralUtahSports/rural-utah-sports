@@ -154,7 +154,7 @@
     });
   }
   function dims(format){
-    return format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1080];
+    return format==='story'?[1080,1920]:format==='x'?[1600,900]:[1080,1350];
   }
   function baseCanvas(format){
     const [w,h]=dims(format),canvas=document.createElement('canvas');
@@ -330,7 +330,7 @@
     const data=blockData(title),label=kind==='seeds'?'Projected Seeds':'Projected Bracket';
     if(!data?.rows.length){window.alert('Projected seeds are still loading.');return}
     const overlay=document.createElement('div');overlay.className='rus-playoff-share-modal';
-    overlay.innerHTML=`<div class="rus-playoff-share-sheet"><h3>${esc(data.cls)} ${label}</h3><p>Choose a social format for this projected playoff graphic.</p><div class="rus-playoff-share-formats"><button data-format="square"><strong>Instagram Post</strong>Square PNG</button><button data-format="story"><strong>Instagram Story</strong>Vertical PNG</button><button data-format="x"><strong>X Post</strong>Landscape PNG</button></div><button class="rus-playoff-share-cancel">Cancel</button></div>`;
+    overlay.innerHTML=`<div class="rus-playoff-share-sheet"><h3>${esc(data.cls)} ${label}</h3><p>Choose a social format for this projected playoff graphic.</p><div class="rus-playoff-share-formats"><button data-format="portrait"><strong>Instagram Post</strong>1080 × 1350 · Portrait PNG</button><button data-format="story"><strong>Instagram Story</strong>Vertical PNG</button><button data-format="x"><strong>X Post</strong>Landscape PNG</button></div><button class="rus-playoff-share-cancel">Cancel</button></div>`;
     document.body.appendChild(overlay);
     const close=()=>overlay.remove();
     overlay.querySelector('.rus-playoff-share-cancel').onclick=close;
