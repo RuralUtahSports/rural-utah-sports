@@ -20,7 +20,7 @@ function team(t){
   const real=known&&colors.known;
   const cls='rus-o-team'+(isBye?' rus-o-bye':'')+(t?.winner?' rus-o-win':'')+(real?' rus-o-real-team':'');
   const style=real?' style="--team-bg:'+colors.backgroundColor+';--team-ink:'+colors.textColor+'"':'';
-  const logo=colors.logo&&known?'<span class="rus-o-logo-shell"><img class="rus-o-logo" src="'+esc(colors.logo)+'" alt="'+esc(name)+' school logo" loading="lazy" decoding="async" width="34" height="34"></span>':'';
+  const logo=colors.logo&&known?'<span class="rus-o-logo-shell" data-team-key="'+esc(colors.key||'')+'"><img class="rus-o-logo" src="'+esc(colors.logo)+'" alt="'+esc(name)+' school logo" loading="lazy" decoding="async" width="48" height="48"></span>':'';
   const score=t&&typeof t==='object'&&t.score!==undefined&&t.score!==null?'<span class="rus-o-score">'+esc(t.score)+'</span>':'';
   return '<div class="'+cls+'"'+style+'><span class="rus-o-seed">'+seed+'</span>'+logo+'<span class="rus-o-name">'+esc(display)+'</span>'+score+'</div>';
 }
