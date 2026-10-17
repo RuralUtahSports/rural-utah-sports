@@ -119,7 +119,7 @@ function draw(){
  html+='</div></div>';
  html+='</section>';
  html+='<section class="rus-pick-summary"><div><div class="rus-pick-eyebrow">YOUR ROAD TO STATE</div><h2>My 2026 State Champions</h2><p>All seven classifications, from 8-Player to 6A.</p></div><div class="rus-pick-champs">'+championList.map(x=>'<div><small>'+x.classification+'</small><strong>'+escapeHTML(x.champion?.name||'Not picked yet')+'</strong></div>').join('')+'</div>';
- html+='<div class="rus-pick-actions"><button type="button" id="rusPickShare" class="rus-pick-primary">Share My Bracket ↗</button><button type="button" id="rusPickImage" class="rus-pick-secondary">Download Instagram Graphic ↓</button></div><p class="rus-pick-disclaimer">Picks are saved on this device. Your fan entry is submitted separately for the public leaderboard. Only your fan name and scores appear publicly.</p></section>';
+ html+='<div class="rus-pick-actions"><button type="button" id="rusPickShare" class="rus-pick-primary">Share My Bracket ↗</button><button type="button" id="rusPickImage" class="rus-pick-secondary">Save Graphic to Phone ↓</button></div><p class="rus-pick-disclaimer">On iPhone, tap Save Graphic to Phone and choose Save Image from the share sheet. Picks are saved on this device; public entries are submitted separately.</p></section>';
  html+='<section class="rus-pick-community"><div class="rus-pick-join"><div class="rus-pick-eyebrow">ENTER THE 2026 CHALLENGE</div><h2>Put Your Bracket on the Leaderboard</h2><p>Choose a fan name and submit. You can update open classifications before their playoffs begin; submitted picks lock at that class’s first listed kickoff (Mountain Time).</p><form id="rusPickJoin"><label for="rusFanName">Fan name</label><div class="rus-pick-join-row"><input id="rusFanName" name="fanName" maxlength="24" minlength="2" autocomplete="nickname" placeholder="Your fan name" value="'+escapeHTML(readName())+'" required><button type="submit" class="rus-pick-primary"'+(submitWorking?' disabled':'')+'>'+(submitWorking?'Submitting…':'Submit My Picks →')+'</button></div></form><small>No email required. Your private entry token stays on this device, so keep your browser data to update your entry.</small></div>';
  html+='<div class="rus-pick-standings"><div class="rus-pick-eyebrow">RUS PLAYOFF BRACKET CHALLENGE</div><h2>Fan Leaderboard <small>'+participantCount+' entries</small></h2><p>1 point opening round · 2 quarterfinals · 4 semifinals · 8 championship. Automatic scores use verified results in the RUS feeds.</p><div class="rus-pick-table-wrap">'+leaderboardMarkup()+'</div><button type="button" id="rusReloadStandings" class="rus-pick-secondary">Refresh Standings ↻</button></div></section>';
  root.innerHTML=html;
@@ -218,33 +218,97 @@ function fitText(ctx,str,maxWidth,base,min){
  let size=base;while(size>min){ctx.font='900 '+size+'px Arial, sans-serif';if(ctx.measureText(str).width<=maxWidth)break;size-=2;}
  return size;
 }
-function downloadCard(){
+function readableGraphicText(bg,ink){
+ // Retain the school-provided text color if legible; otherwise choose strong contrast.
+ const luminosity=hex=>{
+  const vals=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4));
+  return .2126*vals[0]+.7152*vals[1]+.0722*vals[2];
+ };
+ const background=luminosity(bg),text=luminosity(ink);
+ const ratio=(Math.max(background,text)+.05)/(Math.min(background,text)+.05);
+ return ratio>=4.5?ink:background>.179?'#101010':'#FFFFFF';
+}
+function previewGraphicForSave(dataUrl){
+ // In browsers without file sharing, display the actual image for long-press -> Save Image.
+ document.querySelector('#rusPickSavePreview')?.remove();
+ const modal=document.createElement('div');
+ modal.id='rusPickSavePreview';
+ modal.className='rus-pick-save-preview';
+ modal.setAttribute('role','dialog');
+ modal.setAttribute('aria-modal','true');
+ modal.setAttribute('aria-label','Save your playoff champions graphic');
+ modal.innerHTML='<div class="rus-pick-save-sheet"><button type="button" class="rus-pick-save-close" aria-label="Close image preview">×</button><h2>Save to your phone</h2><p>Press and hold the image, then choose <strong>Save to Photos</strong> or <strong>Save Image</strong>.</p><img alt="Your seven RUS playoff champion picks" class="rus-pick-save-image"><a class="rus-pick-primary rus-pick-save-download" download="RUS-2026-Playoff-Champions.png">Download PNG ↓</a></div>';
+ modal.querySelector('img').src=dataUrl;
+ modal.querySelector('a').href=dataUrl;
+ modal.querySelector('.rus-pick-save-close').addEventListener('click',()=>modal.remove());
+ modal.addEventListener('click',event=>{if(event.target===modal)modal.remove()});
+ document.body.appendChild(modal);
+ modal.querySelector('.rus-pick-save-close').focus({preventScroll:true});
+}
+async function downloadCard(){
  const list=ORDER.map(c=>({classification:c,champion:calculate(c).champion}));
  if(!list.some(x=>x.champion)){notice='Pick a state champion first to make your graphic.';draw();return}
- const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;const ctx=canvas.getContext('2d');
+ const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;
+ const ctx=canvas.getContext('2d');
  if(!ctx){notice='Image export is unavailable on this device.';draw();return}
- ctx.fillStyle='#101010';ctx.fillRect(0,0,1080,1350);ctx.fillStyle='#F14D07';ctx.fillRect(0,0,1080,20);
+ ctx.fillStyle='#101010';ctx.fillRect(0,0,1080,1350);
+ ctx.fillStyle='#F14D07';ctx.fillRect(0,0,1080,20);
  ctx.fillStyle='#fff';ctx.font='900 40px Arial, sans-serif';ctx.fillText('RURAL UTAH SPORTS',74,101);
  ctx.fillStyle='#F14D07';ctx.font='900 27px Arial, sans-serif';ctx.fillText('2026 · PLAYOFF PICK’EM',74,154);
  ctx.fillStyle='#fff';ctx.font='900 78px Arial, sans-serif';ctx.fillText('MY STATE',70,254);ctx.fillText('CHAMPIONS',70,345);
  ctx.fillStyle='#777';ctx.fillRect(70,381,940,2);
  list.forEach((v,i)=>{
-  const y=445+i*115;
-  ctx.fillStyle=i%2?'#191919':'#202020';ctx.fillRect(70,y-49,940,100);
-  ctx.fillStyle='#F14D07';ctx.font='900 28px Arial, sans-serif';ctx.fillText(v.classification,94,y+9);
+  const y=445+i*115,brand=v.champion?asset(v.champion):null;
+  const teamColor=brand?.known&&/^#[0-9a-f]{6}$/i.test(brand.backgroundColor)?brand.backgroundColor:null;
+  const teamInk=brand?.known&&/^#[0-9a-f]{6}$/i.test(brand.textColor)?brand.textColor:'#FFFFFF';
+  const bg=teamColor||(i%2?'#191919':'#202020');
+  const ink=readableGraphicText(bg,teamInk);
+  ctx.fillStyle=bg;
+  ctx.fillRect(70,y-49,940,100);
+  // Keep the existing minimalist graphic layout, but let the champion's true school color fill each row.
+  ctx.fillStyle=ink;
+  ctx.fillRect(70,y-49,7,100);
+  ctx.font='900 28px Arial, sans-serif';
+  ctx.fillText(v.classification,94,y+9);
   const name=v.champion?.name||'TBD';
-  const size=fitText(ctx,name,710,36,23);ctx.font='900 '+size+'px Arial, sans-serif';ctx.fillStyle=v.champion?'#fff':'#777';
-  ctx.textAlign='right';ctx.fillText(name,979,y+10);ctx.textAlign='left';
+  const size=fitText(ctx,name,710,36,23);
+  ctx.font='900 '+size+'px Arial, sans-serif';
+  ctx.fillStyle=v.champion?ink:'#A0A0A0';
+  ctx.textAlign='right';
+  ctx.fillText(name,979,y+10);
+  ctx.textAlign='left';
  });
  ctx.fillStyle='#F14D07';ctx.fillRect(0,1264,1080,86);
  ctx.fillStyle='#000';ctx.font='900 30px Arial, sans-serif';ctx.fillText('RURALUTAHSPORTS.COM',70,1317);
  ctx.textAlign='right';ctx.font='900 24px Arial, sans-serif';ctx.fillText('@ruralutahsports77',1002,1317);ctx.textAlign='left';
  try{
-  canvas.toBlob(blob=>{
-   if(!blob){notice='Could not export the graphic.';draw();return}
-   const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='RUS-2026-Playoff-Champions.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
-  },'image/png');
- }catch(e){notice='The graphic could not be saved on this device.';draw();}
+  // Synchronous canvas encoding lets navigator.share run in the original tap gesture on iOS.
+  // Calling navigator.share from inside an asynchronous canvas.toBlob callback can lose user activation.
+  const dataUrl=canvas.toDataURL('image/png');
+  const isAppleMobile=/iPhone|iPad|iPod/i.test(navigator.userAgent||'')||
+   (/Macintosh/i.test(navigator.userAgent||'')&&navigator.maxTouchPoints>1);
+  if(typeof File==='function'&&typeof navigator.share==='function'&&typeof navigator.canShare==='function'){
+   const binary=atob(dataUrl.split(',')[1]);
+   const bytes=Uint8Array.from(binary,ch=>ch.charCodeAt(0));
+   const file=new File([bytes],'RUS-2026-Playoff-Champions.png',{type:'image/png'});
+   if(navigator.canShare({files:[file]})){
+    try{
+     await navigator.share({files:[file],title:'My RUS 2026 State Champions'});
+     return;
+    }catch(err){
+     if(err?.name==='AbortError')return;
+     // A failed share falls back to a saveable image preview on mobile.
+    }
+   }
+  }
+  if(isAppleMobile){previewGraphicForSave(dataUrl);return}
+  const a=document.createElement('a');a.href=dataUrl;a.download='RUS-2026-Playoff-Champions.png';
+  document.body.appendChild(a);a.click();a.remove();
+ }catch(err){
+  console.error('RUS playoff image export',err);
+  notice='The image could not be saved. Please try opening the predictor in Safari.';
+  draw();
+ }
 }
 async function start(){
  try{
