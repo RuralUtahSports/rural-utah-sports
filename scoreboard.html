@@ -56,7 +56,9 @@ const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/&/g,'&amp;
 const aliases={'CEDAR':'CEDAR CITY','MONUMENT VAL':'MONUMENT VALLEY','GUNNISON':'GUNNISON VALLEY','GRAND COUNTY':'GRAND'};
 const canon=v=>aliases[norm(v)]||norm(v),HOME_FIELD_POINTS=3,DAY=86400000,WEEK=7*DAY;let games=[],allGames=[],playoffGames=[],teamMap=new Map(),detailMap=new Map(),previewOverrideMap=new Map();
 function yearOf(d){const m=String(d||'').match(/(20\d{2})/);return m?+m[1]:0}function dateVal(d){const t=Date.parse(String(d||''));return Number.isFinite(t)?t:0}function isoDate(d){const s=String(d||'').trim();let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;const t=dateVal(d);if(!t)return'';const x=new Date(t);return`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`}function gameKey(g){return`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`}function fmtDate(d){const t=dateVal(d);if(!t)return d||'Date TBA';return new Date(t).toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'})}function deseretUrl(d){const iso=isoDate(d);return iso?`https://sports.deseret.com/high-school/football/scores-schedule/${iso}`:'https://sports.deseret.com/high-school/football/scores-schedule'}
-function startOfDay(value){const d=new Date(value);d.setHours(0,0,0,0);return d.getTime()}function thursdayStart(value){const d=new Date(startOfDay(value)),day=d.getDay();if(day>=1&&day<=3)d.setDate(d.getDate()+(4-day));else d.setDate(d.getDate()-((day+3)%7));return d.getTime()}function seasonWeekOneStart(year){const d=new Date(Number(year),7,8);d.setHours(0,0,0,0);while(d.getDay()!==4)d.setDate(d.getDate()+1);return d.getTime()}function gameWeekNumber(g){const date=isoDate(g.date);if(!date)return null;const t=Date.parse(`${date}T12:00:00`);if(!Number.isFinite(t))return null;return Math.floor((thursdayStart(t)-seasonWeekOneStart(new Date(t).getFullYear()))/WEEK)+1}function currentWeek(){const today=new Date(),mt=new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',weekday:'short',hour:'numeric',hourCycle:'h23'}).formatToParts(today),sundayRelease=mt.some(p=>p.type==='weekday'&&p.value==='Sun')&&Number(mt.find(p=>p.type==='hour')?.value)>=8,week=Math.floor((thursdayStart(today)-seasonWeekOneStart(today.getFullYear()))/WEEK)+1+(sundayRelease?1:0);return Math.max(1,Math.min(11,week))}function playoffGameKey(g){
+function startOfDay(value){const d=new Date(value);d.setHours(0,0,0,0);return d.getTime()}function thursdayStart(value){const d=new Date(startOfDay(value)),day=d.getDay();if(day>=1&&day<=3)d.setDate(d.getDate()+(4-day));else d.setDate(d.getDate()-((day+3)%7));return d.getTime()}function seasonWeekOneStart(year){const d=new Date(Number(year),7,8);d.setHours(0,0,0,0);while(d.getDay()!==4)d.setDate(d.getDate()+1);return d.getTime()}function gameWeekNumber(g){const date=isoDate(g.date);if(!date)return null;const t=Date.parse(`${date}T12:00:00`);if(!Number.isFinite(t))return null;return Math.floor((thursdayStart(t)-seasonWeekOneStart(new Date(t).getFullYear()))/WEEK)+1}function currentWeek(){const today=new Date(),mt=new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',weekday:'short',hour:'numeric',hourCycle:'h23'}).formatToParts(today),sundayRelease=mt.some(p=>p.type==='weekday'&&p.value==='Sun')&&Number(mt.find(p=>p.type==='hour')?.value)>=8,week=Math.floor((thursdayStart(today)-seasonWeekOneStart(today.getFullYear()))/WEEK)+1+(sundayRelease?1:0);const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(today).map(x=>[x.type,x.value]));
+ const released=Number(parts.year)===2026&&(Number(parts.month)>10||(Number(parts.month)===10&&Number(parts.day)>=17));
+ return Math.max(1,Math.min(11,released?Math.max(week,11):week))}function playoffGameKey(g){
  const names=[canon(g.awayTeam),canon(g.homeTeam)].sort();
  return isoDate(g.date)+'|'+names.join('|');
 }
@@ -73,6 +75,7 @@ function playoffTeamName(name){
  const names={
   'ST. JOSEPH':'SAINT JOSEPH','CEDAR':'CEDAR CITY',
   'JUDGE MEMORIAL CATHOLIC':'JUDGE MEMORIAL',
+  'MONUMENT VALLEY':'MONUMENT VAL',
   'UTAH MILITARY ACADEMY - HILL FIELD':'UMA-HILLFIELD',
   'UTAH MILITARY ACADEMY - CAMP WILLIAMS':'UMA-LEHI'
  };
@@ -159,7 +162,7 @@ $('scoreboardWeekSelect').addEventListener('change',()=>{const week=Number($('sc
 </script>
 <script src="share-graphic.js?v=20260820-scoreboard-single-v1" defer></script>
 <script src="scoreboard-share-layout.js?v=20260911-safe-logo-export1" defer></script>
-<script src="scoreboard-refresh.js?v=20261002-fresh-finals2"></script>
+<script src="scoreboard-refresh.js?v=20261017-week11-playoffs1"></script>
 <script src="scoreboard-model-record.js?v=20260911-season-record1"></script>
 <script src="rus-lines-dashboard.js?v=20260904-null-projection1" data-rus-lines-dashboard="1" defer></script>
 
