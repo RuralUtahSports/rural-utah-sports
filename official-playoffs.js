@@ -20,7 +20,7 @@ function team(t){
   const real=known&&colors.known;
   const cls='rus-o-team'+(isBye?' rus-o-bye':'')+(t?.winner?' rus-o-win':'')+(real?' rus-o-real-team':'');
   const style=real?' style="--team-bg:'+colors.backgroundColor+';--team-ink:'+colors.textColor+'"':'';
-  const logo=colors.logo&&known?'<img class="rus-o-logo" src="'+esc(colors.logo)+'" alt="'+esc(name)+' school logo" loading="lazy" decoding="async">':'';
+  const logo=colors.logo&&known?'<span class="rus-o-logo-shell"><img class="rus-o-logo" src="'+esc(colors.logo)+'" alt="'+esc(name)+' school logo" loading="lazy" decoding="async" width="34" height="34"></span>':'';
   const score=t&&typeof t==='object'&&t.score!==undefined&&t.score!==null?'<span class="rus-o-score">'+esc(t.score)+'</span>':'';
   return '<div class="'+cls+'"'+style+'><span class="rus-o-seed">'+seed+'</span>'+logo+'<span class="rus-o-name">'+esc(display)+'</span>'+score+'</div>';
 }
@@ -55,7 +55,10 @@ function draw(data){
   html+='<p class="rus-o-foot">Bracket information transcribed from MaxPreps / UHSAA. Check the official source for subsequent changes. '+(current.sourceUrl&&/^https:\/\//.test(current.sourceUrl)?'<a href="'+esc(current.sourceUrl)+'" target="_blank" rel="noopener noreferrer">View '+esc(selected)+' source</a>. ':'')+(data.updatedAt?'RUS update: '+esc(new Date(data.updatedAt).toLocaleString('en-US',{timeZone:'America/Denver',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}))+'. ':'')+'<a href="https://uhsaa.org/football-rpi/" target="_blank" rel="noopener noreferrer">UHSAA football RPI</a> · <a href="playoff-picture.html">Previous RUS projections</a>.</p>';
   host.innerHTML=html;
   host.querySelectorAll('[data-class]').forEach(btn=>btn.addEventListener('click',()=>{selected=btn.dataset.class;manuallySelected=true;draw(data)}));
-  host.querySelectorAll('img.rus-o-logo').forEach(img=>img.addEventListener('error',()=>img.remove()));
+  host.querySelectorAll('img.rus-o-logo').forEach(img=>img.addEventListener('error',()=>{
+    const shell=img.closest('.rus-o-logo-shell');
+    if(shell)shell.remove();else img.remove();
+  }));
 }
 async function refresh(){
  if(inFlight)return;
