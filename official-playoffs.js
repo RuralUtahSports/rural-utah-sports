@@ -4,7 +4,7 @@ const host=document.getElementById('rusOfficialPlayoffs');
 if(!host)return;
 const ORDER=['8-Player','1A','2A','3A','4A','5A','6A'];
 const home=host.dataset.mode==='home';
-let selected='8-Player', manuallySelected=false, lastPayload='', inFlight=false, currentData=null;
+let selected='8-Player', manuallySelected=false, lastPayload='', inFlight=false, currentData=null, predictionMap=new Map();
 const assets=window.RUSOfficialBracketTeamAssets;
 const teamAsset=name=>assets?.resolve(name)||{logo:'',backgroundColor:'#303030',textColor:'#fff',known:false};
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -12,6 +12,45 @@ const getName=t=>typeof t==='string'?t:(t?.name||t?.team||'');
 const isOfficial=c=>c?.status==='official'&&Array.isArray(c.rounds)&&c.rounds.length>0;
 const isPartial=c=>c?.status==='partial'&&Array.isArray(c.rounds)&&c.rounds.length>0;
 const isPublished=c=>isOfficial(c)||isPartial(c);
+const nameKey=value=>{
+ const resolved=assets?.resolve(value);
+ return String(resolved?.key||value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+};
+const monthNum={JAN:'01',FEB:'02',MAR:'03',APR:'04',MAY:'05',JUN:'06',JUL:'07',AUG:'08',SEP:'09',OCT:'10',NOV:'11',DEC:'12'};
+function dateKey(value){
+ const v=String(value||'').trim();
+ let m=v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+ if(m)return m[3]+'-'+m[1].padStart(2,'0')+'-'+m[2].padStart(2,'0');
+ m=v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ if(m)return v;
+ m=v.match(/^([A-Za-z]{3})\s+(\d{1,2}),?\s+(\d{4})/);
+ if(m&&monthNum[m[1].toUpperCase()])return m[3]+'-'+monthNum[m[1].toUpperCase()]+'-'+m[2].padStart(2,'0');
+ return '';
+}
+function predictionKey(date,home,away){return dateKey(date)+'|'+nameKey(home)+'|'+nameKey(away)}
+function gameLine(g){
+ const a=getName(g?.a),b=getName(g?.b);
+ // No projected opponent, no line. BYE does not count as a played game.
+ if(!g?.a?.seed||!g?.b?.seed||!a||!b)return '';
+ const prediction=predictionMap.get(predictionKey(g.date,a,b));
+ if(!prediction)return '';
+ const home=Number(prediction.homeScore),away=Number(prediction.awayScore);
+ if(!Number.isFinite(home)||!Number.isFinite(away))return '';
+ const favorite=home===away?'Pick’em':home>away?a:b;
+ const spread=home===away?'PK':favorite+' -'+Math.abs(home-away);
+ const total=home+away;
+ return '<div class="rus-o-projection"><b>RUS LINE:</b> '+esc(spread)+' <span>·</span> <b>O/U:</b> '+esc(total)+'<small>RUS model projection · Not a final score</small></div>';
+}
+function loadPredictions(payload){
+ const next=new Map();
+ for(const p of payload?.games||[]){
+  if(!p?.homeTeam||!p?.awayTeam)continue;
+  const key=predictionKey(p.date,p.homeTeam,p.awayTeam);
+  if(key&&key[0]!=='|')next.set(key,p);
+ }
+ predictionMap=next;
+}
+
 function team(t){
   const name=getName(t),seed=t&&typeof t==='object'&&Number.isFinite(Number(t.seed))&&String(t.seed).trim()!==''?'#'+esc(t.seed):'';
   const display=name||'TBD',isBye=/^bye$/i.test(display);
@@ -32,7 +71,7 @@ function game(g){
     (g?.venue||g?.location)?'<span><b>Location:</b> '+esc(g.venue||g.location)+'</span>':'',
     g?.note?'<span>'+esc(g.note)+'</span>':''
   ].filter(Boolean).join(' <span aria-hidden="true">·</span> ');
-  return '<div class="rus-o-game">'+team(a)+team(b)+(schedule?'<div class="rus-o-gamemeta">'+schedule+'</div>':'')+'</div>';
+  return '<div class="rus-o-game">'+team(a)+team(b)+gameLine(g)+(schedule?'<div class="rus-o-gamemeta">'+schedule+'</div>':'')+'</div>';
 }
 function draw(data){
   currentData=data;
@@ -66,7 +105,11 @@ async function refresh(){
  try{
   const r=await fetch('official-brackets-2026.json?v='+Date.now(),{cache:'no-store'});
   if(!r.ok)throw Error('HTTP '+r.status);
-  const d=await r.json(),body=JSON.stringify(d);
+  const d=await r.json();
+  let forecast={games:[]};
+  try{const pr=await fetch('playoff-predictions-2026.json?v='+Date.now(),{cache:'no-store'});if(pr.ok)forecast=await pr.json()}catch(e){console.warn('RUS playoff projections unavailable',e)}
+  loadPredictions(forecast);
+  const body=JSON.stringify(d)+'|'+JSON.stringify(forecast);
   if(body!==lastPayload){lastPayload=body;draw(d);}
  }catch(e){
   if(!lastPayload)host.innerHTML='<div class="rus-o-error">The official bracket feed is temporarily unavailable. Please reload the page.</div>';
