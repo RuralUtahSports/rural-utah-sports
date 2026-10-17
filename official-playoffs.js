@@ -16,8 +16,13 @@ function team(t){
 }
 function game(g){
   const a=g?.a??null,b=g?.b??null;
-  const note=[g?.date,g?.time,g?.venue,g?.note].filter(Boolean).map(esc).join(' · ');
-  return '<div class="rus-o-game">'+team(a)+team(b)+(note?'<div class="rus-o-gamemeta">'+note+'</div>':'')+'</div>';
+  const schedule=[
+    g?.date?'<span><b>Date:</b> '+esc(g.date)+'</span>':'',
+    g?.time?'<span><b>Kickoff:</b> '+esc(g.time)+'</span>':'',
+    (g?.venue||g?.location)?'<span><b>Location:</b> '+esc(g.venue||g.location)+'</span>':'',
+    g?.note?'<span>'+esc(g.note)+'</span>':''
+  ].filter(Boolean).join(' <span aria-hidden="true">·</span> ');
+  return '<div class="rus-o-game">'+team(a)+team(b)+(schedule?'<div class="rus-o-gamemeta">'+schedule+'</div>':'')+'</div>';
 }
 function draw(data){
   const classes=data.classifications||{},confirmed=ORDER.filter(c=>isOfficial(classes[c]));
