@@ -209,7 +209,76 @@ function drawByes(c,quarters,opening,x,y,w,sc){
  fitDraw(c,count+' teams advance directly',x+20*sc,y+77*sc,w-40*sc,23*sc,17*sc,'left','#f1f1f1');
  fitDraw(c,'to the quarterfinals',x+20*sc,y+102*sc,w-40*sc,19*sc,14*sc,'left','#b5b8be');
 }
-function makeFullGraphic(cls,data,images,format=FORMATS.full){
+
+/* Only published RUS forecast scores create bracket lines.
+   Weekly forecasts follow the scoreboard's 3-point home-field adjustment.
+   Never synthesize betting odds or infer a spread from school seeds. */
+function isoGameDate(value){
+ const raw=String(value||'').trim();
+ const m=raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+ if(m)return m[3]+'-'+m[1].padStart(2,'0')+'-'+m[2].padStart(2,'0');
+ const iso=raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ if(iso)return raw;
+ const d=new Date(raw);
+ return Number.isFinite(d.valueOf())?d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'):'';
+}
+const lineTeamKey=name=>{
+ const info=window.RUSOfficialBracketTeamAssets?.resolve(name);
+ return String(info?.key||name||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+};
+function matchingForecast(rows,g){
+ if(!g?.a?.seed||!g?.b?.seed)return null;
+ const a=lineTeamKey(getName(g.a)),b=lineTeamKey(getName(g.b));
+ const date=isoGameDate(g.date);
+ if(!a||!b||!date)return null;
+ return rows.find(row=>isoGameDate(row.date)===date&&
+  ((lineTeamKey(row.homeTeam)===a&&lineTeamKey(row.awayTeam)===b)||
+   (lineTeamKey(row.homeTeam)===b&&lineTeamKey(row.awayTeam)===a)))||null;
+}
+function numericScore(v){if(v===null||v===undefined||String(v).trim()==='')return null;const n=Number(v);return Number.isFinite(n)?n:null;}
+function rusForecastForGame(g,feed){
+ const match=matchingForecast(feed?.games||[],g),override=matchingForecast(feed?.overrides||[],g);
+ const forecast=override||match;
+ if(!forecast)return null;
+ const away=numericScore(forecast.awayScore),home=numericScore(forecast.homeScore);
+ if(away===null||home===null)return null;
+ // Editorial override scores are already final model projections; weekly-simulation
+ // base scores receive the same +3 home-field adjustment used on the scoreboard.
+ const homeAdjusted=home+(override?0:3);
+ const spread=Math.abs(away-homeAdjusted),fav=away>homeAdjusted?forecast.awayTeam:forecast.homeTeam;
+ const favName=[g.a,g.b].map(t=>getName(t)).find(n=>lineTeamKey(n)===lineTeamKey(fav))||fav;
+ const margin=Number.isInteger(spread)?String(spread):spread.toFixed(1);
+ const total=away+homeAdjusted;
+ return {line:spread===0?'PK':brief(favName)+' -'+margin,total:total.toFixed(1).replace(/\.0$/,'')};
+}
+async function loadBracketLines(){
+ const load=async(path,fallback)=>{
+  try{const r=await fetch(path+'?v='+Date.now(),{cache:'no-store'});return r.ok?await r.json():fallback}catch{return fallback}
+ };
+ const [weekly,overrides]=await Promise.all([
+  load('weekly-simulation.json',{games:[]}),
+  load('game-preview-overrides.json',{overrides:[]})
+ ]);
+ return {games:Array.isArray(weekly?.games)?weekly.games:[],overrides:Array.isArray(overrides?.overrides)?overrides.overrides:[]};
+}
+function drawOpeningLine(c,g,feed,x,y,w,sc){
+ if(!g?.a?.seed||!g?.b?.seed)return;
+ const model=rusForecastForGame(g,feed);
+ const value=model?'RUS Line: '+model.line+'  |  O/U '+model.total:'RUS Line: Pending';
+ fitDraw(c,value,x+8*sc,y,w-16*sc,16*sc,11*sc,'left',model?'#ffc099':'#a5a7ad');
+}
+function roundSubtitle(round,type){
+ const title=String(round?.name||'');
+ const date=(title.match(/\b(?:Oct|Nov)\s+\d+(?:\s*[–-]\s*\d+)?/i)||[])[0]?.replace(/\s+/g,' ')||'Date TBD';
+ if(type<2)return {date,venue:'Home sites'};
+ const venue=String(round?.games?.[0]?.venue||'');
+ if(/Rice.Eccles|University of Utah/i.test(venue))return {date,venue:'U of U'};
+ if(/Zions Bank/i.test(venue))return {date,venue:'Zions Bank Stadium'};
+ if(/Southern Utah|Eccles Coliseum/i.test(venue))return {date,venue:'SUU • Cedar City'};
+ return {date,venue:'Venue TBD'};
+}
+
+function makeFullGraphic(cls,data,images,format=FORMATS.full,forecasts={games:[],overrides:[]}){
  const w=format.width,h=format.height,sc=Math.min(w/1600,h/1500),view=canvas(w,h),c=view.c;
  const stages=data.rounds.filter(r=>r.games?.length);
  if(stages.length<4)throw Error('Missing official bracket rounds');
@@ -227,8 +296,15 @@ function makeFullGraphic(cls,data,images,format=FORMATS.full){
  const yQ=[0,1,2,3].map(i=>top+(i+.5)*span/4),yS=[(yQ[0]+yQ[1])/2,(yQ[2]+yQ[3])/2],yF=[(yS[0]+yS[1])/2];
  const yFirst=first.length===8?first.map((_,i)=>top+(i+.5)*span/8):first.length===3?[yQ[0],yQ[2],yQ[3]]:first.length===1?[yQ[0]]:first.map((_,i)=>top+(i+.5)*span/first.length);
  const centers=[yFirst,yQ,yS,yF,yF],groups=[first,qf,sf,final];
- ['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP','CHAMPION'].forEach((name,i)=>fitDraw(c,name,xs[i]+widths[i]/2,top-38*sc,widths[i],22*sc,14*sc,'center',i===4?ORANGE:'#ddd'));
- const compact=first.length>=8,cardH=Math.min((compact?133:175)*sc,compact?span/8-15*sc:span/4-28*sc);
+ ['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP','CHAMPION'].forEach((name,i)=>{
+   fitDraw(c,name,xs[i]+widths[i]/2,top-76*sc,widths[i],22*sc,14*sc,'center',i===4?ORANGE:'#ddd');
+   if(i<4){
+    const sub=roundSubtitle(stages[i],i);
+    fitDraw(c,sub.date,xs[i]+widths[i]/2,top-50*sc,widths[i]-5*sc,18*sc,12*sc,'center','#ffbb95');
+    fitDraw(c,sub.venue,xs[i]+widths[i]/2,top-27*sc,widths[i]-5*sc,17*sc,11*sc,'center','#aeb0b5');
+   }
+  });
+ const compact=first.length>=8,cardH=Math.min((compact?133:175)*sc,compact?span/8-34*sc:span/4-28*sc);
  if(cardH<45*sc)throw Error('Bracket graphic height too small');
  const mapped=i=>first.length===8?Math.floor(i/2):first.length===3?[0,2,3][i]:first.length===1?0:Math.min(3,Math.floor(i*4/first.length));
  const edges=[];
@@ -242,6 +318,7 @@ function makeFullGraphic(cls,data,images,format=FORMATS.full){
   c.beginPath();c.moveTo(x1,y1);c.lineTo(mid,y1);c.lineTo(mid,y2);c.lineTo(x2,y2);c.stroke();
  });
  groups.forEach((games,r)=>games.forEach((g,i)=>drawBracketMatch(c,g,first,images,xs[r],centers[r][i],widths[r],cardH,sc)));
+ first.forEach((g,i)=>drawOpeningLine(c,g,forecasts,xs[0],centers[0][i]+cardH/2+17*sc,widths[0],sc));
  if(!compact)drawByes(c,qf,first,xs[0]+9*sc,top+span*.30,widths[0]-18*sc,sc);
  const cX=xs[4],cW=widths[4],cH=Math.max(cardH*.98,110*sc),cY=yF[0]-cH/2;
  rect(c,cX,cY,cW,cH,12*sc);
@@ -289,8 +366,8 @@ async function choose(cls){
       if(!response.ok)throw Error('Bracket feed unavailable');
       const payload=await response.json(),data=payload.classifications?.[cls];
       if(!data?.rounds?.length||!['official','partial'].includes(data.status))throw Error('This classification is not published yet');
-      const images=await loadImages(data);
-      const graphic=f.kind==='full'?makeFullGraphic(cls,data,images,f):makeRoundGraphic(cls,data,f,images);
+      const [images,forecasts]=await Promise.all([loadImages(data),f.kind==='full'?loadBracketLines():Promise.resolve(null)]);
+      const graphic=f.kind==='full'?makeFullGraphic(cls,data,images,f,forecasts):makeRoundGraphic(cls,data,f,images);
       closePopup(overlay);await preview(cls,btn.dataset.format,graphic);
     }catch(e){
       note.textContent='Could not create this graphic. '+String(e.message||'Please retry.');
