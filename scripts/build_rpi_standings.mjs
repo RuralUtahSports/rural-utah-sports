@@ -104,7 +104,7 @@ for (const game of eligibleSchedule) {
   if (isNonVarsity(game)) { verifiedGameAudit.excludedNonVarsity++; continue; }
   const away = alias(game.awayTeam);
   const home = alias(game.homeTeam);
-  if (INDEPENDENT.has(away) || INDEPENDENT.has(home)) continue;
+  // Independent teams are ineligible for seeding, but varsity games against them still count for RPI.
   if (memberKeys.has(away)) addGame(game.awayTeam, game);
   if (memberKeys.has(home)) addGame(game.homeTeam, game);
 }
@@ -305,7 +305,7 @@ if (official?.fetchedAt) {
     for (const game of eligibleSchedule) {
       if (!gameFinal(game) || isNonVarsity(game) || gameDate(game.date) > snapshotDay) continue;
       const away = alias(game.awayTeam), home = alias(game.homeTeam);
-      if (INDEPENDENT.has(away) || INDEPENDENT.has(home)) continue;
+      // Independent teams are ineligible for seeding, but varsity games against them still count for RPI.
       if (memberKeys.has(away)) addGame(game.awayTeam, game);
       if (memberKeys.has(home)) addGame(game.homeTeam, game);
     }
