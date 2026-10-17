@@ -1,0 +1,37 @@
+
+.rus-official{background:#050505;border:1px solid #383838;border-top:4px solid #F14D07;border-radius:9px;padding:17px;margin:0 0 12px;color:#fff;font-family:Arial,Helvetica,sans-serif}
+.rus-o-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.rus-o-eyebrow{font-size:10px;color:#F14D07;font-weight:900;letter-spacing:1px;text-transform:uppercase}
+.rus-o-top h2{font-size:22px;line-height:1.15;margin:5px 0!important;font-weight:900;text-transform:uppercase}
+.rus-o-desc{font-size:11px;line-height:1.5;color:#a9a9a9;margin:3px 0 0!important}
+.rus-o-cta{background:#F14D07;color:#050505!important;font-size:11px;font-weight:900;text-decoration:none;border-radius:5px;padding:10px 12px;white-space:nowrap;display:inline-block}
+.rus-o-cta:hover{background:#fff}
+.rus-o-progress{padding:10px 0 9px;font-size:11px;font-weight:800;color:#ddd}
+.rus-o-progress strong{color:#F14D07}
+.rus-o-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.rus-o-tab{border:1px solid #484848;color:#fff;background:#1b1b1b;border-radius:5px;padding:9px 12px;font-size:11px;font-weight:900;cursor:pointer;min-height:38px}
+.rus-o-tab[aria-pressed=true]{background:#F14D07;color:#000;border-color:#F14D07}
+.rus-o-tab.is-waiting:not([aria-pressed=true]){color:#bbb}
+.rus-o-tab small{display:block;font-size:8px;font-weight:700;letter-spacing:.2px;padding-top:2px}
+.rus-o-status{font-size:11px;color:#a9a9a9;line-height:1.5;margin-bottom:8px}
+.rus-o-status b{color:#fff}
+.rus-o-waiting{background:#131313;border:1px dashed #454545;border-radius:6px;color:#c6c6c6;padding:22px 14px;text-align:center;font-size:13px;line-height:1.5}
+.rus-o-waiting strong{display:block;color:#fff;font-size:15px;margin-bottom:4px}
+.rus-o-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;border:1px solid #282828;border-radius:7px;background:#0e0e0e;padding:13px}
+.rus-o-rounds{display:flex;min-width:max-content;align-items:stretch;gap:15px}
+.rus-o-round{width:210px;min-width:210px;display:flex;flex-direction:column}
+.rus-o-round h3{font-size:12px;font-weight:900;color:#F14D07;text-align:center;text-transform:uppercase;margin:0 0 10px}
+.rus-o-games{display:flex;flex-direction:column;justify-content:space-around;gap:12px;flex:1}
+.rus-o-game{border:1px solid #414141;border-radius:6px;background:#191919;overflow:hidden;min-height:68px}
+.rus-o-team{display:flex;align-items:center;min-height:34px;gap:7px;padding:7px 9px;font-size:11px;font-weight:800}
+.rus-o-team+.rus-o-team{border-top:1px solid #353535}
+.rus-o-team .rus-o-seed{font-size:10px;color:#F14D07;flex:0 0 22px;text-align:center}
+.rus-o-team .rus-o-name{flex:1;overflow-wrap:anywhere}
+.rus-o-team.rus-o-bye{color:#9b9b9b;font-style:italic}
+.rus-o-team.rus-o-win{background:#242424}
+.rus-o-team .rus-o-score{margin-left:auto;color:#fff;font-size:12px}
+.rus-o-gamemeta{border-top:1px solid #353535;font-size:9px;color:#aaa;line-height:1.35;padding:6px 9px}
+.rus-o-foot{font-size:10px;color:#929292;line-height:1.45;margin-top:10px}
+.rus-o-foot a{color:#ffa375}
+.rus-o-error{border:1px solid #5e3838;padding:15px;color:#ffb6a1;font-size:12px}
+@media(max-width:650px){.rus-official{padding:12px 10px}.rus-o-top h2{font-size:19px}.rus-o-cta{font-size:9px;padding:9px 10px}.rus-o-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}.rus-o-tab{flex:0 0 auto;padding:8px 10px;font-size:10px}.rus-o-round{width:190px;min-width:190px}.rus-o-scroll{padding:9px}.rus-o-team{font-size:10px}}
