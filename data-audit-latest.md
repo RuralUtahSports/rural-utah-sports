@@ -1,13 +1,11 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-17T16:06:06.830Z
+Generated: 2026-10-17T16:49:52.836Z
 
-**0 errors • 10 warnings**
+**0 errors • 8 warnings**
 
-## Warnings (10)
+## Warnings (8)
 
-- **RECORD_MISMATCH** — MORGAN standings record does not match completed games in weekly-simulation.json. `{"standings":"8-2-0","calculated":"8-1-1"}`
-- **RECORD_MISMATCH** — LOGAN standings record does not match completed games in weekly-simulation.json. `{"standings":"8-2-0","calculated":"7-2-1"}`
 - **RECORD_MISMATCH** — NORTH SANPETE standings record does not match completed games in weekly-simulation.json. `{"standings":"6-4-0","calculated":"5-4-1"}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CANYON VIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-15","opponent":"Manti"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — FARMINGTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-14","opponent":"Layton"}]}`
