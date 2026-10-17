@@ -91,3 +91,72 @@
   .rus-o-sheet{padding:14px}
   .rus-o-image-preview{max-height:61dvh}
 }
+
+
+/* Bracket polish: original school logos, secondary accents, readable mobile cards. */
+.rus-o-round{width:268px;min-width:268px}
+.rus-o-game{box-shadow:0 3px 11px rgba(0,0,0,.35)}
+.rus-o-team.rus-o-real-team{
+  min-height:52px;
+  border-left:6px solid var(--team-bg,#444);
+  padding:7px 9px 7px 8px;
+  background:linear-gradient(105deg,
+    color-mix(in srgb,var(--team-bg,#303030) 66%,#080808) 0%,
+    color-mix(in srgb,var(--team-bg,#303030) 33%,#171717) 49%,
+    #1b1c20 100%);
+}
+.rus-o-team.rus-o-real-team .rus-o-seed{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:28px;
+  flex:0 0 29px;
+  font-size:12px;
+  color:#fff;
+  border-radius:5px;
+  background:rgba(5,6,8,.62);
+  border-bottom:3px solid var(--team-ink,#f14d07);
+  text-shadow:0 1px 2px #000;
+}
+.rus-o-logo-shell{
+  width:41px;
+  height:41px;
+  flex:0 0 41px;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:radial-gradient(circle at 35% 30%,#fbfbfb,#cfd1d5);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 2px 5px rgba(0,0,0,.55);
+  overflow:hidden;
+}
+.rus-o-team .rus-o-logo{
+  width:35px;
+  height:35px;
+  max-width:35px;
+  max-height:35px;
+  flex:none;
+  border:0;
+  object-fit:contain;
+  background:transparent;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.48));
+}
+.rus-o-team.rus-o-real-team .rus-o-name{
+  font-size:12px;
+  font-weight:900;
+  line-height:1.25;
+  min-width:0;
+  overflow-wrap:break-word;
+}
+.rus-o-team.rus-o-bye .rus-o-name{font-weight:700}
+@media(max-width:650px){
+  .rus-o-round{width:250px;min-width:250px}
+  .rus-o-team.rus-o-real-team{min-height:49px;gap:6px;padding:6px}
+  .rus-o-team.rus-o-real-team .rus-o-seed{min-height:27px;flex-basis:27px;font-size:11px}
+  .rus-o-logo-shell{width:35px;height:35px;flex:0 0 35px}
+  .rus-o-team .rus-o-logo{width:31px;height:31px;max-width:31px;max-height:31px}
+  .rus-o-team.rus-o-real-team .rus-o-name{font-size:11px}
+  .rus-o-scroll{scroll-snap-type:x proximity;scroll-padding-inline:10px}
+  .rus-o-round{scroll-snap-align:start}
+}
