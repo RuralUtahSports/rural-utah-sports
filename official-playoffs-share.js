@@ -196,10 +196,10 @@ function drawByes(c,quarters,opening,x,y,w,sc){
  const listed=new Set(opening.flatMap(g=>[getName(g.a),getName(g.b)]));
  const teams=quarters.flatMap(g=>[g.a,g.b]).filter(t=>t?.seed&&t?.name&&!listed.has(t.name)).sort((a,b)=>a.seed-b.seed);
  if(!teams.length)return;
- const height=(teams.length>3?380:215)*sc;
+ const height=(teams.length>5?380:teams.length>3?295:215)*sc;
  rect(c,x,y,w,height,12*sc);c.fillStyle='rgba(9,13,17,.72)';c.fill();c.strokeStyle='rgba(241,77,7,.65)';c.lineWidth=2*sc;c.stroke();
  fitDraw(c,'FIRST-ROUND BYES',x+22*sc,y+36*sc,w-44*sc,24*sc,16*sc,'left','#ffb48b');
- teams.forEach((team,i)=>fitDraw(c,'#'+team.seed+'  '+brief(team.name),x+22*sc,y+75*sc+i*(teams.length>3?39:43)*sc,w-44*sc,21*sc,15*sc,'left','#f0f0f0'));
+ teams.forEach((team,i)=>fitDraw(c,'#'+team.seed+'  '+brief(team.name),x+22*sc,y+75*sc+i*(teams.length>5?39:teams.length>3?37:43)*sc,w-44*sc,21*sc,15*sc,'left','#f0f0f0'));
 }
 function makeFullGraphic(cls,data,images,format=FORMATS.full){
  const w=format.width,h=format.height,sc=Math.min(w/1600,h/1500),view=canvas(w,h),c=view.c;
