@@ -437,3 +437,29 @@
     font-size: 9px;
   }
 }
+
+/* Post-regular-season 2026 official RPI presentation */
+.rpi-final-summary {
+  margin: 18px 0;
+  border-left: 4px solid #f14d07;
+  line-height: 1.55;
+}
+.rpi-final-summary a,
+.rpi-final-bracket-link a {
+  color: #f14d07;
+  font-weight: 900;
+}
+.rpi-final-bracket-link {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid #333;
+  border-radius: 9px;
+  background: #111;
+}
+.rpi-final-bracket-link a {
+  display: inline-block;
+  min-height: 30px;
+  padding: 5px 0;
+  text-decoration: none;
+}
+.rpi-final-bracket-link a:hover { text-decoration: underline; }
