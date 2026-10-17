@@ -497,6 +497,7 @@
         dropdown("Scoreboard", "scoreboard"),
         dropdown("Rankings", "rankings"),
         link("Standings", "standings.html"),
+        link("Playoff Pick’em", "playoff-pickem.html"),
         link("Pick'em", "simulators.html?tab=weekly"),
         dropdown("Stats", "stats"),
         link("Storylines", "storylines.html"),
@@ -554,7 +555,7 @@
       // the canonical nav exists instead of waiting for window.load and an
       // idle callback, either of which can be delayed by a slow page asset.
       addScript(
-        "mobile-shell.js?v=20260921-mobile-audit2",
+        "mobile-shell.js?v=20261017-playoff-pickem-mobile1",
         "rusMobileShell",
         true,
       );
