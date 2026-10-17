@@ -41,6 +41,21 @@ async function run(){
     const cutoff=cutoffs[classification];
     const top=rows.slice(0,cutoff);
     const bySeed=new Map(top.map(row=>[row.rank,row]));
+    // Mirror the automatic first-round bye advances in the page's quarterfinal slots.
+    const firstRound=pairs.map(([a,b])=>({a:bySeed.get(a)||null,b:bySeed.get(b)||null})).filter(match=>match.a);
+    const byeAdvancers=firstRound.map(match=>match.a&&!match.b?match.a:null);
+    const quarterfinals=Array.from({length:Math.ceil(firstRound.length/2)},(_,i)=>({
+      a:byeAdvancers[i*2]||null,
+      b:byeAdvancers[i*2+1]||null
+    }));
+    const quarterHtml=['3A','2A','1A','8P'].includes(classification)
+      ?'<h3 style="margin:20px 0 9px;text-transform:uppercase;color:#F14D07">Quarterfinals — bye advances filled</h3><p>Teams with first-round byes advance automatically. Unplayed first-round matchups remain TBD; no winners are predicted.</p><div class="grid two">'+
+        quarterfinals.map(match=>'<div class="card">'+
+          (match.a?'<span class="pill">#'+match.a.rank+'</span> '+pill(match.a.team):'<span class="muted">TBD — first-round winner</span>')+
+          '<div style="color:#999;margin:7px 0;font-size:10px;font-weight:900">VS</div>'+
+          (match.b?'<span class="pill">#'+match.b.rank+'</span> '+pill(match.b.team):'<span class="muted">TBD — first-round winner</span>')+
+          '</div>').join('')+'</div>'
+      :'';
     const title=classification==='8P'?'8-Player':classification;
     const atRisk=rows.filter(row=>games(row)<6);
     const outside=rows.filter(row=>row.rank>cutoff).slice(0,3);
@@ -52,7 +67,7 @@ async function run(){
       rows.map(row=>{const eligible=games(row)>=6,inside=eligible&&row.rank<=cutoff;return '<tr class="'+(band&&Math.abs(row.rank-cutoff)<=2?'rpi-bubble':'')+'"><td class="rank">'+row.rank+'</td><td class="left">'+pill(row.team)+'</td><td>'+h(row.record)+'</td><td>'+pct(row.mwp)+'</td><td>'+pct(row.owp)+'</td><td>'+pct(row.oowp)+'</td><td><strong>'+Number(row.rpi).toFixed(6)+'</strong></td><td class="'+(inside?'rpi-in':'rpi-out')+'">'+h(state(row,cutoff))+'</td></tr>'+(row.rank===cutoff&&rows.length>cutoff?'<tr class="playoff-cutoff-row"><td colspan="8"><strong>RUS PROJECTED PLAYOFF CUTOFF</strong></td></tr>':'')}).join('')+
       '</tbody></table></div><section class="rus-projected-bracket"><h3 style="margin:18px 0 9px;text-transform:uppercase;color:#F14D07">Projected Bracket Slots &amp; Byes</h3><p>Matchups use the latest RUS calculated RPI seeds, not released UHSAA bracket positions. A listed bye is not a scheduled game.</p><div class="grid two">'+
       pairs.map(([a,b])=>{const first=bySeed.get(a),second=bySeed.get(b);if(!first)return '';return '<div class="card"><span class="pill">#'+a+'</span> '+pill(first.team)+'<div style="color:#999;margin:7px 0;font-size:10px;font-weight:900">VS</div>'+(second?'<span class="pill">#'+b+'</span> '+pill(second.team)+(games(second)<6?'<small class="muted"> • Eligibility pending</small>':''):'<span class="muted">BYE</span>')+'</div>'}).join('')+
-      '</div></section></section>';
+      '</div>'+quarterHtml+'</section></section>';
   }).join('');
   root.innerHTML=note+nav+sections;
   root.querySelector('#rusPlayoffRefresh')?.addEventListener('click',()=>refresh(true));
