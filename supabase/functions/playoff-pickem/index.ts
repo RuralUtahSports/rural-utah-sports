@@ -125,6 +125,19 @@ function scoreClass(defs:any[], submitted:any,scoreboard:any[]){
  }
  return{score,correct,graded,picked};
 }
+
+function actualSelections(defs:any[],schedule:any[]){
+ const winners:any={},actual:Record<string,string>={};
+ for(const g of defs){
+  const a=resolve(g.a,winners),b=resolve(g.b,winners);
+  if(g.auto){winners[g.id]=a||b;continue;}
+  const verified=resultWinner(g.source,a,b,schedule);
+  winners[g.id]=verified;
+  if(verified)actual[g.id]=verified.id;
+ }
+ return actual;
+}
+
 function grade(row:any,classes:any,scoreboard:any[]){
  let points=0,correct=0,graded=0,picked=0,champions=0;
  for(const c of ORDER){
@@ -152,6 +165,31 @@ Deno.serve(async(req:Request)=>{
   const classes=official.classifications;
   if(!ORDER.every(c=>classes?.[c]?.status==='official'))return respond({error:'Official bracket data not ready'},503);
   const deadlines=Object.fromEntries(ORDER.map(c=>[c,locked(classes[c])]));
+  if(action==='bracket'){
+   const classification=clean(body?.classification);
+   if(!ORDER.includes(classification))return respond({error:'Unknown classification'},400);
+   const deadline=deadlines[classification];
+   // Crucial: do not even look up a fan's choices before the FIRST kickoff in this class.
+   if(!deadline.locked)return respond({locked:true,classification,deadline});
+   const usernameKey=clean(body?.username).toLowerCase();
+   if(usernameKey.length<2||usernameKey.length>24||!/^[a-z0-9 _.-]+$/.test(usernameKey))
+    return respond({error:'Invalid fan name'},400);
+   const results=await db('playoff_pick_entries?season=eq.2026&username_key=eq.'+encodeURIComponent(usernameKey)+'&select=username,picks&limit=1');
+   if(!results?.length)return respond({error:'Fan entry not found'},404);
+   const defs=build(classes[classification]);
+   const publicPicks:Record<string,string>={};
+   for(const g of defs){
+    if(g.auto)continue;
+    const candidate=clean(results[0].picks?.[classification+'|'+g.id]);
+    if(candidate&&candidate.length<=70)publicPicks[g.id]=candidate;
+   }
+   return respond({
+    classification,username:results[0].username,locked:false,
+    picks:publicPicks,
+    actual:actualSelections(defs,scoreboard),
+    deadline
+   });
+  }
   if(action==='leaderboard'){
    const entries=await db('playoff_pick_entries?season=eq.2026&select=username,picks,updated_at&limit=3000');
    const rows=(entries||[]).map((r:any)=>grade(r,classes,scoreboard));

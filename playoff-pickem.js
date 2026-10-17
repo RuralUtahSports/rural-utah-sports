@@ -12,6 +12,7 @@ let defs={},selected='8-Player',picks={},shared=false,notice='';
 const API='https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/playoff-pickem';
 const NAME_KEY='rus-2026-playoff-fan-name',TOKEN_KEY='rus-2026-playoff-fan-token';
 let leaderboardRows=[],leaderboardStatus='Loading fan standings…',participantCount=0,deadlines={},submitWorking=false;
+let publicViewer=null,publicSequence=0,publicScrollLock='',publicCached=new Map();
 function team(t){
  if(!t||!t.name||isBye(t)||isPlaceholder(t))return null;
  return {id:String(t.seed||t.name),name:t.name,seed:t.seed||null};
@@ -44,11 +45,11 @@ function resolve(source,winners){
  if(source?.type==='game')return winners[source.id]||null;
  return null;
 }
-function calculate(cls){
+function calculate(cls,sourcePicks=picks){
  const winners={},games=[],kept={};
  for(const def of defs[cls]||[]){
   const a=resolve(def.a,winners),b=resolve(def.b,winners);
-  const key=cls+'|'+def.id,choice=picks[key],eligible=a&&b;
+  const key=cls+'|'+def.id,choice=sourcePicks[key],eligible=a&&b;
   let winner=null;
   if(def.auto)winner=a||b;
   else if(eligible&&choice&&(choice===a.id||choice===b.id)){winner=choice===a.id?a:b;kept[key]=choice;}
@@ -121,7 +122,7 @@ function draw(){
  html+='<section class="rus-pick-summary"><div><div class="rus-pick-eyebrow">YOUR ROAD TO STATE</div><h2>My 2026 State Champions</h2><p>All seven classifications, from 8-Player to 6A.</p></div><div class="rus-pick-champs">'+championList.map(x=>'<div><small>'+x.classification+'</small><strong>'+escapeHTML(x.champion?.name||'Not picked yet')+'</strong></div>').join('')+'</div>';
  html+='<div class="rus-pick-actions"><button type="button" id="rusPickShare" class="rus-pick-primary">Share My Bracket ↗</button><button type="button" id="rusPickImage" class="rus-pick-secondary">Save Graphic to Phone ↓</button></div><p class="rus-pick-disclaimer">On iPhone, tap Save Graphic to Phone and choose Save Image from the share sheet. Picks are saved on this device; public entries are submitted separately.</p></section>';
  html+='<section class="rus-pick-community"><div class="rus-pick-join"><div class="rus-pick-eyebrow">ENTER THE 2026 CHALLENGE</div><h2>Put Your Bracket on the Leaderboard</h2><p>Choose a fan name and submit. You can update open classifications before their playoffs begin; submitted picks lock at that class’s first listed kickoff (Mountain Time).</p><form id="rusPickJoin"><label for="rusFanName">Fan name</label><div class="rus-pick-join-row"><input id="rusFanName" name="fanName" maxlength="24" minlength="2" autocomplete="nickname" placeholder="Your fan name" value="'+escapeHTML(readName())+'" required><button type="submit" class="rus-pick-primary"'+(submitWorking?' disabled':'')+'>'+(submitWorking?'Submitting…':'Submit My Picks →')+'</button></div></form><small>No email required. Your private entry token stays on this device, so keep your browser data to update your entry.</small></div>';
- html+='<div class="rus-pick-standings"><div class="rus-pick-eyebrow">RUS PLAYOFF BRACKET CHALLENGE</div><h2>Fan Leaderboard <small>'+participantCount+' entries</small></h2><p>1 point opening round · 2 quarterfinals · 4 semifinals · 8 championship. Automatic scores use verified results in the RUS feeds.</p><div class="rus-pick-table-wrap">'+leaderboardMarkup()+'</div><button type="button" id="rusReloadStandings" class="rus-pick-secondary">Refresh Standings ↻</button></div></section>';
+ html+='<div class="rus-pick-standings"><div class="rus-pick-eyebrow">RUS PLAYOFF BRACKET CHALLENGE</div><h2>Fan Leaderboard <small>'+participantCount+' entries</small></h2><p>Tap any fan name to view their bracket and compare it with yours. Picks reveal only after that classification begins. Scoring: 1 / 2 / 4 / 8 points by round.</p><div class="rus-pick-table-wrap">'+leaderboardMarkup()+'</div><button type="button" id="rusReloadStandings" class="rus-pick-secondary">Refresh Standings ↻</button></div></section>';
  root.innerHTML=html;
  const bracket=root.querySelector('.rus-pick-visual');if(bracket)bracket.scrollLeft=oldScroll;
  root.querySelectorAll('[data-class]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.class;notice='';draw();history.replaceState(null,'',location.pathname+location.search+'#'+encodeURIComponent(selected));}));
@@ -131,6 +132,90 @@ function draw(){
  root.querySelector('#rusPickImage').addEventListener('click',downloadCard);
  root.querySelector('#rusPickJoin').addEventListener('submit',submitEntry);
  root.querySelector('#rusReloadStandings').addEventListener('click',refreshLeaderboard);
+ root.querySelectorAll('[data-fan]').forEach(b=>b.addEventListener('click',()=>openFanBracket(b.dataset.fan)));
+
+}
+
+
+function closeFanBracket(){
+ publicSequence++;
+ publicViewer=null;
+ const old=document.getElementById('rusPublicFanModal');
+ if(old)old.remove();
+ document.body.style.overflow=publicScrollLock;
+ window.removeEventListener('keydown',fanEscape);
+}
+function fanEscape(event){if(event.key==='Escape'&&publicViewer)closeFanBracket();}
+function fanRoundCard(g,actual,myResult){
+ if(g.auto)return '<div class="rus-fan-game rus-fan-bye"><small>FIRST-ROUND BYE</small><strong>'+escapeHTML((g.a||g.b)?.name||'TBD')+'</strong></div>';
+ const pick=g.winner?.id||'',truth=actual?.[g.id]||'',mine=myResult?.winners?.[g.id]?.id||'';
+ const status=truth?(pick===truth?'rus-fan-correct':'rus-fan-wrong'):'rus-fan-pending';
+ const label=truth?(pick===truth?'✓ Correct pick':pick?'✕ Wrong pick':'No pick'):'Awaiting final';
+ const showTeam=t=>'<div class="rus-fan-side'+(pick&&t?.id===pick?' is-fan-picked':'')+(mine&&t?.id===mine?' is-my-picked':'')+'"><span>'+escapeHTML(t?.seed?'#'+t.seed:'—')+'</span><strong>'+escapeHTML(t?.name||'Awaiting winner')+'</strong>'+(t?.id===pick?'<b class="rus-fan-pick-label">FAN</b>':'')+(t?.id===mine?'<b class="rus-fan-my-label">YOU</b>':'')+'</div>';
+ return '<div class="rus-fan-game '+status+'"><div class="rus-fan-game-top"><span>'+escapeHTML(g.date||'Playoff matchup')+'</span><span>'+label+'</span></div>'+showTeam(g.a)+showTeam(g.b)+'</div>';
+}
+function viewerMarkup(){
+ if(!publicViewer)return'';
+ const v=publicViewer,c=v.classification,name=escapeHTML(v.username),locked=!!deadlines[c]?.locked;
+ let html='<div class="rus-fan-overlay" id="rusPublicFanModal"><div class="rus-fan-dialog" role="dialog" aria-modal="true" aria-labelledby="rusFanDialogHeading">';
+ html+='<div class="rus-fan-dialog-head"><div><div class="rus-pick-eyebrow">RUS PUBLIC PLAYOFF BRACKETS</div><h2 id="rusFanDialogHeading">'+name+'’s Picks</h2><p>Head-to-head bracket comparison · 2026 Utah football</p></div><button type="button" class="rus-fan-close" aria-label="Close fan bracket">×</button></div>';
+ html+='<div class="rus-fan-classes" role="group" aria-label="View classification">'+ORDER.map(cls=>'<button type="button" data-public-class="'+cls+'" class="'+(cls===c?'active':'')+'" aria-pressed="'+(cls===c)+'">'+cls+' <small>'+(deadlines[cls]?.locked?'View picks':'🔒')+'</small></button>').join('')+'</div>';
+ if(v.loading)html+='<div class="rus-fan-message">Loading '+escapeHTML(c)+' predictions…</div>';
+ else if(v.error)html+='<div class="rus-fan-message">'+escapeHTML(v.error)+'</div>';
+ else if(!locked||v.data?.locked){
+  const d=deadlines[c],date=d?.lockDate||v.data?.deadline?.lockDate||'opening kickoff',time=d?.lockTime||v.data?.deadline?.lockTime||'';
+  html+='<div class="rus-fan-message"><strong>🔒 '+escapeHTML(c)+' predictions are still private.</strong><p>They’ll be revealed when this classification begins: '+escapeHTML(date)+' '+escapeHTML(time)+' (Mountain Time).</p><p>You can keep making your own picks until then.</p></div>';
+ }else if(v.data?.picks){
+  const submitted={};for(const [id,val] of Object.entries(v.data.picks))submitted[c+'|'+id]=String(val);
+  const fan=calculate(c,submitted),mine=calculate(c);
+  let agree=0,disagree=0;
+  for(const g of fan.games){const myChoice=mine.winners[g.id]?.id;if(!g.auto&&g.winner&&myChoice){if(g.winner.id===myChoice)agree++;else disagree++;}}
+  html+='<div class="rus-fan-comparison"><div><strong>'+fan.complete+'/'+fan.total+'</strong><small>Fan picks</small></div><div><strong>'+agree+'</strong><small>Same as you</small></div><div><strong>'+disagree+'</strong><small>Different picks</small></div></div>';
+  html+='<div class="rus-fan-legend"><span><b class="rus-fan-fan-key"></b> '+name+'’s winner</span><span><b class="rus-fan-you-key"></b> Your winner</span><span>✓ / ✕ = graded result</span></div>';
+  html+='<div class="rus-fan-visual" role="region" tabindex="0" aria-label="Read-only '+c+' fan bracket"><div class="rus-fan-columns">';
+  const titles=['Opening Round','Quarterfinals','Semifinals','State Championship'];
+  for(let i=0;i<4;i++){const games=fan.games.filter(g=>g.round===i);html+='<section class="rus-fan-column"><h3>'+titles[i]+'</h3><div class="rus-fan-stage-games">'+games.map(g=>fanRoundCard(g,v.data.actual,mine)).join('')+'</div></section>';}
+  html+='</div></div><p class="rus-fan-footer-note">This is '+name+'’s submitted bracket, shown read-only. Green and red labels appear as verified final results arrive. Your picks stay on this device.</p>';
+ }
+ return html+'</div></div>';
+}
+function renderFanBracket(){
+ if(!publicViewer)return;
+ let modal=document.getElementById('rusPublicFanModal');
+ const wasOpen=!!modal,scrollLeft=modal?.querySelector('.rus-fan-visual')?.scrollLeft||0;
+ if(modal)modal.remove();
+ const host=document.createElement('div');
+ host.innerHTML=viewerMarkup();
+ modal=host.firstElementChild;
+ document.body.appendChild(modal);
+ if(!wasOpen){publicScrollLock=document.body.style.overflow;document.body.style.overflow='hidden';window.addEventListener('keydown',fanEscape);}
+ const slider=modal.querySelector('.rus-fan-visual');if(slider)slider.scrollLeft=scrollLeft;
+ modal.querySelector('.rus-fan-close').addEventListener('click',closeFanBracket);
+ modal.addEventListener('click',e=>{if(e.target===modal)closeFanBracket()});
+ modal.querySelectorAll('[data-public-class]').forEach(btn=>btn.addEventListener('click',()=>loadFanClassification(btn.dataset.publicClass)));
+ if(!wasOpen)modal.querySelector('.rus-fan-close').focus({preventScroll:true});
+}
+async function loadFanClassification(classification){
+ if(!publicViewer||!ORDER.includes(classification))return;
+ const request=++publicSequence;
+ publicViewer.classification=classification;publicViewer.loading=true;publicViewer.error='';publicViewer.data=null;
+ renderFanBracket();
+ try{
+  // Always request one classification. The backend rejects pre-lock access.
+  const key=publicViewer.username.toLowerCase()+'|'+classification;
+  const data=publicCached.get(key)||await api({action:'bracket',username:publicViewer.username,classification});
+  if(!publicViewer||request!==publicSequence)return;
+  if(!data.locked)publicCached.set(key,data);
+  publicViewer.loading=false;publicViewer.data=data;
+ }catch(e){if(!publicViewer||request!==publicSequence)return;publicViewer.loading=false;publicViewer.error=e?.message||'Could not load this fan bracket.';}
+ renderFanBracket();
+}
+function openFanBracket(username){
+ if(!username)return;
+ if(publicViewer)closeFanBracket();
+ const preferred=ORDER.find(c=>deadlines[c]?.locked)||selected;
+ publicViewer={username,classification:preferred,loading:false,data:null,error:''};
+ loadFanClassification(preferred);
 }
 
 function readName(){try{return localStorage.getItem(NAME_KEY)||''}catch{return''}}
@@ -157,7 +242,7 @@ function classLocked(c){
 function leaderboardMarkup(){
  if(!leaderboardRows.length)return '<div class="rus-pick-empty">'+escapeHTML(leaderboardStatus)+'</div>';
  return '<table class="rus-pick-leaderboard"><thead><tr><th>Rank</th><th>Fan</th><th>Points</th><th>Correct</th><th>Titles</th></tr></thead><tbody>'+
- leaderboardRows.map(r=>'<tr><td>#'+Number(r.rank)+'</td><td>'+escapeHTML(r.username)+'</td><td><strong>'+Number(r.points)+'</strong></td><td>'+Number(r.correct)+'</td><td>'+Number(r.champions)+'</td></tr>').join('')+'</tbody></table>';
+ leaderboardRows.map(r=>'<tr><td>#'+Number(r.rank)+'</td><td><button type="button" class="rus-fan-name" data-fan="'+escapeHTML(r.username)+'" aria-label="View '+escapeHTML(r.username)+'\'s playoff bracket">'+escapeHTML(r.username)+' <span aria-hidden="true">↗</span></button></td><td><strong>'+Number(r.points)+'</strong></td><td>'+Number(r.correct)+'</td><td>'+Number(r.champions)+'</td></tr>').join('')+'</tbody></table>';
 }
 async function api(payload){
  const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
