@@ -31,7 +31,7 @@ function buildClass(raw){
  const rounds=raw?.rounds||[];
  if(rounds.length<4)throw Error('Incomplete official rounds');
  const first=rounds[0].games.map((g,i)=>({id:'R0-'+i,round:0,a:entry(g.a),b:entry(g.b),date:g.date||'',auto:isBye(g.a)||isBye(g.b)}));
- const quarter=rounds[1].games.map((g,i)=>({id:'QF-'+i,round:1,a:preliminarySource(g.a,first),b:preliminarySource(g.b,date=''),date:g.date||''}));
+ const quarter=rounds[1].games.map((g,i)=>({id:'QF-'+i,round:1,a:preliminarySource(g.a,first),b:preliminarySource(g.b,first),date:g.date||''}));
  const semifinal=rounds[2].games.map((g,i)=>({id:'SF-'+i,round:2,a:{type:'game',id:quarter[i*2]?.id},b:{type:'game',id:quarter[i*2+1]?.id},date:g.date||''}));
  const final=rounds[3].games.map((g,i)=>({id:'F-'+i,round:3,a:{type:'game',id:semifinal[i*2]?.id},b:{type:'game',id:semifinal[i*2+1]?.id},date:g.date||''}));
  return [...first,...quarter,...semifinal,...final];
@@ -114,7 +114,7 @@ function draw(){
  root.innerHTML=html;
  root.querySelectorAll('[data-class]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.class;notice='';draw();history.replaceState(null,'',location.pathname+location.search+'#'+encodeURIComponent(selected));}));
  root.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{picks[selected+'|'+b.dataset.game]=b.dataset.team;ORDER.forEach(sanitizeClass);shared=false;notice='Picks saved on this device.';persist();draw();if(location.search){history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(selected));}}));
- root.querySelector('#rusPickReset').addEventListener('click',()=>{if(!confirm('Clear all your '+selected+' picks?'))return;Object.keys(picks).filter(k=>k.startsWith(selected+'|')).forEach(k=>delete picks[k]);persist();shared=false;notice=selected+' picks cleared.';draw();});
+ root.querySelector('#rusPickReset').addEventListener('click',()=>{if(!confirm('Clear all your '+selected+' picks?'))return;Object.keys(picks).filter(k=>k.startsWith(selected+'|')).forEach(k=>delete picks[k]);persist();shared=false;notice=selected+' picks cleared.';if(location.search)history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(selected));draw();});
  root.querySelector('#rusPickShare').addEventListener('click',share);
  root.querySelector('#rusPickImage').addEventListener('click',downloadCard);
 }
@@ -156,7 +156,7 @@ function downloadCard(){
   ctx.textAlign='right';ctx.fillText(name,979,y+10);ctx.textAlign='left';
  });
  ctx.fillStyle='#F14D07';ctx.fillRect(0,1264,1080,86);
- ctx.fillStyle='#000';ctx.font='900 30px Arial, sans-serif';ctx.fillText('RURALUTA HSPORTS.COM'.replace('A H','AH'),70,1317);
+ ctx.fillStyle='#000';ctx.font='900 30px Arial, sans-serif';ctx.fillText('RURALUTAHSPORTS.COM',70,1317);
  ctx.textAlign='right';ctx.font='900 24px Arial, sans-serif';ctx.fillText('@ruralutahsports77',1002,1317);ctx.textAlign='left';
  try{
   canvas.toBlob(blob=>{
