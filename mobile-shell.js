@@ -73,6 +73,8 @@ function addStyles(){
   .rus-mobile-menu-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .rus-mobile-menu-links a{min-height:48px;display:flex;align-items:center;padding:10px 11px;border:1px solid #303030;border-radius:9px;background:#191919;color:#fff;text-decoration:none;font-size:12px;font-weight:850;line-height:1.2}
   .rus-mobile-menu-links a.active,.rus-mobile-menu-links a[aria-current="page"]{border-color:#F14D07;background:#24150f;color:#F14D07}
+  .rus-mobile-menu-links a[href*="playoff-pickem.html"]{border:2px solid #F14D07;background:linear-gradient(100deg,#291307,#44220f);color:#fff;font-weight:950;box-shadow:0 0 0 1px rgba(241,77,7,.14)}
+  .rus-mobile-menu-links a[href*="playoff-pickem.html"]::before{content:"🏆";display:inline-block;margin-right:6px;font-size:17px}
   .rus-mobile-menu-links a:active{background:#2a2a2a}
   .rus-mobile-menu-foot{color:#777;text-align:center;font-size:10px;padding:18px 4px 2px;text-transform:uppercase;letter-spacing:.7px}
 }
@@ -102,6 +104,10 @@ function sheetMarkup(nav){
     if(node.tagName==='DETAILS'){
       const title=(node.querySelector('summary')?.childNodes?.[0]?.textContent||node.querySelector('summary')?.textContent||'More').trim();
       const links=[...node.querySelectorAll('.drop a')].map(a=>{const c=a.cloneNode(true);c.removeAttribute('class');return c});
+      if(title.toLowerCase().includes('simulator')&&!links.some(a=>(a.getAttribute('href')||'').includes('playoff-pickem.html'))){
+        const pick=document.createElement('a');pick.href='playoff-pickem.html';pick.textContent='2026 Playoff Pick’em';
+        links.unshift(pick);
+      }
       groups.push({title,links});
     }
   });
