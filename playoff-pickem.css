@@ -97,3 +97,65 @@ button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opa
 .rus-pick-save-image{width:100%;max-width:100%;height:auto;display:block;object-fit:contain;max-height:62dvh;border:1px solid #444;border-radius:4px}
 .rus-pick-save-download{display:block;text-align:center;text-decoration:none}
 @media(max-width:590px){.rus-pick-save-sheet{padding:15px}.rus-pick-save-image{max-height:62dvh}}
+
+/* Public fan bracket and head-to-head comparison, safely read-only. */
+.rus-fan-name{border:0;background:none;color:#fff;font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px;text-align:left;border-radius:3px}
+.rus-fan-name span{color:#F14D07;font-weight:900}
+.rus-fan-name:hover,.rus-fan-name:focus-visible{color:#ff924f;outline:2px solid #F14D07;outline-offset:2px}
+.rus-fan-overlay{position:fixed;inset:0;z-index:2147483550;background:rgba(0,0,0,.9);display:flex;justify-content:center;align-items:center;padding:10px;overscroll-behavior:contain}
+.rus-fan-dialog{background:#0e0e0e;border:2px solid #F14D07;border-radius:13px;max-width:1300px;width:100%;max-height:92dvh;display:flex;flex-direction:column;overflow:hidden;color:#fff;box-shadow:0 24px 90px #000}
+.rus-fan-dialog-head{display:flex;justify-content:space-between;align-items:flex-start;padding:17px 21px 11px;gap:12px;border-bottom:1px solid #404040}
+.rus-fan-dialog-head h2{font-size:clamp(20px,4vw,29px);text-transform:uppercase;font-weight:950;margin:6px 0;overflow-wrap:anywhere}
+.rus-fan-dialog-head p{font-size:12px;color:#aaa;margin:0}
+.rus-fan-close{background:#222;border:1px solid #666;border-radius:50%;width:42px;height:42px;flex:0 0 42px;color:#fff;font-size:25px;cursor:pointer;display:grid;place-items:center}
+.rus-fan-classes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;padding:12px 18px 10px}
+.rus-fan-classes button{min-width:0;min-height:54px;border:1px solid #444;border-radius:7px;background:#222;color:#fff;font-weight:900;font-size:12px;padding:7px 3px}
+.rus-fan-classes button.active{background:#F14D07;border-color:#F14D07;color:#000}
+.rus-fan-classes small{display:block;font-size:9px;font-weight:700;margin-top:4px;color:#aaa}
+.rus-fan-classes button.active small{color:#342019}
+.rus-fan-message{padding:28px 20px;text-align:center;color:#fff;font-weight:750;overflow:auto;line-height:1.5}
+.rus-fan-message strong{font-size:17px}
+.rus-fan-message p{font-size:13px;color:#ccc;margin:14px auto;max-width:580px;font-weight:500}
+.rus-fan-comparison{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:3px 18px 12px}
+.rus-fan-comparison>div{border:1px solid #423226;border-radius:7px;background:#1e140e;padding:9px 11px}
+.rus-fan-comparison strong{display:block;color:#ffa172;font-size:21px}
+.rus-fan-comparison small{font-size:10px;color:#bbb}
+.rus-fan-legend{display:flex;gap:15px;flex-wrap:wrap;font-size:11px;color:#bbb;padding:0 18px 9px}
+.rus-fan-legend b{display:inline-block;width:13px;height:13px;border-radius:2px;vertical-align:middle}
+.rus-fan-fan-key{background:#F14D07}
+.rus-fan-you-key{background:#74baff}
+.rus-fan-visual{overflow:auto;flex:1;min-height:150px;margin:0 13px 6px;background:radial-gradient(circle at 30% 10%,#29140a,#0b0b0b 70%);border:1px solid #3a2921;border-radius:6px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.rus-fan-columns{display:grid;grid-template-columns:repeat(4,minmax(245px,1fr));gap:16px;min-width:1040px;padding:15px;align-items:stretch}
+.rus-fan-column{min-width:0;display:flex;flex-direction:column;scroll-snap-align:start}
+.rus-fan-column h3{color:#F14D07;border-bottom:1px solid #555;padding-bottom:8px;margin:0 0 13px;font-size:14px;text-transform:uppercase}
+.rus-fan-stage-games{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:12px}
+.rus-fan-game{background:#202020;border:1px solid #444;border-radius:7px;overflow:hidden;flex:0 0 auto;min-height:116px}
+.rus-fan-game-top{background:#121212;display:flex;align-items:center;justify-content:space-between;padding:7px 9px;color:#bbb;font-size:9px;text-transform:uppercase;gap:6px;font-weight:900}
+.rus-fan-game.rus-fan-correct{border-color:#45bb66}
+.rus-fan-game.rus-fan-correct .rus-fan-game-top span:last-child{color:#77e696}
+.rus-fan-game.rus-fan-wrong{border-color:#cf6262}
+.rus-fan-game.rus-fan-wrong .rus-fan-game-top span:last-child{color:#ff9393}
+.rus-fan-side{display:flex;align-items:center;gap:6px;padding:9px;min-height:42px;border-bottom:1px solid #3c3c3c;color:#ccc}
+.rus-fan-side:last-child{border-bottom:0}
+.rus-fan-side span{font-size:9px;color:#ffae8e;min-width:22px}
+.rus-fan-side strong{font-size:11px;font-weight:850;flex:1;overflow-wrap:anywhere}
+.rus-fan-side.is-fan-picked{background:#4f230e;color:#fff;box-shadow:inset 4px 0 #F14D07}
+.rus-fan-side.is-my-picked:not(.is-fan-picked){box-shadow:inset 4px 0 #74baff}
+.rus-fan-pick-label,.rus-fan-my-label{font-size:8px;background:#F14D07;color:#000;padding:3px;border-radius:3px}
+.rus-fan-my-label{background:#74baff}
+.rus-fan-bye{padding:14px;display:flex;flex-direction:column;gap:9px;justify-content:center}
+.rus-fan-bye small{color:#F14D07;font-weight:900;font-size:9px}
+.rus-fan-footer-note{padding:7px 18px 15px;margin:0;font-size:11px;color:#999}
+@media(max-width:700px){
+ .rus-fan-overlay{padding:0;align-items:flex-end}
+ .rus-fan-dialog{width:100%;height:93dvh;max-height:93dvh;border-radius:14px 14px 0 0;border-bottom:0}
+ .rus-fan-dialog-head{padding:12px}
+ .rus-fan-classes{grid-template-columns:repeat(4,minmax(0,1fr));padding:9px;gap:5px}
+ .rus-fan-classes button{min-height:44px;font-size:11px;padding:5px 2px}
+ .rus-fan-classes small{font-size:8px}
+ .rus-fan-comparison{padding:3px 9px 9px}
+ .rus-fan-legend{padding:0 9px 9px}
+ .rus-fan-visual{margin:0 7px 6px}
+ .rus-fan-columns{grid-template-columns:repeat(4,250px);min-width:1070px}
+ .rus-fan-footer-note{padding:7px 9px}
+}
