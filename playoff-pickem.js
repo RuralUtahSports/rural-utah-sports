@@ -120,7 +120,7 @@ function draw(){
  html+='</section>';
  html+='<section class="rus-pick-summary"><div><div class="rus-pick-eyebrow">YOUR ROAD TO STATE</div><h2>My 2026 State Champions</h2><p>All seven classifications, from 8-Player to 6A.</p></div><div class="rus-pick-champs">'+championList.map(x=>'<div><small>'+x.classification+'</small><strong>'+escapeHTML(x.champion?.name||'Not picked yet')+'</strong></div>').join('')+'</div>';
  html+='<div class="rus-pick-actions"><button type="button" id="rusPickShare" class="rus-pick-primary">Share My Bracket ↗</button><button type="button" id="rusPickImage" class="rus-pick-secondary">Download Instagram Graphic ↓</button></div><p class="rus-pick-disclaimer">Picks are saved on this device. Your fan entry is submitted separately for the public leaderboard. Only your fan name and scores appear publicly.</p></section>';
- html+='<section class="rus-pick-community"><div class="rus-pick-join"><div class="rus-pick-eyebrow">ENTER THE 2026 CHALLENGE</div><h2>Put Your Bracket on the Leaderboard</h2><p>Choose a fan name and submit. You can update open classifications before their playoffs begin; submitted picks lock for each class on its opening game day.</p><form id="rusPickJoin"><label for="rusFanName">Fan name</label><div class="rus-pick-join-row"><input id="rusFanName" name="fanName" maxlength="24" minlength="2" autocomplete="nickname" placeholder="Your fan name" value="'+escapeHTML(readName())+'" required><button type="submit" class="rus-pick-primary"'+(submitWorking?' disabled':'')+'>'+(submitWorking?'Submitting…':'Submit My Picks →')+'</button></div></form><small>No email required. Your private entry token stays on this device, so keep your browser data to update your entry.</small></div>';
+ html+='<section class="rus-pick-community"><div class="rus-pick-join"><div class="rus-pick-eyebrow">ENTER THE 2026 CHALLENGE</div><h2>Put Your Bracket on the Leaderboard</h2><p>Choose a fan name and submit. You can update open classifications before their playoffs begin; submitted picks lock at that class’s first listed kickoff (Mountain Time).</p><form id="rusPickJoin"><label for="rusFanName">Fan name</label><div class="rus-pick-join-row"><input id="rusFanName" name="fanName" maxlength="24" minlength="2" autocomplete="nickname" placeholder="Your fan name" value="'+escapeHTML(readName())+'" required><button type="submit" class="rus-pick-primary"'+(submitWorking?' disabled':'')+'>'+(submitWorking?'Submitting…':'Submit My Picks →')+'</button></div></form><small>No email required. Your private entry token stays on this device, so keep your browser data to update your entry.</small></div>';
  html+='<div class="rus-pick-standings"><div class="rus-pick-eyebrow">RUS PLAYOFF BRACKET CHALLENGE</div><h2>Fan Leaderboard <small>'+participantCount+' entries</small></h2><p>1 point opening round · 2 quarterfinals · 4 semifinals · 8 championship. Automatic scores use verified results in the RUS feeds.</p><div class="rus-pick-table-wrap">'+leaderboardMarkup()+'</div><button type="button" id="rusReloadStandings" class="rus-pick-secondary">Refresh Standings ↻</button></div></section>';
  root.innerHTML=html;
  const bracket=root.querySelector('.rus-pick-visual');if(bracket)bracket.scrollLeft=oldScroll;
@@ -136,18 +136,23 @@ function draw(){
 function readName(){try{return localStorage.getItem(NAME_KEY)||''}catch{return''}}
 function classLocked(c){
  const server=deadlines[c];
- if(server?.locked)return true;
- const dates=(defs[c]||[]).filter(g=>g.round===0&&!g.auto).map(g=>{
-  const v=String(g.date||''),m=v.match(/^([A-Za-z]{3})\s+(\d{1,2}),?\s+(\d{4})/);
-  if(!m)return '';
+ const games=(defs[c]||[]).filter(g=>g.round===0&&!g.auto);
+ const keys=games.map(g=>{
+  const m=String(g.date||'').match(/^([A-Za-z]{3})\s+(\d{1,2}),?\s+(\d{4})/);
+  if(!m)return null;
   const n=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[1].toLowerCase());
-  return n<0?'':m[3]+'-'+String(n+1).padStart(2,'0')+'-'+m[2].padStart(2,'0');
- }).filter(Boolean).sort();
- const deadline=server?.lockDate||dates[0];
- if(!deadline)return false;
- const parts={};
- for(const p of new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()))parts[p.type]=p.value;
- return parts.year+'-'+parts.month+'-'+parts.day>=deadline;
+  if(n<0)return null;
+  const date=m[3]+String(n+1).padStart(2,'0')+m[2].padStart(2,'0');
+  const time=String(g.time||'').match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  const hour=time?(Number(time[1])%12+(time[3].toUpperCase()==='PM'?12:0)):0;
+  const min=time?Number(time[2]):0;
+  return Number(date+String(hour).padStart(2,'0')+String(min).padStart(2,'0'));
+ }).filter(Boolean).sort((a,b)=>a-b);
+ const cutoff=Number(server?.lockKey||keys[0]||0);
+ if(!cutoff)return false;
+ const p={};
+ for(const x of new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()))p[x.type]=x.value;
+ return Number(p.year+p.month+p.day+p.hour+p.minute)>=cutoff;
 }
 function leaderboardMarkup(){
  if(!leaderboardRows.length)return '<div class="rus-pick-empty">'+escapeHTML(leaderboardStatus)+'</div>';
