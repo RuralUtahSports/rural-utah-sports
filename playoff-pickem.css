@@ -51,3 +51,38 @@ button{font-family:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opa
 .rus-pick-empty{color:#c2c2c2;text-align:center;padding:30px 12px;line-height:1.5;font-size:13px}
 @media(max-width:930px){.rus-pick-community{grid-template-columns:1fr}.rus-pick-columns{grid-template-columns:repeat(4,270px);min-width:1145px;gap:15px}.rus-pick-visual{scroll-padding-left:9px}}
 @media(max-width:590px){.rus-pick-visual{margin:0 -5px;width:calc(100% + 10px);padding:10px 7px}.rus-pick-columns{grid-template-columns:repeat(4,250px);min-width:1065px;gap:14px}.rus-pick-column+.rus-pick-column{padding-left:11px}.rus-pick-panel-head{align-items:flex-start}.rus-pick-champion-preview{flex-direction:column;align-items:flex-start;gap:5px}.rus-pick-join,.rus-pick-standings{padding:16px 12px}.rus-pick-game{min-height:117px}.rus-pick-stage-games{gap:9px}.rus-pick-round-head h3{font-size:12px}}
+
+
+/* Mobile Pick'em classification navigation: all 7 classes remain reachable.
+   Do not use a <nav> here: global RUS nav styling forces overflow visible. */
+@media (max-width:850px){
+  .rus-pick-tabs{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:7px;
+    width:100%;
+    overflow:visible;
+    scroll-snap-type:none;
+    padding:0 0 6px;
+  }
+  .rus-pick-tabs button{
+    min-width:0;
+    width:100%;
+    min-height:68px;
+    padding:9px 3px;
+    font-size:13px;
+    line-height:1.2;
+    white-space:normal;
+    overflow-wrap:normal;
+  }
+  .rus-pick-tabs button small{
+    display:block;
+    font-size:10px;
+    line-height:1.2;
+    margin-top:4px;
+    overflow-wrap:normal;
+  }
+}
+@media (max-width:380px){
+  .rus-pick-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
