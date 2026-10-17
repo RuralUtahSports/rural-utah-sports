@@ -4,6 +4,7 @@ if(window.__rusOfficialBracketShare) return;
 window.__rusOfficialBracketShare=true;
 const ORANGE='#F14D07';
 const FORMATS={
+ instagram:{width:1080,height:1350,name:'Instagram Portrait Full Bracket',kind:'full'},
  square:{width:1600,height:1600,name:'Instagram Square Bracket',kind:'full'},
  full:{width:2000,height:1400,name:'Wide Full Bracket',kind:'full'},
  poster:{width:1080,height:1350,name:'Instagram Portrait Matchups',kind:'round'},
@@ -332,6 +333,20 @@ function makeFullGraphic(cls,data,images,format=FORMATS.full,forecasts={games:[]
  fitDraw(c,'@ruralutahsports77',w-pad,h-44*sc,w*.28,20*sc,14*sc,'right',ORANGE);
  return view.element;
 }
+// Contain the complete connected bracket in a 4:5 carousel frame. Never crop
+// or stretch the source: the first round and champion must both remain visible.
+function makeInstagramGraphic(cls,data,images,forecasts){
+ const source=makeFullGraphic(cls,data,images,FORMATS.square,forecasts);
+ const {element,c}=canvas(FORMATS.instagram.width,FORMATS.instagram.height);
+ const scale=Math.min(element.width/source.width,element.height/source.height);
+ const width=source.width*scale,height=source.height*scale;
+ const x=(element.width-width)/2,y=(element.height-height)/2;
+ c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+ c.drawImage(source,x,y,width,height);
+ fitDraw(c,'THE ROAD TO A STATE TITLE',element.width/2,67,element.width-76,27,20,'center','#ffc09d');
+ fitDraw(c,'RUS lines / O-U: model projections, not UHSAA information or betting odds.',element.width/2,1282,element.width-76,19,14,'center','#b9bcc2');
+ return element;
+}
 function closePopup(el){el?.remove()}
 function popup(html){
   const overlay=document.createElement('div');overlay.className='rus-o-overlay';overlay.setAttribute('role','presentation');overlay.innerHTML=html;
@@ -349,7 +364,7 @@ function download(blob,name){
 async function preview(cls,format,rendered){
   const blob=await blobFor(rendered),name='rus-2026-'+slug(cls)+'-official-playoffs-'+format+'.png';
   const file=new File([blob],name,{type:'image/png'});
-  const overlay=popup('<div class="rus-o-sheet" role="dialog" aria-modal="true" aria-label="Playoff share graphic preview"><h3>'+esc(cls)+' playoff graphic ready</h3><p>Preview the PNG, download it, or share it directly on your phone.</p><div class="rus-o-image-preview"></div><div class="rus-o-popup-buttons"><button type="button" class="rus-o-save-image">Save PNG</button><button type="button" class="rus-o-native-share">Share PNG</button><button type="button" class="rus-o-popup-close">Close</button></div></div>');
+  const overlay=popup('<div class="rus-o-sheet" role="dialog" aria-modal="true" aria-label="Playoff share graphic preview"><h3>'+esc(cls)+' playoff graphic ready</h3><p>Preview the PNG, download it, or share it directly on your phone.'+(format==='instagram'?' This full bracket is 1080 × 1350 (4:5), ready to pair with a portrait cover.':'')+'</p><div class="rus-o-image-preview"></div><div class="rus-o-popup-buttons"><button type="button" class="rus-o-save-image">Save PNG</button><button type="button" class="rus-o-native-share">Share PNG</button><button type="button" class="rus-o-popup-close">Close</button></div></div>');
   $('.rus-o-image-preview',overlay).appendChild(rendered);
   $('.rus-o-save-image',overlay).onclick=()=>download(blob,name);
   const share=$('.rus-o-native-share',overlay);
@@ -358,7 +373,7 @@ async function preview(cls,format,rendered){
   $('.rus-o-popup-close',overlay).onclick=()=>closePopup(overlay);
 }
 async function choose(cls){
-  const overlay=popup('<div class="rus-o-sheet" role="dialog" aria-modal="true" aria-label="Choose playoff graphic"><h3>Share '+esc(cls)+' playoff bracket</h3><p>Use the authentic school logos and colors from Rural Utah Sports. No predicted winners are added.</p><div class="rus-o-format-options"><button type="button" data-format="square"><strong>Instagram Bracket</strong>1600 × 1600 • connected rounds</button><button type="button" data-format="full"><strong>Wide Full Bracket</strong>2000 × 1400 • connected rounds</button><button type="button" data-format="poster"><strong>Matchups Portrait</strong>1080 × 1350 • opening games</button><button type="button" data-format="story"><strong>Matchups Story</strong>1080 × 1920 • opening games</button></div><p class="rus-o-popup-note" aria-live="polite"></p><button type="button" class="rus-o-popup-close">Cancel</button></div>');
+  const overlay=popup('<div class="rus-o-sheet" role="dialog" aria-modal="true" aria-label="Choose playoff graphic"><h3>Share '+esc(cls)+' playoff bracket</h3><p>Use the authentic school logos and colors from Rural Utah Sports. No predicted winners are added.</p><div class="rus-o-format-options"><button type="button" data-format="instagram"><strong>Instagram Bracket · 4:5</strong>1080 × 1350 • full bracket, no cropping</button><button type="button" data-format="square"><strong>Square Bracket · 1:1</strong>1600 × 1600 • connected rounds</button><button type="button" data-format="full"><strong>Wide Full Bracket</strong>2000 × 1400 • connected rounds</button><button type="button" data-format="poster"><strong>Matchups Portrait</strong>1080 × 1350 • opening games</button><button type="button" data-format="story"><strong>Matchups Story</strong>1080 × 1920 • opening games</button></div><p class="rus-o-popup-note" aria-live="polite"></p><button type="button" class="rus-o-popup-close">Cancel</button></div>');
   $$('[data-format]',overlay).forEach(btn=>btn.addEventListener('click',async()=>{
     const f=FORMATS[btn.dataset.format],note=$('.rus-o-popup-note',overlay);
     $$('[data-format]',overlay).forEach(b=>b.disabled=true);note.textContent='Preparing the playoff graphic…';
@@ -368,7 +383,7 @@ async function choose(cls){
       const payload=await response.json(),data=payload.classifications?.[cls];
       if(!data?.rounds?.length||!['official','partial'].includes(data.status))throw Error('This classification is not published yet');
       const [images,forecasts]=await Promise.all([loadImages(data),f.kind==='full'?loadBracketLines():Promise.resolve(null)]);
-      const graphic=f.kind==='full'?makeFullGraphic(cls,data,images,f,forecasts):makeRoundGraphic(cls,data,f,images);
+      const graphic=btn.dataset.format==='instagram'?makeInstagramGraphic(cls,data,images,forecasts):f.kind==='full'?makeFullGraphic(cls,data,images,f,forecasts):makeRoundGraphic(cls,data,f,images);
       closePopup(overlay);await preview(cls,btn.dataset.format,graphic);
     }catch(e){
       note.textContent='Could not create this graphic. '+String(e.message||'Please retry.');
