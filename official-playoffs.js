@@ -4,7 +4,9 @@ const host=document.getElementById('rusOfficialPlayoffs');
 if(!host)return;
 const ORDER=['8-Player','1A','2A','3A','4A','5A','6A'];
 const home=host.dataset.mode==='home';
-let selected='8-Player', manuallySelected=false, lastPayload='', inFlight=false;
+let selected='8-Player', manuallySelected=false, lastPayload='', inFlight=false, currentData=null;
+const assets=window.RUSOfficialBracketTeamAssets;
+const teamAsset=name=>assets?.resolve(name)||{logo:'',backgroundColor:'#303030',textColor:'#fff',known:false};
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 const getName=t=>typeof t==='string'?t:(t?.name||t?.team||'');
 const isOfficial=c=>c?.status==='official'&&Array.isArray(c.rounds)&&c.rounds.length>0;
@@ -13,8 +15,14 @@ const isPublished=c=>isOfficial(c)||isPartial(c);
 function team(t){
   const name=getName(t),seed=t&&typeof t==='object'&&Number.isFinite(Number(t.seed))&&String(t.seed).trim()!==''?'#'+esc(t.seed):'';
   const display=name||'TBD',isBye=/^bye$/i.test(display);
+  const known=!!name&&!/^(?:TBD|Bye|Winner of |Semifinal |Quarterfinal )/i.test(name);
+  const colors=known?teamAsset(name):{logo:'',backgroundColor:'#303030',textColor:'#fff',known:false};
+  const real=known&&colors.known;
+  const cls='rus-o-team'+(isBye?' rus-o-bye':'')+(t?.winner?' rus-o-win':'')+(real?' rus-o-real-team':'');
+  const style=real?' style="--team-bg:'+colors.backgroundColor+';--team-ink:'+colors.textColor+'"':'';
+  const logo=colors.logo&&known?'<img class="rus-o-logo" src="'+esc(colors.logo)+'" alt="'+esc(name)+' school logo" loading="lazy" decoding="async">':'';
   const score=t&&typeof t==='object'&&t.score!==undefined&&t.score!==null?'<span class="rus-o-score">'+esc(t.score)+'</span>':'';
-  return '<div class="rus-o-team'+(isBye?' rus-o-bye':'')+(t?.winner?' rus-o-win':'')+'"><span class="rus-o-seed">'+seed+'</span><span class="rus-o-name">'+esc(display)+'</span>'+score+'</div>';
+  return '<div class="'+cls+'"'+style+'><span class="rus-o-seed">'+seed+'</span>'+logo+'<span class="rus-o-name">'+esc(display)+'</span>'+score+'</div>';
 }
 function game(g){
   const a=g?.a??null,b=g?.b??null;
@@ -27,6 +35,7 @@ function game(g){
   return '<div class="rus-o-game">'+team(a)+team(b)+(schedule?'<div class="rus-o-gamemeta">'+schedule+'</div>':'')+'</div>';
 }
 function draw(data){
+  currentData=data;
   const classes=data.classifications||{},confirmed=ORDER.filter(c=>isOfficial(classes[c]));
   const partial=ORDER.filter(c=>isPartial(classes[c])),published=ORDER.filter(c=>isPublished(classes[c]));
   if(!manuallySelected&&published.length)selected=published[0];
@@ -38,6 +47,7 @@ function draw(data){
   if(ready){
     const rounds=current.rounds.filter(r=>Array.isArray(r.games)&&r.games.length);
     html+='<div class="rus-o-status"><b>'+esc(selected)+(isPartial(current)?' bracket · Partial reveal':' official bracket')+'</b> · Scroll sideways to view every published round. Matchups marked TBD have not been established.</div>';
+    html+='<div class="rus-o-actions"><button type="button" class="rus-o-share" data-official-share="'+esc(selected)+'" aria-label="Create a shareable '+esc(selected)+' official playoff bracket graphic">Share Graphic ↗</button><span>Download or share an Instagram-ready playoff graphic</span></div>';
     html+='<div class="rus-o-scroll" tabindex="0" aria-label="'+esc(selected)+' official playoff bracket"><div class="rus-o-rounds">'+rounds.map(r=>'<div class="rus-o-round"><h3>'+esc(r.name||r.label||'Round')+'</h3><div class="rus-o-games">'+r.games.map(game).join('')+'</div></div>').join('')+'</div></div>';
   }else{
     html+='<div class="rus-o-waiting"><strong>'+esc(selected)+' bracket has not been posted yet.</strong>We will show verified seeds, matchups and byes here after the official reveal.</div>';
@@ -45,6 +55,7 @@ function draw(data){
   html+='<p class="rus-o-foot">Bracket information transcribed from MaxPreps / UHSAA. Check the official source for subsequent changes. '+(current.sourceUrl&&/^https:\/\//.test(current.sourceUrl)?'<a href="'+esc(current.sourceUrl)+'" target="_blank" rel="noopener noreferrer">View '+esc(selected)+' source</a>. ':'')+(data.updatedAt?'RUS update: '+esc(new Date(data.updatedAt).toLocaleString('en-US',{timeZone:'America/Denver',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}))+'. ':'')+'<a href="playoff-picture.html">View previous RUS projections</a>.</p>';
   host.innerHTML=html;
   host.querySelectorAll('[data-class]').forEach(btn=>btn.addEventListener('click',()=>{selected=btn.dataset.class;manuallySelected=true;draw(data)}));
+  host.querySelectorAll('img.rus-o-logo').forEach(img=>img.addEventListener('error',()=>img.remove()));
 }
 async function refresh(){
  if(inFlight)return;
@@ -59,5 +70,6 @@ async function refresh(){
  }finally{inFlight=false;}
 }
 refresh();
+assets?.ready.then(()=>{if(currentData)draw(currentData)});
 setInterval(()=>{if(!document.hidden)refresh()},60000);
 })();
