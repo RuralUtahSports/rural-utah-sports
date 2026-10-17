@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   if(window.__rusPlayoffPictureShareBuild)return;
-  window.__rusPlayoffPictureShareBuild='20261016-rus-live-rpi1';
+  window.__rusPlayoffPictureShareBuild='20261016-bye-quarterfinals-v2';
 
   const root=document.getElementById('featureRoot');
   if(!root)return;
@@ -208,7 +208,7 @@
     c.textAlign='right';c.fillStyle=ORANGE;c.font=`1000 ${Math.max(11,Math.min(16,h*.2))}px Arial`;c.fillText(data.rpi?`RPI ${data.rpi}`:'RPI —',right,y+h*.73);
     c.restore();
   }
-  function drawTeamStrip(c,data,x,y,w,h,logo){
+  function drawTeamStrip(c,data,x,y,w,h,logo,showBye=true){
     const bye=!data,bg=bye?'#202020':data.bg,fg=bye?'#777':data.fg;
     c.fillStyle=bg;c.fillRect(x,y,w,h);
     if(!bye){
@@ -219,11 +219,11 @@
       c.fillStyle='#111';c.textAlign='center';c.textBaseline='middle';c.font=`1000 ${Math.max(11,Math.min(16,badgeH*.48))}px Arial`;c.fillText(`#${data.seed}`,badgeX+badgeW/2,badgeY+badgeH/2+1);
       c.fillStyle=fg;c.textAlign='left';c.textBaseline='middle';
       fit(c,data.team,Math.max(64,badgeX-tx-8),Math.min(22,h*.42),9,1000);c.fillText(data.team,tx,y+h/2+1);
-    }else{
+    }else if(showBye){
       c.fillStyle=fg;c.textAlign='left';c.textBaseline='middle';c.font=`900 ${Math.max(11,Math.min(16,h*.4))}px Arial`;c.fillText('BYE',x+12,y+h/2+1);
     }
   }
-  function drawBracketMatch(c,a,b,x,y,w,h,logos){
+  function drawBracketMatch(c,a,b,x,y,w,h,logos,firstRound=false){
     const rowH=(h-1)/2;
     if(!a&&!b){
       c.fillStyle=CARD;roundRect(c,x,y,w,h,7);c.fill();
@@ -231,28 +231,22 @@
       c.beginPath();c.moveTo(x,y+h/2);c.lineTo(x+w,y+h/2);c.stroke();return;
     }
     c.save();roundRect(c,x,y,w,h,7);c.clip();
-    drawTeamStrip(c,a,x,y,w,rowH,logos.get(a?.seed));
-    drawTeamStrip(c,b,x,y+rowH+1,w,rowH,logos.get(b?.seed));
+    drawTeamStrip(c,a,x,y,w,rowH,logos.get(a?.seed),firstRound);
+    drawTeamStrip(c,b,x,y+rowH+1,w,rowH,logos.get(b?.seed),firstRound);
     c.restore();
     c.strokeStyle='rgba(255,255,255,.18)';c.lineWidth=1;roundRect(c,x,y,w,h,7);c.stroke();
   }
-  function projectedWinner(a,b){
-    if(!a)return null;
-    if(!b)return a;
-    return a.seed<=b.seed?a:b;
-  }
+  // Advance only teams with a real first-round bye, never winners of unplayed games.
   function projectedRounds(rows){
     const bySeed=new Map(rows.map(row=>[row.seed,row]));
-    const first=PAIRS.map(([a,b])=>({a:bySeed.get(a),b:bySeed.get(b)})).filter(game=>game.a);
-    const next=games=>{
-      const out=[];
-      for(let i=0;i<games.length;i+=2){
-        const a=projectedWinner(games[i]?.a,games[i]?.b),b=projectedWinner(games[i+1]?.a,games[i+1]?.b);
-        if(a)out.push({a,b});
-      }
-      return out;
-    };
-    const quarter=next(first),semi=next(quarter),final=next(semi);
+    const first=PAIRS.map(([a,b])=>({a:bySeed.get(a)||null,b:bySeed.get(b)||null})).filter(game=>game.a);
+    const advanced=first.map(game=>game.a&&!game.b?game.a:null);
+    const quarter=Array.from({length:Math.ceil(first.length/2)},(_,i)=>({
+      a:advanced[i*2]||null,
+      b:advanced[i*2+1]||null
+    }));
+    const semi=Array.from({length:Math.ceil(quarter.length/2)},()=>({a:null,b:null}));
+    const final=Array.from({length:Math.ceil(semi.length/2)},()=>({a:null,b:null}));
     return[first,quarter,semi,final];
   }
   function drawBracketConnectors(c,left,right,ysLeft,ysRight,groupH){
@@ -290,7 +284,7 @@
         drawSeedCard(c,row,x,y,cardW,cardH,row.logo);
       });
     }else{
-      const first=projectedRounds(rows)[0],rounds=[first];for(let i=1;i<4;i++)rounds.push(Array.from({length:Math.ceil(rounds[i-1].length/2)},()=>({})));const labels=['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP'],cols=4,gap=format==='x'?28:18,top=format==='story'?285:255,bottom=format==='story'?74:48,areaH=h-top-bottom,groupH=format==='story'?100:format==='x'?60:80,roundGap=format==='story'?28:format==='x'?12:18,usableW=w-margin*2-gap*(cols-1),colW=usableW/cols;
+      const rounds=projectedRounds(rows),first=rounds[0];const labels=['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP'],cols=4,gap=format==='x'?28:18,top=format==='story'?285:255,bottom=format==='story'?74:48,areaH=h-top-bottom,groupH=format==='story'?100:format==='x'?60:80,roundGap=format==='story'?28:format==='x'?12:18,usableW=w-margin*2-gap*(cols-1),colW=usableW/cols;
       const columns=rounds.map((games,index)=>({x:margin+index*(colW+gap),w:colW,games}));
       const total=first.length*groupH+Math.max(0,first.length-1)*roundGap,start=top+Math.max(0,(areaH-total)/2),ys=[first.map((_,i)=>start+i*(groupH+roundGap))];
       for(let r=1;r<4;r++)ys.push(columns[r].games.map((_,i)=>(ys[r-1][i*2]+(ys[r-1][i*2+1]??ys[r-1][i*2]))/2));
@@ -300,7 +294,7 @@
       });
       for(let i=0;i<columns.length-1;i++)drawBracketConnectors(c,columns[i],columns[i+1],ys[i],ys[i+1],groupH);
       const logosBySeed=new Map(rows.map(row=>[row.seed,row.logo]));
-      columns.forEach((column,index)=>column.games.forEach((game,i)=>drawBracketMatch(c,game.a,game.b,column.x,ys[index][i],column.w,groupH,logosBySeed)));
+      columns.forEach((column,index)=>column.games.forEach((game,i)=>drawBracketMatch(c,game.a,game.b,column.x,ys[index][i],column.w,groupH,logosBySeed,index===0)));
     }
     c.textAlign='left';c.textBaseline='alphabetic';c.fillStyle='#777';c.font=`900 ${format==='story'?15:12}px Arial`;c.fillText('@ruralutahsports77',margin,h-20);
     return{canvas,cls:data.cls};
@@ -316,7 +310,7 @@
   function preview(canvas,cls,kind,format){
     const label=kind==='seeds'?'Projected Seeds':'Projected Bracket',slug=safeSlug(`${cls}-${kind}`),name=`rus-${slug}-${format}-${Date.now()}.png`,overlay=document.createElement('div');
     overlay.className='rus-playoff-share-preview';
-    overlay.innerHTML=`<div class="rus-playoff-share-preview-card"><h3>${esc(cls)} ${label} graphic is ready</h3><p>Rendered directly in a RUS social format. Later-round boxes are left empty until matchups are known. These are RUS projections; the official UHSAA bracket may differ.</p><div class="rus-playoff-share-preview-host"></div><div class="rus-playoff-share-preview-actions"><button class="primary share">Share PNG</button><button class="save">Save PNG</button><button class="close">Close</button></div></div>`;
+    overlay.innerHTML=`<div class="rus-playoff-share-preview-card"><h3>${esc(cls)} ${label} graphic is ready</h3><p>Rendered directly in a RUS social format. First-round byes automatically advance to the quarterfinals; other slots stay blank until results are known. These are RUS projections; the official UHSAA bracket may differ.</p><div class="rus-playoff-share-preview-host"></div><div class="rus-playoff-share-preview-actions"><button class="primary share">Share PNG</button><button class="save">Save PNG</button><button class="close">Close</button></div></div>`;
     overlay.querySelector('.rus-playoff-share-preview-host').appendChild(canvas);
     document.body.appendChild(overlay);
     const close=()=>overlay.remove();
