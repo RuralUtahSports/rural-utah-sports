@@ -237,14 +237,14 @@ function matchingForecast(rows,g){
 }
 function numericScore(v){if(v===null||v===undefined||String(v).trim()==='')return null;const n=Number(v);return Number.isFinite(n)?n:null;}
 function rusForecastForGame(g,feed){
- const match=matchingForecast(feed?.games||[],g),override=matchingForecast(feed?.overrides||[],g);
- const forecast=override||match;
+ const match=matchingForecast(feed?.games||[],g),override=matchingForecast(feed?.overrides||[],g),playoff=matchingForecast(feed?.playoff||[],g);
+ const forecast=override||playoff||match;
  if(!forecast)return null;
  const away=numericScore(forecast.awayScore),home=numericScore(forecast.homeScore);
  if(away===null||home===null)return null;
  // Editorial override scores are already final model projections; weekly-simulation
  // base scores receive the same +3 home-field adjustment used on the scoreboard.
- const homeAdjusted=home+(override?0:3);
+ const homeAdjusted=home+(override||playoff?0:3);
  const spread=Math.abs(away-homeAdjusted),fav=away>homeAdjusted?forecast.awayTeam:forecast.homeTeam;
  const favName=[g.a,g.b].map(t=>getName(t)).find(n=>lineTeamKey(n)===lineTeamKey(fav))||fav;
  const margin=Number.isInteger(spread)?String(spread):spread.toFixed(1);
@@ -255,11 +255,12 @@ async function loadBracketLines(){
  const load=async(path,fallback)=>{
   try{const r=await fetch(path+'?v='+Date.now(),{cache:'no-store'});return r.ok?await r.json():fallback}catch{return fallback}
  };
- const [weekly,overrides]=await Promise.all([
+ const [weekly,overrides,predictions]=await Promise.all([
   load('weekly-simulation.json',{games:[]}),
-  load('game-preview-overrides.json',{overrides:[]})
+  load('game-preview-overrides.json',{overrides:[]}),
+  load('playoff-predictions-2026.json',{games:[]})
  ]);
- return {games:Array.isArray(weekly?.games)?weekly.games:[],overrides:Array.isArray(overrides?.overrides)?overrides.overrides:[]};
+ return {games:Array.isArray(weekly?.games)?weekly.games:[],overrides:Array.isArray(overrides?.overrides)?overrides.overrides:[],playoff:Array.isArray(predictions?.games)?predictions.games:[]};
 }
 function drawOpeningLine(c,g,feed,x,y,w,sc){
  if(!g?.a?.seed||!g?.b?.seed)return;
