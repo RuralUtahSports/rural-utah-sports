@@ -4,77 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Official UHSAA Football RPI | Rural Utah Sports</title>
-  <meta name="description" content="Official 2026 UHSAA football RPI standings by classification, including MWP, OWP and OOWP.">
+  <meta name="description" content="Final 2026 UHSAA football RPI seeds for every classification, with records and RPI, WP, OWP and OOWP values.">
   <link rel="canonical" href="https://ruralutahsports.com/rpi.html">
   <base href="https://ruralutahsports.com/">
   <script>(function(){if(location.hostname==='ruralutahsports.github.io'){var p=location.pathname.replace(/^\/rural-utah-sports(?=\/|$)/,'')||'/rpi.html';location.replace('https://ruralutahsports.com'+p+location.search+location.hash)}})();</script>
   <link rel="stylesheet" href="feature-suite.css?v=20260915-rpi1">
-  <link rel="stylesheet" href="rpi-standings.css?v=20260921-movement1">
+  <link rel="stylesheet" href="rpi-standings.css?v=20261017-final1">
   <link rel="manifest" href="manifest.webmanifest?v=20260817-opt1">
   <meta name="theme-color" content="#F14D07">
   <link rel="apple-touch-icon" href="RUSlogoNew.png">
   <meta property="og:title" content="Official UHSAA Football RPI | Rural Utah Sports">
-  <meta property="og:description" content="Current official UHSAA football RPI standings by classification.">
+  <meta property="og:description" content="Final 2026 UHSAA football RPI seedings for all seven classifications.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ruralutahsports.com/rpi.html">
   <meta property="og:image" content="https://ruralutahsports.com/RUSlogoNew.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="stylesheet" href="rpi-picks.css?v=20261001-lab5">
 </head>
 <body data-feature-page="rpi">
   <header><div class="header-content"><img src="RUSlogoNew.png" class="logo" alt="Rural Utah Sports"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
   <nav><div class="nav-content"></div></nav>
   <main class="container">
-    <section class="feature-hero"><h2>Official 2026 UHSAA Football RPI</h2><p>The rankings and values published by UHSAA, organized by classification.</p></section>
-    <section class="rpi-picks rpi-paths" aria-labelledby="rpiPathsTitle">
-      <h2 id="rpiPathsTitle">Ask an RPI Question</h2>
-      <form id="rpiPathForm">
-        <label for="rpiPathQuestion">Ask about a team’s seed or playoff path</label>
-        <div class="rpi-path-question"><input id="rpiPathQuestion" type="text" required maxlength="200" placeholder="What is Uintah’s path to a top 16 seed?"><button type="submit">Calculate Answer</button><button type="button" id="rpiPathCancel" hidden>Cancel</button></div>
-      </form>
-      <p class="rpi-picks-note">Try “Who should Uintah root for?”, “What needs to happen for Uintah to finish ahead of Payson?” or “What is Uintah’s highest seed if they beat Provo but lose to Wasatch?” Conditions apply to the remaining schedule; all other games are explored. Completed scores stay fixed. Your manual simulator picks are not treated as fixed results.</p>
-      <p id="rpiPathStatus" role="status" aria-live="polite"></p>
-      <div id="rpiPathResult"></div>
-    </section>
-    <section class="rpi-picks rpi-lab" aria-labelledby="rpiLabTitle">
-      <h2 id="rpiLabTitle">Playoff Lab</h2>
-      <form id="rpiLabForm">
-        <div class="rpi-scenario-controls">
-          <label>Class<select id="rpiLabClass"><option>6A</option><option>5A</option><option selected>4A</option><option>3A</option><option>2A</option><option>1A</option><option value="8P">8-Player</option></select></label>
-          <label>Team<select id="rpiLabTeam" aria-label="Team for playoff analysis"></select></label>
-          <label>Seed-race opponent<select id="rpiLabRival" aria-label="Opponent for seed race"></select></label>
-          <button type="submit">Analyze Playoff Picture</button><button type="button" id="rpiLabCancel" hidden>Cancel</button>
-        </div>
-      </form>
-      <p class="rpi-picks-note">Rooting guide, important games, next-game comparisons, proven playoff status, minimum wins, seed races, bubble teams and weekly movement.</p>
-      <p id="rpiLabStatus" role="status" aria-live="polite"></p>
-      <div id="rpiLabResult"></div>
-    </section>
-    <section class="rpi-picks" aria-labelledby="rpiAdvancedTitle">
-      <h2 id="rpiAdvancedTitle">Team Outlook</h2>
-      <form id="rpiAdvancedForm"><div class="rpi-scenario-controls">
-        <label>Class<select id="rpiAdvancedClass"><option>6A</option><option>5A</option><option selected>4A</option><option>3A</option><option>2A</option><option>1A</option><option value="8P">8-Player</option></select></label>
-        <label>Team<select id="rpiAdvancedTeam" required></select></label>
-        <label>Target seed<input id="rpiAdvancedTarget" type="number" min="1" max="32" value="16" required></label>
-        <button type="submit">Calculate Team Outlook</button><button id="rpiAdvancedCancel" type="button" hidden>Cancel</button>
-        <button id="rpiTonight" type="button">If Tonight Goes as Predicted</button>
-      </div></form><p id="rpiAdvancedStatus" role="status" aria-live="polite"></p><div id="rpiAdvancedResult"></div>
-    </section>
-    <section id="rpiPicks" class="rpi-picks"><h2>RPI Simulator</h2><p>Pick the winner of every remaining game, then calculate the projected final RPI.</p><button type="button" id="rpiPicksOpen">Pick Remaining Games</button><div id="rpiPicksBody" hidden></div></section>
+    <section class="feature-hero"><h2>Final 2026 UHSAA Football RPI</h2><p>Final regular-season seeds for all seven classifications, released October 17, 2026.</p></section>
+    <section class="feature-note rpi-final-summary"><strong>THE FINAL SEEDS ARE SET.</strong> The regular-season RPI simulator and hypothetical seed paths are closed for the 2026 season. See every qualified team below, or <a href="official-playoffs.html">open the official 2026 playoff brackets →</a></section>
     <div id="featureRoot"><div class="loading">Loading RPI standings…</div></div>
   </main>
-  <footer><strong>RURAL UTAH SPORTS</strong><p>Standings sourced directly from UHSAA.</p></footer>
-  <script src="rpi-picks-core.js?v=20261001-paths1" defer></script>
-  <script src="rpi-paths-core.js?v=20261001-lab5" defer></script>
-  <script src="rpi-scenarios.js?v=20261001-lab5" defer></script>
-  <script src="rpi-lab.js?v=20261001-lab5" defer></script>
-  <script src="rpi-advanced-core.js?v=20261001-advanced1" defer></script>
-  <script src="rpi-advanced.js?v=20261001-export2" defer></script>
-  <script src="rpi-picks.js?v=20261007-week9" defer></script>
-  <script src="rpi-paths.js?v=20261001-lab5" defer></script>
-  <script src="rpi-standings.js?v=20261015-sync-stale1" defer></script>
-  <script src="rpi-bracket-share.js?v=20260915-bracketfix1" defer></script>
-  <script src="rpi-standings-share.js?v=20260922-movement-spacing2" defer></script>
+  <footer><strong>RURAL UTAH SPORTS</strong><p>Final seeds: UHSAA · RPI values rounded to three decimals as published by Deseret News on October 17, 2026.</p></footer>
+  <script src="rpi-standings.js?v=20261017-final1" defer></script>
+  <script src="rpi-standings-share.js?v=20261017-final1" defer></script>
   <script src="feature-mobile-polish.js?v=20260816a" defer></script>
   <script src="back-to-top.js" defer></script>
   <script src="nav-menu.js?v=20261015-nav-sync1"></script>
