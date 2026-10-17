@@ -463,3 +463,15 @@
   text-decoration: none;
 }
 .rpi-final-bracket-link a:hover { text-decoration: underline; }
+
+/* Official final-playoff bracket refinements */
+.rpi-official-bracket .bracket-placeholder,
+.rpi-official-bracket .bracket-bye {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rpi-official-bracket .projected-bracket-head p { max-width: 520px; }
+.rpi-official-bracket .bracket-stage h4 { line-height: 1.4; }
+.rpi-official-bracket .rpi-final-bracket-link { margin-top: 12px; }
