@@ -155,112 +155,93 @@ function smallGame(c,g,images,x,y,w,h){
 /* Full 2026 UHSAA bracket graphic: official seeds, authentic local logos,
    advancing lines, and no assumed winners. The single-play-in formats map
    their opening games onto the correct quarterfinals, leaving byes intact. */
-function bracketSlotLabel(t,firstRound){
-  const name=getName(t)||'TBD';
-  let m=name.match(/^Winner of opening matchup\s+(\d+)/i);
-  if(m){
-    const game=firstRound[Number(m[1])-1];
-    if(game?.a?.seed&&game?.b?.seed)return 'Winner '+game.a.seed+'/'+game.b.seed;
-  }
-  const seeds=Array.from(name.matchAll(/#(\d+)/g),v=>v[1]);
-  if(/^Winner of /i.test(name)&&seeds.length>=2)return 'Winner '+seeds[0]+'/'+seeds[1];
-  m=name.match(/^Winner of QF\s*(\d+)/i);
-  if(m)return 'Winner QF'+m[1];
-  m=name.match(/^Semifinal\s+(\d+)\s+winner/i);
-  if(m)return 'Winner SF'+m[1];
-  return name;
+// Build site-owned logos into a legible Instagram bracket, never redraw them.
+const shortName={'Utah Military Academy - Hill Field':'UMA - Hill Field','Utah Military Academy - Camp Williams':'UMA - Camp Williams','American Leadership Academy':'ALA','Judge Memorial Catholic':'Judge Memorial'};
+const brief=name=>shortName[name]||name;
+function bracketSlotLabel(team,opening){
+ const name=getName(team)||'TBD';
+ let m=name.match(/^Winner of opening matchup\s+(\d+)/i);
+ if(m){const g=opening[Number(m[1])-1];if(g?.a?.seed&&g?.b?.seed)return 'Winner '+g.a.seed+'/'+g.b.seed;}
+ const seeds=[...name.matchAll(/#(\d+)/g)].map(x=>x[1]);
+ if(/^Winner of /i.test(name)&&seeds.length>=2)return 'Winner '+seeds[0]+'/'+seeds[1];
+ m=name.match(/^Winner of QF\s*(\d+)/i);if(m)return 'Winner QF'+m[1];
+ m=name.match(/^Semifinal\s+(\d+)\s+winner/i);if(m)return 'Winner SF'+m[1];
+ return brief(name);
 }
-function drawBracketSlot(c,t,firstRound,images,x,y,w,h,scale){
-  const name=getName(t)||'TBD',real=!placeholder(name),info=real?asset(name):{backgroundColor:'#3b3b3b'};
-  c.fillStyle=real?hexrgba(info.backgroundColor,.27):'#17191c';
-  c.fillRect(x,y,w,h);
-  c.fillStyle=real?info.backgroundColor:'#4f5154';
-  c.fillRect(x,y,Math.max(5,7*scale),h);
-  const num=t?.seed?'#'+t.seed:'';
-  const txt=bracketSlotLabel(t,firstRound);
-  const isBye=/^BYE$/i.test(txt);
-  const logo=real?images.get(name):null,logoSize=logo?Math.min(h*.78,47*scale):0;
-  const logoX=x+w-logoSize-9*scale;
-  if(logo)drawImage(c,logo,logoX,y+(h-logoSize)/2,logoSize,logoSize);
-  const sx=x+Math.max(13,18*scale),baseline=y+h/2;
-  if(num){
-    fitDraw(c,num,sx,baseline,43*scale,18*scale,12*scale,'left','#ffa67b');
-  }
-  const offset=num?Math.max(42,53*scale):0;
-  const textX=sx+offset,textWidth=Math.max(30,w-(textX-x)-(logo?logoSize+15*scale:14*scale));
-  fitDraw(c,txt,textX,baseline,textWidth,(real?19:18)*scale,11*scale,'left',isBye?'#999':real?'#f8f8f8':'#bfc0c3');
+function drawBracketSlot(c,team,opening,images,x,y,w,h,sc){
+ const name=getName(team)||'TBD',real=!placeholder(name),meta=real?asset(name):{backgroundColor:'#393939'};
+ c.fillStyle=real?hexrgba(meta.backgroundColor,.43):'#1b1d21';c.fillRect(x,y,w,h);
+ c.fillStyle=real?meta.backgroundColor:'#51535a';c.fillRect(x,y,Math.max(5,7*sc),h);
+ const img=real?images.get(name):null,size=img?Math.min(h*.75,66*sc):0;
+ if(img){
+  const ix=x+w-size-12*sc,iy=y+(h-size)/2;
+  rect(c,ix-3*sc,iy-3*sc,size+6*sc,size+6*sc,8*sc);
+  c.fillStyle='#edf0f3';c.fill();drawImage(c,img,ix,iy,size,size);
+ }
+ const seed=team?.seed?'#'+team.seed:'',tx=x+17*sc,mid=y+h/2;
+ if(seed)fitDraw(c,seed,tx,mid,47*sc,21*sc,14*sc,'left','#ffb98d');
+ const textX=tx+(seed?52*sc:0),room=Math.max(25,x+w-textX-(img?size+25*sc:14*sc));
+ fitDraw(c,bracketSlotLabel(team,opening),textX,mid,room,(h>70*sc?27:23)*sc,15*sc,'left',real?'#fff':'#c7c9ce');
 }
-function drawBracketMatch(c,g,firstRound,images,x,center,w,h,scale){
-  const y=center-h/2;
-  rect(c,x,y,w,h,10*scale);
-  c.fillStyle='#151619';c.fill();
-  c.strokeStyle='#4d5056';c.lineWidth=2*scale;c.stroke();
-  c.save();rect(c,x+1,y+1,w-2,h-2,9*scale);c.clip();
-  drawBracketSlot(c,g.a,firstRound,images,x+1,y+1,w-2,h/2-1,scale);
-  c.fillStyle='#44464b';c.fillRect(x+5*scale,y+h/2-1,w-10*scale,2);
-  drawBracketSlot(c,g.b,firstRound,images,x+1,y+h/2+1,w-2,h/2-2,scale);
-  c.restore();
+function drawBracketMatch(c,g,opening,images,x,yCenter,w,h,sc){
+ const y=yCenter-h/2;
+ rect(c,x,y,w,h,10*sc);c.fillStyle='#151619';c.fill();c.strokeStyle='#55585f';c.lineWidth=2*sc;c.stroke();
+ c.save();rect(c,x+1,y+1,w-2,h-2,9*sc);c.clip();
+ drawBracketSlot(c,g.a,opening,images,x+1,y+1,w-2,h/2-2,sc);
+ c.fillStyle='#505159';c.fillRect(x+5*sc,y+h/2-1,w-10*sc,2*sc);
+ drawBracketSlot(c,g.b,opening,images,x+1,y+h/2+1,w-2,h/2-2,sc);
+ c.restore();
+}
+function drawByes(c,quarters,opening,x,y,w,sc){
+ const listed=new Set(opening.flatMap(g=>[getName(g.a),getName(g.b)]));
+ const teams=quarters.flatMap(g=>[g.a,g.b]).filter(t=>t?.seed&&t?.name&&!listed.has(t.name)).sort((a,b)=>a.seed-b.seed);
+ if(!teams.length)return;
+ const height=(teams.length>3?380:215)*sc;
+ rect(c,x,y,w,height,12*sc);c.fillStyle='rgba(9,13,17,.72)';c.fill();c.strokeStyle='rgba(241,77,7,.65)';c.lineWidth=2*sc;c.stroke();
+ fitDraw(c,'FIRST-ROUND BYES',x+22*sc,y+36*sc,w-44*sc,24*sc,16*sc,'left','#ffb48b');
+ teams.forEach((team,i)=>fitDraw(c,'#'+team.seed+'  '+brief(team.name),x+22*sc,y+75*sc+i*(teams.length>3?39:43)*sc,w-44*sc,21*sc,15*sc,'left','#f0f0f0'));
 }
 function makeFullGraphic(cls,data,images,format=FORMATS.full){
-  const w=format.width,h=format.height,scale=w/2000,view=canvas(w,h),c=view.c;
-  const rounds=data.rounds.filter(r=>r.games?.length);
-  if(rounds.length<4)throw Error('Cannot render incomplete bracket rounds');
-  const firstRound=rounds[0].games,quarter=rounds[1].games,semi=rounds[2].games,final=rounds[3].games;
-  if(quarter.length!==4||semi.length!==2||final.length!==1)throw Error('Unsupported playoff round structure');
-  const pad=w*.0355,gap=w*.0185,available=w-pad*2-gap*4;
-  const widths=[.281,.206,.197,.172,.144].map(frac=>available*frac);
-  const xs=[pad];
-  for(let i=1;i<5;i++)xs.push(xs[i-1]+widths[i-1]+gap);
-  c.fillStyle=ORANGE;c.fillRect(pad,35*scale,w-2*pad,3*scale);
-  fitDraw(c,'RURAL UTAH SPORTS',pad,85*scale,w-2*pad,30*scale,22*scale,'left',ORANGE);
-  fitDraw(c,'2026 OFFICIAL FOOTBALL PLAYOFFS',pad,164*scale,w-2*pad,62*scale,37*scale,'left','#fff');
-  fitDraw(c,cls+'  |  OFFICIAL PLAYOFF BRACKET',pad,217*scale,w-2*pad,37*scale,24*scale,'left','#ffc7aa');
-  const names=['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP','CHAMPION'];
-  const top=Math.max(h*.205,285*scale),bottom=h-115*scale,span=bottom-top;
-  const quarterY=Array.from({length:4},(_,i)=>top+(i+.5)*span/4);
-  const semifinalY=[(quarterY[0]+quarterY[1])/2,(quarterY[2]+quarterY[3])/2];
-  const championshipY=[(semifinalY[0]+semifinalY[1])/2];
-  const firstY=firstRound.length===8?
-    Array.from({length:8},(_,i)=>top+(i+.5)*span/8):
-    firstRound.length===3?[quarterY[0],quarterY[2],quarterY[3]]:
-    firstRound.length===1?[quarterY[0]]:
-    firstRound.map((_,i)=>top+(i+.5)*span/firstRound.length);
-  const centers=[firstY,quarterY,semifinalY,championshipY,championshipY];
-  const slots=[firstRound,quarter,semi,final];
-  const topTitles=top-Math.max(23,32*scale);
-  names.forEach((name,i)=>fitDraw(c,name,xs[i]+widths[i]/2,topTitles,widths[i],23*scale,15*scale,'center',i===4?ORANGE:'#b6b6b6'));
-  const baseH=Math.min(118*scale,span/(Math.max(8,firstRound.length))*0.82),boxH=Math.max(63*scale,baseH);
-  const firstToQ=index=>{
-    if(firstRound.length===8)return Math.floor(index/2);
-    if(firstRound.length===3)return[0,2,3][index];
-    if(firstRound.length===1)return 0;
-    return Math.min(3,Math.floor(index/(firstRound.length/4)));
-  };
-  const edges=[];
-  for(let i=0;i<firstRound.length;i++)edges.push([0,i,1,firstToQ(i)]);
-  for(let i=0;i<4;i++)edges.push([1,i,2,Math.floor(i/2)]);
-  for(let i=0;i<2;i++)edges.push([2,i,3,0]);
-  edges.push([3,0,4,0]);
-  // Draw joining lines behind every match box so full advancing paths remain visible.
-  c.strokeStyle=ORANGE;c.lineWidth=3*scale;c.lineJoin='round';
-  edges.forEach(([src,srcIndex,dst,dstIndex])=>{
-    const y1=centers[src][srcIndex],y2=centers[dst][dstIndex];
-    if(!Number.isFinite(y1)||!Number.isFinite(y2))return;
-    const x1=xs[src]+widths[src],x2=xs[dst],mid=x1+(x2-x1)*.53;
-    c.beginPath();c.moveTo(x1,y1);c.lineTo(mid,y1);c.lineTo(mid,y2);c.lineTo(x2,y2);c.stroke();
-  });
-  slots.forEach((games,roundIndex)=>games.forEach((g,i)=>{
-    drawBracketMatch(c,g,firstRound,images,xs[roundIndex],centers[roundIndex][i],widths[roundIndex],boxH,scale);
-  }));
-  const champX=xs[4],champW=widths[4],champH=boxH*.84,champY=championshipY[0]-champH/2;
-  rect(c,champX,champY,champW,champH,12*scale);
-  c.fillStyle='#25150f';c.fill();c.strokeStyle=ORANGE;c.lineWidth=3*scale;c.stroke();
-  fitDraw(c,'CHAMPION: TBD',champX+champW/2,championshipY[0],champW-20*scale,25*scale,14*scale,'center',ORANGE);
-  const lineY=h-83*scale;
-  c.fillStyle='#414141';c.fillRect(pad,lineY,w-2*pad,2*scale);
-  fitDraw(c,'UHSAA / MaxPreps official bracket  •  No winners selected',pad,h-48*scale,w*.72,19*scale,13*scale,'left','#a4a4a4');
-  fitDraw(c,'@ruralutahsports77',w-pad,h-48*scale,w*.28,21*scale,14*scale,'right',ORANGE);
-  return view.element;
+ const w=format.width,h=format.height,sc=Math.min(w/1600,h/1500),view=canvas(w,h),c=view.c;
+ const stages=data.rounds.filter(r=>r.games?.length);
+ if(stages.length<4)throw Error('Missing official bracket rounds');
+ const first=stages[0].games,qf=stages[1].games,sf=stages[2].games,final=stages[3].games;
+ if(!first.length||qf.length!==4||sf.length!==2||final.length!==1)throw Error('Unexpected tournament size');
+ const pad=w*.035,gap=w*.018,space=w-2*pad-4*gap;
+ const widths=[.333,.224,.181,.145,.117].map(r=>space*r),xs=[pad];
+ for(let i=1;i<5;i++)xs.push(xs[i-1]+widths[i-1]+gap);
+ c.fillStyle=ORANGE;c.fillRect(pad,22*sc,w-2*pad,3*sc);
+ fitDraw(c,'RURAL UTAH SPORTS',pad,64*sc,w-2*pad,30*sc,20*sc,'left',ORANGE);
+ fitDraw(c,'2026 OFFICIAL FOOTBALL PLAYOFFS',pad,133*sc,w-2*pad,60*sc,36*sc,'left','#fff');
+ fitDraw(c,cls+'  |  OFFICIAL PLAYOFF BRACKET',pad,190*sc,w-2*pad,34*sc,23*sc,'left','#ffc09d');
+ c.fillStyle='rgba(255,255,255,.28)';c.fillRect(pad,222*sc,w-2*pad,1*sc);
+ const top=Math.max(h*.194,272*sc),bottom=h-115*sc,span=bottom-top;
+ const yQ=[0,1,2,3].map(i=>top+(i+.5)*span/4),yS=[(yQ[0]+yQ[1])/2,(yQ[2]+yQ[3])/2],yF=[(yS[0]+yS[1])/2];
+ const yFirst=first.length===8?first.map((_,i)=>top+(i+.5)*span/8):first.length===3?[yQ[0],yQ[2],yQ[3]]:first.length===1?[yQ[0]]:first.map((_,i)=>top+(i+.5)*span/first.length);
+ const centers=[yFirst,yQ,yS,yF,yF],groups=[first,qf,sf,final];
+ ['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP','CHAMPION'].forEach((name,i)=>fitDraw(c,name,xs[i]+widths[i]/2,top-38*sc,widths[i],22*sc,14*sc,'center',i===4?ORANGE:'#ddd'));
+ const compact=first.length>=8,cardH=Math.min((compact?133:175)*sc,compact?span/8-15*sc:span/4-28*sc);
+ if(cardH<45*sc)throw Error('Bracket graphic height too small');
+ const mapped=i=>first.length===8?Math.floor(i/2):first.length===3?[0,2,3][i]:first.length===1?0:Math.min(3,Math.floor(i*4/first.length));
+ const edges=[];
+ first.forEach((_,i)=>edges.push([0,i,1,mapped(i)]));
+ qf.forEach((_,i)=>edges.push([1,i,2,Math.floor(i/2)]));
+ sf.forEach((_,i)=>edges.push([2,i,3,0]));
+ edges.push([3,0,4,0]);
+ c.strokeStyle=ORANGE;c.lineWidth=3*sc;c.lineJoin='round';
+ edges.forEach(([source,i,target,j])=>{
+  const y1=centers[source][i],y2=centers[target][j],x1=xs[source]+widths[source],x2=xs[target],mid=(x1+x2)/2;
+  c.beginPath();c.moveTo(x1,y1);c.lineTo(mid,y1);c.lineTo(mid,y2);c.lineTo(x2,y2);c.stroke();
+ });
+ groups.forEach((games,r)=>games.forEach((g,i)=>drawBracketMatch(c,g,first,images,xs[r],centers[r][i],widths[r],cardH,sc)));
+ if(!compact)drawByes(c,qf,first,xs[0]+9*sc,top+span*.27,widths[0]-18*sc,sc);
+ const cX=xs[4],cW=widths[4],cH=cardH*.82,cY=yF[0]-cH/2;
+ rect(c,cX,cY,cW,cH,10*sc);c.fillStyle='#2b150e';c.fill();c.strokeStyle=ORANGE;c.lineWidth=3*sc;c.stroke();
+ fitDraw(c,'CHAMPION: TBD',cX+cW/2,yF[0],cW-14*sc,21*sc,13*sc,'center',ORANGE);
+ c.fillStyle='#414141';c.fillRect(pad,h-77*sc,w-2*pad,2*sc);
+ fitDraw(c,'UHSAA / MaxPreps  •  No winners selected',pad,h-44*sc,w*.70,18*sc,13*sc,'left','#a7a7a7');
+ fitDraw(c,'@ruralutahsports77',w-pad,h-44*sc,w*.28,20*sc,14*sc,'right',ORANGE);
+ return view.element;
 }
 function closePopup(el){el?.remove()}
 function popup(html){
