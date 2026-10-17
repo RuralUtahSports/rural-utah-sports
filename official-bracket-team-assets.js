@@ -10,7 +10,9 @@ const keys = {
  'UTAH MILITARY ACADEMY HILL FIELD':'UMA-HILLFIELD',
  'UMA CAMP WILLIAMS':'UMA-LEHI',
  'UMA HILL FIELD':'UMA-HILLFIELD',
- 'GUNNISON':'GUNNISON VALLEY'
+ 'GUNNISON':'GUNNISON VALLEY',
+ 'JUDGE MEMORIAL CATHOLIC':'JUDGE MEMORIAL',
+ 'AMERICAN LEADERSHIP ACADEMY':'ALA'
 };
 const norm = value => String(value || '').toUpperCase().replace(/[.'’]/g,'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();
 const key = value => keys[norm(value)] || norm(value);
