@@ -64,10 +64,10 @@ function addGame(team, game) {
 }
 
 for (const game of weekly.games || []) {
-  if (!gameFinal(game)) continue;
+  if (!gameFinal(game) || /\bJV\b|JUNIOR VARSITY|NON[\s-]?VARSITY/i.test(String(game.awayTeam) + ' ' + String(game.homeTeam)) || /\bEXHIBITION\b|\bSCRIMMAGE\b/i.test(String(game.status || game.type || ''))) continue;
   const away = alias(game.awayTeam);
   const home = alias(game.homeTeam);
-  if (INDEPENDENT.has(away) || INDEPENDENT.has(home)) continue;
+  // Independent teams are ineligible for seeding, but varsity games against them still count for RPI.
   if (memberKeys.has(away)) addGame(game.awayTeam, game);
   if (memberKeys.has(home)) addGame(game.homeTeam, game);
 }
