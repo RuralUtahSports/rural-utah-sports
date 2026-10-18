@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-18T14:09:07.617Z",
+  "generatedAt": "2026-10-18T14:55:13.340Z",
   "summary": {
     "errors": 0,
-    "warnings": 7,
+    "warnings": 5,
     "info": 2
   },
   "issues": [
@@ -65,34 +65,6 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "LOGAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
-      "context": {
-        "sourceGamePairs": 10,
-        "missing": [
-          {
-            "date": "2026-10-15",
-            "opponent": "Morgan"
-          }
-        ]
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "MORGAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
-      "context": {
-        "sourceGamePairs": 10,
-        "missing": [
-          {
-            "date": "2026-10-15",
-            "opponent": "Logan"
-          }
-        ]
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "MOUNTAIN RIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 10,
@@ -109,11 +81,11 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9010,
-        "unmatchedRows": 612,
+        "sourceRows": 9049,
+        "unmatchedRows": 616,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 968,
-        "missingGamePairs": 7
+        "sourceGamePairs": 979,
+        "missingGamePairs": 5
       }
     },
     {
