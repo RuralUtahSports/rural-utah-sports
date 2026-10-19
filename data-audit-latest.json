@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-19T21:26:02.706Z",
+  "generatedAt": "2026-10-19T22:12:57.174Z",
   "summary": {
     "errors": 0,
-    "warnings": 6,
+    "warnings": 7,
     "info": 2
   },
   "issues": [
@@ -91,15 +91,29 @@
       }
     },
     {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "WESTLAKE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 10,
+        "missing": [
+          {
+            "date": "2026-10-15",
+            "opponent": "Mountain Ridge"
+          }
+        ]
+      }
+    },
+    {
       "severity": "info",
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9120,
-        "unmatchedRows": 624,
+        "sourceRows": 9277,
+        "unmatchedRows": 631,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 997,
-        "missingGamePairs": 6
+        "sourceGamePairs": 1021,
+        "missingGamePairs": 7
       }
     },
     {
