@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-19T16:10:38.864Z",
+  "generatedAt": "2026-10-19T18:46:22.431Z",
   "summary": {
     "errors": 0,
-    "warnings": 5,
+    "warnings": 6,
     "info": 2
   },
   "issues": [
@@ -65,6 +65,20 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "LAYTON CHRISTIAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 9,
+        "missing": [
+          {
+            "date": "2026-10-16",
+            "opponent": "Mater Academy East Las Vegas"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "MOUNTAIN RIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 10,
@@ -81,11 +95,11 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9049,
-        "unmatchedRows": 616,
+        "sourceRows": 9120,
+        "unmatchedRows": 624,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 979,
-        "missingGamePairs": 5
+        "sourceGamePairs": 997,
+        "missingGamePairs": 6
       }
     },
     {
