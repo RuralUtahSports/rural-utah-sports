@@ -15,6 +15,7 @@ const number=v=>{const s=clean(v).replace(/,/g,'');return /^-?(?:\d+(?:\.\d+)?|\
 const NAME_ALIASES={
   ALA:['American Leadership Academy','American Leadership'],
   CEDAR:['Cedar City','Cedar'],
+  'CEDAR CITY':['Cedar City','Cedar'],
   GRAND:['Grand County','Grand'],
   GUNNISON:['Gunnison Valley','Gunnison'],
   'JUAN DIEGO':['Juan Diego Catholic','Juan Diego'],
@@ -28,6 +29,12 @@ const NAME_ALIASES={
 };
 const aliases=team=>[team,...(NAME_ALIASES[clean(team).toUpperCase()]||[])].map(compact);
 const sameSchool=(team,maxprepsName)=>aliases(team).includes(compact(maxprepsName));
+// Direct, verified school links recover MaxPreps teams missed by MaxPreps search discovery.
+// Each candidate is still checked against the exact Utah school and 26-27 season before use.
+const KNOWN_STATS_URLS={
+  ALA:'https://www.maxpreps.com/ut/spanish-fork/american-leadership-academy-eagles/football/stats/',
+  'CEDAR CITY':'https://www.maxpreps.com/ut/cedar-city/cedar-reds/football/stats/'
+};
 
 async function fetchHtml(url){
   const response=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; RuralUtahSports/1.0; +https://ruralutahsports.github.io/)'},redirect:'follow',signal:AbortSignal.timeout(25000)});
@@ -96,11 +103,17 @@ async function discover(team){
   return null;
 }
 async function loadTeamPage(team){
-  const statsUrl=clean(team.maxprepsStatsUrl),printUrl=clean(team.maxprepsPrintUrl);
-  if(statsUrl&&printUrl){
+  const savedStats=clean(team.maxprepsStatsUrl),savedPrint=clean(team.maxprepsPrintUrl);
+  const directStats=KNOWN_STATS_URLS[clean(team.team).toUpperCase()]||'';
+  // Try the previously verified URL and known school URL before unreliable search discovery.
+  for(const statsUrl of new Set([savedStats,directStats].filter(Boolean))){
     try{
       const html=await fetchHtml(statsUrl),page=nextData(html)?.props?.pageProps,context=page?.teamContext?.data;
-      if(context?.stateCode==='UT'&&context?.sport==='Football'&&context?.year===SEASON_LABEL&&sameSchool(team.team,context?.schoolName))return{statsUrl,printUrl,html,lastUpdated:page.playerStatLeadersData?.lastUpdated?.timeStamp||''};
+      if(context?.stateCode==='UT'&&context?.sport==='Football'&&context?.year===SEASON_LABEL&&sameSchool(team.team,context?.schoolName)){
+        const discoveredPrint=(page.sharedStatsLinks||[]).find(x=>x.displayText==='Print')?.canonicalUrl;
+        const printUrl=(statsUrl===savedStats?savedPrint:'')||discoveredPrint;
+        if(printUrl)return{statsUrl,printUrl:new URL(printUrl,statsUrl).href,html,lastUpdated:page.playerStatLeadersData?.lastUpdated?.timeStamp||''};
+      }
     }catch{}
   }
   return discover(team.team);
@@ -287,6 +300,7 @@ function selfTest(){
   const flightPayload='6:'+JSON.stringify([String.fromCharCode(36),String.fromCharCode(36)+'L1',null,{pageProps:{statsCardProps:{careerGameLogs:flightLogs}}}]);
   const flightHtml='<script>self.__next_f.push([1,'+JSON.stringify(flightPayload)+'])</script>',game=parsePlayerGameLogs(flightHtml,{playerId:'harvey',number:'5',name:'Synic Harvey'}).find(x=>x.opponent==='Kimberly'),defense=game?.statLines.find(x=>x.category==='Defensive Statistics'),touchdowns=game?.statLines.find(x=>x.category==='Touchdowns');
   if(defense?.values?.['PASS INT.']!=='2'||defense?.values?.['PASS INT YDS']!=='64'||defense?.values?.PD!=='1'||touchdowns?.values?.['DEFENSE TD']!=='1')throw new Error('MaxPreps streamed defensive-stat self-test failed');
+  if(!sameSchool('CEDAR CITY','Cedar')||!sameSchool('ALA','American Leadership Academy')||!KNOWN_STATS_URLS['CEDAR CITY']||!KNOWN_STATS_URLS.ALA)throw new Error('Verified MaxPreps school mapping self-test failed');
   console.log('MaxPreps fallback self-test passed.');
 }
 if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
