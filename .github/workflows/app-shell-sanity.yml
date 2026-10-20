@@ -37,6 +37,12 @@ on:
       - 'my-teams-dashboard.js'
       - 'my-teams-dashboard-v4.js'
       - 'rus-lines-dashboard.js'
+      - 'game-center.html'
+      - 'game-center.js'
+      - 'game-center-v2.js'
+      - 'team-stats-2026.json'
+      - 'deseret-game-details.json'
+      - 'scripts/check-game-center-v2.cjs'
       - 'game-center-upgrade.js'
       - 'app-shell-polish.js'
       - 'growth-features.js'
@@ -107,6 +113,12 @@ on:
       - 'my-teams-dashboard.js'
       - 'my-teams-dashboard-v4.js'
       - 'rus-lines-dashboard.js'
+      - 'game-center.html'
+      - 'game-center.js'
+      - 'game-center-v2.js'
+      - 'team-stats-2026.json'
+      - 'deseret-game-details.json'
+      - 'scripts/check-game-center-v2.cjs'
       - 'game-center-upgrade.js'
       - 'app-shell-polish.js'
       - 'growth-features.js'
@@ -183,6 +195,9 @@ jobs:
           node --check my-teams-dashboard.js
           node --check my-teams-dashboard-v4.js
           node --check rus-lines-dashboard.js
+          node --check game-center.js
+          node --check game-center-v2.js
+          node --check scripts/check-game-center-v2.cjs
           node --check game-center-upgrade.js
           node --check app-shell-polish.js
           node --check growth-features.js
@@ -206,6 +221,9 @@ jobs:
 
       - name: Verify app shell wiring
         run: node scripts/check-app-shell.mjs
+
+      - name: Verify interactive Game Center
+        run: node scripts/check-game-center-v2.cjs
 
       - name: Verify football records categories and 8-player isolation
         run: node scripts/check-football-record-formats.cjs
