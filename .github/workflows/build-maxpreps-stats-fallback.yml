@@ -8,6 +8,8 @@ on:
     paths:
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
+      - 'scripts/merge_verified_deseret_kicking.mjs'
+      - 'deseret-kicking-game-stats-2026.json'
       - 'scripts/suppress_invalid_tage_ita_attempts.mjs'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
       - 'scripts/build_team_current_shards.mjs'
@@ -48,6 +50,7 @@ jobs:
           node scripts/merge_maxpreps_stats_fallback.mjs --self-test
           node scripts/merge_maxpreps_game_logs.mjs --self-test
           node scripts/reconcile_season_stats_from_game_logs.mjs --self-test
+          node scripts/merge_verified_deseret_kicking.mjs --self-test
       - name: Fill missing Deseret player stats from MaxPreps
         run: node scripts/merge_maxpreps_stats_fallback.mjs
       - name: Rebuild stats-dependent data
@@ -58,6 +61,7 @@ jobs:
           node scripts/suppress_invalid_tage_ita_attempts.mjs --games-only
           node scripts/reconcile_season_stats_from_game_logs.mjs
           node scripts/suppress_invalid_tage_ita_attempts.mjs --games-only
+          node scripts/merge_verified_deseret_kicking.mjs
           node scripts/build_deseret_stat_metrics.mjs
           node scripts/build_weekly_awards.mjs
           node scripts/build_team_current_shards.mjs
