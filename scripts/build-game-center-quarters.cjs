@@ -33,7 +33,7 @@ for(const g of weekly.games||[]){
   const q=override.quarters;
   if(!Array.isArray(q)||q.length!==2||q.some(v=>v.length!==override.periods.length||v.some(n=>numeric(n)===null)))throw Error("Incomplete manually sourced quarter scores "+key);
   if(q[0].reduce((s,n)=>s+n,0)!==ga||q[1].reduce((s,n)=>s+n,0)!==gb)throw Error("Manual scores conflict with confirmed final "+key);
-  Object.assign(item,{status:"verified",periods:override.periods,quarters:q,sourceUrl:override.sourceUrl,source:"verified_manual"});
+  Object.assign(item,{status:"verified",reason:undefined,periods:override.periods,quarters:q,sourceUrl:override.sourceUrl,source:"verified_manual"});
  }else{
   const d=raw.games?.[key]||raw.games?.[reverse];
   if(!d){item.reason="not_in_source";}
