@@ -82,7 +82,6 @@ async function apply(section,team){
  if(!section||!team)return;
  installStyles();
  const entries=await readPalette();
- if(!section.isConnected)return;
  const t=themeFor(team,entries);
  section.style.setProperty('--rus-record-primary',t.primary);
  section.style.setProperty('--rus-record-secondary',t.secondary);
