@@ -243,6 +243,7 @@
     }
     if(state.ratings && $("teamA").value && $("teamB").value){
       headToHead($("teamA").value,$("teamB").value);
+      window.dispatchEvent(new Event("rus:game-center-history-ready"));
     }
   }
 
@@ -285,6 +286,7 @@
     recent(a.name,"recentA");recent(b.name,"recentB");headToHead(a.name,b.name);
     $("saveGraphic").disabled=false;$("copyLink").disabled=false;
     updateUrl();
+    window.dispatchEvent(new Event("rus:game-center-update"));
   }
 
   function exportCard() {
@@ -408,5 +410,13 @@
   });
   $("saveGraphic").addEventListener("click",exportCard);
   $("copyLink").addEventListener("click",copyLink);
+
+  window.RUSGameCenter=Object.freeze({
+    snapshot:()=>{
+      const m=matchup();
+      if(!m)return null;
+      return {...m,venue:state.venue,home:state.home,format:state.format,ratings:state.ratings,games:state.games,history:state.historyIndex?recordedMeetings(m.a.name,m.b.name):null};
+    }
+  });
   void load();
 })();
