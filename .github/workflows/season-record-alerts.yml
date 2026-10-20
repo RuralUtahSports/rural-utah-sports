@@ -19,6 +19,9 @@ on:
       - 'uhsaa-football-records-8-player.json'
       - 'uhsaa-records-defense.json'
       - 'scripts/build-season-record-alerts.mjs'
+      - 'scripts/historical-player-season-alerts.mjs'
+      - 'scripts/check-historical-player-season-alerts.cjs'
+      - 'team-player-records/**'
       - 'scripts/season-record-metrics.mjs'
       - 'scripts/check-season-record-alerts.cjs'
       - 'home-season-record-alerts.js'
@@ -28,6 +31,9 @@ on:
   pull_request:
     paths:
       - 'scripts/build-season-record-alerts.mjs'
+      - 'scripts/historical-player-season-alerts.mjs'
+      - 'scripts/check-historical-player-season-alerts.cjs'
+      - 'team-player-records/**'
       - 'scripts/check-season-record-alerts.cjs'
       - 'scripts/season-record-metrics.mjs'
       - 'team-stats-2025.json'
@@ -62,11 +68,14 @@ jobs:
         run: |
           node --check scripts/season-record-metrics.mjs
           node --check scripts/build-season-record-alerts.mjs
+          node --check scripts/historical-player-season-alerts.mjs
           node --check home-season-record-alerts.js
       - name: Validate mobile season record cards
         run: node scripts/check-season-record-mobile.cjs
       - name: Verify school colors in season share graphics
         run: node scripts/check-season-record-school-colors.cjs
+      - name: Test historical player season thresholds
+        run: node scripts/check-historical-player-season-alerts.cjs
       - name: Rebuild verified season benchmarks
         run: node scripts/build-season-record-alerts.mjs
       - name: Validate season record alerts
