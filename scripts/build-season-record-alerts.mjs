@@ -4,6 +4,7 @@
 // Player comparisons: reported 2025/2026 Deseret seasons ONLY; not all-time school claims.
 import fs from 'node:fs';
 import {playerMetrics,teamMetrics,playerValue,teamValue,validatePlayerMetricCoverage,validateTeamMetricCoverage} from './season-record-metrics.mjs';
+import {buildHistoricalPlayerSeasonAlerts} from './historical-player-season-alerts.mjs';
 
 const read = p => JSON.parse(fs.readFileSync(p,'utf8'));
 const canonical = name => {
@@ -197,7 +198,9 @@ for(const [key,current] of player2026){
 // Do not turn a one-year (2025) comparison into a purported school season record.
 // Retain the two-season comparisons for research, but only flag exceedances of a
 // separately published UHSAA season mark as a clearly labeled *watch*.
-const playerResults=playerAlerts.filter(a=>a.status==='exceeds-listed-uhsaa');
+const historicalPlayer=buildHistoricalPlayerSeasonAlerts({player2026,teamNames,asOf});
+const publishedHistorical=new Set(historicalPlayer.alerts.map(a=>canonical(a.team)+'|'+a.categoryKey));
+const playerResults=[...historicalPlayer.alerts,...playerAlerts.filter(a=>a.status==='exceeds-listed-uhsaa'&&!publishedHistorical.has(canonical(a.team)+'|'+a.categoryKey))];
 const playerComparisonOnly=playerAlerts.filter(a=>a.status!=='exceeds-listed-uhsaa');
 const teamReportedArchive=[];
 const team2025=new Map(Object.entries(teamStats2025.teams||{}).map(([k,v])=>[canonical(k),v]));
@@ -234,15 +237,16 @@ const teamVerifiedSeasonStats=[];
 const output={
   season:2026,generatedAt:String(rosters2026.updatedAt||standings.updatedAt||''),
   updatedFrom:{results:standings.updatedAt,playerStats:rosters2026.updatedAt},
-  coverageNote:'Only school season records compared against RUS historical season/game results appear as broken. Player season records need a validated multiyear season archive; the existing 2009-present single-game archive is not a complete player season database. Two-season 2025–2026 comparisons are stored for diagnostics only and MUST NOT trigger record alerts. UHSAA listed-record exceedances are watches requiring official review.',
-  metricCatalog:{player:playerCatalog,team:teamMetrics.map(m=>({key:'teamStat_'+m.key,category:m.label,path:m.path,unit:m.unit,qualifyingRate:!!m.rate})),coverage:{player:playerCoverage,team:teamCoverage}},
+  coverageNote:'School season records use RUS historical results. Player single-season school record alerts compare 2026 reported Deseret/MaxPreps totals against Deseret historical school-season leaderboards; each must have at least two different historical seasons and a named previous record holder. Historical player statistics are incomplete, so these are REPORTED school-history highs, NOT certified all-time records. 2025-only comparisons remain diagnostics and MUST NOT trigger record alerts. UHSAA record exceedances require independent review.',
+  metricCatalog:{player:playerCatalog,historicalPlayer:historicalPlayer.catalog,team:teamMetrics.map(m=>({key:'teamStat_'+m.key,category:m.label,path:m.path,unit:m.unit,qualifyingRate:!!m.rate})),coverage:{player:playerCoverage,team:teamCoverage}},
   counts:{teamBroken:teamAlerts.length,teamProvisional:teamWatches.length,playerReportedArchive:playerResults.length,
     playerExceedingUhsaa:playerResults.filter(x=>x.status==='exceeds-listed-uhsaa').length,
+    playerHistoricalHighs:historicalPlayer.alerts.length,playerHistoricalArchivedTeams:historicalPlayer.archiveTeams,
     playerCategoriesMonitored:playerMetrics.length,teamStatCategoriesMonitored:teamMetrics.length,
     teamReportedArchive:teamVerifiedSeasonStats.length,unbenchmarkedPlayerStats:unbenchmarkedPlayerMetrics.length,
     playerComparisonOnly:playerComparisonOnly.length,teamComparisonOnly:teamComparisonOnly.length},
   teamBroken:teamAlerts,teamWatches,teamReportedArchive:teamVerifiedSeasonStats,playerReportedArchive:playerResults,
-  comparisonOnly:{player:playerComparisonOnly,team:teamComparisonOnly},unbenchmarkedPlayerMetrics
+  comparisonOnly:{player:playerComparisonOnly,team:teamComparisonOnly},historicalPlayerMissing:historicalPlayer.missing,unbenchmarkedPlayerMetrics
 };
 if(teamAlerts.some(a=>a.value<=a.previousValue)||playerResults.some(a=>a.value<=a.previousValue))throw Error('Alert threshold regression');
 fs.writeFileSync('season-record-alerts.json',JSON.stringify(output)+'\n');

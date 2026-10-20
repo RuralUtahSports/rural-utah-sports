@@ -38,11 +38,12 @@ async function loadTeamColors(){
   }catch(e){console.warn('Season record school palette unavailable:',path,e);}
  }
 }
-const kind=a=>a.recordType==='seasonTeam'&&a.status==='reported-archive-high'?'2025–26 REPORTED TEAM STAT HIGH':a.recordType==='seasonPlayer'?(a.status==='exceeds-listed-uhsaa'?'EXCEEDS LISTED UHSAA MARK':'REPORTED 2025–26 PLAYER HIGH'):
+const kind=a=>a.status==='historical-school-high'?'REPORTED SCHOOL SEASON RECORD':a.recordType==='seasonTeam'&&a.status==='reported-archive-high'?'2025–26 REPORTED TEAM STAT HIGH':a.recordType==='seasonPlayer'?(a.status==='exceeds-listed-uhsaa'?'EXCEEDS LISTED UHSAA MARK':'REPORTED 2025–26 PLAYER HIGH'):
  a.status==='on-pace'?'PROVISIONAL 2026 SEASON PACE':'2026 SCHOOL SEASON RECORD';
 const note=a=>a.recordType==='seasonPlayer'?
-  (a.status==='exceeds-listed-uhsaa'?'Listed UHSAA: '+fmt(a.officialValue)+' '+a.unit+'; review required. ':'')+
-  '2025 reported leader: '+fmt(a.previousValue)+' '+a.unit+' ('+a.previousPlayer+'). Older seasons not fully archived.':
+  (a.status==='historical-school-high'?('Previous reported school leader: '+fmt(a.previousValue)+' '+a.unit+' • '+a.previousPlayer+' ('+a.previousSeason+'). Historical reporting may be incomplete.'):
+    (a.status==='exceeds-listed-uhsaa'?'Listed UHSAA: '+fmt(a.officialValue)+' '+a.unit+'; review required. ':'')+
+    '2025 reported leader: '+fmt(a.previousValue)+' '+a.unit+' ('+a.previousPlayer+'). Earlier seasons not fully archived.'): 
   (a.status==='on-pace'?'Previous completed season: ':a.status==='reported-archive-high'?'2025 reported team total: ':'Previous record: ')+
   fmt(a.previousValue)+' '+a.unit+' ('+a.previousSeason+').';
 function css(){
@@ -132,7 +133,7 @@ function group(title,intro,rows,key){
  '</span></h2><p>'+esc(intro)+'</p></div><div><button data-act="share">Share Graphics</button>'+
  (rows.length>cap?' <button data-act="more">See All</button>':'')+
  '</div></div><div class="rus-season-scroller">'+rows.slice(0,cap).map(card).join('')+
- '</div><div class="rus-season-foot">'+esc(key==='player'?'Reported 2025–26 player comparisons are not verified all-time school records. Listed UHSAA marks need official review.':
+ '</div><div class="rus-season-foot">'+esc(key==='player'?'2026 player totals are compared against multi-season historical Deseret school leaderboards. These are reported school-history records; incomplete historical coverage means they are not independently certified all-time school records.':
  key==='pace'?'Averages and defensive records can change before the season ends. No final record is claimed.':
  key==='teamStats'?'All available 2025–26 team statistical categories are compared. Not a verified all-time school record. Some stats vary by reporting coverage.':
  'Historical ranks cover games recorded by Rural Utah Sports; incomplete older seasons may affect totals.')+'</div>';
@@ -146,20 +147,20 @@ function group(title,intro,rows,key){
 async function boot(){
  const r=await fetch('season-record-alerts.json?v=20261020-all-stats1',{cache:'no-store'});
  if(!r.ok)return;const data=await r.json();
- const team=data.teamBroken||[],teamStats=[],player=(data.playerReportedArchive||[]).filter(a=>a.status==='exceeds-listed-uhsaa'),pace=data.teamWatches||[]; // Fail closed when cached feeds contain 2025-only milestones.
+ const team=data.teamBroken||[],teamStats=[],player=(data.playerReportedArchive||[]).filter(a=>['historical-school-high','exceeds-listed-uhsaa'].includes(a.status)),pace=data.teamWatches||[]; // Fail closed: never show 2025-only comparison as a record.
  if(!team.length&&!teamStats.length&&!player.length&&!pace.length)return;
  await loadTeamColors();
  css();const main=document.querySelector('main.container')||document.querySelector('main');if(!main)return;
  const block=document.createElement('div');block.id='rusSeasonRecordAlerts';
  const all=[
+ group('Player Single-Season School Records','2026 player statistics exceeding documented historical school-season leaders (2000s onward where available). Historical reports may be incomplete.',player,'player'),
  group('Single-Season Team Records','New 2026 historical school season highs, verified against the RUS game archive.',team,'team'),
  group('Reported Team Stat Milestones','Passing, rushing, receiving, defensive and kicking team totals above the reported 2025 benchmark. These are not all-time records.',teamStats,'teamStats'),
- group('Single-Season Player Milestones','Monitoring '+(data.counts?.playerCategoriesMonitored||29)+' player metrics and '+(data.counts?.teamStatCategoriesMonitored||28)+' team stat metrics; including kicking, tackles, passing, rushing, receiving and defensive stats. 2025 comparison only; not all-time.',player,'player'),
  group('2026 Season Record Watch','Strongest season paces; not labeled broken until the season is complete.',pace,'pace')
  ].filter(Boolean);for(const el of all)block.appendChild(el);
  const info=document.createElement('div');
  info.setAttribute('role','status');info.style.cssText='border:1px solid #4b392e;background:#13100e;border-radius:8px;padding:11px 13px;margin:12px 0;font-size:11px;line-height:1.5;color:#d6c3b2';
- info.innerHTML='<strong style="color:#F14D07">Historical player and team stat records under audit.</strong> 2009–present single-game statistics do not establish all-time single-season totals. Comparisons against 2025 alone are withheld from record alerts until multiyear season benchmarks are verified. Existing verified team season records remain available.';
+ info.innerHTML='<strong style="color:#F14D07">Historical school records: coverage matters.</strong> Player season alerts now use historical Deseret school season leaderboards with at least two documented prior seasons. Some schools and categories have incomplete records; 2025-only comparisons remain excluded. All 29 published player stat categories are monitored, but only categories with reliable historical benchmarks can trigger school-record alerts.';
  block.appendChild(info);
  const existing=document.querySelector('.rus-record-alert-stack');if(existing&&existing.parentNode)existing.after(block);else main.prepend(block);
 }

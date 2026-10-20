@@ -25,19 +25,27 @@ for(const a of data.teamWatches){
  assert.ok(['pointsPerGame','pointsAllowedPerGame','averageMargin','fewestPointsAllowed'].includes(a.categoryKey));
  assert.ok(a.previousSeason<2026);
 }
-// Only third-party listed UHSAA benchmarks, never just 2025, can enter record-watch alerts.
+// Only documented historical school leaderboards (multiple past seasons)
+// or separately published UHSAA marks can trigger player season alerts.
 assert.equal(data.teamReportedArchive.length,0,'Two-season team comparisons falsely published as records');
 for(const a of data.playerReportedArchive){
  assert.equal(a.recordType,'seasonPlayer');
- assert.equal(a.status,'exceeds-listed-uhsaa','2025-only player comparison falsely published as record');
- assert.equal(a.previousSeason,2025);
- assert.ok(a.section&&a.categoryKey&&a.category);
- assert.equal(typeof a.negativeOutcome,'boolean');
+ assert.ok(['historical-school-high','exceeds-listed-uhsaa'].includes(a.status),'2025-only comparison published as record');
+ assert.ok(a.previousSeason<2026,'Cannot compare current 2026 against a current 2026 record');
+ assert.ok(a.categoryKey&&a.category);
  assert.ok(a.value>a.previousValue);
  assert.ok(a.player&&a.previousPlayer);
  assert.match(a.asOf,/^2026-\d\d-\d\d$/);
- assert.ok(a.status==='exceeds-listed-uhsaa'||a.note.includes('NOT a verified all-time school record'));
- if(a.status==='exceeds-listed-uhsaa')assert.ok(a.value>a.officialValue);
+ if(a.status==='historical-school-high'){
+  assert.equal(a.scope,'reported-school-history');
+  assert.ok(a.historicalSeasons>=2,'At least two distinct historical years required');
+  assert.ok(a.earliestHistoricalSeason<2026);
+  assert.ok(a.sourceUrl?.includes('/team-records'),'Missing named historical school source');
+  assert.ok(a.note.includes('independently verify'));
+  assert.ok(!a.negativeOutcome,'Negative statistical outcomes cannot become record achievements');
+ }else{
+  assert.ok(a.value>a.officialValue);
+ }
 }
 assert.ok(Array.isArray(data.comparisonOnly?.player)&&Array.isArray(data.comparisonOnly?.team));
 for(const a of data.comparisonOnly.player){
@@ -54,6 +62,7 @@ for(const a of data.comparisonOnly.team){
  assert.match(a.asOf,/^2026-\d\d-\d\d$/);
 }
 assert.equal(data.metricCatalog.player.length,29,'Some raw player season stat fields were omitted');
+assert.equal(data.metricCatalog.historicalPlayer.length,13,'Historical school category mapping changed');
 assert.equal(data.metricCatalog.team.length,28,'Some team season stats were omitted');
 const observed=data.metricCatalog.coverage.player.observed;
 for(const x of ['Defense/Special Teams|TACKLES','Defense/Special Teams|FUM REC','Defense/Special Teams|PD',
@@ -70,6 +79,8 @@ const count=data.counts;
 assert.equal(count.teamBroken,data.teamBroken.length);
 assert.equal(count.teamProvisional,data.teamWatches.length);
 assert.equal(count.playerReportedArchive,data.playerReportedArchive.length);
+assert.equal(count.playerHistoricalHighs,data.playerReportedArchive.filter(a=>a.status==='historical-school-high').length);
+assert.ok(count.playerHistoricalArchivedTeams>50,'Historical season archive was not loaded');
 assert.equal(count.playerCategoriesMonitored,29);
 assert.equal(count.teamStatCategoriesMonitored,28);
 assert.equal(count.teamReportedArchive,data.teamReportedArchive.length);
