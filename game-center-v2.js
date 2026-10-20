@@ -185,12 +185,16 @@ function detailLookup(data,g){
 function alignedDetailRows(detail,g){
  const rows=detail?.boxScore?.rows;
  if(!Array.isArray(rows)||rows.length!==2)return null;
- const key=n=>String(n||"").split("(")[0].toUpperCase().replace(/[^A-Z0-9]/g,"");
+ const key=n=>String(n||"").split("(")[0].toUpperCase().replace(/[^A-Z0-9]+/g," ").trim();
  const a=key(g.awayTeam),b=key(g.homeTeam);
  if(!a||!b||a===b)return null;
  const names=rows.map(r=>key(r.team));
- if(names[0]===a&&names[1]===b)return rows;
- if(names[0]===b&&names[1]===a)return [rows[1],rows[0]];
+ const matches=(label,name)=>label===name||label.startsWith(name+" ");
+ const forward=matches(names[0],a)&&matches(names[1],b);
+ const reverse=matches(names[0],b)&&matches(names[1],a);
+ if(forward===reverse)return null;
+ if(forward)return rows;
+ if(reverse)return [rows[1],rows[0]];
  return null;
 }
 function validQuarterRows(periods,rows,totals,partial=false){
