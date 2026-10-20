@@ -40,6 +40,7 @@ function addGame(map,team,year,date,opponent,forScore,againstScore){
 }
 for(const g of standings.games||[]){
   if(number(g.actualAway)===null||number(g.actualHome)===null)continue;
+  if(number(g.actualAway)===0&&number(g.actualHome)===0)continue; // reject placeholder ties
   addGame(games,g.awayTeam,2026,g.date,g.homeTeam,g.actualAway,g.actualHome);
   addGame(games,g.homeTeam,2026,g.date,g.awayTeam,g.actualHome,g.actualAway);
 }
@@ -198,7 +199,7 @@ teamWatches.sort((a,b)=>b.asOf.localeCompare(a.asOf)||a.team.localeCompare(b.tea
 playerResults.sort((a,b)=>Number(b.status==='exceeds-listed-uhsaa')-Number(a.status==='exceeds-listed-uhsaa')||
   (b.value/Math.max(1,b.previousValue))-(a.value/Math.max(1,a.previousValue))||a.team.localeCompare(b.team));
 const output={
-  season:2026,generatedAt:new Date().toISOString(),
+  season:2026,generatedAt:String(rosters2026.updatedAt||standings.updatedAt||''),
   updatedFrom:{results:standings.updatedAt,playerStats:rosters2026.updatedAt},
   coverageNote:'Team historical records compare RUS recorded school seasons and finals. Player comparisons cover reported 2025–2026 seasons only; they are NOT verified school all-time records. UHSAA listed marks are separately identified and require official review.',
   counts:{teamBroken:teamAlerts.length,teamProvisional:teamWatches.length,playerReportedArchive:playerResults.length,
