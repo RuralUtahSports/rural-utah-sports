@@ -9,6 +9,20 @@ const text=name=>fs.readFileSync(path.join(root,name),"utf8");
 const html=text("game-center.html"),core=text("game-center.js"),script=text("game-center-v2.js");
 const teamStats=JSON.parse(text("team-stats-2026.json"));
 const playerStats=JSON.parse(text("deseret-stat-metrics-2026.json"));
+const quarterData=JSON.parse(text("game-center-quarter-scores-2026.json"));
+const playerAudit=JSON.parse(text("game-center-player-audit-2026.json"));
+assert.equal(Object.keys(quarterData.games).length,quarterData.summary.verified);
+assert.equal(quarterData.summary.complete+quarterData.summary.partial+quarterData.summary.unavailable+quarterData.summary.conflict,quarterData.summary.verified);
+for(const row of Object.values(quarterData.games)){
+ if(!["complete","partial"].includes(row.status))continue;
+ for(let i=0;i<2;i++){
+  const scored=row.quarters[i].reduce((sum,x)=>sum+(x??0),0);
+  assert.ok(scored<=row.final[i],"Quarter scoring exceeds verified final");
+  if(row.status==="complete")assert.equal(scored,row.final[i],"Quarter scoring does not add to final");
+ }
+}
+assert.deepEqual(quarterData.games["2026-10-08|LOGAN|GRANTSVILLE"].quarters[0],[6,15,6,10]);
+assert.equal(playerAudit.teams.GRANTSVILLE.Receiving["Dawson Dunlevy"].yards,333);
 
 assert.match(html,/src="game-center-v2\.js\?v=/);
 assert.match(html,/src="nav-menu\.js[^"]*"><\/script>/);
@@ -48,7 +62,7 @@ const windowMock={
  addEventListener(type,fn){listeners[type]=fn;}
 };
 const documentMock={getElementById:el,addEventListener(){},querySelector(){return null}};
-const data={"team-stats-2026.json":teamStats,"deseret-stat-metrics-2026.json":playerStats};
+const data={"team-stats-2026.json":teamStats,"deseret-stat-metrics-2026.json":playerStats,"game-center-quarter-scores-2026.json":quarterData,"game-center-player-audit-2026.json":playerAudit};
 const fetchMock=async url=>({ok:true,json:async()=>data[url]});
 vm.runInNewContext(script,{window:windowMock,document:documentMock,fetch:fetchMock,console,Date,Math,Number,String,Object,Map,Array,Promise,Set});
 const funcs=windowMock.RUSGameCenterV2Test;
@@ -80,7 +94,12 @@ assert.match(el("v2Rivalry").innerHTML,/<svg/);
 assert.match(el("v2GameSelect").innerHTML,/MORGAN/);
 await new Promise(resolve=>setTimeout(resolve,0));
 assert.match(el("v2Stats").innerHTML,/Points scored/);
+assert.match(el("v2Stats").innerHTML,/class="v2-stat-name">Points scored/);
+assert.match(el("v2GameReport").innerHTML,/v2-quarters/);
+assert.match(el("v2GameReport").innerHTML,/Q1/);
 assert.match(el("v2Players").innerHTML,/2026|Owen Gilson|George Thurston|Bridger/i);
+assert.match(el("v2Players").innerHTML,/Dawson Dunlavy/);
+assert.match(el("v2Players").innerHTML,/333/);
 
 // Changing teams after history has already loaded must not strand the chart.
 snapshot={...snapshot,a:{...B},b:{...A},history:snapshot.history,difference:-21,neutral:-21};
