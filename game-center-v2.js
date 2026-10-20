@@ -17,9 +17,9 @@ function barRow(label,a,b,higherBetter=true,suffix=""){
  const widthA=valid?Math.max(2,Math.round(Math.max(0,a)/max*100)):0;
  const widthB=valid?Math.max(2,Math.round(Math.max(0,b)/max*100)):0;
  const better=valid?(Math.abs(a-b)<0.001?"tie":(a>b)===higherBetter?"a":"b"):"missing";
- return '<div class="v2-stat"><div class="v2-stat-name">'+esc(label)+'</div>'+
-   '<div class="v2-stat-pair"><div class="'+(better==="a"?"v2-leading":"")+'"><strong>'+fmt(a)+(a==null?"":suffix)+'</strong><div class="v2-stat-track"><i style="width:'+widthA+'%;--fill:var(--tone-a)"></i></div></div>'+
-   '<div class="'+(better==="b"?"v2-leading":"")+'"><strong>'+fmt(b)+(b==null?"":suffix)+'</strong><div class="v2-stat-track"><i style="width:'+widthB+'%;--fill:var(--tone-b)"></i></div></div></div></div>';
+ return '<div class="v2-stat"><div class="v2-stat-pair"><div class="'+(better==="a"?"v2-leading":"")+'"><strong>'+fmt(a)+(a==null?"":suffix)+'</strong><div class="v2-stat-track"><i style="width:'+widthA+'%;--fill:var(--tone-a)"></i></div></div>'+
+ '<div class="v2-stat-name">'+esc(label)+'</div>'+
+ '<div class="'+(better==="b"?"v2-leading":"")+'"><strong>'+fmt(b)+(b==null?"":suffix)+'</strong><div class="v2-stat-track"><i style="width:'+widthB+'%;--fill:var(--tone-b)"></i></div></div></div></div>';
 }
 function compare(){
  const s=state.snapshot;if(!s)return;
