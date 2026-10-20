@@ -2,7 +2,7 @@
 const fs=require('node:fs'),assert=require('node:assert/strict');
 const data=JSON.parse(fs.readFileSync('season-record-alerts.json','utf8'));
 assert.equal(data.season,2026);
-assert.ok(data.coverageNote.includes('NOT verified school all-time records'),'Missing player-data coverage warning');
+assert.ok(data.coverageNote.includes('MUST NOT trigger record alerts'),'Missing player-data coverage warning');
 for(const k of ['teamBroken','teamWatches','teamReportedArchive','playerReportedArchive','unbenchmarkedPlayerMetrics'])assert.ok(Array.isArray(data[k]),k+' missing');
 const seen=new Set();
 for(const item of [...data.teamBroken,...data.teamWatches,...data.teamReportedArchive,...data.playerReportedArchive]){
