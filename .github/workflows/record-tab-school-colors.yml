@@ -1,0 +1,46 @@
+name: Team Record School Colors
+
+on:
+  pull_request:
+    paths:
+      - 'team-record-theme.js'
+      - 'team-player-records.js'
+      - 'team-stat-records.js'
+      - 'team-page-content.html'
+      - 'team-tabs.js'
+      - 'team.html'
+      - 'team-colors-exact.json'
+      - 'teams-data.json'
+      - 'scripts/check-record-tab-school-colors.cjs'
+      - '.github/workflows/record-tab-school-colors.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'team-record-theme.js'
+      - 'team-player-records.js'
+      - 'team-stat-records.js'
+      - 'team-page-content.html'
+      - 'team-tabs.js'
+      - 'team.html'
+      - 'scripts/check-record-tab-school-colors.cjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-school-record-colors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check record-tab JavaScript syntax
+        run: |
+          node --check team-record-theme.js
+          node --check team-player-records.js
+          node --check team-stat-records.js
+          node --check team-tabs.js
+      - name: Check school palettes and record tabs
+        run: node scripts/check-record-tab-school-colors.cjs
