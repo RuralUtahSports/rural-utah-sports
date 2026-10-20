@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {applyRosterStatCorrections} from './apply_manual_stat_corrections.mjs';
 
 const season=Number(process.argv[2]||2026);
 if(![2025,2026].includes(season))throw new Error(`Unsupported season ${season}`);
@@ -89,6 +90,7 @@ if(season===2026){
 const rosterFile=`deseret-rosters-stats-${season}.json`;
 if(!fs.existsSync(rosterFile))throw new Error(`${rosterFile} missing`);
 const rosters=JSON.parse(fs.readFileSync(rosterFile,'utf8'));
+if(season===2026)applyRosterStatCorrections(rosters);
 const rows=new Map();
 for(const [key,m] of meta)rows.set(key,blank(m.team,m));
 for(const [sourceName,entry] of Object.entries(rosters.teams||{})){
