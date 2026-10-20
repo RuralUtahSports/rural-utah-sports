@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   const $ = id => document.getElementById(id);
-  const state = { ratings: null, games: [], venue: "neutral", home: 2.5, logos: {}, format: "11P" };
+  const state = { ratings: null, games: [], venue: "neutral", home: 2.5, logos: {}, format: "11P", historyIndex: null, historyProblem: false, historyFor: "", historyShown: 5 };
   const safeColor = value => /^#[\da-f]{6}$/i.test(String(value || "")) ? value : "#f14d07";
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
   const validScore = value => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)) && Number(value) >= 0;
@@ -108,14 +108,144 @@
       return '<div class="result-row"><span class="date">'+esc(g.date)+'</span><span class="opponent"><span class="wl '+kind+'">'+flag+'</span>'+ (isAway?"@ ":"vs ") +esc(other)+'</span><span class="score">'+us+'–'+them+'</span></div>';
     }).join("");
   }
-  function headToHead(a,b) {
-    const rows = state.games.filter(g => (g.awayTeam===a && g.homeTeam===b) || (g.awayTeam===b && g.homeTeam===a));
-    if (!rows.length) { $("h2h").innerHTML = '<div class="empty">No verified head-to-head meeting between these teams appears in the 2026 feed. That does not mean they have never played.</div>';return;}
-    $("h2h").innerHTML = rows.map(g => {
-      const winner = g.away===g.home ? "Tie" : g.away>g.home ? g.awayTeam : g.homeTeam;
-      return '<div class="result-row"><span class="date">'+esc(g.date)+'</span><span class="opponent">'+esc(g.awayTeam)+' at '+esc(g.homeTeam)+'</span><span class="score">'+g.away+'–'+g.home+' · '+esc(winner)+'</span></div>';
-    }).join("");
+
+  // Historic rivalry records are loaded from the same Clean Games/Scorigami
+  // database as the public RUS Rivalry Hub. The verified weekly feed can
+  // supersede a conflicting historical entry for the same 2026 meeting.
+  const HISTORIC_ALIASES = {
+    "CEDAR":"CEDAR CITY", "CEDAR HIGH":"CEDAR CITY",
+    "GRAND COUNTY":"GRAND", "GUNNISON":"GUNNISON VALLEY",
+    "MONUMENT VAL":"MONUMENT VALLEY", "WASATCH ACAD":"WASATCH ACADEMY",
+    "AMERICAN LEADERSHIP ACADEMY":"ALA", "ST. JOSEPH":"SAINT JOSEPH",
+    "ST JOSEPH":"SAINT JOSEPH", "LAYTON CHRISTIAN ACADEMY":"LAYTON CHRISTIAN"
+  };
+  const canonical = name => {
+    let n = String(name ?? "").trim().toUpperCase().replace(/\s+/g," ").replace(/\.+$/,"");
+    if (n.startsWith("WASATCH ACAD")) return "WASATCH ACADEMY";
+    return HISTORIC_ALIASES[n] || n;
+  };
+  const pairKey = (a,b) => [canonical(a),canonical(b)].sort().join("|");
+  const historicalDate = value => {
+    const s=String(value ?? "").trim();
+    let m=/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s);
+    if (m) return {stamp:Date.UTC(+m[3],+m[1]-1,+m[2]),key:[+m[3],+m[1],+m[2]].join("-")};
+    m=/^(\d{4})-(\d{1,2})-(\d{1,2})(?:$|T)/.exec(s);
+    if (m) return {stamp:Date.UTC(+m[1],+m[2]-1,+m[3]),key:[+m[1],+m[2],+m[3]].join("-")};
+    m=/\b(18\d{2}|19\d{2}|20\d{2})\b/.exec(s);
+    return m?{stamp:Date.UTC(+m[1],0,1),key:m[1]+"-year"}:null;
+  };
+  function historicRecord(g) {
+    if (!g || !g.date) return null;
+    const a=canonical(g.tie?g.team1:g.winner), b=canonical(g.tie?g.team2:g.loser);
+    const s1=g.tie?g.score1:g.winnerScore, s2=g.tie?g.score2:g.loserScore;
+    if (!a || !b || a===b || !validScore(s1) || !validScore(s2)) return null;
+    const date=historicalDate(g.date);
+    if (!date || !Number.isFinite(date.stamp) || date.stamp>Date.now()) return null;
+    const first=Number(s1),second=Number(s2);
+    if (!g.tie && first<=second) return null;
+    if (g.tie && first!==second) return null;
+    return {date:String(g.date),stamp:date.stamp,dateKey:date.key,team1:a,team2:b,score1:first,score2:second};
   }
+  function buildHistoryIndex(data) {
+    const index=new Map(), seen=new Set();
+    for (const block of (Array.isArray(data?.scores)?data.scores:[])) {
+      for (const entry of (Array.isArray(block.games)?block.games:[])) {
+        const game=historicRecord(entry);
+        if (!game) continue;
+        const key=pairKey(game.team1,game.team2);
+        const dedup=key+"|"+game.dateKey+"|"+[
+          [game.team1,game.score1],[game.team2,game.score2]
+        ].sort((x,y)=>x[0].localeCompare(y[0])).map(x=>x.join(":")).join("|");
+        if (seen.has(dedup)) continue;
+        seen.add(dedup);
+        if(!index.has(key))index.set(key,[]);
+        index.get(key).push(game);
+      }
+    }
+    for (const list of index.values()) list.sort((x,y)=>y.stamp-x.stamp);
+    return index;
+  }
+  function currentMeetings(a,b) {
+    return state.games.filter(g=>pairKey(g.awayTeam,g.homeTeam)===pairKey(a,b)).map(g=>{
+      const date=historicalDate(g.date);
+      return {date:g.date,stamp:g.stamp,dateKey:date?.key||g.date,team1:g.awayTeam,team2:g.homeTeam,score1:g.away,score2:g.home};
+    });
+  }
+  function recordedMeetings(a,b) {
+    const current=currentMeetings(a,b);
+    if (!state.historyIndex) return current;
+    // If a final has since been verified in the weekly feed, prefer it
+    // to an older score for the same date/pair in the history snapshot.
+    const currentDates=new Set(current.map(g=>g.dateKey));
+    const historic=(state.historyIndex.get(pairKey(a,b))||[]).filter(g=>
+      !(new Date(g.stamp).getUTCFullYear()===2026 && currentDates.has(g.dateKey))
+    );
+    const seen=new Set(), result=[];
+    for(const g of [...historic,...current]){
+      const match=pairKey(g.team1,g.team2);
+      const scoreKey=match+"|"+g.dateKey+"|"+[
+        [g.team1,g.score1],[g.team2,g.score2]
+      ].sort((x,y)=>x[0].localeCompare(y[0])).map(x=>x.join(":")).join("|");
+      if(seen.has(scoreKey)) continue;
+      seen.add(scoreKey); result.push(g);
+    }
+    return result.sort((x,y)=>y.stamp-x.stamp || x.date.localeCompare(y.date));
+  }
+  function headToHead(a,b) {
+    const key=pairKey(a,b);
+    if (state.historyFor!==key) {state.historyFor=key;state.historyShown=5;}
+    const matches=recordedMeetings(a,b);
+    const loaded=!!state.historyIndex;
+    const label=loaded?"recorded all-time meetings":"verified 2026 meetings";
+    if(!matches.length && !loaded && !state.historyProblem){
+      $("h2h").innerHTML='<div class="empty" role="status">Loading the complete historical matchup archive…</div>';
+      return;
+    }
+    if(!matches.length){
+      $("h2h").innerHTML='<div class="empty">'+(state.historyProblem
+        ?"Historical matchup records could not be loaded. Try refreshing the page."
+        :"No recorded meetings between these teams were found in RUS’s historical database.")+'</div>';
+      return;
+    }
+    const winsA=matches.filter(g=>(g.team1===canonical(a)?g.score1:g.score2)>(g.team1===canonical(a)?g.score2:g.score1)).length;
+    const winsB=matches.filter(g=>(g.team1===canonical(b)?g.score1:g.score2)>(g.team1===canonical(b)?g.score2:g.score1)).length;
+    const ties=matches.length-winsA-winsB;
+    const count=Math.min(state.historyShown,matches.length);
+    const summary='<div class="series-summary"><strong>'+matches.length+' '+label+'</strong><span>'+esc(a)+' '+winsA+' – '+winsB+(ties?' – '+ties:'')+' '+esc(b)+'</span><small>Showing '+count+' of '+matches.length+' · newest first</small></div>';
+    const note=(!loaded?'<p class="note">'+(state.historyProblem
+      ?"Historical archive temporarily unavailable; showing verified 2026 results only."
+      :"Loading historical games; 2026 results shown for now…")+'</p>':'');
+    const rows=matches.slice(0,count).map(g=>{
+      const aScore=g.team1===canonical(a)?g.score1:g.score2;
+      const bScore=g.team1===canonical(b)?g.score1:g.score2;
+      const result=aScore>bScore?'W':aScore<bScore?'L':'T';
+      const winner=aScore>bScore?a:bScore>aScore?b:"Tie";
+      return '<div class="result-row historic-row"><span class="date">'+esc(g.date)+'</span><span class="opponent">'+
+        '<span class="wl '+(result==='W'?'win':result==='L'?'loss':'tie')+'">'+result+'</span>'+
+        esc(a)+' '+aScore+'–'+bScore+' '+esc(b)+'</span><span class="score">'+esc(winner)+'</span></div>';
+    }).join("");
+    const remaining=matches.length-count;
+    const more=(loaded && remaining>0)?'<button type="button" id="h2hMore" class="history-more">See More · '+remaining+' older '+(remaining===1?'game':'games')+'</button>':'';
+    const less=(loaded&&count>5)?'<button type="button" id="h2hLess" class="history-less">Show fewer</button>':'';
+    $("h2h").innerHTML=summary+note+rows+(more||less?'<div class="history-buttons">'+more+less+'</div>':'');
+    const rivalry=$("rivalryLink");
+    if(rivalry)rivalry.href="rivalry.html?"+new URLSearchParams({team1:a,team2:b}).toString();
+  }
+  async function loadHistory() {
+    try {
+      const response=await fetch("scorigami.json",{cache:"default"});
+      if(!response.ok)throw new Error("Scorigami HTTP "+response.status);
+      const data=await response.json();
+      state.historyIndex=buildHistoryIndex(data);
+    }catch(error){
+      state.historyProblem=true;
+      console.warn("Game Center: historical archive could not be loaded",error);
+    }
+    if(state.ratings && $("teamA").value && $("teamB").value){
+      headToHead($("teamA").value,$("teamB").value);
+    }
+  }
+
 
   function matchup() {
     const a = rating($("teamA").value), b = rating($("teamB").value);
@@ -240,6 +370,7 @@
       state.format=params.format;state.venue=params.venue;state.home=params.home;
       populate(params.a,params.b);
       venueControls();render();
+      void loadHistory();
       $("modelStatus").textContent="Ratings loaded · "+state.ratings[state.format].teams.length+" teams";
       void loadLogos();
     } catch(error) {
@@ -266,6 +397,15 @@
     state.home=Number(event.target.value);venueControls();render();
   });
   $("resetVenue").addEventListener("click",()=>{state.home=2.5;venueControls();render();});
+  $("h2h").addEventListener("click",event=>{
+    if(event.target?.id==="h2hMore"){
+      state.historyShown+=10;
+      headToHead($("teamA").value,$("teamB").value);
+    }else if(event.target?.id==="h2hLess"){
+      state.historyShown=5;
+      headToHead($("teamA").value,$("teamB").value);
+    }
+  });
   $("saveGraphic").addEventListener("click",exportCard);
   $("copyLink").addEventListener("click",copyLink);
   void load();
