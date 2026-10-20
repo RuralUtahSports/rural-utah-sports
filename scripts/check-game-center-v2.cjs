@@ -32,7 +32,9 @@ const A={name:"MORGAN",rating:76,backgroundColor:"#a32a12"};
 const B={name:"GRANTSVILLE",rating:55,backgroundColor:"#254292"};
 const games=[
  {date:"10/2/2026",stamp:Date.UTC(2026,9,2),awayTeam:"GRANTSVILLE",homeTeam:"MORGAN",away:7,home:42},
- {date:"9/1/2026",stamp:Date.UTC(2026,8,1),awayTeam:"MORGAN",homeTeam:"RIDGELINE",away:20,home:21}
+ {date:"9/1/2026",stamp:Date.UTC(2026,8,1),awayTeam:"MORGAN",homeTeam:"RIDGELINE",away:20,home:21},
+ // Mock games solely to exercise the minimum-sample threshold in the unit test.
+ ...Array.from({length:20},(_,i)=>({date:"8/"+String(i+1)+"/2026",stamp:Date.UTC(2026,7,i+1),awayTeam:i%2?"MORGAN":"GRANTSVILLE",homeTeam:"RIDGELINE",away:14+i%12,home:21+i%10}))
 ];
 let snapshot={
  a:A,b:B,neutral:21,difference:21,home:2.5,venue:"neutral",format:"11P",games,
