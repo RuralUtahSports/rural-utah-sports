@@ -22,6 +22,7 @@ on:
       - 'scripts/season-record-metrics.mjs'
       - 'scripts/check-season-record-alerts.cjs'
       - 'home-season-record-alerts.js'
+      - 'scripts/check-season-record-mobile.cjs'
   pull_request:
     paths:
       - 'scripts/build-season-record-alerts.mjs'
@@ -30,6 +31,7 @@ on:
       - 'team-stats-2025.json'
       - 'team-stats-2026.json'
       - 'home-season-record-alerts.js'
+      - 'scripts/check-season-record-mobile.cjs'
       - 'index.html'
       - '.github/workflows/season-record-alerts.yml'
 
@@ -57,6 +59,8 @@ jobs:
           node --check scripts/season-record-metrics.mjs
           node --check scripts/build-season-record-alerts.mjs
           node --check home-season-record-alerts.js
+      - name: Validate mobile season record cards
+        run: node scripts/check-season-record-mobile.cjs
       - name: Rebuild verified season benchmarks
         run: node scripts/build-season-record-alerts.mjs
       - name: Validate season record alerts
