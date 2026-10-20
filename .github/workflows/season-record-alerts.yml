@@ -1,0 +1,66 @@
+name: Refresh Season Record Alerts
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '25 8 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'standings-2026.json'
+      - 'greatest-seasons-data-v2.json'
+      - 'scorigami.json'
+      - 'teams-data.json'
+      - 'deseret-rosters-stats-2025.json'
+      - 'deseret-rosters-stats-2026.json'
+      - 'uhsaa-football-records.json'
+      - 'uhsaa-football-records-8-player.json'
+      - 'uhsaa-records-defense.json'
+      - 'scripts/build-season-record-alerts.mjs'
+      - 'scripts/check-season-record-alerts.cjs'
+      - 'home-season-record-alerts.js'
+  pull_request:
+    paths:
+      - 'scripts/build-season-record-alerts.mjs'
+      - 'scripts/check-season-record-alerts.cjs'
+      - 'home-season-record-alerts.js'
+      - 'index.html'
+      - '.github/workflows/season-record-alerts.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: season-record-alerts-main
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout recorded results
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Syntax check generator and UI
+        run: |
+          node --check scripts/build-season-record-alerts.mjs
+          node --check home-season-record-alerts.js
+      - name: Rebuild verified season benchmarks
+        run: node scripts/build-season-record-alerts.mjs
+      - name: Validate season record alerts
+        run: node scripts/check-season-record-alerts.cjs
+      - name: Publish when source snapshots change
+        if: github.event_name != 'pull_request'
+        run: |
+          if ! git diff --quiet -- season-record-alerts.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add season-record-alerts.json
+            git commit -m "Refresh verified 2026 single-season record alerts"
+            git push
+          fi
