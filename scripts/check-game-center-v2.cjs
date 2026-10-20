@@ -94,6 +94,55 @@ assert.match(conflict,/conflicts/);
 assert.doesNotMatch(conflict,/Verified scoring play/);
 assert.match(funcs.breakdownHTML(null,g),/No verified/);
 
+
+// Alignment must follow the school, never the unordered pair of scores.
+assert.match(funcs.safeScoringHTML(matched,g),/Verified scoring play/);
+const mascots={...matched,boxScore:{...matched.boxScore,rows:matched.boxScore.rows.map(r=>({...r,team:r.team+" Mascots (1-0)"}))}};
+assert.match(funcs.safeScoringHTML(mascots,g),/Verified scoring play/);
+const reversed={...matched,boxScore:{...matched.boxScore,rows:[...matched.boxScore.rows].reverse()}};
+assert.match(funcs.safeScoringHTML(reversed,g),/Verified scoring play/);
+assert.doesNotMatch(funcs.safeScoringHTML(matched,{...g,away:24,home:21}),/Verified scoring play/);
+const unrelated={...matched,boxScore:{...matched.boxScore,rows:matched.boxScore.rows.map(r=>({...r,team:"OTHER"}))}};
+assert.doesNotMatch(funcs.safeScoringHTML(unrelated,g),/Verified scoring play/);
+const periods=["Q1","Q2","Q3","Q4"];
+assert.equal(funcs.validQuarterRows(periods,[[7,7,0,0],[7,7,7,3]],[21,24],true),false);
+assert.equal(funcs.validQuarterRows(periods,[[7,7,null,0],[7,7,7,3]],[21,24],true),true);
+assert.equal(funcs.validQuarterRows(periods,[[7,7,null,0],[7,7,7,3]],[21,24]),false);
+assert.equal(funcs.validQuarterRows([...periods,"OT"],[[7,7,7,0,3],[7,7,7,0,6]],[24,27]),true);
+assert.equal(funcs.validQuarterRows(["Q2","Q3","Q4","OT"],[[7,7,7,0],[7,7,7,3]],[21,24]),false);
+assert.equal(funcs.validQuarterRows(periods,[[7,7,-1,8],[7,7,7,3]],[21,24]),false);
+assert.equal(funcs.validQuarterRows(periods,[[7,7,6.5,0.5],[7,7,7,3]],[21,24]),false);
+assert.match(funcs.auditedQuarterHTML(null,g),/Quarter-by-quarter scoring has not been verified for this game/);
+
+// Exercise the actual generator with synthetic fixtures; no production data writes.
+function buildFixture(quarters){
+ const files={
+  "weekly-simulation.json":{games:[{date:g.date,awayTeam:g.awayTeam,homeTeam:g.homeTeam,actualAway:21,actualHome:24,actualWinner:"RIDGELINE"}]},
+  "deseret-game-details.json":{games:{"2026-08-14|MORGAN|RIDGELINE":{...matched,boxScore:{periods,rows:[
+   {team:"Morgan",quarters,total:21},{team:"Ridgeline",quarters:[7,7,7,3],total:24}
+  ]}}}},
+  "game-center-quarter-overrides-2026.json":[]
+ };
+ let output;
+ vm.runInNewContext(text("scripts/build-game-center-quarters.cjs"),{
+  __dirname:path.join(root,"scripts"),
+  require(name){
+   if(name==="node:path")return path;
+   if(name==="node:fs")return {
+    readFileSync(file){return JSON.stringify(files[path.basename(file)])},
+    writeFileSync(file,data){output=JSON.parse(data)}
+   };
+   throw Error("Unexpected module "+name);
+  },
+  console:{log(){}}
+ });
+ return output.games[0];
+}
+assert.equal(buildFixture([7,7,0,0]).status,"conflict");
+assert.equal(buildFixture([7,7,7,7]).status,"conflict");
+assert.equal(buildFixture([7,7,null,0]).status,"partial");
+assert.equal(buildFixture([7,7,7,0]).status,"verified");
+
 listeners["rus:game-center-update"]();
 assert.match(el("v2Probability").innerHTML,/v2-prob-track/);
 assert.match(el("v2Rivalry").innerHTML,/<svg/);

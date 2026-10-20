@@ -181,16 +181,42 @@ function detailLookup(data,g){
  const id1=day+"|"+key(g.awayTeam)+"|"+key(g.homeTeam),id2=day+"|"+key(g.homeTeam)+"|"+key(g.awayTeam);
  return data?.games?.[id1]||data?.games?.[id2]||null;
 }
+// Require a unique team identity before comparing a source row's total.
+function alignedDetailRows(detail,g){
+ const rows=detail?.boxScore?.rows;
+ if(!Array.isArray(rows)||rows.length!==2)return null;
+ const key=n=>String(n||"").split("(")[0].toUpperCase().replace(/[^A-Z0-9]+/g," ").trim();
+ const a=key(g.awayTeam),b=key(g.homeTeam);
+ if(!a||!b||a===b)return null;
+ const names=rows.map(r=>key(r.team));
+ const matches=(label,name)=>label===name||label.startsWith(name+" ");
+ const forward=matches(names[0],a)&&matches(names[1],b);
+ const reverse=matches(names[0],b)&&matches(names[1],a);
+ if(forward===reverse)return null;
+ if(forward)return rows;
+ if(reverse)return [rows[1],rows[0]];
+ return null;
+}
+function validQuarterRows(periods,rows,totals,partial=false){
+ if(!Array.isArray(periods)||periods.length<4||!Array.isArray(rows)||rows.length!==2)return false;
+ if(periods.slice(0,4).join("|")!=="Q1|Q2|Q3|Q4")return false;
+ if(periods.slice(4).some(p=>!/\bOT\b/.test(String(p))))return false;
+ return rows.every((row,i)=>{
+  if(!Array.isArray(row)||row.length!==periods.length)return false;
+  if(row.some(n=>n!==null&&(!Number.isInteger(n)||n<0)))return false;
+  const sum=row.reduce((s,n)=>s+(n??0),0);
+  return row.includes(null)?partial&&sum<=totals[i]:sum===totals[i];
+ });
+}
+
 function breakdownHTML(detail,g){
  if(!detail?.final)return '<div class="empty">No verified final game-detail report is available for this result.</div>';
- const box=detail?.boxScore,rows=box?.rows||[];
- // Only display the box or scoring plays if the recorded final and detail totals agree.
- if(rows.length<2 || !comparable(num(rows[0].total),num(rows[1].total)))return '<div class="empty">Final score confirmed, but verified quarter-by-quarter scoring is unavailable.</div>';
- const expected=[g.away,g.home].sort((a,b)=>a-b);
- const provided=[Number(rows[0].total),Number(rows[1].total)].sort((a,b)=>a-b);
- if(expected[0]!==provided[0]||expected[1]!==provided[1])
-  return '<div class="warning">The detailed box score conflicts with the RUS verified final. Quarter scores and scoring plays are hidden pending correction.</div>';
- const period=Array.isArray(box.periods)?box.periods:["Q1","Q2","Q3","Q4"];
+ const box=detail.boxScore,rows=alignedDetailRows(detail,g);
+ if(!rows||rows.some((r,i)=>num(r.total)!==[g.away,g.home][i]))
+  return '<div class="warning">The detailed box score conflicts with the RUS final or its team labels could not be verified.</div>';
+ const period=box.periods;
+ if(!validQuarterRows(period,rows.map(r=>r.quarters),[g.away,g.home]))
+  return '<div class="empty">Quarter-by-quarter scoring has not been verified for this game.</div>';
  const tables=rows.slice(0,2).map(row=>{
   const values=Array.isArray(row.quarters)?row.quarters:[];
   return '<div class="v2-quarters-row"><b>'+esc(row.team||"Team")+'</b>'+
@@ -212,14 +238,17 @@ const quartersKey=(g)=>{const m=String(g.date||"").match(/^(\d{1,2})\/(\d{1,2})\
 const sourceLink=(url)=>/^https:\/\/sports\.deseret\.com\/high-school\/football\/game\//.test(String(url||""))
  ? '<p><a class="text-link" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Source game report ↗</a></p>':"";
 function auditedQuarterHTML(record,g){
- if(!record)return '<div class="empty">This final has not yet been included in the latest quarter-score audit. No quarters will be inferred.</div>';
+ if(!record)return '<div class="empty">Quarter-by-quarter scoring has not been verified for this game.</div>';
  if(record.awayTotal!==g.away||record.homeTotal!==g.home)return '<div class="warning">RUS has updated this final since the quarter archive was generated. Quarter scores are withheld until the new totals can be checked.</div>';
  const reasons={not_in_source:"No source game report",source_not_final:"Game report is not yet marked final",no_quarter_box:"No quarter-by-quarter table reported",team_label_unmatched:"Quarter-score team labels could not be verified",quarter_sum_conflict:"Quarter totals do not add up",final_total_conflict:"Source final differs from RUS final",no_quarter_values:"No quarter points reported",quarter_count_conflict:"Incomplete quarter period structure"};
  const link=sourceLink(record.sourceUrl);
  if(record.status==="conflict")
   return '<div class="warning">Quarter scoring withheld: '+esc(reasons[record.reason]||"Source-data conflict")+'. The official RUS final above is unaffected.</div>'+link;
  if(record.status!=="verified"&&record.status!=="partial")
-  return '<div class="empty">Verified final available, but quarter-by-quarter scores are not: '+esc(reasons[record.reason]||"Not reported")+'.</div>'+link;
+  return '<div class="empty">Quarter-by-quarter scoring has not been verified for this game. '+esc(reasons[record.reason]||"Not reported")+'.</div>'+link;
+ if(record.away!==g.awayTeam||record.home!==g.homeTeam||
+    !validQuarterRows(record.periods,record.quarters,[g.away,g.home],record.status==="partial"))
+  return '<div class="warning">Quarter-by-quarter scoring has not been verified for this game. Inconsistent quarter data withheld.</div>'+link;
  const teams=[g.awayTeam,g.homeTeam],totals=[g.away,g.home];
  const rows=teams.map((name,i)=>{
   const cells=(record.quarters?.[i]||[]);
@@ -232,10 +261,10 @@ function auditedQuarterHTML(record,g){
 }
 function safeScoringHTML(detail,g){
  if(!detail?.final)return '<p class="note">Verified scoring-play details unavailable for this game.</p>';
- const rows=detail.boxScore?.rows||[];
- if(rows.length!==2)return '<p class="note">Source game details have no confirmable final box score.</p>';
- const total=rows.map(x=>num(x.total)).sort((a,b)=>a-b);
- const actual=[g.away,g.home].sort((a,b)=>a-b);
+ const rows=alignedDetailRows(detail,g);
+ if(!rows)return '<p class="note">Source game details have no confirmable final box score.</p>';
+ const total=rows.map(x=>num(x.total));
+ const actual=[g.away,g.home];
  if(total.length!==2||total.some((v,i)=>v!==actual[i]))return '<div class="warning">Scoring plays withheld because the source final conflicts with the RUS verified final.</div>';
  const plays=(detail.scoringPlays||[]).map(x=>typeof x==="string"?x:x?.text||x?.description||"").filter(Boolean);
  return plays.length?'<details class="v2-plays" open><summary>Recorded scoring plays ('+plays.length+')</summary><ol>'+plays.map((line,i)=>'<li><b>'+(i+1)+'.</b> '+esc(line)+'</li>').join("")+'</ol></details>':
@@ -302,5 +331,5 @@ void Promise.all([
  fetchData("game-center-quarter-scores-2026.json").then(v=>{state.quarterData=new Map((v.games||[]).map(g=>[g.iso+"|"+g.away+"|"+g.home,g]));}).catch(e=>{state.quarterError=true;console.warn("Quarter audit unavailable",e)})
 ]).then(()=>{compare();players();renderBreakdown()});
 update();
-window.RUSGameCenterV2Test=Object.freeze({winChance,detailLookup,breakdownHTML,barRow,probabilitySD,auditedQuarterHTML,safeScoringHTML});
+window.RUSGameCenterV2Test=Object.freeze({winChance,detailLookup,breakdownHTML,barRow,probabilitySD,auditedQuarterHTML,safeScoringHTML,alignedDetailRows,validQuarterRows});
 })();

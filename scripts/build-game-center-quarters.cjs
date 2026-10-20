@@ -9,7 +9,7 @@ const raw=read("deseret-game-details.json");
 const overrides=read("game-center-quarter-overrides-2026.json");
 const compact=name=>String(name||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
 const iso=date=>{const m=String(date||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return m?m[3]+"-"+m[1].padStart(2,"0")+"-"+m[2].padStart(2,"0"):"";};
-const numeric=x=>x!==null&&x!==undefined&&String(x).trim()!==""&&Number.isFinite(Number(x))&&Number(x)>=0?Number(x):null;
+const numeric=x=>x!==null&&x!==undefined&&String(x).trim()!==""&&Number.isInteger(Number(x))&&Number(x)>=0?Number(x):null;
 const orderedNames=(rowA,rowB,a,b)=>{
  const match=(x,name)=>compact(x).includes(compact(name));
  if(match(rowA.team,a)&&match(rowB.team,b))return[rowA,rowB];
@@ -58,7 +58,7 @@ for(const g of weekly.games||[]){
      }
      const len=labels.length;
      if(rows.some(arr=>arr.length!==len)){item.reason="quarter_count_conflict";item.status="conflict";}
-     else if(rows.some((arr,i)=>arr.reduce((s,v)=>s+(v??0),0)>[ga,gb][i])){item.reason="quarter_sum_conflict";item.status="conflict";}
+     else if(rows.some((arr,i)=>{const sum=arr.reduce((s,v)=>s+(v??0),0);return sum>[ga,gb][i]||(arr.every(v=>v!==null)&&sum!==[ga,gb][i]);})){item.reason="quarter_sum_conflict";item.status="conflict";}
      else if(rows.every((arr,i)=>arr.every(v=>v!==null)&&arr.reduce((s,v)=>s+v,0)===[ga,gb][i])){
       Object.assign(item,{status:"verified",reason:undefined,periods:labels,quarters:rows,source:"deseret"});
      }else if(rows.some(arr=>arr.some(v=>v!==null))){
