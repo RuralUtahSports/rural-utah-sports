@@ -2,10 +2,42 @@
 'use strict';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=v=>Number.isFinite(Number(v))?Number(v).toLocaleString('en-US',{maximumFractionDigits:2}):String(v??'');
+// Reuse the existing verified school palette; never infer or invent team colors.
 const colors=new Map(),clean=v=>String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-const color=t=>{const v=colors.get(clean(t));if(!/^#[0-9a-f]{6}$/i.test(v||''))return'#f14d07';
- const n=parseInt(v.slice(1),16),l=.2126*((n>>16)&255)+.7152*((n>>8)&255)+.0722*(n&255);
- return l>=110?v:'#ec9b66';};
+const validHex=v=>/^#[0-9a-f]{6}$/i.test(String(v||''))?String(v).toUpperCase():null;
+const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const mix=(a,b,f)=>'#'+rgb(a).map((v,i)=>Math.round(v*(1-f)+rgb(b)[i]*f).toString(16).padStart(2,'0')).join('').toUpperCase();
+const luminance=h=>rgb(h).map(c=>{const v=c/255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4;})
+ .reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+const contrast=(a,b)=>{const x=luminance(a),y=luminance(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
+const readable=(hex,dark='#121212')=>{
+ if(contrast(hex,dark)>=4.5)return hex;
+ for(let i=1;i<=12;i++){const candidate=mix(hex,'#FFFFFF',i/12);if(contrast(candidate,dark)>=4.5)return candidate;}
+ return'#FFFFFF';
+};
+function palette(team){
+ const source=colors.get(clean(team))||{};
+ const primary=validHex(source.backgroundColor)||'#F14D07';
+ const secondary=validHex(source.textColor)||'#FFFFFF';
+ const chipText=contrast(primary,secondary)>=4.5?secondary:
+   (contrast(primary,'#FFFFFF')>=contrast(primary,'#000000')?'#FFFFFF':'#000000');
+ return{primary,secondary,chipText,accent:readable(primary)};
+}
+const color=t=>palette(t).accent;
+async function loadTeamColors(){
+ for(const path of ['team-colors-exact.json','teams-data.json']){
+  try{
+   const response=await fetch(path+'?v=20261020-season-school-colors1',{cache:'no-store'});
+   if(!response.ok)continue;
+   const rows=await response.json();
+   if(!Array.isArray(rows))continue;
+   for(const team of rows){
+    const key=clean(team.team);
+    if(key&&!colors.has(key))colors.set(key,{backgroundColor:team.backgroundColor,textColor:team.textColor});
+   }
+  }catch(e){console.warn('Season record school palette unavailable:',path,e);}
+ }
+}
 const kind=a=>a.recordType==='seasonTeam'&&a.status==='reported-archive-high'?'2025–26 REPORTED TEAM STAT HIGH':a.recordType==='seasonPlayer'?(a.status==='exceeds-listed-uhsaa'?'EXCEEDS LISTED UHSAA MARK':'REPORTED 2025–26 PLAYER HIGH'):
  a.status==='on-pace'?'PROVISIONAL 2026 SEASON PACE':'2026 SCHOOL SEASON RECORD';
 const note=a=>a.recordType==='seasonPlayer'?
@@ -22,7 +54,7 @@ function css(){
  '.rus-season-head button{padding:8px 10px;font-size:9px;text-transform:uppercase;font-weight:900;border:1px solid #F14D07;background:#F14D07;color:#000;border-radius:5px;cursor:pointer}'+
  '.rus-season-count{font-size:11px;color:#F14D07;margin-left:10px}'+
  '.rus-season-scroller{display:flex;flex-wrap:nowrap;align-items:stretch;gap:9px;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding:12px;scrollbar-width:thin}'+
- '.rus-season-scroller > .rus-season-card{box-sizing:border-box;scroll-snap-align:start;background:#111;border:1px solid #333;border-top:4px solid var(--accent);border-radius:7px;flex:0 0 min(310px,85vw);min-width:0;max-width:min(310px,85vw);padding:13px;overflow-wrap:break-word}'+
+ '.rus-season-scroller > .rus-season-card{box-sizing:border-box;scroll-snap-align:start;background:#111;border:1px solid #333;border-top:4px solid var(--team-primary);box-shadow:inset 4px 0 var(--team-secondary);border-radius:7px;flex:0 0 min(310px,85vw);min-width:0;max-width:min(310px,85vw);padding:13px;overflow-wrap:break-word}'+
  '.rus-season-kicker{color:#F14D07;font-size:9px;font-weight:900;text-transform:uppercase}.rus-season-who{font-weight:950;font-size:15px;line-height:1.35;margin-top:8px}'+
  '.rus-season-who strong{color:var(--accent)}.rus-season-value{font-size:30px;font-weight:950;color:var(--accent);margin-top:6px}'+
  '.rus-season-category{font-size:11px;color:#fff;font-weight:800}.rus-season-note{font-size:10px;color:#aaa;line-height:1.45;margin-top:8px}'+
@@ -34,7 +66,8 @@ function card(a){
  const who=a.player?esc(a.player)+' • <strong>'+esc(a.team)+'</strong>':'<strong>'+esc(a.team)+'</strong>';
  const caution=a.negativeOutcome?' • Negative outcome: higher count, not an award.':'';
  const href=a.playerId?'player.html?id='+encodeURIComponent(a.playerId):'team.html?team='+encodeURIComponent(a.team);
- return '<article class="rus-season-card" style="--accent:'+color(a.team)+'">'+
+ const theme=palette(a.team);
+ return '<article class="rus-season-card" style="--team-primary:'+theme.primary+';--team-secondary:'+theme.secondary+';--accent:'+theme.accent+'">'+
  '<div class="rus-season-kicker">'+esc(kind(a))+'</div><div class="rus-season-who">'+who+
  '</div><div class="rus-season-value">'+esc(fmt(a.value))+' '+esc(a.unit||'')+
  '</div><div class="rus-season-category">'+esc(a.category)+'</div><div class="rus-season-note">'+esc(note(a)+caution)+
@@ -52,16 +85,26 @@ function draw(rows,title,page,pages){
  ctx.fillStyle='#fff';ctx.textAlign='right';ctx.font='700 22px Arial';ctx.fillText(page+' / '+pages,1005,76);ctx.textAlign='left';
  function fit(str,max,initial){let s=initial;while(s>16){ctx.font='900 '+s+'px Arial';if(ctx.measureText(str).width<=max)break;s--;}return s;}
  rows.forEach((a,i)=>{
-   const y=222+i*202,clr=color(a.team);ctx.fillStyle='#121212';ctx.fillRect(70,y,940,187);ctx.fillStyle=clr;ctx.fillRect(70,y,10,187);
-   ctx.fillStyle='#F14D07';ctx.font='900 16px Arial';ctx.fillText(kind(a),90,y+29);
+   const y=222+i*202,theme=palette(a.team),accent=theme.accent;
+   // The primary and secondary colors are the ORIGINAL team values. Only
+   // the small stat text is lightened for readability on the dark graphic.
+   ctx.fillStyle='#121212';ctx.fillRect(70,y,940,187);
+   const [red,green,blue]=rgb(theme.primary);
+   ctx.fillStyle='rgba('+red+','+green+','+blue+',0.14)';ctx.fillRect(70,y,940,187);
+   ctx.fillStyle=theme.primary;ctx.fillRect(70,y,16,187);
+   ctx.fillStyle=theme.secondary;ctx.fillRect(86,y,5,187);
+   ctx.fillStyle=accent;ctx.font='900 16px Arial';ctx.fillText(kind(a),102,y+29);
    const name=(a.player?a.player+' • ':'')+a.team;
-   ctx.fillStyle='#fff';ctx.font='900 '+fit(name,560,29)+'px Arial';ctx.fillText(name,90,y+75);
-   ctx.fillStyle='#bbb';ctx.font='700 '+fit(a.category,580,20)+'px Arial';ctx.fillText(a.category,90,y+106);
-   ctx.fillStyle=clr;ctx.textAlign='right';const value=fmt(a.value)+' '+(a.unit||'');
-   ctx.font='900 '+fit(value,330,40)+'px Arial';ctx.fillText(value,990,y+81);ctx.textAlign='left';
-   ctx.fillStyle='#bbb';ctx.font='700 16px Arial';ctx.fillText('Previous: '+fmt(a.previousValue)+' ('+(a.previousSeason||'2025')+')',90,y+144);
-   ctx.fillStyle='#8b8b8b';ctx.font='700 15px Arial';
-   ctx.fillText(a.status==='on-pace'?'Provisional, not final':a.status==='reported-archive-high'?'Reported 2025–26 comparison; not all-time':'RUS recorded school history',90,y+172);
+   const size=fit(name,535,28),textWidth=ctx.measureText(name).width,chipWidth=Math.min(555,textWidth+28);
+   ctx.fillStyle=theme.primary;ctx.fillRect(102,y+39,chipWidth,43);
+   ctx.fillStyle=theme.chipText;ctx.font='900 '+size+'px Arial';ctx.fillText(name,116,y+70);
+   ctx.fillStyle=theme.secondary;ctx.fillRect(102,y+82,chipWidth,3);
+   ctx.fillStyle='#ddd';ctx.font='700 '+fit(a.category,565,20)+'px Arial';ctx.fillText(a.category,102,y+112);
+   ctx.fillStyle=accent;ctx.textAlign='right';const value=fmt(a.value)+' '+(a.unit||'');
+   ctx.font='900 '+fit(value,323,40)+'px Arial';ctx.fillText(value,990,y+80);ctx.textAlign='left';
+   ctx.fillStyle='#c5c5c5';ctx.font='700 16px Arial';ctx.fillText('Previous: '+fmt(a.previousValue)+' ('+(a.previousSeason||'2025')+')',102,y+147);
+   ctx.fillStyle='#aaa';ctx.font='700 15px Arial';
+   ctx.fillText(a.status==='on-pace'?'Provisional, not final':a.status==='reported-archive-high'?'Reported 2025–26 comparison; not all-time':'RUS recorded school history',102,y+173);
  });
  ctx.fillStyle='#999';ctx.font='700 16px Arial';ctx.fillText('Coverage varies; UHSAA listed marks require official recognition.',70,1280);
  ctx.fillStyle='#fff';ctx.font='900 21px Arial';ctx.fillText('ruralutahsports.com',70,1320);
@@ -105,7 +148,7 @@ async function boot(){
  if(!r.ok)return;const data=await r.json();
  const team=data.teamBroken||[],teamStats=[],player=(data.playerReportedArchive||[]).filter(a=>a.status==='exceeds-listed-uhsaa'),pace=data.teamWatches||[]; // Fail closed when cached feeds contain 2025-only milestones.
  if(!team.length&&!teamStats.length&&!player.length&&!pace.length)return;
- try{const t=await fetch('teams-data.json?v=20261020-all-stats1');if(t.ok)for(const x of await t.json())colors.set(clean(x.team),x.backgroundColor)}catch(e){}
+ await loadTeamColors();
  css();const main=document.querySelector('main.container')||document.querySelector('main');if(!main)return;
  const block=document.createElement('div');block.id='rusSeasonRecordAlerts';
  const all=[
