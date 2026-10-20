@@ -1,9 +1,9 @@
 {
   "season": 2026,
-  "asOf": "2026-10-15",
+  "asOf": "2026-10-20",
   "rule": "Every team tied for the highest final region win-loss record earns one RUS region championship for that season. Head-to-head, seeding, points, and other tiebreakers do not negate co-championships; teams tied below first do not qualify. Do not credit 8-player classification as a region.",
   "scope": "RUS football historical title counts. This is not an official UHSAA championship or playoff-seeding determination.",
-  "pendingRegion": "5A Region 5 (Box Elder vs West Field, October 16)",
+  "pendingRegion": null,
   "baselineBefore2025": {
     "BOUNTIFUL": 15,
     "BOX ELDER": 36,
@@ -82,6 +82,13 @@
       "region": "4",
       "teams": [
         "WEST"
+      ]
+    },
+    {
+      "classification": "5A",
+      "region": "5",
+      "teams": [
+        "BOX ELDER"
       ]
     },
     {
@@ -186,8 +193,9 @@
   ],
   "notes": [
     "2025 champions based on PR #118 (f1ee158) and region-title-audit-2026.json; intentionally exclude Rich's 8-player 2025 first-place finish from region-title totals.",
-    "2026 19 title recipients across 16 clinched 11-player regions. The 17th (5A Region 5) is pending its final head-to-head game.",
+    "2026 20 title recipients across 17 completed 11-player regions; Box Elder clinched Region 5 with a 28-7 win over West Field on October 16.",
     "Co-champions: Provo and Salem Hills (4A Region 8); Hurricane, Crimson Cliffs, and Snow Canyon (4A Region 9).",
-    "This overlay is bounded through 2026; update champion arrays for newly clinched regions and re-audit when later seasons begin."
+    "This overlay is bounded through 2026; update champion arrays for newly clinched regions and re-audit when later seasons begin.",
+    "Week 11 Felt's Facts corroborates 2026 region champions. Do not increment team-records.json again: the Box Elder 2026 title is already included there (37)."
   ]
 }
