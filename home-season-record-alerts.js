@@ -114,6 +114,10 @@ async function boot(){
  group('Single-Season Player Milestones','Monitoring '+(data.counts?.playerCategoriesMonitored||29)+' player metrics and '+(data.counts?.teamStatCategoriesMonitored||28)+' team stat metrics; including kicking, tackles, passing, rushing, receiving and defensive stats. 2025 comparison only; not all-time.',player,'player'),
  group('2026 Season Record Watch','Strongest season paces; not labeled broken until the season is complete.',pace,'pace')
  ].filter(Boolean);for(const el of all)block.appendChild(el);
+ const info=document.createElement('div');
+ info.setAttribute('role','status');info.style.cssText='border:1px solid #4b392e;background:#13100e;border-radius:8px;padding:11px 13px;margin:12px 0;font-size:11px;line-height:1.5;color:#d6c3b2';
+ info.innerHTML='<strong style="color:#F14D07">Historical player and team stat records under audit.</strong> 2009–present single-game statistics do not establish all-time single-season totals. Comparisons against 2025 alone are withheld from record alerts until multiyear season benchmarks are verified. Existing verified team season records remain available.';
+ block.appendChild(info);
  const existing=document.querySelector('.rus-record-alert-stack');if(existing&&existing.parentNode)existing.after(block);else main.prepend(block);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>void boot().catch(console.error),{once:true});
