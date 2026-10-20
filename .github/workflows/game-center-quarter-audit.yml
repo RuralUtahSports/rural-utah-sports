@@ -1,0 +1,41 @@
+name: Refresh Game Center Quarter Audit
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 14 * * *'
+    - cron: '17 2 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'weekly-simulation.json'
+      - 'deseret-game-details.json'
+      - 'game-center-quarter-overrides-2026.json'
+      - 'scripts/build-game-center-quarters.cjs'
+permissions:
+  contents: write
+concurrency:
+  group: rus-quarter-audit
+  cancel-in-progress: true
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build quarter audit using reported 2026 finals
+        run: node scripts/build-game-center-quarters.cjs
+      - name: Commit changes only when verified source data changed
+        run: |
+          if git diff --quiet -- game-center-quarter-scores-2026.json; then
+            echo "Audited quarter feed unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add game-center-quarter-scores-2026.json
+          git commit -m "Refresh audited 2026 quarter scores"
+          git push origin HEAD:main
