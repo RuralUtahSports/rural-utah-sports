@@ -113,6 +113,7 @@
       ["Past Award Winners", "awards-2025.html"],
     ],
     simulators: [
+      ["Game Center · Interactive Matchups", "game-center.html"],
       ["2026 Playoff Pick’em", "playoff-pickem.html"],
       ["Weekly Pick'em", "simulators.html?tab=weekly"],
       ["Simulators Hub", "simulators.html"],
