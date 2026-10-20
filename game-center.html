@@ -34,13 +34,13 @@ footer{border-top:1px solid #292929;padding:22px;text-align:center;font-size:11p
 .series-summary{display:flex;flex-direction:column;gap:5px;background:#101010;border:1px solid #484848;border-left:4px solid #f14d07;border-radius:8px;padding:12px 14px;margin-bottom:10px}.series-summary strong{color:#ff8f5d;font-size:14px}.series-summary span{font-size:13px;font-weight:900}.series-summary small{font-size:11px;color:#aaa}.history-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.history-more{background:#f14d07;color:#111;border-color:#f14d07;flex:1;min-width:160px}.history-less{background:#242424;color:#fff;flex:0 0 auto}.historic-row .opponent{min-width:0}.historic-row .score{font-size:11px;overflow-wrap:anywhere}.historic-row{grid-template-columns:minmax(55px,80px) minmax(0,1fr) minmax(50px,110px)}@media(max-width:560px){.historic-row{grid-template-columns:minmax(57px,64px) minmax(0,1fr)}.historic-row .score{grid-column:2;text-align:left;color:#aaa;padding-left:28px}}
 /* Game Center 2.0 · mobile-first, no external graphics or dependencies. */
 .v2-dashboard{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:14px}
-.v2-stat-head{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:5px 0 17px;text-align:center;font-size:11px;font-weight:900;word-break:break-word}
+.v2-stat-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(95px,.95fr) minmax(0,1fr);gap:8px;margin:5px 0 17px;text-align:center;font-size:11px;font-weight:900;word-break:break-word}.v2-stat-head-center{color:#ff9a69}
 .v2-stat{padding:10px 0;border-bottom:1px solid #303030}
 .v2-stat:last-child{border-bottom:0}
-.v2-stat-name{font-size:11px;color:#c9c9c9;font-weight:800;margin-bottom:8px}
-.v2-stat-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.v2-stat-name{font-size:11px;color:#c9c9c9;font-weight:800;text-align:center;align-self:center;line-height:1.4;overflow-wrap:anywhere}
+.v2-stat-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(95px,.95fr) minmax(0,1fr);gap:10px;align-items:center}
 .v2-stat-pair>div{min-width:0}.v2-stat-pair strong{display:block;margin-bottom:6px;color:#ddd;font-size:14px;font-variant-numeric:tabular-nums}
-.v2-stat-pair>div:nth-child(2){text-align:right}
+.v2-stat-pair>div:nth-child(3){text-align:right}
 .v2-stat-pair .v2-leading strong{color:#ffb18a}
 .v2-stat-track{height:8px;border-radius:8px;background:#343434;overflow:hidden}
 .v2-stat-track i{display:block;height:100%;border-radius:8px;background:var(--fill,#f14d07);min-width:0}
@@ -132,7 +132,7 @@ footer{border-top:1px solid #292929;padding:22px;text-align:center;font-size:11p
 <div class="v2-dashboard">
  <section class="card" id="v2TeamComparison">
   <div class="card-heading"><h2>Visual team comparison</h2><span class="pill">2026 STATS</span></div>
-  <div class="v2-stat-head"><span id="v2StatsA">Team A</span><span id="v2StatsB">Team B</span></div>
+  <div class="v2-stat-head"><span id="v2StatsA">Team A</span><span class="v2-stat-head-center">STAT</span><span id="v2StatsB">Team B</span></div>
   <div id="v2Stats" aria-live="polite"><div class="empty">Loading team stats…</div></div>
   <p class="note" id="v2Coverage"></p>
  </section>
@@ -154,8 +154,8 @@ footer{border-top:1px solid #292929;padding:22px;text-align:center;font-size:11p
 </section>
 <section class="card" id="v2GameBreakdown">
  <div class="card-heading"><h2>2026 game breakdowns</h2><span class="pill">VERIFIED FINALS</span></div>
- <p class="note">Select a finished game involving either school. Detailed quarter scoring and scoring plays only display when available and consistent with the RUS final.</p>
- <div class="v2-game-control"><div><label for="v2GameSelect">Choose completed game</label><select id="v2GameSelect"><option value="">Loading…</option></select></div><button type="button" class="primary" id="v2LoadDetail">Load game breakdown</button></div>
+ <p class="note">Select a finished game involving either school. Audited quarter scores load automatically; available scoring plays can be opened separately.</p>
+ <div class="v2-game-control"><div><label for="v2GameSelect">Choose completed game</label><select id="v2GameSelect"><option value="">Loading…</option></select></div><button type="button" class="primary" id="v2LoadDetail" hidden>Show scoring plays</button></div>
  <div id="v2GameTitle" class="v2-game-title" aria-live="polite"></div>
  <div id="v2GameReport" aria-live="polite"><div class="empty">Select a completed game above.</div></div>
 </section>
@@ -169,7 +169,7 @@ footer{border-top:1px solid #292929;padding:22px;text-align:center;font-size:11p
 <script src="power-ratings-core.js?v=20261010-1"></script>
 <script src="school-assets-core.js?v=20260818-perf2"></script>
 <script src="game-center.js?v=20261020-v2-1" defer></script>
-<script src="game-center-v2.js?v=20261020-v2-1" defer></script>
+<script src="game-center-v2.js?v=20261020-quarter2" defer></script>
 <script src="nav-menu.js?v=20261015-nav-sync1"></script>
 </body>
 </html>
