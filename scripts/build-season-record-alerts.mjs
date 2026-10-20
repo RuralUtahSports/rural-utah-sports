@@ -236,5 +236,5 @@ const output={
   unbenchmarkedPlayerMetrics
 };
 if(teamAlerts.some(a=>a.value<=a.previousValue)||playerResults.some(a=>a.value<=a.previousValue))throw Error('Alert threshold regression');
-fs.writeFileSync('season-record-alerts.json',JSON.stringify(output,null,2)+'\n');
+fs.writeFileSync('season-record-alerts.json',JSON.stringify(output)+'\n');
 console.log('Season record alerts:',JSON.stringify(output.counts));
