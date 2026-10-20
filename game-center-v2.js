@@ -239,8 +239,8 @@ function update(){
  const newPair=!old||old.a.name!==fresh.a.name||old.b.name!==fresh.b.name||old.format!==fresh.format;
  state.snapshot=fresh;
  compare();renderProbability();players();
- if(newPair){state.gameSelected="";state.seriesFor="";state.series=null;gameOptions();rivalry();}
- else {rivalry();}
+ if(newPair){state.gameSelected="";state.seriesFor=[fresh.a.name,fresh.b.name].sort().join("|");state.series=fresh.history;gameOptions();rivalry();}
+ else {if(!state.series&&fresh.history)state.series=fresh.history;rivalry();}
 }
 window.addEventListener("rus:game-center-update",update);
 window.addEventListener("rus:game-center-history-ready",()=>{
