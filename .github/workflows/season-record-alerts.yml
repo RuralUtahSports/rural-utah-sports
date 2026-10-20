@@ -11,18 +11,24 @@ on:
       - 'greatest-seasons-data-v2.json'
       - 'scorigami.json'
       - 'teams-data.json'
+      - 'team-stats-2025.json'
+      - 'team-stats-2026.json'
       - 'deseret-rosters-stats-2025.json'
       - 'deseret-rosters-stats-2026.json'
       - 'uhsaa-football-records.json'
       - 'uhsaa-football-records-8-player.json'
       - 'uhsaa-records-defense.json'
       - 'scripts/build-season-record-alerts.mjs'
+      - 'scripts/season-record-metrics.mjs'
       - 'scripts/check-season-record-alerts.cjs'
       - 'home-season-record-alerts.js'
   pull_request:
     paths:
       - 'scripts/build-season-record-alerts.mjs'
       - 'scripts/check-season-record-alerts.cjs'
+      - 'scripts/season-record-metrics.mjs'
+      - 'team-stats-2025.json'
+      - 'team-stats-2026.json'
       - 'home-season-record-alerts.js'
       - 'index.html'
       - '.github/workflows/season-record-alerts.yml'
@@ -48,6 +54,7 @@ jobs:
           node-version: '20'
       - name: Syntax check generator and UI
         run: |
+          node --check scripts/season-record-metrics.mjs
           node --check scripts/build-season-record-alerts.mjs
           node --check home-season-record-alerts.js
       - name: Rebuild verified season benchmarks
