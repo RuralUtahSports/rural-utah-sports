@@ -1,14 +1,12 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-20T16:53:15.390Z
+Generated: 2026-10-20T16:58:47.074Z
 
-**0 errors • 7 warnings**
+**0 errors • 5 warnings**
 
-## Warnings (7)
+## Warnings (5)
 
-- **MAXPREPS_GAME_STATS_NOT_MERGED** — CANYON VIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-15","opponent":"Manti"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — FARMINGTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-14","opponent":"Layton"}]}`
-- **MAXPREPS_GAME_STATS_NOT_MERGED** — MANTI has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-15","opponent":"Canyon View"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — LAYTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-14","opponent":"Farmington"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — LAYTON CHRISTIAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":9,"missing":[{"date":"2026-10-16","opponent":"Mater Academy East Las Vegas"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MOUNTAIN RIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-15","opponent":"Westlake"}]}`
@@ -16,6 +14,6 @@ Generated: 2026-10-20T16:53:15.390Z
 
 ## Infos (2)
 
-- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9282,"unmatchedRows":631,"rosterlessTeams":0,"sourceGamePairs":1025,"missingGamePairs":7}`
+- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9282,"unmatchedRows":631,"rosterlessTeams":0,"sourceGamePairs":1025,"missingGamePairs":5}`
 - **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":602,"standings":118,"rankedTeams":68,"playerIds":6440}`
 
