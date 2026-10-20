@@ -9,6 +9,15 @@ const text=name=>fs.readFileSync(path.join(root,name),"utf8");
 const html=text("game-center.html"),core=text("game-center.js"),script=text("game-center-v2.js");
 const teamStats=JSON.parse(text("team-stats-2026.json"));
 const playerStats=JSON.parse(text("deseret-stat-metrics-2026.json"));
+const audit=JSON.parse(text("game-center-quarter-scores-2026.json"));
+assert.equal(audit.games.length,599);
+assert.equal(audit.summary.total,audit.summary.verified+audit.summary.partial+audit.summary.unavailable+audit.summary.conflict);
+for(const g of audit.games)if(g.status==="verified"){
+ assert.equal(g.quarters[0].reduce((sum,n)=>sum+n,0),g.awayTotal);
+ assert.equal(g.quarters[1].reduce((sum,n)=>sum+n,0),g.homeTotal);
+}
+assert.match(html,/v2-stat-head-center/);
+
 
 assert.match(html,/src="game-center-v2\.js\?v=/);
 assert.match(html,/src="nav-menu\.js[^"]*"><\/script>/);
@@ -48,7 +57,7 @@ const windowMock={
  addEventListener(type,fn){listeners[type]=fn;}
 };
 const documentMock={getElementById:el,addEventListener(){},querySelector(){return null}};
-const data={"team-stats-2026.json":teamStats,"deseret-stat-metrics-2026.json":playerStats};
+const data={"team-stats-2026.json":teamStats,"deseret-stat-metrics-2026.json":playerStats,"game-center-quarter-scores-2026.json":audit};
 const fetchMock=async url=>({ok:true,json:async()=>data[url]});
 vm.runInNewContext(script,{window:windowMock,document:documentMock,fetch:fetchMock,console,Date,Math,Number,String,Object,Map,Array,Promise,Set});
 const funcs=windowMock.RUSGameCenterV2Test;
@@ -57,6 +66,16 @@ assert.ok(funcs.winChance(10,14)>.5);
 assert.ok(funcs.winChance(-10,14)<.5);
 assert.ok(Math.abs(funcs.winChance(10,14)+funcs.winChance(-10,14)-1)<1e-9);
 assert.match(funcs.barRow("<unsafe>",1,2),/&lt;unsafe&gt;/);
+const grant=audit.games.find(g=>g.iso==="2026-10-08"&&g.away==="LOGAN"&&g.home==="GRANTSVILLE");
+assert.ok(grant&&grant.status==="verified");
+assert.match(funcs.auditedQuarterHTML(grant,{awayTeam:"LOGAN",homeTeam:"GRANTSVILLE",away:37,home:36}),/Q1/);
+assert.match(funcs.auditedQuarterHTML(grant,{awayTeam:"LOGAN",homeTeam:"GRANTSVILLE",away:38,home:36}),/withheld/);
+const part=audit.games.find(g=>g.iso==="2026-10-02"&&g.away==="GRANTSVILLE"&&g.home==="MORGAN");
+assert.ok(part&&part.status==="partial");
+assert.match(funcs.auditedQuarterHTML(part,{awayTeam:"GRANTSVILLE",homeTeam:"MORGAN",away:7,home:42}),/unknown, NOT zero/);
+assert.equal(playerStats.teams.GRANTSVILLE.stats.find(s=>s.category==="Receiving").rows.find(p=>p.name==="Dawson Dunlavy").values.Yards,"333");
+assert.equal(teamStats.teams.GRANTSVILLE.receiving.yards,1036);
+
 
 const g={date:"8/14/2026",awayTeam:"MORGAN",homeTeam:"RIDGELINE",away:21,home:24};
 const details={games:{"2026-08-14|MORGAN|RIDGELINE":{
