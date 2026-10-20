@@ -11,7 +11,7 @@ const kind=a=>a.recordType==='seasonTeam'&&a.status==='reported-archive-high'?'2
 const note=a=>a.recordType==='seasonPlayer'?
   (a.status==='exceeds-listed-uhsaa'?'Listed UHSAA: '+fmt(a.officialValue)+' '+a.unit+'; review required. ':'')+
   '2025 reported leader: '+fmt(a.previousValue)+' '+a.unit+' ('+a.previousPlayer+'). Older seasons not fully archived.':
-  (a.status==='on-pace'?'Previous completed season: ':'Previous record: ')+
+  (a.status==='on-pace'?'Previous completed season: ':a.status==='reported-archive-high'?'2025 reported team total: ':'Previous record: ')+
   fmt(a.previousValue)+' '+a.unit+' ('+a.previousSeason+').';
 function css(){
  if(document.getElementById('rus-season-alert-style'))return;
@@ -111,7 +111,7 @@ async function boot(){
  const all=[
  group('Single-Season Team Records','New 2026 historical school season highs, verified against the RUS game archive.',team,'team'),
  group('Reported Team Stat Milestones','Passing, rushing, receiving, defensive and kicking team totals above the reported 2025 benchmark. These are not all-time records.',teamStats,'teamStats'),
- group('Single-Season Player Milestones','All available categories, including kicking, tackles, passing, rushing, receiving and defensive stats. 2025 comparison only; not all-time.',player,'player'),
+ group('Single-Season Player Milestones','Monitoring '+(data.counts?.playerCategoriesMonitored||29)+' player metrics and '+(data.counts?.teamStatCategoriesMonitored||28)+' team stat metrics; including kicking, tackles, passing, rushing, receiving and defensive stats. 2025 comparison only; not all-time.',player,'player'),
  group('2026 Season Record Watch','Strongest season paces; not labeled broken until the season is complete.',pace,'pace')
  ].filter(Boolean);for(const el of all)block.appendChild(el);
  const existing=document.querySelector('.rus-record-alert-stack');if(existing&&existing.parentNode)existing.after(block);else main.prepend(block);
