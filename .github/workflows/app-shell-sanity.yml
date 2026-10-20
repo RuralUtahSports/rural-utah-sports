@@ -40,6 +40,10 @@ on:
       - 'game-center.html'
       - 'game-center.js'
       - 'game-center-v2.js'
+      - 'game-center-quarter-scores-2026.json'
+      - 'game-center-verified-quarters-2026.json'
+      - 'game-center-player-audit-2026.json'
+      - 'scripts/build-game-center-quarter-scores.mjs'
       - 'team-stats-2026.json'
       - 'deseret-game-details.json'
       - 'scripts/check-game-center-v2.cjs'
@@ -116,6 +120,10 @@ on:
       - 'game-center.html'
       - 'game-center.js'
       - 'game-center-v2.js'
+      - 'game-center-quarter-scores-2026.json'
+      - 'game-center-verified-quarters-2026.json'
+      - 'game-center-player-audit-2026.json'
+      - 'scripts/build-game-center-quarter-scores.mjs'
       - 'team-stats-2026.json'
       - 'deseret-game-details.json'
       - 'scripts/check-game-center-v2.cjs'
@@ -197,6 +205,7 @@ jobs:
           node --check rus-lines-dashboard.js
           node --check game-center.js
           node --check game-center-v2.js
+          node --check scripts/build-game-center-quarter-scores.mjs
           node --check scripts/check-game-center-v2.cjs
           node --check game-center-upgrade.js
           node --check app-shell-polish.js
@@ -221,6 +230,9 @@ jobs:
 
       - name: Verify app shell wiring
         run: node scripts/check-app-shell.mjs
+
+      - name: Verify audited Game Center quarter index
+        run: node scripts/build-game-center-quarter-scores.mjs --check
 
       - name: Verify interactive Game Center
         run: node scripts/check-game-center-v2.cjs
