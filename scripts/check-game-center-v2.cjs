@@ -97,6 +97,8 @@ assert.match(funcs.breakdownHTML(null,g),/No verified/);
 
 // Alignment must follow the school, never the unordered pair of scores.
 assert.match(funcs.safeScoringHTML(matched,g),/Verified scoring play/);
+const mascots={...matched,boxScore:{...matched.boxScore,rows:matched.boxScore.rows.map(r=>({...r,team:r.team+" Mascots (1-0)"}))}};
+assert.match(funcs.safeScoringHTML(mascots,g),/Verified scoring play/);
 const reversed={...matched,boxScore:{...matched.boxScore,rows:[...matched.boxScore.rows].reverse()}};
 assert.match(funcs.safeScoringHTML(reversed,g),/Verified scoring play/);
 assert.doesNotMatch(funcs.safeScoringHTML(matched,{...g,away:24,home:21}),/Verified scoring play/);
