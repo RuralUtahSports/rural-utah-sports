@@ -181,14 +181,21 @@ const GAME_FIELD_MAP={
   Sacks:{Sacks:'SACKS'},
   'Defensive Statistics':{Interceptions:'PASS INT.',INTs:'PASS INT.',INT:'PASS INT.',INTYards:'PASS INT YDS',InterceptionYards:'PASS INT YDS',YardsPerINT:'PASS INT AVG',PassesDefensed:'PD',FumbleRecoveries:'FUM REC',FumbleRecoveryYards:'FR YDS',CausedFumbles:'CAUSED FUM',QuarterbackHurries:'QB HURRIES',QBHurries:'QB HURRIES',Hurries:'QB HURRIES'},
   Touchdowns:{FumbleRecoveryTDNum:'DEFENSE TD',InterceptionTDNum:'DEFENSE TD',IntReturnedTDNum:'DEFENSE TD',PuntReturnTDNum:'RETURN TD',PuntReturnedTDNum:'RETURN TD',KickoffReturnTDNum:'RETURN TD',KickoffsReturnedTDNum:'RETURN TD'},
-  'PATs and Field Goals':{PATMade:'PAT',FieldGoalsMade:'FG',KickingPoints:'Pts'}
+  'PATs and Field Goals':{PATMade:'PAT',PATsMade:'PAT',PATKickingMade:'PAT',PATKickMade:'PAT',ExtraPointsMade:'PAT',FieldGoalsMade:'FG',FieldGoalMade:'FG',FGMade:'FG',KickingPoints:'Pts',KickScoringPoints:'Pts'}
 };
 const GAME_GROUP_ALIASES={DEFENSIVE:'Defensive Statistics',DEFENSE:'Defensive Statistics',DEFENSIVESTATISTICS:'Defensive Statistics',DEFENSESPECIALTEAMS:'Defensive Statistics'};
 const gameGroupName=value=>GAME_GROUP_ALIASES[compact(value)]||clean(value);
 function gameField(fieldMap,name){
   const direct=fieldMap[name];if(direct)return direct;
   const key=Object.keys(fieldMap).find(candidate=>compact(candidate)===compact(name));
-  return key?fieldMap[key]:'';
+  if(key)return fieldMap[key];
+  if(fieldMap===GAME_FIELD_MAP['PATs and Field Goals']){
+    const normalized=compact(name);
+    if(/^(?:PAT|PATS|EXTRAPOINTS?)(?:KICKING)?(?:MADE|GOOD|NUM)?$/.test(normalized))return 'PAT';
+    if(/^(?:FG|FIELDGOALS?)(?:MADE|GOOD|NUM)?$/.test(normalized))return 'FG';
+    if(/^(?:KICKING|KICKSCORING)?(?:TOTAL)?(?:POINTS|PTS)$/.test(normalized))return 'Pts';
+  }
+  return '';
 }
 function parsePlayerGameLogs(html,player){
   const logs=nextData(html)?.props?.pageProps?.statsCardProps?.careerGameLogs?.groups||[],games=new Map();
@@ -300,6 +307,12 @@ function selfTest(){
   const flightPayload='6:'+JSON.stringify([String.fromCharCode(36),String.fromCharCode(36)+'L1',null,{pageProps:{statsCardProps:{careerGameLogs:flightLogs}}}]);
   const flightHtml='<script>self.__next_f.push([1,'+JSON.stringify(flightPayload)+'])</script>',game=parsePlayerGameLogs(flightHtml,{playerId:'harvey',number:'5',name:'Synic Harvey'}).find(x=>x.opponent==='Kimberly'),defense=game?.statLines.find(x=>x.category==='Defensive Statistics'),touchdowns=game?.statLines.find(x=>x.category==='Touchdowns');
   if(defense?.values?.['PASS INT.']!=='2'||defense?.values?.['PASS INT YDS']!=='64'||defense?.values?.PD!=='1'||touchdowns?.values?.['DEFENSE TD']!=='1')throw new Error('MaxPreps streamed defensive-stat self-test failed');
+  const kickGroups={groups:[{name:'Special Teams',subgroups:[{name:'PATs and Field Goals',stats:[{stamp:'2026-10-15T19:00:00',opponentSchoolName:'Logan',stats:[{name:'PAT Kicking Made',value:'3'},{name:'Field Goal Made',value:'1'},{name:'Kick Scoring Points',value:'6'}]}]}]}]};
+  const kickFlight='6:'+JSON.stringify([String.fromCharCode(36),String.fromCharCode(36)+'L1',null,{pageProps:{statsCardProps:{careerGameLogs:kickGroups}}}]);
+  const kickHtml='<script>self.__next_f.push([1,'+JSON.stringify(kickFlight)+'])</script>';
+  const kickGame=parsePlayerGameLogs(kickHtml,{playerId:'kicker',number:'1',name:'Example Kicker'})[0];
+  const kickLine=kickGame?.statLines?.find(line=>line.category==='PATs and Field Goals');
+  if(kickLine?.values.PAT!=='3'||kickLine?.values.FG!=='1'||kickLine?.values.Pts!=='6')throw new Error('MaxPreps kicking game-log alias self-test failed');
   if(!sameSchool('CEDAR CITY','Cedar')||!sameSchool('ALA','American Leadership Academy')||!KNOWN_STATS_URLS['CEDAR CITY']||!KNOWN_STATS_URLS.ALA)throw new Error('Verified MaxPreps school mapping self-test failed');
   console.log('MaxPreps fallback self-test passed.');
 }
