@@ -1,6 +1,6 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-20T15:56:27.875Z
+Generated: 2026-10-20T16:53:15.390Z
 
 **0 errors • 7 warnings**
 
@@ -16,6 +16,6 @@ Generated: 2026-10-20T15:56:27.875Z
 
 ## Infos (2)
 
-- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9282,"unmatchedRows":631,"rosterlessTeams":0,"sourceGamePairs":1024,"missingGamePairs":7}`
+- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9282,"unmatchedRows":631,"rosterlessTeams":0,"sourceGamePairs":1025,"missingGamePairs":7}`
 - **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":602,"standings":118,"rankedTeams":68,"playerIds":6440}`
 
