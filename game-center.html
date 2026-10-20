@@ -87,6 +87,13 @@ footer{border-top:1px solid #292929;padding:22px;text-align:center;font-size:11p
 .v2-anchor-links a:hover{border-color:#f14d07;color:#ff9a69}
 @media(max-width:800px){.v2-dashboard{grid-template-columns:1fr}}
 @media(max-width:620px){.v2-player-grid{grid-template-columns:1fr}.v2-game-control{grid-template-columns:1fr}.v2-game-control button{height:auto}.v2-quarters-row>span{min-width:29px}.v2-quarters-row{padding:9px 5px;gap:4px}.v2-quarters-row>b{font-size:10px}.v2-prob-options{gap:3px}.v2-prob-options button{font-size:9px}.v2-player-row{grid-template-columns:90px 1fr}}
+
+/* Team A value | centered comparison label | Team B value */
+.v2-stat-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(105px,1.12fr) minmax(0,1fr);align-items:center;gap:11px}
+.v2-stat-pair .v2-stat-name{text-align:center;color:#e6e6e6;font-weight:900;margin:0;line-height:1.3;font-size:12px;overflow-wrap:break-word}
+.v2-stat-pair>div:nth-child(3){text-align:right}
+.v2-stat-pair>div:nth-child(2){text-align:center}
+@media(max-width:560px){.v2-stat-pair{grid-template-columns:minmax(0,1fr) minmax(94px,1.16fr) minmax(0,1fr);gap:6px}.v2-stat-pair .v2-stat-name{font-size:10px}}
 </style>
 </head>
 <body>
@@ -155,8 +162,9 @@ footer{border-top:1px solid #292929;padding:22px;text-align:center;font-size:11p
 <section class="card" id="v2GameBreakdown">
  <div class="card-heading"><h2>2026 game breakdowns</h2><span class="pill">VERIFIED FINALS</span></div>
  <p class="note">Select a finished game involving either school. Detailed quarter scoring and scoring plays only display when available and consistent with the RUS final.</p>
- <div class="v2-game-control"><div><label for="v2GameSelect">Choose completed game</label><select id="v2GameSelect"><option value="">Loading…</option></select></div><button type="button" class="primary" id="v2LoadDetail">Load game breakdown</button></div>
+ <div class="v2-game-control"><div><label for="v2GameSelect">Choose completed game</label><select id="v2GameSelect"><option value="">Loading…</option></select></div><button type="button" class="primary" id="v2LoadDetail">See scoring plays</button></div>
  <div id="v2GameTitle" class="v2-game-title" aria-live="polite"></div>
+ <p id="v2QuarterCoverage" class="note" aria-live="polite">Auditing quarter reports…</p>
  <div id="v2GameReport" aria-live="polite"><div class="empty">Select a completed game above.</div></div>
 </section>
 <section class="card"><div class="card-heading"><h2>Head-to-head · All-time</h2><a id="rivalryLink" class="text-link" href="rivalry.html">Full rivalry hub ↗</a></div><div id="h2h" class="results-list" aria-live="polite"><p class="loading">Loading…</p></div><p class="note">The five most recent recorded meetings are shown first. See More reveals the rest of the RUS historical record, including earlier seasons and ties. Historical coverage may be incomplete for some programs.</p></section>
@@ -169,7 +177,7 @@ footer{border-top:1px solid #292929;padding:22px;text-align:center;font-size:11p
 <script src="power-ratings-core.js?v=20261010-1"></script>
 <script src="school-assets-core.js?v=20260818-perf2"></script>
 <script src="game-center.js?v=20261020-v2-1" defer></script>
-<script src="game-center-v2.js?v=20261020-v2-1" defer></script>
+<script src="game-center-v2.js?v=20261020-quarterfix1" defer></script>
 <script src="nav-menu.js?v=20261015-nav-sync1"></script>
 </body>
 </html>
