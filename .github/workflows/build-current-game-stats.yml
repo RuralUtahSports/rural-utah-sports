@@ -11,6 +11,8 @@ on:
       - 'maxpreps-player-game-stats-2026.json'
       - 'scripts/build_player_game_stats.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
+      - 'scripts/merge_verified_deseret_kicking.mjs'
+      - 'deseret-kicking-game-stats-2026.json'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
       - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/build_weekly_awards.mjs'
@@ -45,6 +47,7 @@ jobs:
           node scripts/build_player_game_stats.mjs
           node scripts/merge_maxpreps_game_logs.mjs
           node scripts/reconcile_season_stats_from_game_logs.mjs
+          node scripts/merge_verified_deseret_kicking.mjs
           node scripts/build_deseret_stat_metrics.mjs
           node scripts/build_weekly_awards.mjs
           node scripts/build_team_current_shards.mjs
