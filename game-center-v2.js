@@ -7,7 +7,7 @@ const num=x=>x==null||String(x).trim()===""?null:(Number.isFinite(Number(x))?Num
 const fmt=x=>x==null?"—":Number(x).toLocaleString("en-US",{maximumFractionDigits:1});
 const percent=x=>(x*100).toFixed(1)+"%";
 const getTeam=(obj,name)=>obj?.teams?.[name]||null;
-const state={snapshot:null,teamStats:null,playerStats:null,details:null,detailsLoading:null,series:null,seriesFor:"",gameSelected:"",teamStatsError:false,playerError:false,detailsError:false,sd:{}};
+const state={snapshot:null,teamStats:null,playerStats:null,playerAudit:null,quarterData:null,quarterError:false,details:null,detailsLoading:null,series:null,seriesFor:"",gameSelected:"",teamStatsError:false,playerError:false,detailsError:false,sd:{}};
 const fetchData=async path=>{const response=await fetch(path,{cache:"no-store"});if(!response.ok)throw Error(path+" "+response.status);return response.json()};
 function comparable(a,b){
  return a!==null&&a!==undefined&&b!==null&&b!==undefined&&Number.isFinite(a)&&Number.isFinite(b);
@@ -130,7 +130,13 @@ function playerLeader(team,category,stat){
  const record=state.playerStats?.teams?.[team];
  const group=record?.stats?.find(x=>String(x.category).toLowerCase()===category.toLowerCase());
  if(!group)return null;
- const scored=(group.rows||[]).map(r=>({id:r.playerId,name:r.name,number:r.number,n:num(r.values?.[stat]),td:num(r.values?.TD)})).filter(r=>r.n!==null&&r.n>0);
+ const overrides=state.playerAudit?.teams?.[team]?.[category]||{};
+ const scored=(group.rows||[]).map(r=>{
+  const reported=num(r.values?.[stat]),override=overrides[r.name];
+  const crossChecked=override&&stat==="Yards"&&num(override.yards)!==null&&(reported===null||num(override.yards)>reported);
+  return {id:r.playerId,name:crossChecked?override.displayName:r.name,number:r.number,
+   n:crossChecked?num(override.yards):reported,td:num(r.values?.TD),crossChecked:!!crossChecked};
+ }).filter(r=>r.n!==null&&r.n>0);
  scored.sort((a,b)=>b.n-a.n||a.name.localeCompare(b.name));
  return scored[0]||null;
 }
@@ -150,12 +156,12 @@ function players(){
    const p=playerLeader(t.name,cat,stat);
    const url=p?.id?"player.html?id="+encodeURIComponent(p.id)+"&season=2026":"";
    return '<div class="v2-player-row"><span>'+esc(title)+'</span><div>'+(p?
-    '<b>'+(url?'<a href="'+url+'">'+esc(p.name)+'</a>':esc(p.name))+'</b><small>'+(p.number&&p.number!=="-"?"#"+esc(p.number)+" · ":"")+fmt(p.n)+" "+unit+'</small>':
+    '<b>'+(url?'<a href="'+url+'">'+esc(p.name)+'</a>':esc(p.name))+'</b><small>'+(p.number&&p.number!=="-"?"#"+esc(p.number)+" · ":"")+fmt(p.n)+" "+unit+(p.crossChecked?" · MaxPreps cross-check":"")+"</small>":
     '<b>No reported total</b><small>—</small>')+'</div></div>';
   }).join("");
   return '<article class="v2-player-team"><h3>'+esc(t.name)+'</h3>'+rows+'</article>';
  }).join("");
- $("v2PlayerSource").textContent="Source: Deseret-reported 2026 player season totals collected by RUS; reporting may be partial or delayed. Player profile links lead to RUS’s existing records.";
+ $("v2PlayerSource").textContent="Reported 2026 player totals from Deseret. Grantsville receiving-yard discrepancy: the RUS MaxPreps snapshot lists Dawson Dunlavy at 333 yards versus 100 in the Deseret snapshot; Game Center uses the source-verified MaxPreps total. Other reported season totals may be incomplete.";
 }
 function gameKey(g){return g.date+"|"+g.awayTeam+"|"+g.homeTeam;}
 function gameOptions(){
@@ -258,8 +264,13 @@ $("v2GameSelect")?.addEventListener("change",ev=>{state.gameSelected=ev.target.v
 $("v2LoadDetail")?.addEventListener("click",loadDetails);
 void Promise.all([
  fetchData("team-stats-2026.json").then(v=>state.teamStats=v).catch(e=>{state.teamStatsError=true;console.warn("Team comparison data unavailable",e)}),
- fetchData("deseret-stat-metrics-2026.json").then(v=>state.playerStats=v).catch(e=>{state.playerError=true;console.warn("Player season data unavailable",e)})
-]).then(()=>{compare();players()});
+ fetchData("deseret-stat-metrics-2026.json").then(v=>state.playerStats=v).catch(e=>{state.playerError=true;console.warn("Player season data unavailable",e)}),
+ fetchData("game-center-player-audit-2026.json").then(v=>state.playerAudit=v).catch(e=>console.warn("Player cross-check unavailable",e)),
+ fetchData("game-center-quarter-scores-2026.json").then(v=>{
+  state.quarterData=v;const c=v.summary||{},node=$("v2QuarterCoverage");
+  if(node)node.textContent="Of "+c.verified+" verified finals: "+c.complete+" complete quarter reports, "+c.partial+" partial, "+c.unavailable+" not reported, "+c.conflict+" conflicting sources withheld.";
+ }).catch(e=>{state.quarterError=true;console.warn("Quarter index could not load",e)})
+]).then(()=>{compare();players();renderBreakdown()});
 update();
 window.RUSGameCenterV2Test=Object.freeze({winChance,detailLookup,breakdownHTML,barRow,probabilitySD});
 })();
