@@ -25,9 +25,11 @@ for(const a of data.teamWatches){
  assert.ok(['pointsPerGame','pointsAllowedPerGame','averageMargin','fewestPointsAllowed'].includes(a.categoryKey));
  assert.ok(a.previousSeason<2026);
 }
+// Only third-party listed UHSAA benchmarks, never just 2025, can enter record-watch alerts.
+assert.equal(data.teamReportedArchive.length,0,'Two-season team comparisons falsely published as records');
 for(const a of data.playerReportedArchive){
  assert.equal(a.recordType,'seasonPlayer');
- assert.ok(['reported-archive-high','exceeds-listed-uhsaa'].includes(a.status));
+ assert.equal(a.status,'exceeds-listed-uhsaa','2025-only player comparison falsely published as record');
  assert.equal(a.previousSeason,2025);
  assert.ok(a.section&&a.categoryKey&&a.category);
  assert.equal(typeof a.negativeOutcome,'boolean');
@@ -37,7 +39,13 @@ for(const a of data.playerReportedArchive){
  assert.ok(a.status==='exceeds-listed-uhsaa'||a.note.includes('NOT a verified all-time school record'));
  if(a.status==='exceeds-listed-uhsaa')assert.ok(a.value>a.officialValue);
 }
-for(const a of data.teamReportedArchive){
+assert.ok(Array.isArray(data.comparisonOnly?.player)&&Array.isArray(data.comparisonOnly?.team));
+for(const a of data.comparisonOnly.player){
+ assert.equal(a.status,'reported-archive-high');
+ assert.equal(a.previousSeason,2025);
+ assert.ok(a.note.includes('NOT a verified all-time school record'));
+}
+for(const a of data.comparisonOnly.team){
  assert.equal(a.recordType,'seasonTeam');
  assert.equal(a.status,'reported-archive-high');
  assert.equal(a.previousSeason,2025);
@@ -53,7 +61,7 @@ for(const x of ['Defense/Special Teams|TACKLES','Defense/Special Teams|FUM REC',
  'Defense/Special Teams|FR YDS','Kicking|Pts','Passing|COMP-ATT', 'Passing|INT', 'Passing|Int']){
  assert.ok(observed.includes(x),'Missing tracked field: '+x);
 }
-const actualPlayerKeys=new Set(data.playerReportedArchive.map(a=>a.categoryKey));
+const actualPlayerKeys=new Set(data.comparisonOnly.player.map(a=>a.categoryKey));
 for(const key of ['tackles','rushingYards','passingAttempts','passingCompletions','kickingPoints',
  'receivingYards','defensiveTouchdowns','returnTouchdowns']){
  assert.ok(actualPlayerKeys.has(key),'No reported benchmark alerts for '+key);
@@ -65,6 +73,9 @@ assert.equal(count.playerReportedArchive,data.playerReportedArchive.length);
 assert.equal(count.playerCategoriesMonitored,29);
 assert.equal(count.teamStatCategoriesMonitored,28);
 assert.equal(count.teamReportedArchive,data.teamReportedArchive.length);
+assert.equal(count.playerComparisonOnly,data.comparisonOnly.player.length);
+assert.equal(count.teamComparisonOnly,data.comparisonOnly.team.length);
+assert.equal(data.playerReportedArchive.filter(a=>a.status==='reported-archive-high').length,0);
 assert.equal(count.unbenchmarkedPlayerStats,data.unbenchmarkedPlayerMetrics.length);
 assert.equal(count.playerExceedingUhsaa,data.playerReportedArchive.filter(x=>x.status==='exceeds-listed-uhsaa').length);
 const code=fs.readFileSync('scripts/build-season-record-alerts.mjs','utf8');
