@@ -6,7 +6,7 @@ const colors=new Map(),clean=v=>String(v||'').toUpperCase().replace(/[^A-Z0-9]/g
 const color=t=>{const v=colors.get(clean(t));if(!/^#[0-9a-f]{6}$/i.test(v||''))return'#f14d07';
  const n=parseInt(v.slice(1),16),l=.2126*((n>>16)&255)+.7152*((n>>8)&255)+.0722*(n&255);
  return l>=110?v:'#ec9b66';};
-const kind=a=>a.recordType==='seasonPlayer'?(a.status==='exceeds-listed-uhsaa'?'EXCEEDS LISTED UHSAA MARK':'REPORTED 2025–26 PLAYER HIGH'):
+const kind=a=>a.recordType==='seasonTeam'&&a.status==='reported-archive-high'?'2025–26 REPORTED TEAM STAT HIGH':a.recordType==='seasonPlayer'?(a.status==='exceeds-listed-uhsaa'?'EXCEEDS LISTED UHSAA MARK':'REPORTED 2025–26 PLAYER HIGH'):
  a.status==='on-pace'?'PROVISIONAL 2026 SEASON PACE':'2026 SCHOOL SEASON RECORD';
 const note=a=>a.recordType==='seasonPlayer'?
   (a.status==='exceeds-listed-uhsaa'?'Listed UHSAA: '+fmt(a.officialValue)+' '+a.unit+'; review required. ':'')+
@@ -32,13 +32,14 @@ function css(){
 }
 function card(a){
  const who=a.player?esc(a.player)+' • <strong>'+esc(a.team)+'</strong>':'<strong>'+esc(a.team)+'</strong>';
+ const caution=a.negativeOutcome?' • Negative outcome: higher count, not an award.':'';
  const href=a.playerId?'player.html?id='+encodeURIComponent(a.playerId):'team.html?team='+encodeURIComponent(a.team);
  return '<article class="rus-season-card" style="--accent:'+color(a.team)+'">'+
  '<div class="rus-season-kicker">'+esc(kind(a))+'</div><div class="rus-season-who">'+who+
  '</div><div class="rus-season-value">'+esc(fmt(a.value))+' '+esc(a.unit||'')+
- '</div><div class="rus-season-category">'+esc(a.category)+'</div><div class="rus-season-note">'+esc(note(a))+
+ '</div><div class="rus-season-category">'+esc(a.category)+'</div><div class="rus-season-note">'+esc(note(a)+caution)
  '</div><div class="rus-season-meta">As of '+esc(a.asOf||a.date||'2026')+
- (a.status==='on-pace'?' • Not final':a.recordType==='seasonPlayer'?' • Reported stats only':' • Historical RUS game archive')+
+ (a.status==='on-pace'?' • Not final':a.status==='reported-archive-high'?' • 2025–26 reported comparison':' • Historical RUS game archive')+
  '</div><a class="rus-season-link" href="'+esc(href)+'">View '+(a.player?'player':'team')+' →</a></article>';
 }
 function draw(rows,title,page,pages){
@@ -60,7 +61,7 @@ function draw(rows,title,page,pages){
    ctx.font='900 '+fit(value,330,40)+'px Arial';ctx.fillText(value,990,y+81);ctx.textAlign='left';
    ctx.fillStyle='#bbb';ctx.font='700 16px Arial';ctx.fillText('Previous: '+fmt(a.previousValue)+' ('+(a.previousSeason||'2025')+')',90,y+144);
    ctx.fillStyle='#8b8b8b';ctx.font='700 15px Arial';
-   ctx.fillText(a.status==='on-pace'?'Provisional, not final':a.recordType==='seasonPlayer'?'Reported 2025–26 comparison; not all-time':'RUS recorded school history',90,y+172);
+   ctx.fillText(a.status==='on-pace'?'Provisional, not final':a.status==='reported-archive-high'?'Reported 2025–26 comparison; not all-time':'RUS recorded school history',90,y+172);
  });
  ctx.fillStyle='#999';ctx.font='700 16px Arial';ctx.fillText('Coverage varies; UHSAA listed marks require official recognition.',70,1280);
  ctx.fillStyle='#fff';ctx.font='900 21px Arial';ctx.fillText('ruralutahsports.com',70,1320);
@@ -90,6 +91,7 @@ function group(title,intro,rows,key){
  '</div></div><div class="rus-season-scroller">'+rows.slice(0,cap).map(card).join('')+
  '</div><div class="rus-season-foot">'+esc(key==='player'?'Reported 2025–26 player comparisons are not verified all-time school records. Listed UHSAA marks need official review.':
  key==='pace'?'Averages and defensive records can change before the season ends. No final record is claimed.':
+ key==='teamStats'?'All available 2025–26 team statistical categories are compared. Not a verified all-time school record. Some stats vary by reporting coverage.':
  'Historical ranks cover games recorded by Rural Utah Sports; incomplete older seasons may affect totals.')+'</div>';
  section.addEventListener('click',e=>{
   const b=e.target.closest('button[data-act]');if(!b)return;
@@ -101,14 +103,15 @@ function group(title,intro,rows,key){
 async function boot(){
  const r=await fetch('season-record-alerts.json?v=20261020-season-records1',{cache:'no-store'});
  if(!r.ok)return;const data=await r.json();
- const team=data.teamBroken||[],player=data.playerReportedArchive||[],pace=data.teamWatches||[];
- if(!team.length&&!player.length&&!pace.length)return;
+ const team=data.teamBroken||[],teamStats=data.teamReportedArchive||[],player=data.playerReportedArchive||[],pace=data.teamWatches||[];
+ if(!team.length&&!teamStats.length&&!player.length&&!pace.length)return;
  try{const t=await fetch('teams-data.json?v=20261020-season-records1');if(t.ok)for(const x of await t.json())colors.set(clean(x.team),x.backgroundColor)}catch(e){}
  css();const main=document.querySelector('main.container')||document.querySelector('main');if(!main)return;
  const block=document.createElement('div');block.id='rusSeasonRecordAlerts';
  const all=[
  group('Single-Season Team Records','New 2026 historical school season highs, verified against the RUS game archive.',team,'team'),
- group('Single-Season Player Milestones','Player season totals exceeding the available reported 2025 school-season benchmark.',player,'player'),
+ group('Reported Team Stat Milestones','Passing, rushing, receiving, defensive and kicking team totals above the reported 2025 benchmark. These are not all-time records.',teamStats,'teamStats'),
+ group('Single-Season Player Milestones','All available categories, including kicking, tackles, passing, rushing, receiving and defensive stats. 2025 comparison only; not all-time.',player,'player'),
  group('2026 Season Record Watch','Strongest season paces; not labeled broken until the season is complete.',pace,'pace')
  ].filter(Boolean);for(const el of all)block.appendChild(el);
  const existing=document.querySelector('.rus-record-alert-stack');if(existing&&existing.parentNode)existing.after(block);else main.prepend(block);
