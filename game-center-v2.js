@@ -7,7 +7,7 @@ const num=x=>x==null||String(x).trim()===""?null:(Number.isFinite(Number(x))?Num
 const fmt=x=>x==null?"—":Number(x).toLocaleString("en-US",{maximumFractionDigits:1});
 const percent=x=>(x*100).toFixed(1)+"%";
 const getTeam=(obj,name)=>obj?.teams?.[name]||null;
-const state={snapshot:null,teamStats:null,playerStats:null,details:null,detailsLoading:null,series:null,seriesFor:"",gameSelected:"",teamStatsError:false,playerError:false,detailsError:false,sd:{}};
+const state={snapshot:null,teamStats:null,playerStats:null,quarterData:null,quarterError:false,details:null,detailsLoading:null,series:null,seriesFor:"",gameSelected:"",teamStatsError:false,playerError:false,detailsError:false,sd:{}};
 const fetchData=async path=>{const response=await fetch(path,{cache:"no-store"});if(!response.ok)throw Error(path+" "+response.status);return response.json()};
 function comparable(a,b){
  return a!==null&&a!==undefined&&b!==null&&b!==undefined&&Number.isFinite(a)&&Number.isFinite(b);
@@ -17,8 +17,8 @@ function barRow(label,a,b,higherBetter=true,suffix=""){
  const widthA=valid?Math.max(2,Math.round(Math.max(0,a)/max*100)):0;
  const widthB=valid?Math.max(2,Math.round(Math.max(0,b)/max*100)):0;
  const better=valid?(Math.abs(a-b)<0.001?"tie":(a>b)===higherBetter?"a":"b"):"missing";
- return '<div class="v2-stat"><div class="v2-stat-name">'+esc(label)+'</div>'+
-   '<div class="v2-stat-pair"><div class="'+(better==="a"?"v2-leading":"")+'"><strong>'+fmt(a)+(a==null?"":suffix)+'</strong><div class="v2-stat-track"><i style="width:'+widthA+'%;--fill:var(--tone-a)"></i></div></div>'+
+ return '<div class="v2-stat"><div class="v2-stat-pair"><div class="'+(better==="a"?"v2-leading":"")+'"><strong>'+fmt(a)+(a==null?"":suffix)+'</strong><div class="v2-stat-track"><i style="width:'+widthA+'%;--fill:var(--tone-a)"></i></div></div>'+
+   '<div class="v2-stat-name">'+esc(label)+'</div>'+
    '<div class="'+(better==="b"?"v2-leading":"")+'"><strong>'+fmt(b)+(b==null?"":suffix)+'</strong><div class="v2-stat-track"><i style="width:'+widthB+'%;--fill:var(--tone-b)"></i></div></div></div></div>';
 }
 function compare(){
@@ -155,7 +155,9 @@ function players(){
   }).join("");
   return '<article class="v2-player-team"><h3>'+esc(t.name)+'</h3>'+rows+'</article>';
  }).join("");
- $("v2PlayerSource").textContent="Source: Deseret-reported 2026 player season totals collected by RUS; reporting may be partial or delayed. Player profile links lead to RUS’s existing records.";
+ const snapshots=[s.a.name,s.b.name].map(team=>({team,date:state.playerStats?.teams?.[team]?.maxprepsLastUpdated})).filter(x=>x.date);
+ const timing=snapshots.map(x=>x.team+" MaxPreps fallback: "+x.date.slice(0,10)).join(" · ");
+ $("v2PlayerSource").textContent="Reported 2026 season totals from RUS's Deseret/MaxPreps data. Not every game has complete player stats. "+(timing?timing+". ":"")+"A fallback's last-update date does not verify newer games.";
 }
 function gameKey(g){return g.date+"|"+g.awayTeam+"|"+g.homeTeam;}
 function gameOptions(){
@@ -204,24 +206,61 @@ function breakdownHTML(detail,g){
    '<p class="note">Scoring-play details not available for this game.</p>')+
   (detail.url&&/^https:\/\/sports\.deseret\.com\//.test(detail.url)?'<p><a class="text-link" target="_blank" rel="noopener noreferrer" href="'+esc(detail.url)+'">Source game report ↗</a></p>':"");
 }
+
+const quartersKey=(g)=>{const m=String(g.date||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+ return m?m[3]+"-"+m[1].padStart(2,"0")+"-"+m[2].padStart(2,"0")+"|"+g.awayTeam+"|"+g.homeTeam:"";};
+const sourceLink=(url)=>/^https:\/\/sports\.deseret\.com\/high-school\/football\/game\//.test(String(url||""))
+ ? '<p><a class="text-link" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Source game report ↗</a></p>':"";
+function auditedQuarterHTML(record,g){
+ if(!record)return '<div class="empty">This final has not yet been included in the latest quarter-score audit. No quarters will be inferred.</div>';
+ if(record.awayTotal!==g.away||record.homeTotal!==g.home)return '<div class="warning">RUS has updated this final since the quarter archive was generated. Quarter scores are withheld until the new totals can be checked.</div>';
+ const reasons={not_in_source:"No source game report",source_not_final:"Game report is not yet marked final",no_quarter_box:"No quarter-by-quarter table reported",team_label_unmatched:"Quarter-score team labels could not be verified",quarter_sum_conflict:"Quarter totals do not add up",final_total_conflict:"Source final differs from RUS final",no_quarter_values:"No quarter points reported",quarter_count_conflict:"Incomplete quarter period structure"};
+ const link=sourceLink(record.sourceUrl);
+ if(record.status==="conflict")
+  return '<div class="warning">Quarter scoring withheld: '+esc(reasons[record.reason]||"Source-data conflict")+'. The official RUS final above is unaffected.</div>'+link;
+ if(record.status!=="verified"&&record.status!=="partial")
+  return '<div class="empty">Verified final available, but quarter-by-quarter scores are not: '+esc(reasons[record.reason]||"Not reported")+'.</div>'+link;
+ const teams=[g.awayTeam,g.homeTeam],totals=[g.away,g.home];
+ const rows=teams.map((name,i)=>{
+  const cells=(record.quarters?.[i]||[]);
+  return '<div class="v2-quarters-row"><b>'+esc(name)+'</b>'+
+   (record.periods||[]).map((period,j)=>'<span><small>'+esc(period)+'</small>'+ (cells[j]==null?"—":esc(cells[j]))+'</span>').join("")+
+   '<strong>'+esc(totals[i])+'</strong></div>';
+ }).join("");
+ return '<div class="v2-quarters">'+rows+'</div>'+
+  '<p class="note">'+(record.status==="verified"?"Quarter-by-quarter points verified against the RUS final.":"Only reported quarter cells are shown. A dash means unknown, NOT zero.")+'</p>'+link;
+}
+function safeScoringHTML(detail,g){
+ if(!detail?.final)return '<p class="note">Verified scoring-play details unavailable for this game.</p>';
+ const rows=detail.boxScore?.rows||[];
+ if(rows.length!==2)return '<p class="note">Source game details have no confirmable final box score.</p>';
+ const total=rows.map(x=>num(x.total)).sort((a,b)=>a-b);
+ const actual=[g.away,g.home].sort((a,b)=>a-b);
+ if(total.length!==2||total.some((v,i)=>v!==actual[i]))return '<div class="warning">Scoring plays withheld because the source final conflicts with the RUS verified final.</div>';
+ const plays=(detail.scoringPlays||[]).map(x=>typeof x==="string"?x:x?.text||x?.description||"").filter(Boolean);
+ return plays.length?'<details class="v2-plays" open><summary>Recorded scoring plays ('+plays.length+')</summary><ol>'+plays.map((line,i)=>'<li><b>'+(i+1)+'.</b> '+esc(line)+'</li>').join("")+'</ol></details>':
+  '<p class="note">No scoring-play text was supplied for this game.</p>';
+}
 function renderBreakdown(){
- const s=state.snapshot;
- if(!s)return;
+ const s=state.snapshot;if(!s)return;
  const g=(s.games||[]).find(x=>gameKey(x)===state.gameSelected);
  if(!g)return;
- const title=$("v2GameTitle");
- title.textContent=g.awayTeam+" "+g.away+" – "+g.home+" "+g.homeTeam+" · "+g.date;
+ $("v2GameTitle").textContent=g.awayTeam+" "+g.away+" – "+g.home+" "+g.homeTeam+" · "+g.date;
  const report=$("v2GameReport"),btn=$("v2LoadDetail");
- if(!state.details) {
-   report.innerHTML='<div class="empty">'+(state.detailsError?"Detailed game reports unavailable. The verified final above is still valid.":'Verified final shown above. Load quarter scores and scoring plays when available.')+'</div>';
-   btn.hidden=state.detailsError;
-   btn.textContent=state.detailsLoading?"Loading detailed reports…":"Load game breakdown";
-   btn.disabled=!!state.detailsLoading;
-   return;
+ if(!state.quarterData){
+  report.innerHTML='<div class="empty">'+(state.quarterError?"Quarter-score audit unavailable. Final score remains verified.":"Loading audited quarter-by-quarter scoring…")+'</div>';
+  btn.hidden=true;return;
  }
- btn.hidden=true;
- const d=detailLookup(state.details,g);
- report.innerHTML=breakdownHTML(d,g);
+ const entry=state.quarterData.get(quartersKey(g));
+ report.innerHTML=auditedQuarterHTML(entry,g);
+ if(state.details){
+  const detail=detailLookup(state.details,g);
+  report.innerHTML+=safeScoringHTML(detail,g);btn.hidden=true;return;
+ }
+ btn.hidden=!entry||!["verified","partial"].includes(entry.status);
+ btn.textContent=state.detailsLoading?"Loading recorded scoring plays…":"Show scoring plays";
+ btn.disabled=!!state.detailsLoading;
+ if(state.detailsError){btn.hidden=true;report.innerHTML+='<p class="note">Scoring-play source temporarily unavailable.</p>';}
 }
 async function loadDetails(){
  if(state.details||state.detailsLoading)return;
@@ -231,6 +270,7 @@ async function loadDetails(){
  renderBreakdown();
  await state.detailsLoading;
 }
+
 function update(){
  const get=window.RUSGameCenter?.snapshot;
  const fresh=typeof get==="function"?get():null;
@@ -258,8 +298,9 @@ $("v2GameSelect")?.addEventListener("change",ev=>{state.gameSelected=ev.target.v
 $("v2LoadDetail")?.addEventListener("click",loadDetails);
 void Promise.all([
  fetchData("team-stats-2026.json").then(v=>state.teamStats=v).catch(e=>{state.teamStatsError=true;console.warn("Team comparison data unavailable",e)}),
- fetchData("deseret-stat-metrics-2026.json").then(v=>state.playerStats=v).catch(e=>{state.playerError=true;console.warn("Player season data unavailable",e)})
-]).then(()=>{compare();players()});
+ fetchData("deseret-stat-metrics-2026.json").then(v=>state.playerStats=v).catch(e=>{state.playerError=true;console.warn("Player season data unavailable",e)}),
+ fetchData("game-center-quarter-scores-2026.json").then(v=>{state.quarterData=new Map((v.games||[]).map(g=>[g.iso+"|"+g.away+"|"+g.home,g]));}).catch(e=>{state.quarterError=true;console.warn("Quarter audit unavailable",e)})
+]).then(()=>{compare();players();renderBreakdown()});
 update();
-window.RUSGameCenterV2Test=Object.freeze({winChance,detailLookup,breakdownHTML,barRow,probabilitySD});
+window.RUSGameCenterV2Test=Object.freeze({winChance,detailLookup,breakdownHTML,barRow,probabilitySD,auditedQuarterHTML,safeScoringHTML});
 })();
