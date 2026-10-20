@@ -1,4 +1,5 @@
 /* Regression checks for the interactive Game Center. Run with Node 22+. */
+async function main(){
 const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const vm=require("node:vm");
@@ -84,3 +85,5 @@ snapshot={...snapshot,a:{...B},b:{...A},history:snapshot.history,difference:-21,
 listeners["rus:game-center-update"]();
 assert.match(el("v2Rivalry").innerHTML,/<svg/);
 console.log("Game Center v2 checks passed: verified-source comparisons, experimental odds, rivalry updates, player leaders and detail-score safeguards.");
+}
+main().catch(error=>{console.error(error);process.exitCode=1;});
