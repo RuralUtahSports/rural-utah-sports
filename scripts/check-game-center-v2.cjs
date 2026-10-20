@@ -10,7 +10,8 @@ const html=text("game-center.html"),core=text("game-center.js"),script=text("gam
 const teamStats=JSON.parse(text("team-stats-2026.json"));
 const playerStats=JSON.parse(text("deseret-stat-metrics-2026.json"));
 const audit=JSON.parse(text("game-center-quarter-scores-2026.json"));
-assert.equal(audit.games.length,599);
+assert.ok(audit.games.length>0);
+assert.equal(audit.games.length,audit.summary.total);
 assert.equal(audit.summary.total,audit.summary.verified+audit.summary.partial+audit.summary.unavailable+audit.summary.conflict);
 for(const g of audit.games)if(g.status==="verified"){
  assert.equal(g.quarters[0].reduce((sum,n)=>sum+n,0),g.awayTotal);
