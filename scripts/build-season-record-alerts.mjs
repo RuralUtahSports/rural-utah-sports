@@ -194,7 +194,11 @@ for(const [key,current] of player2026){
    'Exceeds the best reported 2025 school season total in this category. Earlier player seasons are not fully archived; NOT a verified all-time school record.'});
  }
 }
-const playerResults=playerAlerts;
+// Do not turn a one-year (2025) comparison into a purported school season record.
+// Retain the two-season comparisons for research, but only flag exceedances of a
+// separately published UHSAA season mark as a clearly labeled *watch*.
+const playerResults=playerAlerts.filter(a=>a.status==='exceeds-listed-uhsaa');
+const playerComparisonOnly=playerAlerts.filter(a=>a.status!=='exceeds-listed-uhsaa');
 const teamReportedArchive=[];
 const team2025=new Map(Object.entries(teamStats2025.teams||{}).map(([k,v])=>[canonical(k),v]));
 for(const [raw,current] of Object.entries(teamStats2026.teams||{})){
@@ -223,17 +227,22 @@ teamAlerts.sort((a,b)=>b.date.localeCompare(a.date)||a.team.localeCompare(b.team
 teamWatches.sort((a,b)=>b.asOf.localeCompare(a.asOf)||a.team.localeCompare(b.team));
 playerResults.sort((a,b)=>Number(b.status==='exceeds-listed-uhsaa')-Number(a.status==='exceeds-listed-uhsaa')||
   (b.value/Math.max(1,b.previousValue))-(a.value/Math.max(1,a.previousValue))||a.team.localeCompare(b.team));
+// These are NOT records. Preserve as diagnostic comparisons for a future 2008–present
+// player-season backfill; never place them in the user-facing record-alert arrays.
+const teamComparisonOnly=teamReportedArchive;
+const teamVerifiedSeasonStats=[];
 const output={
   season:2026,generatedAt:String(rosters2026.updatedAt||standings.updatedAt||''),
   updatedFrom:{results:standings.updatedAt,playerStats:rosters2026.updatedAt},
-  coverageNote:'Team historical records compare RUS recorded school seasons and finals. Player and team statistical comparisons cover reported 2025–2026 seasons only; they are NOT verified school all-time records. Rate stats require minimum attempts. 2026-only fields without a 2025 comparison are tracked but no record is claimed. UHSAA listed marks are separately identified and require official review.',
+  coverageNote:'Only school season records compared against RUS historical season/game results appear as broken. Player season records need a validated multiyear season archive; the existing 2009-present single-game archive is not a complete player season database. Two-season 2025–2026 comparisons are stored for diagnostics only and MUST NOT trigger record alerts. UHSAA listed-record exceedances are watches requiring official review.',
   metricCatalog:{player:playerCatalog,team:teamMetrics.map(m=>({key:'teamStat_'+m.key,category:m.label,path:m.path,unit:m.unit,qualifyingRate:!!m.rate})),coverage:{player:playerCoverage,team:teamCoverage}},
   counts:{teamBroken:teamAlerts.length,teamProvisional:teamWatches.length,playerReportedArchive:playerResults.length,
     playerExceedingUhsaa:playerResults.filter(x=>x.status==='exceeds-listed-uhsaa').length,
     playerCategoriesMonitored:playerMetrics.length,teamStatCategoriesMonitored:teamMetrics.length,
-    teamReportedArchive:teamReportedArchive.length,unbenchmarkedPlayerStats:unbenchmarkedPlayerMetrics.length},
-  teamBroken:teamAlerts,teamWatches,teamReportedArchive,playerReportedArchive:playerResults,
-  unbenchmarkedPlayerMetrics
+    teamReportedArchive:teamVerifiedSeasonStats.length,unbenchmarkedPlayerStats:unbenchmarkedPlayerMetrics.length,
+    playerComparisonOnly:playerComparisonOnly.length,teamComparisonOnly:teamComparisonOnly.length},
+  teamBroken:teamAlerts,teamWatches,teamReportedArchive:teamVerifiedSeasonStats,playerReportedArchive:playerResults,
+  comparisonOnly:{player:playerComparisonOnly,team:teamComparisonOnly},unbenchmarkedPlayerMetrics
 };
 if(teamAlerts.some(a=>a.value<=a.previousValue)||playerResults.some(a=>a.value<=a.previousValue))throw Error('Alert threshold regression');
 fs.writeFileSync('season-record-alerts.json',JSON.stringify(output)+'\n');
