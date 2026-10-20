@@ -3,6 +3,7 @@
 // Historical team season data: Greatest Seasons and Scorigami.
 // Player comparisons: reported 2025/2026 Deseret seasons ONLY; not all-time school claims.
 import fs from 'node:fs';
+import {playerMetrics,teamMetrics,playerValue,teamValue,validatePlayerMetricCoverage,validateTeamMetricCoverage} from './season-record-metrics.mjs';
 
 const read = p => JSON.parse(fs.readFileSync(p,'utf8'));
 const canonical = name => {
@@ -18,7 +19,11 @@ const dateKey=d=>{const m=String(d||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)
 const teamNames=new Map();
 const standings=read('standings-2026.json'),seasons=read('greatest-seasons-data-v2.json'),
   scorigami=read('scorigami.json'),rosters2025=read('deseret-rosters-stats-2025.json'),
-  rosters2026=read('deseret-rosters-stats-2026.json'),meta=read('teams-data.json');
+  rosters2026=read('deseret-rosters-stats-2026.json'),
+  teamStats2025=read('team-stats-2025.json'),teamStats2026=read('team-stats-2026.json'),
+  meta=read('teams-data.json');
+const playerCoverage=validatePlayerMetricCoverage([rosters2025,rosters2026]);
+const teamCoverage=validateTeamMetricCoverage([teamStats2025,teamStats2026]);
 for(const t of meta)teamNames.set(canonical(t.team),t.team);
 const official11=[...read('uhsaa-football-records.json').categories,
   ...read('uhsaa-records-defense.json').categories];
@@ -125,75 +130,95 @@ for(const [key,gs] of games){
     }
   }
 }
-// A player record is NOT an all-time school record unless a comprehensive historical
-// individual-season archive exists. This feed covers the two reported Deseret seasons.
-const playerDefs=[
- ['Rushing','YARDS','rushYards','Rushing Yards','yards',150,'rush-yards-season'],
- ['Rushing','TD','rushTd','Rushing Touchdowns','TD',3,'rush-td-season'],
- ['Rushing','CARRIES','carries','Rushing Carries','carries',30,null],
- ['Passing','YARDS','passYards','Passing Yards','yards',150,'pass-yards-season'],
- ['Passing','TD','passTd','Passing Touchdowns','TD',3,'pass-td-season'],
- ['Receiving','YARDS','receivingYards','Receiving Yards','yards',100,'receiving-yards-season'],
- ['Receiving','TD','receivingTd','Receiving Touchdowns','TD',2,null],
- ['Receiving','RECEPTIONS','receptions','Receptions','catches',15,null],
- ['Defense/Special Teams','TACKLES','tackles','Tackles','tackles',20,'tackles-season'],
- ['Defense/Special Teams','SACKS','sacks','Sacks','sacks',2,'sacks-season'],
- ['Defense/Special Teams','PASS INT.','interceptions','Defensive Interceptions','INT',1,'interceptions-season'],
- ['Kicking','FG','fieldGoals','Field Goals','FG',1,null],
- ['Kicking','PAT','extraPoints','Extra Points','PAT',5,null]
-];
+// Every published player field is explicitly mapped. Prior year comparisons
+// cover 2025 and 2026 only; never advertise them as historical school records.
 function collectPlayers(archive){
-  const out=new Map();
-  for(const [team,record] of Object.entries(archive.teams||{})){
-    const key=canonical(team),m=new Map();
-    for(const [section,field,id,label,unit,baseline,officialId] of playerDefs){
-      const group=(record.stats||[]).find(s=>s.category===section);
-      if(!group)continue;
-      const players=[];
-      for(const row of group.rows||[]){
-        const amount=number(row.values?.[field]);
-        if(amount===null||amount<=0||!row.name)continue;
-        players.push({name:row.name,playerId:row.playerId||'',value:amount});
-      }
-      if(players.length){players.sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name));
-        m.set(id,{players,leader:players[0],label,unit,baseline,officialId});}
-    }
-    out.set(key,m);
+ const out=new Map();
+ for(const [team,rec] of Object.entries(archive.teams||{})){
+  const key=canonical(team),metrics=new Map();
+  for(const def of playerMetrics){
+   const section=(rec.stats||[]).find(x=>x.category===def.section);
+   if(!section)continue;
+   const players=[];
+   for(const row of section.rows||[]){
+    const val=playerValue(row.values,def);
+    if(val===null||val<0||!row.name)continue;
+    players.push({name:row.name,playerId:row.playerId||'',value:val});
+   }
+   players.sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name));
+   if(players.length)metrics.set(def.key,{players,leader:players[0],def});
   }
-  return out;
+  out.set(key,metrics);
+ }
+ return out;
 }
-const player2025=collectPlayers(rosters2025),player2026=collectPlayers(rosters2026),playerAlerts=[];
+const player2025=collectPlayers(rosters2025),player2026=collectPlayers(rosters2026);
+const playerAlerts=[],unbenchmarkedPlayerMetrics=[],playerCatalog=[];
 const asOf=String(rosters2026.updatedAt||'').slice(0,10);
-for(const [key,current] of player2026){
-  const before=player2025.get(key);if(!before)continue;
-  for(const [metric,c] of current){
-    const prior=before.get(metric);
-    if(!prior||prior.leader.value<c.baseline)continue;
-    for(const player of c.players){
-      if(player.value<=prior.leader.value)continue;
-      const format=/^8P|^8.PLAYER/.test(classify.get(key)||'')?'8-player':'11-player';
-      const officialCategories=format==='8-player'?official8:official11;
-      const official=officialCategories.find(x=>x.id===c.officialId)?.entries?.[0];
-      const officialValue=number(official?.value);
-      const exceedsOfficial=officialValue!==null&&player.value>officialValue;
-      playerAlerts.push({recordType:'seasonPlayer',status:exceedsOfficial?'exceeds-listed-uhsaa':'reported-archive-high',
-        scope:exceedsOfficial?'listed-uhsaa':'reported-2025-present',team:teamNames.get(key)||key,
-        season:2026,player:player.name,playerId:player.playerId,categoryKey:metric,category:c.label,
-        unit:c.unit,value:player.value,previousValue:prior.leader.value,
-        previousPlayer:prior.leader.name,previousSeason:2025,asOf,
-        officialValue:exceedsOfficial?officialValue:null,
-        officialHolder:exceedsOfficial?official.name:null,
-        footballFormat:format,
-        note:exceedsOfficial?'Exceeds the listed UHSAA mark; official recognition requires review.':
-          'Exceeds the top reported 2025 school season mark. Earlier player season records are not fully archived; NOT a verified all-time school record.'});
-    }
-  }
+for(const def of playerMetrics){
+ const previousSchools=[...player2025.values()].filter(m=>m.has(def.key)).length;
+ const currentSchools=[...player2026.values()].filter(m=>m.has(def.key)).length;
+ playerCatalog.push({key:def.key,category:def.label,section:def.section,unit:def.unit,
+  previousSchoolCoverage:previousSchools,currentSchoolCoverage:currentSchools,
+  qualifyingRate:!!def.rate,negativeOutcome:!!def.negativeOutcome,
+  benchmark:previousSchools?'reported-2025':'no-comparable-2025-baseline'});
 }
-// For each category only the top current player per school triggers a new team archive benchmark.
-const uniquePlayer=new Map();
-for(const a of playerAlerts){const key=canonical(a.team)+'|'+a.categoryKey;
-  if(!uniquePlayer.has(key)||a.value>uniquePlayer.get(key).value)uniquePlayer.set(key,a);}
-const playerResults=[...uniquePlayer.values()];
+for(const [key,current] of player2026){
+ const prior=player2025.get(key)||new Map();
+ for(const [metric,c] of current){
+  const previous=prior.get(metric),def=c.def;
+  if(!previous){
+   unbenchmarkedPlayerMetrics.push({team:teamNames.get(key)||key,categoryKey:metric,category:def.label,
+     section:def.section,asOf,reason:'No comparable qualifying reported 2025 stat'});
+   continue;
+  }
+  if(c.leader.value<=previous.leader.value)continue;
+  // One strongest player per school per metric keeps the alert meaningful.
+  const player=c.leader;
+  const format=/^8P|^8.PLAYER/.test(classify.get(key)||'')?'8-player':'11-player';
+  const officialCategories=format==='8-player'?official8:official11;
+  const official=def.officialId?officialCategories.find(o=>o.id===def.officialId)?.entries?.[0]:null;
+  const officialValue=number(official?.value);
+  const exceedsOfficial=officialValue!==null&&player.value>officialValue;
+  playerAlerts.push({recordType:'seasonPlayer',
+   status:exceedsOfficial?'exceeds-listed-uhsaa':'reported-archive-high',
+   scope:exceedsOfficial?'listed-uhsaa':'reported-2025-present',
+   team:teamNames.get(key)||key,season:2026,player:player.name,playerId:player.playerId,
+   categoryKey:metric,category:def.label,section:def.section,
+   unit:def.unit,value:player.value,previousValue:previous.leader.value,
+   previousPlayer:previous.leader.name,previousSeason:2025,asOf,
+   officialValue:exceedsOfficial?officialValue:null,
+   officialHolder:exceedsOfficial?official.name:null,footballFormat:format,
+   qualifyingRate:!!def.rate,negativeOutcome:!!def.negativeOutcome,
+   note:exceedsOfficial?'Exceeds listed UHSAA season mark; official recognition requires review.':
+   'Exceeds the best reported 2025 school season total in this category. Earlier player seasons are not fully archived; NOT a verified all-time school record.'});
+ }
+}
+const playerResults=playerAlerts;
+const teamReportedArchive=[];
+const team2025=new Map(Object.entries(teamStats2025.teams||{}).map(([k,v])=>[canonical(k),v]));
+for(const [raw,current] of Object.entries(teamStats2026.teams||{})){
+ const key=canonical(raw),previous=team2025.get(key);
+ if(!previous)continue;
+ for(const def of teamMetrics){
+  const currentVal=teamValue(current,def),priorVal=teamValue(previous,def);
+  if(currentVal===null||priorVal===null||currentVal<=priorVal)continue;
+  const section=def.path.split('.')[0];
+  if(['passing','rushing','receiving','defense','kicking'].includes(section)){
+   if(current.categories?.[section]===false||previous.categories?.[section]===false)continue;
+  }
+  teamReportedArchive.push({recordType:'seasonTeam',scope:'reported-2025-present',
+   status:'reported-archive-high',season:2026,team:teamNames.get(key)||raw,
+   categoryKey:'teamStat_'+def.key,category:def.label,unit:def.unit,
+   value:currentVal,previousValue:priorVal,previousSeason:2025,
+   asOf:String(teamStats2026.generatedAt||'').slice(0,10),
+   negativeOutcome:!!def.negativeOutcome,qualifyingRate:!!def.rate,
+   source:'RUS Deseret-derived team statistics: 2025 vs 2026',
+   note:'Exceeds the reported 2025 team stat, NOT a verified all-time school record. Reporting coverage may vary by school.'});
+ }
+}
+teamReportedArchive.sort((a,b)=>(b.value/Math.max(1,b.previousValue))-(a.value/Math.max(1,a.previousValue))||
+ a.team.localeCompare(b.team)||a.categoryKey.localeCompare(b.categoryKey));
 teamAlerts.sort((a,b)=>b.date.localeCompare(a.date)||a.team.localeCompare(b.team));
 teamWatches.sort((a,b)=>b.asOf.localeCompare(a.asOf)||a.team.localeCompare(b.team));
 playerResults.sort((a,b)=>Number(b.status==='exceeds-listed-uhsaa')-Number(a.status==='exceeds-listed-uhsaa')||
@@ -201,10 +226,14 @@ playerResults.sort((a,b)=>Number(b.status==='exceeds-listed-uhsaa')-Number(a.sta
 const output={
   season:2026,generatedAt:String(rosters2026.updatedAt||standings.updatedAt||''),
   updatedFrom:{results:standings.updatedAt,playerStats:rosters2026.updatedAt},
-  coverageNote:'Team historical records compare RUS recorded school seasons and finals. Player comparisons cover reported 2025–2026 seasons only; they are NOT verified school all-time records. UHSAA listed marks are separately identified and require official review.',
+  coverageNote:'Team historical records compare RUS recorded school seasons and finals. Player and team statistical comparisons cover reported 2025–2026 seasons only; they are NOT verified school all-time records. Rate stats require minimum attempts. 2026-only fields without a 2025 comparison are tracked but no record is claimed. UHSAA listed marks are separately identified and require official review.',
+  metricCatalog:{player:playerCatalog,team:teamMetrics.map(m=>({key:'teamStat_'+m.key,category:m.label,path:m.path,unit:m.unit,qualifyingRate:!!m.rate})),coverage:{player:playerCoverage,team:teamCoverage}},
   counts:{teamBroken:teamAlerts.length,teamProvisional:teamWatches.length,playerReportedArchive:playerResults.length,
-    playerExceedingUhsaa:playerResults.filter(x=>x.status==='exceeds-listed-uhsaa').length},
-  teamBroken:teamAlerts,teamWatches,playerReportedArchive:playerResults
+    playerExceedingUhsaa:playerResults.filter(x=>x.status==='exceeds-listed-uhsaa').length,
+    playerCategoriesMonitored:playerMetrics.length,teamStatCategoriesMonitored:teamMetrics.length,
+    teamReportedArchive:teamReportedArchive.length,unbenchmarkedPlayerStats:unbenchmarkedPlayerMetrics.length},
+  teamBroken:teamAlerts,teamWatches,teamReportedArchive,playerReportedArchive:playerResults,
+  unbenchmarkedPlayerMetrics
 };
 if(teamAlerts.some(a=>a.value<=a.previousValue)||playerResults.some(a=>a.value<=a.previousValue))throw Error('Alert threshold regression');
 fs.writeFileSync('season-record-alerts.json',JSON.stringify(output,null,2)+'\n');
