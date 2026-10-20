@@ -101,11 +101,11 @@ function group(title,intro,rows,key){
  return section;
 }
 async function boot(){
- const r=await fetch('season-record-alerts.json?v=20261020-season-records1',{cache:'no-store'});
+ const r=await fetch('season-record-alerts.json?v=20261020-all-stats1',{cache:'no-store'});
  if(!r.ok)return;const data=await r.json();
  const team=data.teamBroken||[],teamStats=data.teamReportedArchive||[],player=data.playerReportedArchive||[],pace=data.teamWatches||[];
  if(!team.length&&!teamStats.length&&!player.length&&!pace.length)return;
- try{const t=await fetch('teams-data.json?v=20261020-season-records1');if(t.ok)for(const x of await t.json())colors.set(clean(x.team),x.backgroundColor)}catch(e){}
+ try{const t=await fetch('teams-data.json?v=20261020-all-stats1');if(t.ok)for(const x of await t.json())colors.set(clean(x.team),x.backgroundColor)}catch(e){}
  css();const main=document.querySelector('main.container')||document.querySelector('main');if(!main)return;
  const block=document.createElement('div');block.id='rusSeasonRecordAlerts';
  const all=[
