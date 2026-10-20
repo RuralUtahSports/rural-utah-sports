@@ -21,8 +21,8 @@ function css(){
  '.rus-season-head h2{font-size:17px;text-transform:uppercase}.rus-season-head p{font-size:10px;line-height:1.4;color:#aaa;margin-top:4px;max-width:800px}'+
  '.rus-season-head button{padding:8px 10px;font-size:9px;text-transform:uppercase;font-weight:900;border:1px solid #F14D07;background:#F14D07;color:#000;border-radius:5px;cursor:pointer}'+
  '.rus-season-count{font-size:11px;color:#F14D07;margin-left:10px}'+
- '.rus-season-scroller{display:flex;gap:9px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px;scrollbar-width:thin}'+
- '.rus-season-card{scroll-snap-align:start;background:#111;border:1px solid #333;border-top:4px solid var(--accent);border-radius:7px;flex:0 0 min(310px,85vw);min-width:0;padding:13px}'+
+ '.rus-season-scroller{display:flex;flex-wrap:nowrap;align-items:stretch;gap:9px;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding:12px;scrollbar-width:thin}'+
+ '.rus-season-scroller > .rus-season-card{box-sizing:border-box;scroll-snap-align:start;background:#111;border:1px solid #333;border-top:4px solid var(--accent);border-radius:7px;flex:0 0 min(310px,85vw);min-width:0;max-width:min(310px,85vw);padding:13px;overflow-wrap:break-word}'+
  '.rus-season-kicker{color:#F14D07;font-size:9px;font-weight:900;text-transform:uppercase}.rus-season-who{font-weight:950;font-size:15px;line-height:1.35;margin-top:8px}'+
  '.rus-season-who strong{color:var(--accent)}.rus-season-value{font-size:30px;font-weight:950;color:var(--accent);margin-top:6px}'+
  '.rus-season-category{font-size:11px;color:#fff;font-weight:800}.rus-season-note{font-size:10px;color:#aaa;line-height:1.45;margin-top:8px}'+
@@ -37,7 +37,7 @@ function card(a){
  return '<article class="rus-season-card" style="--accent:'+color(a.team)+'">'+
  '<div class="rus-season-kicker">'+esc(kind(a))+'</div><div class="rus-season-who">'+who+
  '</div><div class="rus-season-value">'+esc(fmt(a.value))+' '+esc(a.unit||'')+
- '</div><div class="rus-season-category">'+esc(a.category)+'</div><div class="rus-season-note">'+esc(note(a)+caution)
+ '</div><div class="rus-season-category">'+esc(a.category)+'</div><div class="rus-season-note">'+esc(note(a)+caution)+
  '</div><div class="rus-season-meta">As of '+esc(a.asOf||a.date||'2026')+
  (a.status==='on-pace'?' • Not final':a.status==='reported-archive-high'?' • 2025–26 reported comparison':' • Historical RUS game archive')+
  '</div><a class="rus-season-link" href="'+esc(href)+'">View '+(a.player?'player':'team')+' →</a></article>';
