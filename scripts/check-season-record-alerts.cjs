@@ -32,7 +32,7 @@ for(const a of data.playerReportedArchive){
  assert.ok(a.value>a.previousValue);
  assert.ok(a.player&&a.previousPlayer);
  assert.match(a.asOf,/^2026-\d\d-\d\d$/);
- assert.ok(!a.note.includes('verified all-time school record'));
+ assert.ok(a.status==='exceeds-listed-uhsaa'||a.note.includes('NOT a verified all-time school record'));
  if(a.status==='exceeds-listed-uhsaa')assert.ok(a.value>a.officialValue);
 }
 const count=data.counts;
