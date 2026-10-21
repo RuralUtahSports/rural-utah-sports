@@ -67,3 +67,11 @@ RUS = `team-records.json` on October 20. Felt = George Felt's Week 11 report, "M
 - George Felt, *Felt's Facts 2026 Week 11* (source provided directly to RUS)
 - Deseret News, *Week 10 Friday roundup*, October 16, 2026: https://www.deseret.com/sports/2026/10/16/high-school-football-week-10-friday-roundup/
 - High School Football America, *2026 Utah high school football first-round playoff matchups*, October 19, 2026: https://highschoolfootballamerica.com/2026-utah-high-school-football-first-round-playoff-matchups/
+
+## October 20 final region-title reconciliation
+
+- Compared **all 20** champion school totals in Felt's Week 11 report with the site's `team-records.json` as of October 20. **19 matched before correction; Box Elder was the only discrepancy (RUS 38, Felt 37).**
+- Set Box Elder's `regionTitles` to **37**, maintaining its confirmed 2026 Region 5 championship.
+- Dropped the older provisional Box Elder `historicalRecordCorrections` item (`add:1`) in the overlay, which conflicted with the current Week 11 source. Kept Logan's existing correction.
+- **All 20 counts now match** George's Week 11 list, including co-champions. No changes to playoff wins, state championships, 8-player-only region results, or other teams.
+- The team page's Achievements `Region Titles` reads `team-records.json` with a timestamp cache bust, so its Box Elder display will show the corrected figure on reload.
