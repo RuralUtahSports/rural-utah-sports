@@ -1,0 +1,55 @@
+/* Shared Game Center research calculations. Never reconstruct historical forecasts. */
+(function(root){
+'use strict';
+const number=v=>v==null||String(v).trim()===''?null:Number.isFinite(Number(v))?Number(v):null;
+const aliases={'CEDAR':'CEDAR CITY','CEDAR HIGH':'CEDAR CITY','GRAND COUNTY':'GRAND','GUNNISON':'GUNNISON VALLEY','MONUMENT VAL':'MONUMENT VALLEY','WASATCH ACAD':'WASATCH ACADEMY','AMERICAN LEADERSHIP ACADEMY':'ALA','ST. JOSEPH':'SAINT JOSEPH','ST JOSEPH':'SAINT JOSEPH','LAYTON CHRISTIAN ACADEMY':'LAYTON CHRISTIAN','UTAH MILITARY ACADEMY - HILL FIELD':'UMA-HILLFIELD','UMA-HILL FIELD':'UMA-HILLFIELD','UTAH MILITARY ACADEMY - CAMP WILLIAMS':'UMA-LEHI','UMA-CAMP WILLIAMS':'UMA-LEHI'};
+const canonical=v=>{const n=String(v||'').trim().toUpperCase().replace(/\s+/g,' ').replace(/\.+$/,'');return aliases[n]||n;};
+function day(v){let m=String(v||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return `${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;m=String(v||'').match(/^(\d{4}-\d{2}-\d{2})(?:T|$)/);if(m)return m[1];m=String(v||'').match(/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2}),? (\d{4})/i);return m?`${m[3]}-${String(['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[1].toLowerCase())+1).padStart(2,'0')}-${m[2].padStart(2,'0')}`:'';}
+const key=g=>day(g.date)+'|'+[canonical(g.awayTeam),canonical(g.homeTeam)].sort().join('|');
+function finals(rows){const map=new Map(),bad=new Set();for(const g of rows||[]){const a=number(g.actualAway),h=number(g.actualHome),dt=day(g.date),awayTeam=canonical(g.awayTeam),homeTeam=canonical(g.homeTeam);if(!dt||!awayTeam||!homeTeam||awayTeam===homeTeam||a==null||h==null||!Number.isInteger(a)||!Number.isInteger(h)||a<0||h<0||a+h===0||/cancel|postpon|live|scheduled/i.test(g.status||''))continue;if(canonical(g.actualWinner)!==(a>h?awayTeam:h>a?homeTeam:'TIE'))continue;const row={...g,awayTeam,homeTeam,away:a,home:h},id=key(row),prev=map.get(id);if(prev&&((prev.awayTeam===awayTeam?prev.away:prev.home)!==a||(prev.homeTeam===homeTeam?prev.home:prev.away)!==h))bad.add(id);map.set(id,row);}return [...map].filter(([id])=>!bad.has(id)).map(([,g])=>g);}
+const involves=(g,t)=>g.awayTeam===canonical(t)||g.homeTeam===canonical(t);
+const opponent=(g,t)=>g.awayTeam===canonical(t)?g.homeTeam:g.awayTeam;
+const margin=(g,t)=>g.awayTeam===canonical(t)?g.away-g.home:g.home-g.away;
+const mean=xs=>xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:null;
+const record=(gs,t)=>({w:gs.filter(g=>margin(g,t)>0).length,l:gs.filter(g=>margin(g,t)<0).length,t:gs.filter(g=>margin(g,t)===0).length,n:gs.length});
+const wp=(gs,t)=>{const r=record(gs,t);return r.n?(r.w+.5*r.t)/r.n:null;};
+function common(games,a,b){a=canonical(a);b=canonical(b);const ga=games.filter(g=>involves(g,a)),gb=games.filter(g=>involves(g,b));return [...new Set(ga.map(g=>opponent(g,a)))].filter(o=>gb.some(g=>opponent(g,b)===o)).sort().map(o=>({opponent:o,a:ga.filter(g=>opponent(g,a)===o),b:gb.filter(g=>opponent(g,b)===o)}));}
+// RUS schedule research uses observed same-format finals, not official UHSAA RPI.
+function schedule(games,t,ratings){t=canonical(t);const known=new Map(ratings.map(r=>[canonical(r.name),r]));const format=n=>known.get(n)?.classification==='8P'?'8P':known.has(n)?'11P':null;
+ const eligible=games.filter(g=>format(g.awayTeam)&&format(g.awayTeam)===format(g.homeTeam));
+ const own=eligible.filter(g=>involves(g,t));
+ const rest=(n,exclude)=>eligible.filter(g=>involves(g,n)&&(!exclude||!involves(g,exclude)));
+ const owp=(n,exclude)=>{const gs=rest(n,exclude),vals=gs.map(g=>{const o=opponent(g,n);return wp(rest(o,n).filter(x=>!exclude||!involves(x,exclude)),o);});return vals.length&&vals.every(v=>v!==null)?mean(vals):null;};
+ const vals=own.map(g=>{const o=opponent(g,t);return {g,o,p:wp(rest(o,t),o),r:record(rest(o,t),o),rating:number(known.get(o)?.rating)};});
+ const strict=xs=>xs.length&&xs.every(v=>v!==null)?mean(xs):null;
+ return {n:own.length,excluded:games.filter(g=>involves(g,t)).length-own.length,owp:strict(vals.map(x=>x.p)),oowp:strict(own.map(g=>owp(opponent(g,t),t))),power:strict(vals.map(x=>x.rating)),avgWins:mean(vals.map(x=>x.r.w)),avgLosses:mean(vals.map(x=>x.r.l)),winning:record(vals.filter(x=>x.p>.5).map(x=>x.g),t),losing:record(vals.filter(x=>x.p!==null&&x.p<.5).map(x=>x.g),t),strengthWins:strict(vals.filter(x=>margin(x.g,t)>0).map(x=>x.rating)),strengthLosses:strict(vals.filter(x=>margin(x.g,t)<0).map(x=>x.rating))};}
+function quarterPoints(q,g){if(q?.status!=='verified'||q.awayTotal!==g.away||q.homeTotal!==g.home||canonical(q.away)!==g.awayTeam||canonical(q.home)!==g.homeTeam||q.iso!==day(g.date)||!Array.isArray(q.periods)||q.periods.length<4)return null;
+ if(q.quarters?.length!==2||q.quarters.some((r,i)=>r.length!==q.periods.length||r.some(n=>!Number.isInteger(n)||n<0)||r.reduce((a,b)=>a+b,0)!==[g.away,g.home][i]))return null;
+ let a=0,b=0;return [{label:'Kickoff',a:0,b:0,diff:0},...q.periods.map((label,i)=>{a+=q.quarters[0][i];b+=q.quarters[1][i];return {label,a,b,diff:a-b};})];}
+function momentum(q,g,events){const quarters=quarterPoints(q,g);if(!quarters)return null;
+ // Event support requires explicit points, identity, quarter and elapsed order. Free text is not guessed.
+ if(Array.isArray(events)&&events.length){let a=0,b=0,prior=-1,valid=true;const sums=q.quarters.map(r=>r.map(()=>0)),points=[{label:'Kickoff',a:0,b:0,diff:0}];for(const e of events){const side=canonical(e.team)===g.awayTeam?0:canonical(e.team)===g.homeTeam?1:-1;const p=e.period-1;if(side<0||!Number.isInteger(e.points)||e.points<=0||!Number.isFinite(e.elapsed)||e.elapsed<=prior||!Number.isInteger(p)||p<0||p>=q.periods.length){valid=false;break;}prior=e.elapsed;sums[side][p]+=e.points;side===0?a+=e.points:b+=e.points;points.push({label:e.text||q.periods[p],a,b,diff:a-b});}if(valid&&sums.every((r,i)=>r.every((n,j)=>n===q.quarters[i][j])))return {mode:'Verified scoring events',points,exact:true};}
+ return {mode:'Quarter-end scoring only',points:quarters,exact:false};}
+function rivalry(history,a,b){a=canonical(a);b=canonical(b);const gs=(history||[]).filter(g=>[canonical(g.team1),canonical(g.team2)].sort().join('|')===[a,b].sort().join('|')&&number(g.score1)!==null&&number(g.score2)!==null).map(g=>({...g,a:canonical(g.team1)===a?g.score1:g.score2,b:canonical(g.team1)===b?g.score1:g.score2})).sort((x,y)=>x.stamp-y.stamp);if(!gs.length)return null;
+ let aw=0,bw=0,ties=0,sa=0,sb=0,maxA=0,maxB=0;for(const g of gs){if(g.a>g.b){aw++;sa++;sb=0;maxA=Math.max(maxA,sa);}else if(g.b>g.a){bw++;sb++;sa=0;maxB=Math.max(maxB,sb);}else{ties++;sa=sb=0;}}
+ const best=score=>gs.reduce((a,b)=>score(b)>score(a)?b:a);return {n:gs.length,aw,bw,ties,maxA,maxB,current:sa?`${a}: ${sa}`:sb?`${b}: ${sb}`:'Tied last meeting',first:gs[0],last:gs.at(-1),largest:best(g=>Math.abs(g.a-g.b)),closest:best(g=>-Math.abs(g.a-g.b)),highest:best(g=>g.a+g.b),mostA:best(g=>g.a),mostB:best(g=>g.b)};}
+function evaluate(archive,games){const finalMap=new Map(games.map(g=>[key(g),g]));const seen=new Set(),out=[];for(const p of archive?.predictions||[]){const g=finalMap.get(key(p)),id=key(p);if(!g||seen.has(id)||p.evidence!=='git-pregame-snapshot'||!p.sourceCommit||!Number.isFinite(Date.parse(p.capturedAt))||Date.parse(p.capturedAt)>=Date.parse(day(g.date)+'T00:00:00Z')||number(p.marginAway)===null||!['11P','8P'].includes(p.format))continue;
+ // Reversed orientation and rescheduled dates must not silently match.
+ if(canonical(p.awayTeam)!==g.awayTeam||canonical(p.homeTeam)!==g.homeTeam)continue;seen.add(id);const actual=g.away-g.home;out.push({...p,g,actual,error:Math.abs(p.marginAway-actual),upset:p.marginAway*actual<0,correct:Math.sign(p.marginAway)===Math.sign(actual)});}return out;}
+function accuracy(rows){const decisive=rows.filter(r=>r.marginAway!==0&&r.actual!==0);return {n:rows.length,winnerN:decisive.length,correct:decisive.filter(r=>r.correct).length,percent:decisive.length?100*decisive.filter(r=>r.correct).length/decisive.length:null,mae:mean(rows.map(r=>r.error)),projected:mean(rows.map(r=>r.marginAway)),actual:mean(rows.map(r=>r.actual))};}
+function playerRows(team,category){return (team?.stats||[]).filter(s=>s.category===category).flatMap(s=>s.rows||[]).filter(p=>p.playerId);}
+function boxGame(data,g,team){team=canonical(team);const games=Object.entries(data?.teams||{}).find(([n])=>canonical(n)===team)?.[1]?.games||[];const rows=games.filter(x=>x.final===true&&day(x.date)===day(g.date)&&canonical(x.opponent)===opponent(g,team)&&number(x.teamScore)===(g.awayTeam===team?g.away:g.home)&&number(x.opponentScore)===(g.awayTeam===team?g.home:g.away));return rows.length===1?rows[0]:null;}
+
+function bracketPath(data,team,games){team=canonical(team);const result=[];
+ for(const [classification,bracket] of Object.entries(data?.classifications||{})){
+  if(bracket.status!=='official')continue;const rounds=bracket.rounds||[],seeds=new Map();
+  rounds.forEach(r=>r.games.forEach(g=>[g.a,g.b].forEach(t=>{if(t?.seed)seeds.set(+t.seed,canonical(t.name));})));
+  const cache=new Map();
+  function slot(t,ri){if(!t||/^bye$/i.test(t.name||''))return [];if(t.seed)return [canonical(t.name)];const name=t.name||'';let m=name.match(/opening matchup (\d+)/i);if(m)return resolve(0,+m[1]-1);m=name.match(/QF (\d+)/i);if(m)return resolve(rounds.findIndex(r=>/Quarterfinal/i.test(r.name)),+m[1]-1);m=name.match(/Semifinal (\d+)/i);if(m)return resolve(rounds.findIndex(r=>/Semifinal/i.test(r.name)),+m[1]-1);const ss=[...name.matchAll(/#(\d+)/g)].map(m=>seeds.get(+m[1])).filter(Boolean);if(ss.length){for(let j=0;j<ri;j++){const gi=rounds[j].games.findIndex(g=>g.a?.seed&&g.b?.seed&&ss.includes(canonical(g.a.name))&&ss.includes(canonical(g.b.name)));if(gi>=0)return resolve(j,gi);}return ss;}return [];}
+  function resolve(ri,gi){const id=ri+':'+gi;if(cache.has(id))return cache.get(id);const g=rounds[ri]?.games?.[gi];if(!g)return [];cache.set(id,[]);const a=slot(g.a,ri),b=slot(g.b,ri);let names=[...new Set([...a,...b])];if(a.length===1&&b.length===1){const f=games.find(f=>key(f)===key({date:g.date,awayTeam:a[0],homeTeam:b[0]}));if(f&&f.away!==f.home)names=[f.away>f.home?f.awayTeam:f.homeTeam];}cache.set(id,names);return names;}
+  rounds.forEach((r,ri)=>r.games.forEach((g,gi)=>{const a=slot(g.a,ri),b=slot(g.b,ri);if(!a.includes(team)&&!b.includes(team))return;const opponents=(a.includes(team)?b:a);result.push({classification,round:r.name,roundIndex:ri,position:gi+1,date:g.date,time:g.time,venue:g.venue,note:g.note,seed:[...seeds].find(([,n])=>n===team)?.[0],opponents,potential:(a.includes(team)?a:b).length>1,bye:/^bye$/i.test(g.a?.name||'')||/^bye$/i.test(g.b?.name||''),sourceUrl:bracket.sourceUrl,advanced:resolve(ri,gi).length===1&&resolve(ri,gi)[0]===team});}));
+ }return result;
+}
+
+const api={bracketPath,number,canonical,day,key,finals,involves,opponent,margin,mean,record,wp,common,schedule,quarterPoints,momentum,rivalry,evaluate,accuracy,playerRows,boxGame};if(typeof module!=='undefined')module.exports=api;root.RUSGameCenterResearch=Object.freeze(api);
+})(typeof window==='undefined'?globalThis:window);
