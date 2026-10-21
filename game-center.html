@@ -88,6 +88,7 @@ footer{border-top:1px solid #292929;padding:22px;text-align:center;font-size:11p
 @media(max-width:800px){.v2-dashboard{grid-template-columns:1fr}}
 @media(max-width:620px){.v2-player-grid{grid-template-columns:1fr}.v2-game-control{grid-template-columns:1fr}.v2-game-control button{height:auto}.v2-quarters-row>span{min-width:29px}.v2-quarters-row{padding:9px 5px;gap:4px}.v2-quarters-row>b{font-size:10px}.v2-prob-options{gap:3px}.v2-prob-options button{font-size:9px}.v2-player-row{grid-template-columns:90px 1fr}}
 </style>
+<link rel="stylesheet" href="game-center-v3.css?v=20261020-3">
 </head>
 <body>
 <header><div class="header-content"><a href="index.html" aria-label="Rural Utah Sports home"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"></a><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
@@ -164,12 +165,30 @@ footer{border-top:1px solid #292929;padding:22px;text-align:center;font-size:11p
  <div class="card-heading"><h2>Rivalry series through time</h2><a class="text-link" href="rivalry.html">More rivalry analytics ↗</a></div>
  <div id="v2Rivalry" aria-live="polite"><div class="empty">Loading historic matchups…</div></div>
 </section>
+
+<div id="gc3Research">
+ <header class="gc3-head"><h2>Matchup research</h2><p id="gc3Names"></p><p class="note">Game Center 3.0 · Verified results, corrected player statistics and documented history.</p></header>
+ <div class="v2-anchor-links" role="navigation" aria-label="Research sections"><a href="#gc3CommonCard">Common opponents</a><a href="#gc3SOSCard">Schedule strength</a><a href="#gc3PlayerCard">Player comparisons</a><a href="#gc3CompletedCard">Completed games</a><a href="#gc3PlayoffCard">Playoff path</a><a href="#gc3ReportCard">Matchup report</a></div>
+ <div class="gc3-grid">
+ <section class="card" id="gc3CommonCard"><h2>Common opponents</h2><div id="gc3Common"></div></section>
+ <section class="card" id="gc3SOSCard"><h2>Strength of schedule</h2><div id="gc3SOS"></div></section>
+ <section class="card gc3-wide" id="gc3PlayerCard"><h2>Player vs. player</h2><div id="gc3Players"></div></section>
+ <section class="card gc3-wide" id="gc3CompletedCard"><h2>Completed-game research</h2><p class="note">Uses the completed game selected in <a href="#v2GameBreakdown">Game breakdowns</a> above. Quarters and scoring plays remain in that section.</p><div id="gc3Momentum"></div><details><summary>Detailed player box score</summary><button type="button" id="gc3BoxLoad">Load game statistics</button><div id="gc3Boxes"></div></details></section>
+ <section class="card"><h2>Rivalry milestones</h2><div id="gc3Rivalry"></div></section>
+ <section class="card" id="gc3PlayoffCard"><h2>Official playoff stakes</h2><div id="gc3Playoffs"></div></section>
+ <section class="card gc3-wide"><h2>RUS prediction accuracy</h2><div id="gc3Accuracy"></div><details><summary>Upset meter &amp; margin surprises</summary><div id="gc3Upsets"></div></details></section>
+ <section class="card gc3-wide" id="gc3ReportCard"><h2>Your matchup report</h2><p class="note">Build a multi-slide 1080 × 1350 Instagram report and printable PDF from this matchup’s verified data. Text-only school names preserve authentic branding when logos are unavailable.</p><button type="button" id="gc3Report">Generate Matchup Report</button><div id="gc3ReportOutput" aria-live="polite"></div></section>
+ </div>
+</div>
 </main>
 <footer>RURAL UTAH SPORTS · 2026 model scenario tool · <a href="scoreboard.html" class="text-link">Officially recorded finals on the scoreboard</a></footer>
 <script src="power-ratings-core.js?v=20261010-1"></script>
 <script src="school-assets-core.js?v=20260818-perf2"></script>
 <script src="game-center.js?v=20261020-v2-1" defer></script>
 <script src="game-center-v2.js?v=20261020-quarter2" defer></script>
+<script src="game-center-v3-core.js?v=20261020-3" defer></script>
+<script src="game-center-report.js?v=20261020-3" defer></script>
+<script src="game-center-v3.js?v=20261020-3" defer></script>
 <script src="nav-menu.js?v=20261015-nav-sync1"></script>
 </body>
 </html>

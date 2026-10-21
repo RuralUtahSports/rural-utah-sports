@@ -1,0 +1,36 @@
+name: Validate and refresh Game Center research
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '8 */6 * * *'
+  pull_request:
+    paths: ['game-center*', 'scripts/*game-center*', '.github/workflows/game-center-research.yml']
+  push:
+    branches: [main]
+    paths: ['game-center*', 'scripts/*game-center*', 'deseret-rosters-stats-2026.json', 'playoff-predictions-2026.json', 'weekly-simulation.json', '.github/workflows/game-center-research.yml']
+permissions:
+  contents: write
+concurrency:
+  group: game-center-research-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/build-game-center-research.cjs
+      - run: node scripts/check-game-center-v2.cjs && node scripts/check-game-center-v3.cjs
+      - if: github.event_name != 'pull_request'
+        run: node scripts/archive-game-center-predictions.cjs
+      - if: github.event_name != 'pull_request'
+        run: |
+          git add game-center-player-totals-2026.json game-center-predictions-2026.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Refresh corrected Game Center totals and append pregame snapshots'
+          git pull --rebase origin main
+          git push origin HEAD:main
