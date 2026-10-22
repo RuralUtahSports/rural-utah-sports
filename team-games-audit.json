@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-22T15:23:40.119Z",
+  "updatedAt": "2026-10-22T15:24:48.497Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,13 +8,13 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68853,
+    "scheduleRowsAudited": 68849,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
     "sameDayMultipleOpponents": 53,
     "suspiciousRepeatGames": 3,
     "invalidRows": 0,
-    "seasonSummaryMismatches": 16,
+    "seasonSummaryMismatches": 0,
     "reciprocalMismatches": 33,
     "likelyOpponentTypos": 1,
     "recent2025PlusIssues": 8
@@ -753,380 +753,7 @@
     }
   ],
   "invalidRows": [],
-  "seasonSummaryMismatches": [
-    {
-      "type": "season-summary-mismatch",
-      "team": "ALTAMONT",
-      "season": "2003",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "wins": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 355,
-          "actual": 307
-        },
-        "pointsAgainst": {
-          "expected": 136,
-          "actual": 130
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "ENTERPRISE",
-      "season": "2008",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "losses": {
-          "expected": 8,
-          "actual": 7
-        },
-        "pointsFor": {
-          "expected": 189,
-          "actual": 168
-        },
-        "pointsAgainst": {
-          "expected": 318,
-          "actual": 272
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "GUNNISON VALLEY",
-      "season": "1998",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 170,
-          "actual": 140
-        },
-        "pointsAgainst": {
-          "expected": 283,
-          "actual": 270
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "GUNNISON VALLEY",
-      "season": "2001",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 6,
-          "actual": 5
-        },
-        "losses": {
-          "expected": 6,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 236,
-          "actual": 167
-        },
-        "pointsAgainst": {
-          "expected": 253,
-          "actual": 202
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "GUNNISON VALLEY",
-      "season": "2005",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "wins": {
-          "expected": 8,
-          "actual": 7
-        },
-        "pointsFor": {
-          "expected": 307,
-          "actual": 280
-        },
-        "pointsAgainst": {
-          "expected": 201,
-          "actual": 194
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "GUNNISON VALLEY",
-      "season": "2014",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 193,
-          "actual": 173
-        },
-        "pointsAgainst": {
-          "expected": 455,
-          "actual": 408
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "JUAB",
-      "season": "2001",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "wins": {
-          "expected": 5,
-          "actual": 4
-        },
-        "pointsFor": {
-          "expected": 186,
-          "actual": 167
-        },
-        "pointsAgainst": {
-          "expected": 189,
-          "actual": 175
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "KANAB",
-      "season": "2001",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "wins": {
-          "expected": 3,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 159,
-          "actual": 139
-        },
-        "pointsAgainst": {
-          "expected": 234,
-          "actual": 218
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "LAYTON CHRISTIAN",
-      "season": "2014",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "wins": {
-          "expected": 4,
-          "actual": 3
-        },
-        "pointsFor": {
-          "expected": 234,
-          "actual": 187
-        },
-        "pointsAgainst": {
-          "expected": 331,
-          "actual": 311
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MANTI",
-      "season": "2001",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 3,
-          "actual": 2
-        },
-        "pointsFor": {
-          "expected": 273,
-          "actual": 261
-        },
-        "pointsAgainst": {
-          "expected": 131,
-          "actual": 92
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MONTICELLO",
-      "season": "2022",
-      "mismatches": {
-        "games": {
-          "expected": 13,
-          "actual": 12
-        },
-        "wins": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 506,
-          "actual": 464
-        },
-        "pointsAgainst": {
-          "expected": 294,
-          "actual": 274
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "MONUMENT VALLEY",
-      "season": "2022",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "losses": {
-          "expected": 9,
-          "actual": 8
-        },
-        "pointsFor": {
-          "expected": 178,
-          "actual": 158
-        },
-        "pointsAgainst": {
-          "expected": 528,
-          "actual": 486
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "NORTH SEVIER",
-      "season": "1998",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 8,
-          "actual": 7
-        },
-        "pointsFor": {
-          "expected": 178,
-          "actual": 165
-        },
-        "pointsAgainst": {
-          "expected": 287,
-          "actual": 257
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "RICH",
-      "season": "2003",
-      "mismatches": {
-        "games": {
-          "expected": 11,
-          "actual": 10
-        },
-        "losses": {
-          "expected": 8,
-          "actual": 7
-        },
-        "pointsFor": {
-          "expected": 206,
-          "actual": 200
-        },
-        "pointsAgainst": {
-          "expected": 299,
-          "actual": 251
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "RICH",
-      "season": "2008",
-      "mismatches": {
-        "games": {
-          "expected": 12,
-          "actual": 11
-        },
-        "wins": {
-          "expected": 7,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 385,
-          "actual": 339
-        },
-        "pointsAgainst": {
-          "expected": 254,
-          "actual": 233
-        }
-      }
-    },
-    {
-      "type": "season-summary-mismatch",
-      "team": "RICHFIELD",
-      "season": "2005",
-      "mismatches": {
-        "games": {
-          "expected": 10,
-          "actual": 9
-        },
-        "losses": {
-          "expected": 7,
-          "actual": 6
-        },
-        "pointsFor": {
-          "expected": 167,
-          "actual": 160
-        },
-        "pointsAgainst": {
-          "expected": 293,
-          "actual": 266
-        }
-      }
-    }
-  ],
+  "seasonSummaryMismatches": [],
   "reciprocalMismatches": [
     {
       "type": "reciprocal-mismatch",
@@ -2039,7 +1666,7 @@
       "team": "GUNNISON VALLEY",
       "file": "gunnison-valley.json",
       "seasons": 37,
-      "totalGames": 360
+      "totalGames": 359
     },
     {
       "team": "HERRIMAN",
@@ -2081,7 +1708,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 72,
-      "totalGames": 730
+      "totalGames": 729
     },
     {
       "team": "JUAN DIEGO",
@@ -2165,13 +1792,13 @@
       "team": "MONTICELLO",
       "file": "monticello.json",
       "seasons": 74,
-      "totalGames": 733
+      "totalGames": 732
     },
     {
       "team": "MONUMENT VALLEY",
       "file": "monument-valley.json",
       "seasons": 37,
-      "totalGames": 296
+      "totalGames": 295
     },
     {
       "team": "MORGAN",
