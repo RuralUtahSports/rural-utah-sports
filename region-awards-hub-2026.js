@@ -33,10 +33,15 @@ const sideFor=slot=>['DL','DE','MLB','S','CB'].includes(slot)?'defense':slot==='
 function idSlot(id){return id.split(':')[1]}
 function poolFit(p,slot){return selectors[slot.startsWith('WR')?'WR':slot]?.test(token(p))||false}
 function fallbackFit(p,slot){return backup[slot]?.test(token(p))||false}
-function matchStatus(p,slot){if(!p)return'missing';if(poolFit(p,slot))return'accurate';if(fallbackFit(p,slot))return'review';return'override'}
+function matchStatus(p,slot){if(!p)return'missing';if(poolFit(p,slot))return'accurate';if(fallbackFit(p,slot))return'review';if(slot==='P'&&p.specialStats?.punt)return'review';if(slot==='RS'&&(p.specialStats?.kr||p.specialStats?.pr))return'review';return'override'}
 function getValue(values,name){const item=Object.entries(values||{}).find(([k])=>norm(k)===norm(name));return item?number(item[1]):null}
 function linesFor(p,category){return p.lines.find(l=>l.category.toLowerCase().startsWith(category.toLowerCase()))?.values||null}
-function returnStats(p,kind){return (kind==='kick'?(linesFor(p,'Kickoff Returns')||linesFor(p,'Kick Returns')):linesFor(p,'Punt Returns'))}
+function returnStats(p,kind){return kind==='kick'?(linesFor(p,'Kickoff Returns')||linesFor(p,'Kick Returns')):linesFor(p,'Punt Returns')}
+function maxprepsSpecialStatus(){const src=window.RUSAwardSpecialTeamsMaxPreps2026;
+ const matches=players.filter(p=>p.specialStats?.punt||p.specialStats?.kr||p.specialStats?.pr);
+ const punters=matches.filter(p=>p.specialStats.punt).length,returners=matches.filter(p=>p.specialStats.kr||p.specialStats.pr).length;
+ return 'MaxPreps 2026 reported stats · '+punters+' punters / '+returners+' return specialists in this region · checked '+(src?.checkedAt||'unknown')+'. Stats are not necessarily complete regular-season totals; some records may include playoff games. Missing ≠ zero.';
+}
 function strength(p,slot){
  if(!p)return 0;
  if(slot==='FLEX')return Math.max(p.scores.RB||0,p.scores.WR||0,p.scores.TE||0);
@@ -53,8 +58,8 @@ function statLine(p,slot){
  const res=[],add=(v,kind)=>{if(v!==null&&v!==0&&Number.isFinite(v))res.push(v.toLocaleString('en-US',{maximumFractionDigits:1})+' '+kind)};
  if(SPECIAL_POSITIONS.includes(slot)){
    if(slot==='K'){const d=linesFor(p,'Kicking');if(d){add(getValue(d,'FG'),'FG');add(getValue(d,'PAT'),'PAT');add(getValue(d,'Pts'),'PTS');}}
-   if(slot==='P'){const d=linesFor(p,'Punting');if(d){add(getValue(d,'PUNTS'),'PUNTS');add(getValue(d,'YARDS'),'PUNT YDS');add(getValue(d,'AVG'),'YDS/PN');}}
-   if(slot==='RS'){for(const kind of ['kick','punt']){const d=returnStats(p,kind);if(d){add(getValue(d,'YARDS'),kind==='kick'?'KR YDS':'PR YDS');add(getValue(d,'TD'),kind==='kick'?'KR TD':'PR TD');}}}
+   if(slot==='P'){const d=linesFor(p,'Punting');if(d){add(getValue(d,'PUNTS'),'PUNTS');add(getValue(d,'YARDS'),'PUNT YDS');add(getValue(d,'AVG'),'YDS/PUNT');add(getValue(d,'INSIDE 20'),'IN20');}}
+   if(slot==='RS'){for(const kind of ['kick','punt']){const d=returnStats(p,kind);if(d){add(getValue(d,'RETURNS'),kind==='kick'?'KR':'PR');add(getValue(d,'YARDS'),kind==='kick'?'KR YDS':'PR YDS');}}}
    return res.join(' · ')||(slot==='K'?'KICKING STATS NOT REPORTED':slot==='P'?'PUNT STATS NOT REPORTED':'KR/PR STATS NOT REPORTED');
  }else if(['DL','DE','MLB','S','CB'].includes(slot)){
    const d=linesFor(p,'Defense');if(d){add(getValue(d,'TACKLES'),'TKL');add(getValue(d,'SACKS'),'SACK');add(getValue(d,'PASS INT.'),'INT');add(getValue(d,'FUM REC'),'FR');}
@@ -70,9 +75,9 @@ function missingInfo(p,slot){
  if(!p)return'Missing selection';
  const needs=slot==='K'?['Kicking']:slot==='P'?['Punting']:slot==='RS'?['Kickoff Returns','Kick Returns','Punt Returns']:['QB'].includes(slot)?['Passing']:['RB','FLEX'].includes(slot)?['Rushing','Receiving']:['WR1','WR2','WR3','TE'].includes(slot)?['Receiving']:['Defense'];
  const reported=needs.some(x=>!!linesFor(p,x));
- return reported?'':(slot==='P'?'Punting production not included in the locked 2026 snapshot; confirm with a coach or scorebook':slot==='RS'?'Kick/punt return production not included in the locked 2026 snapshot; confirm with a coach or scorebook':'No '+needs.join('/')+' statistics reported');
+ return reported?'':(slot==='P'?'Punting stats not reported for this player in the MaxPreps supplemental coverage; check the team stats or coach':slot==='RS'?'KR/PR stats not reported for this player in the MaxPreps supplemental coverage; check the team stats or coach':'No '+needs.join('/')+' statistics reported');
 }
-function positionNote(p,slot){const verification=p?.positionAudit;if(verification?.[1]==='source_difference')return 'Roster positions differ: Deseret/saved roster '+(verification[2]||verification[0]||'not listed')+'; MaxPreps '+(verification[3]||'not listed')+'. Verify '+slot;if(verification?.[1]==='identity_review')return 'Name or jersey match needs review before confirming '+slot;const kind=matchStatus(p,slot);const correction=window.RUSAwardPositionCorrections2026Status?.[p?.id]||'';if(/mismatch/.test(correction))return 'MaxPreps and Deseret roster details differ; verify athlete identity and '+slot;return unlistedPosition(p)?'Position unverified — confirm '+slot+' before selecting':kind==='review'?'Position is broad on roster; verify '+slot:kind==='override'?'Manual position override; verify '+slot:kind==='missing'?'Position not reported; editorial verification required':''}
+function positionNote(p,slot){if(p?.sourceOnly)return 'MaxPreps stats-only entry; confirm player identity and school roster';const verification=p?.positionAudit;if(verification?.[1]==='source_difference')return 'Roster positions differ: Deseret/saved roster '+(verification[2]||verification[0]||'not listed')+'; MaxPreps '+(verification[3]||'not listed')+'. Verify '+slot;if(verification?.[1]==='identity_review')return 'Name or jersey match needs review before confirming '+slot;const kind=matchStatus(p,slot);const correction=window.RUSAwardPositionCorrections2026Status?.[p?.id]||'';if(/mismatch/.test(correction))return 'MaxPreps and Deseret roster details differ; verify athlete identity and '+slot;return unlistedPosition(p)?'Position unverified — confirm '+slot+' before selecting':kind==='review'?'Position is broad on roster; verify '+slot:kind==='override'?'Manual position override; verify '+slot:kind==='missing'?'Position not reported; editorial verification required':''}
 function logo(team){const canon=String(team||'').trim().toUpperCase();const alt=({CEDAR:'CEDAR CITY',GRAND:'GRAND COUNTY',GUNNISON:'GUNNISON VALLEY'})[canon];return logoMap[canon]||logoMap[alt]||window.RUSSchoolAssets?.customLogo?.(team)||''}
 function color(team){const t=(snapshot?.teamMeta||[]).find(t=>norm(t.team)===norm(team));return /^#[0-9a-f]{6}$/i.test(t?.backgroundColor||'')?t.backgroundColor:'#F14D07'}
 function playerHTML(p,slot,isWinner=false){
@@ -87,6 +92,8 @@ function playerHTML(p,slot,isWinner=false){
 }
 function collect(r){
  const teams=new Set(snapshot.teamMeta.filter(t=>t.region===r).map(t=>norm(t.team))),out=new Map();
+ const supplemental=window.RUSAwardSpecialTeamsMaxPreps2026;
+ const canonTeam=supplemental?.canonTeam||norm;
  const scoring=window.RUSLockedRegionScoring;
  const contexts=scoring?.buildTeamContexts?.(snapshot.standings,snapshot.stateTop25);
  for(const [team,t] of Object.entries(snapshot.data.teams||{})){
@@ -101,7 +108,25 @@ function collect(r){
    out.get(id).lines.push({category:section.category,values:row.values||{}});
   }
  }
+ // Do not silently drop documented special-team production when a school omitted a
+ // punter or returner from its published roster. Keep the source-only player flagged.
+ if(supplemental?.rows){
+  const known=new Set([...out.values()].map(p=>canonTeam(p.team)+'|'+norm(p.name)));
+  for(const item of supplemental.rows){
+   const key=canonTeam(item.team)+'|'+norm(item.name);
+   if(![...teams].some(t=>canonTeam(t)===canonTeam(item.team))||known.has(key))continue;
+   const school=snapshot.teamMeta.find(t=>t.region===r&&canonTeam(t.team)===canonTeam(item.team))?.team||item.team;
+   const id='maxpreps-st-2026|'+canonTeam(school)+'|'+norm(item.name);
+   out.set(id,{id,team:school,name:item.name,number:'',position:'',positionSource:'MaxPreps stat line — verify identity',lines:[],scores:{},sourceOnly:true});
+   known.add(key);
+  }
+ }
  for(const p of out.values()){
+  p.specialStats=supplemental?.athlete(p.team,p.name)||{};
+  const pRow=p.specialStats.punt,kr=p.specialStats.kr,pr=p.specialStats.pr;
+  if(pRow)p.lines.push({category:'Punting (MaxPreps)',values:{PUNTS:String(pRow.attempts),YARDS:String(pRow.yards),AVG:pRow.attempts?(pRow.yards/pRow.attempts).toFixed(2):'',LONG:String(pRow.long),'INSIDE 20':String(pRow.inside20),GP:String(pRow.gp)}});
+  if(kr)p.lines.push({category:'Kickoff Returns (MaxPreps)',values:{RETURNS:String(kr.attempts),YARDS:String(kr.yards),AVG:kr.attempts?(kr.yards/kr.attempts).toFixed(2):'',LONG:String(kr.long),GP:String(kr.gp)}});
+  if(pr)p.lines.push({category:'Punt Returns (MaxPreps)',values:{RETURNS:String(pr.attempts),YARDS:String(pr.yards),AVG:pr.attempts?(pr.yards/pr.attempts).toFixed(2):'',LONG:String(pr.long),GP:String(pr.gp)}});
   if(!p.position||p.position==='-'){
    const verified=window.RUSAwardPositionCorrections2026?.[p.id];
    if(verified){p.position=verified;p.positionSource='MaxPreps verified roster';}
@@ -116,7 +141,10 @@ function collect(r){
   p.scores.K=scoring?.kickingScore?.(linesFor(p,'Kicking')||{})||0;
   // No verified individual punting or separate KR/PR data exists in the 2026 locked snapshot.
   // Do not auto-rank P or RS from tackles, defensive return TDs, or guessed statistics.
-  p.scores.P=0;p.scores.RS=0;
+  p.scores.P=pRow&&pRow.attempts>=1?(pRow.yards/pRow.attempts)*Math.min(1,pRow.attempts/10)+pRow.inside20*.4:0;
+  const returnAttempts=(kr?.attempts||0)+(pr?.attempts||0);
+  const returnYards=(kr?.yards||0)+(pr?.yards||0);
+  p.scores.RS=returnAttempts>0?returnYards/12+(returnYards/returnAttempts)*.4:0;
   p.offense=Math.max(p.scores.QB||0,p.scores.RB||0,p.scores.WR||0,p.scores.TE||0);
   p.defense=Math.max(p.scores.DL||0,p.scores.LB||0,p.scores.DB||0);
  }
@@ -171,7 +199,12 @@ function suggest(){
     const id=section+':'+slot+(section==='honorable'?':'+index:'');
     // Special teams have no verified punting/return production in the locked snapshot.
     // Keep manually reviewed choices instead of replacing them with invented rankings.
-    if(slot==='P'||slot==='RS'){all[id]=picks[id]||'';continue;}
+    if(slot==='P'||slot==='RS'){
+     const current=picks[id];
+     // Keep explicitly reviewed picks, otherwise rank only verified MaxPreps numbers.
+     const choice=current||candidateList(slot,used).find(p=>p.scores[slot]>0)?.id||'';
+     all[id]=choice;if(choice)used.add(choice);continue;
+    }
     if(slot==='S')continue; // S and CB are chosen as one rated defensive-back pair.
     if(slot==='CB'){
       const pair=bestSecondaryPair(used);
@@ -315,19 +348,24 @@ function rosterCheck(p){
  return ({both_agree:'Both sources agree',deseret_only:'Deseret listed',maxpreps_only:'MaxPreps listed',source_difference:'Sources differ — review',identity_review:'Identity needs review',snapshot_only:'Saved roster only',unverified:'Position unverified'})[p.positionAudit?.[1]]||'Saved roster';
 }
 function sourceLinks(p){
+ const special=Object.values(p.specialStats||{}).filter(x=>x?.source).map(x=>x.source);
+ const extra=[...new Set(special)].map((url,i)=>'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">MaxPreps special teams '+(i+1)+'</a>');
  const source=window.RUSAwardPositionSources2026?.[p.team]||{};
- return ['deseret','maxpreps'].map(key=>{const u=source[key]?.url;if(!u)return '';try{const url=new URL(u);if(url.protocol!=='https:'||!['sports.deseret.com','www.maxpreps.com'].includes(url.hostname))return ''}catch{return ''}return '<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">'+(key==='deseret'?'Deseret roster':'MaxPreps roster')+'</a>'}).filter(Boolean).join(' · ');
+ return [...extra,...['deseret','maxpreps'].map(key=>{const u=source[key]?.url;if(!u)return '';try{const url=new URL(u);if(url.protocol!=='https:'||!['sports.deseret.com','www.maxpreps.com'].includes(url.hostname))return ''}catch{return ''}return '<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">'+(key==='deseret'?'Deseret roster':'MaxPreps roster')+'</a>'}).filter(Boolean)].join(' · ');
 }
 function candidateColumns(slot){
  const stat=(label,category,...names)=>({label,get:p=>{const values=linesFor(p,category);for(const name of names){const v=getValue(values,name);if(v!==null)return v}return null}});
  const receiving=[stat('Receptions','Receiving','RECEPTIONS'),stat('Rec yards','Receiving','YARDS'),{label:'Yards / catch',get:p=>{const d=linesFor(p,'Receiving'),y=getValue(d,'YARDS'),r=getValue(d,'RECEPTIONS');return y!==null&&r>0?y/r:null}},stat('Rec TD','Receiving','TD')];
  if(slot==='K')return [stat('Field goals','Kicking','FG'),stat('PATs','Kicking','PAT'),stat('Total kick points','Kicking','Pts')];
- if(slot==='P')return [stat('Punts','Punting','PUNTS'),stat('Punt yards','Punting','YARDS'),stat('Punt average','Punting','AVG','AVERAGE'),stat('Inside 20','Punting','INSIDE 20')];
+ if(slot==='P')return [stat('Punts','Punting','PUNTS'),stat('Punt yards','Punting','YARDS'),stat('Punt average','Punting','AVG','AVERAGE'),stat('Long punt','Punting','LONG'),stat('Inside 20','Punting','INSIDE 20'),stat('Games reported','Punting','GP')];
  if(slot==='RS')return [
+  {label:'KR att',get:p=>getValue(returnStats(p,'kick'),'RETURNS')},
   {label:'KR yards',get:p=>getValue(returnStats(p,'kick'),'YARDS')},
-  {label:'KR TD',get:p=>getValue(returnStats(p,'kick'),'TD')},
+  {label:'KR average',get:p=>getValue(returnStats(p,'kick'),'AVG')},
+  {label:'PR att',get:p=>getValue(returnStats(p,'punt'),'RETURNS')},
   {label:'PR yards',get:p=>getValue(returnStats(p,'punt'),'YARDS')},
-  {label:'PR TD',get:p=>getValue(returnStats(p,'punt'),'TD')}
+  {label:'PR average',get:p=>getValue(returnStats(p,'punt'),'AVG')},
+  {label:'Total return yards',get:p=>{const k=getValue(returnStats(p,'kick'),'YARDS'),q=getValue(returnStats(p,'punt'),'YARDS');return k===null&&q===null?null:(k||0)+(q||0)}}
  ];
  if(sideFor(slot)==='defense')return [stat('Tackles','Defense','TACKLES'),stat('TFL','Defense','TFL','TACKLES FOR LOSS'),stat('Sacks','Defense','SACKS'),stat('INT','Defense','PASS INT.','INTERCEPTIONS'),stat('Forced fumbles','Defense','FORCED FUMBLES','FUM FORCED','CAUSED FUM','FF'),stat('Fumble recoveries','Defense','FUM REC')];
  if(slot==='QB')return [stat('Pass yards','Passing','YARDS'),stat('Pass TD','Passing','TD'),stat('INT','Passing','INT'),stat('Rush yards','Rushing','YARDS'),stat('Rush TD','Rushing','TD')];
@@ -366,7 +404,7 @@ function openCandidates(target){
   dialog.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{
    if((published&&!admin)||regionLocked||!admin)return;
    const player=byID.get(b.dataset.pick);
-   if((matchStatus(player,slot)==='override'||['source_difference','identity_review'].includes(player.positionAudit?.[1]))&&!confirm(player.name+': '+(positionNote(player,slot)||'Verify the reported '+slot+' position')+'. Select after editorial review?'))return;
+   if((matchStatus(player,slot)==='override'||player.sourceOnly||['source_difference','identity_review'].includes(player.positionAudit?.[1]))&&!confirm(player.name+': '+(positionNote(player,slot)||'Verify the reported '+slot+' position')+'. Select after editorial review?'))return;
    if(pickChange(target,player.id)){render();close()}
   });
  };
@@ -385,7 +423,7 @@ function drawSelector(id,section){
 function renderTeam(section){
  const ids=fieldIDs(section),left=ids.filter(id=>firstHalf.includes(idSlot(id))),right=ids.filter(id=>!firstHalf.includes(idSlot(id))&&!SPECIAL_POSITIONS.includes(idSlot(id))),special=ids.filter(id=>SPECIAL_POSITIONS.includes(idSlot(id)));
  return '<div class="ar-columns"><div>'+left.map(id=>drawSelector(id,section)).join('')+'</div><div>'+right.map(id=>drawSelector(id,section)).join('')+'</div></div>'+
-  '<div class="ar-special-section"><h3>Special Teams · Kicker / Punter / KR-PR</h3><p class="ar-muted">Kickers use reported field goals and PATs. Punter and return specialist selections require manual review where punting and return production is not reported.</p><div class="ar-special-grid">'+special.map(id=>drawSelector(id,section)).join('')+'</div></div>';
+  '<div class="ar-special-section"><h3>Special Teams · Kicker / Punter / KR-PR</h3><p class="ar-muted">Kickers use reported field goals and PATs. Punter and return comparison tables use available 2026 MaxPreps statistics. Reported games may vary; missing entries are not zero.</p><div class="ar-special-grid">'+special.map(id=>drawSelector(id,section)).join('')+'</div></div>';
 }
 function renderSpecialTeams(){
  const blocks=SECTIONS.map(section=>{
@@ -393,7 +431,7 @@ function renderSpecialTeams(){
   const ids=fieldIDs(section).filter(id=>SPECIAL_POSITIONS.includes(idSlot(id)));
   return '<section class="ar-special-group"><h3>'+esc(title)+' Special Teams</h3><div class="ar-special-grid">'+ids.map(id=>drawSelector(id,section)).join('')+'</div></section>';
  }).join('');
- return '<div class="ar-special-top"><h2>Kicker · Punter · KR/PR</h2><p>Choose special-teams selections for each All-Region team. Kicker comparisons include reported field goals and PATs; punting and return stats require separate verification.</p><button id="ar-special-share" type="button">Download First Team Special Teams Graphic ↓</button></div>'+blocks;
+ return '<div class="ar-special-top"><h2>Kicker · Punter · KR/PR</h2><p>Choose special-teams selections for each All-Region team. Kicker comparisons use the frozen regular season; punting and return totals use reported 2026 MaxPreps records (which may include playoffs). Review GP, missing data and roster identity before finalizing.</p><button id="ar-special-share" type="button">Download First Team Special Teams Graphic ↓</button></div>'+blocks+'<p class="ar-muted">'+esc(maxprepsSpecialStatus())+'</p>';
 }
 function renderAwards(){
  return '<div class="ar-winners">'+Object.entries(TITLES).map(([role,title])=>{
