@@ -82,7 +82,7 @@ function asset(teamData){
 }
 function side(teamData,game,slot){
  const assigned=teamData&&game.enabled&&!classLocked(selected);
- const pick=assigned&&game.winner?.id===teamData.id;
+ const pick=Boolean(teamData&&game.winner?.id===teamData.id);
  const brand=asset(teamData);
  const safeColor=/^#[0-9a-f]{6}$/i.test(brand.backgroundColor)?brand.backgroundColor:'#292929';
  const safeInk=/^#[0-9a-f]{6}$/i.test(brand.textColor)?brand.textColor:'#fff';
@@ -126,7 +126,7 @@ function draw(){
  root.innerHTML=html;
  const bracket=root.querySelector('.rus-pick-visual');if(bracket)bracket.scrollLeft=oldScroll;
  root.querySelectorAll('[data-class]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.class;notice='';draw();history.replaceState(null,'',location.pathname+location.search+'#'+encodeURIComponent(selected));}));
- root.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{picks[selected+'|'+b.dataset.game]=b.dataset.team;ORDER.forEach(sanitizeClass);shared=false;notice='Picks saved on this device.';persist();draw();if(location.search){history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(selected));}}));
+ root.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>{if(classLocked(selected)){notice='This classification is locked because playoff games have started.';draw();return;}picks[selected+'|'+b.dataset.game]=b.dataset.team;ORDER.forEach(sanitizeClass);shared=false;notice='Picks saved on this device.';persist();draw();if(location.search){history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(selected));}}));
  root.querySelector('#rusPickReset').addEventListener('click',()=>{if(classLocked(selected))return;if(!confirm('Clear all your '+selected+' picks?'))return;Object.keys(picks).filter(k=>k.startsWith(selected+'|')).forEach(k=>delete picks[k]);persist();shared=false;notice=selected+' picks cleared.';if(location.search)history.replaceState(null,'',location.pathname+'#'+encodeURIComponent(selected));draw();});
  root.querySelector('#rusPickShare').addEventListener('click',share);
  root.querySelector('#rusPickImage').addEventListener('click',downloadCard);
@@ -221,6 +221,7 @@ function openFanBracket(username){
 function readName(){try{return localStorage.getItem(NAME_KEY)||''}catch{return''}}
 function classLocked(c){
  const server=deadlines[c];
+ if(server?.locked===true)return true;
  const games=(defs[c]||[]).filter(g=>g.round===0&&!g.auto);
  const keys=games.map(g=>{
   const m=String(g.date||'').match(/^([A-Za-z]{3})\s+(\d{1,2}),?\s+(\d{4})/);
@@ -270,6 +271,7 @@ function entryToken(){
 async function submitEntry(event){
  event.preventDefault();
  if(submitWorking)return;
+ if(ORDER.every(classLocked)){notice='All playoff classifications are locked. Existing entries are preserved; no new submissions are accepted.';draw();return;}
  const field=root.querySelector('#rusFanName');
  const username=String(field?.value||'').replace(/[^A-Za-z0-9 _.-]/g,'').replace(/\s+/g,' ').trim().slice(0,24);
  if(username.length<2){notice='Enter a fan name with at least 2 characters.';draw();return}
