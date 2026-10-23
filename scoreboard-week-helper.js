@@ -320,6 +320,9 @@
       syncWeekNav();
     }
 
+    // Previous/Next buttons use this render wrapper directly, so keep the
+    // playoff banner synchronized with the visible week on every navigation.
+    if (typeof updatePlayoffNote === 'function') updatePlayoffNote();
     return originalRender();
   };
 
