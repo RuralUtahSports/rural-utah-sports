@@ -108,10 +108,39 @@ function collect(r){
 function candidateList(slot,used,includeUnscored=false){
  return players.filter(p=>!used.has(p.id)&&(includeUnscored||strength(p,slot)>0))
  .sort((a,b)=>{
-  const ap=matchStatus(a,slot),bp=matchStatus(b,slot);
+  // Ranked production is the primary consideration; a broad DB or LB label
+  // can never hide a clearly higher-rated eligible athlete.
   const priority={accurate:0,review:1,override:2,missing:3};
-  return priority[ap]-priority[bp]||strength(b,slot)-strength(a,slot)||a.name.localeCompare(b.name);
+  return strength(b,slot)-strength(a,slot)||
+    priority[matchStatus(a,slot)]-priority[matchStatus(b,slot)]||a.name.localeCompare(b.name);
  });
+}
+// Score both DB positions together so a DB who can play either spot does not
+// block the only eligible corner or safety. Never fabricate a specific position.
+function bestSecondaryPair(used){
+ const dbPool=candidateList('CB',used).filter(p=>
+  matchStatus(p,'S')!=='override'||matchStatus(p,'CB')!=='override').slice(0,90);
+ const safety=dbPool.filter(p=>matchStatus(p,'S')!=='override');
+ const corners=dbPool.filter(p=>matchStatus(p,'CB')!=='override');
+ let best=null;
+ for(const s of safety)for(const cb of corners){
+  if(s.id===cb.id)continue;
+  const score=strength(s,'S')+strength(cb,'CB');
+  const exact=Number(matchStatus(s,'S')==='accurate')+Number(matchStatus(cb,'CB')==='accurate');
+  const names=s.name+'|'+cb.name;
+  if(!best||score>best.score||
+    (score===best.score&&(exact>best.exact||(exact===best.exact&&names<best.names)))){
+    best={s,cb,score,exact,names};
+  }
+ }
+ if(best)return{S:best.s,CB:best.cb};
+ // Some small regions only have one documented DB. Fill whichever position
+ // that player actually qualifies for, leaving the other slot unselected.
+ const topS=safety[0]||null,topCB=corners[0]||null;
+ if(!topS&&!topCB)return{S:null,CB:null};
+ if(topS&&!topCB)return{S:topS,CB:null};
+ if(topCB&&!topS)return{S:null,CB:topCB};
+ return strength(topS,'S')>=strength(topCB,'CB')?{S:topS,CB:null}:{S:null,CB:topCB};
 }
 function suggest(){
  const all={},used=new Set();
@@ -120,9 +149,18 @@ function suggest(){
   for(let index=1;index<=cycles;index++){
    for(const slot of PRIORITY){
     const id=section+':'+slot+(section==='honorable'?':'+index:'');
-    // Preserve accurate exact-position candidates before fallback; never duplicate players across awards teams.
-    const choices=candidateList(slot,used).filter(p=>matchStatus(p,slot)!=='override');
-    const best=choices[0]||null;
+    if(slot==='S')continue; // S and CB are chosen as one rated defensive-back pair.
+    if(slot==='CB'){
+      const pair=bestSecondaryPair(used);
+      for(const position of ['S','CB']){
+        const pick=pair[position];
+        const id=section+':'+position+(section==='honorable'?':'+index:'');
+        all[id]=pick?.id||'';
+        if(pick)used.add(pick.id);
+      }
+      continue;
+    }
+    const best=candidateList(slot,used).find(p=>matchStatus(p,slot)!=='override')||null;
     all[id]=best?.id||'';
     if(best)used.add(best.id);
    }
@@ -170,7 +208,7 @@ function relevantPlayers(slot,current){
  const unscored=players.filter(p=>matchStatus(p,slot)!=='override'&&strength(p,slot)===0);
  const sorter=(a,b)=>{
   const weight={accurate:0,review:1,override:2};
-  return weight[matchStatus(a,slot)]-weight[matchStatus(b,slot)]||strength(b,slot)-strength(a,slot)||a.name.localeCompare(b.name);
+  return strength(b,slot)-strength(a,slot)||weight[matchStatus(a,slot)]-weight[matchStatus(b,slot)]||a.name.localeCompare(b.name);
  };
  scored.sort(sorter);unscored.sort(sorter);
  const selected=byID.get(current);
@@ -196,7 +234,7 @@ function manualOptions(slot,text,target){
  const found=players.filter(p=>norm(p.name+' '+p.team+' '+p.number).includes(q))
   .sort((a,b)=>{
    const rank={accurate:0,review:1,override:2};
-   return rank[matchStatus(a,slot)]-rank[matchStatus(b,slot)]||strength(b,slot)-strength(a,slot)||a.name.localeCompare(b.name);
+   return strength(b,slot)-strength(a,slot)||rank[matchStatus(a,slot)]-rank[matchStatus(b,slot)]||a.name.localeCompare(b.name);
   }).slice(0,20);
  return '<option value="">'+(found.length?'Select a matching player…':'No players found')+'</option>'+
  found.map(p=>optionFor(p,slot,'',target)).join('');
