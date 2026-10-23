@@ -1,4 +1,10 @@
-/* 2026 roster-position corrections for awards eligibility. Positions independently checked against MaxPreps Richfield 2026-27 roster last updated Oct 21, 2026. Original locked stats unchanged. Name/number variants require careful editorial review. Source: https://www.maxpreps.com/ut/richfield/richfield-wildcats/football/roster/ */
+/* Verified 2026 Richfield roster-position corrections for awards eligibility.
+ * Sources and all 44 player-by-player match notes: richfield-positions-2026.json.
+ * Source: https://www.maxpreps.com/ut/richfield/richfield-wildcats/football/roster/
+ * Never change the frozen regular-season statistical totals.
+ * Positions with no corroborating roster evidence remain unknown; number or
+ * name discrepancies are explicitly flagged in the audit for editor review.
+ */
 window.RUSAwardPositionCorrections2026=Object.freeze({
   "richfield-0-briggs-mullen": "CB/WR",
   "richfield-1-brayson-berrett": "WR/CB",
@@ -8,6 +14,7 @@ window.RUSAwardPositionCorrections2026=Object.freeze({
   "richfield-5-shane-pearson": "WR/SS",
   "richfield-6-rhett-littlewood": "MLB/OLB",
   "richfield-8-colton-white": "RB/MLB",
+  "richfield-9-dax-janes": "TE/QB",
   "richfield-10-landon-waters": "WR/MLB",
   "richfield-11-maddox-blad": "QB",
   "richfield-12-derek-barton": "QB",
@@ -17,6 +24,7 @@ window.RUSAwardPositionCorrections2026=Object.freeze({
   "richfield-20-austin-morgan": "WR/CB",
   "richfield-22-keinen-myers": "RB",
   "richfield-23-cash-wood": "RB/OLB",
+  "richfield-24-tyler-barnum": "MLB",
   "richfield-26-sam-gonzolez": "MLB",
   "richfield-32-gage-allen": "SB/CB",
   "richfield-35-porter-white": "LB",
@@ -27,10 +35,59 @@ window.RUSAwardPositionCorrections2026=Object.freeze({
   "richfield-54-luke-cowley": "G/DE",
   "richfield-57-anhder-thorson": "G/DE",
   "richfield-59-bridger-goodwin": "DE/DT",
+  "richfield-59-kason-whitmore": "MLB/T",
+  "richfield-68-mason-forsythe": "DE/T",
   "richfield-70-everett-lindsay": "T",
   "richfield-71-ripkin-janes": "RB/MLB",
   "richfield-72-treyden-damron": "T/G",
   "richfield-76-tytus-jones": "T/G",
+  "richfield-76-beckham-yardley": "DT/G",
   "richfield-88-taylor-rogers": "WR/FS",
   "richfield-96-aiden-ohearon": "OLB/DE"
+});
+window.RUSAwardPositionCorrections2026Status=Object.freeze({
+  "richfield-0-briggs-mullen": "exact",
+  "richfield-1-brayson-berrett": "exact",
+  "richfield-2-temana-vakautakakala": "exact",
+  "richfield-3-trey-yardley": "exact",
+  "richfield-4-cordon-white": "name_alias",
+  "richfield-5-shane-pearson": "exact",
+  "richfield-6-rhett-littlewood": "exact",
+  "richfield-8-colton-white": "exact",
+  "richfield-9-dax-janes": "name_alias",
+  "richfield-10-landon-waters": "exact",
+  "richfield-11-maddox-blad": "name_alias",
+  "richfield-12-derek-barton": "exact",
+  "richfield-13-crew-udy": "exact",
+  "richfield-14-ngalu-taufatofua": "no_reported_position",
+  "richfield-15-hayden-jolley": "exact",
+  "richfield-17-eamon-moriarty": "not_found_in_maxpreps",
+  "richfield-19-trey-littlewood": "jersey_mismatch",
+  "richfield-20-austin-morgan": "exact",
+  "richfield-22-keinen-myers": "exact",
+  "richfield-23-cash-wood": "exact",
+  "richfield-24-tyler-barnum": "jersey_mismatch",
+  "richfield-26-sam-gonzolez": "name_alias",
+  "richfield-32-gage-allen": "jersey_mismatch",
+  "richfield-35-porter-white": "exact",
+  "richfield-36-hudson-woolsey": "exact",
+  "richfield-40-zach-fraizer": "name_alias",
+  "richfield-42-jhett-van": "exact",
+  "richfield-47-gage-fjord": "exact",
+  "richfield-53-cooper-mcdonald": "no_reported_position",
+  "richfield-54-luke-cowley": "exact",
+  "richfield-57-anhder-thorson": "exact",
+  "richfield-59-bridger-goodwin": "exact",
+  "richfield-59-kason-whitmore": "jersey_mismatch_name_alias",
+  "richfield-63-jace-robison": "not_found_in_maxpreps",
+  "richfield-68-mason-forsythe": "jersey_mismatch",
+  "richfield-69-mark-hilton": "no_reported_position",
+  "richfield-70-everett-lindsay": "exact",
+  "richfield-71-ripkin-janes": "jersey_mismatch_name_alias",
+  "richfield-72-treyden-damron": "exact",
+  "richfield-76-tytus-jones": "exact",
+  "richfield-76-beckham-yardley": "name_alias",
+  "richfield-84-nash-spell": "no_reported_position",
+  "richfield-88-taylor-rogers": "exact",
+  "richfield-96-aiden-ohearon": "exact"
 });
