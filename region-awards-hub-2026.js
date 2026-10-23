@@ -20,7 +20,7 @@ const number=v=>{if(v===undefined||v===null||String(v).trim()==='')return null;c
 const token=p=>' '+String(p.position||'').toUpperCase().replace(/[^A-Z0-9]+/g,' ')+' ';
 const slotRole=slot=>slot.startsWith('WR')?'WR':slot==='DE'?'DL':slot==='MLB'?'LB':['CB','S'].includes(slot)?'DB':slot;
 const firstHalf=['QB','RB','WR1','WR2','WR3','TE'];
-let snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false,dirty=false;
+let snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false,dirty=false,logoMap={};
 function labelRegion(r){return /^\d+$/.test(r)?'Region '+r:r}
 function fieldIDs(section){
  return section==='honorable'?POSITIONS.flatMap(p=>[section+':'+p+':1',section+':'+p+':2']):POSITIONS.map(p=>section+':'+p);
@@ -62,7 +62,7 @@ function missingInfo(p,slot){
  return reported?'':('No '+needs.join('/')+' statistics reported');
 }
 function positionNote(p,slot){const kind=matchStatus(p,slot);return kind==='review'?'Position is broad on roster; verify '+slot:kind==='override'?'Manual position override; verify '+slot:''}
-function logo(team){try{return window.RUSSchoolAssets?.logoUrl?.(team)||''}catch{return''}}
+function logo(team){const canon=String(team||'').trim().toUpperCase();const alt=({CEDAR:'CEDAR CITY',GRAND:'GRAND COUNTY',GUNNISON:'GUNNISON VALLEY'})[canon];return logoMap[canon]||logoMap[alt]||window.RUSSchoolAssets?.customLogo?.(team)||''}
 function color(team){const t=(snapshot?.teamMeta||[]).find(t=>norm(t.team)===norm(team));return /^#[0-9a-f]{6}$/i.test(t?.backgroundColor||'')?t.backgroundColor:'#F14D07'}
 function playerHTML(p,slot,isWinner=false){
  if(!p)return'<span class="ar-muted">Unselected</span>';
@@ -414,8 +414,9 @@ async function confirmCode(){
 async function init(){
  el('#ar-error').textContent='Loading locked regular-season region data…';
  try{
- const r=await fetch('region-awards-2026.lock.json?v=20261023-lock-1',{cache:'no-store'});
+ const [r,logos]=await Promise.all([fetch('region-awards-2026.lock.json?v=20261023-lock-1',{cache:'no-store'}),fetch('school-logo-cache.json?v=20261023-hub1').catch(()=>null)]);
  if(!r.ok)throw Error('Locked awards data could not be read');snapshot=await r.json();
+ if(logos?.ok){const saved=await logos.json();if(saved&&typeof saved==='object')logoMap=saved;}
  if(snapshot.status!=='LOCKED')throw Error('Expected a locked regular-season snapshot');
  await Promise.all([window.RUSSchoolAssets?.load?.().catch(()=>{})||Promise.resolve()]);
  regions=[...new Set(snapshot.teamMeta.map(t=>t.region).filter(r=>r&&r!=='Independant'))].sort((a,b)=>{
