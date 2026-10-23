@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>2026 Football Region Awards Hub | Rural Utah Sports</title>
-<meta name="description" content="2026 Rural Utah Sports football All-Region First and Second Teams, honorable mentions, player-of-the-year selections, and shareable awards graphics.">
+<title>Private 2026 Region Awards Editor | Rural Utah Sports</title>
+<meta name="description" content="Private 2026 Rural Utah Sports awards editor. Approved editor access only.">
+<meta name="robots" content="noindex,nofollow,noarchive,noimageindex">
+<meta name="googlebot" content="noindex,nofollow,noarchive">
 <link rel="icon" href="RUSlogoNew.png">
 <style>
 :root{color-scheme:dark;--orange:#f14d07;--ink:#0b0b0e;--panel:#131316;--line:#37373a;--soft:#bbb}
@@ -69,21 +71,31 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 .ar-manual-search{margin-top:10px;border-top:1px solid #34343b;padding-top:9px}
 .ar-manual-search summary{cursor:pointer;color:#ffad84;font-size:11px;font-weight:900;padding:7px 0}
 .ar-manual-search input,.ar-manual-search select{display:block;width:100%;margin-top:6px;font-size:12px}
-</style>
+#ar-gate[hidden],#ar-workspace[hidden]{display:none!important}\n</style>
 </head>
 <body>
 <header><div class="wrap"><a href="index.html"><img class="brand" src="RUSlogoNew.png" alt="Rural Utah Sports logo"></a>
 <div><strong>Rural Utah Sports</strong><small>Football Awards &amp; Historical Records</small></div>
 <nav><a href="index.html">Home</a><a href="all-state-watch.html?view=region">2026 Rankings</a><a href="awards-2025.html">Past Awards</a></nav></div></header>
 <main class="wrap">
+<section id="ar-gate" class="section" aria-label="Private awards editor sign-in">
+<h1>Private Region Awards Editor</h1>
+<p class="ar-muted">This page is not part of the public Rural Utah Sports awards site. Only approved editors can open the working teams and unpublished selections.</p>
+<div id="ar-editor">
+<p class="ar-muted">Editor access is protected. Sign in with an email link or one-time code. The Supabase project administrator must separately approve the authenticated account to edit and publish official selections.</p>
+<div class="ar-login"><input id="ar-email" type="email" placeholder="Editor email" aria-label="Editor email"><button id="ar-email-send" class="button">Send Sign-In Email</button><input id="ar-code" inputmode="numeric" placeholder="Email verification code" aria-label="Email verification code"><button id="ar-code-verify" class="button">Verify Code</button><button id="ar-signout" class="button">Sign Out</button></div>
+<div id="ar-auth-status" class="ar-muted">Not signed in</div>
+</div>
+</section>
+<div id="ar-error" role="status" aria-live="polite"></div>
+<div id="ar-workspace" hidden>
 <section class="hero">
-<div class="eyebrow">2026 Football Awards · Region Hub</div>
+<div class="eyebrow">Private Workspace · 2026 Region Awards</div>
 <h1 id="ar-heading">All-Region Awards</h1>
 <p>First Team, Second Team, Honorable Mentions, and Region Player of the Year awards. Selections are based on the locked regular-season data, then reviewed and finalized by Rural Utah Sports editors. Missing coach-submitted statistics are unknown, not zero.</p>
 </section>
 <section class="section">
 <div class="ar-toolbar"><label for="ar-region">Select region</label><select id="ar-region" aria-label="Football region"></select><span id="ar-status">Loading official publishing status…</span></div>
-<div id="ar-error" role="status" aria-live="polite"></div>
 </section>
 <section class="section">
 <div id="ar-tabs" class="ar-tabs"></div>
@@ -101,24 +113,21 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 </section>
 <section class="section">
 <h2>Editorial Controls</h2>
-<p id="ar-preview-status">Selections can be prepared locally. Saving live awards requires editor approval.</p>
+<p id="ar-preview-status">Selections can be prepared locally. Saving private awards requires editor approval.</p>
 <div class="ar-actions">
 <button id="ar-auto" class="secondary">Restore Ranked Suggestions</button>
 <button id="ar-backup" class="secondary">Export Draft Backup</button>
 <button id="ar-save" disabled>Save Private Draft to Website</button>
-<button id="ar-publish" disabled>Finalize &amp; Publish Region</button>
+<button id="ar-publish" disabled>Finalize Region Privately</button>
 </div>
 <label for="ar-note" class="ar-edit-label">Editorial review notes (optional)</label><textarea id="ar-note" placeholder="Document reasons for manual adjustments, position confirmation, or missing coach statistics."></textarea>
-<div id="ar-editor">
-<p class="ar-muted">Editor access is protected. Sign in with an email link or one-time code. The Supabase project administrator must separately approve the authenticated account to edit and publish official selections.</p>
-<div class="ar-login"><input id="ar-email" type="email" placeholder="Editor email" aria-label="Editor email"><button id="ar-email-send" class="button">Send Sign-In Email</button><input id="ar-code" inputmode="numeric" placeholder="Email verification code" aria-label="Email verification code"><button id="ar-code-verify" class="button">Verify Code</button><button id="ar-signout" class="button">Sign Out</button></div>
-<div id="ar-auth-status" class="ar-muted">Not signed in</div>
-</div>
+
 </section>
+</div>
 </main>
-<footer>© 2026 Rural Utah Sports · Award classifications are RUS editorial selections, not UHSAA or coach-voted official awards.</footer>
+<footer>© 2026 Rural Utah Sports · Private working drafts and RUS editorial selections; not official UHSAA awards.</footer>
 <script src="award-scoring-core-region-2026.lock.js?v=20261023-lock-1"></script>
 <script src="school-assets-bundle.js?v=20260910-oos-5"></script>
 <script src="award-roster-position-corrections-2026.js?v=20261023-richfield-audit2"></script>
-<script src="region-awards-hub-2026.js?v=20261023-relevant-roster1"></script>
+<script src="region-awards-hub-2026.js?v=20261023-private-editor1"></script>
 </body></html>
