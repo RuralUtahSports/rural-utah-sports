@@ -242,7 +242,7 @@ function render(){
  if(!snapshot)return;
  el('#ar-heading').textContent='2026 '+labelRegion(region)+' All-Region Awards';
  el('#ar-region').value=region;
- el('#ar-status').textContent=published?'Published publicly · '+new Date(published.published_at||published.updated_at).toLocaleString()+(dirty?' · unsaved changes':''):'Not yet published · editorial draft';
+ el('#ar-status').textContent=published?'Finalized privately · '+new Date(published.published_at||published.updated_at).toLocaleString()+(dirty?' · unsaved changes':''):'Private editorial draft · not publicly accessible';
  el('#ar-tabs').innerHTML=tabs();
  const body=mode==='winners'?renderAwards():mode==='summary'?schoolBreakdown():renderTeam(mode);
  el('#ar-content').innerHTML=body;
@@ -254,9 +254,9 @@ function render(){
  el('#ar-note').disabled=Boolean(published&&!admin);
  el('#ar-publish').disabled=!admin||busy;
  el('#ar-save').disabled=!admin||busy;
- el('#ar-publish').textContent=published?'Update Published Region':'Finalize & Publish Region';
- el('#ar-preview-status').textContent=admin?'Approved editor access':session?'Signed in, but this account is not yet approved as an awards editor. Drafts remain local.':'Sign in and obtain editor approval to save drafts or publish to the live website.';
- el('#ar-editor').hidden=admin;
+ el('#ar-publish').textContent=published?'Update Finalized Region':'Finalize Region Privately';
+ el('#ar-preview-status').textContent='Private awards workspace · approved editor';
+ el('#ar-gate').hidden=admin;
  el('#ar-auth-status').textContent=session?(admin?'Editor approved':'Signed in; editor approval required. Account ID: '+(uid||'still loading')):'Not signed in';
  el('#ar-note').value=notes;
  el('#ar-tabs').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;render()});
@@ -349,13 +349,13 @@ async function save(statusValue){
  if(statusValue==='published'&&fieldIDs('first').some(id=>!picks[id])){alert('Complete every First Team slot before publishing.');return}
  if(statusValue==='published'&&fieldIDs('second').some(id=>!picks[id])){alert('Complete every Second Team slot before publishing.');return}
  if(statusValue==='published'&&Object.keys(TITLES).some(id=>!winners[id])){alert('Select all three region award winners before publishing.');return}
- if(statusValue==='draft'&&published&&!confirm('Saving a draft will temporarily unpublish this region. Continue?'))return;
- if(statusValue==='published'&&!confirm('Publish '+labelRegion(region)+' awards for everyone to see? Confirm that players, schools, positions, and missing statistics have been reviewed.'))return;
+ if(statusValue==='draft'&&published&&!confirm('Reopen this finalized region as a private draft? Continue?'))return;
+ if(statusValue==='published'&&!confirm('Finalize '+labelRegion(region)+' privately? Only approved editors will be able to see these selections.'))return;
  busy=true;render();el('#ar-error').textContent='';
  try{
  const row={season:YEAR,region,status:statusValue,selections:{picks},winners,editorial_notes:notes,updated_by:uid,updated_at:new Date().toISOString(),published_at:statusValue==='published'?new Date().toISOString():null};
  await api('/rest/v1/rus_region_awards?on_conflict=season,region',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify(row)});
- saveLocal();await readPublication();el('#ar-error').textContent=statusValue==='published'?'Region published successfully. Visitors can now view the awards.':'Draft securely saved to the website.';
+ saveLocal();await readPublication();el('#ar-error').textContent=statusValue==='published'?'Region finalized privately. Only approved editors can see it.':'Private draft securely saved.';
  }catch(err){el('#ar-error').textContent='Could not save to website: '+err.message;}finally{busy=false;render()}
 }
 function fileName(section,format){return'RUS-2026-'+region.replace(/[^a-z0-9]+/gi,'-')+'-'+section+'-'+format+'.png'}
@@ -417,7 +417,7 @@ async function graphicFor(section,format){
   }
  }
  ctx.textAlign='center';ctx.font='800 '+(landscape?17:14)+'px Arial';ctx.fillStyle='#fff';
- ctx.fillText((published&&!dirty?'PUBLISHED':'DRAFT · UNVERIFIED')+'  •  RURALUTAHSPORTS.COM  •  @RURALUTAHSPORTS77',centerX,h-35);
+ ctx.fillText((published&&!dirty?'FINAL RUS PICKS':'DRAFT · UNVERIFIED')+'  •  RURALUTAHSPORTS.COM  •  @RURALUTAHSPORTS77',centerX,h-35);
  return cvs;
 }
 async function downloadGraphic(){
@@ -443,44 +443,86 @@ async function sendEmail(){
  el('#ar-error').textContent='Login email requested. Enter the emailed code below, or follow its secure sign-in link.';
  }catch(e){el('#ar-error').textContent='Could not request login: '+e.message}
 }
+// Private-editor gate: the locked award source is loaded only after Supabase has
+// validated the session AND confirmed that its auth.uid() belongs to an approved editor.
+let workspaceLoaded=false;
+function accessUI(){
+ const allowed=Boolean(admin&&uid&&session?.access_token);
+ el('#ar-workspace').hidden=!allowed;
+ el('#ar-gate').hidden=allowed;
+ const status=el('#ar-auth-status');
+ if(status)status.textContent=allowed?'Approved awards editor':
+  session&&uid?'Signed in; editor approval required. Account ID: '+uid:'Not signed in';
+ return allowed;
+}
 async function confirmCode(){
- const email=el('#ar-email').value.trim(),code=el('#ar-code').value.trim();if(!email||!code)return;
+ const email=el('#ar-email').value.trim(),code=el('#ar-code').value.trim();
+ if(!email||!code){el('#ar-error').textContent='Enter your email address and sign-in code.';return}
  try{
- const data=await api('/auth/v1/verify',{method:'POST',body:JSON.stringify({email,token:code,type:'email'})});
- if(!data.access_token)throw Error('No session was returned');
- session=data;localStorage.setItem('rus-award-auth-2026',JSON.stringify(session));
- await checkEditor();await readPublication();render();
- el('#ar-error').textContent=admin?'Editor access confirmed. Drafts can now be saved and published.':'Signed in. Editor approval is still required to publish.';
- }catch(e){el('#ar-error').textContent='Email code could not be verified: '+e.message}
+  const response=await api('/auth/v1/verify',{method:'POST',body:JSON.stringify({email,token:code,type:'email'})});
+  if(!response.access_token)throw Error('No session was returned');
+  session=response;localStorage.setItem('rus-award-auth-2026',JSON.stringify(session));
+  await checkEditor();
+  if(accessUI()){
+   el('#ar-error').textContent='Approved editor sign-in confirmed.';
+   await openWorkspace();
+  }else el('#ar-error').textContent='Signed in. Your account must be approved before the private awards editor can be opened.';
+ }catch(e){el('#ar-error').textContent='Sign-in failed: '+e.message}
+}
+async function openWorkspace(){
+ if(!accessUI())return;
+ if(workspaceLoaded){render();return}
+ try{
+  el('#ar-error').textContent='Loading private awards workspace…';
+  const [dataResponse,logoResponse]=await Promise.all([
+   fetch('region-awards-2026.lock.json?v=20261023-lock-1',{cache:'no-store'}),
+   fetch('school-logo-cache.json?v=20261023-hub1').catch(()=>null)
+  ]);
+  if(!dataResponse.ok)throw Error('The locked awards snapshot is unavailable');
+  snapshot=await dataResponse.json();
+  if(snapshot.status!=='LOCKED')throw Error('The award snapshot is not locked');
+  if(logoResponse?.ok){const saved=await logoResponse.json();if(saved&&typeof saved==='object')logoMap=saved}
+  await (window.RUSSchoolAssets?.load?.().catch(()=>{})||Promise.resolve());
+  regions=[...new Set(snapshot.teamMeta.map(t=>t.region).filter(r=>r&&r!=='Independant'))]
+   .sort((a,b)=>{
+    const aNum=/^\d+$/.test(a)?Number(a):Infinity,bNum=/^\d+$/.test(b)?Number(b):Infinity;
+    return aNum-bNum||a.localeCompare(b,undefined,{numeric:true});
+   });
+  el('#ar-region').innerHTML=regions.map(r=>'<option value="'+esc(r)+'">'+esc(labelRegion(r))+'</option>').join('');
+  const desired=new URLSearchParams(location.search).get('region');
+  const initial=regions.includes(desired)?desired:regions.includes('3A North')?'3A North':regions[0];
+  workspaceLoaded=true;
+  el('#ar-region').addEventListener('change',e=>setRegion(e.target.value));
+  el('#ar-save').onclick=()=>save('draft');
+  el('#ar-publish').onclick=()=>save('published');
+  el('#ar-auto').onclick=()=>{
+   if(!confirm('Restore the highest-scoring position-eligible suggestions for all tiers?'))return;
+   picks=suggest();winners=suggestWinners();dirty=true;saveLocal();render()
+  };
+  el('#ar-note').onchange=e=>{notes=e.target.value;dirty=true;saveLocal();render()};
+  el('#ar-download').onclick=downloadGraphic;
+  el('#ar-backup').onclick=exportDraft;
+  await setRegion(initial);
+  el('#ar-error').textContent='';
+ }catch(e){
+  workspaceLoaded=false;
+  el('#ar-error').textContent='Could not open private awards workspace: '+e.message;
+  console.error(e);
+ }
 }
 async function init(){
- el('#ar-error').textContent='Loading locked regular-season region data…';
- try{
- const [r,logos]=await Promise.all([fetch('region-awards-2026.lock.json?v=20261023-lock-1',{cache:'no-store'}),fetch('school-logo-cache.json?v=20261023-hub1').catch(()=>null)]);
- if(!r.ok)throw Error('Locked awards data could not be read');snapshot=await r.json();
- if(logos?.ok){const saved=await logos.json();if(saved&&typeof saved==='object')logoMap=saved;}
- if(snapshot.status!=='LOCKED')throw Error('Expected a locked regular-season snapshot');
- await Promise.all([window.RUSSchoolAssets?.load?.().catch(()=>{})||Promise.resolve()]);
- regions=[...new Set(snapshot.teamMeta.map(t=>t.region).filter(r=>r&&r!=='Independant'))].sort((a,b)=>{
-  const aNum=/^\d+$/.test(a)?Number(a):Infinity,bNum=/^\d+$/.test(b)?Number(b):Infinity;
-  return aNum-bNum||a.localeCompare(b,undefined,{numeric:true});
- });
- el('#ar-region').innerHTML=regions.map(r=>'<option value="'+esc(r)+'">'+esc(labelRegion(r))+'</option>').join('');
- authRestore();await checkEditor();
- const initial=new URLSearchParams(location.search).get('region'),chosen=regions.includes(initial)?initial:regions.includes('3A North')?'3A North':regions[0];
- await setRegion(chosen);el('#ar-error').textContent='';
- el('#ar-region').addEventListener('change',e=>setRegion(e.target.value));
- el('#ar-save').onclick=()=>save('draft');
- el('#ar-publish').onclick=()=>save('published');
- el('#ar-auto').onclick=()=>{if(!confirm('Replace the current First Team, Second Team, and Honorable Mention selections with highest-scoring eligible players?'))return;
-  picks=suggest();winners=suggestWinners();dirty=true;saveLocal();render()};
- el('#ar-note').onchange=e=>{notes=e.target.value;dirty=true;saveLocal();render()};
- el('#ar-download').onclick=downloadGraphic;
- el('#ar-backup').onclick=exportDraft;
  el('#ar-email-send').onclick=sendEmail;
  el('#ar-code-verify').onclick=confirmCode;
- el('#ar-signout').onclick=()=>{localStorage.removeItem('rus-award-auth-2026');session=null;admin=false;uid='';setRegion(region)};
- }catch(e){console.error(e);el('#ar-error').textContent='Unable to load the awards hub: '+e.message}
+ el('#ar-signout').onclick=()=>{
+  localStorage.removeItem('rus-award-auth-2026');
+  session=null;admin=false;uid='';
+  accessUI();
+  el('#ar-error').textContent='Signed out of the private awards editor.';
+ };
+ el('#ar-error').textContent='Checking approved editor access…';
+ authRestore();await checkEditor();
+ if(accessUI())await openWorkspace();
+ else el('#ar-error').textContent=session?'This account is not yet approved to edit the awards.':'This awards page is private. Sign in with an approved editor account.';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
