@@ -144,7 +144,7 @@ async function paint(format){
  const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');
  ctx.fillStyle='#353536';ctx.fillRect(0,0,w,h);
  const glow=ctx.createRadialGradient(w*.5,h*.53,10,w*.5,h*.53,w*.69);
- glow.addColorStop(0,'rgba(227,8,11,.8)');glow.addColorStop(.4,'rgba(152,15,19,.45)');glow.addColorStop(1,'rgba(0,0,0,0)');
+ glow.addColorStop(0,'rgba(241,77,7,.80)');glow.addColorStop(.4,'rgba(145,45,7,.46)');glow.addColorStop(1,'rgba(0,0,0,0)');
  ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
  const margin=portrait||square?30:58,brandSize=portrait||square?80:110;
  const brand=await image('RUSlogoNew.png');drawImage(ctx,brand,margin,30,brandSize,brandSize);drawImage(ctx,brand,w-margin-brandSize,30,brandSize,brandSize);
@@ -154,7 +154,7 @@ async function paint(format){
  const head=fit(ctx,regionTitle().toUpperCase()+' ALL-REGION 1ST TEAM',w-margin*2,portrait||square?48:67,28);
  ctx.fillText(head,w/2,portrait||square?161:167);
  ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.font='800 '+(portrait||square?19:21)+'px Arial';
- ctx.fillStyle='#ffd6d6';ctx.fillText('RUS EDITORIAL PICKS • 2026 REGULAR SEASON',w/2,portrait||square?205:207);
+ ctx.fillStyle='#ffe3d1';ctx.fillText('RUS EDITORIAL PICKS • 2026 REGULAR SEASON',w/2,portrait||square?205:207);
  const top=portrait?269:square?256:258,bottom=h-(portrait?120:square?104:92),rh=(bottom-top)/6, gap=portrait||square?24:70,cw=(w-2*margin-gap)/2;
  const teamsUsed=[...new Set(slots.map(s=>lookup.get(selection[s])?.school).filter(Boolean))],logos=new Map();
  await Promise.all(teamsUsed.map(async team=>{logos.set(team,await image(siteAssets()?.logoUrl?.(team)||''))}));
@@ -169,14 +169,14 @@ async function paint(format){
   ctx.fillStyle='#fff';ctx.textAlign='left';ctx.shadowColor='#000';ctx.shadowBlur=4;ctx.shadowOffsetY=3;
   let label=slot+': '+(p?p.name.toUpperCase()+(p.year?' ('+p.year+')':''):'SELECTION PENDING');
   label=fit(ctx,label,max,portrait?26:square?24:32,17);ctx.fillText(label,tx,y+rh*.44);
-  ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.fillStyle='#ffeaea';
+  ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.fillStyle='#fff0e6';
   const sub=p?p.school.toUpperCase()+' • '+stats(p,slot):'CHOOSE A REGION PLAYER';
   ctx.fillText(fit(ctx,sub,max,portrait?15:square?14:19,11),tx,y+rh*.72);
  }
  ctx.textAlign='center';ctx.fillStyle='#eee';ctx.font='800 '+(portrait?17:square?16:18)+'px Arial';
  const missing=slots.filter(s=>!selection[s]).length;
  ctx.fillText(missing?'DRAFT • '+missing+' SELECTION'+(missing===1?'':'S')+' PENDING':'RUS PICKS • NOT OFFICIAL COACH-VOTED AWARDS',w/2,h-(portrait?67:square?56:51));
- ctx.fillStyle='#ffad90';ctx.font='800 '+(portrait?15:square?14:18)+'px Arial';
+ ctx.fillStyle='#ffbd95';ctx.font='800 '+(portrait?15:square?14:18)+'px Arial';
  ctx.fillText('RURALUTAHSPORTS.COM  •  @RURALUTAHSPORTS77',w/2,h-(portrait?38:square?29:23));
  return canvas;
 }
