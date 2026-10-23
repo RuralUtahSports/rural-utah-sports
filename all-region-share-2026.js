@@ -52,7 +52,7 @@ function stored(){try{return JSON.parse(localStorage.getItem('rus-region-graphic
 function persist(){try{localStorage.setItem('rus-region-graphic-2026:'+region,JSON.stringify(selection))}catch{}}
 function suggest(){
  const old=stored(),taken=new Set();selection={};
- for(const slot of slots){
+ for(const slot of ['QB','RB','WR1','WR2','WR3','TE','DE','MLB','CB','S','DL','FLEX','OL']){
   if(old[slot]&&lookup.has(old[slot])&&!taken.has(old[slot])){selection[slot]=old[slot];taken.add(old[slot]);continue}
   if(slot==='OL'){selection[slot]='';continue}
   const first=athletes.filter(p=>valid(p,slot)&&!taken.has(p.id)&&value(p,slot)>0)
