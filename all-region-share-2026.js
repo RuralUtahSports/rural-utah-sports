@@ -255,7 +255,7 @@ function open(){
    refresh();
   };
  }
- box.querySelector('#rg-auto').onclick=()=>{if(!confirm('Replace all 12 picks with the highest-ranked available athletes from locked 2026 statistics?'))return;suggest(true);persist();for(const s of slots)box.querySelector('#rg-'+s).value=selection[s]||'';refresh()};
+ box.querySelector('#rg-auto').onclick=()=>{if(!confirm('Replace all 12 picks with the highest-ranked available athletes from locked 2026 statistics?'))return;suggest(true);persist();for(const s of slots){const field=box.querySelector('#rg-'+s);field.innerHTML=options(s);field.value=selection[s]||'';}refresh()};
  box.querySelector('#rg-size').onchange=refresh;box.querySelector('#rg-save').onclick=download;
  box.querySelector('#rg-share').onclick=share;box.querySelector('#rg-close').onclick=close;
  box.addEventListener('click',e=>{if(e.target===box)close()});refresh();
