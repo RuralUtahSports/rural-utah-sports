@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 if(!/region-awards\.html$/i.test(location.pathname))return;
-const YEAR=2026,BASE='https://pleggeciqvaoyxtuvczd.supabase.co',KEY='sb_publishable_xl-kjZ-aufkux3zGuNoYAw_UN9pYM_Z';
+const YEAR=2026,PIN_URL='https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/rus-awards-pin',BASE='https://pleggeciqvaoyxtuvczd.supabase.co',KEY='sb_publishable_xl-kjZ-aufkux3zGuNoYAw_UN9pYM_Z';
 const POSITIONS=['QB','RB','WR1','WR2','WR3','TE','FLEX','DL','DE','MLB','S','CB'];
 const PRIORITY=['QB','DE','MLB','CB','S','TE','RB','WR1','WR2','WR3','DL','FLEX'];
 const SECTIONS=['first','second','honorable'];
@@ -180,6 +180,19 @@ function suggestWinners(){
  const overall=players.filter(p=>p.offense||p.defense).sort((a,b)=>Math.max(b.offense,b.defense)-Math.max(a.offense,a.defense));
  return{mvp:overall[0]?.id||'',opoy:offensive[0]?.id||'',dpoy:defensive[0]?.id||''};
 }
+async function pinApi(action,extra={}){
+ const token=localStorage.getItem('rus-awards-pin-token')||'';
+ const r=await fetch(PIN_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,token,...extra})});
+ const data=await r.json();if(!r.ok)throw Error(data.error||'PIN service unavailable');return data;
+}
+async function pinUnlock(){
+ const pin=el('#ar-pin').value.trim(),message=el('#ar-pin-message');
+ if(!/^\\d{6}$/.test(pin)){message.textContent='Enter all six digits.';return}
+ const button=el('#ar-pin-submit');button.disabled=true;message.textContent='Verifying…';
+ try{const data=await pinApi('login',{pin});localStorage.setItem('rus-awards-pin-token',data.token);el('#ar-pin').value='';admin=true;el('#ar-pin-panel').hidden=true;await setRegion(region);message.textContent='';}
+ catch(e){message.textContent=e.message;}
+ finally{button.disabled=false}
+}
 function draftKey(){return'RUS-2026-REGION-AWARDS:'+region}
 function local(){try{return JSON.parse(localStorage.getItem(draftKey())||'null')}catch{return null}}
 function saveLocal(){try{localStorage.setItem(draftKey(),JSON.stringify({picks,winners,notes}))}catch{};scheduleCloudSave()}
@@ -196,7 +209,7 @@ function scheduleCloudSave(){
 async function writeRegion(statusValue){
  if(!admin||!uid)throw Error('Approved editor access required');
  const row={season:YEAR,region,status:statusValue,selections:{picks,locked:regionLocked},winners,editorial_notes:notes,updated_by:uid,updated_at:new Date().toISOString(),published_at:statusValue==='published'?(published?.published_at||new Date().toISOString()):null};
- await api('/rest/v1/rus_region_awards?on_conflict=season,region',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify(row)});
+ await pinApi('save',{region,record:row});
 }
 async function toggleRegionLock(){
  if(!admin){el('#ar-error').textContent='Editor verification is required before changing the lock on the shared website.';return}
@@ -391,7 +404,7 @@ function render(){
  if(!snapshot)return;
  el('#ar-heading').textContent='2026 '+labelRegion(region)+' All-Region Awards';
  el('#ar-region').value=region;
- el('#ar-status').textContent=published?'Published publicly · '+new Date(published.published_at||published.updated_at).toLocaleString()+(dirty?' · unsaved changes':''):'Not yet published · editorial draft';
+ el('#ar-status').textContent=!admin?'Editor locked · PIN required':published?'Published publicly · '+new Date(published.published_at||published.updated_at).toLocaleString()+(dirty?' · unsaved changes':''):'Not yet published · editorial draft';
  el('#ar-tabs').innerHTML=tabs();
  const body=mode==='winners'?renderAwards():mode==='summary'?schoolBreakdown():renderTeam(mode);
  el('#ar-content').innerHTML=body;
@@ -408,8 +421,8 @@ function render(){
  el('#ar-lock').textContent=regionLocked?'🔓 Unlock This Region':'🔒 Lock This Region';
  el('#ar-lock').disabled=!admin||busy||syncPending;
  el('#ar-lock-status').textContent=regionLocked?'🔒 Locked on all devices':'🔓 Unlocked for editor changes';
- el('#ar-preview-status').textContent=admin?'Verified editor · changes to unpublished regions auto-sync across devices':session?'Signed in, but this account is not approved as an awards editor.':'Sign in as the approved editor to sync changes across devices.';
- el('#ar-editor').hidden=admin;
+ el('#ar-preview-status').textContent=admin?'PIN unlocked · changes to unpublished regions sync across devices':'Enter your editor PIN to unlock shared editing.';
+ el('#ar-editor').hidden=true;el('#ar-pin-panel').hidden=admin;
  el('#ar-auth-status').textContent=session?(admin?'Editor approved':'Signed in; editor approval required. Account ID: '+(uid||'still loading')):'Not signed in';
  el('#ar-note').value=notes;
  el('#ar-tabs').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;render()});
@@ -458,16 +471,20 @@ function authRestore(){
 }
 async function checkEditor(){
  admin=false;uid='';
+ try{await pinApi('check');admin=true;return}catch{localStorage.removeItem('rus-awards-pin-token');return}
+}
+ /*
  if(!session?.access_token)return;
  try{const user=await api('/auth/v1/user');uid=user?.id||'';
  const list=await api('/rest/v1/rus_award_editors?user_id=eq.'+encodeURIComponent(uid)+'&select=user_id');
  admin=Array.isArray(list)&&list.length>0;
  }catch{session=null;localStorage.removeItem('rus-award-auth-2026')}
 }
+*/
 async function readPublication(){
  published=null;dirty=false;regionLocked=false;
- try{const rows=await api('/rest/v1/rus_region_awards?season=eq.'+YEAR+'&region=eq.'+encodeURIComponent(region)+'&select=*');
- const record=Array.isArray(rows)?rows[0]:null;
+ try{const rows=admin?(await pinApi('read',{region})).record:null;
+ const record=rows;
  regionLocked=Boolean(record?.selections?.locked);
  if(record&&record.status==='published')published=record;
  if(record&&admin){
@@ -624,10 +641,12 @@ async function init(){
   return aNum-bNum||a.localeCompare(b,undefined,{numeric:true});
  });
  el('#ar-region').innerHTML=regions.map(r=>'<option value="'+esc(r)+'">'+esc(labelRegion(r))+'</option>').join('');
- authRestore();await checkEditor();
+ await checkEditor();
  const initial=new URLSearchParams(location.search).get('region'),chosen=regions.includes(initial)?initial:regions.includes('3A North')?'3A North':regions[0];
  await setRegion(chosen);el('#ar-error').textContent='';
  el('#ar-region').addEventListener('change',e=>setRegion(e.target.value));
+ el('#ar-pin-submit').onclick=pinUnlock;
+ el('#ar-pin').onkeydown=e=>{if(e.key==='Enter')pinUnlock()};
  el('#ar-save').onclick=()=>save('draft');
  el('#ar-lock').onclick=toggleRegionLock;
  el('#ar-publish').onclick=()=>save('published');
