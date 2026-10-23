@@ -13,6 +13,8 @@ const siteAssets=()=>window.RUSSchoolAssets;
 const src=()=>typeof view!=='undefined'&&view==='All-Region'&&typeof lockedRegionSnapshot!=='undefined'&&lockedRegionSnapshot?.status==='LOCKED'?lockedRegionSnapshot:null;
 const selectedRegion=()=>typeof scope==='undefined'?'':scope;
 const roleFor=s=>s.startsWith('WR')?'WR':s==='FLEX'?'FLEX':s==='DE'?'DL':s==='MLB'?'LB':s==='S'||s==='CB'?'DB':s;
+const sideFor=s=>['DL','DE','MLB','S','CB'].includes(s)?'defense':'offense';
+const conflicts=(slot,other)=>slot!==other&&sideFor(slot)===sideFor(other);
 const valid=(p,s)=>roles[s.startsWith('WR')?'WR':s]?.test(token(p))||false;
 // Generic DB is an umbrella position: allow it only as a review-required fallback.
 const broadDB=(p,s)=>['S','CB'].includes(s)&&/\bDB\b/.test(token(p));
@@ -74,8 +76,9 @@ function bestDefensiveBackPair(taken){
  return{S:safeties[0],CB:null};
 }
 function suggest(ignoreSaved=false){
- const old=ignoreSaved?{}:stored(),taken=new Set();selection={};
+ const old=ignoreSaved?{}:stored(),used={offense:new Set(),defense:new Set()};selection={};
  for(const slot of ['QB','RB','WR1','WR2','WR3','TE','DE','MLB','CB','S','DL','FLEX']){
+  const taken=used[sideFor(slot)];
   if(slot==='S')continue;
   if(slot==='CB'){
    for(const s of ['S','CB'])if(old[s]&&lookup.has(old[s])&&!taken.has(old[s])){
@@ -188,7 +191,7 @@ async function refresh(){
  try{const canv=await paint(box.querySelector('#rg-size').value);if(v!==generation||!box)return;
   graphic=canv;box.querySelector('#rg-preview').src=graphic.toDataURL('image/png');
   const count=slots.filter(s=>!selection[s]).length;
-  box.querySelector('#rg-note').textContent=count?count+' selections are pending. Graphic clearly marked DRAFT.':'All 13 choices filled. Review accuracy before publishing; picks are not coach-voted awards.';
+  box.querySelector('#rg-note').textContent=count?count+' selections are pending. Graphic clearly marked DRAFT.':'All 12 choices filled. Review accuracy before publishing; picks are not coach-voted awards.';
   save.disabled=share.disabled=false;
  }catch(e){console.error(e);box.querySelector('#rg-note').textContent='Graphic rendering failed. Please retry.'}
 }
@@ -210,7 +213,7 @@ function open(){
  if(!athletes.length){alert('No roster data is available for this region.');return}
  suggest();
  const options=slot=>{
-  const used=new Set(Object.entries(selection).filter(([other])=>other!==slot).map(([,id])=>id).filter(Boolean));
+  const used=new Set(Object.entries(selection).filter(([other])=>conflicts(slot,other)).map(([,id])=>id).filter(Boolean));
   const matching=athletes.filter(p=>eligible(p,slot)&&!used.has(p.id))
    .sort((a,b)=>value(b,slot)-value(a,slot)||Number(valid(b,slot))-Number(valid(a,slot))||a.name.localeCompare(b.name));
   const saved=lookup.get(selection[slot]),selected=saved?[saved]:[];
@@ -223,7 +226,7 @@ function open(){
  const manualOptions=(slot,query)=>{
   const q=key(query);
   if(q.length<2)return '<option value="">Type 2+ letters to search</option>';
-  const used=new Set(Object.values(selection).filter(Boolean));
+  const used=new Set(Object.entries(selection).filter(([other])=>conflicts(slot,other)).map(([,id])=>id).filter(Boolean));
   const matches=athletes.filter(p=>!used.has(p.id)&&key(p.name+' '+p.school+' '+p.number).includes(q))
    .sort((a,b)=>(Number(valid(b,slot))-Number(valid(a,slot)))||value(b,slot)-value(a,slot)||a.name.localeCompare(b.name)).slice(0,20);
   return '<option value="">'+(matches.length?'Select a player…':'No matching players')+'</option>'+
@@ -231,15 +234,16 @@ function open(){
  };
  box=document.createElement('div');box.className='rus-region-graphic-backdrop';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');
  box.innerHTML='<div class="rus-region-graphic-panel"><h2>'+escape(region)+' — 2026 All-Region First Team</h2>'+
-  '<p>Edit all 12 positions. We automatically suggest the highest-ranked available players using locked regular-season statistics. Missing coach-reported stats are unknown, not zero. Your changes save only on this device and do not publish team selections to the website.</p>'+
+  '<p>Edit all 12 positions. We automatically suggest the highest-ranked available players using locked regular-season statistics. A player may earn one offensive and one defensive spot, evaluated separately. No player may fill two positions on the same side. Missing coach-reported stats are unknown, not zero. Your changes save only on this device and do not publish team selections to the website.</p>'+
   '<div class="rus-region-graphic-grid">'+slots.map(s=>'<div><label for="rg-'+s+'">'+s+(s==='WR1'?' (highest-ranked WR)':'')+'</label><select id="rg-'+s+'" data-slot="'+s+'">'+options(s)+'</select><details class="rus-rg-manual"><summary>Search other region players</summary><input data-rg-search="'+s+'" type="search" placeholder="Search by name or school" autocomplete="off"><select data-rg-manual="'+s+'"><option value="">Type 2+ letters to search</option></select></details></div>').join('')+'</div>'+
   '<div class="rus-region-graphic-actions"><button id="rg-auto" type="button">Restore Top-Ranked Picks</button><select id="rg-size" aria-label="Graphic dimensions"><option value="landscape">Landscape · 1600 × 900</option><option value="square">Square · 1080 × 1080</option><option value="portrait">Instagram Portrait · 1080 × 1350</option></select><button id="rg-save">Save PNG</button><button id="rg-share">Share Image</button><button id="rg-close">Close</button></div>'+
   '<p id="rg-note" aria-live="polite">Only real school logos are included; otherwise school text is used.</p><img id="rg-preview" alt="Preview of your two-column All-Region first-team graphic"></div>';
+ const syncOptions=()=>{for(const s of slots){const el=box.querySelector('#rg-'+s);el.innerHTML=options(s);el.value=selection[s]||'';const search=box.querySelector('[data-rg-search="'+s+'"]');box.querySelector('[data-rg-manual="'+s+'"]').innerHTML=manualOptions(s,search.value)}};
  document.body.append(box);
  for(const s of slots){const sel=box.querySelector('#rg-'+s);sel.value=selection[s]||'';
-  sel.addEventListener('change',()=>{const id=sel.value;if(id&&Object.entries(selection).some(([other,v])=>other!==s&&v===id)){
-    alert('This player is already selected for another position.');sel.value=selection[s]||'';return}
-   selection[s]=id;persist();refresh();
+  sel.addEventListener('change',()=>{const id=sel.value;if(id&&Object.entries(selection).some(([other,v])=>conflicts(s,other)&&v===id)){
+    alert('This player already has a position on this side of the ball.');sel.value=selection[s]||'';return}
+   selection[s]=id;persist();syncOptions();refresh();
   });
  }
  for(const slot of slots){
@@ -249,14 +253,15 @@ function open(){
   results.onchange=()=>{
    const id=results.value;
    if(!id)return;
-   if(Object.entries(selection).some(([other,v])=>other!==slot&&v===id)){alert('Player already selected at another position.');return}
+   if(Object.entries(selection).some(([other,v])=>conflicts(slot,other)&&v===id)){alert('Player already selected on this side of the ball.');return}
    selection[slot]=id;persist();
    const defaultSelect=box.querySelector('#rg-'+slot);
    defaultSelect.innerHTML=options(slot);defaultSelect.value=id;
+   syncOptions();
    refresh();
   };
  }
- box.querySelector('#rg-auto').onclick=()=>{if(!confirm('Replace all 12 picks with the highest-ranked available athletes from locked 2026 statistics?'))return;suggest(true);persist();for(const s of slots)box.querySelector('#rg-'+s).value=selection[s]||'';refresh()};
+ box.querySelector('#rg-auto').onclick=()=>{if(!confirm('Replace all 12 picks with the highest-ranked available athletes from locked 2026 statistics?'))return;suggest(true);persist();syncOptions();refresh()};
  box.querySelector('#rg-size').onchange=refresh;box.querySelector('#rg-save').onclick=download;
  box.querySelector('#rg-share').onclick=share;box.querySelector('#rg-close').onclick=close;
  box.addEventListener('click',e=>{if(e.target===box)close()});refresh();
