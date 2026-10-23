@@ -61,7 +61,7 @@ function missingInfo(p,slot){
  const reported=needs.some(x=>!!linesFor(p,x));
  return reported?'':('No '+needs.join('/')+' statistics reported');
 }
-function positionNote(p,slot){const kind=matchStatus(p,slot);return kind==='review'?'Position is broad on roster; verify '+slot:kind==='override'?'Manual position override; verify '+slot:''}
+function positionNote(p,slot){const kind=matchStatus(p,slot);const correction=window.RUSAwardPositionCorrections2026Status?.[p?.id]||'';if(/mismatch/.test(correction))return 'MaxPreps and Deseret roster details differ; verify athlete identity and '+slot;return kind==='review'?'Position is broad on roster; verify '+slot:kind==='override'?'Manual position override; verify '+slot:kind==='missing'?'Position not reported; editorial verification required':''}
 function logo(team){const canon=String(team||'').trim().toUpperCase();const alt=({CEDAR:'CEDAR CITY',GRAND:'GRAND COUNTY',GUNNISON:'GUNNISON VALLEY'})[canon];return logoMap[canon]||logoMap[alt]||window.RUSSchoolAssets?.customLogo?.(team)||''}
 function color(team){const t=(snapshot?.teamMeta||[]).find(t=>norm(t.team)===norm(team));return /^#[0-9a-f]{6}$/i.test(t?.backgroundColor||'')?t.backgroundColor:'#F14D07'}
 function playerHTML(p,slot,isWinner=false){
