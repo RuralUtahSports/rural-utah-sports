@@ -244,11 +244,11 @@ function manualOptions(slot,text,target){
  return '<option value="">'+(found.length?'Select a matching player…':'No players found')+'</option>'+
  found.map(p=>optionFor(p,slot,'',target)).join('');
 }
-// Include relevant production when the roster has no position, without inventing eligibility.
+// Show relevant reported production for every team, even if a roster position is missing or incomplete.
+// Visibility is not verified position eligibility; manual selection still requires review.
 function unlistedPosition(p){return !norm(p.position)||['NA','UNKNOWN','UNLISTED'].includes(norm(p.position))}
 function visibleCandidate(p,slot){
  if(matchStatus(p,slot)!=='override')return true;
- if(!unlistedPosition(p))return false;
  const categories=sideFor(slot)==='defense'?['Defense']:slot==='QB'?['Passing']:slot==='RB'?['Rushing']:slot==='FLEX'?['Rushing','Receiving']:['Receiving'];
  return categories.some(category=>p.lines.some(line=>line.category.toLowerCase().startsWith(category.toLowerCase())&&Object.values(line.values||{}).some(v=>number(v)!==null)));
 }
@@ -274,15 +274,15 @@ function openCandidates(target){
  const columns=[{label:'Name',get:p=>p.name},{label:'School',get:p=>p.team},{label:'Grade',get:gradeLabel},{label:'Position',get:p=>unlistedPosition(p)?'Position unverified':p.position},...candidateColumns(slot)];
  let sort=4,descending=true;
  const dialog=document.createElement('dialog');dialog.className='ar-candidate-dialog';dialog.setAttribute('aria-labelledby','ar-candidate-title');
- dialog.innerHTML='<div class="ar-candidate-head"><h2 id="ar-candidate-title">Choose '+esc(selectionTitle(target))+'</h2><button type="button" data-close>Close</button></div><p>Compare locked regular-season statistics. Each player can earn one offensive and one defensive spot. Missing statistics are not zero. Players with relevant reported stats but no listed position appear as Position unverified; confirm their role before selecting.</p><label>Search name or school<input type="search" data-search placeholder="Search players or schools" autocomplete="off"></label><label class="ar-candidate-toggle"><input type="checkbox" data-all> Include all region players (manual position overrides)</label><p data-count aria-live="polite"></p><div class="ar-tablewrap" tabindex="0" aria-label="Player comparison table; scroll horizontally for more statistics"><table><thead></thead><tbody></tbody></table></div>';
+ dialog.innerHTML='<div class="ar-candidate-head"><h2 id="ar-candidate-title">Choose '+esc(selectionTitle(target))+'</h2><button type="button" data-close>Close</button></div><p>Compare locked regular-season statistics. Each player can earn one offensive and one defensive spot. Missing statistics are not zero. Players with relevant stats remain visible even when roster positions are missing or incomplete. Confirm any flagged position before selecting.</p><label>Search name or school<input type="search" data-search placeholder="Search players or schools" autocomplete="off"></label><label class="ar-candidate-toggle"><input type="checkbox" data-all> Include entire region roster, including unreported stats</label><p data-count aria-live="polite"></p><div class="ar-tablewrap" tabindex="0" aria-label="Player comparison table; scroll horizontally for more statistics"><table><thead></thead><tbody></tbody></table></div>';
  document.body.append(dialog);
  const close=()=>dialog.close();
  dialog.querySelector('[data-close]').onclick=close;
  dialog.addEventListener('close',()=>{dialog.remove();if(opener?.isConnected)opener.focus();else document.querySelector('[data-choose-id="'+target+'"]')?.focus()},{once:true});
  const draw=()=>{
   const q=norm(dialog.querySelector('[data-search]').value),all=dialog.querySelector('[data-all]').checked;
-  const rows=players.filter(p=>(all||visibleCandidate(p,slot)||p.id===picks[target])&&(!q||norm(p.name+' '+p.team+' '+p.number).includes(q))).sort((a,b)=>compareCandidates(a,b,columns[sort],descending));
-  dialog.querySelector('[data-count]').textContent=rows.length+' candidates · tap a column heading to sort. Scroll across for all stats.';
+  const rows=players.filter(p=>(all||q||visibleCandidate(p,slot)||p.id===picks[target])&&(!q||norm(p.name+' '+p.team+' '+p.number).includes(q))).sort((a,b)=>compareCandidates(a,b,columns[sort],descending));
+  dialog.querySelector('[data-count]').textContent=rows.length+' candidates · search checks the entire region roster. Tap a heading to sort; scroll across for all stats.';
   dialog.querySelector('thead').innerHTML='<tr>'+columns.map((c,i)=>'<th scope="col"'+(sort===i?' aria-sort="'+(descending?'descending':'ascending')+'"':'')+'><button type="button" data-sort="'+i+'">'+esc(c.label)+(sort===i?(descending?' ▼':' ▲'):'')+'</button></th>').join('')+'<th scope="col">Selections / action</th></tr>';
   dialog.querySelector('tbody').innerHTML=rows.length?rows.map(p=>{
    const assigned=assignmentOf(p.id,target),placements=Object.entries(picks).filter(([,id])=>id===p.id).map(([id])=>selectionTitle(id)),warning=positionNote(p,slot);
