@@ -2,11 +2,11 @@
 'use strict';
 // This builder uses the frozen 2026 regional roster/stats snapshot, not live playoff statistics.
 if(!/all-state-watch\.html$/i.test(location.pathname))return;
-const slots=['QB','RB','WR1','WR2','WR3','TE','FLEX','DL','DE','MLB','OL','S','CB'],split=6;
+const slots=['QB','RB','WR1','WR2','WR3','TE','FLEX','DL','DE','MLB','S','CB'],split=6;
 const clean=v=>String(v??'').trim(),key=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const escape=v=>clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const token=p=>' '+clean(p.position).toUpperCase().replace(/[^A-Z0-9]+/g,' ')+' ';
-const roles={QB:/\bQB\b/,RB:/\b(RB|HB|FB)\b/,WR:/\b(WR|SE|FL)\b/,TE:/\bTE\b/,FLEX:/\b(RB|HB|FB|WR|TE|ATH|SE|FL)\b/,DL:/\b(DL|DT|NT|DE)\b/,DE:/\bDE\b/,MLB:/\b(MLB|ILB|LB)\b/,OL:/\b(OL|OT|OG|C|G|T)\b/,S:/\b(S|FS|SS|SAF|DB)\b/,CB:/\b(CB|DB)\b/};
+const roles={QB:/\bQB\b/,RB:/\b(RB|HB|FB)\b/,WR:/\b(WR|SE|FL)\b/,TE:/\bTE\b/,FLEX:/\b(RB|HB|FB|WR|TE|ATH|SE|FL)\b/,DL:/\b(DL|DT|NT|DE)\b/,DE:/\bDE\b/,MLB:/\b(MLB|ILB|LB)\b/,S:/\b(S|FS|SS|SAF|DB)\b/,CB:/\b(CB|DB)\b/};
 let region='',athletes=[],lookup=new Map(),selection={},box=null,graphic=null,generation=0;
 const regionTitle=()=>/^\d+$/.test(region)?'Region '+region:region;
 const siteAssets=()=>window.RUSSchoolAssets;
@@ -45,17 +45,15 @@ function collect(snap,scopeName){
  return [...out.values()].filter(p=>p.name).sort((a,b)=>a.name.localeCompare(b.name));
 }
 function value(p,slot){
- if(slot==='OL')return 0; // there are no verified individual blocking metrics
  if(slot==='FLEX')return Math.max(p.scores.RB||0,p.scores.WR||0,p.scores.TE||0);
  return p.scores[roleFor(slot)]||0;
 }
 function stored(){try{return JSON.parse(localStorage.getItem('rus-region-graphic-2026:'+region)||'{}')}catch{return{}}}
 function persist(){try{localStorage.setItem('rus-region-graphic-2026:'+region,JSON.stringify(selection))}catch{}}
-function suggest(){
- const old=stored(),taken=new Set();selection={};
- for(const slot of ['QB','RB','WR1','WR2','WR3','TE','DE','MLB','CB','S','DL','FLEX','OL']){
+function suggest(ignoreSaved=false){
+ const old=ignoreSaved?{}:stored(),taken=new Set();selection={};
+ for(const slot of ['QB','RB','WR1','WR2','WR3','TE','DE','MLB','CB','S','DL','FLEX']){
   if(old[slot]&&lookup.has(old[slot])&&!taken.has(old[slot])){selection[slot]=old[slot];taken.add(old[slot]);continue}
-  if(slot==='OL'){selection[slot]='';continue}
   const first=athletes.filter(p=>valid(p,slot)&&!taken.has(p.id)&&value(p,slot)>0)
    .sort((a,b)=>value(b,slot)-value(a,slot)||a.name.localeCompare(b.name))[0];
   selection[slot]=first?.id||'';if(first)taken.add(first.id);
@@ -63,7 +61,6 @@ function suggest(){
 }
 function stats(p,s){
  if(!p)return'EDIT THIS SLOT';
- if(s==='OL')return'INDIVIDUAL BLOCKING STATS NOT REPORTED';
  const lines=p.lines||[],stat=[];
  const add=(v,name)=>{if(v!=null&&Number.isFinite(v)&&v!==0)stat.push(v.toLocaleString('en-US',{maximumFractionDigits:1})+' '+name)};
  const find=prefix=>lines.find(l=>l.category?.toLowerCase().startsWith(prefix.toLowerCase()))?.values;
@@ -117,7 +114,7 @@ async function paint(format){
  ctx.fillText(head,w/2,portrait||square?161:167);
  ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.font='800 '+(portrait||square?19:21)+'px Arial';
  ctx.fillStyle='#ffd6d6';ctx.fillText('RUS EDITORIAL PICKS • 2026 REGULAR SEASON',w/2,portrait||square?205:207);
- const top=portrait?269:square?256:258,bottom=h-(portrait?120:square?104:92),rh=(bottom-top)/7, gap=portrait||square?24:70,cw=(w-2*margin-gap)/2;
+ const top=portrait?269:square?256:258,bottom=h-(portrait?120:square?104:92),rh=(bottom-top)/6, gap=portrait||square?24:70,cw=(w-2*margin-gap)/2;
  const teamsUsed=[...new Set(slots.map(s=>lookup.get(selection[s])?.school).filter(Boolean))],logos=new Map();
  await Promise.all(teamsUsed.map(async team=>{logos.set(team,await image(siteAssets()?.logoUrl?.(team)||''))}));
  for(let i=0;i<slots.length;i++){
@@ -179,9 +176,9 @@ function open(){
  };
  box=document.createElement('div');box.className='rus-region-graphic-backdrop';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');
  box.innerHTML='<div class="rus-region-graphic-panel"><h2>'+escape(region)+' — 2026 All-Region First Team</h2>'+
-  '<p>Edit each of the 13 selections. Suggested athletes are based only on locked pre-playoff stats; OL requires manual review. Missing coach-reported stats are unknown, not zero. Your changes save only on this device and do not publish team selections to the website.</p>'+
-  '<div class="rus-region-graphic-grid">'+slots.map(s=>'<div><label for="rg-'+s+'">'+s+(s==='WR1'?' (top-ranked WR)':s==='OL'?' (manual review)':'')+'</label><select id="rg-'+s+'" data-slot="'+s+'">'+options(s)+'</select></div>').join('')+'</div>'+
-  '<div class="rus-region-graphic-actions"><select id="rg-size" aria-label="Graphic dimensions"><option value="landscape">Landscape · 1600 × 900</option><option value="square">Square · 1080 × 1080</option><option value="portrait">Instagram Portrait · 1080 × 1350</option></select><button id="rg-save">Save PNG</button><button id="rg-share">Share Image</button><button id="rg-close">Close</button></div>'+
+  '<p>Edit all 12 positions. We automatically suggest the highest-ranked available players using locked regular-season statistics. Missing coach-reported stats are unknown, not zero. Your changes save only on this device and do not publish team selections to the website.</p>'+
+  '<div class="rus-region-graphic-grid">'+slots.map(s=>'<div><label for="rg-'+s+'">'+s+(s==='WR1'?' (highest-ranked WR)':'')+'</label><select id="rg-'+s+'" data-slot="'+s+'">'+options(s)+'</select></div>').join('')+'</div>'+
+  '<div class="rus-region-graphic-actions"><button id="rg-auto" type="button">Restore Top-Ranked Picks</button><select id="rg-size" aria-label="Graphic dimensions"><option value="landscape">Landscape · 1600 × 900</option><option value="square">Square · 1080 × 1080</option><option value="portrait">Instagram Portrait · 1080 × 1350</option></select><button id="rg-save">Save PNG</button><button id="rg-share">Share Image</button><button id="rg-close">Close</button></div>'+
   '<p id="rg-note" aria-live="polite">Only real school logos are included; otherwise school text is used.</p><img id="rg-preview" alt="Preview of your two-column All-Region first-team graphic"></div>';
  document.body.append(box);
  for(const s of slots){const sel=box.querySelector('#rg-'+s);sel.value=selection[s]||'';
@@ -190,6 +187,7 @@ function open(){
    selection[s]=id;persist();refresh();
   });
  }
+ box.querySelector('#rg-auto').onclick=()=>{if(!confirm('Replace all 12 picks with the highest-ranked available athletes from locked 2026 statistics?'))return;suggest(true);persist();for(const s of slots)box.querySelector('#rg-'+s).value=selection[s]||'';refresh()};
  box.querySelector('#rg-size').onchange=refresh;box.querySelector('#rg-save').onclick=download;
  box.querySelector('#rg-share').onclick=share;box.querySelector('#rg-close').onclick=close;
  box.addEventListener('click',e=>{if(e.target===box)close()});refresh();
@@ -213,7 +211,7 @@ function init(){
  ].join('');document.head.append(styles);
  const controls=document.querySelector('.controls');if(!controls)return;
  const area=document.createElement('div');area.className='rus-region-graphic-area';area.hidden=true;
- area.innerHTML='<button type="button" class="rus-region-graphic-btn">Create All-Region Share Graphic</button><p>Two-column First Team template · 13 editable positions · locked regular-season stats · real school logos · PNG download</p>';
+ area.innerHTML='<button type="button" class="rus-region-graphic-btn">Create All-Region Share Graphic</button><p>Two-column First Team template · 12 editable positions · locked regular-season stats · real school logos · PNG download</p>';
  controls.append(area);area.querySelector('button').onclick=open;
  const sync=()=>{area.hidden=!(src()&&selectedRegion())};
  for(const selector of ['#viewBtns','#scopeBtns','#results']){const el=document.querySelector(selector);if(el)new MutationObserver(sync).observe(el,{childList:true,subtree:true})}
