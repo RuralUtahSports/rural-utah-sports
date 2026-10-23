@@ -54,6 +54,25 @@ function value(p,slot){
 }
 function stored(){try{return JSON.parse(localStorage.getItem('rus-region-graphic-2026:'+region)||'{}')}catch{return{}}}
 function persist(){try{localStorage.setItem('rus-region-graphic-2026:'+region,JSON.stringify(selection))}catch{}}
+function bestDefensiveBackPair(taken){
+ const pool=athletes.filter(p=>!taken.has(p.id)&&value(p,'CB')>0&&(eligible(p,'S')||eligible(p,'CB')))
+  .sort((a,b)=>value(b,'CB')-value(a,'CB')||a.name.localeCompare(b.name)).slice(0,90);
+ const safeties=pool.filter(p=>eligible(p,'S'));
+ const corners=pool.filter(p=>eligible(p,'CB'));
+ let best=null;
+ for(const s of safeties)for(const cb of corners){
+  if(s.id===cb.id)continue;
+  const score=value(s,'S')+value(cb,'CB'),exact=Number(valid(s,'S'))+Number(valid(cb,'CB'));
+  const names=s.name+'|'+cb.name;
+  if(!best||score>best.score||(score===best.score&&(exact>best.exact||(exact===best.exact&&names<best.names))))
+   best={s,cb,score,exact,names};
+ }
+ if(best)return{S:best.s,CB:best.cb};
+ if(safeties.length&&!corners.length)return{S:safeties[0],CB:null};
+ if(corners.length&&!safeties.length)return{S:null,CB:corners[0]};
+ if(!safeties.length)return{S:null,CB:null};
+ return{S:safeties[0],CB:null};
+}
 function suggest(ignoreSaved=false){
  const old=ignoreSaved?{}:stored(),taken=new Set();selection={};
  for(const slot of ['QB','RB','WR1','WR2','WR3','TE','DE','MLB','CB','S','DL','FLEX']){
