@@ -25,6 +25,7 @@ function labelRegion(r){return /^\d+$/.test(r)?'Region '+r:r}
 function fieldIDs(section){
  return section==='honorable'?POSITIONS.flatMap(p=>[section+':'+p+':1',section+':'+p+':2']):POSITIONS.map(p=>section+':'+p);
 }
+const sideFor=slot=>['DL','DE','MLB','S','CB'].includes(slot)?'defense':'offense';
 function idSlot(id){return id.split(':')[1]}
 function poolFit(p,slot){return selectors[slot.startsWith('WR')?'WR':slot]?.test(token(p))||false}
 function fallbackFit(p,slot){return backup[slot]?.test(token(p))||false}
@@ -143,11 +144,12 @@ function bestSecondaryPair(used){
  return strength(topS,'S')>=strength(topCB,'CB')?{S:topS,CB:null}:{S:null,CB:topCB};
 }
 function suggest(){
- const all={},used=new Set();
+ const all={},usedBySide={offense:new Set(),defense:new Set()};
  for(const section of SECTIONS){
   const cycles=section==='honorable'?2:1;
   for(let index=1;index<=cycles;index++){
    for(const slot of PRIORITY){
+    const used=usedBySide[sideFor(slot)];
     const id=section+':'+slot+(section==='honorable'?':'+index:'');
     if(slot==='S')continue; // S and CB are chosen as one rated defensive-back pair.
     if(slot==='CB'){
@@ -178,8 +180,9 @@ function draftKey(){return'RUS-2026-REGION-AWARDS:'+region}
 function local(){try{return JSON.parse(localStorage.getItem(draftKey())||'null')}catch{return null}}
 function saveLocal(){try{localStorage.setItem(draftKey(),JSON.stringify({picks,winners,notes}))}catch{}}
 function validPicks(){
- const values=Object.values(picks).filter(Boolean);
- return values.length===new Set(values).size&&values.every(id=>byID.has(id));
+ const entries=Object.entries(picks).filter(([,player])=>player);
+ const keys=entries.map(([field,player])=>sideFor(idSlot(field))+':'+player);
+ return keys.length===new Set(keys).size&&entries.every(([,player])=>byID.has(player));
 }
 function pickChange(id,value){
  const assigned=assignmentOf(value,id);
@@ -193,10 +196,10 @@ function pickChange(id,value){
 // Keep the normal chooser focused on players with a matching reported position.
 // A separate, explicit search permits editorial overrides without flooding the dropdown.
 // All top eligible players remain visible, even when already placed on another team.
-// Choosing a placed player moves their selection after confirmation, without duplicates.
+// Choosing a placed player moves their selection after confirmation, without same-side duplicates.
 function assignmentOf(playerId,target){
  if(!playerId)return'';
- return Object.keys(picks).find(id=>id!==target&&picks[id]===playerId)||'';
+ return Object.keys(picks).find(id=>id!==target&&sideFor(idSlot(id))===sideFor(idSlot(target))&&picks[id]===playerId)||'';
 }
 function selectionTitle(id){
  if(!id)return'';
@@ -260,7 +263,7 @@ function renderAwards(){
   return '<div class="ar-winner"><strong>'+esc(title)+'</strong>'+playerHTML(p,role.toUpperCase(),true)+
    '<label class="ar-edit-label">Choose winner<select data-winner="'+role+'"><option value="">— Unselected —</option>'+
    ordered.map(x=>'<option value="'+esc(x.id)+'"'+(x.id===current?' selected':'')+'>'+esc(x.name+' — '+x.team)+'</option>').join('')+'</select></label></div>';
- }).join('')+'</div><p class="ar-muted">Award-winner suggestions are derived from reported production only. Winners may also appear on an All-Region team.</p>';
+ }).join('')+'</div><p class="ar-muted">Award-winner suggestions are derived from reported production only. Winners may also appear on an All-Region team. Each player may earn one offensive and one defensive team selection across First Team, Second Team and Honorable Mention.</p>';
 }
 function schoolBreakdown(){
  const rows=new Map();
@@ -400,7 +403,7 @@ async function setRegion(r){
 }
 async function save(statusValue){
  if(!admin||!uid){alert('You must be an approved editor to save or publish awards.');return}
- if(!validPicks()){alert('Duplicate or invalid players found. Please fix selections.');return}
+ if(!validPicks()){alert('Duplicate players on the same side of the ball or invalid players found. Each player may earn one offensive and one defensive selection.');return}
  if(statusValue==='published'&&fieldIDs('first').some(id=>!picks[id])){alert('Complete every First Team slot before publishing.');return}
  if(statusValue==='published'&&fieldIDs('second').some(id=>!picks[id])){alert('Complete every Second Team slot before publishing.');return}
  if(statusValue==='published'&&Object.keys(TITLES).some(id=>!winners[id])){alert('Select all three region award winners before publishing.');return}
