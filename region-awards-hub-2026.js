@@ -169,6 +169,9 @@ function suggest(){
    for(const slot of PRIORITY){
     const used=usedBySide[sideFor(slot)];
     const id=section+':'+slot+(section==='honorable'?':'+index:'');
+    // Special teams have no verified punting/return production in the locked snapshot.
+    // Keep manually reviewed choices instead of replacing them with invented rankings.
+    if(slot==='P'||slot==='RS'){all[id]=picks[id]||'';continue;}
     if(slot==='S')continue; // S and CB are chosen as one rated defensive-back pair.
     if(slot==='CB'){
       const pair=bestSecondaryPair(used);
@@ -249,7 +252,6 @@ function pickChange(id,value){
   if(!confirm((player?.name||'This player')+' is currently on '+selectionTitle(assigned)+'. Move them to '+selectionTitle(id)+'? The previous slot will be cleared.'))return false;
   picks[assigned]='';
  }
- if(regionLocked)return false;
  picks[id]=value||'';dirty=true;saveLocal();return true;
 }
 // Keep the normal chooser focused on players with a matching reported position.
@@ -416,8 +418,8 @@ function editorWarnings(){
   if(positional)problems.push(LABELS[id.split(':')[0]]+' '+slot+': '+p.name+' — '+positional);
   if(missing)problems.push(LABELS[id.split(':')[0]]+' '+slot+': '+p.name+' — '+missing);
  }
- const count=fieldIDs('first').filter(id=>!picks[id]).length;
- if(count)problems.unshift(count+' First-Team spot(s) remain unfilled');
+ const count=fieldIDs('first').filter(id=>!picks[id]&&!SPECIAL_POSITIONS.includes(idSlot(id))).length;
+ if(count)problems.unshift(count+' offensive/defensive First-Team spot(s) remain unfilled');
  return problems;
 }
 function tabs(){
@@ -545,8 +547,8 @@ async function save(statusValue){
  if(!admin){alert('Enter your editor PIN to save or publish awards.');return}
  if(regionLocked){alert('Unlock this region before saving or publishing.');return}
  if(!validPicks()){alert('Duplicate players on the same side of the ball or invalid players found. Each player may earn one offensive and one defensive selection.');return}
- if(statusValue==='published'&&fieldIDs('first').some(id=>!picks[id])){alert('Complete every First Team slot before publishing.');return}
- if(statusValue==='published'&&fieldIDs('second').some(id=>!picks[id])){alert('Complete every Second Team slot before publishing.');return}
+ if(statusValue==='published'&&fieldIDs('first').filter(id=>!SPECIAL_POSITIONS.includes(idSlot(id))).some(id=>!picks[id])){alert('Complete the offensive and defensive First Team slots before publishing. Unverified special-teams picks can remain pending.');return}
+ if(statusValue==='published'&&fieldIDs('second').filter(id=>!SPECIAL_POSITIONS.includes(idSlot(id))).some(id=>!picks[id])){alert('Complete the offensive and defensive Second Team slots before publishing. Unverified special-teams picks can remain pending.');return}
  if(statusValue==='published'&&Object.keys(TITLES).some(id=>!winners[id])){alert('Select all three region award winners before publishing.');return}
  if(statusValue==='draft'&&published&&!confirm('Saving a draft will temporarily unpublish this region. Continue?'))return;
  if(statusValue==='published'&&!confirm('Publish '+labelRegion(region)+' awards for everyone to see? Confirm that players, schools, positions, and missing statistics have been reviewed.'))return;
