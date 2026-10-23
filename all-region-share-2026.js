@@ -8,6 +8,7 @@ const escape=v=>clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g
 const token=p=>' '+clean(p.position).toUpperCase().replace(/[^A-Z0-9]+/g,' ')+' ';
 const roles={QB:/\bQB\b/,RB:/\b(RB|HB|FB)\b/,WR:/\b(WR|SE|FL)\b/,TE:/\bTE\b/,FLEX:/\b(RB|HB|FB|WR|TE|ATH|SE|FL)\b/,DL:/\b(DL|DT|NT|DE)\b/,DE:/\bDE\b/,MLB:/\b(MLB|ILB|LB)\b/,OL:/\b(OL|OT|OG|C|G|T)\b/,S:/\b(S|FS|SS|SAF|DB)\b/,CB:/\b(CB|DB)\b/};
 let region='',athletes=[],lookup=new Map(),selection={},box=null,graphic=null,generation=0;
+const regionTitle=()=>/^\d+$/.test(region)?'Region '+region:region;
 const siteAssets=()=>window.RUSSchoolAssets;
 const src=()=>typeof view!=='undefined'&&view==='All-Region'&&typeof lockedRegionSnapshot!=='undefined'&&lockedRegionSnapshot?.status==='LOCKED'?lockedRegionSnapshot:null;
 const selectedRegion=()=>typeof scope==='undefined'?'':scope;
@@ -112,7 +113,7 @@ async function paint(format){
  ctx.fillStyle='#fff';ctx.textAlign='center';ctx.shadowColor='#000';ctx.shadowBlur=5;ctx.shadowOffsetY=4;
  const name=fit(ctx,'2026 RURAL UTAH SPORTS',w-brandSize*2-margin*3,portrait||square?47:61,25);
  ctx.fillText(name,w/2,portrait||square?81:81);
- const head=fit(ctx,region.toUpperCase()+' ALL-REGION 1ST TEAM',w-margin*2,portrait||square?48:67,28);
+ const head=fit(ctx,regionTitle().toUpperCase()+' ALL-REGION 1ST TEAM',w-margin*2,portrait||square?48:67,28);
  ctx.fillText(head,w/2,portrait||square?161:167);
  ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.font='800 '+(portrait||square?19:21)+'px Arial';
  ctx.fillStyle='#ffd6d6';ctx.fillText('RUS EDITORIAL PICKS • 2026 REGULAR SEASON',w/2,portrait||square?205:207);
