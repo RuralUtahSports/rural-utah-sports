@@ -41,7 +41,7 @@ function collect(snap,scopeName){
   if(!p.position||p.position==='-')p.position=window.RUSAwardPositionCorrections2026?.[p.id]||p.position;
   p.scores={};
   for(const role of ['QB','RB','WR','TE','DL','LB','DB']){
-   const base=scoring?.positionScore?.(role,p.lines)||0;
+   const base=window.RUSAwardRoleScoring2026?.forRole?.(scoring,role,p.lines)??0;
    const context=scoring?.teamContextFor?.(contexts,p.school);
    p.scores[role]=scoring?.applyTeamContext?.(base,context,'allRegion')??base;
   }
