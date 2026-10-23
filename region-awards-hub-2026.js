@@ -62,7 +62,7 @@ function missingInfo(p,slot){
  const reported=needs.some(x=>!!linesFor(p,x));
  return reported?'':('No '+needs.join('/')+' statistics reported');
 }
-function positionNote(p,slot){const kind=matchStatus(p,slot);const correction=window.RUSAwardPositionCorrections2026Status?.[p?.id]||'';if(/mismatch/.test(correction))return 'MaxPreps and Deseret roster details differ; verify athlete identity and '+slot;return kind==='review'?'Position is broad on roster; verify '+slot:kind==='override'?'Manual position override; verify '+slot:kind==='missing'?'Position not reported; editorial verification required':''}
+function positionNote(p,slot){const kind=matchStatus(p,slot);const correction=window.RUSAwardPositionCorrections2026Status?.[p?.id]||'';if(/mismatch/.test(correction))return 'MaxPreps and Deseret roster details differ; verify athlete identity and '+slot;return unlistedPosition(p)?'Position unverified — confirm '+slot+' before selecting':kind==='review'?'Position is broad on roster; verify '+slot:kind==='override'?'Manual position override; verify '+slot:kind==='missing'?'Position not reported; editorial verification required':''}
 function logo(team){const canon=String(team||'').trim().toUpperCase();const alt=({CEDAR:'CEDAR CITY',GRAND:'GRAND COUNTY',GUNNISON:'GUNNISON VALLEY'})[canon];return logoMap[canon]||logoMap[alt]||window.RUSSchoolAssets?.customLogo?.(team)||''}
 function color(team){const t=(snapshot?.teamMeta||[]).find(t=>norm(t.team)===norm(team));return /^#[0-9a-f]{6}$/i.test(t?.backgroundColor||'')?t.backgroundColor:'#F14D07'}
 function playerHTML(p,slot,isWinner=false){
@@ -244,10 +244,18 @@ function manualOptions(slot,text,target){
  return '<option value="">'+(found.length?'Select a matching player…':'No players found')+'</option>'+
  found.map(p=>optionFor(p,slot,'',target)).join('');
 }
+// Include relevant production when the roster has no position, without inventing eligibility.
+function unlistedPosition(p){return !norm(p.position)||['NA','UNKNOWN','UNLISTED'].includes(norm(p.position))}
+function visibleCandidate(p,slot){
+ if(matchStatus(p,slot)!=='override')return true;
+ if(!unlistedPosition(p))return false;
+ const categories=sideFor(slot)==='defense'?['Defense']:slot==='QB'?['Passing']:slot==='RB'?['Rushing']:slot==='FLEX'?['Rushing','Receiving']:['Receiving'];
+ return categories.some(category=>p.lines.some(line=>line.category.toLowerCase().startsWith(category.toLowerCase())&&Object.values(line.values||{}).some(v=>number(v)!==null)));
+}
 function candidateColumns(slot){
  const stat=(label,category,...names)=>({label,get:p=>{const values=linesFor(p,category);for(const name of names){const v=getValue(values,name);if(v!==null)return v}return null}});
  const receiving=[stat('Receptions','Receiving','RECEPTIONS'),stat('Rec yards','Receiving','YARDS'),{label:'Yards / catch',get:p=>{const d=linesFor(p,'Receiving'),y=getValue(d,'YARDS'),r=getValue(d,'RECEPTIONS');return y!==null&&r>0?y/r:null}},stat('Rec TD','Receiving','TD')];
- if(sideFor(slot)==='defense')return [stat('Tackles','Defense','TACKLES'),stat('TFL','Defense','TFL','TACKLES FOR LOSS'),stat('Sacks','Defense','SACKS'),stat('INT','Defense','PASS INT.','INTERCEPTIONS'),stat('Forced fumbles','Defense','FORCED FUMBLES','FUM FORCED','FF'),stat('Fumble recoveries','Defense','FUM REC')];
+ if(sideFor(slot)==='defense')return [stat('Tackles','Defense','TACKLES'),stat('TFL','Defense','TFL','TACKLES FOR LOSS'),stat('Sacks','Defense','SACKS'),stat('INT','Defense','PASS INT.','INTERCEPTIONS'),stat('Forced fumbles','Defense','FORCED FUMBLES','FUM FORCED','CAUSED FUM','FF'),stat('Fumble recoveries','Defense','FUM REC')];
  if(slot==='QB')return [stat('Pass yards','Passing','YARDS'),stat('Pass TD','Passing','TD'),stat('INT','Passing','INT'),stat('Rush yards','Rushing','YARDS'),stat('Rush TD','Rushing','TD')];
  if(slot==='RB'||slot==='FLEX')return [stat('Rush yards','Rushing','YARDS'),stat('Rush TD','Rushing','TD'),...receiving];
  return receiving;
@@ -263,17 +271,17 @@ function compareCandidates(a,b,column,descending){
 function openCandidates(target){
  if(published&&!admin)return;
  const slot=idSlot(target),opener=document.activeElement;
- const columns=[{label:'Name',get:p=>p.name},{label:'School',get:p=>p.team},{label:'Grade',get:gradeLabel},{label:'Position',get:p=>p.position||'Not reported'},...candidateColumns(slot)];
+ const columns=[{label:'Name',get:p=>p.name},{label:'School',get:p=>p.team},{label:'Grade',get:gradeLabel},{label:'Position',get:p=>unlistedPosition(p)?'Position unverified':p.position},...candidateColumns(slot)];
  let sort=4,descending=true;
  const dialog=document.createElement('dialog');dialog.className='ar-candidate-dialog';dialog.setAttribute('aria-labelledby','ar-candidate-title');
- dialog.innerHTML='<div class="ar-candidate-head"><h2 id="ar-candidate-title">Choose '+esc(selectionTitle(target))+'</h2><button type="button" data-close>Close</button></div><p>Compare locked regular-season statistics. Each player can earn one offensive and one defensive spot. Missing statistics are not zero.</p><label>Search name or school<input type="search" data-search placeholder="Search players or schools" autocomplete="off"></label><label class="ar-candidate-toggle"><input type="checkbox" data-all> Include all region players (manual position overrides)</label><p data-count aria-live="polite"></p><div class="ar-tablewrap" tabindex="0" aria-label="Player comparison table; scroll horizontally for more statistics"><table><thead></thead><tbody></tbody></table></div>';
+ dialog.innerHTML='<div class="ar-candidate-head"><h2 id="ar-candidate-title">Choose '+esc(selectionTitle(target))+'</h2><button type="button" data-close>Close</button></div><p>Compare locked regular-season statistics. Each player can earn one offensive and one defensive spot. Missing statistics are not zero. Players with relevant reported stats but no listed position appear as Position unverified; confirm their role before selecting.</p><label>Search name or school<input type="search" data-search placeholder="Search players or schools" autocomplete="off"></label><label class="ar-candidate-toggle"><input type="checkbox" data-all> Include all region players (manual position overrides)</label><p data-count aria-live="polite"></p><div class="ar-tablewrap" tabindex="0" aria-label="Player comparison table; scroll horizontally for more statistics"><table><thead></thead><tbody></tbody></table></div>';
  document.body.append(dialog);
  const close=()=>dialog.close();
  dialog.querySelector('[data-close]').onclick=close;
  dialog.addEventListener('close',()=>{dialog.remove();if(opener?.isConnected)opener.focus();else document.querySelector('[data-choose-id="'+target+'"]')?.focus()},{once:true});
  const draw=()=>{
   const q=norm(dialog.querySelector('[data-search]').value),all=dialog.querySelector('[data-all]').checked;
-  const rows=players.filter(p=>(all||matchStatus(p,slot)!=='override'||p.id===picks[target])&&(!q||norm(p.name+' '+p.team+' '+p.number).includes(q))).sort((a,b)=>compareCandidates(a,b,columns[sort],descending));
+  const rows=players.filter(p=>(all||visibleCandidate(p,slot)||p.id===picks[target])&&(!q||norm(p.name+' '+p.team+' '+p.number).includes(q))).sort((a,b)=>compareCandidates(a,b,columns[sort],descending));
   dialog.querySelector('[data-count]').textContent=rows.length+' candidates · tap a column heading to sort. Scroll across for all stats.';
   dialog.querySelector('thead').innerHTML='<tr>'+columns.map((c,i)=>'<th scope="col"'+(sort===i?' aria-sort="'+(descending?'descending':'ascending')+'"':'')+'><button type="button" data-sort="'+i+'">'+esc(c.label)+(sort===i?(descending?' ▼':' ▲'):'')+'</button></th>').join('')+'<th scope="col">Selections / action</th></tr>';
   dialog.querySelector('tbody').innerHTML=rows.length?rows.map(p=>{
