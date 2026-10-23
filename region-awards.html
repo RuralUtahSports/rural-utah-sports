@@ -71,6 +71,15 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 .ar-manual-search{margin-top:10px;border-top:1px solid #34343b;padding-top:9px}
 .ar-manual-search summary{cursor:pointer;color:#ffad84;font-size:11px;font-weight:900;padding:7px 0}
 .ar-manual-search input,.ar-manual-search select{display:block;width:100%;margin-top:6px;font-size:12px}
+
+.ar-candidate-dialog{background:#151515;color:#fff;border:1px solid #666;border-top:5px solid #F14D07;border-radius:12px;width:min(1200px,96vw);max-width:96vw;max-height:92dvh;padding:20px;box-sizing:border-box;overflow:auto}
+.ar-selection>button,.ar-candidate-dialog button{background:#F14D07;color:#0b0806;border:0;border-radius:7px;padding:10px 13px;min-height:44px;font-weight:800}.ar-selection>button.secondary{background:#36363b;color:white}
+.ar-candidate-dialog::backdrop{background:rgba(0,0,0,.85)}
+.ar-candidate-head{display:flex;gap:16px;align-items:center;justify-content:space-between}.ar-candidate-head h2{margin:0}
+.ar-candidate-dialog p{font-size:13px;color:#ccc}.ar-candidate-dialog input[type=search]{display:block;width:100%;box-sizing:border-box;margin:8px 0;padding:12px;background:#222;color:white;border:1px solid #666;border-radius:6px}
+.ar-candidate-toggle{display:flex;align-items:center;gap:8px;font-size:13px;margin:12px 0}.ar-candidate-toggle input{width:auto}
+.ar-candidate-dialog table{width:100%;border-collapse:collapse}.ar-candidate-dialog th,.ar-candidate-dialog td{padding:10px;text-align:left;white-space:nowrap;border-bottom:1px solid #444}.ar-candidate-dialog th{background:#252525}.ar-candidate-dialog th button{background:transparent;color:#ffb38f;padding:6px}.ar-candidate-dialog td small{display:block;white-space:normal;min-width:130px;font-size:12px;margin-bottom:6px}.ar-candidate-dialog tr:hover{background:#252525}.ar-candidate-dialog .ar-tablewrap{overflow:auto}.ar-selection>button{margin:10px 8px 0 0;min-height:44px}
+@media(max-width:600px){.ar-candidate-dialog{padding:12px}.ar-candidate-head h2{font-size:19px}.ar-candidate-dialog th,.ar-candidate-dialog td{padding:8px}}
 </style>
 </head>
 <body>
@@ -89,6 +98,7 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 </section>
 <section class="section">
 <div id="ar-tabs" class="ar-tabs"></div>
+<p class="ar-muted">Start with blank positions and choose each player from a sortable stats table. Saved selections stay intact. Auto-fill Suggested Picks is optional.</p>
 <div id="ar-content"><p class="ar-muted">Loading reported rosters and regular-season statistics…</p></div>
 </section>
 <section class="section" id="ar-warnings"><strong>Accuracy review</strong> — Loading missing-stat checks…</section>
@@ -105,7 +115,7 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 <h2>Editorial Controls</h2>
 <p id="ar-preview-status">Selections can be prepared locally. Saving live awards requires editor approval.</p>
 <div class="ar-actions">
-<button id="ar-auto" class="secondary">Restore Ranked Suggestions</button>
+<button id="ar-auto" class="secondary">Auto-fill Suggested Picks</button>
 <button id="ar-backup" class="secondary">Export Draft Backup</button>
 <button id="ar-save" disabled>Save Private Draft to Website</button>
 <button id="ar-publish" disabled>Finalize &amp; Publish Region</button>
@@ -123,5 +133,5 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 <script src="award-role-scoring-2026.js?v=20261023-role-scores1"></script>
 <script src="school-assets-bundle.js?v=20260910-oos-5"></script>
 <script src="award-roster-position-corrections-2026.js?v=20261023-richfield-audit2"></script>
-<script src="region-awards-hub-2026.js?v=20261023-two-way5"></script>
+<script src="region-awards-hub-2026.js?v=20261023-candidate-table6"></script>
 </body></html>
