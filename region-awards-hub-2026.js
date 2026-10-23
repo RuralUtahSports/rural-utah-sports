@@ -204,7 +204,7 @@ function manualOptions(slot,text,target){
 function drawSelector(id,section){
  const slot=idSlot(id),p=byID.get(picks[id]),status=matchStatus(p,slot);
  return '<div class="ar-selection'+(status==='review'||status==='override'?' ar-attention':'')+'"><div class="ar-select-top"><strong>'+esc(slot)+(section==='honorable'?' · '+id.split(':')[2]:'')+'</strong>'+
- (p?'<span class="ar-pill">'+esc(status==='accurate'?'Position matched':status==='review'?'Verify position':'Manual override')+'</span>':'<span class="ar-warn">Empty</span>')+'</div>'+
+ (p?'<span class="ar-pill">'+esc(status==='accurate'?'Roster-listed':status==='review'?'Check specific role':'Manual override')+'</span>':'<span class="ar-warn">Empty</span>')+'</div>'+
  playerHTML(p,slot)+
  '<label class="ar-edit-label">Top eligible players<select data-select-id="'+esc(id)+'">'+playerOptions(slot,picks[id],id)+'</select></label>'+
  '<details class="ar-manual-search"><summary>Find another player (manual override)</summary>'+
@@ -265,7 +265,8 @@ function render(){
  const warnings=editorWarnings();
  el('#ar-warnings').innerHTML='<strong>Accuracy review</strong> · '+warnings.length+' item(s) flagged for review.'+
  (warnings.length?'<details><summary>View warnings</summary><ul>'+warnings.slice(0,70).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></details>':
- '<p>No missing data or broad positions detected in currently selected player records.</p>');
+ '<p>No missing data or broad positions detected in currently selected player records.</p>')+
+ '<details class="ar-verify-guide"><summary>How do I verify a player’s position?</summary><p>Check the athlete’s 2026 school or MaxPreps football roster. Roster-listed means that the saved position matches the selected slot; it is not an independent coach confirmation. For broad labels such as LB or DB, confirm the exact MLB, CB or safety assignment with the school or coaching staff. If no reliable position exists, leave it flagged for manual review. Never determine defensive positions from statistics alone.</p></details>';
  el('#ar-auto').disabled=Boolean(published&&!admin);
  el('#ar-note').disabled=Boolean(published&&!admin);
  el('#ar-publish').disabled=!admin||busy;
