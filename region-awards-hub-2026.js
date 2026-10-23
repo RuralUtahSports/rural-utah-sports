@@ -187,7 +187,7 @@ async function pinApi(action,extra={}){
 }
 async function pinUnlock(){
  const pin=el('#ar-pin').value.trim(),message=el('#ar-pin-message');
- if(!/^\\d{6}$/.test(pin)){message.textContent='Enter all six digits.';return}
+ if(!/^[0-9]{6}$/.test(pin)){message.textContent='Enter all six digits.';return}
  const button=el('#ar-pin-submit');button.disabled=true;message.textContent='Verifying…';
  try{const data=await pinApi('login',{pin});localStorage.setItem('rus-awards-pin-token',data.token);el('#ar-pin').value='';admin=true;el('#ar-pin-panel').hidden=true;await setRegion(region);message.textContent='';}
  catch(e){message.textContent=e.message;}
@@ -207,8 +207,8 @@ function scheduleCloudSave(){
  },850);
 }
 async function writeRegion(statusValue){
- if(!admin||!uid)throw Error('Approved editor access required');
- const row={season:YEAR,region,status:statusValue,selections:{picks,locked:regionLocked},winners,editorial_notes:notes,updated_by:uid,updated_at:new Date().toISOString(),published_at:statusValue==='published'?(published?.published_at||new Date().toISOString()):null};
+ if(!admin)throw Error('Unlock the editor with your PIN first');
+ const row={season:YEAR,region,status:statusValue,selections:{picks,locked:regionLocked},winners,editorial_notes:notes,updated_by:null,updated_at:new Date().toISOString(),published_at:statusValue==='published'?(published?.published_at||new Date().toISOString()):null};
  await pinApi('save',{region,record:row});
 }
 async function toggleRegionLock(){
@@ -228,6 +228,7 @@ function validPicks(){
  return keys.length===new Set(keys).size&&entries.every(([,player])=>byID.has(player));
 }
 function pickChange(id,value){
+ if(regionLocked||!admin)return false;
  const assigned=assignmentOf(value,id);
  if(assigned){
   const player=byID.get(value);
@@ -518,7 +519,7 @@ async function setRegion(r){
  const u=new URL(location.href);u.searchParams.set('region',r);history.replaceState(null,'',u.pathname+u.search);
 }
 async function save(statusValue){
- if(!admin||!uid){alert('You must be an approved editor to save or publish awards.');return}
+ if(!admin){alert('Enter your editor PIN to save or publish awards.');return}
  if(regionLocked){alert('Unlock this region before saving or publishing.');return}
  if(!validPicks()){alert('Duplicate players on the same side of the ball or invalid players found. Each player may earn one offensive and one defensive selection.');return}
  if(statusValue==='published'&&fieldIDs('first').some(id=>!picks[id])){alert('Complete every First Team slot before publishing.');return}
