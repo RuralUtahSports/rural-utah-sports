@@ -91,6 +91,10 @@ function collect(r){
   }
  }
  for(const p of out.values()){
+  if(!p.position||p.position==='-'){
+   const verified=window.RUSAwardPositionCorrections2026?.[p.id];
+   if(verified){p.position=verified;p.positionSource='MaxPreps verified roster';}
+  }
   for(const role of ['QB','RB','WR','TE','DL','LB','DB']){
    const amount=scoring?.positionScore?.(role,p.lines)||0;
    const ctx=scoring?.teamContextFor?.(contexts,p.team);
