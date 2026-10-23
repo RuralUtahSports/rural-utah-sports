@@ -432,7 +432,7 @@ async function graphicFor(section,format){
  const cvs=document.createElement('canvas');cvs.width=w;cvs.height=h;const ctx=cvs.getContext('2d');const centerX=w/2;
  ctx.fillStyle='#333436';ctx.fillRect(0,0,w,h);
  const grad=ctx.createRadialGradient(w*.5,h*.52,0,w*.5,h*.52,w*.72);
- grad.addColorStop(0,'rgba(225,17,17,.76)');grad.addColorStop(.48,'rgba(106,18,18,.44)');grad.addColorStop(1,'rgba(0,0,0,0)');
+ grad.addColorStop(0,'rgba(241,77,7,.80)');grad.addColorStop(.48,'rgba(145,45,7,.44)');grad.addColorStop(1,'rgba(0,0,0,0)');
  ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
  const margin=landscape?60:34,bigLogo=landscape?104:84;
  const brand=await loadLogo(new URL('RUSlogoNew.png',location.href).href);
@@ -443,7 +443,7 @@ async function graphicFor(section,format){
  let sub=section==='winners'?'REGION AWARD WINNERS':section==='first'?'ALL-REGION 1ST TEAM':section==='second'?'ALL-REGION 2ND TEAM':'HONORABLE MENTION';
  const line2=fitted(ctx,labelRegion(region).toUpperCase()+' · '+sub,w-2*margin,landscape?67:49,28);
  ctx.fillText(line2,centerX,landscape?166:165);ctx.shadowBlur=0;ctx.shadowOffsetY=0;
- ctx.font='800 '+(landscape?20:17)+'px Arial';ctx.fillStyle='#ffe4de';
+ ctx.font='800 '+(landscape?20:17)+'px Arial';ctx.fillStyle='#ffe8d8';
  ctx.fillText(published&&!dirty?'RUS EDITORIAL AWARDS • 2026 REGULAR SEASON':'RUS EDITORIAL DRAFT • NOT FINAL AWARDS',centerX,landscape?209:209);
  const ids=section==='winners'?['mvp','opoy','dpoy']:fieldIDs(section);
  const left=ids.filter((id,i)=>section==='winners'?i<2:firstHalf.includes(idSlot(id)));
@@ -466,7 +466,7 @@ async function graphicFor(section,format){
    ctx.textAlign='left';ctx.fillStyle='#fff';ctx.shadowColor='#000';ctx.shadowBlur=4;ctx.shadowOffsetY=3;
    const title=(section==='winners'?({MVP:'MVP',OPOY:'OPOY',DPOY:'DPOY'})[slot]:slot)+': '+(p?p.name.toUpperCase():'PENDING');
    ctx.fillText(fitted(ctx,title,maxText,section==='honorable'?(landscape?20:17):landscape?31:24,12),tx,y+rowHeight*.43);
-   ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.fillStyle='#ffefec';
+   ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.fillStyle='#fff2e9';
    let detail=p?p.team.toUpperCase()+' · '+statLine(p,slot):'SELECTION NOT VERIFIED';
    ctx.fillText(fitted(ctx,detail,maxText,section==='honorable'?12:landscape?19:14,10),tx,y+rowHeight*.73);
   }
