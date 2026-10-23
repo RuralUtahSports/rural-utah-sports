@@ -169,16 +169,29 @@ function open(){
  if(!athletes.length){alert('No roster data is available for this region.');return}
  suggest();
  const options=slot=>{
-  const matching=athletes.filter(p=>valid(p,slot)).sort((a,b)=>value(b,slot)-value(a,slot)||a.name.localeCompare(b.name));
-  const others=athletes.filter(p=>!valid(p,slot));
-  const toOpt=p=>'<option value="'+escape(p.id)+'">'+escape(p.name+' — '+p.school+' ('+p.position+')')+'</option>';
-  return '<option value="">— Unselected —</option><optgroup label="Matching position">'+matching.map(toOpt).join('')+
-   '</optgroup><optgroup label="Other region players • manual override">'+others.map(toOpt).join('')+'</optgroup>';
+  const used=new Set(Object.entries(selection).filter(([other])=>other!==slot).map(([,id])=>id).filter(Boolean));
+  const matching=athletes.filter(p=>valid(p,slot)&&!used.has(p.id))
+   .sort((a,b)=>value(b,slot)-value(a,slot)||a.name.localeCompare(b.name));
+  const saved=lookup.get(selection[slot]),selected=saved?[saved]:[];
+  const highlighted=matching.filter(p=>value(p,slot)>0).slice(0,18);
+  const unreported=matching.filter(p=>value(p,slot)===0).slice(0,3);
+  const pool=[...new Map([...selected,...highlighted,...unreported].map(p=>[p.id,p])).values()];
+  const toOpt=p=>'<option value="'+escape(p.id)+'">'+escape(p.name+' — '+p.school+' ('+(p.position||'?')+') · '+(value(p,slot)>0?value(p,slot).toFixed(1)+' pts':'unreported'))+'</option>';
+  return '<option value="">— Unselected —</option>'+pool.map(toOpt).join('');
+ };
+ const manualOptions=(slot,query)=>{
+  const q=key(query);
+  if(q.length<2)return '<option value="">Type 2+ letters to search</option>';
+  const used=new Set(Object.values(selection).filter(Boolean));
+  const matches=athletes.filter(p=>!used.has(p.id)&&key(p.name+' '+p.school+' '+p.number).includes(q))
+   .sort((a,b)=>(Number(valid(b,slot))-Number(valid(a,slot)))||value(b,slot)-value(a,slot)||a.name.localeCompare(b.name)).slice(0,20);
+  return '<option value="">'+(matches.length?'Select a player…':'No matching players')+'</option>'+
+   matches.map(p=>'<option value="'+escape(p.id)+'">'+escape(p.name+' — '+p.school+' ('+(p.position||'?')+')')+'</option>').join('');
  };
  box=document.createElement('div');box.className='rus-region-graphic-backdrop';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');
  box.innerHTML='<div class="rus-region-graphic-panel"><h2>'+escape(region)+' — 2026 All-Region First Team</h2>'+
   '<p>Edit all 12 positions. We automatically suggest the highest-ranked available players using locked regular-season statistics. Missing coach-reported stats are unknown, not zero. Your changes save only on this device and do not publish team selections to the website.</p>'+
-  '<div class="rus-region-graphic-grid">'+slots.map(s=>'<div><label for="rg-'+s+'">'+s+(s==='WR1'?' (highest-ranked WR)':'')+'</label><select id="rg-'+s+'" data-slot="'+s+'">'+options(s)+'</select></div>').join('')+'</div>'+
+  '<div class="rus-region-graphic-grid">'+slots.map(s=>'<div><label for="rg-'+s+'">'+s+(s==='WR1'?' (highest-ranked WR)':'')+'</label><select id="rg-'+s+'" data-slot="'+s+'">'+options(s)+'</select><details class="rus-rg-manual"><summary>Search other region players</summary><input data-rg-search="'+s+'" type="search" placeholder="Search by name or school" autocomplete="off"><select data-rg-manual="'+s+'"><option value="">Type 2+ letters to search</option></select></details></div>').join('')+'</div>'+
   '<div class="rus-region-graphic-actions"><button id="rg-auto" type="button">Restore Top-Ranked Picks</button><select id="rg-size" aria-label="Graphic dimensions"><option value="landscape">Landscape · 1600 × 900</option><option value="square">Square · 1080 × 1080</option><option value="portrait">Instagram Portrait · 1080 × 1350</option></select><button id="rg-save">Save PNG</button><button id="rg-share">Share Image</button><button id="rg-close">Close</button></div>'+
   '<p id="rg-note" aria-live="polite">Only real school logos are included; otherwise school text is used.</p><img id="rg-preview" alt="Preview of your two-column All-Region first-team graphic"></div>';
  document.body.append(box);
@@ -187,6 +200,20 @@ function open(){
     alert('This player is already selected for another position.');sel.value=selection[s]||'';return}
    selection[s]=id;persist();refresh();
   });
+ }
+ for(const slot of slots){
+  const search=box.querySelector('[data-rg-search="'+slot+'"]');
+  const results=box.querySelector('[data-rg-manual="'+slot+'"]');
+  search.oninput=()=>{results.innerHTML=manualOptions(slot,search.value)};
+  results.onchange=()=>{
+   const id=results.value;
+   if(!id)return;
+   if(Object.entries(selection).some(([other,v])=>other!==slot&&v===id)){alert('Player already selected at another position.');return}
+   selection[slot]=id;persist();
+   const defaultSelect=box.querySelector('#rg-'+slot);
+   defaultSelect.innerHTML=options(slot);defaultSelect.value=id;
+   refresh();
+  };
  }
  box.querySelector('#rg-auto').onclick=()=>{if(!confirm('Replace all 12 picks with the highest-ranked available athletes from locked 2026 statistics?'))return;suggest(true);persist();for(const s of slots)box.querySelector('#rg-'+s).value=selection[s]||'';refresh()};
  box.querySelector('#rg-size').onchange=refresh;box.querySelector('#rg-save').onclick=download;
@@ -202,6 +229,7 @@ function init(){
  '.rus-region-graphic-panel{width:min(1040px,100%);max-height:95vh;overflow:auto;background:#111;border:1px solid #555;border-top:5px solid #F14D07;padding:18px;border-radius:12px;color:#fff;font-family:Arial,sans-serif}',
  '.rus-region-graphic-panel h2{margin:0;font-size:23px}',
  '.rus-region-graphic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 15px}',
+ '.rus-rg-manual{margin-top:8px;border-top:1px solid #444;padding-top:7px}.rus-rg-manual summary{cursor:pointer;color:#ffac86;font-size:11px;font-weight:900;padding:6px 0}.rus-rg-manual input,.rus-rg-manual select{display:block;width:100%;margin-top:8px;background:#222;color:#fff;border:1px solid #555;border-radius:6px;padding:9px;font-size:12px}',
  '.rus-region-graphic-grid label{display:block;color:#ffc2ac;font-size:11px;font-weight:900;margin:0 0 5px}',
  '.rus-region-graphic-grid select,#rg-size{display:block;width:100%;min-width:0;background:#222;color:#fff;border:1px solid #555;border-radius:6px;padding:9px;font-size:12px}',
  '.rus-region-graphic-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:16px 0}',

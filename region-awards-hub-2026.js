@@ -147,23 +147,53 @@ function pickChange(id,value){
  if(value&&Object.entries(picks).some(([other,v])=>other!==id&&v===value)){alert('That athlete already appears on another awards team. No duplicates are allowed.');return false;}
  picks[id]=value||'';dirty=true;saveLocal();return true;
 }
-function playerOptions(slot,current,expanded=false){
- const used=new Set(Object.values(picks).filter(x=>x!==current&&x));
- const choices=[...players].sort((a,b)=>{
-  const category=kind=>({accurate:0,review:1,override:2})[matchStatus(kind,slot)]||3;
-  return category(a)-category(b)||strength(b,slot)-strength(a,slot)||a.name.localeCompare(b.name);
- });
- const shown=expanded?choices:choices.slice(0,30).concat(current&&choices.findIndex(p=>p.id===current)>=30?[choices.find(p=>p.id===current)]:[]);
- return '<option value="">— Unselected —</option>'+shown.map(p=>'<option value="'+esc(p.id)+'"'+(p.id===current?' selected':'')+(used.has(p.id)?' disabled':'')+'>'+
- esc(p.name+' — '+p.team+' ('+(p.position||'?')+')'+(strength(p,slot)?' · '+strength(p,slot).toFixed(1):' · no reported '+slot+' points')+
- (matchStatus(p,slot)==='review'?' ⚠ verify position':matchStatus(p,slot)==='override'?' ⚠ override':''))+'</option>').join('');
+// Keep the normal chooser focused on players with a matching reported position.
+// A separate, explicit search permits editorial overrides without flooding the dropdown.
+function relevantPlayers(slot,current){
+ const used=new Set(Object.values(picks).filter(id=>id&&id!==current));
+ const scored=players.filter(p=>!used.has(p.id)&&matchStatus(p,slot)!=='override'&&strength(p,slot)>0);
+ const unscored=players.filter(p=>!used.has(p.id)&&matchStatus(p,slot)!=='override'&&strength(p,slot)===0);
+ const sorter=(a,b)=>{
+  const weight={accurate:0,review:1,override:2};
+  return weight[matchStatus(a,slot)]-weight[matchStatus(b,slot)]||strength(b,slot)-strength(a,slot)||a.name.localeCompare(b.name);
+ };
+ scored.sort(sorter);unscored.sort(sorter);
+ const selected=byID.get(current);
+ const pool=[...(selected?[selected]:[]),...scored.slice(0,18),...unscored.slice(0,3)];
+ return [...new Map(pool.map(p=>[p.id,p])).values()];
+}
+function optionFor(p,slot,current){
+ const mismatch=matchStatus(p,slot);
+ const detail=mismatch==='review'?' · VERIFY POSITION':mismatch==='override'?' · MANUAL OVERRIDE':'';
+ const stats=strength(p,slot)>0?' · '+strength(p,slot).toFixed(1)+' pts':' · no reported stats';
+ return '<option value="'+esc(p.id)+'"'+(p.id===current?' selected':'')+'>'+
+ esc(p.name+' — '+p.team+' ('+(p.position||'unknown')+')'+stats+detail)+'</option>';
+}
+function playerOptions(slot,current){
+ const choices=relevantPlayers(slot,current);
+ return '<option value="">— Unselected —</option>'+choices.map(p=>optionFor(p,slot,current)).join('');
+}
+function manualOptions(slot,text){
+ const q=norm(text);
+ if(q.length<2)return '<option value="">Type at least 2 characters to search</option>';
+ const used=new Set(Object.values(picks).filter(Boolean));
+ const found=players.filter(p=>!used.has(p.id)&&norm(p.name+' '+p.team+' '+p.number).includes(q))
+  .sort((a,b)=>{
+   const rank={accurate:0,review:1,override:2};
+   return rank[matchStatus(a,slot)]-rank[matchStatus(b,slot)]||strength(b,slot)-strength(a,slot)||a.name.localeCompare(b.name);
+  }).slice(0,20);
+ return '<option value="">'+(found.length?'Select a matching player…':'No available players found')+'</option>'+
+ found.map(p=>optionFor(p,slot,'')).join('');
 }
 function drawSelector(id,section){
  const slot=idSlot(id),p=byID.get(picks[id]),status=matchStatus(p,slot);
  return '<div class="ar-selection'+(status==='review'||status==='override'?' ar-attention':'')+'"><div class="ar-select-top"><strong>'+esc(slot)+(section==='honorable'?' · '+id.split(':')[2]:'')+'</strong>'+
  (p?'<span class="ar-pill">'+esc(status==='accurate'?'Position matched':status==='review'?'Verify position':'Manual override')+'</span>':'<span class="ar-warn">Empty</span>')+'</div>'+
  playerHTML(p,slot)+
- '<label class="ar-edit-label">Change player<select data-select-id="'+esc(id)+'">'+playerOptions(slot,picks[id])+'</select></label></div>';
+ '<label class="ar-edit-label">Top eligible players<select data-select-id="'+esc(id)+'">'+playerOptions(slot,picks[id])+'</select></label>'+
+ '<details class="ar-manual-search"><summary>Find another player (manual override)</summary>'+
+ '<label class="ar-edit-label">Search name or school<input type="search" data-player-search="'+esc(id)+'" placeholder="Search entire region roster" autocomplete="off"></label>'+
+ '<select data-manual-id="'+esc(id)+'" aria-label="Search results for '+esc(slot)+'"><option value="">Type at least 2 characters to search</option></select></details></div>';
 }
 function renderTeam(section){
  const ids=fieldIDs(section),left=ids.filter(id=>firstHalf.includes(idSlot(id))),right=ids.filter(id=>!firstHalf.includes(idSlot(id)));
@@ -231,8 +261,16 @@ function render(){
  el('#ar-note').value=notes;
  el('#ar-tabs').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;render()});
  el('#ar-content').querySelectorAll('[data-select-id]').forEach(s=>{
-  s.onfocus=()=>{if(s.dataset.loaded==='1')return;const id=s.dataset.selectId,slot=idSlot(id);s.innerHTML=playerOptions(slot,picks[id],true);s.value=picks[id]||'';s.dataset.loaded='1'};
   s.onchange=()=>{if(!pickChange(s.dataset.selectId,s.value)){s.value=picks[s.dataset.selectId]||''}render()};
+ });
+ el('#ar-content').querySelectorAll('[data-player-search]').forEach(input=>{
+  input.oninput=()=>{
+   const field=input.closest('.ar-manual-search')?.querySelector('[data-manual-id]');
+   if(field)field.innerHTML=manualOptions(idSlot(input.dataset.playerSearch),input.value);
+  };
+ });
+ el('#ar-content').querySelectorAll('[data-manual-id]').forEach(s=>{
+  s.onchange=()=>{if(!pickChange(s.dataset.manualId,s.value)){s.value='';return;}render()};
  });
  el('#ar-content').querySelectorAll('[data-winner]').forEach(s=>s.onchange=()=>{winners[s.dataset.winner]=s.value;dirty=true;saveLocal();render()});
  const locked=published&&(!admin);
