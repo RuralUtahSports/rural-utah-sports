@@ -115,7 +115,7 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 <section class="section">
 <h2>Editorial Controls</h2>
 <div class="ar-actions" style="margin:12px 0"><strong id="ar-lock-status" aria-live="polite">Loading region lock…</strong><button type="button" id="ar-lock" class="secondary" disabled>Lock This Region</button></div>
-<p id="ar-preview-status">Verified editors can sync unpublished selections across desktop and phone. Each region can be locked independently.</p>
+<p id="ar-preview-status">Changes to unlocked regions save to the website and sync between your computer and phone. Anyone with this unlisted link can edit.</p>
 <div class="ar-actions">
 <button id="ar-auto" class="secondary">Auto-fill Suggested Picks</button>
 <button id="ar-backup" class="secondary">Export Draft Backup</button>
@@ -123,7 +123,7 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 <button id="ar-publish" disabled>Finalize &amp; Publish Region</button>
 </div>
 <label for="ar-note" class="ar-edit-label">Editorial review notes (optional)</label><textarea id="ar-note" placeholder="Document reasons for manual adjustments, position confirmation, or missing coach statistics."></textarea>
-<div id="ar-editor">
+<div id="ar-editor" hidden>
 <p class="ar-muted">Editor access is protected. Sign in with an email link or one-time code. The Supabase project administrator must separately approve the authenticated account to edit and publish official selections.</p>
 <div class="ar-login"><input id="ar-email" type="email" placeholder="Editor email" aria-label="Editor email"><button id="ar-email-send" class="button">Send Sign-In Email</button><input id="ar-code" inputmode="numeric" placeholder="Email verification code" aria-label="Email verification code"><button id="ar-code-verify" class="button">Verify Code</button><button id="ar-signout" class="button">Sign Out</button></div>
 <div id="ar-auth-status" class="ar-muted">Not signed in</div>
@@ -136,5 +136,5 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 <script src="school-assets-bundle.js?v=20260910-oos-5"></script>
 <script src="award-roster-position-corrections-2026.js?v=20261023-richfield-audit2"></script>
 <script src="award-position-verification-2026.js?v=20261023-maxpreps-fill2"></script>
-<script src="region-awards-hub-2026.js?v=20261023-cross-device-lock1"></script>
+<script src="region-awards-hub-2026.js?v=20261023-no-login1"></script>
 </body></html>
