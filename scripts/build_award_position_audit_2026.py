@@ -12,7 +12,7 @@ def match(row,players):
  if len(exact)==1:return exact[0],'exact'
  if same:return None,'number_or_duplicate_review'
  return None,'not_found'
-report={'season':2026,'checkedDate':'2026-10-23','policy':'Exact normalized name and jersey matches only. Deseret positions take priority when sources differ; disagreements remain flagged. No position inferred from statistics. Locked statistics unchanged.','teams':{}}
+report={'season':2026,'checkedDate':'2026-10-23','policy':'Exact normalized name and jersey matches only. When the site position is missing, use an exact-match MaxPreps position first, then Deseret. For existing site positions, retain the Deseret-first policy; disagreements remain flagged. No position inferred from statistics. Locked statistics unchanged.','teams':{}}
 counts=collections.Counter();updates={};sources={}
 for team,t in snapshot['data']['teams'].items():
  fetched={}
@@ -26,7 +26,7 @@ for team,t in snapshot['data']['teams'].items():
    if row.get('playerId') and row['playerId'] not in roster:roster[row['playerId']]={**row,'position':''}
  for row in roster.values():
   d,dm=match(row,fetched['deseret'].get('players',[]));m,mm=match(row,fetched['maxpreps'].get('players',[]));dp=pos(d.get('position')) if d else '';mp=pos(m.get('position')) if m else '';old=pos(row.get('position'))
-  selected=dp or old or mp
+  selected=(mp or dp) if not old else (dp or old)
   if dp and mp:status='both_agree' if set(dp.split('/'))==set(mp.split('/')) else 'source_difference'
   elif dp:status='deseret_only'
   elif mp:status='maxpreps_only' if not old or set(old.split('/'))==set(mp.split('/')) else 'source_difference'
