@@ -472,6 +472,7 @@ function authRestore(){
 async function checkEditor(){
  admin=false;uid='';
  try{await pinApi('check');admin=true;return}catch{localStorage.removeItem('rus-awards-pin-token');return}
+}
  /*
  if(!session?.access_token)return;
  try{const user=await api('/auth/v1/user');uid=user?.id||'';
