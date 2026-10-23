@@ -33,7 +33,7 @@ const sideFor=slot=>['DL','DE','MLB','S','CB'].includes(slot)?'defense':slot==='
 function idSlot(id){return id.split(':')[1]}
 function poolFit(p,slot){return selectors[slot.startsWith('WR')?'WR':slot]?.test(token(p))||false}
 function fallbackFit(p,slot){return backup[slot]?.test(token(p))||false}
-function matchStatus(p,slot){if(!p)return'missing';if(poolFit(p,slot))return'accurate';if(fallbackFit(p,slot))return'review';if(SPECIAL_POSITIONS.includes(slot)&&p.specialStats?.[slot==='K'?'kicking':slot==='P'?'punt':'returns'])return'review';return'override'}
+function matchStatus(p,slot){if(!p)return'missing';if(poolFit(p,slot))return'accurate';if(fallbackFit(p,slot))return'review';if(slot==='P'&&p.specialStats?.punt)return'review';if(slot==='RS'&&(p.specialStats?.kr||p.specialStats?.pr))return'review';return'override'}
 function getValue(values,name){const item=Object.entries(values||{}).find(([k])=>norm(k)===norm(name));return item?number(item[1]):null}
 function linesFor(p,category){return p.lines.find(l=>l.category.toLowerCase().startsWith(category.toLowerCase()))?.values||null}
 function returnStats(p,kind){return kind==='kick'?(linesFor(p,'Kickoff Returns')||linesFor(p,'Kick Returns')):linesFor(p,'Punt Returns')}
