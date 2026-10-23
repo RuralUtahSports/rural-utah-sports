@@ -87,6 +87,12 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 #ar-pin-message{color:#ffd09b;font-size:12px;font-weight:800}
 #ar-pin-panel[hidden]{display:none!important}
 @media(max-width:650px){#ar-pin-panel{flex-direction:column;align-items:stretch}#ar-pin-panel #ar-pin,#ar-pin-panel #ar-pin-submit{width:100%}}
+.ar-special-section{margin-top:18px;padding-top:15px;border-top:2px solid #f14d07}
+.ar-special-section h3{font-size:16px;text-transform:uppercase;color:#ffad84;margin:0 0 8px}
+.ar-special-section p{margin:0 0 12px}
+.ar-special-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media(max-width:900px){.ar-special-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.ar-special-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -115,7 +121,7 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 <h2>Share Graphics</h2>
 <p class="ar-muted">Use the dark charcoal/red two-column style from the original Rural Utah Sports graphic. Authentic saved school logos are used when available; otherwise the school name appears. Unpublished awards are visibly marked DRAFT.</p>
 <div class="ar-actions">
-<select id="ar-share-section" aria-label="Which team graphic"><option value="first">First Team</option><option value="second">Second Team</option><option value="honorable">Honorable Mentions</option><option value="winners">Award Winners</option></select>
+<select id="ar-share-section" aria-label="Which team graphic"><option value="first">First Team</option><option value="second">Second Team</option><option value="honorable">Honorable Mentions</option><option value="winners">Award Winners</option><option value="special">Special Teams · K / P / KR-PR</option></select>
 <select id="ar-share-format" aria-label="Graphic dimensions"><option value="landscape">Landscape · 1600 × 900</option><option value="square">Square · 1080 × 1080</option><option value="portrait">Instagram Portrait · 1080 × 1350</option></select>
 <button id="ar-download">Download Graphic</button>
 </div>
@@ -145,5 +151,5 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 <script src="school-assets-bundle.js?v=20260910-oos-5"></script>
 <script src="award-roster-position-corrections-2026.js?v=20261023-richfield-audit2"></script>
 <script src="award-position-verification-2026.js?v=20261023-maxpreps-fill2"></script>
-<script src="region-awards-hub-2026.js?v=20261023-pin-visible-fix2"></script>
+<script src="region-awards-hub-2026.js?v=20261023-specialteams1"></script>
 </body></html>
