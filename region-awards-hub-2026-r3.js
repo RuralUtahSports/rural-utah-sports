@@ -663,6 +663,34 @@ function shareStatLine(p,slot){
  }
  return statLine(p,slot);
 }
+/**
+ * Keep player names prominent while showing the verified class at 65% size.
+ * Measure the three text runs together so long names fit without leaving the canvas.
+ */
+function drawAwardHeading(ctx,role,grade,player,x,y,maxWidth,start,min){
+ const position=role+': ',tag=grade?'('+grade+') ':'';
+ let size=min,small=Math.max(10,Math.round(min*.65));
+ for(let candidate=start;candidate>=min;candidate--){
+  const candidateSmall=Math.max(10,Math.round(candidate*.65));
+  ctx.font='900 '+candidate+'px Arial';
+  const largeWidth=ctx.measureText(position).width+ctx.measureText(player).width;
+  ctx.font='900 '+candidateSmall+'px Arial';
+  const tagWidth=tag?ctx.measureText(tag).width:0;
+  if(largeWidth+tagWidth<=maxWidth){size=candidate;small=candidateSmall;break;}
+ }
+ ctx.font='900 '+size+'px Arial';ctx.fillStyle='#fff';
+ ctx.fillText(position,x,y);
+ let cursor=x+ctx.measureText(position).width;
+ if(tag){
+  ctx.font='900 '+small+'px Arial';ctx.fillStyle='#ffb48c';
+  ctx.fillText(tag,cursor,y);cursor+=ctx.measureText(tag).width;
+ }
+ ctx.font='900 '+size+'px Arial';ctx.fillStyle='#fff';
+ const space=Math.max(0,maxWidth-(cursor-x));
+ const display=ctx.measureText(player).width<=space?player:fitted(ctx,player,space,size,min);
+ if(space>5)ctx.fillText(display,cursor,y);
+}
+
 async function graphicFor(section,format){
  const portrait=format==='portrait',landscape=format==='landscape',w=landscape?1600:1080,h=landscape?900:portrait?1350:1080;
  const cvs=document.createElement('canvas');cvs.width=w;cvs.height=h;
@@ -783,11 +811,10 @@ async function graphicFor(section,format){
    ctx.textAlign='left';ctx.shadowColor='#000';ctx.shadowBlur=3;ctx.shadowOffsetY=2;
    ctx.fillStyle='#fff';
    const role=isTeam?slotLabel(slot):({MVP:'MVP',OPOY:'OPOY',DPOY:'DPOY'})[slot];
-   const classSuffix=p&&shareGrade(p)?' ('+shareGrade(p)+')':'';
-   const name=role+classSuffix+': '+(p?p.name.toUpperCase():'PENDING');
    const titleSize=section==='honorable'?landscape?20:18:landscape?30:portrait?30:26;
    const titleMin=section==='honorable'?11:14;
-   ctx.fillText(fitted(ctx,name,maxText,titleSize,titleMin),tx,y+rowHeight*.42);
+   drawAwardHeading(ctx,role,p?shareGrade(p):'',p?p.name.toUpperCase():'PENDING',
+    tx,y+rowHeight*.42,maxText,titleSize,titleMin);
    ctx.shadowBlur=0;ctx.shadowOffsetY=0;
    ctx.fillStyle='#f5e4d9';
    const detail=p?p.team.toUpperCase()+' · '+statLine(p,slot):'SELECTION NOT VERIFIED';
