@@ -27,7 +27,7 @@ const firstHalf=['QB','RB','WR1','WR2','WR3','TE'];
 let snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false,dirty=false,logoMap={},regionLocked=false,syncTimer=null,syncPending=false;
 function labelRegion(r){return /^\d+$/.test(r)?'Region '+r:r}
 function fieldIDs(section){
- return section==='honorable'?POSITIONS.flatMap(p=>[section+':'+p+':1',section+':'+p+':2']):POSITIONS.map(p=>section+':'+p);
+ return section==='honorable'?POSITIONS.filter(p=>!SPECIAL_POSITIONS.includes(p)).flatMap(p=>[section+':'+p+':1',section+':'+p+':2']):POSITIONS.map(p=>section+':'+p);
 }
 const sideFor=slot=>['DL','DE','MLB','S','CB'].includes(slot)?'defense':slot==='K'?'kicking':slot==='P'?'punting':slot==='RS'?'returns':'offense';
 function idSlot(id){return id.split(':')[1]}
@@ -188,6 +188,7 @@ function bestSecondaryPair(used){
  return strength(topS,'S')>=strength(topCB,'CB')?{S:topS,CB:null}:{S:null,CB:topCB};
 }
 function blankPicks(){return Object.fromEntries(SECTIONS.flatMap(fieldIDs).map(id=>[id,'']))}
+function normalizedPicks(stored){const result=blankPicks();for(const id of Object.keys(result))result[id]=stored?.[id]||'';return result}
 function blankWinners(){return {mvp:'',opoy:'',dpoy:''}}
 function suggest(){
  const all={},usedBySide={offense:new Set(),defense:new Set(),kicking:new Set(),punting:new Set(),returns:new Set()};
@@ -195,6 +196,7 @@ function suggest(){
   const cycles=section==='honorable'?2:1;
   for(let index=1;index<=cycles;index++){
    for(const slot of PRIORITY){
+    if(section==='honorable'&&SPECIAL_POSITIONS.includes(slot))continue;
     const used=usedBySide[sideFor(slot)];
     const id=section+':'+slot+(section==='honorable'?':'+index:'');
     // Special teams have no verified punting/return production in the locked snapshot.
@@ -245,7 +247,7 @@ async function pinUnlock(){
 }
 function draftKey(){return'RUS-2026-REGION-AWARDS:'+region}
 function local(){try{return JSON.parse(localStorage.getItem(draftKey())||'null')}catch{return null}}
-function saveLocal(){try{localStorage.setItem(draftKey(),JSON.stringify({picks,winners,notes}))}catch{};scheduleCloudSave()}
+function saveLocal(){try{localStorage.setItem(draftKey(),JSON.stringify({picks:normalizedPicks(picks),winners,notes}))}catch{};scheduleCloudSave()}
 function scheduleCloudSave(){
  if(!admin||regionLocked||published||busy)return;
  clearTimeout(syncTimer);const target=region;
@@ -258,7 +260,7 @@ function scheduleCloudSave(){
 }
 async function writeRegion(statusValue){
  if(!admin)throw Error('Unlock the editor with your PIN first');
- const row={season:YEAR,region,status:statusValue,selections:{picks,locked:regionLocked},winners,editorial_notes:notes,updated_by:null,updated_at:new Date().toISOString(),published_at:statusValue==='published'?(published?.published_at||new Date().toISOString()):null};
+ const row={season:YEAR,region,status:statusValue,selections:{picks:normalizedPicks(picks),locked:regionLocked},winners,editorial_notes:notes,updated_by:null,updated_at:new Date().toISOString(),published_at:statusValue==='published'?(published?.published_at||new Date().toISOString()):null};
  await pinApi('save',{region,record:row});
 }
 async function toggleRegionLock(){
@@ -423,15 +425,15 @@ function drawSelector(id,section){
 function renderTeam(section){
  const ids=fieldIDs(section),left=ids.filter(id=>firstHalf.includes(idSlot(id))),right=ids.filter(id=>!firstHalf.includes(idSlot(id))&&!SPECIAL_POSITIONS.includes(idSlot(id))),special=ids.filter(id=>SPECIAL_POSITIONS.includes(idSlot(id)));
  return '<div class="ar-columns"><div>'+left.map(id=>drawSelector(id,section)).join('')+'</div><div>'+right.map(id=>drawSelector(id,section)).join('')+'</div></div>'+
-  '<div class="ar-special-section"><h3>Special Teams · Kicker / Punter / KR-PR</h3><p class="ar-muted">Kickers use reported field goals and PATs. Punter and return comparison tables use available 2026 MaxPreps statistics. Reported games may vary; missing entries are not zero.</p><div class="ar-special-grid">'+special.map(id=>drawSelector(id,section)).join('')+'</div></div>';
+  (special.length?'<div class="ar-special-section"><h3>Special Teams · Kicker / Punter / KR-PR</h3><p class="ar-muted">Kickers use reported field goals and PATs. Punter and return comparison tables use available 2026 MaxPreps statistics. Reported games may vary; missing entries are not zero.</p><div class="ar-special-grid">'+special.map(id=>drawSelector(id,section)).join('')+'</div></div>':'');
 }
 function renderSpecialTeams(){
- const blocks=SECTIONS.map(section=>{
+ const blocks=['first','second'].map(section=>{
   const title=LABELS[section]||section;
   const ids=fieldIDs(section).filter(id=>SPECIAL_POSITIONS.includes(idSlot(id)));
   return '<section class="ar-special-group"><h3>'+esc(title)+' Special Teams</h3><div class="ar-special-grid">'+ids.map(id=>drawSelector(id,section)).join('')+'</div></section>';
  }).join('');
- return '<div class="ar-special-top"><h2>Kicker · Punter · KR/PR</h2><p>Choose special-teams selections for each All-Region team. Kicker comparisons use the frozen regular season; punting and return totals use reported 2026 MaxPreps records (which may include playoffs). Review GP, missing data and roster identity before finalizing.</p><button id="ar-special-share" type="button">Download First Team Special Teams Graphic ↓</button></div>'+blocks+'<p class="ar-muted">'+esc(maxprepsSpecialStatus())+'</p>';
+ return '<div class="ar-special-top"><h2>Kicker · Punter · KR/PR</h2><p>Choose First Team and Second Team special-teams selections (no Honorable Mentions). Kicker comparisons use the frozen regular season; punting and return totals use reported 2026 MaxPreps records (which may include playoffs). Review GP, missing data and roster identity before finalizing.</p><button id="ar-special-share" type="button">Download First Team Special Teams Graphic ↓</button></div>'+blocks+'<p class="ar-muted">'+esc(maxprepsSpecialStatus())+'</p>';
 }
 function renderAwards(){
  return '<div class="ar-winners">'+Object.entries(TITLES).map(([role,title])=>{
@@ -563,16 +565,16 @@ async function readPublication(){
  regionLocked=Boolean(record?.selections?.locked);
  if(record&&record.status==='published')published=record;
  if(record&&admin){
-  picks={...blankPicks(),...(record.selections?.picks||{})};
+  picks=normalizedPicks(record.selections?.picks||{});
   winners={...blankWinners(),...(record.winners||{})};
   notes=record.editorial_notes||'';
  }else if(published){
-  picks={...blankPicks(),...(record.selections?.picks||{})};
+  picks=normalizedPicks(record.selections?.picks||{});
   winners={...blankWinners(),...(record.winners||{})};
   notes=record.editorial_notes||'';
  }else{
   const draft=local();
-  picks={...blankPicks(),...(draft?.picks||{})};
+  picks=normalizedPicks(draft?.picks||{});
   winners={...blankWinners(),...(draft?.winners||{})};
   notes=draft?.notes||'';
   // Preserve first-team picks created in the original template, if no advanced draft exists.
@@ -581,7 +583,7 @@ async function readPublication(){
   }catch{}}
  }
  }catch(err){console.warn('Region publication lookup:',err);const draft=local();
-  picks={...blankPicks(),...(draft?.picks||{})};winners={...blankWinners(),...(draft?.winners||{})};notes=draft?.notes||'';
+  picks=normalizedPicks(draft?.picks||{});winners={...blankWinners(),...(draft?.winners||{})};notes=draft?.notes||'';
   el('#ar-error').textContent='Published award records are temporarily unavailable; showing a local draft only.';
  }
 }
