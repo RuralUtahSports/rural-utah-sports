@@ -20,7 +20,7 @@ const number=v=>{if(v===undefined||v===null||String(v).trim()==='')return null;c
 const token=p=>' '+String(p.position||'').toUpperCase().replace(/[^A-Z0-9]+/g,' ')+' ';
 const slotRole=slot=>slot.startsWith('WR')?'WR':slot==='DE'?'DL':slot==='MLB'?'LB':['CB','S'].includes(slot)?'DB':slot;
 const firstHalf=['QB','RB','WR1','WR2','WR3','TE'];
-let snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false,dirty=false,logoMap={};
+let snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false,dirty=false,logoMap={},regionLocked=false,syncTimer=null,syncPending=false;
 function labelRegion(r){return /^\d+$/.test(r)?'Region '+r:r}
 function fieldIDs(section){
  return section==='honorable'?POSITIONS.flatMap(p=>[section+':'+p+':1',section+':'+p+':2']):POSITIONS.map(p=>section+':'+p);
@@ -182,7 +182,33 @@ function suggestWinners(){
 }
 function draftKey(){return'RUS-2026-REGION-AWARDS:'+region}
 function local(){try{return JSON.parse(localStorage.getItem(draftKey())||'null')}catch{return null}}
-function saveLocal(){try{localStorage.setItem(draftKey(),JSON.stringify({picks,winners,notes}))}catch{}}
+function saveLocal(){try{localStorage.setItem(draftKey(),JSON.stringify({picks,winners,notes}))}catch{};scheduleCloudSave()}
+function scheduleCloudSave(){
+ if(!admin||regionLocked||published||busy)return;
+ clearTimeout(syncTimer);const target=region;
+ syncTimer=setTimeout(async()=>{if(region!==target||regionLocked||published||busy)return;
+  syncPending=true;el('#ar-preview-status').textContent='Syncing draft to website…';
+  try{await writeRegion('draft');dirty=false;el('#ar-preview-status').textContent='Draft synced across devices';}
+  catch(e){el('#ar-error').textContent='Sync failed. Your draft is still saved on this device: '+e.message;}
+  finally{syncPending=false;}
+ },850);
+}
+async function writeRegion(statusValue){
+ if(!admin||!uid)throw Error('Approved editor access required');
+ const row={season:YEAR,region,status:statusValue,selections:{picks,locked:regionLocked},winners,editorial_notes:notes,updated_by:uid,updated_at:new Date().toISOString(),published_at:statusValue==='published'?(published?.published_at||new Date().toISOString()):null};
+ await api('/rest/v1/rus_region_awards?on_conflict=season,region',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify(row)});
+}
+async function toggleRegionLock(){
+ if(!admin){el('#ar-error').textContent='Editor verification is required before changing the lock on the shared website.';return}
+ if(syncPending){el('#ar-error').textContent='Finish syncing the current draft before changing the lock.';return}
+ clearTimeout(syncTimer);
+ const next=!regionLocked;
+ if(next&&!confirm('Lock '+labelRegion(region)+'? Selections will become read-only on all devices until you unlock it.'))return;
+ const previous=regionLocked;regionLocked=next;busy=true;render();
+ try{await writeRegion(published?'published':'draft');await readPublication();el('#ar-error').textContent=next?'Region locked on all devices.':'Region unlocked on all devices.';}
+ catch(e){regionLocked=previous;el('#ar-error').textContent='Could not update shared lock: '+e.message;}
+ finally{busy=false;render()}
+}
 function validPicks(){
  const entries=Object.entries(picks).filter(([,player])=>player);
  const keys=entries.map(([field,player])=>sideFor(idSlot(field))+':'+player);
@@ -195,6 +221,7 @@ function pickChange(id,value){
   if(!confirm((player?.name||'This player')+' is currently on '+selectionTitle(assigned)+'. Move them to '+selectionTitle(id)+'? The previous slot will be cleared.'))return false;
   picks[assigned]='';
  }
+ if(regionLocked)return false;
  picks[id]=value||'';dirty=true;saveLocal();return true;
 }
 // Keep the normal chooser focused on players with a matching reported position.
@@ -373,12 +400,15 @@ function render(){
  (warnings.length?'<details><summary>View warnings</summary><ul>'+warnings.slice(0,70).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></details>':
  '<p>No missing data or broad positions detected in currently selected player records.</p>')+
  '<details class="ar-verify-guide"><summary>How do I verify a player’s position?</summary><p>Check the athlete’s 2026 school or MaxPreps football roster. Roster-listed means that the saved position matches the selected slot; it is not an independent coach confirmation. For broad labels such as LB or DB, confirm the exact MLB, CB or safety assignment with the school or coaching staff. If no reliable position exists, leave it flagged for manual review. Never determine defensive positions from statistics alone.</p></details>';
- el('#ar-auto').disabled=Boolean(published&&!admin);
- el('#ar-note').disabled=Boolean(published&&!admin);
- el('#ar-publish').disabled=!admin||busy;
- el('#ar-save').disabled=!admin||busy;
+ el('#ar-auto').disabled=regionLocked||Boolean(published&&!admin);
+ el('#ar-note').disabled=regionLocked||Boolean(published&&!admin);
+ el('#ar-publish').disabled=!admin||busy||regionLocked;
+ el('#ar-save').disabled=!admin||busy||regionLocked;
  el('#ar-publish').textContent=published?'Update Published Region':'Finalize & Publish Region';
- el('#ar-preview-status').textContent=admin?'Approved editor access':session?'Signed in, but this account is not yet approved as an awards editor. Drafts remain local.':'Sign in and obtain editor approval to save drafts or publish to the live website.';
+ el('#ar-lock').textContent=regionLocked?'🔓 Unlock This Region':'🔒 Lock This Region';
+ el('#ar-lock').disabled=!admin||busy||syncPending;
+ el('#ar-lock-status').textContent=regionLocked?'🔒 Locked on all devices':'🔓 Unlocked for editor changes';
+ el('#ar-preview-status').textContent=admin?'Verified editor · changes to unpublished regions auto-sync across devices':session?'Signed in, but this account is not approved as an awards editor.':'Sign in as the approved editor to sync changes across devices.';
  el('#ar-editor').hidden=admin;
  el('#ar-auth-status').textContent=session?(admin?'Editor approved':'Signed in; editor approval required. Account ID: '+(uid||'still loading')):'Not signed in';
  el('#ar-note').value=notes;
@@ -395,10 +425,10 @@ function render(){
  el('#ar-content').querySelectorAll('[data-manual-id]').forEach(s=>{
   s.onchange=()=>{if(!pickChange(s.dataset.manualId,s.value)){s.value='';return;}render()};
  });
- el('#ar-content').querySelectorAll('[data-winner]').forEach(s=>s.onchange=()=>{winners[s.dataset.winner]=s.value;dirty=true;saveLocal();render()});
+ el('#ar-content').querySelectorAll('[data-winner]').forEach(s=>s.onchange=()=>{if(regionLocked)return;winners[s.dataset.winner]=s.value;dirty=true;saveLocal();render()});
  el('#ar-content').querySelectorAll('[data-choose-id]').forEach(b=>b.onclick=()=>openCandidates(b.dataset.chooseId));
  el('#ar-content').querySelectorAll('[data-clear-id]').forEach(b=>b.onclick=()=>{if(published&&!admin)return;pickChange(b.dataset.clearId,'');render()});
- const locked=published&&(!admin);
+ const locked=regionLocked||busy||(published&&!admin);
  if(locked)el('#ar-content').querySelectorAll('select,[data-choose-id],[data-clear-id]').forEach(s=>s.disabled=true);
 }
 async function api(path,options={}){
@@ -435,9 +465,10 @@ async function checkEditor(){
  }catch{session=null;localStorage.removeItem('rus-award-auth-2026')}
 }
 async function readPublication(){
- published=null;dirty=false;
+ published=null;dirty=false;regionLocked=false;
  try{const rows=await api('/rest/v1/rus_region_awards?season=eq.'+YEAR+'&region=eq.'+encodeURIComponent(region)+'&select=*');
  const record=Array.isArray(rows)?rows[0]:null;
+ regionLocked=Boolean(record?.selections?.locked);
  if(record&&record.status==='published')published=record;
  if(record&&admin){
   picks={...blankPicks(),...(record.selections?.picks||{})};
@@ -464,12 +495,14 @@ async function readPublication(){
 }
 async function setRegion(r){
  if(!regions.includes(r))return;
+ clearTimeout(syncTimer);
  region=r;players=collect(r);byID=new Map(players.map(p=>[p.id,p]));mode='first';el('#ar-error').textContent='';
  await readPublication();render();
  const u=new URL(location.href);u.searchParams.set('region',r);history.replaceState(null,'',u.pathname+u.search);
 }
 async function save(statusValue){
  if(!admin||!uid){alert('You must be an approved editor to save or publish awards.');return}
+ if(regionLocked){alert('Unlock this region before saving or publishing.');return}
  if(!validPicks()){alert('Duplicate players on the same side of the ball or invalid players found. Each player may earn one offensive and one defensive selection.');return}
  if(statusValue==='published'&&fieldIDs('first').some(id=>!picks[id])){alert('Complete every First Team slot before publishing.');return}
  if(statusValue==='published'&&fieldIDs('second').some(id=>!picks[id])){alert('Complete every Second Team slot before publishing.');return}
@@ -478,8 +511,8 @@ async function save(statusValue){
  if(statusValue==='published'&&!confirm('Publish '+labelRegion(region)+' awards for everyone to see? Confirm that players, schools, positions, and missing statistics have been reviewed.'))return;
  busy=true;render();el('#ar-error').textContent='';
  try{
- const row={season:YEAR,region,status:statusValue,selections:{picks},winners,editorial_notes:notes,updated_by:uid,updated_at:new Date().toISOString(),published_at:statusValue==='published'?new Date().toISOString():null};
- await api('/rest/v1/rus_region_awards?on_conflict=season,region',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify(row)});
+ clearTimeout(syncTimer);
+ await writeRegion(statusValue);
  saveLocal();await readPublication();el('#ar-error').textContent=statusValue==='published'?'Region published successfully. Visitors can now view the awards.':'Draft securely saved to the website.';
  }catch(err){el('#ar-error').textContent='Could not save to website: '+err.message;}finally{busy=false;render()}
 }
@@ -596,10 +629,11 @@ async function init(){
  await setRegion(chosen);el('#ar-error').textContent='';
  el('#ar-region').addEventListener('change',e=>setRegion(e.target.value));
  el('#ar-save').onclick=()=>save('draft');
+ el('#ar-lock').onclick=toggleRegionLock;
  el('#ar-publish').onclick=()=>save('published');
- el('#ar-auto').onclick=()=>{if(!confirm('Replace the current First Team, Second Team, and Honorable Mention selections with highest-scoring eligible players?'))return;
+ el('#ar-auto').onclick=()=>{if(regionLocked)return;if(!confirm('Replace the current First Team, Second Team, and Honorable Mention selections with highest-scoring eligible players?'))return;
   picks=suggest();winners=suggestWinners();dirty=true;saveLocal();render()};
- el('#ar-note').onchange=e=>{notes=e.target.value;dirty=true;saveLocal();render()};
+ el('#ar-note').onchange=e=>{if(regionLocked)return;notes=e.target.value;dirty=true;saveLocal();render()};
  el('#ar-download').onclick=downloadGraphic;
  el('#ar-backup').onclick=exportDraft;
  el('#ar-email-send').onclick=sendEmail;
