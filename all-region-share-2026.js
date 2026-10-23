@@ -6,7 +6,7 @@ const slots=['QB','RB','WR1','WR2','WR3','TE','FLEX','DL','DE','MLB','S','CB'],s
 const clean=v=>String(v??'').trim(),key=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const escape=v=>clean(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const token=p=>' '+clean(p.position).toUpperCase().replace(/[^A-Z0-9]+/g,' ')+' ';
-const roles={QB:/\bQB\b/,RB:/\b(RB|HB|FB)\b/,WR:/\b(WR|SE|FL)\b/,TE:/\bTE\b/,FLEX:/\b(RB|HB|FB|WR|TE|ATH|SE|FL)\b/,DL:/\b(DL|DT|NT|DE)\b/,DE:/\bDE\b/,MLB:/\b(MLB|ILB|LB)\b/,S:/\b(S|FS|SS|SAF|DB)\b/,CB:/\b(CB|DB)\b/};
+const roles={QB:/\bQB\b/,RB:/\b(RB|HB|FB)\b/,WR:/\b(WR|SE|FL)\b/,TE:/\bTE\b/,FLEX:/\b(RB|HB|FB|WR|TE|ATH|SE|FL)\b/,DL:/\b(DL|DT|NT|DE)\b/,DE:/\bDE\b/,MLB:/\b(MLB|ILB|LB)\b/,S:/\b(S|FS|SS|SAF)\b/,CB:/\bCB\b/};
 let region='',athletes=[],lookup=new Map(),selection={},box=null,graphic=null,generation=0;
 const regionTitle=()=>/^\d+$/.test(region)?'Region '+region:region;
 const siteAssets=()=>window.RUSSchoolAssets;
@@ -14,6 +14,8 @@ const src=()=>typeof view!=='undefined'&&view==='All-Region'&&typeof lockedRegio
 const selectedRegion=()=>typeof scope==='undefined'?'':scope;
 const roleFor=s=>s.startsWith('WR')?'WR':s==='FLEX'?'FLEX':s==='DE'?'DL':s==='MLB'?'LB':s==='S'||s==='CB'?'DB':s;
 const valid=(p,s)=>roles[s.startsWith('WR')?'WR':s]?.test(token(p))||false;
+const broadDB=(p,s)=>['S','CB'].includes(s)&&/\bDB\b/.test(token(p));
+const eligible=(p,s)=>valid(p,s)||broadDB(p,s);
 const n=(vals,k)=>{const v=Object.entries(vals||{}).find(([name])=>key(name)===key(k))?.[1];return v==null||v===''?null:Number(String(v).replace(/,/g,''))};
 const abbrev=yr=>({2027:'SR',2028:'JR',2029:'SO',2030:'FR'})[Number(yr)]||'';
 function collect(snap,scopeName){
@@ -55,8 +57,8 @@ function suggest(ignoreSaved=false){
  const old=ignoreSaved?{}:stored(),taken=new Set();selection={};
  for(const slot of ['QB','RB','WR1','WR2','WR3','TE','DE','MLB','CB','S','DL','FLEX']){
   if(old[slot]&&lookup.has(old[slot])&&!taken.has(old[slot])){selection[slot]=old[slot];taken.add(old[slot]);continue}
-  const first=athletes.filter(p=>valid(p,slot)&&!taken.has(p.id)&&value(p,slot)>0)
-   .sort((a,b)=>value(b,slot)-value(a,slot)||a.name.localeCompare(b.name))[0];
+  const first=athletes.filter(p=>eligible(p,slot)&&!taken.has(p.id)&&value(p,slot)>0)
+   .sort((a,b)=>Number(valid(b,slot))-Number(valid(a,slot))||value(b,slot)-value(a,slot)||a.name.localeCompare(b.name))[0];
   selection[slot]=first?.id||'';if(first)taken.add(first.id);
  }
 }
@@ -170,13 +172,13 @@ function open(){
  suggest();
  const options=slot=>{
   const used=new Set(Object.entries(selection).filter(([other])=>other!==slot).map(([,id])=>id).filter(Boolean));
-  const matching=athletes.filter(p=>valid(p,slot)&&!used.has(p.id))
-   .sort((a,b)=>value(b,slot)-value(a,slot)||a.name.localeCompare(b.name));
+  const matching=athletes.filter(p=>eligible(p,slot)&&!used.has(p.id))
+   .sort((a,b)=>Number(valid(b,slot))-Number(valid(a,slot))||value(b,slot)-value(a,slot)||a.name.localeCompare(b.name));
   const saved=lookup.get(selection[slot]),selected=saved?[saved]:[];
   const highlighted=matching.filter(p=>value(p,slot)>0).slice(0,18);
   const unreported=matching.filter(p=>value(p,slot)===0).slice(0,3);
   const pool=[...new Map([...selected,...highlighted,...unreported].map(p=>[p.id,p])).values()];
-  const toOpt=p=>'<option value="'+escape(p.id)+'">'+escape(p.name+' — '+p.school+' ('+(p.position||'?')+') · '+(value(p,slot)>0?value(p,slot).toFixed(1)+' pts':'unreported'))+'</option>';
+  const toOpt=p=>'<option value="'+escape(p.id)+'">'+escape(p.name+' — '+p.school+' ('+(p.position||'?')+') · '+(value(p,slot)>0?value(p,slot).toFixed(1)+' pts':'unreported')+(broadDB(p,slot)&&!valid(p,slot)?' · VERIFY DB ROLE':''))+'</option>';
   return '<option value="">— Unselected —</option>'+pool.map(toOpt).join('');
  };
  const manualOptions=(slot,query)=>{
