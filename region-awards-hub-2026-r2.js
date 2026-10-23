@@ -1,7 +1,8 @@
 (()=>{
 'use strict';
+// Region Awards share graphics: grade labels prominent in player headings, export revision r3.
 // Graphic exporter refresh 2026-10-23: distinct URL to bypass stale CDN/browser asset caches.
-if(!/region-awards(?:-latest)?\.html$/i.test(location.pathname))return;
+if(!/region-awards(?:-latest|-grades)?\.html$/i.test(location.pathname))return;
 const YEAR=2026,PIN_URL='https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/rus-awards-pin',BASE='https://pleggeciqvaoyxtuvczd.supabase.co',KEY='sb_publishable_xl-kjZ-aufkux3zGuNoYAw_UN9pYM_Z';
 const POSITIONS=['QB','RB','WR1','WR2','WR3','TE','FLEX','DL','DE','MLB','S','CB','K','P','RS'];
 const SPECIAL_POSITIONS=['K','P','RS'];
@@ -782,13 +783,14 @@ async function graphicFor(section,format){
    ctx.textAlign='left';ctx.shadowColor='#000';ctx.shadowBlur=3;ctx.shadowOffsetY=2;
    ctx.fillStyle='#fff';
    const role=isTeam?slotLabel(slot):({MVP:'MVP',OPOY:'OPOY',DPOY:'DPOY'})[slot];
-   const name=role+': '+(p?p.name.toUpperCase():'PENDING');
+   const classSuffix=p&&shareGrade(p)?' ('+shareGrade(p)+')':'';
+   const name=role+classSuffix+': '+(p?p.name.toUpperCase():'PENDING');
    const titleSize=section==='honorable'?landscape?20:18:landscape?30:portrait?30:26;
    const titleMin=section==='honorable'?11:14;
    ctx.fillText(fitted(ctx,name,maxText,titleSize,titleMin),tx,y+rowHeight*.42);
    ctx.shadowBlur=0;ctx.shadowOffsetY=0;
    ctx.fillStyle='#f5e4d9';
-   const detail=p?shareSchoolGrade(p)+' · '+statLine(p,slot):'SELECTION NOT VERIFIED';
+   const detail=p?p.team.toUpperCase()+' · '+statLine(p,slot):'SELECTION NOT VERIFIED';
    const detailSize=section==='honorable'?landscape?12:13:landscape?18:portrait?17:14;
    ctx.fillText(fitted(ctx,detail,maxText,detailSize,10),tx,y+rowHeight*.73);
   }
