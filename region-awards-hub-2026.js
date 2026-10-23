@@ -375,6 +375,28 @@ function candidateColumns(slot){
  return receiving;
 }
 function gradeLabel(p){const g=String(p.grade||'');return ({2027:'SR',2028:'JR',2029:'SO',2030:'FR',12:'SR',11:'JR',10:'SO',9:'FR'})[g]||(g==='-'?'Not reported':g)||'Not reported'}
+/** Display roster-confirmed class on share graphics; never infer from unknown labels. */
+function shareGrade(p,full=false){
+ const g=String(p?.grade??'').trim().toUpperCase();
+ const labels={
+  '2027':['SR','SENIOR'],'2028':['JR','JUNIOR'],
+  '2029':['SO','SOPHOMORE'],'2030':['FR','FRESHMAN'],
+  '12':['SR','SENIOR'],'11':['JR','JUNIOR'],
+  '10':['SO','SOPHOMORE'],'9':['FR','FRESHMAN'],
+  'SR':['SR','SENIOR'],'JR':['JR','JUNIOR'],
+  'SO':['SO','SOPHOMORE'],'FR':['FR','FRESHMAN'],
+  'SENIOR':['SR','SENIOR'],'JUNIOR':['JR','JUNIOR'],
+  'SOPHOMORE':['SO','SOPHOMORE'],'FRESHMAN':['FR','FRESHMAN']
+ };
+ const value=labels[g];
+ return value?value[full?1:0]:'';
+}
+function shareSchoolGrade(p,full=false){
+ if(!p)return 'AWAITING SELECTION';
+ const className=shareGrade(p,full);
+ return p.team.toUpperCase()+(className?' · '+className:'');
+}
+
 function compareCandidates(a,b,column,descending){
  const av=column.get(a),bv=column.get(b);
  if(av===null||av==='')return bv===null||bv===''?a.name.localeCompare(b.name):1;
@@ -660,7 +682,7 @@ async function graphicFor(section,format){
  ctx.shadowBlur=0;ctx.shadowOffsetY=0;
  ctx.fillStyle='#ffb48c';
  ctx.fillText(fitted(ctx,labelRegion(region).toUpperCase(),w-2*margin,landscape?29:27,20),centerX,137);
- const title=section==='special'?'ALL-REGION SPECIAL TEAMS':section==='winners'?'REGION AWARD WINNERS':section==='first'?'ALL-REGION 1ST TEAM':section==='second'?'ALL-REGION 2ND TEAM':'HONORABLE MENTION';
+ const title=section==='special'?'ALL-REGION 1ST TEAM SPECIAL TEAMS':section==='winners'?'REGION AWARD WINNERS':section==='first'?'ALL-REGION 1ST TEAM':section==='second'?'ALL-REGION 2ND TEAM':'HONORABLE MENTION';
  ctx.fillStyle='#fff';ctx.shadowBlur=4;ctx.shadowOffsetY=2;
  ctx.fillText(fitted(ctx,title,w-2*margin,landscape?48:41,25),centerX,187);
  ctx.shadowBlur=0;ctx.shadowOffsetY=0;
@@ -706,7 +728,7 @@ async function graphicFor(section,format){
     ctx.fillStyle='#fff';
     ctx.fillText(fitted(ctx,p?p.name.toUpperCase():'SELECTION PENDING',leftWidth,44,23),tx,y+cardHeight*.59);
     ctx.fillStyle='#eeded4';
-    ctx.fillText(fitted(ctx,p?p.team.toUpperCase():'AWAITING SELECTION',leftWidth,23,15),tx,y+cardHeight*.81);
+    ctx.fillText(fitted(ctx,shareSchoolGrade(p,true),leftWidth,23,15),tx,y+cardHeight*.81);
     ctx.fillStyle='rgba(241,77,7,.63)';ctx.fillRect(statsX-20,y+30,2,cardHeight-60);
     ctx.fillStyle='#ffb48c';
     ctx.fillText(fitted(ctx,slot==='K'?'RUS REGULAR SEASON':'MAXPREPS REPORTED',rightWidth,17,12),statsX,y+cardHeight*.39);
@@ -719,7 +741,7 @@ async function graphicFor(section,format){
     ctx.fillStyle='#fff';
     ctx.fillText(fitted(ctx,p?p.name.toUpperCase():'SELECTION PENDING',available,portrait?44:35,19),tx,y+cardHeight*.48);
     ctx.fillStyle='#f7e7dd';
-    ctx.fillText(fitted(ctx,p?p.team.toUpperCase():'AWAITING SELECTION',available,portrait?22:19,12),tx,y+cardHeight*.66);
+    ctx.fillText(fitted(ctx,shareSchoolGrade(p,true),available,portrait?22:19,12),tx,y+cardHeight*.66);
     ctx.fillStyle='#ffbd97';
     ctx.fillText(fitted(ctx,p?shareStatLine(p,slot):'STATS PENDING',available,portrait?20:17,11),tx,y+cardHeight*.82);
    }
@@ -765,7 +787,7 @@ async function graphicFor(section,format){
    ctx.fillText(fitted(ctx,name,maxText,titleSize,titleMin),tx,y+rowHeight*.42);
    ctx.shadowBlur=0;ctx.shadowOffsetY=0;
    ctx.fillStyle='#f5e4d9';
-   const detail=p?p.team.toUpperCase()+' · '+statLine(p,slot):'SELECTION NOT VERIFIED';
+   const detail=p?shareSchoolGrade(p)+' · '+statLine(p,slot):'SELECTION NOT VERIFIED';
    const detailSize=section==='honorable'?landscape?12:13:landscape?18:portrait?17:14;
    ctx.fillText(fitted(ctx,detail,maxText,detailSize,10),tx,y+rowHeight*.73);
   }
