@@ -93,6 +93,15 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 .ar-special-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 @media(max-width:900px){.ar-special-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.ar-special-grid{grid-template-columns:1fr}}
+
+.ar-special-shortcut{background:#f14d07;border:2px solid #f14d07;color:#110c08;font-size:12px;font-weight:900;border-radius:8px;padding:11px 15px;min-height:44px;cursor:pointer}
+.ar-special-top{background:linear-gradient(125deg,#35180c,#141417 70%);border:1px solid #f14d07;border-radius:11px;padding:16px 20px;margin-bottom:18px}
+.ar-special-top h2{margin:0 0 8px;color:#ffb18a;font-size:23px;text-transform:uppercase}
+.ar-special-top p{font-size:13px;color:#e5dcd8;line-height:1.5}
+.ar-special-top button{background:#f14d07;color:#130b07;font-weight:900;border:0;border-radius:8px;padding:12px 15px;min-height:44px;margin-top:12px}
+.ar-special-group{margin-bottom:25px}.ar-special-group h3{border-bottom:1px solid #f14d07;padding-bottom:8px;color:#ffaf85;text-transform:uppercase}
+.ar-tabs [data-mode="special"]{border-color:#f14d07;color:#ffb18a}.ar-tabs [data-mode="special"].active{color:#080606}
+@media(max-width:650px){.ar-special-shortcut{width:100%}}
 </style>
 </head>
 <body>
@@ -106,7 +115,7 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 <p><strong>Working draft — not publicly announced.</strong> Review First Team, Second Team, Honorable Mentions and Region Player of the Year before release. Some coach-reported statistics are incomplete.</p>
 </section>
 <section class="section">
-<div class="ar-toolbar"><label for="ar-region">Select region</label><select id="ar-region" aria-label="Football region"></select><span id="ar-status">Loading official publishing status…</span></div>
+<div class="ar-toolbar"><label for="ar-region">Select region</label><select id="ar-region" aria-label="Football region"></select><button type="button" id="ar-special-shortcut" class="ar-special-shortcut">🏈 Special Teams · K / P / KR-PR</button><span id="ar-status">Loading official publishing status…</span></div>
 <div id="ar-pin-panel" class="ar-login"><label for="ar-pin">🔐 Unlock Region Awards Editor</label><input type="password" id="ar-pin" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" autocomplete="off" placeholder="6-digit PIN"><button type="button" id="ar-pin-submit">Unlock Editing</button><span id="ar-pin-message" role="status"></span></div>
 <div id="ar-error" role="status" aria-live="polite"></div>
 </section>
@@ -151,5 +160,5 @@ footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-si
 <script src="school-assets-bundle.js?v=20260910-oos-5"></script>
 <script src="award-roster-position-corrections-2026.js?v=20261023-richfield-audit2"></script>
 <script src="award-position-verification-2026.js?v=20261023-maxpreps-fill2"></script>
-<script src="region-awards-hub-2026.js?v=20261023-specialteams1"></script>
+<script src="region-awards-hub-2026.js?v=20261023-specialteams-visible2"></script>
 </body></html>

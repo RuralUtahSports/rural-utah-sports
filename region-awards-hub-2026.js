@@ -387,6 +387,14 @@ function renderTeam(section){
  return '<div class="ar-columns"><div>'+left.map(id=>drawSelector(id,section)).join('')+'</div><div>'+right.map(id=>drawSelector(id,section)).join('')+'</div></div>'+
   '<div class="ar-special-section"><h3>Special Teams · Kicker / Punter / KR-PR</h3><p class="ar-muted">Kickers use reported field goals and PATs. Punter and return specialist selections require manual review where punting and return production is not reported.</p><div class="ar-special-grid">'+special.map(id=>drawSelector(id,section)).join('')+'</div></div>';
 }
+function renderSpecialTeams(){
+ const blocks=SECTIONS.map(section=>{
+  const title=LABELS[section]||section;
+  const ids=fieldIDs(section).filter(id=>SPECIAL_POSITIONS.includes(idSlot(id)));
+  return '<section class="ar-special-group"><h3>'+esc(title)+' Special Teams</h3><div class="ar-special-grid">'+ids.map(id=>drawSelector(id,section)).join('')+'</div></section>';
+ }).join('');
+ return '<div class="ar-special-top"><h2>Kicker · Punter · KR/PR</h2><p>Choose special-teams selections for each All-Region team. Kicker comparisons include reported field goals and PATs; punting and return stats require separate verification.</p><button id="ar-special-share" type="button">Download First Team Special Teams Graphic ↓</button></div>'+blocks;
+}
 function renderAwards(){
  return '<div class="ar-winners">'+Object.entries(TITLES).map(([role,title])=>{
   const current=winners[role],p=byID.get(current),ordered=[...players].sort((a,b)=>(role==='dpoy'?b.defense:role==='opoy'?b.offense:Math.max(b.offense,b.defense))-
@@ -423,8 +431,8 @@ function editorWarnings(){
  return problems;
 }
 function tabs(){
- return '<div class="ar-tabs">'+[...SECTIONS,'winners','summary'].map(m=>'<button data-mode="'+m+'" class="'+(mode===m?'active':'')+'">'+
- esc(LABELS[m]||(m==='winners'?'Region Award Winners':'School Breakdown'))+'</button>').join('')+'</div>';
+ return '<div class="ar-tabs">'+[...SECTIONS,'special','winners','summary'].map(m=>'<button data-mode="'+m+'" class="'+(mode===m?'active':'')+'">'+
+ esc(LABELS[m]||(m==='special'?'🏈 Special Teams · K / P / KR-PR':m==='winners'?'Region Award Winners':'School Breakdown'))+'</button>').join('')+'</div>';
 }
 function render(){
  if(!snapshot)return;
@@ -432,7 +440,7 @@ function render(){
  el('#ar-region').value=region;
  el('#ar-status').textContent=!admin?'Editor locked · PIN required':published?'Published publicly · '+new Date(published.published_at||published.updated_at).toLocaleString()+(dirty?' · unsaved changes':''):'Not yet published · editorial draft';
  el('#ar-tabs').innerHTML=tabs();
- const body=mode==='winners'?renderAwards():mode==='summary'?schoolBreakdown():renderTeam(mode);
+ const body=mode==='special'?renderSpecialTeams():mode==='winners'?renderAwards():mode==='summary'?schoolBreakdown():renderTeam(mode);
  el('#ar-content').innerHTML=body;
  const warnings=editorWarnings();
  el('#ar-warnings').innerHTML='<strong>Accuracy review</strong> · '+warnings.length+' item(s) flagged for review.'+
@@ -452,6 +460,9 @@ function render(){
  el('#ar-auth-status').textContent=session?(admin?'Editor approved':'Signed in; editor approval required. Account ID: '+(uid||'still loading')):'Not signed in';
  el('#ar-note').value=notes;
  el('#ar-tabs').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;render()});
+ el('#ar-special-shortcut').onclick=()=>{mode='special';render();el('#ar-tabs').scrollIntoView({block:'start',behavior:'smooth'})};
+ const graphicButton=el('#ar-special-share');
+ if(graphicButton)graphicButton.onclick=()=>{el('#ar-share-section').value='special';el('#ar-share-format').value='portrait';downloadGraphic()};
  el('#ar-content').querySelectorAll('[data-select-id]').forEach(s=>{
   s.onchange=()=>{if(!pickChange(s.dataset.selectId,s.value)){s.value=picks[s.dataset.selectId]||''}render()};
  });
