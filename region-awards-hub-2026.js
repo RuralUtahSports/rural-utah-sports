@@ -144,15 +144,30 @@ function validPicks(){
  return values.length===new Set(values).size&&values.every(id=>byID.has(id));
 }
 function pickChange(id,value){
- if(value&&Object.entries(picks).some(([other,v])=>other!==id&&v===value)){alert('That athlete already appears on another awards team. No duplicates are allowed.');return false;}
+ const assigned=assignmentOf(value,id);
+ if(assigned){
+  const player=byID.get(value);
+  if(!confirm((player?.name||'This player')+' is currently on '+selectionTitle(assigned)+'. Move them to '+selectionTitle(id)+'? The previous slot will be cleared.'))return false;
+  picks[assigned]='';
+ }
  picks[id]=value||'';dirty=true;saveLocal();return true;
 }
 // Keep the normal chooser focused on players with a matching reported position.
 // A separate, explicit search permits editorial overrides without flooding the dropdown.
+// All top eligible players remain visible, even when already placed on another team.
+// Choosing a placed player moves their selection after confirmation, without duplicates.
+function assignmentOf(playerId,target){
+ if(!playerId)return'';
+ return Object.keys(picks).find(id=>id!==target&&picks[id]===playerId)||'';
+}
+function selectionTitle(id){
+ if(!id)return'';
+ const [team,slot,mention]=id.split(':');
+ return (LABELS[team]||team)+' '+slot+(mention?' #'+mention:'');
+}
 function relevantPlayers(slot,current){
- const used=new Set(Object.values(picks).filter(id=>id&&id!==current));
- const scored=players.filter(p=>!used.has(p.id)&&matchStatus(p,slot)!=='override'&&strength(p,slot)>0);
- const unscored=players.filter(p=>!used.has(p.id)&&matchStatus(p,slot)!=='override'&&strength(p,slot)===0);
+ const scored=players.filter(p=>matchStatus(p,slot)!=='override'&&strength(p,slot)>0);
+ const unscored=players.filter(p=>matchStatus(p,slot)!=='override'&&strength(p,slot)===0);
  const sorter=(a,b)=>{
   const weight={accurate:0,review:1,override:2};
   return weight[matchStatus(a,slot)]-weight[matchStatus(b,slot)]||strength(b,slot)-strength(a,slot)||a.name.localeCompare(b.name);
@@ -162,35 +177,36 @@ function relevantPlayers(slot,current){
  const pool=[...(selected?[selected]:[]),...scored.slice(0,18),...unscored.slice(0,3)];
  return [...new Map(pool.map(p=>[p.id,p])).values()];
 }
-function optionFor(p,slot,current){
+function optionFor(p,slot,current,target){
  const mismatch=matchStatus(p,slot);
  const detail=mismatch==='review'?' · VERIFY POSITION':mismatch==='override'?' · MANUAL OVERRIDE':'';
  const stats=strength(p,slot)>0?' · '+strength(p,slot).toFixed(1)+' pts':' · no reported stats';
+ const assigned=assignmentOf(p.id,target);
+ const already=assigned?' · MOVE FROM '+selectionTitle(assigned).toUpperCase():'';
  return '<option value="'+esc(p.id)+'"'+(p.id===current?' selected':'')+'>'+
- esc(p.name+' — '+p.team+' ('+(p.position||'unknown')+')'+stats+detail)+'</option>';
+ esc(p.name+' — '+p.team+' ('+(p.position||'unknown')+')'+stats+detail+already)+'</option>';
 }
-function playerOptions(slot,current){
+function playerOptions(slot,current,target){
  const choices=relevantPlayers(slot,current);
- return '<option value="">— Unselected —</option>'+choices.map(p=>optionFor(p,slot,current)).join('');
+ return '<option value="">— Unselected —</option>'+choices.map(p=>optionFor(p,slot,current,target)).join('');
 }
-function manualOptions(slot,text){
+function manualOptions(slot,text,target){
  const q=norm(text);
  if(q.length<2)return '<option value="">Type at least 2 characters to search</option>';
- const used=new Set(Object.values(picks).filter(Boolean));
- const found=players.filter(p=>!used.has(p.id)&&norm(p.name+' '+p.team+' '+p.number).includes(q))
+ const found=players.filter(p=>norm(p.name+' '+p.team+' '+p.number).includes(q))
   .sort((a,b)=>{
    const rank={accurate:0,review:1,override:2};
    return rank[matchStatus(a,slot)]-rank[matchStatus(b,slot)]||strength(b,slot)-strength(a,slot)||a.name.localeCompare(b.name);
   }).slice(0,20);
- return '<option value="">'+(found.length?'Select a matching player…':'No available players found')+'</option>'+
- found.map(p=>optionFor(p,slot,'')).join('');
+ return '<option value="">'+(found.length?'Select a matching player…':'No players found')+'</option>'+
+ found.map(p=>optionFor(p,slot,'',target)).join('');
 }
 function drawSelector(id,section){
  const slot=idSlot(id),p=byID.get(picks[id]),status=matchStatus(p,slot);
  return '<div class="ar-selection'+(status==='review'||status==='override'?' ar-attention':'')+'"><div class="ar-select-top"><strong>'+esc(slot)+(section==='honorable'?' · '+id.split(':')[2]:'')+'</strong>'+
  (p?'<span class="ar-pill">'+esc(status==='accurate'?'Position matched':status==='review'?'Verify position':'Manual override')+'</span>':'<span class="ar-warn">Empty</span>')+'</div>'+
  playerHTML(p,slot)+
- '<label class="ar-edit-label">Top eligible players<select data-select-id="'+esc(id)+'">'+playerOptions(slot,picks[id])+'</select></label>'+
+ '<label class="ar-edit-label">Top eligible players<select data-select-id="'+esc(id)+'">'+playerOptions(slot,picks[id],id)+'</select></label>'+
  '<details class="ar-manual-search"><summary>Find another player (manual override)</summary>'+
  '<label class="ar-edit-label">Search name or school<input type="search" data-player-search="'+esc(id)+'" placeholder="Search entire region roster" autocomplete="off"></label>'+
  '<select data-manual-id="'+esc(id)+'" aria-label="Search results for '+esc(slot)+'"><option value="">Type at least 2 characters to search</option></select></details></div>';
@@ -266,7 +282,7 @@ function render(){
  el('#ar-content').querySelectorAll('[data-player-search]').forEach(input=>{
   input.oninput=()=>{
    const field=input.closest('.ar-manual-search')?.querySelector('[data-manual-id]');
-   if(field)field.innerHTML=manualOptions(idSlot(input.dataset.playerSearch),input.value);
+   if(field)field.innerHTML=manualOptions(idSlot(input.dataset.playerSearch),input.value,input.dataset.playerSearch);
   };
  });
  el('#ar-content').querySelectorAll('[data-manual-id]').forEach(s=>{
