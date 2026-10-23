@@ -223,7 +223,7 @@ function render(){
  el('#ar-publish').textContent=published?'Update Published Region':'Finalize & Publish Region';
  el('#ar-preview-status').textContent=admin?'Approved editor access':session?'Signed in, but this account is not yet approved as an awards editor. Drafts remain local.':'Sign in and obtain editor approval to save drafts or publish to the live website.';
  el('#ar-editor').hidden=admin;
- el('#ar-auth-status').textContent=session?(admin?'Editor approved':'Signed in; editor approval is pending'):'Not signed in';
+ el('#ar-auth-status').textContent=session?(admin?'Editor approved':'Signed in; editor approval required. Account ID: '+(uid||'still loading')):'Not signed in';
  el('#ar-note').value=notes;
  el('#ar-tabs').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;render()});
  el('#ar-content').querySelectorAll('[data-select-id]').forEach(s=>{
@@ -397,7 +397,7 @@ function exportDraft(){
 }
 async function sendEmail(){
  const email=el('#ar-email').value.trim();if(!email)return;
- try{await api('/auth/v1/otp',{method:'POST',body:JSON.stringify({email,create_user:true,options:{email_redirect_to:location.origin+location.pathname}})});
+ try{await api('/auth/v1/otp?redirect_to='+encodeURIComponent(location.origin+location.pathname),{method:'POST',body:JSON.stringify({email,create_user:true,options:{email_redirect_to:location.origin+location.pathname}})});
  el('#ar-error').textContent='Login email requested. Enter the emailed code below, or follow its secure sign-in link.';
  }catch(e){el('#ar-error').textContent='Could not request login: '+e.message}
 }
