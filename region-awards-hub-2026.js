@@ -20,7 +20,7 @@ const number=v=>{if(v===undefined||v===null||String(v).trim()==='')return null;c
 const token=p=>' '+String(p.position||'').toUpperCase().replace(/[^A-Z0-9]+/g,' ')+' ';
 const slotRole=slot=>slot.startsWith('WR')?'WR':slot==='DE'?'DL':slot==='MLB'?'LB':['CB','S'].includes(slot)?'DB':slot;
 const firstHalf=['QB','RB','WR1','WR2','WR3','TE'];
-let snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false;
+let snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false,dirty=false;
 function labelRegion(r){return /^\d+$/.test(r)?'Region '+r:r}
 function fieldIDs(section){
  return section==='honorable'?POSITIONS.flatMap(p=>[section+':'+p+':1',section+':'+p+':2']):POSITIONS.map(p=>section+':'+p);
@@ -38,6 +38,12 @@ function strength(p,slot){
 }
 function statLine(p,slot){
  if(!p)return'NO PLAYER SELECTED';
+ if(['MVP','OPOY','DPOY'].includes(slot)){
+  const categories=slot==='DPOY'?['Defense']:['Passing','Rushing','Receiving','Defense'];
+  const lines=categories.map(category=>p.lines.find(l=>l.category.toLowerCase().startsWith(category.toLowerCase()))).filter(Boolean);
+  lines.sort((a,b)=>(window.RUSLockedRegionScoring?.categoryScore?.(b.category,b.values)||0)-(window.RUSLockedRegionScoring?.categoryScore?.(a.category,a.values)||0));
+  return lines.length?statLine(p,lines[0].category.toLowerCase().startsWith('defense')?'MLB':lines[0].category.toLowerCase().startsWith('passing')?'QB':lines[0].category.toLowerCase().startsWith('rushing')?'RB':'WR1'):'STATS NOT REPORTED';
+ }
  const res=[],add=(v,kind)=>{if(v!==null&&v!==0&&Number.isFinite(v))res.push(v.toLocaleString('en-US',{maximumFractionDigits:1})+' '+kind)};
  if(['DL','DE','MLB','S','CB'].includes(slot)){
    const d=linesFor(p,'Defense');if(d){add(getValue(d,'TACKLES'),'TKL');add(getValue(d,'SACKS'),'SACK');add(getValue(d,'PASS INT.'),'INT');add(getValue(d,'FUM REC'),'FR');}
@@ -58,9 +64,9 @@ function missingInfo(p,slot){
 function positionNote(p,slot){const kind=matchStatus(p,slot);return kind==='review'?'Position is broad on roster; verify '+slot:kind==='override'?'Manual position override; verify '+slot:''}
 function logo(team){try{return window.RUSSchoolAssets?.logoUrl?.(team)||''}catch{return''}}
 function color(team){const t=(snapshot?.teamMeta||[]).find(t=>norm(t.team)===norm(team));return /^#[0-9a-f]{6}$/i.test(t?.backgroundColor||'')?t.backgroundColor:'#F14D07'}
-function playerHTML(p,slot){
+function playerHTML(p,slot,isWinner=false){
  if(!p)return'<span class="ar-muted">Unselected</span>';
- const warnings=[positionNote(p,slot),missingInfo(p,slot)].filter(Boolean);
+ const warnings=isWinner?[]:[positionNote(p,slot),missingInfo(p,slot)].filter(Boolean);
  const source=logo(p.team);
  const url=source&&new URL(source,location.href).origin===location.origin?source:'';
  return '<span class="ar-player">'+(url?'<img src="'+esc(url)+'" alt="" onerror="this.remove()">':'')+
@@ -135,15 +141,16 @@ function validPicks(){
 }
 function pickChange(id,value){
  if(value&&Object.entries(picks).some(([other,v])=>other!==id&&v===value)){alert('That athlete already appears on another awards team. No duplicates are allowed.');return false;}
- picks[id]=value||'';saveLocal();return true;
+ picks[id]=value||'';dirty=true;saveLocal();return true;
 }
-function playerOptions(slot,current){
+function playerOptions(slot,current,expanded=false){
  const used=new Set(Object.values(picks).filter(x=>x!==current&&x));
  const choices=[...players].sort((a,b)=>{
   const category=kind=>({accurate:0,review:1,override:2})[matchStatus(kind,slot)]||3;
   return category(a)-category(b)||strength(b,slot)-strength(a,slot)||a.name.localeCompare(b.name);
  });
- return '<option value="">— Unselected —</option>'+choices.map(p=>'<option value="'+esc(p.id)+'"'+(p.id===current?' selected':'')+(used.has(p.id)?' disabled':'')+'>'+
+ const shown=expanded?choices:choices.slice(0,30).concat(current&&choices.findIndex(p=>p.id===current)>=30?[choices.find(p=>p.id===current)]:[]);
+ return '<option value="">— Unselected —</option>'+shown.map(p=>'<option value="'+esc(p.id)+'"'+(p.id===current?' selected':'')+(used.has(p.id)?' disabled':'')+'>'+
  esc(p.name+' — '+p.team+' ('+(p.position||'?')+')'+(strength(p,slot)?' · '+strength(p,slot).toFixed(1):' · no reported '+slot+' points')+
  (matchStatus(p,slot)==='review'?' ⚠ verify position':matchStatus(p,slot)==='override'?' ⚠ override':''))+'</option>').join('');
 }
@@ -162,7 +169,7 @@ function renderAwards(){
  return '<div class="ar-winners">'+Object.entries(TITLES).map(([role,title])=>{
   const current=winners[role],p=byID.get(current),ordered=[...players].sort((a,b)=>(role==='dpoy'?b.defense:role==='opoy'?b.offense:Math.max(b.offense,b.defense))-
   (role==='dpoy'?a.defense:role==='opoy'?a.offense:Math.max(a.offense,a.defense)));
-  return '<div class="ar-winner"><strong>'+esc(title)+'</strong>'+playerHTML(p,role==='dpoy'?'MLB':role==='opoy'?'FLEX':'FLEX')+
+  return '<div class="ar-winner"><strong>'+esc(title)+'</strong>'+playerHTML(p,role.toUpperCase(),true)+
    '<label class="ar-edit-label">Choose winner<select data-winner="'+role+'"><option value="">— Unselected —</option>'+
    ordered.map(x=>'<option value="'+esc(x.id)+'"'+(x.id===current?' selected':'')+'>'+esc(x.name+' — '+x.team)+'</option>').join('')+'</select></label></div>';
  }).join('')+'</div><p class="ar-muted">Award-winner suggestions are derived from reported production only. Winners may also appear on an All-Region team.</p>';
@@ -201,7 +208,7 @@ function render(){
  if(!snapshot)return;
  el('#ar-heading').textContent='2026 '+labelRegion(region)+' All-Region Awards';
  el('#ar-region').value=region;
- el('#ar-status').textContent=published?'Published publicly · '+new Date(published.published_at||published.updated_at).toLocaleString():'Not yet published · editorial draft';
+ el('#ar-status').textContent=published?'Published publicly · '+new Date(published.published_at||published.updated_at).toLocaleString()+(dirty?' · unsaved changes':''):'Not yet published · editorial draft';
  el('#ar-tabs').innerHTML=tabs();
  const body=mode==='winners'?renderAwards():mode==='summary'?schoolBreakdown():renderTeam(mode);
  el('#ar-content').innerHTML=body;
@@ -209,6 +216,8 @@ function render(){
  el('#ar-warnings').innerHTML='<strong>Accuracy review</strong> · '+warnings.length+' item(s) flagged for review.'+
  (warnings.length?'<details><summary>View warnings</summary><ul>'+warnings.slice(0,70).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></details>':
  '<p>No missing data or broad positions detected in currently selected player records.</p>');
+ el('#ar-auto').disabled=Boolean(published&&!admin);
+ el('#ar-note').disabled=Boolean(published&&!admin);
  el('#ar-publish').disabled=!admin||busy;
  el('#ar-save').disabled=!admin||busy;
  el('#ar-publish').textContent=published?'Update Published Region':'Finalize & Publish Region';
@@ -217,8 +226,11 @@ function render(){
  el('#ar-auth-status').textContent=session?(admin?'Editor approved':'Signed in; editor approval is pending'):'Not signed in';
  el('#ar-note').value=notes;
  el('#ar-tabs').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;render()});
- el('#ar-content').querySelectorAll('[data-select-id]').forEach(s=>s.onchange=()=>{if(!pickChange(s.dataset.selectId,s.value)){s.value=picks[s.dataset.selectId]||''}render()});
- el('#ar-content').querySelectorAll('[data-winner]').forEach(s=>s.onchange=()=>{winners[s.dataset.winner]=s.value;saveLocal();render()});
+ el('#ar-content').querySelectorAll('[data-select-id]').forEach(s=>{
+  s.onfocus=()=>{if(s.dataset.loaded==='1')return;const id=s.dataset.selectId,slot=idSlot(id);s.innerHTML=playerOptions(slot,picks[id],true);s.value=picks[id]||'';s.dataset.loaded='1'};
+  s.onchange=()=>{if(!pickChange(s.dataset.selectId,s.value)){s.value=picks[s.dataset.selectId]||''}render()};
+ });
+ el('#ar-content').querySelectorAll('[data-winner]').forEach(s=>s.onchange=()=>{winners[s.dataset.winner]=s.value;dirty=true;saveLocal();render()});
  const locked=published&&(!admin);
  if(locked)el('#ar-content').querySelectorAll('select').forEach(s=>s.disabled=true);
 }
@@ -256,7 +268,7 @@ async function checkEditor(){
  }catch{session=null;localStorage.removeItem('rus-award-auth-2026')}
 }
 async function readPublication(){
- published=null;
+ published=null;dirty=false;
  try{const rows=await api('/rest/v1/rus_region_awards?season=eq.'+YEAR+'&region=eq.'+encodeURIComponent(region)+'&select=*');
  const record=Array.isArray(rows)?rows[0]:null;
  if(record&&record.status==='published')published=record;
@@ -295,6 +307,7 @@ async function save(statusValue){
  if(statusValue==='published'&&fieldIDs('first').some(id=>!picks[id])){alert('Complete every First Team slot before publishing.');return}
  if(statusValue==='published'&&fieldIDs('second').some(id=>!picks[id])){alert('Complete every Second Team slot before publishing.');return}
  if(statusValue==='published'&&Object.keys(TITLES).some(id=>!winners[id])){alert('Select all three region award winners before publishing.');return}
+ if(statusValue==='draft'&&published&&!confirm('Saving a draft will temporarily unpublish this region. Continue?'))return;
  if(statusValue==='published'&&!confirm('Publish '+labelRegion(region)+' awards for everyone to see? Confirm that players, schools, positions, and missing statistics have been reviewed.'))return;
  busy=true;render();el('#ar-error').textContent='';
  try{
@@ -334,7 +347,7 @@ async function graphicFor(section,format){
  const line2=fitted(ctx,labelRegion(region).toUpperCase()+' · '+sub,w-2*margin,landscape?67:49,28);
  ctx.fillText(line2,centerX,landscape?166:165);ctx.shadowBlur=0;ctx.shadowOffsetY=0;
  ctx.font='800 '+(landscape?20:17)+'px Arial';ctx.fillStyle='#ffe4de';
- ctx.fillText(published?'RUS EDITORIAL AWARDS • 2026 REGULAR SEASON':'RUS EDITORIAL DRAFT • NOT FINAL AWARDS',centerX,landscape?209:209);
+ ctx.fillText(published&&!dirty?'RUS EDITORIAL AWARDS • 2026 REGULAR SEASON':'RUS EDITORIAL DRAFT • NOT FINAL AWARDS',centerX,landscape?209:209);
  const ids=section==='winners'?['mvp','opoy','dpoy']:fieldIDs(section);
  const left=ids.filter((id,i)=>section==='winners'?i<2:firstHalf.includes(idSlot(id)));
  const right=ids.filter((id,i)=>section==='winners'?i>=2:!firstHalf.includes(idSlot(id)));
@@ -357,12 +370,12 @@ async function graphicFor(section,format){
    const title=(section==='winners'?({MVP:'MVP',OPOY:'OPOY',DPOY:'DPOY'})[slot]:slot)+': '+(p?p.name.toUpperCase():'PENDING');
    ctx.fillText(fitted(ctx,title,maxText,section==='honorable'?(landscape?20:17):landscape?31:24,12),tx,y+rowHeight*.43);
    ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.fillStyle='#ffefec';
-   let detail=p?p.team.toUpperCase()+' · '+statLine(p,section==='winners'?(id==='dpoy'?'MLB':'FLEX'):slot):'SELECTION NOT VERIFIED';
+   let detail=p?p.team.toUpperCase()+' · '+statLine(p,slot):'SELECTION NOT VERIFIED';
    ctx.fillText(fitted(ctx,detail,maxText,section==='honorable'?12:landscape?19:14,10),tx,y+rowHeight*.73);
   }
  }
  ctx.textAlign='center';ctx.font='800 '+(landscape?17:14)+'px Arial';ctx.fillStyle='#fff';
- ctx.fillText((published?'PUBLISHED':'DRAFT · UNVERIFIED')+'  •  RURALUTAHSPORTS.COM  •  @RURALUTAHSPORTS77',centerX,h-35);
+ ctx.fillText((published&&!dirty?'PUBLISHED':'DRAFT · UNVERIFIED')+'  •  RURALUTAHSPORTS.COM  •  @RURALUTAHSPORTS77',centerX,h-35);
  return cvs;
 }
 async function downloadGraphic(){
@@ -417,8 +430,8 @@ async function init(){
  el('#ar-save').onclick=()=>save('draft');
  el('#ar-publish').onclick=()=>save('published');
  el('#ar-auto').onclick=()=>{if(!confirm('Replace the current First Team, Second Team, and Honorable Mention selections with highest-scoring eligible players?'))return;
-  picks=suggest();winners=suggestWinners();saveLocal();render()};
- el('#ar-note').onchange=e=>{notes=e.target.value;saveLocal()};
+  picks=suggest();winners=suggestWinners();dirty=true;saveLocal();render()};
+ el('#ar-note').onchange=e=>{notes=e.target.value;dirty=true;saveLocal();render()};
  el('#ar-download').onclick=downloadGraphic;
  el('#ar-backup').onclick=exportDraft;
  el('#ar-email-send').onclick=sendEmail;
