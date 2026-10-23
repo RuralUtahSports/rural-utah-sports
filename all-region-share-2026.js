@@ -211,9 +211,9 @@ function init(){
  ].join('');document.head.append(styles);
  const controls=document.querySelector('.controls');if(!controls)return;
  const area=document.createElement('div');area.className='rus-region-graphic-area';area.hidden=true;
- area.innerHTML='<button type="button" class="rus-region-graphic-btn">Create All-Region Share Graphic</button><p>Two-column First Team template · 12 editable positions · locked regular-season stats · real school logos · PNG download</p>';
+ area.innerHTML='<button type="button" class="rus-region-graphic-btn">Create All-Region Share Graphic</button> <a id="rus-region-awards-hub-link" href="region-awards.html" style="display:inline-block;margin:8px 0 2px 8px;padding:12px 14px;border:1px solid #F14D07;border-radius:8px;color:#F14D07;font-size:12px;font-weight:900;text-decoration:none">Full Region Awards Hub →</a><p>First Team graphic, plus Second Team, honorable mentions, Region Player of the Year, school breakdowns, and editor publishing.</p>';
  controls.append(area);area.querySelector('button').onclick=open;
- const sync=()=>{area.hidden=!(src()&&selectedRegion())};
+ const sync=()=>{area.hidden=!(src()&&selectedRegion());const link=area.querySelector('#rus-region-awards-hub-link');if(link)link.href='region-awards.html?region='+encodeURIComponent(selectedRegion())};
  for(const selector of ['#viewBtns','#scopeBtns','#results']){const el=document.querySelector(selector);if(el)new MutationObserver(sync).observe(el,{childList:true,subtree:true})}
  sync();
 }

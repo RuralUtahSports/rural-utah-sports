@@ -110,6 +110,7 @@
       ["MVP Race", "mvp-race.html"],
       ["All-Utah Team", "all-utah.html"],
       ["All-State & Region Watch", "all-state-watch.html"],
+      ["2026 Region Awards Hub", "region-awards.html"],
       ["Past Award Winners", "awards-2025.html"],
     ],
     simulators: [

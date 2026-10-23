@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026 Football Region Awards Hub | Rural Utah Sports</title>
+<meta name="description" content="2026 Rural Utah Sports football All-Region First and Second Teams, honorable mentions, player-of-the-year selections, and shareable awards graphics.">
+<link rel="icon" href="RUSlogoNew.png">
+<style>
+:root{color-scheme:dark;--orange:#f14d07;--ink:#0b0b0e;--panel:#131316;--line:#37373a;--soft:#bbb}
+*{box-sizing:border-box}body{margin:0;background:#101012;color:#f9f9fa;font:15px Arial,Helvetica,sans-serif}
+a{color:#ff985f}button,select,input,textarea{font:inherit}
+button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}
+header{background:#050506;border-bottom:4px solid var(--orange)}.wrap{width:min(1330px,calc(100% - 28px));margin:auto}
+header .wrap{display:flex;gap:15px;align-items:center;padding:14px 0}
+.brand{width:68px;height:68px;object-fit:contain}
+header strong{font-size:22px;font-weight:950;letter-spacing:.02em;text-transform:uppercase}
+header small{display:block;color:#e2865b;margin-top:4px;font-size:12px}
+header nav{margin-left:auto;display:flex;gap:15px;flex-wrap:wrap;font-weight:900;font-size:12px}
+header a{text-decoration:none}
+main{padding:25px 0 70px}
+.hero{background:radial-gradient(circle at 56% 70%,rgba(216,12,12,.35),transparent 58%),linear-gradient(125deg,#151517,#111 75%);border:1px solid var(--line);border-top:6px solid var(--orange);border-radius:11px;padding:25px;margin-bottom:19px}
+.hero .eyebrow{font-size:12px;color:#f4996c;text-transform:uppercase;letter-spacing:1.7px;font-weight:950}
+h1{font-size:clamp(26px,4vw,43px);line-height:1.07;margin:10px 0;text-transform:uppercase}
+.hero p{color:#ccc;max-width:950px;line-height:1.6}
+.section{background:#09090c;border:1px solid var(--line);border-radius:10px;padding:17px;margin:15px 0}
+.section h2{margin:0 0 10px;font-size:19px;text-transform:uppercase}
+.ar-toolbar{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.ar-toolbar label{font-weight:900;font-size:12px;text-transform:uppercase}
+select,input,textarea{border:1px solid #555;background:#242429;border-radius:7px;padding:11px;color:#fff;max-width:100%}
+#ar-region{min-width:210px;max-width:100%}
+#ar-status{color:#ffad84;font-size:12px;font-weight:900}
+.ar-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.ar-tabs button{background:#242428;border:1px solid #48484b;color:#fff;padding:12px 14px;border-radius:8px;font-weight:900;font-size:12px}
+.ar-tabs button.active{background:var(--orange);border-color:var(--orange);color:#000}
+.ar-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.ar-selection{background:#151519;border:1px solid #39393e;border-left:4px solid #e9571d;border-radius:8px;padding:13px;margin-bottom:11px;min-width:0}
+.ar-selection.ar-attention{border-left-color:#e7b256}
+.ar-select-top{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px}
+.ar-select-top strong{font-size:16px}.ar-pill{font-size:10px;font-weight:800;color:#d5d5d5}
+.ar-player{display:flex;align-items:center;gap:10px;min-width:0;line-height:1.35}
+.ar-player img{width:48px;height:48px;object-fit:contain;flex:none}
+.ar-player>span{min-width:0}.ar-player b{display:block;font-size:17px;overflow-wrap:anywhere}.ar-player small{display:block;color:#bdbdc3;font-size:11px;margin-top:3px}
+.ar-edit-label{display:block;color:#aaa;font-size:10px;font-weight:900;margin-top:13px;text-transform:uppercase}
+.ar-edit-label select{width:100%;display:block;margin-top:5px;font-size:12px}
+.ar-warn{display:block;font-size:10px;font-weight:800;color:#ffd09b;padding:3px 0}
+.ar-muted{color:#b4b4ba;font-size:12px;line-height:1.55}
+.ar-winners{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ar-winner{background:#151519;border-top:4px solid var(--orange);border-radius:9px;padding:16px}
+.ar-winner strong{display:block;margin-bottom:12px;text-transform:uppercase;color:#ffad85;font-size:15px}
+.ar-tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px;border-bottom:1px solid #333;text-align:center}th:first-child,td:first-child{text-align:left}th{color:#ffab81;text-transform:uppercase}
+.ar-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.ar-actions button,.button{background:var(--orange);border:0;border-radius:8px;padding:12px 15px;font-size:12px;color:#0a0706;font-weight:900}
+.ar-actions button.secondary{background:#36363b;color:#fff}
+.ar-actions select{min-width:150px;font-size:12px}
+#ar-editor[hidden]{display:none}
+#ar-editor{border-top:1px solid #38383c;margin-top:15px;padding-top:15px}
+.ar-login{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.ar-login input{width:230px}
+#ar-error{font-size:12px;line-height:1.5;color:#f5ba91;margin:9px 0;min-height:16px}
+#ar-warnings{font-size:12px;color:#ddc7b5;line-height:1.6}
+#ar-warnings strong{color:#ffab80}#ar-warnings summary{cursor:pointer;margin-top:8px;font-weight:bold}
+#ar-warnings ul{padding-left:20px;max-height:230px;overflow:auto}
+#ar-preview-status{font-size:12px;color:#c8c8cc;line-height:1.5}
+#ar-note{width:100%;min-height:65px}
+footer{border-top:3px solid var(--orange);padding:22px;text-align:center;font-size:12px;color:#999}
+@media(max-width:900px){.ar-winners{grid-template-columns:1fr}header nav{margin-left:0;width:100%}header .wrap{flex-wrap:wrap}}
+@media(max-width:650px){header strong{font-size:17px}.brand{width:54px;height:54px}.hero{padding:17px}.section{padding:12px}.ar-columns{grid-template-columns:1fr}.ar-toolbar{align-items:stretch;flex-direction:column}.ar-toolbar select{width:100%}.ar-actions select{width:100%}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a href="index.html"><img class="brand" src="RUSlogoNew.png" alt="Rural Utah Sports logo"></a>
+<div><strong>Rural Utah Sports</strong><small>Football Awards &amp; Historical Records</small></div>
+<nav><a href="index.html">Home</a><a href="all-state-watch.html?view=region">2026 Rankings</a><a href="awards-2025.html">Past Awards</a></nav></div></header>
+<main class="wrap">
+<section class="hero">
+<div class="eyebrow">2026 Football Awards · Region Hub</div>
+<h1 id="ar-heading">All-Region Awards</h1>
+<p>First Team, Second Team, Honorable Mentions, and Region Player of the Year awards. Selections are based on the locked regular-season data, then reviewed and finalized by Rural Utah Sports editors. Missing coach-submitted statistics are unknown, not zero.</p>
+</section>
+<section class="section">
+<div class="ar-toolbar"><label for="ar-region">Select region</label><select id="ar-region" aria-label="Football region"></select><span id="ar-status">Loading official publishing status…</span></div>
+<div id="ar-error" role="status" aria-live="polite"></div>
+</section>
+<section class="section">
+<div id="ar-tabs" class="ar-tabs"></div>
+<div id="ar-content"><p class="ar-muted">Loading reported rosters and regular-season statistics…</p></div>
+</section>
+<section class="section" id="ar-warnings"><strong>Accuracy review</strong> — Loading missing-stat checks…</section>
+<section class="section">
+<h2>Share Graphics</h2>
+<p class="ar-muted">Use the dark charcoal/red two-column style from the original Rural Utah Sports graphic. Authentic saved school logos are used when available; otherwise the school name appears. Unpublished awards are visibly marked DRAFT.</p>
+<div class="ar-actions">
+<select id="ar-share-section" aria-label="Which team graphic"><option value="first">First Team</option><option value="second">Second Team</option><option value="honorable">Honorable Mentions</option><option value="winners">Award Winners</option></select>
+<select id="ar-share-format" aria-label="Graphic dimensions"><option value="landscape">Landscape · 1600 × 900</option><option value="square">Square · 1080 × 1080</option><option value="portrait">Instagram Portrait · 1080 × 1350</option></select>
+<button id="ar-download">Download Graphic</button>
+</div>
+</section>
+<section class="section">
+<h2>Editorial Controls</h2>
+<p id="ar-preview-status">Selections can be prepared locally. Saving live awards requires editor approval.</p>
+<div class="ar-actions">
+<button id="ar-auto" class="secondary">Restore Ranked Suggestions</button>
+<button id="ar-backup" class="secondary">Export Draft Backup</button>
+<button id="ar-save" disabled>Save Private Draft to Website</button>
+<button id="ar-publish" disabled>Finalize &amp; Publish Region</button>
+</div>
+<label for="ar-note" class="ar-edit-label">Editorial review notes (optional)</label><textarea id="ar-note" placeholder="Document reasons for manual adjustments, position confirmation, or missing coach statistics."></textarea>
+<div id="ar-editor">
+<p class="ar-muted">Editor access is protected. Sign in with an email link or one-time code. The Supabase project administrator must separately approve the authenticated account to edit and publish official selections.</p>
+<div class="ar-login"><input id="ar-email" type="email" placeholder="Editor email" aria-label="Editor email"><button id="ar-email-send" class="button">Send Sign-In Email</button><input id="ar-code" inputmode="numeric" placeholder="Email verification code" aria-label="Email verification code"><button id="ar-code-verify" class="button">Verify Code</button><button id="ar-signout" class="button">Sign Out</button></div>
+<div id="ar-auth-status" class="ar-muted">Not signed in</div>
+</div>
+</section>
+</main>
+<footer>© 2026 Rural Utah Sports · Award classifications are RUS editorial selections, not UHSAA or coach-voted official awards.</footer>
+<script src="award-scoring-core-region-2026.lock.js?v=20261023-lock-1"></script>
+<script src="school-assets-bundle.js?v=20260910-oos-5"></script>
+<script src="region-awards-hub-2026.js?v=20261023-hub1"></script>
+</body></html>
