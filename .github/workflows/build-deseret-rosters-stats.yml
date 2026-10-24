@@ -59,6 +59,8 @@ jobs:
           node scripts/merge_maxpreps_game_logs.mjs
           node scripts/reconcile_season_stats_from_game_logs.mjs
           node scripts/merge_verified_deseret_kicking.mjs
+          # Re-apply verified athlete-level floors after incomplete game logs have been summed.
+          node scripts/apply_manual_stat_corrections.mjs
       - name: Build compact shared stat metrics
         run: node scripts/build_deseret_stat_metrics.mjs
       - name: Build automatic weekly awards
