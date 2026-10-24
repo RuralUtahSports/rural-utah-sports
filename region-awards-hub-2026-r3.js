@@ -26,6 +26,29 @@ const number=v=>{if(v===undefined||v===null||String(v).trim()==='')return null;c
 const token=p=>' '+String(p.position||'').toUpperCase().replace(/[^A-Z0-9]+/g,' ')+' ';
 const slotRole=slot=>slot.startsWith('WR')?'WR':slot==='DE'?'DL':slot==='MLB'?'LB':['CB','S'].includes(slot)?'DB':slot;
 const firstHalf=['QB','RB','WR1','WR2','WR3','TE'];
+// UHSAA 2025–27 football alignment: Enterprise belongs to 1A South.
+// The regular-season award snapshot is frozen, so correct its metadata
+// in memory without changing player statistics or saved editorial picks.
+function correctLockedFootballAlignment(data){
+ if(!Array.isArray(data?.teamMeta))return;
+ const enterprise=data.teamMeta.filter(row=>norm(row.team)==='ENTERPRISE');
+ if(enterprise.length!==1){console.warn('Enterprise alignment: expected one team record');return}
+ enterprise[0].classification='1A';
+ enterprise[0].region='1A South';
+}
+function oldEnterprisePickIds(){
+ const enterprise=Object.entries(snapshot?.data?.teams||{}).find(([name])=>norm(name)==='ENTERPRISE')?.[1];
+ if(!enterprise)return new Set();
+ const ids=new Set();
+ for(const p of enterprise.roster||[])if(p.playerId)ids.add(p.playerId);
+ for(const section of enterprise.stats||[])for(const p of section.rows||[])if(p.playerId)ids.add(p.playerId);
+ return ids;
+}
+function misplacedEnterprisePicks(){
+ if(region!=='2A South')return [];
+ const ids=oldEnterprisePickIds();
+ return Object.entries(picks).filter(([,playerId])=>ids.has(playerId));
+}
 let snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false,dirty=false,logoMap={},regionLocked=false,syncTimer=null,syncPending=false;
 function labelRegion(r){return /^\d+$/.test(r)?'Region '+r:r}
 function fieldIDs(section){
@@ -475,7 +498,9 @@ function schoolBreakdown(){
   team[id.split(':')[0]]++;rows.set(p.team,team);
  }
  const ordered=[...rows.values()].sort((a,b)=>(b.first*3+b.second*2+b.honorable)-(a.first*3+a.second*2+a.honorable)||a.team.localeCompare(b.team));
- return '<p class="ar-muted">Every selection counts. No artificial school quotas are applied.</p>'+
+ const displaced=misplacedEnterprisePicks().length;
+ return (displaced?'<p class="ar-warn"><strong>'+displaced+' previous Enterprise pick(s) were excluded from 2A South.</strong> Enterprise is in 1A South. Your old draft selections were not deleted; review and replace these invalid 2A slots before publishing.</p>':'')+
+ '<p class="ar-muted">Every selection counts. No artificial school quotas are applied.</p>'+
  '<div class="ar-tablewrap"><table><thead><tr><th>School</th><th>1st</th><th>2nd</th><th>HM</th><th>Total</th></tr></thead><tbody>'+
  ordered.map(r=>'<tr><td>'+esc(r.team)+'</td><td>'+r.first+'</td><td>'+r.second+'</td><td>'+r.honorable+'</td><td>'+Number(r.first+r.second+r.honorable)+'</td></tr>').join('')+
  '</tbody></table></div>';
@@ -485,7 +510,10 @@ function editorWarnings(){
  for(const [id,playerId] of Object.entries(picks)){
   if(!playerId)continue;
   const p=byID.get(playerId),slot=idSlot(id);
-  if(!p){problems.push(id+': player no longer in locked roster');continue}
+  if(!p){
+   problems.push(id+(misplacedEnterprisePicks().some(([field])=>field===id)?': Enterprise belongs to 1A South; this old draft pick must be replaced in 2A South':': player is not in the selected region roster'));
+   continue
+  }
   const positional=positionNote(p,slot),missing=missingInfo(p,slot);
   if(positional)problems.push(LABELS[id.split(':')[0]]+' '+slot+': '+p.name+' — '+positional);
   if(missing)problems.push(LABELS[id.split(':')[0]]+' '+slot+': '+p.name+' — '+missing);
@@ -929,7 +957,7 @@ async function init(){
  el('#ar-error').textContent='Loading locked regular-season region data…';
  try{
  const [r,logos]=await Promise.all([fetch('region-awards-2026.lock.json?v=20261023-lock-1',{cache:'no-store'}),fetch('school-logo-cache.json?v=20261023-hub1').catch(()=>null)]);
- if(!r.ok)throw Error('Locked awards data could not be read');snapshot=await r.json();window.RUSVerifiedPlayerStats2026?.apply(snapshot.data);
+ if(!r.ok)throw Error('Locked awards data could not be read');snapshot=await r.json();correctLockedFootballAlignment(snapshot);window.RUSVerifiedPlayerStats2026?.apply(snapshot.data);
  if(logos?.ok){const saved=await logos.json();if(saved&&typeof saved==='object')logoMap=saved;}
  if(snapshot.status!=='LOCKED')throw Error('Expected a locked regular-season snapshot');
  await Promise.all([window.RUSSchoolAssets?.load?.().catch(()=>{})||Promise.resolve()]);
