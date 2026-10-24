@@ -1,37 +1,37 @@
 {
-  "generatedAt": "2026-10-24T14:27:28.962Z",
+  "generatedAt": "2026-10-24T14:54:52.627Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
     "teams": 118,
     "rosterPlayers": 6440,
     "uniqueRosterIDs": 6440,
-    "statRows": 6893,
-    "athletesWithStats": 4049,
-    "gamesWithPlayerRecords": 1068,
-    "gamePlayerRows": 20808,
-    "gameStatLines": 29747,
-    "missingStatPlayers": 2510,
+    "statRows": 6903,
+    "athletesWithStats": 4056,
+    "gamesWithPlayerRecords": 1070,
+    "gamePlayerRows": 20857,
+    "gameStatLines": 29824,
+    "missingStatPlayers": 2504,
     "missingTeamStats": [
       "MONUMENT VAL",
       "UMA-HILLFIELD"
     ],
-    "unmatchedSeasonStatPlayers": 166,
+    "unmatchedSeasonStatPlayers": 167,
     "unmatchedGamePlayers": 381,
-    "seasonAboveGameSum": 474,
-    "gameAboveSeasonSum": 305,
-    "reviewFlags": 309,
+    "seasonAboveGameSum": 483,
+    "gameAboveSeasonSum": 280,
+    "reviewFlags": 285,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "SEASON_GT_AVAILABLE_GAME_LOG": 462,
-    "GAME_SUM_EXCEEDS_SEASON": 305,
-    "RECEIVING_RATE_MISMATCH": 2,
+    "SEASON_GT_AVAILABLE_GAME_LOG": 472,
+    "GAME_SUM_EXCEEDS_SEASON": 280,
+    "RECEIVING_RATE_MISMATCH": 3,
     "COMPACT_FEED_MISMATCH": 2
   },
   "severityCounts": {
-    "info": 462,
-    "review": 309
+    "info": 472,
+    "review": 285
   },
   "teams": [
     {
@@ -48,10 +48,10 @@
     {
       "team": "AMERICAN FORK",
       "rosterPlayers": 89,
-      "statRows": 137,
-      "rosterPlayersWithoutReportedStats": 43,
-      "finalGameLogs": 9,
-      "finalGameLogsWithPlayerData": 9,
+      "statRows": 142,
+      "rosterPlayersWithoutReportedStats": 39,
+      "finalGameLogs": 10,
+      "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 0,
       "compactMismatches": 0,
       "sourceStatsFetched": true
@@ -301,11 +301,11 @@
     {
       "team": "DESERET PEAK",
       "rosterPlayers": 49,
-      "statRows": 42,
-      "rosterPlayersWithoutReportedStats": 26,
-      "finalGameLogs": 9,
-      "finalGameLogsWithPlayerData": 9,
-      "seasonRowsWithUnknownId": 0,
+      "statRows": 46,
+      "rosterPlayersWithoutReportedStats": 24,
+      "finalGameLogs": 10,
+      "finalGameLogsWithPlayerData": 10,
+      "seasonRowsWithUnknownId": 1,
       "compactMismatches": 0,
       "sourceStatsFetched": true
     },
@@ -449,7 +449,7 @@
       "finalGameLogs": 9,
       "finalGameLogsWithPlayerData": 9,
       "seasonRowsWithUnknownId": 0,
-      "compactMismatches": 2,
+      "compactMismatches": 0,
       "sourceStatsFetched": true
     },
     {
@@ -559,7 +559,7 @@
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 0,
-      "compactMismatches": 0,
+      "compactMismatches": 2,
       "sourceStatsFetched": true
     },
     {
@@ -950,7 +950,7 @@
     {
       "team": "PAYSON",
       "rosterPlayers": 43,
-      "statRows": 54,
+      "statRows": 55,
       "rosterPlayersWithoutReportedStats": 10,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
@@ -1337,17 +1337,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "GRAND",
-      "subject": "Corbin Black",
-      "category": "Passing",
-      "field": "YARDS",
-      "season": 374,
-      "gameLogSum": 1556,
-      "difference": 1182
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "SOUTH SUMMIT",
       "subject": "Ian Mair",
       "category": "Passing",
@@ -1355,17 +1344,6 @@
       "season": 679,
       "gameLogSum": 1397,
       "difference": 718
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "GRAND",
-      "subject": "Beto Carroll",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 431,
-      "gameLogSum": 1060,
-      "difference": 629
     },
     {
       "level": "review",
@@ -1437,6 +1415,17 @@
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GRAND",
+      "subject": "Corbin Black",
+      "category": "Passing",
+      "field": "YARDS",
+      "season": 1270,
+      "gameLogSum": 1556,
+      "difference": 286
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRAND",
       "subject": "Cooper Swasey",
       "category": "Rushing",
       "field": "YARDS",
@@ -1476,6 +1465,17 @@
       "season": 1584,
       "gameLogSum": 1799,
       "difference": 215
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRAND",
+      "subject": "Beto Carroll",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 861,
+      "gameLogSum": 1060,
+      "difference": 199
     },
     {
       "level": "review",
@@ -1542,17 +1542,6 @@
       "season": 360,
       "gameLogSum": 525,
       "difference": 165
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Andrew Harris",
-      "category": "Passing",
-      "field": "YARDS",
-      "season": 394,
-      "gameLogSum": 547,
-      "difference": 153
     },
     {
       "level": "review",
@@ -1656,17 +1645,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Karter Stroyek",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 272,
-      "gameLogSum": 361,
-      "difference": 89
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "SOUTH SUMMIT",
       "subject": "Cash Rockhill",
       "category": "Receiving",
@@ -1718,17 +1696,6 @@
       "season": 29,
       "gameLogSum": 113,
       "difference": 84
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Eli Overman",
-      "category": "Rushing",
-      "field": "YARDS",
-      "season": 78,
-      "gameLogSum": 154,
-      "difference": 76
     },
     {
       "level": "review",
@@ -1920,17 +1887,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Cody Jensen",
-      "category": "Rushing",
-      "field": "YARDS",
-      "season": 43,
-      "gameLogSum": 95,
-      "difference": 52
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "WATER CANYON",
       "subject": "Justin Cooke",
       "category": "Receiving",
@@ -1971,17 +1927,6 @@
       "season": 52,
       "gameLogSum": 99,
       "difference": 47
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Eli Overman",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 86,
-      "gameLogSum": 132,
-      "difference": 46
     },
     {
       "level": "review",
@@ -2184,17 +2129,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Tennessee Greenhalgh",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 3,
-      "gameLogSum": 28,
-      "difference": 25
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GRAND",
       "subject": "Everett Hill",
       "category": "Rushing",
@@ -2360,17 +2294,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Cody Jensen",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 21,
-      "gameLogSum": 38,
-      "difference": 17
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GRAND",
       "subject": "Corbin Black",
       "category": "Passing",
@@ -2400,17 +2323,6 @@
       "season": 81,
       "gameLogSum": 98,
       "difference": 17
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Andrew Harris",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 41,
-      "gameLogSum": 57,
-      "difference": 16
     },
     {
       "level": "review",
@@ -2455,17 +2367,6 @@
       "season": 1,
       "gameLogSum": 17,
       "difference": 16
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Mason Hiett",
-      "category": "Rushing",
-      "field": "YARDS",
-      "season": 6,
-      "gameLogSum": 21,
-      "difference": 15
     },
     {
       "level": "review",
@@ -2624,17 +2525,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Eli Overman",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 31,
-      "gameLogSum": 43,
-      "difference": 12
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "LAYTON CHRISTIAN",
       "subject": "Jahmi Harrison-Bismillah",
       "category": "Receiving",
@@ -2675,17 +2565,6 @@
       "season": 20,
       "gameLogSum": 31,
       "difference": 11
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Andrew Harris",
-      "category": "Rushing",
-      "field": "YARDS",
-      "season": 116,
-      "gameLogSum": 126,
-      "difference": 10
     },
     {
       "level": "review",
@@ -2789,17 +2668,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Karter Stroyek",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
-      "season": 16,
-      "gameLogSum": 24,
-      "difference": 8
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "LAYTON CHRISTIAN",
       "subject": "Colton Johns",
       "category": "Rushing",
@@ -2839,17 +2707,6 @@
       "field": "CARRIES",
       "season": 6,
       "gameLogSum": 14,
-      "difference": 8
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Ian Mair",
-      "category": "Passing",
-      "field": "TD",
-      "season": 7,
-      "gameLogSum": 15,
       "difference": 8
     },
     {
@@ -2921,6 +2778,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "SOUTH SUMMIT",
+      "subject": "Ian Mair",
+      "category": "Passing",
+      "field": "TD",
+      "season": 7,
+      "gameLogSum": 14,
+      "difference": 7
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "TAYLORSVILLE",
       "subject": "David Jewkes",
       "category": "Rushing",
@@ -2982,28 +2850,6 @@
       "field": "Int",
       "season": 0,
       "gameLogSum": 6,
-      "difference": 6
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "David Muderwa",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 19,
-      "gameLogSum": 25,
-      "difference": 6
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Eli Overman",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
-      "season": 2,
-      "gameLogSum": 8,
       "difference": 6
     },
     {
@@ -3218,28 +3064,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Royce Decker",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 6,
-      "gameLogSum": 10,
-      "difference": 4
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Mason Hiett",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 5,
-      "gameLogSum": 9,
-      "difference": 4
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "DESERT HILLS",
       "subject": "Isaac Andresen",
       "category": "Receiving",
@@ -3378,17 +3202,6 @@
       "field": "RECEPTIONS",
       "season": 6,
       "gameLogSum": 9,
-      "difference": 3
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Tennessee Greenhalgh",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
-      "season": 2,
-      "gameLogSum": 5,
       "difference": 3
     },
     {
@@ -3673,61 +3486,6 @@
       "subject": "Kai Betsinger",
       "category": "Passing",
       "field": "TD",
-      "season": 3,
-      "gameLogSum": 5,
-      "difference": 2
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Trycin Gordon",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 14,
-      "gameLogSum": 16,
-      "difference": 2
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Trycin Gordon",
-      "category": "Rushing",
-      "field": "YARDS",
-      "season": 54,
-      "gameLogSum": 56,
-      "difference": 2
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Mason Hiett",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 3,
-      "gameLogSum": 5,
-      "difference": 2
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Andrew Harris",
-      "category": "Passing",
-      "field": "TD",
-      "season": 5,
-      "gameLogSum": 7,
-      "difference": 2
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "David Muderwa",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
       "season": 3,
       "gameLogSum": 5,
       "difference": 2
@@ -4049,39 +3807,6 @@
       "field": "RECEPTIONS",
       "season": 1,
       "gameLogSum": 2,
-      "difference": 1
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Andrew Harris",
-      "category": "Passing",
-      "field": "Int",
-      "season": 2,
-      "gameLogSum": 3,
-      "difference": 1
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Karter Stroyek",
-      "category": "Receiving",
-      "field": "TD",
-      "season": 4,
-      "gameLogSum": 5,
-      "difference": 1
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "DESERET PEAK",
-      "subject": "Mason Hiett",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
-      "season": 2,
-      "gameLogSum": 3,
       "difference": 1
     },
     {
@@ -4692,22 +4417,31 @@
     {
       "level": "review",
       "code": "COMPACT_FEED_MISMATCH",
-      "team": "GRAND",
-      "subject": "Corbin Black",
+      "team": "MANTI",
+      "subject": "Kingston Wright",
       "category": "Passing",
       "field": "YARDS",
-      "season": 374,
-      "compact": 1270
+      "season": 2858,
+      "compact": 3032
     },
     {
       "level": "review",
       "code": "COMPACT_FEED_MISMATCH",
+      "team": "MANTI",
+      "subject": "Kingston Wright",
+      "category": "Passing",
+      "field": "TD",
+      "season": 27,
+      "compact": 29
+    },
+    {
+      "level": "review",
+      "code": "RECEIVING_RATE_MISMATCH",
       "team": "GRAND",
       "subject": "Beto Carroll",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 431,
-      "compact": 861
+      "yards": 861,
+      "receptions": 11,
+      "yardsPerReception": 39.18
     },
     {
       "level": "review",
@@ -4941,11 +4675,31 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "AMERICAN FORK",
+      "subject": "Sam Thompson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 58,
+      "gameLogSum": 55
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "AMERICAN FORK",
       "subject": "Lincoln Miller",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 51,
-      "gameLogSum": 48
+      "season": 64,
+      "gameLogSum": 55
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "AMERICAN FORK",
+      "subject": "Noah Behm",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 48,
+      "gameLogSum": 46
     },
     {
       "level": "info",
@@ -4954,8 +4708,18 @@
       "subject": "Damian Wilkinson",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 39,
-      "gameLogSum": 33
+      "season": 41,
+      "gameLogSum": 34
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "AMERICAN FORK",
+      "subject": "Dalin Afu",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 43,
+      "gameLogSum": 41
     },
     {
       "level": "info",
@@ -4974,8 +4738,8 @@
       "subject": "Carter Jorgensen",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 12,
-      "gameLogSum": 11
+      "season": 13,
+      "gameLogSum": 12
     },
     {
       "level": "info",
@@ -5084,7 +4848,7 @@
       "subject": "Bryson Barnes",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 72,
+      "season": 77,
       "gameLogSum": 64
     },
     {
@@ -5184,7 +4948,7 @@
       "subject": "Teegen Stephenson",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 60,
+      "season": 66,
       "gameLogSum": 51
     },
     {
@@ -5204,7 +4968,7 @@
       "subject": "Gage Miller",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 37,
+      "season": 43,
       "gameLogSum": 33
     },
     {
@@ -5216,6 +4980,16 @@
       "field": "TACKLES",
       "season": 17,
       "gameLogSum": 16
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CANYON VIEW",
+      "subject": "Ari Groft",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 4,
+      "gameLogSum": 3
     },
     {
       "level": "info",
@@ -5275,7 +5049,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 68,
-      "gameLogSum": 67
+      "gameLogSum": 65
     },
     {
       "level": "info",
@@ -6451,36 +6225,6 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "MANTI",
-      "subject": "Kingston Wright",
-      "category": "Passing",
-      "field": "YARDS",
-      "season": 3032,
-      "gameLogSum": 2858
-    },
-    {
-      "level": "info",
-      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
-      "team": "MANTI",
-      "subject": "Kingston Wright",
-      "category": "Passing",
-      "field": "TD",
-      "season": 29,
-      "gameLogSum": 27
-    },
-    {
-      "level": "info",
-      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
-      "team": "MANTI",
-      "subject": "Kingston Wright",
-      "category": "Passing",
-      "field": "Int",
-      "season": 12,
-      "gameLogSum": 11
-    },
-    {
-      "level": "info",
-      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
-      "team": "MANTI",
       "subject": "Tyler Steinfeldt",
       "category": "Kicking",
       "field": "PAT",
@@ -7154,8 +6898,18 @@
       "subject": "Jesse Nuttall",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 57,
+      "season": 64,
       "gameLogSum": 55
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "NORTH SANPETE",
+      "subject": "Jesse Nuttall",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 9,
+      "gameLogSum": 7
     },
     {
       "level": "info",
@@ -7164,8 +6918,18 @@
       "subject": "Milo Hendry",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 43,
+      "season": 48,
       "gameLogSum": 40
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "NORTH SANPETE",
+      "subject": "Milo Hendry",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 4,
+      "gameLogSum": 3.5
     },
     {
       "level": "info",
@@ -7174,8 +6938,18 @@
       "subject": "Trexon Madsen",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 54,
+      "season": 57,
       "gameLogSum": 52
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "NORTH SANPETE",
+      "subject": "Nyxon Parkinson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 27,
+      "gameLogSum": 25
     },
     {
       "level": "info",
@@ -7184,7 +6958,7 @@
       "subject": "Chaetton Osborne",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 32,
+      "season": 42,
       "gameLogSum": 27
     },
     {
@@ -7194,7 +6968,7 @@
       "subject": "Wyatt Hobush",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 55,
+      "season": 61,
       "gameLogSum": 54
     },
     {
@@ -7204,7 +6978,7 @@
       "subject": "Seth Burningham",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 44,
+      "season": 48,
       "gameLogSum": 42
     },
     {
@@ -7224,7 +6998,7 @@
       "subject": "Sawyer Steadman",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 43,
+      "season": 50,
       "gameLogSum": 37
     },
     {
@@ -7241,11 +7015,41 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "NORTH SANPETE",
+      "subject": "Mckray Beesley",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 47,
+      "gameLogSum": 41
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "NORTH SANPETE",
+      "subject": "Finley John",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 7
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "NORTH SANPETE",
       "subject": "Jorgen Christensen",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 16,
+      "season": 17,
       "gameLogSum": 15
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "NORTH SANPETE",
+      "subject": "Jorgen Christensen",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 1,
+      "gameLogSum": 0.5
     },
     {
       "level": "info",
@@ -7254,7 +7058,7 @@
       "subject": "Koplin Carpenter",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 10,
+      "season": 15,
       "gameLogSum": 9
     },
     {
@@ -7281,6 +7085,16 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "NORTH SANPETE",
+      "subject": "Eric Doxford",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 1,
+      "gameLogSum": 0.5
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "NORTH SANPETE",
       "subject": "Stryker Lee",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
@@ -7301,6 +7115,16 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "NORTH SANPETE",
+      "subject": "Crew Lindsay",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 18,
+      "gameLogSum": 14
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "NORTH SANPETE",
       "subject": "Hegan Williams",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
@@ -7316,6 +7140,16 @@
       "field": "TACKLES",
       "season": 4,
       "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "NORTH SANPETE",
+      "subject": "Angel Tapia",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 1,
+      "gameLogSum": 0.5
     },
     {
       "level": "info",
