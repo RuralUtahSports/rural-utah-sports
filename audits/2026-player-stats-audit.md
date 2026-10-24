@@ -1,6 +1,6 @@
 # 2026 Football Player Statistics Audit
 
-Generated: 2026-10-24T03:36:55.058Z
+Generated: 2026-10-24T03:41:00.542Z
 
 **118 schools · 6440 roster IDs · 4049 athletes with reported stats · 6893 category rows.**
 
@@ -12,10 +12,10 @@ Generated: 2026-10-24T03:36:55.058Z
 - 166 stat rows have IDs missing from their own roster (may be MaxPreps-only entries)
 
 ## Review flags
-- SEASON_GT_AVAILABLE_GAME_LOG: 458
-- GAME_SUM_EXCEEDS_SEASON: 306
-- COMPACT_FEED_MISMATCH: 4
+- SEASON_GT_AVAILABLE_GAME_LOG: 462
+- GAME_SUM_EXCEEDS_SEASON: 305
 - RECEIVING_RATE_MISMATCH: 2
+- COMPACT_FEED_MISMATCH: 2
 
 ## Highest-priority examples
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Corbin Black; {"category":"Passing","field":"YARDS","season":374,"gameLogSum":1556,"difference":1182}

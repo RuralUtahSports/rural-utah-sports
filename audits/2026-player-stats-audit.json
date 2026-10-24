@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T03:36:55.058Z",
+  "generatedAt": "2026-10-24T03:41:00.542Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -18,20 +18,20 @@
     ],
     "unmatchedSeasonStatPlayers": 166,
     "unmatchedGamePlayers": 381,
-    "seasonAboveGameSum": 470,
-    "gameAboveSeasonSum": 306,
-    "reviewFlags": 0,
+    "seasonAboveGameSum": 474,
+    "gameAboveSeasonSum": 305,
+    "reviewFlags": 309,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "SEASON_GT_AVAILABLE_GAME_LOG": 458,
-    "GAME_SUM_EXCEEDS_SEASON": 306,
+    "SEASON_GT_AVAILABLE_GAME_LOG": 462,
+    "GAME_SUM_EXCEEDS_SEASON": 305,
     "RECEIVING_RATE_MISMATCH": 2,
-    "COMPACT_FEED_MISMATCH": 4
+    "COMPACT_FEED_MISMATCH": 2
   },
   "severityCounts": {
-    "info": 458,
-    "review": 312
+    "info": 462,
+    "review": 309
   },
   "teams": [
     {
@@ -449,7 +449,7 @@
       "finalGameLogs": 9,
       "finalGameLogsWithPlayerData": 9,
       "seasonRowsWithUnknownId": 0,
-      "compactMismatches": 0,
+      "compactMismatches": 2,
       "sourceStatsFetched": true
     },
     {
@@ -559,7 +559,7 @@
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 0,
-      "compactMismatches": 2,
+      "compactMismatches": 0,
       "sourceStatsFetched": true
     },
     {
@@ -1252,7 +1252,7 @@
       "finalGameLogs": 9,
       "finalGameLogsWithPlayerData": 9,
       "seasonRowsWithUnknownId": 0,
-      "compactMismatches": 2,
+      "compactMismatches": 0,
       "sourceStatsFetched": true
     },
     {
@@ -2245,17 +2245,6 @@
       "field": "YARDS",
       "season": 13,
       "gameLogSum": 35,
-      "difference": 22
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "WATER CANYON",
-      "subject": "Alma Barlow",
-      "category": "Rushing",
-      "field": "TD",
-      "season": 9,
-      "gameLogSum": 31,
       "difference": 22
     },
     {
@@ -3329,6 +3318,17 @@
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "WATER CANYON",
+      "subject": "Alma Barlow",
+      "category": "Rushing",
+      "field": "TD",
+      "season": 27,
+      "gameLogSum": 31,
+      "difference": 4
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WATER CANYON",
       "subject": "Rocky Barlow",
       "category": "Rushing",
       "field": "YARDS",
@@ -3620,17 +3620,6 @@
       "field": "RECEPTIONS",
       "season": 16,
       "gameLogSum": 19,
-      "difference": 3
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "WATER CANYON",
-      "subject": "Alma Barlow",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
-      "season": 12,
-      "gameLogSum": 15,
       "difference": 3
     },
     {
@@ -4703,42 +4692,22 @@
     {
       "level": "review",
       "code": "COMPACT_FEED_MISMATCH",
-      "team": "MANTI",
-      "subject": "Kingston Wright",
+      "team": "GRAND",
+      "subject": "Corbin Black",
       "category": "Passing",
       "field": "YARDS",
-      "season": 2858,
-      "compact": 3032
+      "season": 374,
+      "compact": 1270
     },
     {
       "level": "review",
       "code": "COMPACT_FEED_MISMATCH",
-      "team": "MANTI",
-      "subject": "Kingston Wright",
-      "category": "Passing",
-      "field": "TD",
-      "season": 27,
-      "compact": 29
-    },
-    {
-      "level": "review",
-      "code": "COMPACT_FEED_MISMATCH",
-      "team": "WATER CANYON",
-      "subject": "Alma Barlow",
-      "category": "Rushing",
-      "field": "TD",
-      "season": 9,
-      "compact": 27
-    },
-    {
-      "level": "review",
-      "code": "COMPACT_FEED_MISMATCH",
-      "team": "WATER CANYON",
-      "subject": "Alma Barlow",
+      "team": "GRAND",
+      "subject": "Beto Carroll",
       "category": "Receiving",
-      "field": "RECEPTIONS",
-      "season": 12,
-      "compact": 16
+      "field": "YARDS",
+      "season": 431,
+      "compact": 861
     },
     {
       "level": "review",
@@ -4755,7 +4724,7 @@
       "team": "WATER CANYON",
       "subject": "Alma Barlow",
       "yards": 118,
-      "receptions": 12,
+      "receptions": 16,
       "yardsPerReception": 8.33
     },
     {
@@ -6477,6 +6446,36 @@
       "field": "TACKLES",
       "season": 51,
       "gameLogSum": 50
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Kingston Wright",
+      "category": "Passing",
+      "field": "YARDS",
+      "season": 3032,
+      "gameLogSum": 2858
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Kingston Wright",
+      "category": "Passing",
+      "field": "TD",
+      "season": 29,
+      "gameLogSum": 27
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Kingston Wright",
+      "category": "Passing",
+      "field": "Int",
+      "season": 12,
+      "gameLogSum": 11
     },
     {
       "level": "info",
@@ -8977,6 +8976,16 @@
       "field": "YARDS",
       "season": 2424,
       "gameLogSum": 2182
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "WATER CANYON",
+      "subject": "Alma Barlow",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 16,
+      "gameLogSum": 15
     },
     {
       "level": "info",
