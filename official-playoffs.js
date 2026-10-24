@@ -68,7 +68,7 @@ function team(t,isFinal=false){
   const style=real?' style="--team-bg:'+colors.backgroundColor+';--team-ink:'+colors.textColor+'"':'';
   const logo=colors.logo&&known?'<span class="rus-o-logo-shell" data-team-key="'+esc(colors.key||'')+'"><img class="rus-o-logo" src="'+esc(colors.logo)+'" alt="'+esc(name)+' school logo" loading="lazy" decoding="async" width="48" height="48"></span>':'';
   const score=t&&typeof t==='object'&&t.score!==undefined&&t.score!==null?'<span class="rus-o-score">'+esc(t.score)+'</span>':'';
-  const nameAndBadge='<span class="rus-o-team-details"><span class="rus-o-name">'+esc(display)+'</span>'+(isWinner?'<span class="rus-o-winner-label" aria-label="Winning team">✓ WINNER</span>':'')+'</span>';
+  const nameAndBadge='<span class="rus-o-team-details"><span class="rus-o-name">'+esc(display)+'</span></span>';
   return '<div class="'+cls+'"'+style+'><span class="rus-o-seed">'+seed+'</span>'+logo+nameAndBadge+score+'</div>';
 }
 function game(g){
