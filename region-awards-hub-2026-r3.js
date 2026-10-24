@@ -929,7 +929,7 @@ async function init(){
  el('#ar-error').textContent='Loading locked regular-season region data…';
  try{
  const [r,logos]=await Promise.all([fetch('region-awards-2026.lock.json?v=20261023-lock-1',{cache:'no-store'}),fetch('school-logo-cache.json?v=20261023-hub1').catch(()=>null)]);
- if(!r.ok)throw Error('Locked awards data could not be read');snapshot=await r.json();
+ if(!r.ok)throw Error('Locked awards data could not be read');snapshot=await r.json();window.RUSVerifiedPlayerStats2026?.apply(snapshot.data);
  if(logos?.ok){const saved=await logos.json();if(saved&&typeof saved==='object')logoMap=saved;}
  if(snapshot.status!=='LOCKED')throw Error('Expected a locked regular-season snapshot');
  await Promise.all([window.RUSSchoolAssets?.load?.().catch(()=>{})||Promise.resolve()]);
