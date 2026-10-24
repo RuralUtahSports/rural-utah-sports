@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-10-24T03:37:07.406Z",
+  "status": "Initial dataset scan, deeper every-player audit script committed; generated full report may not yet be available",
+  "season": 2026,
+  "scope": "All available 2026 RUS player statistics, all classifications including 8-player",
+  "counts": {
+    "teams": 118,
+    "athletesWithCompactMetrics": 3952,
+    "compactStatCategoryRows": 6488,
+    "compactCategorySections": 459,
+    "teamsWithNoCompactStats": 2
+  },
+  "sourceSnapshot": "2026-10-24T03:36:33.880Z",
+  "knownFlags": [
+    {
+      "level": "review",
+      "code": "TEAM_WITHOUT_COMPACT_STATS",
+      "team": "MONUMENT VAL, UMA-HILLFIELD",
+      "subject": "No stat rows in compact leader dataset; this alone does not establish a team reported none",
+      "count": 2
+    },
+    {
+      "level": "review",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "team": "FARMINGTON, LAYTON, LAYTON CHRISTIAN, MOUNTAIN RIDGE, WESTLAKE",
+      "subject": "Existing full RUS data audit lists 5 missing MaxPreps player-game matchups",
+      "count": 5
+    },
+    {
+      "level": "review",
+      "code": "GAME_LOG_EXCEEDS_SEASON",
+      "team": "WATER CANYON",
+      "subject": "12-team sample yielded 23 player-stat totals whose game log sum exceeds the team season total; source data conflict or incomplete aggregation, requires confirmation",
+      "count": 23
+    },
+    {
+      "level": "review",
+      "code": "STALE_SOURCE_ALMA_BARLOW",
+      "team": "WATER CANYON",
+      "subject": "Current Deseret athlete page lists 27 rushing TD, 2,424 rushing yards, and 16 receptions while stored Water Canyon season shard has 9 TD and 12 receptions; verified override + persistent correction added",
+      "count": 1
+    }
+  ],
+  "sample": {
+    "teamsAudited": 12,
+    "rosterRowsChecked": 602,
+    "seasonStatCategoryRowsChecked": 664,
+    "playerGameRowsChecked": 1984,
+    "reviewDiscrepancies": 23,
+    "note": "Sample only, not statewide verified discrepancy count"
+  },
+  "notes": [
+    "Missing source data is not zero.",
+    "Season-vs-game disagreements are review flags; games may be partially reported or stats may be attributed differently.",
+    "Deseret athlete-page updates can be newer than indexed search snapshots.",
+    "Do not update award selections or publish unchecked corrections."
+  ],
+  "legacyAuditSummary": {
+    "errors": 0,
+    "warnings": 5,
+    "info": 2
+  }
+}
