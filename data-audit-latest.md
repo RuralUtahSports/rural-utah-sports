@@ -1,13 +1,11 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-24T01:01:58.463Z
+Generated: 2026-10-24T02:56:49.435Z
 
-**0 errors • 7 warnings**
+**0 errors • 5 warnings**
 
-## Warnings (7)
+## Warnings (5)
 
-- **RECORD_MISMATCH** — EMERY standings record does not match completed games in weekly-simulation.json. `{"standings":"2-8-0","calculated":"2-7-1"}`
-- **RECORD_MISMATCH** — UMA-HILLFIELD standings record does not match completed games in weekly-simulation.json. `{"standings":"3-6-0","calculated":"3-5-1"}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — FARMINGTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-14","opponent":"Layton"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — LAYTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-14","opponent":"Farmington"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — LAYTON CHRISTIAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":9,"missing":[{"date":"2026-10-16","opponent":"Mater Academy East Las Vegas"}]}`
