@@ -378,9 +378,18 @@ async function choose(cls){
     const f=FORMATS[btn.dataset.format],note=$('.rus-o-popup-note',overlay);
     $$('[data-format]',overlay).forEach(b=>b.disabled=true);note.textContent='Preparing the playoff graphic…';
     try{
-      const response=await fetch('official-brackets-2026.json?v='+Date.now(),{cache:'no-store'});
-      if(!response.ok)throw Error('Bracket feed unavailable');
-      const payload=await response.json(),data=payload.classifications?.[cls];
+      // Export the same freshest data shown in the bracket UI, including finals.
+      let payload=window.RUSOfficialBracketsLatest;
+      if(!payload?.classifications?.[cls]){
+        const urls=['https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/official-brackets-2026.json','official-brackets-2026.json'];
+        for(const url of urls){
+          try{
+            const response=await fetch(url+'?v='+Date.now(),{cache:'no-store'});
+            if(response.ok){payload=await response.json();if(payload?.classifications?.[cls])break;}
+          }catch{}
+        }
+      }
+      const data=payload?.classifications?.[cls];
       if(!data?.rounds?.length||!['official','partial'].includes(data.status))throw Error('This classification is not published yet');
       const [images,forecasts]=await Promise.all([loadImages(data),f.kind==='full'?loadBracketLines():Promise.resolve(null)]);
       const graphic=btn.dataset.format==='instagram'?makeInstagramGraphic(cls,data,images,forecasts):f.kind==='full'?makeFullGraphic(cls,data,images,f,forecasts):makeRoundGraphic(cls,data,f,images);
