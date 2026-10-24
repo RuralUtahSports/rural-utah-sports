@@ -27,6 +27,8 @@ on:
       - 'player-game-stats-2026.json'
       - 'team-page-data/**'
       - 'scripts/audit-football-data.mjs'
+      - 'scripts/audit-all-player-stats-2026.mjs'
+      - 'deseret-stat-metrics-2026.json'
       - 'scripts/normalize-weekly-team-names.mjs'
       - '.github/workflows/data-audit.yml'
 
@@ -55,10 +57,17 @@ jobs:
         id: audit
         continue-on-error: true
         run: node scripts/audit-football-data.mjs
+      - name: Audit all 2026 player statistics
+        id: players
+        continue-on-error: true
+        run: |
+          node --check scripts/audit-all-player-stats-2026.mjs
+          node scripts/audit-all-player-stats-2026.mjs
       - name: Publish readable audit summary
         if: always()
         run: |
           if [ -f data-audit-report.md ]; then cat data-audit-report.md >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -f audits/2026-player-stats-audit.md ]; then cat audits/2026-player-stats-audit.md | head -n 100 >> "$GITHUB_STEP_SUMMARY"; fi
       - name: Upload audit reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -67,6 +76,8 @@ jobs:
           path: |
             data-audit-report.json
             data-audit-report.md
+            audits/2026-player-stats-audit.json
+            audits/2026-player-stats-audit.md
           if-no-files-found: warn
       - name: Save latest audit in repository
         if: always()
@@ -76,11 +87,11 @@ jobs:
           cp data-audit-report.md data-audit-latest.md
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data-audit-latest.json data-audit-latest.md
+          git add data-audit-latest.json data-audit-latest.md audits/2026-player-stats-audit.json audits/2026-player-stats-audit.md
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'Refresh latest data audit report'
           git pull --rebase origin main
           git push
       - name: Fail on critical data errors
-        if: steps.audit.outcome == 'failure'
+        if: steps.audit.outcome == 'failure' || steps.players.outcome == 'failure'
         run: exit 1
