@@ -28,7 +28,13 @@ function dateKey(value){
  return '';
 }
 function predictionKey(date,home,away){return dateKey(date)+'|'+nameKey(home)+'|'+nameKey(away)}
+function isFinalGame(g){
+ const scores=[g?.a?.score,g?.b?.score];
+ return scores.every(v=>v!==undefined&&v!==null&&v!==''&&Number.isFinite(Number(v)))
+   &&(g?.a?.winner===true||g?.b?.winner===true||/^final\b/i.test(String(g?.note||'')));
+}
 function gameLine(g){
+ if(isFinalGame(g))return '';
  const a=getName(g?.a),b=getName(g?.b);
  // No projected opponent, no line. BYE does not count as a played game.
  if(!g?.a?.seed||!g?.b?.seed||!a||!b)return '';
@@ -64,14 +70,15 @@ function team(t){
   return '<div class="'+cls+'"'+style+'><span class="rus-o-seed">'+seed+'</span>'+logo+'<span class="rus-o-name">'+esc(display)+'</span>'+score+'</div>';
 }
 function game(g){
-  const a=g?.a??null,b=g?.b??null;
+  const a=g?.a??null,b=g?.b??null,isFinal=isFinalGame(g);
   const schedule=[
+    isFinal?'<strong class="rus-o-final">FINAL</strong>':'',
     g?.date?'<span><b>Date:</b> '+esc(g.date)+'</span>':'',
     g?.time?'<span><b>Kickoff:</b> '+esc(g.time)+'</span>':'',
     (g?.venue||g?.location)?'<span><b>Location:</b> '+esc(g.venue||g.location)+'</span>':'',
-    g?.note?'<span>'+esc(g.note)+'</span>':''
+    g?.note&&!isFinal?'<span>'+esc(g.note)+'</span>':''
   ].filter(Boolean).join(' <span aria-hidden="true">·</span> ');
-  return '<div class="rus-o-game">'+team(a)+team(b)+gameLine(g)+(schedule?'<div class="rus-o-gamemeta">'+schedule+'</div>':'')+'</div>';
+  return '<div class="rus-o-game'+(isFinal?' is-final':'')+'">'+team(a)+team(b)+gameLine(g)+(schedule?'<div class="rus-o-gamemeta">'+schedule+'</div>':'')+'</div>';
 }
 function draw(data){
   currentData=data;
@@ -81,7 +88,7 @@ function draw(data){
   const current=classes[selected]||{},ready=isPublished(current);
   let html='<div class="rus-o-top"><div><div class="rus-o-eyebrow">2026 Utah High School Football</div><h2>Official State Playoff Brackets</h2><p class="rus-o-desc">UHSAA matchups, seeds and first-round byes, added as each classification is announced.</p></div>';
   if(home)html+='<a class="rus-o-cta" href="official-playoffs.html">Full Brackets →</a>';
-  html+='</div><div class="rus-o-progress"><strong>'+confirmed.length+' of 7 classifications fully posted</strong>'+(partial.length?' · '+partial.length+' partially posted':'')+' · '+(confirmed.length===7?'All official brackets posted':published.length?'Bracket reveal in progress':'Awaiting official bracket reveal')+'</div>';
+  html+='</div><div class="rus-o-progress"><span><strong>'+confirmed.length+' of 7 classifications fully posted</strong>'+(partial.length?' · '+partial.length+' partially posted':'')+' · '+(confirmed.length===7?'All official brackets posted':published.length?'Bracket reveal in progress':'Awaiting official bracket reveal')+'</span><button type="button" class="rus-o-refresh" aria-label="Refresh bracket scores now">↻ Refresh Scores</button></div>';
   html+='<div class="rus-o-tabs" role="group" aria-label="Choose football classification">'+ORDER.map(c=>'<button type="button" class="rus-o-tab'+(isPublished(classes[c])?'':' is-waiting')+'" data-class="'+esc(c)+'" aria-pressed="'+(selected===c?'true':'false')+'">'+esc(c)+'<small>'+(isOfficial(classes[c])?'OFFICIAL':isPartial(classes[c])?'PARTIAL':'AWAITING')+'</small></button>').join('')+'</div>';
   if(ready){
     const rounds=current.rounds.filter(r=>Array.isArray(r.games)&&r.games.length);
@@ -94,6 +101,7 @@ function draw(data){
   html+='<p class="rus-o-foot">Bracket information transcribed from MaxPreps / UHSAA. Check the official source for subsequent changes. '+(current.sourceUrl&&/^https:\/\//.test(current.sourceUrl)?'<a href="'+esc(current.sourceUrl)+'" target="_blank" rel="noopener noreferrer">View '+esc(selected)+' source</a>. ':'')+(data.updatedAt?'RUS update: '+esc(new Date(data.updatedAt).toLocaleString('en-US',{timeZone:'America/Denver',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}))+'. ':'')+'<a href="https://uhsaa.org/football-rpi/" target="_blank" rel="noopener noreferrer">UHSAA football RPI</a> · <a href="playoff-picture.html">Previous RUS projections</a>.</p>';
   host.innerHTML=html;
   host.querySelectorAll('[data-class]').forEach(btn=>btn.addEventListener('click',()=>{selected=btn.dataset.class;manuallySelected=true;draw(data)}));
+  host.querySelector('.rus-o-refresh')?.addEventListener('click',()=>refresh());
   host.querySelectorAll('img.rus-o-logo').forEach(img=>img.addEventListener('error',()=>{
     const shell=img.closest('.rus-o-logo-shell');
     if(shell)shell.remove();else img.remove();
@@ -137,4 +145,6 @@ async function refresh(){
 refresh();
 assets?.ready.then(()=>{if(currentData)draw(currentData)});
 setInterval(()=>{if(!document.hidden)refresh()},60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
+window.addEventListener('pageshow',()=>{if(!document.hidden)refresh()});
 })();
