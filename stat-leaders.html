@@ -192,7 +192,7 @@ async function load(){
   const statUrl=`deseret-rosters-stats-${season}.json?v=${stamp}`,gameStatUrl=`player-game-stats-${season}.json?v=${stamp}`;
   if(season===2026){
    const [s,g,t,d,w]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)]);
-   if(!s.ok||!t.ok)throw new Error('Unable to load current stat data');allStats=await s.json();playerGames=g?.ok?await g.json():null;allStats.weeklySchedule=w?.ok?(await w.json()).games||[]:[];teamMeta.clear();for(const x of await t.json())teamMeta.set(canon(x.team),x);if(d?.ok)loadLongFieldGoals(await d.json());
+   if(!s.ok||!t.ok)throw new Error('Unable to load current stat data');allStats=await s.json();window.RUSVerifiedPlayerStats2026?.apply(allStats);playerGames=g?.ok?await g.json():null;allStats.weeklySchedule=w?.ok?(await w.json()).games||[]:[];teamMeta.clear();for(const x of await t.json())teamMeta.set(canon(x.team),x);if(d?.ok)loadLongFieldGoals(await d.json());
   }else{
    const [s,g,a]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`full-season-alignment-${season}.json?v=${stamp}`,{cache:'no-store'})]);
    if(!s.ok||!a.ok)throw new Error(`Archived ${season} stat data is not available`);allStats=await s.json();playerGames=g?.ok?await g.json():null;longFgMap=new Map();buildPastMeta(await a.json());
