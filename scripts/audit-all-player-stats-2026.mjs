@@ -107,7 +107,7 @@ const levels={};const codes={};
 for(const row of issues){levels[row.level]=(levels[row.level]||0)+1;codes[row.code]=(codes[row.code]||0)+1}
 const priority={GAME_SUM_EXCEEDS_SEASON:0,COMPACT_FEED_MISMATCH:1,NEGATIVE_COUNT:2,RUSHING_RATE_MISMATCH:3,RECEIVING_RATE_MISMATCH:4,UNMATCHED_ROSTER_IDENTITY:5,DUPLICATE_SEASON_ROW:6};
 issues.sort((a,b)=>(priority[a.code]??10)-(priority[b.code]??10)||(b.difference||0)-(a.difference||0)||a.team.localeCompare(b.team));
-const counts={...tally,uniqueRosterIDs:tally.uniqueRosterIDs.size,athletesWithStats:tally.athletesWithStats.size};
+const counts={...tally,uniqueRosterIDs:tally.uniqueRosterIDs.size,athletesWithStats:tally.athletesWithStats.size,reviewFlags:levels.review||0};
 const result={generatedAt:new Date().toISOString(),scope:'2026 Utah football, all available schools and every roster/stat/game-log player',limitations:'Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.',counts,issueCounts:codes,severityCounts:levels,teams:summaries,issues};
 fs.mkdirSync('audits',{recursive:true});
 fs.writeFileSync(OUTPUT,JSON.stringify(result,null,2)+'\n');
