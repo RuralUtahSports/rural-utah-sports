@@ -99,19 +99,38 @@ function draw(data){
     if(shell)shell.remove();else img.remove();
   }));
 }
+const PRIMARY_BRACKETS='official-brackets-2026.json';
+const REPO_BRACKETS='https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/official-brackets-2026.json';
+async function fetchFreshBrackets(url){
+ const separator=url.includes('?')?'&':'?';
+ const response=await fetch(url+separator+'v='+Date.now(),{cache:'no-store'});
+ if(!response.ok)throw new Error('HTTP '+response.status);
+ const data=await response.json();
+ if(!data?.classifications||!data.classifications['8-Player']?.rounds)throw new Error('Invalid bracket data');
+ return data;
+}
 async function refresh(){
  if(inFlight)return;
  inFlight=true;
  try{
-  const r=await fetch('official-brackets-2026.json?v='+Date.now(),{cache:'no-store'});
-  if(!r.ok)throw Error('HTTP '+r.status);
-  const d=await r.json();
+  // Pages/CDNs can lag behind the latest GitHub commit. Compare both sources
+  // and display the newest verified bracket feed rather than a stale site copy.
+  const outcomes=await Promise.allSettled([
+   fetchFreshBrackets(PRIMARY_BRACKETS),
+   fetchFreshBrackets(REPO_BRACKETS)
+  ]);
+  const available=outcomes.filter(x=>x.status==='fulfilled').map(x=>x.value);
+  if(!available.length)throw new Error('All bracket sources unavailable');
+  available.sort((a,b)=>(Date.parse(b.updatedAt)||0)-(Date.parse(a.updatedAt)||0));
+  const d=available[0];
+  window.RUSOfficialBracketsLatest=d;
   let forecast={games:[]};
   try{const pr=await fetch('playoff-predictions-2026.json?v='+Date.now(),{cache:'no-store'});if(pr.ok)forecast=await pr.json()}catch(e){console.warn('RUS playoff projections unavailable',e)}
   loadPredictions(forecast);
   const body=JSON.stringify(d)+'|'+JSON.stringify(forecast);
   if(body!==lastPayload){lastPayload=body;draw(d);}
  }catch(e){
+  console.warn('RUS playoff brackets refresh failed',e);
   if(!lastPayload)host.innerHTML='<div class="rus-o-error">The official bracket feed is temporarily unavailable. Please reload the page.</div>';
  }finally{inFlight=false;}
 }
