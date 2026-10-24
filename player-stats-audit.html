@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 Football Player Stats Audit | Rural Utah Sports</title>
+<meta name="description" content="2026 Utah high school football player-stat coverage, reconciliation checks, and coach-reporting gaps.">
+<style>
+:root{color-scheme:dark;--orange:#f14d07;--muted:#afb0b7;--bg:#0c0c0e;--card:#18191d}
+*{box-sizing:border-box}body{background:var(--bg);color:white;font:15px/1.5 system-ui,Arial,sans-serif;margin:0}
+header{background:#070707;border-bottom:4px solid var(--orange);padding:20px max(16px,calc((100% - 1160px)/2))}
+header strong{font-size:18px;letter-spacing:.04em}header small{color:var(--orange);display:block;font-weight:800;letter-spacing:.18em}
+main{max-width:1160px;margin:auto;padding:24px 16px 80px}
+h1{font-size:clamp(26px,4vw,42px);margin:0 0 8px;line-height:1.1}
+p{color:#ccc}h2{font-size:20px;margin:30px 0 12px}
+.links{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0 22px}
+a{color:#ff853e}.links a{text-decoration:none;border:1px solid #454545;padding:9px 14px;border-radius:7px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:20px 0}
+.card{border:1px solid #38383a;background:var(--card);padding:16px;border-radius:10px;min-height:110px}
+.card strong{display:block;color:var(--orange);font-size:30px}.card span{display:block;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.note{border-left:4px solid var(--orange);background:#1d1714;padding:12px 16px;margin:18px 0;color:#eee}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+input,select{background:#202126;color:white;border:1px solid #5d5d64;border-radius:6px;padding:12px;font:inherit}
+input{flex:1;min-width:190px}select{max-width:250px}
+.table-wrap{max-width:100%;overflow-x:auto;border:1px solid #38383a;border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:740px}
+th{text-align:left;color:var(--orange);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:#18191d}
+td,th{padding:11px 13px;border-bottom:1px solid #363638;vertical-align:top}
+tr:last-child td{border-bottom:0}.code{color:#ffc18a;font-weight:800;word-break:break-word}.minor{color:#aaa;font-size:12px}
+#notice{font-weight:700;color:#ffd9c2}button{background:var(--orange);color:#0b0b0b;font-weight:800;padding:10px 15px;border:0;border-radius:6px;cursor:pointer}
+footer{color:var(--muted);font-size:12px;margin-top:24px}
+</style></head><body>
+<header><small>RURAL UTAH SPORTS</small><strong>Football Statistics Accuracy Center</strong></header>
+<main>
+<h1>2026 Player Stats Audit</h1>
+<p>Coverage and accuracy review for reported Utah high school football player statistics in every classification. Checks include season totals, available game logs, roster identity, and cross-file consistency.</p>
+<div class="links"><a href="stat-leaders.html">← Stat Leaders</a><a href="region-awards.html">Region Awards</a><a href="https://github.com/RuralUtahSports/rural-utah-sports/tree/main/audits" target="_blank" rel="noopener">Audit Source Files ↗</a></div>
+<div id="notice" aria-live="polite">Loading the latest available audit…</div>
+<div id="cards" class="cards"></div>
+<div class="note"><strong>Important:</strong> Reported does not mean independently verified. Some teams and coaches do not submit complete player statistics. A missing number is not zero, and a flagged difference must be checked against source reports before being changed on the site. No award selections are modified by this audit.</div>
+<h2>Issues requiring review</h2>
+<div class="controls"><input type="search" id="search" placeholder="Search school, athlete, or issue"><select id="severity" aria-label="Filter issue level"><option value="all">All flags</option><option value="review">Needs review</option><option value="info">Information only</option></select><button id="clear" type="button">Clear</button></div>
+<p id="count" class="minor"></p>
+<div class="table-wrap"><table><thead><tr><th>School</th><th>Player / subject</th><th>Issue</th><th>Details</th></tr></thead><tbody id="issues"><tr><td colspan="4">Loading…</td></tr></tbody></table></div>
+<h2>School coverage</h2>
+<p id="schoolNote" class="minor">A breakdown of how much data is reported for each school is available when the full audit report has been generated.</p>
+<div class="table-wrap" id="schoolsContainer" hidden><table><thead><tr><th>School</th><th>Roster athletes</th><th>Category rows</th><th>Athletes without reported stats</th><th>Finals with player data</th></tr></thead><tbody id="schools"></tbody></table></div>
+<footer>Automated audit of available RUS records, not a replacement for the school scorekeeper's official statistics. Deseret is the primary reference; MaxPreps helps identify gaps when athlete identity and season are confirmed.</footer>
+</main>
+<script>
+(() => {
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const number=v=>Number(v||0).toLocaleString('en-US');
+const paths=['audits/2026-player-stats-audit.json','audits/2026-player-stats-baseline.json'];
+const github='https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/';
+let data=null,rows=[];
+async function load(){
+  for(const path of paths){
+    for(const base of ['',github]){
+      try{
+        const url=base+path+'?v='+Date.now();
+        const res=await fetch(url,{cache:'no-store'});
+        if(!res.ok)continue;
+        const json=await res.json();
+        if(!json?.counts)continue;
+        data=json;show(path.includes('baseline'));return;
+      }catch(e){console.warn('Audit source unavailable',path,e)}
+    }
+  }
+  $('notice').textContent='No audit output is available yet. The GitHub audit source remains linked above.';
+  $('issues').innerHTML='<tr><td colspan="4">No audit data available.</td></tr>';
+}
+function show(isBaseline){
+ const c=data.counts||{};
+ $('notice').textContent=isBaseline?'Initial statewide scan • full player-by-player results not yet published':'Full player-by-player audit • generated '+new Date(data.generatedAt).toLocaleString();
+ const tiles=[
+  ['Schools',c.teams],['Roster IDs',c.uniqueRosterIDs],['Athletes with stats',c.athletesWithStats??c.athletesWithCompactMetrics],
+  ['Stat category rows',c.statRows??c.compactStatCategoryRows],['Athletes without stats',c.missingStatPlayers],
+  ['Flagged records',(data.issues||[]).filter(x=>x.level==='review').length||data.sample?.reviewDiscrepancies]
+ ];
+ $('cards').innerHTML=tiles.filter(([k,v])=>v!==undefined).map(([label,value])=>'<div class="card"><strong>'+esc(number(value))+'</strong><span>'+esc(label)+'</span></div>').join('');
+ rows=Array.isArray(data.issues)?data.issues:(data.knownFlags||[]);
+ if(Array.isArray(data.teams)){
+   $('schoolsContainer').hidden=false;$('schoolNote').textContent='Player-stat coverage varies considerably by school. Missing game logs are not counted as zero.';
+   $('schools').innerHTML=data.teams.map(s=>'<tr><td>'+esc(s.team)+'</td><td>'+number(s.rosterPlayers)+'</td><td>'+number(s.statRows)+'</td><td>'+number(s.rosterPlayersWithoutReportedStats)+'</td><td>'+number(s.finalGameLogsWithPlayerData)+' / '+number(s.finalGameLogs)+'</td></tr>').join('');
+ }
+ render();
+}
+function render(){
+ const q=$('search').value.trim().toLowerCase(),level=$('severity').value;
+ const filtered=rows.filter(x=>(level==='all'||x.level===level)&&(!q||Object.values(x).some(v=>String(v).toLowerCase().includes(q))));
+ $('count').textContent=number(filtered.length)+' matching flags'+(data?.sample?' • initial sample; not a completed statewide discrepancy count':'');
+ $('issues').innerHTML=filtered.slice(0,500).map(x=>{
+  const context=Object.entries(x).filter(([k])=>!['level','code','team','subject'].includes(k)).map(([k,v])=>k+': '+(typeof v==='object'?JSON.stringify(v):v)).join(' · ');
+  return '<tr><td>'+esc(x.team||'—')+'</td><td>'+esc(x.subject||'—')+'</td><td class="code">'+esc(x.code||'—')+'<div class="minor">'+esc(x.level||'review')+'</div></td><td>'+esc(context||'Source review required')+'</td></tr>';
+ }).join('')||'<tr><td colspan="4">No matching issues.</td></tr>';
+}
+$('search').addEventListener('input',render);$('severity').addEventListener('change',render);
+$('clear').onclick=()=>{$('search').value='';$('severity').value='all';render()};
+load();
+})();
+</script>
+</body></html>
