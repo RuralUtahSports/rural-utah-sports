@@ -57,17 +57,19 @@ function loadPredictions(payload){
  predictionMap=next;
 }
 
-function team(t){
+function team(t,isFinal=false){
   const name=getName(t),seed=t&&typeof t==='object'&&Number.isFinite(Number(t.seed))&&String(t.seed).trim()!==''?'#'+esc(t.seed):'';
   const display=name||'TBD',isBye=/^bye$/i.test(display);
   const known=!!name&&!/^(?:TBD|Bye|Winner of |Semifinal |Quarterfinal )/i.test(name);
   const colors=known?teamAsset(name):{logo:'',backgroundColor:'#303030',textColor:'#fff',known:false};
   const real=known&&colors.known;
-  const cls='rus-o-team'+(isBye?' rus-o-bye':'')+(t?.winner?' rus-o-win':'')+(real?' rus-o-real-team':'');
+  const isWinner=isFinal&&t?.winner===true;
+  const cls='rus-o-team'+(isBye?' rus-o-bye':'')+(isWinner?' rus-o-win':'')+(real?' rus-o-real-team':'');
   const style=real?' style="--team-bg:'+colors.backgroundColor+';--team-ink:'+colors.textColor+'"':'';
   const logo=colors.logo&&known?'<span class="rus-o-logo-shell" data-team-key="'+esc(colors.key||'')+'"><img class="rus-o-logo" src="'+esc(colors.logo)+'" alt="'+esc(name)+' school logo" loading="lazy" decoding="async" width="48" height="48"></span>':'';
   const score=t&&typeof t==='object'&&t.score!==undefined&&t.score!==null?'<span class="rus-o-score">'+esc(t.score)+'</span>':'';
-  return '<div class="'+cls+'"'+style+'><span class="rus-o-seed">'+seed+'</span>'+logo+'<span class="rus-o-name">'+esc(display)+'</span>'+score+'</div>';
+  const nameAndBadge='<span class="rus-o-team-details"><span class="rus-o-name">'+esc(display)+'</span>'+(isWinner?'<span class="rus-o-winner-label" aria-label="Winning team">✓ WINNER</span>':'')+'</span>';
+  return '<div class="'+cls+'"'+style+'><span class="rus-o-seed">'+seed+'</span>'+logo+nameAndBadge+score+'</div>';
 }
 function game(g){
   const a=g?.a??null,b=g?.b??null,isFinal=isFinalGame(g);
@@ -78,7 +80,7 @@ function game(g){
     (g?.venue||g?.location)?'<span><b>Location:</b> '+esc(g.venue||g.location)+'</span>':'',
     g?.note&&!isFinal?'<span>'+esc(g.note)+'</span>':''
   ].filter(Boolean).join(' <span aria-hidden="true">·</span> ');
-  return '<div class="rus-o-game'+(isFinal?' is-final':'')+'">'+team(a)+team(b)+gameLine(g)+(schedule?'<div class="rus-o-gamemeta">'+schedule+'</div>':'')+'</div>';
+  return '<div class="rus-o-game'+(isFinal?' is-final':'')+'">'+team(a,isFinal)+team(b,isFinal)+gameLine(g)+(schedule?'<div class="rus-o-gamemeta">'+schedule+'</div>':'')+'</div>';
 }
 function draw(data){
   currentData=data;
