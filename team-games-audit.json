@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-23T23:16:21.137Z",
+  "updatedAt": "2026-10-24T01:41:02.663Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -14,10 +14,10 @@
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 234,
+    "seasonSummaryMismatches": 241,
     "reciprocalMismatches": 989,
     "likelyOpponentTypos": 6,
-    "recent2025PlusIssues": 239
+    "recent2025PlusIssues": 244
   },
   "recent2025PlusIssues": [
     {
@@ -128,6 +128,29 @@
         "pointsAgainst": {
           "expected": 449,
           "actual": 408
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "CEDAR CITY",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 10
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 322,
+          "actual": 278
+        },
+        "pointsAgainst": {
+          "expected": 257,
+          "actual": 237
         }
       }
     },
@@ -262,19 +285,23 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 10,
+          "expected": 11,
           "actual": 9
+        },
+        "wins": {
+          "expected": 3,
+          "actual": 2
         },
         "losses": {
           "expected": 8,
           "actual": 7
         },
         "pointsFor": {
-          "expected": 210,
+          "expected": 238,
           "actual": 196
         },
         "pointsAgainst": {
-          "expected": 401,
+          "expected": 422,
           "actual": 375
         }
       }
@@ -382,6 +409,29 @@
         "RICHFIELD",
         "SKY VIEW"
       ]
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "JUDGE MEMORIAL",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 9,
+          "actual": 8
+        },
+        "losses": {
+          "expected": 8,
+          "actual": 7
+        },
+        "pointsFor": {
+          "expected": 145,
+          "actual": 124
+        },
+        "pointsAgainst": {
+          "expected": 276,
+          "actual": 248
+        }
+      }
     },
     {
       "type": "season-summary-mismatch",
@@ -579,6 +629,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "NORTH SANPETE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 10
+        },
+        "losses": {
+          "expected": 5,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 257,
+          "actual": 237
+        },
+        "pointsAgainst": {
+          "expected": 251,
+          "actual": 207
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "NORTH SEVIER",
       "season": "2025",
       "mismatches": {
@@ -597,6 +670,29 @@
         "CANYON VIEW",
         "CEDAR CITY"
       ]
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "OGDEN",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 10
+        },
+        "wins": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 311,
+          "actual": 269
+        },
+        "pointsAgainst": {
+          "expected": 165,
+          "actual": 162
+        }
+      }
     },
     {
       "type": "likely-opponent-typo",
@@ -802,6 +898,29 @@
         "pointsAgainst": {
           "expected": 319,
           "actual": 136
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "UNION",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "losses": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 193,
+          "actual": 190
+        },
+        "pointsAgainst": {
+          "expected": 305,
+          "actual": 263
         }
       }
     },
@@ -5711,6 +5830,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "CEDAR CITY",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 10
+        },
+        "wins": {
+          "expected": 6,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 322,
+          "actual": 278
+        },
+        "pointsAgainst": {
+          "expected": 257,
+          "actual": 237
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "CEDAR VALLEY",
       "season": "2021",
       "mismatches": {
@@ -6051,19 +6193,23 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 10,
+          "expected": 11,
           "actual": 9
+        },
+        "wins": {
+          "expected": 3,
+          "actual": 2
         },
         "losses": {
           "expected": 8,
           "actual": 7
         },
         "pointsFor": {
-          "expected": 210,
+          "expected": 238,
           "actual": 196
         },
         "pointsAgainst": {
-          "expected": 401,
+          "expected": 422,
           "actual": 375
         }
       }
@@ -6210,20 +6356,20 @@
       "team": "GUNNISON VALLEY",
       "season": "2001",
       "mismatches": {
+        "games": {
+          "expected": 8,
+          "actual": 9
+        },
         "wins": {
           "expected": 4,
           "actual": 5
         },
-        "losses": {
-          "expected": 5,
-          "actual": 4
-        },
         "pointsFor": {
-          "expected": 162,
+          "expected": 148,
           "actual": 167
         },
         "pointsAgainst": {
-          "expected": 207,
+          "expected": 188,
           "actual": 202
         }
       }
@@ -6403,6 +6549,29 @@
     {
       "type": "season-summary-mismatch",
       "team": "JUAB",
+      "season": "2001",
+      "mismatches": {
+        "games": {
+          "expected": 9,
+          "actual": 10
+        },
+        "wins": {
+          "expected": 4,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 153,
+          "actual": 172
+        },
+        "pointsAgainst": {
+          "expected": 156,
+          "actual": 170
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "JUAB",
       "season": "2005",
       "mismatches": {
         "pointsFor": {
@@ -6465,6 +6634,29 @@
         "pointsAgainst": {
           "expected": 474,
           "actual": 523
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "JUDGE MEMORIAL",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 9,
+          "actual": 8
+        },
+        "losses": {
+          "expected": 8,
+          "actual": 7
+        },
+        "pointsFor": {
+          "expected": 145,
+          "actual": 124
+        },
+        "pointsAgainst": {
+          "expected": 276,
+          "actual": 248
         }
       }
     },
@@ -6956,9 +7148,21 @@
       "team": "MONTICELLO",
       "season": "2022",
       "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 12
+        },
+        "wins": {
+          "expected": 7,
+          "actual": 8
+        },
         "pointsFor": {
-          "expected": 465,
+          "expected": 423,
           "actual": 464
+        },
+        "pointsAgainst": {
+          "expected": 254,
+          "actual": 274
         }
       }
     },
@@ -6974,6 +7178,29 @@
         "pointsAgainst": {
           "expected": 250,
           "actual": 258
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "MONUMENT VALLEY",
+      "season": "2022",
+      "mismatches": {
+        "games": {
+          "expected": 8,
+          "actual": 9
+        },
+        "losses": {
+          "expected": 7,
+          "actual": 8
+        },
+        "pointsFor": {
+          "expected": 138,
+          "actual": 158
+        },
+        "pointsAgainst": {
+          "expected": 445,
+          "actual": 487
         }
       }
     },
@@ -7135,6 +7362,29 @@
         "pointsFor": {
           "expected": 194,
           "actual": 187
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "NORTH SANPETE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 10
+        },
+        "losses": {
+          "expected": 5,
+          "actual": 4
+        },
+        "pointsFor": {
+          "expected": 257,
+          "actual": 237
+        },
+        "pointsAgainst": {
+          "expected": 251,
+          "actual": 207
         }
       }
     },
@@ -7340,6 +7590,29 @@
         "pointsAgainst": {
           "expected": 290,
           "actual": 319
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "OGDEN",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 10
+        },
+        "wins": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 311,
+          "actual": 269
+        },
+        "pointsAgainst": {
+          "expected": 165,
+          "actual": 162
         }
       }
     },
@@ -8697,6 +8970,29 @@
         "pointsAgainst": {
           "expected": 394,
           "actual": 397
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "UNION",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "losses": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 193,
+          "actual": 190
+        },
+        "pointsAgainst": {
+          "expected": 305,
+          "actual": 263
         }
       }
     },
