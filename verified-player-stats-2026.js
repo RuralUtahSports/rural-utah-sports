@@ -10,7 +10,7 @@
     name: 'Alma Barlow',
     playerId: 'water-canyon-35-alma-barlow',
     season: 2026,
-    rushing: { Yards: '2424', TD: '9', Carries: '187' },
+    rushing: { Yards: '2424', TD: '27', Carries: '187' },
     receiving: { Yards: '118', TD: '1', Receptions: '16' },
     games: 10,
     source: 'https://sports.deseret.com/high-school/football/athlete/alma-barlow/409288'
