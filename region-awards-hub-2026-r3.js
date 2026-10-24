@@ -778,6 +778,74 @@ async function graphicFor(section,format){
   }
   footer();return cvs;
  }
+ if(section==='winners'){
+  // Award winners have a dedicated hierarchy: a full-width MVP, then OPOY and DPOY.
+  // Keep this responsive across landscape, square and Instagram portrait exports.
+  const top=landscape?269:274,bottom=h-84,gap=landscape?16:portrait?22:18;
+  const totalHeight=bottom-top-gap,mvpHeight=Math.round(totalHeight*(landscape?.43:.44));
+  const lowerTop=top+mvpHeight+gap,lowerHeight=bottom-lowerTop,cardGap=landscape?22:portrait?24:20;
+  const cardWidth=(w-2*margin-cardGap)/2;
+  const labels={
+   mvp:'MOST VALUABLE PLAYER',opoy:'OFFENSIVE PLAYER OF THE YEAR',dpoy:'DEFENSIVE PLAYER OF THE YEAR'
+  };
+  function drawWinnerCard(role,x,y,cw,ch,featured){
+   const p=byID.get(winners[role]);
+   ctx.fillStyle='rgba(10,9,12,.79)';ctx.fillRect(x,y,cw,ch);
+   ctx.fillStyle='#f14d07';ctx.fillRect(x,y,8,ch);
+   ctx.fillStyle='rgba(255,255,255,.07)';ctx.fillRect(x+8,y,cw-8,2);
+   if(p){
+    ctx.fillStyle=color(p.team);
+    ctx.fillRect(x+8,y+ch-5,cw-8,5);
+   }
+   ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+   if(featured || landscape){
+    const logoDim=Math.min(featured?(landscape?156:portrait?182:147):118,ch*(featured?.60:.62));
+    const lx=x+(featured?29:20),ly=y+(ch-logoDim)/2;
+    if(p&&!drawLogo(ctx,imgs.get(p.team),lx,ly,logoDim)){
+     ctx.fillStyle='#fff';ctx.textAlign='center';
+     ctx.fillText(fitted(ctx,norm(p.team).slice(0,4),logoDim,19,11),lx+logoDim/2,ly+logoDim*.55);
+    }
+    const tx=lx+logoDim+(featured?31:24),textWidth=Math.max(20,cw-(tx-x)-25);
+    ctx.textAlign='left';ctx.fillStyle='#ffb48c';
+    ctx.fillText(fitted(ctx,labels[role],textWidth,featured?(landscape?26:29):20,13),
+     tx,y+ch*(featured?.24:.24));
+    ctx.shadowColor='#000';ctx.shadowBlur=3;ctx.shadowOffsetY=2;
+    drawAwardHeading(ctx,role.toUpperCase(),p?shareGrade(p):'',p?p.name.toUpperCase():'PENDING',
+     tx,y+ch*(featured?.46:.49),textWidth,featured?(landscape?41:42):29,featured?20:15);
+    ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+    ctx.fillStyle='#f6e5dc';
+    ctx.fillText(fitted(ctx,p?p.team.toUpperCase():'AWAITING SELECTION',textWidth,featured?24:21,12),
+     tx,y+ch*(featured?.68:.70));
+    ctx.fillStyle='#ffdfce';
+    ctx.fillText(fitted(ctx,p?statLine(p,role.toUpperCase()):'STATS NOT VERIFIED',textWidth,
+     featured?(landscape?22:portrait?22:20):17,11),tx,y+ch*(featured?.84:.87));
+   }else{
+    // Square and portrait: stack school logo above names on two equal bottom cards.
+    ctx.textAlign='center';ctx.fillStyle='#ffb48c';
+    ctx.fillText(fitted(ctx,labels[role],cw-28,portrait?20:18,12),x+cw/2,y+ch*.115);
+    const logoDim=Math.min(portrait?148:123,ch*.32),lx=x+(cw-logoDim)/2,ly=y+ch*.19;
+    if(p&&!drawLogo(ctx,imgs.get(p.team),lx,ly,logoDim)){
+     ctx.fillStyle='#fff';
+     ctx.fillText(fitted(ctx,norm(p.team).slice(0,4),logoDim,17,10),x+cw/2,ly+logoDim*.55);
+    }
+    const tx=x+21,textWidth=cw-42;
+    ctx.textAlign='left';ctx.shadowColor='#000';ctx.shadowBlur=3;ctx.shadowOffsetY=2;
+    drawAwardHeading(ctx,role.toUpperCase(),p?shareGrade(p):'',p?p.name.toUpperCase():'PENDING',
+     tx,y+ch*.66,textWidth,portrait?28:26,15);
+    ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+    ctx.fillStyle='#f5e4d9';
+    ctx.fillText(fitted(ctx,p?p.team.toUpperCase():'AWAITING SELECTION',textWidth,portrait?21:19,11),
+     tx,y+ch*.77);
+    ctx.fillStyle='#ffdfce';
+    ctx.fillText(fitted(ctx,p?statLine(p,role.toUpperCase()):'STATS NOT VERIFIED',textWidth,
+     portrait?17:16,10),tx,y+ch*.88);
+   }
+  }
+  drawWinnerCard('mvp',margin,top,w-2*margin,mvpHeight,true);
+  drawWinnerCard('opoy',margin,lowerTop,cardWidth,lowerHeight,false);
+  drawWinnerCard('dpoy',margin+cardWidth+cardGap,lowerTop,cardWidth,lowerHeight,false);
+  footer();return cvs;
+ }
  const isTeam=section!=='winners';
  const left=ids.filter((id,i)=>!isTeam?i<2:firstHalf.includes(idSlot(id))||idSlot(id)==='FLEX');
  const right=ids.filter((id,i)=>!isTeam?i>=2:!firstHalf.includes(idSlot(id))&&idSlot(id)!=='FLEX');
