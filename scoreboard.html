@@ -160,7 +160,23 @@ function showSelectedWeek(){
  updatePlayoffNote();render();
 }
 function teamInfo(name){return teamMap.get(canon(name))||null}function cls(name){const c=String(teamInfo(name)?.classification||'').toUpperCase();return c==='8-PLAYER'?'8P':c}
-function gameClass(g){return g.playoff?(g.classification==='8-Player'?'8P':g.classification):cls(g.homeTeam)||cls(g.awayTeam)}function detailFor(g){const exact=detailMap.get(gameKey(g));if(exact)return exact;if(compact(g.awayTeam)==='WEBER'&&compact(g.homeTeam)==='ROY'&&isoDate(g.date)==='2026-08-27')return detailMap.get('2026-08-28|WEBER|ROY')||null;return null}
+function gameClass(g){return g.playoff?(g.classification==='8-Player'?'8P':g.classification):cls(g.homeTeam)||cls(g.awayTeam)}function detailFor(g){
+ let exact=detailMap.get(gameKey(g))||null;
+ if(!exact&&compact(g.awayTeam)==='WEBER'&&compact(g.homeTeam)==='ROY'&&isoDate(g.date)==='2026-08-27')exact=detailMap.get('2026-08-28|WEBER|ROY')||null;
+ // Preserve screenshot-verified quarter scores on finalized playoff games even
+ // when the external Deseret detail feeds have no matching entry yet.
+ const quarters=g.quarterScores;
+ const final=g.actualAway!==null&&g.actualAway!==undefined&&g.actualHome!==null&&g.actualHome!==undefined;
+ if(final&&Array.isArray(quarters?.away)&&Array.isArray(quarters?.home)&&quarters.away.length===4&&quarters.home.length===4){
+  const reported=exact?.boxScore?.rows;
+  const hasQuarters=Array.isArray(reported)&&reported.length>=2&&reported.every(r=>Array.isArray(r.quarters)&&r.quarters.length===4&&r.quarters.every(v=>v!==null&&v!==undefined));
+  if(!hasQuarters)return {...(exact||{}),final:true,status:'Final',boxScore:{periods:['Q1','Q2','Q3','Q4'],rows:[
+   {team:g.awayTeam,quarters:quarters.away,total:g.actualAway},
+   {team:g.homeTeam,quarters:quarters.home,total:g.actualHome}
+  ],source:'Deseret News scoreboard screenshots'}};
+ }
+ return exact;
+}
 function scoreState(g){const d=detailFor(g),sheetDone=g.actualAway!==null&&g.actualAway!==undefined&&g.actualHome!==null&&g.actualHome!==undefined,box=d?.boxScore?.rows||[],desAway=box[0]?.total,desHome=box[1]?.total,hasDes=Number.isFinite(Number(desAway))&&Number.isFinite(Number(desHome));if(sheetDone)return{done:true,away:Number(g.actualAway),home:Number(g.actualHome),status:'Final',live:false,sheetDone:true,hasDes};if(d?.final===true&&hasDes)return{done:true,away:Number(desAway),home:Number(desHome),status:'Final',live:false,sheetDone:false,hasDes:true};return{done:false,away:null,home:null,status:'Upcoming',live:false,sheetDone:false,hasDes:false}}
 function previewOverride(g){return previewOverrideMap.get(gameKey(g))||null}function projectedScores(g){const o=previewOverride(g);if(o&&o.awayScore!==null&&o.awayScore!==undefined&&o.awayScore!==''&&o.homeScore!==null&&o.homeScore!==undefined&&o.homeScore!==''){const away=Number(o.awayScore),home=Number(o.homeScore);if(Number.isFinite(away)&&Number.isFinite(home))return{away,home}}if(g.awayScore===null||g.awayScore===undefined||g.awayScore===''||g.homeScore===null||g.homeScore===undefined||g.homeScore==='')return null;const away=Number(g.awayScore),rawHome=Number(g.homeScore);return Number.isFinite(away)&&Number.isFinite(rawHome)?{away,home:rawHome+(g.playoffModel?0:HOME_FIELD_POINTS)}:null}function projectedWinner(g){const p=projectedScores(g);return!p?'':p.away>p.home?norm(g.awayTeam):p.home>p.away?norm(g.homeTeam):''}
 function finalGame(g){return scoreState(g).done}function liveGame(g){return scoreState(g).live}function overtimeGame(g){const d=detailFor(g),status=String(d?.status||''),period=String(d?.period||''),periods=d?.boxScore?.periods||[];return /(?:^|\b)(?:OT|OVERTIME)(?:\b|$)/i.test(`${status} ${period}`)||periods.some(p=>/(?:^|\b)(?:OT|OVERTIME)(?:\b|$)/i.test(String(p||'')))}function mercyGame(g){const s=scoreState(g),a=Number(s.away),h=Number(s.home);return s.done&&s.away!==null&&s.home!==null&&Number.isFinite(a)&&Number.isFinite(h)&&Math.abs(a-h)>=44}function outcome(g){const s=scoreState(g);if(!s.done||s.away===null||s.home===null)return'';const actual=s.sheetDone&&norm(g.actualWinner)?norm(g.actualWinner):s.away>s.home?norm(g.awayTeam):s.home>s.away?norm(g.homeTeam):'TIE',pred=projectedWinner(g);if(!pred||actual==='TIE')return'';return actual===pred?'W':'L'}
