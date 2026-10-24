@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-10-23T23:12:51.354Z",
+  "generatedAt": "2026-10-24T01:01:58.463Z",
   "summary": {
     "errors": 0,
-    "warnings": 5,
+    "warnings": 7,
     "info": 2
   },
   "issues": [
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "EMERY standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "2-8-0",
+        "calculated": "2-7-1"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "RECORD_MISMATCH",
+      "message": "UMA-HILLFIELD standings record does not match completed games in weekly-simulation.json.",
+      "context": {
+        "standings": "3-6-0",
+        "calculated": "3-5-1"
+      }
+    },
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
@@ -94,7 +112,7 @@
       "message": "Audit input counts.",
       "context": {
         "teams": 118,
-        "games": 602,
+        "games": 612,
         "standings": 118,
         "rankedTeams": 68,
         "playerIds": 6440
