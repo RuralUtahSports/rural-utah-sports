@@ -224,3 +224,22 @@
 .rus-o-final{color:#fff;background:#176534;border:1px solid #45b777;border-radius:3px;font-size:10px;font-weight:900;padding:3px 6px;letter-spacing:.4px;display:inline-block}
 .rus-o-game.is-final .rus-o-team.rus-o-win .rus-o-name,.rus-o-game.is-final .rus-o-team.rus-o-win .rus-o-score{color:#fff;font-weight:900}
 .rus-o-game.is-final .rus-o-team:not(.rus-o-win){opacity:.78}
+
+/* Clear winner treatment for verified final scores — original school colors and logos retained. */
+.rus-o-team-details{min-width:0;flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.rus-o-team-details .rus-o-name{min-width:0;width:100%;flex:initial}
+.rus-o-winner-label{display:inline-flex;align-items:center;gap:3px;background:#4af5a0;color:#071b13;border-radius:4px;padding:3px 7px;font-size:10px;line-height:1.2;letter-spacing:.6px;font-weight:1000;text-shadow:none;white-space:nowrap}
+.rus-o-game.is-final .rus-o-team.rus-o-win,
+.rus-o-game.is-final .rus-o-team.rus-o-win.rus-o-real-team{
+  background:linear-gradient(105deg,color-mix(in srgb,var(--team-bg,#253629) 56%,#0d5031) 0%,#123c2c 100%);
+  border-left:6px solid #4af5a0;
+  box-shadow:inset 0 0 0 2px #4af5a0,inset 0 0 20px rgba(74,245,160,.21);
+  opacity:1;
+}
+.rus-o-game.is-final .rus-o-team.rus-o-win .rus-o-name{font-weight:950;color:#fff}
+.rus-o-game.is-final .rus-o-team.rus-o-win .rus-o-score{background:#4af5a0;color:#082015;border-radius:5px;padding:5px 8px;font-size:16px;font-weight:1000;text-shadow:none}
+.rus-o-game.is-final .rus-o-team:not(.rus-o-win){opacity:.68;filter:saturate(.75)}
+@media(max-width:650px){
+  .rus-o-winner-label{font-size:9px;padding:3px 6px}
+  .rus-o-game.is-final .rus-o-team.rus-o-win .rus-o-score{font-size:15px;padding:4px 6px}
+}
