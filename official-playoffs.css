@@ -215,3 +215,12 @@
 .rus-o-projection>span{color:#ff9d65;margin:0 5px}
 .rus-o-projection small{display:block;font-size:9px;font-weight:700;color:#b9b9b9;margin-top:2px}
 @media(max-width:650px){.rus-o-projection{padding:8px;font-size:11px}}
+
+/* Verified playoff finals and a manual score-refresh control. */
+.rus-o-progress{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.rus-o-refresh{background:#25160e;color:#fff;border:1px solid #F14D07;border-radius:6px;padding:8px 11px;min-height:38px;font-size:11px;font-weight:900;cursor:pointer}
+.rus-o-refresh:hover,.rus-o-refresh:focus-visible{background:#F14D07;color:#000;outline:2px solid #fff;outline-offset:2px}
+.rus-o-game.is-final{border-color:#F14D07}
+.rus-o-final{color:#fff;background:#176534;border:1px solid #45b777;border-radius:3px;font-size:10px;font-weight:900;padding:3px 6px;letter-spacing:.4px;display:inline-block}
+.rus-o-game.is-final .rus-o-team.rus-o-win .rus-o-name,.rus-o-game.is-final .rus-o-team.rus-o-win .rus-o-score{color:#fff;font-weight:900}
+.rus-o-game.is-final .rus-o-team:not(.rus-o-win){opacity:.78}
