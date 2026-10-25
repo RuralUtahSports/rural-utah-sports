@@ -75,10 +75,10 @@ function strength(p,slot){
 function statLine(p,slot){
  if(!p)return'NO PLAYER SELECTED';
  if(['MVP','OPOY','DPOY'].includes(slot)){
-  const categories=slot==='DPOY'?['Defense']:['Passing','Rushing','Receiving','Defense'];
+  const categories=slot==='DPOY'?['Defense']:slot==='OPOY'?['Passing','Rushing','Receiving']:['Passing','Rushing','Receiving','Defense'];
   const lines=categories.map(category=>p.lines.find(l=>l.category.toLowerCase().startsWith(category.toLowerCase()))).filter(Boolean);
   lines.sort((a,b)=>(window.RUSLockedRegionScoring?.categoryScore?.(b.category,b.values)||0)-(window.RUSLockedRegionScoring?.categoryScore?.(a.category,a.values)||0));
-  return lines.length?statLine(p,lines[0].category.toLowerCase().startsWith('defense')?'MLB':lines[0].category.toLowerCase().startsWith('passing')?'QB':lines[0].category.toLowerCase().startsWith('rushing')?'RB':'WR1'):'STATS NOT REPORTED';
+  return lines.length?statLine(p,lines[0].category.toLowerCase().startsWith('defense')?'MLB':lines[0].category.toLowerCase().startsWith('passing')?'QB':lines[0].category.toLowerCase().startsWith('rushing')?'RB':'WR1'):slot==='OPOY'?'OFFENSIVE STATS NOT REPORTED':slot==='DPOY'?'DEFENSIVE STATS NOT REPORTED':'STATS NOT REPORTED';
  }
  const res=[],add=(v,kind)=>{if(v!==null&&v!==0&&Number.isFinite(v))res.push(v.toLocaleString('en-US',{maximumFractionDigits:1})+' '+kind)};
  if(SPECIAL_POSITIONS.includes(slot)){
