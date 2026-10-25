@@ -747,7 +747,7 @@ async function graphicFor(section,format){
  const finalized=Boolean(published&&!dirty);
  const subtitle=section==='special'?'REPORTED 2026 SEASON STATS':'2026 REGULAR SEASON';
  ctx.fillStyle='#f6e1d5';
- ctx.fillText(fitted(ctx,(finalized?'RUS EDITORIAL AWARDS':'RUS EDITORIAL DRAFT')+'  •  '+subtitle,w-2*margin,landscape?18:16,12),centerX,223);
+ ctx.fillText(fitted(ctx,'RUS EDITORIAL AWARDS'+'  •  '+subtitle,w-2*margin,landscape?18:16,12),centerX,223);
  ctx.fillStyle='#f14d07';ctx.fillRect(margin,247,w-2*margin,3);
  const ids=section==='winners'?['mvp','opoy','dpoy']:section==='special'?SPECIAL_POSITIONS.map(slot=>'first:'+slot):fieldIDs(section).filter(id=>!SPECIAL_POSITIONS.includes(idSlot(id)));
  const imgs=new Map();
@@ -758,7 +758,7 @@ async function graphicFor(section,format){
   ctx.fillStyle='rgba(0,0,0,.36)';ctx.fillRect(0,h-66,w,66);
   ctx.fillStyle='#f14d07';ctx.fillRect(margin,h-66,w-2*margin,2);
   ctx.textAlign='center';ctx.fillStyle='#fff';
-  ctx.fillText(fitted(ctx,(finalized?'PUBLISHED':'DRAFT · UNVERIFIED')+'  •  RURALUTAHSPORTS.COM  •  @RURALUTAHSPORTS77',w-2*margin,landscape?17:15,11),centerX,footerY);
+  ctx.fillText(fitted(ctx,'2026 REGION AWARD WINNERS'+'  •  RURALUTAHSPORTS.COM  •  @RURALUTAHSPORTS77',w-2*margin,landscape?17:15,11),centerX,footerY);
  }
  if(section==='special'){
   const top=portrait?290:278,bottom=h-84,gap=landscape?15:portrait?23:17;
@@ -920,6 +920,64 @@ async function graphicFor(section,format){
  }
  footer();return cvs;
 }
+
+function zipU16(v){return[v&255,(v>>>8)&255]}
+function zipU32(v){return[v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255]}
+function zipCRC(bytes){
+ let c=0xffffffff;
+ for(const b of bytes){c^=b;for(let k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0)}
+ return(c^0xffffffff)>>>0;
+}
+async function zipAwardGraphics(entries){
+ const encoder=new TextEncoder(),local=[],central=[];let offset=0;
+ for(const item of entries){
+  const name=encoder.encode(item.name),bytes=new Uint8Array(await item.blob.arrayBuffer());
+  const crc=zipCRC(bytes),size=bytes.length;
+  const head=new Uint8Array([80,75,3,4,20,0,0,0,0,0,0,0,0,0,...zipU32(crc),...zipU32(size),...zipU32(size),...zipU16(name.length),0,0]);
+  local.push(head,name,bytes);
+  central.push(new Uint8Array([80,75,1,2,20,0,20,0,0,0,0,0,0,0,...zipU32(crc),...zipU32(size),...zipU32(size),...zipU16(name.length),0,0,0,0,0,0,0,0,0,0,0,0,...zipU32(offset)]),name);
+  offset+=head.length+name.length+size;
+ }
+ const directorySize=central.reduce((n,b)=>n+b.length,0);
+ const end=new Uint8Array([80,75,5,6,0,0,0,0,...zipU16(entries.length),...zipU16(entries.length),...zipU32(directorySize),...zipU32(offset),0,0]);
+ return new Blob([...local,...central,end],{type:'application/zip'});
+}
+async function downloadAwardBundle(scope){
+ const btn=el(scope==='all'?'#ar-download-all':'#ar-download-region');
+ const original=btn.textContent,previous=region,format=el('#ar-share-format').value;
+ const saved={region,players,byID,picks,winners,status,published,dirty,notes,regionLocked,mode};
+ btn.disabled=true;
+ const entries=[],errors=[];
+ try{
+  if(scope==='all'&&!admin)throw Error('Unlock the editor with your PIN to download saved awards across all regions.');
+  const targets=scope==='all'?regions:[region],sections=['first','second','honorable','winners','special'];
+  for(let i=0;i<targets.length;i++){
+   const r=targets[i];btn.textContent='Rendering '+(i+1)+'/'+targets.length+' regions…';
+   if(r!==region){
+    region=r;players=collect(r);byID=new Map(players.map(p=>[p.id,p]));
+    await readPublication();
+   }
+   for(const section of sections){
+    const canvas=await graphicFor(section,format);
+    const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('PNG export failed')),'image/png'));
+    entries.push({name:r.replace(/[^a-z0-9-]+/gi,'-')+'/'+fileName(section,format),blob});
+   }
+  }
+  if(!entries.length)throw Error('No graphics to export');
+  btn.textContent='Packaging '+entries.length+' graphics…';
+  const blob=await zipAwardGraphics(entries);
+  const url=URL.createObjectURL(blob),link=document.createElement('a');
+  link.href=url;link.download='RUS-2026-'+(scope==='all'?'All-Regions':previous.replace(/[^a-z0-9]+/gi,'-'))+'-Awards-'+format+'.zip';
+  document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+  el('#ar-error').textContent='';
+ }catch(e){el('#ar-error').textContent='Bulk download failed: '+e.message}
+ finally{
+  Object.assign(saved,{});
+  region=saved.region;players=saved.players;byID=saved.byID;picks=saved.picks;winners=saved.winners;status=saved.status;published=saved.published;dirty=saved.dirty;notes=saved.notes;regionLocked=saved.regionLocked;mode=saved.mode;
+  btn.disabled=false;btn.textContent=original;
+ }
+}
+
 async function downloadGraphic(){
  const section=el('#ar-share-section').value,format=el('#ar-share-format').value,btn=el('#ar-download');
  btn.disabled=true;btn.textContent='Rendering…';
@@ -979,6 +1037,8 @@ async function init(){
   picks=suggest();winners=suggestWinners();dirty=true;saveLocal();render()};
  el('#ar-note').onchange=e=>{if(regionLocked)return;notes=e.target.value;dirty=true;saveLocal();render()};
  el('#ar-download').onclick=downloadGraphic;
+ el('#ar-download-region').onclick=()=>downloadAwardBundle('region');
+ el('#ar-download-all').onclick=()=>downloadAwardBundle('all');
  el('#ar-backup').onclick=exportDraft;
  el('#ar-email-send').onclick=sendEmail;
  el('#ar-code-verify').onclick=confirmCode;
