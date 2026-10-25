@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-25T13:24:38.748Z",
+  "generatedAt": "2026-10-25T15:18:04.279Z",
   "summary": {
     "errors": 0,
-    "warnings": 7,
+    "warnings": 12,
     "info": 2
   },
   "issues": [
@@ -23,6 +23,34 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "CEDAR CITY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "North Sanpete"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "EMERY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Judge Memorial Catholic"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "FARMINGTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 10,
@@ -30,6 +58,20 @@
           {
             "date": "2026-10-14",
             "opponent": "Layton"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "MANTI has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Canyon View"
           }
         ]
       }
@@ -93,6 +135,34 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "RICHFIELD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Carbon"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "UNION has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 10,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Ogden"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "WESTLAKE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 10,
@@ -109,11 +179,11 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9346,
-        "unmatchedRows": 655,
+        "sourceRows": 9363,
+        "unmatchedRows": 653,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1040,
-        "missingGamePairs": 7
+        "sourceGamePairs": 1045,
+        "missingGamePairs": 12
       }
     },
     {

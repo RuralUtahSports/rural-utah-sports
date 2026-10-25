@@ -1,36 +1,36 @@
 {
-  "generatedAt": "2026-10-25T13:24:39.155Z",
+  "generatedAt": "2026-10-25T15:18:04.810Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
     "teams": 118,
     "rosterPlayers": 6440,
     "uniqueRosterIDs": 6440,
-    "statRows": 6903,
-    "athletesWithStats": 4056,
+    "statRows": 6911,
+    "athletesWithStats": 4057,
     "gamesWithPlayerRecords": 1070,
-    "gamePlayerRows": 20857,
-    "gameStatLines": 29824,
-    "missingStatPlayers": 2504,
+    "gamePlayerRows": 20880,
+    "gameStatLines": 29866,
+    "missingStatPlayers": 2503,
     "missingTeamStats": [
       "MONUMENT VAL",
       "UMA-HILLFIELD"
     ],
-    "unmatchedSeasonStatPlayers": 167,
-    "unmatchedGamePlayers": 381,
-    "seasonAboveGameSum": 483,
+    "unmatchedSeasonStatPlayers": 168,
+    "unmatchedGamePlayers": 388,
+    "seasonAboveGameSum": 555,
     "gameAboveSeasonSum": 280,
     "reviewFlags": 285,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "SEASON_GT_AVAILABLE_GAME_LOG": 472,
+    "SEASON_GT_AVAILABLE_GAME_LOG": 544,
     "GAME_SUM_EXCEEDS_SEASON": 280,
     "RECEIVING_RATE_MISMATCH": 3,
     "COMPACT_FEED_MISMATCH": 2
   },
   "severityCounts": {
-    "info": 472,
+    "info": 544,
     "review": 285
   },
   "teams": [
@@ -114,7 +114,7 @@
     {
       "team": "CEDAR CITY",
       "rosterPlayers": 52,
-      "statRows": 53,
+      "statRows": 54,
       "rosterPlayersWithoutReportedStats": 14,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
@@ -301,11 +301,11 @@
     {
       "team": "DESERET PEAK",
       "rosterPlayers": 49,
-      "statRows": 46,
+      "statRows": 47,
       "rosterPlayersWithoutReportedStats": 24,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
-      "seasonRowsWithUnknownId": 1,
+      "seasonRowsWithUnknownId": 2,
       "compactMismatches": 0,
       "sourceStatsFetched": true
     },
@@ -972,8 +972,8 @@
     {
       "team": "RIVERTON",
       "rosterPlayers": 55,
-      "statRows": 50,
-      "rosterPlayersWithoutReportedStats": 23,
+      "statRows": 52,
+      "rosterPlayersWithoutReportedStats": 22,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 3,
@@ -1027,7 +1027,7 @@
     {
       "team": "SKYLINE",
       "rosterPlayers": 86,
-      "statRows": 100,
+      "statRows": 101,
       "rosterPlayersWithoutReportedStats": 21,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
@@ -1192,7 +1192,7 @@
     {
       "team": "UNION",
       "rosterPlayers": 49,
-      "statRows": 59,
+      "statRows": 62,
       "rosterPlayersWithoutReportedStats": 15,
       "finalGameLogs": 9,
       "finalGameLogsWithPlayerData": 9,
@@ -4838,7 +4838,7 @@
       "subject": "Wyatt Copp",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 80,
+      "season": 96,
       "gameLogSum": 68
     },
     {
@@ -4868,7 +4868,7 @@
       "subject": "Chase Jacobsen",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 72,
+      "season": 78,
       "gameLogSum": 62
     },
     {
@@ -4888,7 +4888,7 @@
       "subject": "Kayl Hutchinson",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 37,
+      "season": 40,
       "gameLogSum": 35
     },
     {
@@ -4908,8 +4908,28 @@
       "subject": "Maleck Rigby",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 31,
+      "season": 33,
       "gameLogSum": 27
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CANYON VIEW",
+      "subject": "Maleck Rigby",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 4,
+      "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CANYON VIEW",
+      "subject": "Jace Floyd",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 29,
+      "gameLogSum": 17
     },
     {
       "level": "info",
@@ -4918,7 +4938,7 @@
       "subject": "Bridger Bauer",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 35,
+      "season": 37,
       "gameLogSum": 32
     },
     {
@@ -4928,7 +4948,7 @@
       "subject": "Bridger Bauer",
       "category": "Defense/Special Teams",
       "field": "SACKS",
-      "season": 7.5,
+      "season": 8.5,
       "gameLogSum": 4.5
     },
     {
@@ -4938,7 +4958,7 @@
       "subject": "Kallen Cavalieri",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 34,
+      "season": 36,
       "gameLogSum": 28
     },
     {
@@ -4958,7 +4978,7 @@
       "subject": "Kody Lloyd",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 39,
+      "season": 46,
       "gameLogSum": 35
     },
     {
@@ -5030,6 +5050,176 @@
       "field": "PAT",
       "season": 10,
       "gameLogSum": 7
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Jake York",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 72,
+      "gameLogSum": 70
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Luke McNett",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 80,
+      "gameLogSum": 76
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Owen Burton",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 65,
+      "gameLogSum": 58
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Stockton Street",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 47,
+      "gameLogSum": 41
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Hunter Burgess",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 45,
+      "gameLogSum": 42
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Rhake Marsh",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 29,
+      "gameLogSum": 28
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Parker Dotson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 42,
+      "gameLogSum": 40
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Jace Jamison",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 32,
+      "gameLogSum": 31
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Noah Bencomo",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 23,
+      "gameLogSum": 22
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Skyler Oveson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 36,
+      "gameLogSum": 29
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Skyler Oveson",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 3,
+      "gameLogSum": 2
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Logan Robison",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 13,
+      "gameLogSum": 11
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Evan Forrester",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 14,
+      "gameLogSum": 11
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Gavin Hinds",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 10,
+      "gameLogSum": 9
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Taivan Brown",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 11,
+      "gameLogSum": 10
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Austin Womack",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 22,
+      "gameLogSum": 20
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CEDAR CITY",
+      "subject": "Tyler Bell",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 15,
+      "gameLogSum": 11
     },
     {
       "level": "info",
@@ -5415,11 +5605,131 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "EMERY",
+      "subject": "Heath Lupo",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 79,
+      "gameLogSum": 71
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Colton North",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 102,
+      "gameLogSum": 82
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Krae LeRoy",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 53,
+      "gameLogSum": 45
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Krae LeRoy",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 4,
+      "gameLogSum": 2
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
       "subject": "Corbyn Ward",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 21,
       "gameLogSum": 20
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Conner Nielson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 33,
+      "gameLogSum": 30
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Elias Hascall",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 23,
+      "gameLogSum": 21
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Chaz Sorensen",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 29,
+      "gameLogSum": 24
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Myles Mortensen",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 29,
+      "gameLogSum": 21
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Jess Larsen",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 9,
+      "gameLogSum": 7
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Travis Hurst",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 4,
+      "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Jesse Drage",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 2,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "EMERY",
+      "subject": "Branson Mortensen",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 4,
+      "gameLogSum": 3
     },
     {
       "level": "info",
@@ -6238,8 +6548,18 @@
       "subject": "Hudson Crane",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 59,
+      "season": 71,
       "gameLogSum": 55
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Trever Christensen",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 25,
+      "gameLogSum": 23
     },
     {
       "level": "info",
@@ -6248,8 +6568,18 @@
       "subject": "Tevon Vakautakakala",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 65,
+      "season": 72,
       "gameLogSum": 58
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Stetson Thomson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 31,
+      "gameLogSum": 28
     },
     {
       "level": "info",
@@ -6268,7 +6598,7 @@
       "subject": "Kolten Layton",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 59,
+      "season": 68,
       "gameLogSum": 29
     },
     {
@@ -6278,7 +6608,7 @@
       "subject": "Jacob Cox",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 53,
+      "season": 60,
       "gameLogSum": 49
     },
     {
@@ -6288,7 +6618,7 @@
       "subject": "Isaac Meacham",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 35,
+      "season": 37,
       "gameLogSum": 34
     },
     {
@@ -6298,7 +6628,7 @@
       "subject": "Will Olsen",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 31,
+      "season": 35,
       "gameLogSum": 26
     },
     {
@@ -6315,11 +6645,41 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "MANTI",
+      "subject": "Austin Perry",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 2,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
       "subject": "Connor Dotson",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 16,
       "gameLogSum": 14
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Isaiah Wright",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 9,
+      "gameLogSum": 7
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Ethan Summers",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 9,
+      "gameLogSum": 4
     },
     {
       "level": "info",
@@ -6335,10 +6695,20 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "MANTI",
+      "subject": "Emmett Gray",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 4,
+      "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
       "subject": "Tyson Buchanan",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 19,
+      "season": 20,
       "gameLogSum": 13
     },
     {
@@ -6358,7 +6728,7 @@
       "subject": "Wally Everitt",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 9,
+      "season": 12,
       "gameLogSum": 8
     },
     {
@@ -6378,7 +6748,7 @@
       "subject": "Kurt Dommer",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 5,
+      "season": 6,
       "gameLogSum": 3
     },
     {
@@ -6388,7 +6758,7 @@
       "subject": "Ben Taulapapa",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 11,
+      "season": 18,
       "gameLogSum": 9
     },
     {
@@ -7594,6 +7964,236 @@
     {
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Colton White",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 63,
+      "gameLogSum": 59
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Ngalu Taufatofua",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 60,
+      "gameLogSum": 54
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Nash Spell",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 46,
+      "gameLogSum": 43
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Nash Spell",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 9,
+      "gameLogSum": 7.5
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Cordon White",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 41,
+      "gameLogSum": 37
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Bridger Goodwin",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 45,
+      "gameLogSum": 44
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Trey Yardley",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 44,
+      "gameLogSum": 41
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Trey Yardley",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 2,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Temana Vakautakakala",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 46,
+      "gameLogSum": 42
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Anhder Thorson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 27,
+      "gameLogSum": 26
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Hayden Jolley",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 29,
+      "gameLogSum": 23
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Kason Whitmore",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 38,
+      "gameLogSum": 37
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Ripkin Janes",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 36,
+      "gameLogSum": 33
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Ripkin Janes",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 1.5,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Austin Morgan",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 34,
+      "gameLogSum": 31
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Austin Morgan",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 2,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Crew Udy",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 7,
+      "gameLogSum": 5
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Rhett Littlewood",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 10,
+      "gameLogSum": 8
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Mason Forsythe",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 6,
+      "gameLogSum": 5
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Beckham Yardley",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 5,
+      "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Porter White",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 17,
+      "gameLogSum": 16
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Everett Lindsay",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 9,
+      "gameLogSum": 8
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "RICHFIELD",
+      "subject": "Gage Fjord",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 5,
+      "gameLogSum": 4
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "RIDGELINE",
       "subject": "Kaden Wiser",
       "category": "Defense/Special Teams",
@@ -8760,6 +9360,126 @@
       "field": "PAT",
       "season": 6,
       "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Deegan Harmston",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 71,
+      "gameLogSum": 63
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Tyce Labrum",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 77,
+      "gameLogSum": 66
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Jaxson Grimm",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 48,
+      "gameLogSum": 45
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Cruz Labrum",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 31,
+      "gameLogSum": 26
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Teegan Terry",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 23,
+      "gameLogSum": 20
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Brevan Stevens",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 12,
+      "gameLogSum": 10
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "James Ruff",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 7,
+      "gameLogSum": 6
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Ben Diaz",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 12,
+      "gameLogSum": 11
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Creedance Nyberg",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 7
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Kaden Lane",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 2,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Peyton Clayburn",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 13,
+      "gameLogSum": 10
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "UNION",
+      "subject": "Dylan Watahomigie",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 12,
+      "gameLogSum": 9
     },
     {
       "level": "info",
