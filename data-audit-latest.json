@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-26T22:00:57.181Z",
+  "generatedAt": "2026-10-26T22:57:59.722Z",
   "summary": {
     "errors": 0,
-    "warnings": 15,
+    "warnings": 16,
     "info": 2
   },
   "issues": [
@@ -177,6 +177,20 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PAROWAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "North Sevier"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "RICHFIELD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 11,
@@ -221,11 +235,11 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9370,
+        "sourceRows": 9380,
         "unmatchedRows": 656,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1048,
-        "missingGamePairs": 15
+        "sourceGamePairs": 1049,
+        "missingGamePairs": 16
       }
     },
     {

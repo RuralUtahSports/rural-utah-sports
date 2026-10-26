@@ -1,10 +1,10 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-26T22:00:57.181Z
+Generated: 2026-10-26T22:57:59.722Z
 
-**0 errors • 15 warnings**
+**0 errors • 16 warnings**
 
-## Warnings (15)
+## Warnings (16)
 
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — BEN LOMOND has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Grantsville"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CANYON VIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Manti"}]}`
@@ -18,12 +18,13 @@ Generated: 2026-10-26T22:00:57.181Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MOUNTAIN RIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-15","opponent":"Westlake"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — NORTH SANPETE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Cedar"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — OGDEN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Union"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — PAROWAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"North Sevier"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — RICHFIELD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Carbon"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — UNION has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-23","opponent":"Ogden"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — WESTLAKE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-15","opponent":"Mountain Ridge"}]}`
 
 ## Infos (2)
 
-- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9370,"unmatchedRows":656,"rosterlessTeams":0,"sourceGamePairs":1048,"missingGamePairs":15}`
+- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9380,"unmatchedRows":656,"rosterlessTeams":0,"sourceGamePairs":1049,"missingGamePairs":16}`
 - **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":602,"standings":118,"rankedTeams":68,"playerIds":6440}`
 

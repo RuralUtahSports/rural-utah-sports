@@ -1,36 +1,36 @@
 {
-  "generatedAt": "2026-10-26T22:00:57.888Z",
+  "generatedAt": "2026-10-26T22:58:00.118Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
     "teams": 118,
     "rosterPlayers": 6440,
     "uniqueRosterIDs": 6440,
-    "statRows": 6915,
-    "athletesWithStats": 4059,
+    "statRows": 6922,
+    "athletesWithStats": 4064,
     "gamesWithPlayerRecords": 1070,
-    "gamePlayerRows": 20895,
-    "gameStatLines": 29884,
-    "missingStatPlayers": 2501,
+    "gamePlayerRows": 20901,
+    "gameStatLines": 29890,
+    "missingStatPlayers": 2496,
     "missingTeamStats": [
       "MONUMENT VAL",
       "UMA-HILLFIELD"
     ],
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
-    "seasonAboveGameSum": 586,
+    "seasonAboveGameSum": 602,
     "gameAboveSeasonSum": 280,
     "reviewFlags": 285,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "SEASON_GT_AVAILABLE_GAME_LOG": 575,
+    "SEASON_GT_AVAILABLE_GAME_LOG": 591,
     "GAME_SUM_EXCEEDS_SEASON": 280,
     "RECEIVING_RATE_MISMATCH": 3,
     "COMPACT_FEED_MISMATCH": 2
   },
   "severityCounts": {
-    "info": 575,
+    "info": 591,
     "review": 285
   },
   "teams": [
@@ -862,8 +862,8 @@
     {
       "team": "PAROWAN",
       "rosterPlayers": 45,
-      "statRows": 49,
-      "rosterPlayersWithoutReportedStats": 16,
+      "statRows": 54,
+      "rosterPlayersWithoutReportedStats": 13,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 1,
@@ -972,8 +972,8 @@
     {
       "team": "RIVERTON",
       "rosterPlayers": 55,
-      "statRows": 54,
-      "rosterPlayersWithoutReportedStats": 21,
+      "statRows": 56,
+      "rosterPlayersWithoutReportedStats": 19,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 3,
@@ -7930,6 +7930,166 @@
       "field": "PAT",
       "season": 3,
       "gameLogSum": 2
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Cooper Heath",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 81,
+      "gameLogSum": 76
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Cooper Heath",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 3,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Hagen Evans",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 82,
+      "gameLogSum": 69
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Maddox Finley",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 68,
+      "gameLogSum": 58
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Benson Haynie",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 37,
+      "gameLogSum": 35
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Benson Haynie",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 3,
+      "gameLogSum": 2
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Tyler Meibos",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 55,
+      "gameLogSum": 48
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Rustyn Mackelprang",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 43,
+      "gameLogSum": 40
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Kaleb Kohler",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 32,
+      "gameLogSum": 29
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Karter Wilson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 24,
+      "gameLogSum": 20
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Joshua Meibos",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 21,
+      "gameLogSum": 10
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Trey Robertson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 12,
+      "gameLogSum": 8
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Porter Lemke",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 23,
+      "gameLogSum": 14
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Lincoln Johnson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 3,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Cash Davis",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 5,
+      "gameLogSum": 2
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "PAROWAN",
+      "subject": "Maddax Jackson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 6,
+      "gameLogSum": 4
     },
     {
       "level": "info",
