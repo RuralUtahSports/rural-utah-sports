@@ -19,9 +19,9 @@ for(const token of ['JH3D Printz','Official RUS Sponsor of ALA Coverage','sponso
 if(JSON.stringify(config.ALA).includes('jh3dprints@gmail.com'))fail('Old JH3D email address is still present');
 if(!fs.existsSync('sponsors/jh3d-printz-logo.svg'))fail('JH3D Printz sponsor logo asset is missing');
 if(config?.UINTAH?.mode!=='sponsor')fail('Uintah should have an active Speed Cut sponsor configuration');
-for(const token of ['Speed Cut','Official RUS Sponsor of Uintah Coverage','sponsors/speed-cut-logo.svg','https://x.com/Coach_Burrell1','2026-10-26'])if(!JSON.stringify(config.UINTAH).includes(token))fail(`Uintah sponsor missing ${token}`);
+for(const token of ['Speed Cut','Official RUS Sponsor of Uintah Coverage','sponsors/speed-cut-original.webp','https://x.com/Coach_Burrell1','2026-10-26'])if(!JSON.stringify(config.UINTAH).includes(token))fail(`Uintah sponsor missing ${token}`);
 if(config.UINTAH?.endDate)fail('Uintah Speed Cut sponsor must remain active until manually removed');
-if(!fs.existsSync('sponsors/speed-cut-logo.svg'))fail('Speed Cut sponsor logo is missing');
+if(!fs.existsSync('sponsors/speed-cut-original.webp'))fail('Speed Cut sponsor logo is missing');
 for(const token of ['entry.contactUrl','entry.contactLabel'])if(!sponsor.includes(token))fail(`Sponsor contact link support missing ${token}`);
 for(const token of ['s.contactUrl','contactText'])if(!sponsorsPage.includes(token))fail(`Sponsor directory contact support missing ${token}`);
 if(!teams.includes('s.contactUrl'))fail('Team card sponsor contact support is missing');
