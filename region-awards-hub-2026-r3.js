@@ -30,11 +30,37 @@ const firstHalf=['QB','RB','WR1','WR2','WR3','TE'];
 // The regular-season award snapshot is frozen, so correct its metadata
 // in memory without changing player statistics or saved editorial picks.
 function correctLockedFootballAlignment(data){
- if(!Array.isArray(data?.teamMeta))return;
- const enterprise=data.teamMeta.filter(row=>norm(row.team)==='ENTERPRISE');
- if(enterprise.length!==1){console.warn('Enterprise alignment: expected one team record');return}
- enterprise[0].classification='1A';
- enterprise[0].region='1A South';
+ const alignment={ENTERPRISE:['1A','1A South'],GRAND:['2A','2A South'],LAYTONCHRISTIAN:['2A','2A North']};
+ for(const row of data?.teamMeta||[]){const correct=alignment[norm(row.team)];if(correct){row.classification=correct[0];row.region=correct[1]}}
+}
+function applyRegularSeasonStatCorrections(data,corrections){
+ if(corrections?.season!==2026||corrections.cutoff!=='2026-10-16'){
+  data.statCoverage=Object.fromEntries(Object.keys(data.data.teams||{}).map(team=>[team,{status:'incomplete',message:'Regular-season statistics are not independently certified; missing reporting is unknown, not zero.'}]));
+  return;
+ }
+ data.statCoverage=corrections.coverage;
+ for(const change of corrections.changes||[]){
+  if(!change.evidence?.throughDate||change.evidence.throughDate>corrections.cutoff)continue;
+  const team=data.data.teams[change.team];if(!team)continue;
+  let section=(team.stats||[]).find(s=>norm(s.category)===norm(change.category));
+  if(!section){section={category:change.category,headers:[],rows:[]};(team.stats||=[]).push(section)}
+  let row=section.rows.find(p=>p.playerId===change.playerId);
+  if(!row){const person=team.roster?.find(p=>p.playerId===change.playerId);if(!person)continue;row={...person,values:{}};section.rows.push(row)}
+  (row.values||={})[change.header]=change.value;
+  section.headers||=[];if(!section.headers.includes(change.header))section.headers.push(change.header);
+  const get=key=>number(Object.entries(row.values).find(([h])=>norm(h)===norm(key))?.[1]);
+  const set=(key,value)=>{const h=Object.keys(row.values).find(h=>norm(h)===norm(key))||key;row.values[h]=value===null?'':String(Math.round(value*100)/100)};
+  const cat=norm(section.category),yards=get('YARDS');
+  if(cat==='RUSHING'||cat==='RECEIVING'){
+   const n=get(cat==='RUSHING'?'CARRIES':'RECEPTIONS');
+   set(cat==='RUSHING'?'YARDS/CARRY':'YARDS/RECEP.',n>0&&yards!==null?yards/n:null);
+  }
+  if(cat==='PASSING'){
+   const pair=String(Object.entries(row.values).find(([h])=>norm(h)==='COMPATT')?.[1]||'').match(/^(\d+)-(\d+)$/);
+   set('COMP%',pair&&Number(pair[2])>0?Number(pair[1])/Number(pair[2])*100:null);
+   set('YARDS/COMP.',pair&&Number(pair[1])>0&&yards!==null?yards/Number(pair[1]):null);
+  }
+ }
 }
 function oldEnterprisePickIds(){
  const enterprise=Object.entries(snapshot?.data?.teams||{}).find(([name])=>norm(name)==='ENTERPRISE')?.[1];
@@ -65,7 +91,7 @@ function returnStats(p,kind){return kind==='kick'?(linesFor(p,'Kickoff Returns')
 function maxprepsSpecialStatus(){const src=window.RUSAwardSpecialTeamsMaxPreps2026;
  const matches=players.filter(p=>p.specialStats?.punt||p.specialStats?.kr||p.specialStats?.pr);
  const punters=matches.filter(p=>p.specialStats.punt).length,returners=matches.filter(p=>p.specialStats.kr||p.specialStats.pr).length;
- return 'MaxPreps 2026 reported stats · '+punters+' punters / '+returners+' return specialists in this region · checked '+(src?.checkedAt||'unknown')+'. Stats are not necessarily complete regular-season totals; some records may include playoff games. Missing ≠ zero.';
+ return 'MaxPreps 2026 reported stats · '+punters+' punters / '+returners+' return specialists in this region · checked '+(src?.checkedAt||'unknown')+'. Unscoped cumulative special-team totals are excluded from award scoring because they may include playoff games. Missing ≠ zero.';
 }
 function strength(p,slot){
  if(!p)return 0;
@@ -98,6 +124,8 @@ function statLine(p,slot){
 }
 function missingInfo(p,slot){
  if(!p)return'Missing selection';
+ const coverage=snapshot?.statCoverage?.[p.team];
+ if(coverage?.status==='incomplete')return coverage.message;
  const needs=slot==='K'?['Kicking']:slot==='P'?['Punting']:slot==='RS'?['Kickoff Returns','Kick Returns','Punt Returns']:['QB'].includes(slot)?['Passing']:['RB','FLEX'].includes(slot)?['Rushing','Receiving']:['WR1','WR2','WR3','TE'].includes(slot)?['Receiving']:['Defense'];
  const reported=needs.some(x=>!!linesFor(p,x));
  return reported?'':(slot==='P'?'Punting stats not reported for this player in the MaxPreps supplemental coverage; check the team stats or coach':slot==='RS'?'KR/PR stats not reported for this player in the MaxPreps supplemental coverage; check the team stats or coach':'No '+needs.join('/')+' statistics reported');
@@ -107,7 +135,7 @@ function logo(team){const canon=String(team||'').trim().toUpperCase();const alt=
 function color(team){const t=(snapshot?.teamMeta||[]).find(t=>norm(t.team)===norm(team));return /^#[0-9a-f]{6}$/i.test(t?.backgroundColor||'')?t.backgroundColor:'#F14D07'}
 function playerHTML(p,slot,isWinner=false){
  if(!p)return'<span class="ar-muted">Unselected</span>';
- const warnings=isWinner?[]:[positionNote(p,slot),missingInfo(p,slot)].filter(Boolean);
+ const warnings=[...(isWinner?[]:[positionNote(p,slot)]),missingInfo(p,slot)].filter(Boolean);
  const source=logo(p.team);
  const url=source&&new URL(source,location.href).origin===location.origin?source:'';
  return '<span class="ar-player">'+(url?'<img src="'+esc(url)+'" alt="" onerror="this.remove()">':'')+
@@ -117,7 +145,11 @@ function playerHTML(p,slot,isWinner=false){
 }
 function collect(r){
  const teams=new Set(snapshot.teamMeta.filter(t=>t.region===r).map(t=>norm(t.team))),out=new Map();
- const supplemental=window.RUSAwardSpecialTeamsMaxPreps2026;
+ // Supplemental cumulative totals have no verified October 16 cutoff. Keep the
+ // source-only candidate identities available, but exclude unscoped totals from scoring.
+ const rawSupplemental=window.RUSAwardSpecialTeamsMaxPreps2026;
+ const supplemental=rawSupplemental;
+ const scopedSupplemental=rawSupplemental?.throughDate&&rawSupplemental.throughDate<='2026-10-16'?rawSupplemental:null;
  const canonTeam=supplemental?.canonTeam||norm;
  const scoring=window.RUSLockedRegionScoring;
  const contexts=scoring?.buildTeamContexts?.(snapshot.standings,snapshot.stateTop25);
@@ -147,7 +179,7 @@ function collect(r){
   }
  }
  for(const p of out.values()){
-  p.specialStats=supplemental?.athlete(p.team,p.name)||{};
+  p.specialStats=scopedSupplemental?.athlete(p.team,p.name)||{};
   const pRow=p.specialStats.punt,kr=p.specialStats.kr,pr=p.specialStats.pr;
   if(pRow)p.lines.push({category:'Punting (MaxPreps)',values:{PUNTS:String(pRow.attempts),YARDS:String(pRow.yards),AVG:pRow.attempts?(pRow.yards/pRow.attempts).toFixed(2):'',LONG:String(pRow.long),'INSIDE 20':String(pRow.inside20),GP:String(pRow.gp)}});
   if(kr)p.lines.push({category:'Kickoff Returns (MaxPreps)',values:{RETURNS:String(kr.attempts),YARDS:String(kr.yards),AVG:kr.attempts?(kr.yards/kr.attempts).toFixed(2):'',LONG:String(kr.long),GP:String(kr.gp)}});
@@ -432,7 +464,7 @@ function compareCandidates(a,b,column,descending){
 function openCandidates(target){
  if((published&&!admin)||regionLocked||!admin)return;
  const slot=idSlot(target),opener=document.activeElement;
- const columns=[{label:'Name',get:p=>p.name},{label:'School',get:p=>p.team},{label:'Grade',get:gradeLabel},{label:'Position',get:p=>unlistedPosition(p)?'Position unverified':p.position},...candidateColumns(slot),{label:'Roster check',get:rosterCheck}];
+ const columns=[{label:'Name',get:p=>p.name},{label:'School',get:p=>p.team},{label:'Grade',get:gradeLabel},{label:'Position',get:p=>unlistedPosition(p)?'Position unverified':p.position},...candidateColumns(slot),{label:'Roster check',get:rosterCheck},{label:'Reporting coverage',get:p=>missingInfo(p,slot)||'Reported; completeness not independently certified'}];
  let sort=4,descending=true;
  const dialog=document.createElement('dialog');dialog.className='ar-candidate-dialog';dialog.setAttribute('aria-labelledby','ar-candidate-title');
  dialog.innerHTML='<div class="ar-candidate-head"><h2 id="ar-candidate-title">Choose '+esc(selectionTitle(target))+'</h2><button type="button" data-close>Close</button></div><p>Compare locked regular-season statistics. Players may earn separate offense, defense, kicking, punting and return honors. Missing statistics are not zero; punting and KR/PR numbers are not available in the frozen snapshot and require manual review. Players with relevant stats remain visible even when roster positions are missing or incomplete. Confirm any flagged position before selecting.</p><label>Search name or school<input type="search" data-search placeholder="Search players or schools" autocomplete="off"></label><label class="ar-candidate-toggle"><input type="checkbox" data-all> Include entire region roster, including unreported stats</label><p data-count aria-live="polite"></p><div class="ar-tablewrap" tabindex="0" aria-label="Player comparison table; scroll horizontally for more statistics"><table><thead></thead><tbody></tbody></table></div>';
@@ -1015,7 +1047,9 @@ async function init(){
  el('#ar-error').textContent='Loading locked regular-season region data…';
  try{
  const [r,logos]=await Promise.all([fetch('region-awards-2026.lock.json?v=20261023-lock-1',{cache:'no-store'}),fetch('school-logo-cache.json?v=20261023-hub1').catch(()=>null)]);
- if(!r.ok)throw Error('Locked awards data could not be read');snapshot=await r.json();correctLockedFootballAlignment(snapshot);window.RUSVerifiedPlayerStats2026?.apply(snapshot.data);
+ if(!r.ok)throw Error('Locked awards data could not be read');snapshot=await r.json();correctLockedFootballAlignment(snapshot);
+ const corrections=await fetch('region-awards-stat-corrections-2026.json?v=20261026-integrity1',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null);
+ applyRegularSeasonStatCorrections(snapshot,corrections);
  if(logos?.ok){const saved=await logos.json();if(saved&&typeof saved==='object')logoMap=saved;}
  if(snapshot.status!=='LOCKED')throw Error('Expected a locked regular-season snapshot');
  await Promise.all([window.RUSSchoolAssets?.load?.().catch(()=>{})||Promise.resolve()]);

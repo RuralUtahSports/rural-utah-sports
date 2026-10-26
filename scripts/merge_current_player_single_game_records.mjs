@@ -1,3 +1,5 @@
+import {pathToFileURL} from 'node:url';
+import {categoryKey, numeric} from './lib/player-stat-integrity.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -13,7 +15,7 @@ const CURRENT_SEASON_LIMIT=100;
 
 const clean=v=>String(v??'').trim();
 const norm=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
-const number=v=>{const n=Number(clean(v).replace(/,/g,''));return Number.isFinite(n)?n:null};
+const number=numeric;
 const findValue=(values,...names)=>{
   const keys=Object.keys(values||{});
   for(const name of names){const hit=keys.find(k=>norm(k)===norm(name));if(hit!==undefined)return values[hit]}
@@ -27,14 +29,16 @@ function addStat(stats,key,value){
 }
 
 function statsFromPlayer(player){
-  const out={};
+  const out={};let passingKnown=false,rushingKnown=false;
   for(const line of player?.statLines||[]){
-    const cat=norm(line.category),v=line.values||{};
+    const cat=categoryKey(line.category),v=line.values||{};
     if(cat==='RUSHING'){
+      rushingKnown=number(findValue(v,'Yards'))!==null;
       addStat(out,'carries',number(findValue(v,'Carries')));
       addStat(out,'rushingYards',number(findValue(v,'Yards')));
       addStat(out,'rushingTouchdowns',number(findValue(v,'TD')));
     }else if(cat==='PASSING'){
+      passingKnown=number(findValue(v,'Yards'))!==null;
       const ca=clean(findValue(v,'Comp-Att','Comp Att'));
       const m=ca.match(/(\d+)\s*[-/]\s*(\d+)/);
       if(m){addStat(out,'completions',Number(m[1]));addStat(out,'passAttempts',Number(m[2]))}
@@ -44,22 +48,27 @@ function statsFromPlayer(player){
       addStat(out,'receptions',number(findValue(v,'Receptions')));
       addStat(out,'receivingYards',number(findValue(v,'Yards')));
       addStat(out,'receivingTouchdowns',number(findValue(v,'TD')));
-    }else if(cat==='DEFENSE'){
+    }else if(cat==='DEFENSESPECIALTEAMS'){
       addStat(out,'tackles',number(findValue(v,'Tackles','Tot Tackles','Total Tackles','Tkl','TKL')));
       addStat(out,'sacks',number(findValue(v,'Sacks')));
       addStat(out,'interceptions',number(findValue(v,'Pass Int.','Pass Int','Interceptions')));
-      addStat(out,'defensiveTouchdowns',number(findValue(v,'TD')));
-    }else if(cat==='SPECIALTEAMS'){
+      addStat(out,'defensiveTouchdowns',number(findValue(v,'DEFENSE TD','Defensive TD')));
+      addStat(out,'returnTouchdowns',number(findValue(v,'RETURN TD')));
+    }else if(cat==='SPECIALTEAMS'||cat==='KICKING'){
       addStat(out,'fieldGoals',number(findValue(v,'FG')));
       addStat(out,'extraPoints',number(findValue(v,'PAT')));
       addStat(out,'returnTouchdowns',number(findValue(v,'Return TD')));
     }
   }
   const total=(out.passingYards||0)+(out.rushingYards||0);
-  if(total>0)out.totalOffenseYards=total;
+  if(total>0&&passingKnown&&rushingKnown)out.totalOffenseYards=total;
   return out;
 }
 
+function gameEvidenceUrl(game){
+ const valid=value=>{try{const u=new URL(clean(value));return u.protocol==='https:'&&(u.hostname==='sports.deseret.com'&&/^\/high-school\/football\/game\//.test(u.pathname)||u.hostname==='www.maxpreps.com'&&/^\/(?:ut|inter-state)\/football\/game\//.test(u.pathname))}catch{return false}};
+ return [game.url,game.maxprepsUrl].find(valid)||'';
+}
 function currentEntries(){
   const entries=[];
   if(fs.existsSync(CURRENT)){
@@ -67,7 +76,7 @@ function currentEntries(){
     const season=Number(data.season)||2026;
     for(const [teamName,team] of Object.entries(data.teams||{})){
       for(const game of team.games||[]){
-        if(!game.final)continue;
+        if(!game.final||!gameEvidenceUrl(game))continue;
         for(const player of game.players||[]){
           const stats=statsFromPlayer(player);
           if(norm(teamName)==='WOODSCROSS'&&norm(player.name)==='TAGEITA'&&String(game.date).slice(0,10)==='2026-10-08'&&norm(game.opponent)==='OLYMPUS') delete stats.passAttempts;
@@ -78,12 +87,12 @@ function currentEntries(){
             season,
             date:clean(game.date),
             opponent:clean(game.opponent),
-            teamScore:Number.isFinite(Number(game.teamScore))?Number(game.teamScore):null,
-            opponentScore:Number.isFinite(Number(game.opponentScore))?Number(game.opponentScore):null,
+            teamScore:number(game.teamScore),
+            opponentScore:number(game.opponentScore),
             value,
-            gameId:gameIdFromUrl(game.url),
-            gameUrl:clean(game.url),
-            source:'Deseret News synced game stats'
+            gameId:gameIdFromUrl(gameEvidenceUrl(game)),
+            gameUrl:gameEvidenceUrl(game),
+            source:game.maxprepsUrl?'Deseret News / MaxPreps synced game stats':'Deseret News synced game stats'
           });
         }
       }
@@ -128,6 +137,8 @@ function mergeCategory(data,category,incoming,limit){
   return JSON.stringify(cat.entries)!==before;
 }
 
+export {statsFromPlayer,gameEvidenceUrl};
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
 const incoming=currentEntries();
 
 // Publish a dedicated current-season leaderboard from the complete 2026 feed.
@@ -197,3 +208,5 @@ const juabTackles=(juab.categories||[]).find(c=>c.key==='tackles')?.entries||[];
 const cutoff=juabTackles.length?juabTackles.at(-1).value:null;
 console.log(`Merged ${incoming.length} current-season candidate performances; updated ${changedFiles} record file(s), added ${insertedQualifiers} qualifying team entries.`);
 console.log(`Juab tackle top-${TEAM_LIMIT} cutoff: ${cutoff ?? 'n/a'}. Current verified Payson tackles: Auston Brown 8, Marshall Draper 7, Jiles Barnes 5.`);
+
+}

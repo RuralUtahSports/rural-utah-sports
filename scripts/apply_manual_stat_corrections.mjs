@@ -7,10 +7,17 @@ const compact=value=>clean(value).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const same=(a,b)=>compact(a)===compact(b);
 const sameCategory=(a,b)=>same(a,b)||(/^DEFENSE/.test(compact(a))&&/^DEFENSE/.test(compact(b)));
 
+export function findCorrectionConflicts(corrections){
+ const groups=new Map();
+ for(const c of corrections){if(c.gameOnly)continue;const key=[compact(c.team),compact(c.targetPlayer),compact(c.category),compact(c.stat)].join('|');const group=groups.get(key)||[];group.push(c);groups.set(key,group)}
+ return [...groups].filter(([,group])=>group.some(a=>Object.hasOwn(a,'exactValue')&&group.some(b=>Object.hasOwn(b,'minimumValue')&&Number(a.exactValue)<Number(b.minimumValue)))).map(([key,rules])=>({key,ids:rules.map(c=>c.id),reason:'Exact correction conflicts with a minimum floor; retain existing value pending source review'}));
+}
 function loadCorrections(){
-  if(!fs.existsSync(CONFIG))return[];
-  try{return JSON.parse(fs.readFileSync(CONFIG,'utf8')).corrections||[]}
-  catch(error){console.warn(`Manual stat corrections: ${error.message}`);return[]}
+ if(!fs.existsSync(CONFIG))return[];
+ const corrections=JSON.parse(fs.readFileSync(CONFIG,'utf8')).corrections||[];
+ const conflicts=findCorrectionConflicts(corrections),blocked=new Set(conflicts.flatMap(c=>c.ids));
+ if(conflicts.length)console.warn(`Manual stat corrections: ${conflicts.length} conflicting field group(s) retained unchanged for source review`);
+ return corrections.filter(c=>!blocked.has(c.id));
 }
 
 function correctionTag(container,correction){

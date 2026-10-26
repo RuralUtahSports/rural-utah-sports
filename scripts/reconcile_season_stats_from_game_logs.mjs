@@ -1,193 +1,165 @@
 import fs from 'node:fs';
+import {pathToFileURL} from 'node:url';
+import {spawnSync} from 'node:child_process';
+import {applyRosterStatCorrections} from './apply_manual_stat_corrections.mjs';
+import {clean, compact, numeric, isoDate, canonTeam, categoryKey, fieldKey, matchPlayer, atomicJSON, gameIdentity} from './lib/player-stat-integrity.mjs';
 
-const ROSTERS='deseret-rosters-stats-2026.json';
-const GAMES='player-game-stats-2026.json';
-const TEAM_DATA='deseret-team-data-2026.json';
-const WEEKLY='weekly-simulation.json';
-const clean=value=>String(value??'').trim();
-const compact=value=>clean(value).toUpperCase().replace(/[^A-Z0-9]/g,'');
-const aliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN',STJOSEPH:'SAINTJOSEPH',JUANDIEGOCATHOLIC:'JUANDIEGO'};
-const canon=value=>aliases[compact(value)]||compact(value);
-const numeric=value=>{
-  const number=Number(clean(value).replace(/,/g,'').replace(/%$/,''));
-  return Number.isFinite(number)?number:null;
+const LABELS={PASSING:'Passing',RUSHING:'Rushing',RECEIVING:'Receiving',DEFENSESPECIALTEAMS:'Defense/Special Teams',KICKING:'Kicking'};
+const HEADERS={COMPATT:'COMP-ATT',PASSINT:'PASS INT.',DEFENSETD:'DEFENSE TD',RETURNTD:'RETURN TD'};
+const FIELDS={PASSING:['COMPATT','YARDS','TD','INT'],RUSHING:['CARRIES','YARDS','TD'],RECEIVING:['RECEPTIONS','YARDS','TD'],DEFENSESPECIALTEAMS:['TACKLES','SACKS','PASSINT','DEFENSETD','RETURNTD','PD','FUMREC','CAUSEDFUM','QBHURRIES'],KICKING:['PAT','FG','PTS'],PUNTING:['PUNTS','YARDS'],KICKOFFRETURNS:['RETURNS','YARDS','TD'],PUNTRETURNS:['RETURNS','YARDS','TD']};
+const parsed=(field,value)=>{
+ if(field==='COMPATT'){
+  const pair=/^\d+\s*-\s*\d+$/.test(clean(value))?clean(value).split('-').map(Number):null;
+  return pair&&pair[0]<=pair[1]?pair:null;
+ }
+ const number=numeric(value);return number!==null&&(number>=0||field==='YARDS')?number:null;
 };
-const rounded=(value,places=2)=>Number(value.toFixed(places)).toString();
-const isoDate=value=>{const s=clean(value);let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return `${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return `${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;return s};
-const hasScore=value=>value!==null&&value!==undefined&&value!==''&&Number.isFinite(Number(value));
-const categoryKey=v=>{const key=compact(v);return ['DEFENSE','DEFENSESPECIALTEAMS','DEFENSIVESTATISTICS','TACKLES','SACKS','TOUCHDOWNS'].includes(key)?'DEFENSESPECIALTEAMS':key};
-const categoryLabel=v=>categoryKey(v)==='DEFENSESPECIALTEAMS'?'Defense/Special Teams':clean(v);
-const headerKey=(category,header)=>{const key=compact(header);if(categoryKey(category)==='DEFENSESPECIALTEAMS'){if(['PASSINT','INTERCEPTIONS','INTS'].includes(key))return'PASSINT';if(['DEFENSETD','DEFENSIVETD','TD'].includes(key))return'DEFENSETD';if(['RETURNTD','RETURNTDS'].includes(key))return'RETURNTD'}return key};
-const outputHeader={PASSINT:'PASS INT.',DEFENSETD:'DEFENSE TD',RETURNTD:'RETURN TD'};
-const CATEGORY_FIELDS={
-  PASSING:['COMP-ATT','YARDS','TD','INT'],
-  RUSHING:['CARRIES','YARDS','TD'],
-  RECEIVING:['RECEPTIONS','YARDS','TD'],
-  DEFENSESPECIALTEAMS:['TACKLES','SACKS','PASSINT','DEFENSETD','RETURNTD'],
-  KICKING:['PAT','FG','PTS']
-};
-const MAXPREPS_DEFENSE_FLOOR_FIELDS=new Set(['TACKLES','SACKS','PASSINT','DEFENSETD','RETURNTD']);
+const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+const format=value=>Array.isArray(value)?value.join('-'):String(Number(value.toFixed(2)));
+const sameTeam=(teams,name)=>Object.entries(teams||{}).find(([key])=>canonTeam(key)===canonTeam(name))?.[1];
+const final=game=>game.final===true||/FINAL/i.test(clean(game.status));
 
-function addValue(bucket,key,value){
-  const number=numeric(value);if(number===null)return;
-  bucket.values[key]=(bucket.values[key]||0)+number;
-  bucket.found.add(key);
-}
-
-function aggregatePlayer(player){
-  const categories=new Map();
-  for(const line of player.lines||[]){
-    const category=categoryKey(line.category),allowed=CATEGORY_FIELDS[category];if(!allowed)continue;
-    const bucket=categories.get(category)||{category:categoryLabel(line.category),values:{},found:new Set(),completions:0,attempts:0};
-    for(const [header,value] of Object.entries(line.values||{})){
-      const key=headerKey(category,header);
-      if(category==='PASSING'&&key==='COMPATT'){
-        const match=clean(value).match(/^(\d+)\s*-\s*(\d+)$/);if(match){bucket.completions+=Number(match[1]);bucket.attempts+=Number(match[2]);bucket.found.add('COMPATT')}
-      }else if(allowed.includes(key))addValue(bucket,key,value);
-    }
-    categories.set(category,bucket);
-  }
-  return categories;
-}
-
-function outputValues(bucket){
-  const values={};
-  for(const key of bucket.found){
-    if(key==='COMPATT')values['COMP-ATT']=`${bucket.completions}-${bucket.attempts}`;
-    else values[outputHeader[key]||key]=rounded(bucket.values[key]||0);
-  }
-  if(bucket.category&&compact(bucket.category)==='PASSING'&&bucket.found.has('COMPATT')){
-    values['COMP%']=bucket.attempts?rounded(bucket.completions/bucket.attempts*100):'0';
-    if(bucket.found.has('YARDS'))values['YARDS/COMP.']=bucket.completions?rounded((bucket.values.YARDS||0)/bucket.completions):'0';
-  }
-  if(compact(bucket.category)==='RUSHING'&&bucket.found.has('CARRIES')&&bucket.found.has('YARDS'))values['YARDS/CARRY']=bucket.values.CARRIES?rounded(bucket.values.YARDS/bucket.values.CARRIES):'0';
-  if(compact(bucket.category)==='RECEIVING'&&bucket.found.has('RECEPTIONS')&&bucket.found.has('YARDS'))values['YARDS/RECEP.']=bucket.values.RECEPTIONS?rounded(bucket.values.YARDS/bucket.values.RECEPTIONS):'0';
-  return values;
-}
-
-function scheduleFinal(game){const status=clean(game?.rusStatus).toUpperCase(),result=clean(game?.result).toUpperCase();return status.includes('FINAL')||(hasScore(game?.teamScore)&&hasScore(game?.opponentScore))||['W','L','T'].includes(result)}
-function gameHasStats(game){return (game?.players||[]).some(player=>(player.statLines||[]).some(line=>Object.values(line.values||{}).some(value=>clean(value)!=='')))}
-function gameFinal(game){return game?.final===true||clean(game?.status).toUpperCase().includes('FINAL')}
-function expectedFinalKeys(teamName,sources={}){
-  const expected=new Map(),teamKey=canon(teamName),team=Object.values(sources.teamData?.teams||{}).find(row=>canon(row?.team)===teamKey);
-  for(const game of team?.schedule||[]){if(!scheduleFinal(game))continue;const opponent=clean(game.opponent)||(canon(game.awayTeam)===teamKey?game.homeTeam:game.awayTeam),date=isoDate(game.date);if(date&&opponent)expected.set(`${date}|${canon(opponent)}`,`${date} vs ${opponent}`)}
-  for(const game of sources.weekly?.games||[]){if(!hasScore(game?.actualAway)||!hasScore(game?.actualHome))continue;const away=canon(game.awayTeam),home=canon(game.homeTeam);if(away!==teamKey&&home!==teamKey)continue;const opponent=away===teamKey?game.homeTeam:game.awayTeam,date=isoDate(game.date);if(date&&opponent)expected.set(`${date}|${canon(opponent)}`,`${date} vs ${opponent}`)}
-  return expected;
-}
-function availableFinalKeys(gameTeam){const available=new Set();for(const game of gameTeam?.games||[]){if(game?.manualPartialStats||!gameFinal(game)||!gameHasStats(game))continue;const date=isoDate(game.date),opponent=clean(game.opponent);if(date&&opponent)available.add(`${date}|${canon(opponent)}`)}return available}
-
-export function reconcileSeasonStats(rosters,games,sources={}){
-  let teams=0,players=0,categories=0,fields=0,skippedTeams=0;const incompleteTeams=[];
-  for(const [teamKey,gameTeam] of Object.entries(games.teams||{})){
-    const rosterKey=Object.keys(rosters.teams||{}).find(key=>canon(key)===canon(teamKey));if(!rosterKey)continue;
-    const team=rosters.teams[rosterKey],expected=expectedFinalKeys(rosterKey,sources),available=availableFinalKeys(gameTeam);teams++;
-    const manualPartial=(gameTeam?.games||[]).filter(game=>game?.manualPartialStats);
-    const missing=[...expected.entries()].filter(([key])=>!available.has(key));
-    if(missing.length||manualPartial.length){skippedTeams++;incompleteTeams.push({team:rosterKey,expectedFinalGames:expected.size,availableFinalStatGames:available.size,missing:missing.map(([,label])=>label),manualPartialGames:manualPartial.map(game=>`${isoDate(game.date)} vs ${clean(game.opponent)}`)});continue}
-    const byPlayer=new Map();
-    for(const game of gameTeam.games||[])for(const player of game.players||[]){
-      const key=clean(player.playerId)||`${compact(player.name)}|${clean(player.number)}`;
-      const saved=byPlayer.get(key)||{playerId:player.playerId,number:player.number,name:player.name,lines:[]};
-      saved.lines.push(...(player.statLines||[]));byPlayer.set(key,saved);
-    }
-    for(const player of byPlayer.values()){
-      let changedPlayer=false;
-      for(const bucket of aggregatePlayer(player).values()){
-        const incoming=outputValues(bucket);if(!Object.keys(incoming).length)continue;
-        let section=(team.stats||[]).find(row=>compact(row.category)===compact(bucket.category));
-        if(!section){section={category:bucket.category,headers:[],rows:[]};(team.stats||(team.stats=[])).push(section)}
-        let row=(section.rows||[]).find(item=>item.playerId===player.playerId)||(section.rows||[]).find(item=>compact(item.name)===compact(player.name)&&clean(item.number)===clean(player.number));
-        if(!row){row={playerId:player.playerId,number:player.number,name:player.name,rosterMatched:true,values:{}};(section.rows||(section.rows=[])).push(row)}
-        for(const [header,value] of Object.entries(incoming)){
-          const target=Object.keys(row.values||{}).find(key=>compact(key)===compact(header))||header;
-          row.values||(row.values={});row.statSources||(row.statSources={});
-          const existing=row.values[target],existingSource=clean(row.statSources[target]),fieldKey=headerKey(bucket.category,header);
-          const existingNumber=numeric(existing),calculatedNumber=numeric(value);
-          const preserveMaxPrepsFloor=categoryKey(bucket.category)==='DEFENSESPECIALTEAMS'&&MAXPREPS_DEFENSE_FLOOR_FIELDS.has(fieldKey)&&/^MaxPreps season total/i.test(existingSource)&&existingNumber!==null&&calculatedNumber!==null&&existingNumber>calculatedNumber;
-          if(preserveMaxPrepsFloor){
-            row.statSources[target]=existingSource+'; preserved over lower complete-game sum';
-          }else{
-            row.values[target]=value;row.statSources[target]='Calculated from complete game logs';
-          }
-          if(!section.headers.some(key=>compact(key)===compact(target)))section.headers.push(target);fields++;
+// One cell per player/category/field/matchup. Conflicting duplicate cells are
+// unknown and must not contribute to a computed season total.
+export function aggregateGames(team, roster, {cutoff=null, sourceRows=false}={}) {
+  const cells=new Map(), conflicts=[], identities=[];
+  for(const game of team?.games||[]) {
+    const date=isoDate(game.date);
+    if(!/^2026-\d\d-\d\d$/.test(date)||cutoff&&date>cutoff||!sourceRows&&!final(game))continue;
+    if(!clean(game.opponent))continue;
+    for(const incoming of sourceRows?[game]:game.players||[]) {
+      const player=matchPlayer(roster,incoming,team.team);
+      if(!player){identities.push({date,opponent:game.opponent,name:incoming.name,playerId:incoming.playerId});continue}
+      for(const line of incoming.statLines||[]) {
+        const category=categoryKey(line.category);
+        for(const [header,values] of Object.entries(line.statConflicts||{}))conflicts.push({playerId:player.playerId,name:player.name,category,field:fieldKey(category,header),date,opponent:game.opponent,values});
+        for(const [header,value] of Object.entries(line.values||{})) {
+          const field=fieldKey(category,header);if(!FIELDS[category]?.includes(field))continue;
+          const number=parsed(field,value);if(number===null)continue;
+          const key=[player.playerId,category,field,gameIdentity(game)].join('|');
+          const previous=cells.get(key);
+          if(previous && !equal(previous.value,number)) {
+            previous.conflict=true;
+            conflicts.push({playerId:player.playerId,name:player.name,category,field,date,opponent:game.opponent,values:[previous.value,number]});
+          }else if(!previous)cells.set(key,{player,category,field,date,opponent:game.opponent,value:number,url:game.maxprepsUrl||game.url||''});
         }
-        categories++;changedPlayer=true;
       }
-      if(changedPlayer)players++;
     }
+  }
+  const totals=new Map();
+  for(const cell of cells.values()) {
+    const key=[cell.player.playerId,cell.category,cell.field].join('|');
+    const total=totals.get(key)||{...cell,value:Array.isArray(cell.value)?[0,0]:0,games:[],conflict:false};
+    total.conflict ||= !!cell.conflict;
+    if(Array.isArray(cell.value))total.value=total.value.map((v,i)=>v+cell.value[i]);else total.value+=cell.value;
+    total.games.push({date:cell.date,opponent:cell.opponent,url:cell.url});totals.set(key,total);
+  }
+  for(const conflict of conflicts){const key=[conflict.playerId,conflict.category,conflict.field].join('|');if(totals.has(key))totals.get(key).conflict=true}
+  return {totals,conflicts,identities};
+}
+export function refreshRates(row, category) {
+  const get=field=>{const key=Object.keys(row.values||{}).find(h=>fieldKey(category,h)===field);return parsed(field,row.values?.[key]);};
+  const set=(field,value)=>{
+    const key=Object.keys(row.values).find(h=>compact(h)===compact(field))||field;
+    const provenance=clean(row.statSources?.[key]);
+    if(/verified|manual/i.test(provenance))return;
+    row.values[key]=value===null?'':format(value);row.statSources||={};row.statSources[key]='Derived from retained season totals';
+  };
+  const yards=get('YARDS');
+  if(category==='PASSING'){
+    const pair=get('COMPATT');
+    if(pair)set('COMP%',pair[1]>0?pair[0]/pair[1]*100:null);
+    if(pair&&yards!==null)set('YARDS/COMP.',pair[0]>0?yards/pair[0]:null);
+  }
+  if(category==='RUSHING'||category==='RECEIVING'){
+    const divisor=get(category==='RUSHING'?'CARRIES':'RECEPTIONS');
+    if(divisor!==null&&yards!==null)set(category==='RUSHING'?'YARDS/CARRY':'YARDS/RECEP.',divisor>0?yards/divisor:null);
+  }
+}
+function manualPolicy(team,player,category,field,corrections) {
+  return corrections.filter(c=>!c.gameOnly&&canonTeam(c.team)===canonTeam(team)&&categoryKey(c.category)===category&&fieldKey(category,c.stat)===field&&[c.targetPlayer,...c.playerAliases||[],c.correctedPlayerName].some(n=>n&&compact(n)===compact(player.name)));
+}
+export function reconcileSeasonStats(rosters,games,sources={}) {
+  if(rosters.season&&rosters.season!==2026||games.season&&games.season!==2026)throw Error('Expected 2026 season inputs');
+  const report={teams:0,players:0,categories:0,fields:0,skippedTeams:0,incompleteTeams:[],decisions:[],conflicts:[],unmatchedIdentities:[]};
+  const corrections=sources.corrections||[];
+  for(const [teamName,team] of Object.entries(rosters.teams||{})) {
+    report.teams++;
+    const known=[...(team.roster||[]),...(team.stats||[]).flatMap(s=>s.rows||[])];
+    const local=sameTeam(games.teams,teamName)||{team:teamName,games:[]};
+    const cached=sameTeam(sources.maxprepsGames?.teams,teamName)||{team:teamName,games:[]};
+    const observed=aggregateGames({...local,team:teamName},known,{cutoff:sources.cutoff});
+    const corroboration=aggregateGames({...cached,team:teamName},known,{sourceRows:true,cutoff:sources.cutoff});
+    report.conflicts.push(...observed.conflicts.map(x=>({team:teamName,...x})),...corroboration.conflicts.map(x=>({team:teamName,source:'MaxPreps',...x})));
+    report.unmatchedIdentities.push(...observed.identities.map(x=>({team:teamName,...x})));
+    const saved=sameTeam(sources.maxprepsSeason?.teams,teamName);
+    const sourceAllowed=sources.maxprepsSeason?.season===2026&&sources.maxprepsGames?.season===2026;
+    const candidates=new Map();
+    for(const incoming of sourceAllowed?saved?.rows||[]:[]) {
+      const player=matchPlayer(known,incoming,teamName);if(!player)continue;
+      const category=categoryKey(incoming.category);
+      for(const [header,value] of Object.entries(incoming.values||{})) {
+        const field=fieldKey(category,header),number=parsed(field,value);
+        if(!FIELDS[category]?.includes(field)||number===null)continue;
+        const key=[player.playerId,category,field].join('|');
+        const old=candidates.get(key);
+        candidates.set(key,{player,category,field,value:number,header,conflict:!!old&&(!equal(old.value,number)||old.conflict)});
+      }
+    }
+    let changed=0;
+    for(const [key,candidate] of candidates) {
+      const {player,category,field,value}=candidate,proof=corroboration.totals.get(key);
+      let section=(team.stats||[]).find(s=>categoryKey(s.category)===category);
+      let row=section?.rows?.find(r=>r.playerId===player.playerId);
+      const header=Object.keys(row?.values||{}).find(h=>fieldKey(category,h)===field)||HEADERS[field]||candidate.header;
+      const existing=parsed(field,row?.values?.[header]);
+      if(equal(existing,value))continue;
+      const record={team:teamName,player:player.name,playerId:player.playerId,category,field,previous:existing,proposed:value,sourceUrl:saved?.sourceUrl,sourceUpdatedAt:saved?.lastUpdated||null,sourceSnapshotAt:sources.maxprepsSeason?.updatedAt||null,gameCoverage:proof?.games||[]};
+      // A source season cell must agree with its unique per-game evidence. The
+      // publication timestamp alone cannot establish its regular-season scope.
+      if(candidate.conflict||!proof||proof.conflict||!equal(proof.value,value)){
+        report.decisions.push({...record,status:'review',reason:'Source season cell is not corroborated by unique in-scope game cells'});continue;
+      }
+      const policies=manualPolicy(teamName,player,category,field,corrections);
+      const locked=policies.some(c=>Object.hasOwn(c,'exactValue')&&!Object.hasOwn(c,'whenValue')&&!Array.isArray(c.whenValues)) ||
+        policies.some(c=>Object.hasOwn(c,'exactValue')&&policies.some(other=>Object.hasOwn(other,'minimumValue')&&Number(c.exactValue)<Number(other.minimumValue))) ||
+        policies.some(c=>Object.hasOwn(c,'exactValue')&&[...(c.whenValues||[]),...(Object.hasOwn(c,'whenValue')?[c.whenValue]:[])].some(bad=>equal(parsed(field,bad),value))&&!equal(parsed(field,c.exactValue),value));
+      const belowFloor=policies.some(c=>Object.hasOwn(c,'minimumValue')&&(typeof value!=='number'||value<c.minimumValue));
+      const existingSource=clean(row?.statSources?.[header]);
+      if(locked||belowFloor||/manual|verified/i.test(existingSource)&&!policies.length||existing!==null&&
+        (Array.isArray(value)?value[0]<existing[0]||value[1]<existing[1]:value<existing)&&!/^Calculated from complete game logs/.test(existingSource)){
+        report.decisions.push({...record,status:'preserved',reason:'Retained verified correction or more complete season value'});continue;
+      }
+      if(!section){section={category:LABELS[category]||candidate.category,headers:[],rows:[]};(team.stats||=[]).push(section)}
+      if(!row){row={playerId:player.playerId,name:player.name,number:player.number,rosterMatched:true,values:{}};section.rows.push(row)}
+      row.values[header]=format(value);row.statSources||={};row.statSources[header]='MaxPreps season total corroborated by unique game logs';
+      row.statEvidence||={};row.statEvidence[header]={sourceUrl:saved.sourceUrl,sourceUpdatedAt:saved.lastUpdated||null,sourceSnapshotAt:sources.maxprepsSeason.updatedAt,throughDate:proof.games.map(g=>g.date).sort().at(-1),games:proof.games.length};
+      section.headers||=[];if(!section.headers.includes(header))section.headers.push(header);
+      report.fields++;changed++;report.decisions.push({...record,status:'corrected',reason:'Source season cell agrees with unique in-scope source game cells'});
+    }
+    // Game sums are observations, never a replacement merely because some
+    // other player reported stats in each game. Retain conflicts for review.
+    for(const [key,total] of observed.totals) {
+      const row=(team.stats||[]).find(s=>categoryKey(s.category)===total.category)?.rows?.find(r=>r.playerId===total.player.playerId);
+      const header=Object.keys(row?.values||{}).find(h=>fieldKey(total.category,h)===total.field),current=parsed(total.field,row?.values?.[header]);
+      if(!equal(current,total.value))report.decisions.push({team:teamName,player:total.player.name,playerId:total.player.playerId,category:total.category,field:total.field,previous:current,gameSum:total.value,status:'review',reason:total.conflict?'Conflicting duplicate game cells':'Game sums alone cannot establish player/category completeness'});
+    }
+    for(const section of team.stats||[])for(const row of section.rows||[])refreshRates(row,categoryKey(section.category));
+    if(changed)report.players+=new Set(report.decisions.filter(d=>d.team===teamName&&d.status==='corrected').map(d=>d.playerId)).size;
+    const review=report.decisions.filter(d=>d.team===teamName&&d.status==='review');
+    if(review.length){report.skippedTeams++;report.incompleteTeams.push({team:teamName,reviewFields:review.length})}
   }
   rosters.updatedAt=new Date().toISOString();
-  rosters.summary={...(rosters.summary||{}),gameLogSeasonReconciliation:{teams,players,categories,fields,skippedTeams,incompleteTeams,policy:'Season totals are recalculated only when every known final game has individual stat data; incomplete sets preserve source totals, and a verified higher MaxPreps defensive season total is never reduced by a lower game-log sum.'}};
-  return{teams,players,categories,fields,skippedTeams,incompleteTeams};
+  rosters.summary={...rosters.summary,gameLogSeasonReconciliation:{teams:report.teams,players:report.players,fields:report.fields,skippedTeams:report.skippedTeams,incompleteTeams:report.incompleteTeams,policy:'Game presence is not player/category completeness. Only source-season cells corroborated by unique in-scope source game cells may repair totals; preserve verified corrections, unknowns and fuller totals. All unresolved differences remain review items.'}};
+  return report;
 }
-
-function selfTest(){
-  const makeRoster=(yards='725')=>({teams:{MANTI:{stats:[{category:'Passing',headers:['COMP-ATT','COMP%','YARDS','YARDS/COMP.','TD','Int'],rows:[{playerId:'wright',name:'Kingston Wright',number:'1',values:{'COMP-ATT':'52-70','COMP%':'74.29',YARDS:yards,'YARDS/COMP.':'13.94',TD:'12',Int:'3'}}]}]}}});
-  const rows=[['2026-08-14','PINE VIEW','41-56',525,3,3],['2026-08-21','RICHFIELD','11-14',200,4,0],['2026-08-28','GRANTSVILLE','22-37',466,5,1]];
-  const makeGame=([date,opponent,attempts,yards,td,int])=>({date,opponent,status:'Final',final:true,players:[{playerId:'wright',name:'Kingston Wright',number:'1',statLines:[{category:'Passing',values:{'Comp-Att':attempts,Yards:String(yards),TD:String(td),Int:String(int)}}]}]});
-  const rosters=makeRoster(),games={teams:{MANTI:{games:rows.map(makeGame)}}},result=reconcileSeasonStats(rosters,games),values=rosters.teams.MANTI.stats[0].rows[0].values;
-  if(result.players!==1||values['COMP-ATT']!=='74-107'||values.YARDS!=='1191'||values.TD!=='12'||values.Int!=='4'||values['COMP%']!=='69.16')throw new Error('Season reconciliation self-test failed');
-  const guarded=makeRoster('1140'),partial={teams:{MANTI:{games:rows.slice(0,2).map(makeGame)}}},teamData={teams:{MANTI:{team:'MANTI',schedule:rows.map(([date,opponent])=>({date,opponent,teamScore:1,opponentScore:0,result:'W',rusStatus:'Final'}))}}};
-  const guardResult=reconcileSeasonStats(guarded,partial,{teamData});
-  if(guardResult.skippedTeams!==1||guarded.teams.MANTI.stats[0].rows[0].values.YARDS!=='1140')throw new Error('Incomplete game-log guard self-test failed');
-  const defenseRoster={teams:{LCA:{stats:[]}}};
-  const defenseGames={
-    teams:{
-      LCA:{
-        games:[
-          {
-            date:'2026-08-14',
-            opponent:'Hunter',
-            status:'Final',
-            final:true,
-            players:[{
-              playerId:'harvey',
-              name:'Synic Harvey',
-              number:'5',
-              statLines:[{category:'Defense',values:{'Pass Int.':'1'}}]
-            }]
-          },
-          {
-            date:'2026-08-28',
-            opponent:'Kimberly',
-            status:'Final',
-            final:true,
-            players:[{
-              playerId:'harvey',
-              name:'Synic Harvey',
-              number:'5',
-              statLines:[{category:'Tackles',values:{'PASS INT.':'2'}}]
-            }]
-          },
-          {
-            date:'2026-09-04',
-            opponent:'East',
-            status:'Final',
-            final:true,
-            players:[{
-              playerId:'harvey',
-              name:'Synic Harvey',
-              number:'5',
-              statLines:[{category:'Defensive Statistics',values:{INTs:'2'}}]
-            }]
-          }
-        ]
-      }
-    }
-  };
-  const defenseResult=reconcileSeasonStats(defenseRoster,defenseGames);
-  const defenseValues=defenseRoster.teams.LCA.stats[0].rows[0].values;
-  if(defenseResult.players!==1||defenseValues['PASS INT.']!=='5')throw new Error('Defensive season reconciliation self-test failed');
-  const floorRoster={teams:{CC:{stats:[{category:'Defense/Special Teams',headers:['TACKLES','SACKS'],rows:[{playerId:'tate',name:'Tate Patterson',number:'8',values:{TACKLES:'69',SACKS:'2.5'},statSources:{TACKLES:'MaxPreps season total (higher than primary source)',SACKS:'MaxPreps season total (higher than primary source)'}}]}]}}};
-  const floorGames={teams:{CC:{games:[{date:'2026-10-02',opponent:'Cedar Valley',status:'Final',final:true,players:[{playerId:'tate',name:'Tate Patterson',number:'8',statLines:[{category:'Defense',values:{Tackles:'68',Sacks:'2'}}]}]}]}}};
-  reconcileSeasonStats(floorRoster,floorGames);
-  const floorValues=floorRoster.teams.CC.stats[0].rows[0].values;
-  if(floorValues.TACKLES!=='69'||floorValues.SACKS!=='2.5')throw new Error('MaxPreps defensive season floor self-test failed');
-  console.log('Season reconciliation self-test passed.');
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
+  if(process.argv.includes('--self-test'))process.exit(spawnSync(process.execPath,['--test','tests/player-stat-integrity.test.mjs'],{stdio:'inherit'}).status??1);
+  const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
+  const rosters=read('deseret-rosters-stats-2026.json');
+  const report=reconcileSeasonStats(rosters,read('player-game-stats-2026.json'),{maxprepsSeason:read('maxpreps-stats-fallback-2026.json'),maxprepsGames:read('maxpreps-player-game-stats-2026.json'),corrections:read('manual-stat-corrections-2026.json').corrections});
+  applyRosterStatCorrections(rosters);
+  atomicJSON('deseret-rosters-stats-2026.json',rosters);
+  fs.mkdirSync('audits',{recursive:true});atomicJSON('audits/2026-stat-reconciliation.json',report);
+  console.log(`Corroborated ${report.fields} source season cells; ${report.decisions.filter(d=>d.status==='review').length} differences retained for review; ${report.conflicts.length} duplicate conflicts.`);
 }
-
-if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
-if(!fs.existsSync(ROSTERS)||!fs.existsSync(GAMES))throw new Error('Season reconciliation inputs are missing.');
-const rosters=JSON.parse(fs.readFileSync(ROSTERS,'utf8')),games=JSON.parse(fs.readFileSync(GAMES,'utf8')),teamData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null,weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):null,summary=reconcileSeasonStats(rosters,games,{teamData,weekly});
-fs.writeFileSync(ROSTERS,JSON.stringify(rosters,null,2)+'\n');
-console.log(`Season totals reconciled from complete game logs for ${summary.players} players across ${summary.teams-summary.skippedTeams} teams; ${summary.skippedTeams} incomplete team(s) preserved (${summary.fields} fields).`);

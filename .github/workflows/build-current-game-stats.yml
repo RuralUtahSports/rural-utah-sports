@@ -3,6 +3,7 @@ name: Build Current Game Stats
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - 'deseret-game-details.json'
       - 'weekly-simulation.json'
@@ -14,6 +15,10 @@ on:
       - 'scripts/merge_verified_deseret_kicking.mjs'
       - 'deseret-kicking-game-stats-2026.json'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
+      - 'scripts/lib/player-stat-integrity.mjs'
+      - 'scripts/build_region_award_stat_corrections.mjs'
+      - 'player-stat-aliases-2026.json'
+      - 'tests/player-stat-integrity.test.mjs'
       - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/build_weekly_awards.mjs'
       - 'scripts/build_team_current_shards.mjs'
@@ -41,13 +46,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Test player statistic integrity before importing
+        run: node --test tests/player-stat-integrity.test.mjs
       - name: Build current game stats and season totals
         run: |
           node scripts/apply_manual_stat_corrections.mjs
           node scripts/build_player_game_stats.mjs
           node scripts/merge_maxpreps_game_logs.mjs
-          node scripts/reconcile_season_stats_from_game_logs.mjs
           node scripts/merge_verified_deseret_kicking.mjs
+          node scripts/reconcile_season_stats_from_game_logs.mjs
+          node scripts/apply_manual_stat_corrections.mjs
+          node scripts/build_region_award_stat_corrections.mjs
           node scripts/build_deseret_stat_metrics.mjs
           node scripts/build_weekly_awards.mjs
           node scripts/build_team_current_shards.mjs
@@ -84,7 +93,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add player-game-stats-2026.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json weekly-awards-2026.json team-current-data
+          git add region-awards-stat-corrections-2026.json audits/2026-stat-reconciliation.json player-game-stats-2026.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json weekly-awards-2026.json team-current-data
           if git diff --cached --quiet; then echo "Current game stats and season totals already published."; exit 0; fi
           git commit -m "Auto-sync current game stats and season totals"
           for attempt in 1 2 3 4; do

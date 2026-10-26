@@ -1,3 +1,5 @@
+import {pathToFileURL} from 'node:url';
+import {matchPlayer, atomicJSON, mergeSourceGameRows} from './lib/player-stat-integrity.mjs';
 import fs from 'node:fs';
 
 const FILE='deseret-rosters-stats-2026.json';
@@ -225,25 +227,7 @@ function knownPlayers(team){
   for(const section of team.stats||[])for(const row of section.rows||[])add(row);
   return out;
 }
-function rosterMatch(team,row){
-  const players=knownPlayers(team),incomingName=cleanPlayerName(row.name),incomingNo=clean(row.number),bits=nameBits(incomingName);
-  if(!players.length||!incomingName)return null;
-  const exactName=players.filter(p=>compact(cleanPlayerName(p.name))===compact(incomingName));
-  const exact=exactName.find(p=>incomingNo&&clean(p.number)===incomingNo);
-  if(exact)return exact;
-  if(exactName.length===1)return exactName[0];
-
-  const sameLastInitial=p=>{
-    const pb=nameBits(p.name);
-    return !!bits.last&&pb.last===bits.last&&!!bits.initial&&pb.initial===bits.initial;
-  };
-  if(incomingNo){
-    const numbered=players.filter(p=>clean(p.number)===incomingNo&&sameLastInitial(p));
-    if(numbered.length===1)return numbered[0];
-  }
-  const byLastInitial=players.filter(sameLastInitial);
-  return byLastInitial.length===1?byLastInitial[0]:null;
-}
+function rosterMatch(team,row){return matchPlayer(knownPlayers(team),{...row,name:cleanPlayerName(row.name)},team.team)}
 function maxprepsOnlyPlayer(team,row){
   team.roster||(team.roster=[]);
   const name=cleanPlayerName(row.name),number=clean(row.number),existing=team.roster.find(p=>compact(cleanPlayerName(p.name))===compact(name)&&clean(p.number)===number);
@@ -270,6 +254,7 @@ function mergeTeam(team,rows,sourceUrl){
       const target=Object.keys(row.values).find(existing=>compact(existing)===compact(header))||header;
       const existing=row.values[target],defense=compact(incoming.category)==='DEFENSESPECIALTEAMS',key=compact(header);
       if(nonEmpty(existing)){
+        if(/verified|manual/i.test(clean(row.statSources?.[target])))continue;
         const oldNumber=Number(clean(existing).replace(/,/g,'')),newNumber=Number(clean(value).replace(/,/g,''));
         if(defense&&DEFENSE_MAX_FIELDS.has(key)&&Number.isFinite(oldNumber)&&Number.isFinite(newNumber)&&newNumber>oldNumber){
           row.values[target]=value;row.statSources||(row.statSources={});row.statSources[target]='MaxPreps season total (higher than primary source)';upgradedFields++;
@@ -316,12 +301,15 @@ function selfTest(){
   if(!sameSchool('CEDAR CITY','Cedar')||!sameSchool('ALA','American Leadership Academy')||!KNOWN_STATS_URLS['CEDAR CITY']||!KNOWN_STATS_URLS.ALA)throw new Error('Verified MaxPreps school mapping self-test failed');
   console.log('MaxPreps fallback self-test passed.');
 }
+export {mergeTeam, rosterMatch, parsePlayerGameLogs};
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
 if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
 
 if(!fs.existsSync(FILE))throw new Error(`${FILE} missing`);
 const data=JSON.parse(fs.readFileSync(FILE,'utf8'));
 let cache={season:data.season||2026,updatedAt:'',teams:{}};
 if(fs.existsSync(CACHE)){try{cache=JSON.parse(fs.readFileSync(CACHE,'utf8'))}catch(error){console.warn(`${CACHE}: ${error.message}`)}}
+if(cache.season!==2026||data.season!==2026)throw new Error('Expected 2026 season cache and roster inputs');
 if(process.argv.includes('--apply-cache')){
   let addedRows=0,filledFields=0,upgradedFields=0,unmatchedRows=0,available=0;
   for(const team of Object.values(data.teams||{})){
@@ -330,7 +318,7 @@ if(process.argv.includes('--apply-cache')){
     team.maxprepsStatsUrl=saved.sourceUrl||'';team.maxprepsPrintUrl=saved.printUrl||'';team.maxprepsLastUpdated=saved.lastUpdated||'';
   }
   data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked:Object.keys(data.teams||{}).length,available,addedRows,filledFields,upgradedFields,unmatchedRows,failures:0,cacheUpdatedAt:cache.updatedAt||'',policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
-  fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
+  atomicJSON(FILE,data);
   console.log(`MaxPreps cache: ${available} teams available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped.`);
   process.exit(0);
 }
@@ -339,6 +327,7 @@ async function one(team){
   try{
     const page=await loadTeamPage(team);checked++;if(!page){team.maxprepsFallback={checkedAt:new Date().toISOString(),available:false};return}
     available++;const print=await fetchHtml(page.printUrl),rows=parsePrintStats(print),merged=mergeTeam(team,rows,page.statsUrl);
+    if(!rows.length)throw new Error('No parsed season rows; cached source retained');
     cache.teams[team.team]={sourceUrl:page.statsUrl,printUrl:page.printUrl,lastUpdated:page.lastUpdated||'',rows};
     team.maxprepsStatsUrl=page.statsUrl;team.maxprepsPrintUrl=page.printUrl;team.maxprepsLastUpdated=page.lastUpdated||'';
     addedRows+=merged.addedRows;filledFields+=merged.filledFields;upgradedFields+=merged.upgradedFields||0;unmatchedRows+=merged.unmatched;
@@ -346,7 +335,8 @@ async function one(team){
 }
 async function worker(){while(true){const i=next++;if(i>=entries.length)return;await one(entries[i]);await new Promise(resolve=>setTimeout(resolve,120))}}
 await Promise.all(Array.from({length:Math.min(5,entries.length)},()=>worker()));
-const gameCache={season:data.season||2026,updatedAt:'',teams:{}},playerTasks=[];
+if(checked<Math.max(20,Math.floor(entries.length*.5)))throw new Error(`Too few MaxPreps teams checked: ${checked}/${entries.length}; saved datasets retained`);
+const gameCache=fs.existsSync(GAME_CACHE)?JSON.parse(fs.readFileSync(GAME_CACHE,'utf8')):{season:data.season||2026,updatedAt:'',teams:{}},playerTasks=[];
 for(const team of entries){
   const saved=cache.teams?.[team.team],seen=new Set();
   for(const row of saved?.rows||[]){
@@ -355,11 +345,13 @@ for(const team of entries){
   }
 }
 let gameNext=0,gamePlayersFetched=0,gamePlayersFailed=0,gameRows=0;
-async function gameWorker(){while(true){const i=gameNext++;if(i>=playerTasks.length)return;const task=playerTasks[i];try{const html=await fetchHtml(task.url),games=parsePlayerGameLogs(html,task.player);if(games.length){const bucket=gameCache.teams[task.team.team]||(gameCache.teams[task.team.team]={team:task.team.team,games:[]});bucket.games.push(...games);gameRows+=games.length}gamePlayersFetched++}catch(error){gamePlayersFailed++;console.warn(`${task.team.team} ${task.player.name} game logs: ${error.message}`)}await new Promise(resolve=>setTimeout(resolve,80))}}
+async function gameWorker(){while(true){const i=gameNext++;if(i>=playerTasks.length)return;const task=playerTasks[i];try{const html=await fetchHtml(task.url),games=parsePlayerGameLogs(html,task.player);if(!games.length)throw new Error('No parsed player game rows; cached rows retained');if(games.length){const bucket=gameCache.teams[task.team.team]||(gameCache.teams[task.team.team]={team:task.team.team,games:[]});bucket.games=mergeSourceGameRows(bucket.games,games);gameRows+=games.length}gamePlayersFetched++}catch(error){gamePlayersFailed++;console.warn(`${task.team.team} ${task.player.name} game logs: ${error.message}`)}await new Promise(resolve=>setTimeout(resolve,80))}}
 await Promise.all(Array.from({length:Math.min(8,playerTasks.length)},()=>gameWorker()));
 data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,upgradedFields,unmatchedRows,failures,policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
-fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
-cache.updatedAt=new Date().toISOString();fs.writeFileSync(CACHE,JSON.stringify(cache,null,2)+'\n');
-gameCache.updatedAt=new Date().toISOString();gameCache.summary={playersQueued:playerTasks.length,playersFetched:gamePlayersFetched,playersFailed:gamePlayersFailed,playerGames:gameRows};fs.writeFileSync(GAME_CACHE,JSON.stringify(gameCache,null,2)+'\n');
+atomicJSON(FILE,data);
+cache.updatedAt=new Date().toISOString();atomicJSON(CACHE,cache);
+gameCache.updatedAt=new Date().toISOString();gameCache.summary={playersQueued:playerTasks.length,playersFetched:gamePlayersFetched,playersFailed:gamePlayersFailed,playerGames:gameRows};atomicJSON(GAME_CACHE,gameCache);
 console.log(`MaxPreps fallback: checked ${checked} teams; ${available} pages available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped; ${failures} failures. Game logs: ${gamePlayersFetched}/${playerTasks.length} players fetched, ${gameRows} player-games, ${gamePlayersFailed} failures.`);
 if(checked<Math.max(20,Math.floor(entries.length*.5)))throw new Error(`Too few MaxPreps teams checked: ${checked}/${entries.length}`);
+
+}
