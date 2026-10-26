@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-26T20:36:42.759Z",
+  "updatedAt": "2026-10-26T21:56:31.799Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -8,16 +8,16 @@
   },
   "counts": {
     "teamPagesAudited": 118,
-    "scheduleRowsAudited": 68767,
+    "scheduleRowsAudited": 68765,
     "exactDuplicates": 0,
     "sameDateOpponentConflicts": 0,
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 235,
-    "reciprocalMismatches": 989,
+    "seasonSummaryMismatches": 237,
+    "reciprocalMismatches": 991,
     "likelyOpponentTypos": 6,
-    "recent2025PlusIssues": 240
+    "recent2025PlusIssues": 244
   },
   "recent2025PlusIssues": [
     {
@@ -397,6 +397,29 @@
       ]
     },
     {
+      "type": "season-summary-mismatch",
+      "team": "JUAB",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 13,
+          "actual": 12
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 433,
+          "actual": 417
+        },
+        "pointsAgainst": {
+          "expected": 313,
+          "actual": 283
+        }
+      }
+    },
+    {
       "type": "same-day-multiple-opponents",
       "team": "JUAN DIEGO",
       "season": "2025",
@@ -620,6 +643,29 @@
         "CANYON VIEW",
         "CEDAR CITY"
       ]
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "PANGUITCH",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 1,
+          "actual": 0
+        },
+        "pointsFor": {
+          "expected": 180,
+          "actual": 132
+        },
+        "pointsAgainst": {
+          "expected": 482,
+          "actual": 476
+        }
+      }
     },
     {
       "type": "likely-opponent-typo",
@@ -1266,6 +1312,26 @@
     {
       "type": "reciprocal-mismatch",
       "teamA": "BONNEVILLE",
+      "teamB": "CLEARFIELD",
+      "date": "10/3/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "BONNEVILLE",
+          "opponent": "CLEARFIELD",
+          "date": "10/3/2025",
+          "teamScore": 19,
+          "opponentScore": 35,
+          "result": "L",
+          "season": "2025",
+          "index": 7
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BONNEVILLE",
       "teamB": "NORTHRIDGE",
       "date": "10/10/2025",
       "season": "2025",
@@ -1299,6 +1365,26 @@
           "result": "L",
           "season": "2025",
           "index": 9
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BOX ELDER",
+      "teamB": "CLEARFIELD",
+      "date": "10/10/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "BOX ELDER",
+          "opponent": "CLEARFIELD",
+          "date": "10/10/2025",
+          "teamScore": 24,
+          "opponentScore": 7,
+          "result": "W",
+          "season": "2025",
+          "index": 8
         }
       ],
       "sideB": []
@@ -1402,6 +1488,46 @@
         }
       ],
       "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BONNEVILLE",
+      "teamB": "CLEARFIELD",
+      "date": "10/4/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "CLEARFIELD",
+          "opponent": "BONNEVILLE",
+          "date": "10/4/2025",
+          "teamScore": 35,
+          "opponentScore": 19,
+          "result": "W",
+          "season": "2025",
+          "index": 7
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BOX ELDER",
+      "teamB": "CLEARFIELD",
+      "date": "10/9/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "CLEARFIELD",
+          "opponent": "BOX ELDER",
+          "date": "10/9/2025",
+          "teamScore": 7,
+          "opponentScore": 24,
+          "result": "L",
+          "season": "2025",
+          "index": 8
+        }
+      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -2216,26 +2342,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "JUAB",
-      "teamB": "NORTH SANPETE",
-      "date": "10/17/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "JUAB",
-          "opponent": "NORTH SANPETE",
-          "date": "10/17/2025",
-          "teamScore": 16,
-          "opponentScore": 30,
-          "result": "L",
-          "season": "2025",
-          "index": 9
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -2250,7 +2356,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 10
+          "index": 9
         }
       ]
     },
@@ -3178,26 +3284,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "PANGUITCH",
-      "date": "9/19/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "PANGUITCH",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/19/2025",
-          "teamScore": 48,
-          "opponentScore": 6,
-          "result": "W",
-          "season": "2025",
-          "index": 5
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -3212,7 +3298,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 7
         }
       ]
     },
@@ -3231,7 +3317,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 9
+          "index": 8
         }
       ],
       "sideB": []
@@ -6482,6 +6568,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "JUAB",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 13,
+          "actual": 12
+        },
+        "losses": {
+          "expected": 4,
+          "actual": 3
+        },
+        "pointsFor": {
+          "expected": 433,
+          "actual": 417
+        },
+        "pointsAgainst": {
+          "expected": 313,
+          "actual": 283
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "JUAN DIEGO",
       "season": "2022",
       "mismatches": {
@@ -7475,6 +7584,29 @@
         "pointsAgainst": {
           "expected": 463,
           "actual": 416
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "PANGUITCH",
+      "season": "2025",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 1,
+          "actual": 0
+        },
+        "pointsFor": {
+          "expected": 180,
+          "actual": 132
+        },
+        "pointsAgainst": {
+          "expected": 482,
+          "actual": 476
         }
       }
     },
@@ -11789,6 +11921,26 @@
     {
       "type": "reciprocal-mismatch",
       "teamA": "BONNEVILLE",
+      "teamB": "CLEARFIELD",
+      "date": "10/3/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "BONNEVILLE",
+          "opponent": "CLEARFIELD",
+          "date": "10/3/2025",
+          "teamScore": 19,
+          "opponentScore": 35,
+          "result": "L",
+          "season": "2025",
+          "index": 7
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BONNEVILLE",
       "teamB": "NORTHRIDGE",
       "date": "10/10/2025",
       "season": "2025",
@@ -12326,6 +12478,26 @@
           "result": "W",
           "season": "2023",
           "index": 6
+        }
+      ],
+      "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BOX ELDER",
+      "teamB": "CLEARFIELD",
+      "date": "10/10/2025",
+      "season": "2025",
+      "sideA": [
+        {
+          "team": "BOX ELDER",
+          "opponent": "CLEARFIELD",
+          "date": "10/10/2025",
+          "teamScore": 24,
+          "opponentScore": 7,
+          "result": "W",
+          "season": "2025",
+          "index": 8
         }
       ],
       "sideB": []
@@ -13392,6 +13564,46 @@
         }
       ],
       "sideB": []
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BONNEVILLE",
+      "teamB": "CLEARFIELD",
+      "date": "10/4/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "CLEARFIELD",
+          "opponent": "BONNEVILLE",
+          "date": "10/4/2025",
+          "teamScore": 35,
+          "opponentScore": 19,
+          "result": "W",
+          "season": "2025",
+          "index": 7
+        }
+      ]
+    },
+    {
+      "type": "reciprocal-mismatch",
+      "teamA": "BOX ELDER",
+      "teamB": "CLEARFIELD",
+      "date": "10/9/2025",
+      "season": "2025",
+      "sideA": [],
+      "sideB": [
+        {
+          "team": "CLEARFIELD",
+          "opponent": "BOX ELDER",
+          "date": "10/9/2025",
+          "teamScore": 7,
+          "opponentScore": 24,
+          "result": "L",
+          "season": "2025",
+          "index": 8
+        }
+      ]
     },
     {
       "type": "reciprocal-mismatch",
@@ -18056,26 +18268,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "JUAB",
-      "teamB": "NORTH SANPETE",
-      "date": "10/17/2025",
-      "season": "2025",
-      "sideA": [
-        {
-          "team": "JUAB",
-          "opponent": "NORTH SANPETE",
-          "date": "10/17/2025",
-          "teamScore": 16,
-          "opponentScore": 30,
-          "result": "L",
-          "season": "2025",
-          "index": 9
-        }
-      ],
-      "sideB": []
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "BEN LOMOND",
       "teamB": "JUAB",
       "date": "10/24/2025",
@@ -18090,7 +18282,7 @@
           "opponentScore": 14,
           "result": "W",
           "season": "2025",
-          "index": 10
+          "index": 9
         }
       ]
     },
@@ -23664,26 +23856,6 @@
     },
     {
       "type": "reciprocal-mismatch",
-      "teamA": "MONUMENT VALLEY",
-      "teamB": "PANGUITCH",
-      "date": "9/19/2025",
-      "season": "2025",
-      "sideA": [],
-      "sideB": [
-        {
-          "team": "PANGUITCH",
-          "opponent": "MONUMENT VALLEY",
-          "date": "9/19/2025",
-          "teamScore": 48,
-          "opponentScore": 6,
-          "result": "W",
-          "season": "2025",
-          "index": 5
-        }
-      ]
-    },
-    {
-      "type": "reciprocal-mismatch",
       "teamA": "ALTAMONT",
       "teamB": "PANGUITCH",
       "date": "10/10/2025",
@@ -23698,7 +23870,7 @@
           "opponentScore": 50,
           "result": "L",
           "season": "2025",
-          "index": 8
+          "index": 7
         }
       ]
     },
@@ -23717,7 +23889,7 @@
           "opponentScore": 55,
           "result": "L",
           "season": "2025",
-          "index": 9
+          "index": 8
         }
       ],
       "sideB": []
@@ -31188,7 +31360,7 @@
       "team": "JUAB",
       "file": "juab.json",
       "seasons": 72,
-      "totalGames": 728
+      "totalGames": 727
     },
     {
       "team": "JUAN DIEGO",
@@ -31356,7 +31528,7 @@
       "team": "PANGUITCH",
       "file": "panguitch.json",
       "seasons": 8,
-      "totalGames": 74
+      "totalGames": 73
     },
     {
       "team": "PARK CITY",
