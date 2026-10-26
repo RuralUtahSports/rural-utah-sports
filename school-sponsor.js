@@ -33,11 +33,11 @@ function renderSponsored(entry,hero){
   const content=hero.querySelector('.hero-content');if(!content)return false;
   styles();
   const el=document.createElement('aside');el.id='rusTeamHeroSponsor';el.className='rus-team-hero-sponsor';
-  const mail=orderHref(entry),attrs=externalAttrs(mail);
+  const mail=orderHref(entry),href=String(entry.contactUrl||mail||'').trim(),attrs=externalAttrs(href);
   const logoImg=entry.logo?`<img class="rus-team-hero-sponsor-logo" src="${esc(entry.logo)}" alt="${esc(entry.business||'Sponsor')} logo" loading="eager" decoding="async">`:'';
-  const logo=logoImg?(mail?`<a class="rus-team-hero-sponsor-logo-link" href="${esc(mail)}"${attrs} aria-label="Email ${esc(entry.business||'sponsor')} to submit an order">${logoImg}</a>`:logoImg):'';
-  const link=entry.website?`<a class="rus-team-hero-sponsor-link" href="${esc(entry.website)}" target="_blank" rel="noopener sponsored">Visit Sponsor →</a>`:'';
-  const orderNote=mail&&entry.orderNote?`<div class="rus-team-hero-sponsor-order-note">${esc(entry.orderNote)}</div>`:'';
+  const logo=logoImg?(href?`<a class="rus-team-hero-sponsor-logo-link" href="${esc(href)}"${attrs} aria-label="${esc(entry.contactLabel||(mail?`Email ${entry.business||'sponsor'} to submit an order`:`Contact ${entry.business||'sponsor'}`))}">${logoImg}</a>`:logoImg):'';
+  const link=entry.contactUrl?`<a class="rus-team-hero-sponsor-link" href="${esc(entry.contactUrl)}" target="_blank" rel="noopener sponsored">${esc(entry.contactLabel||'Contact Sponsor')} →</a>`:entry.website?`<a class="rus-team-hero-sponsor-link" href="${esc(entry.website)}" target="_blank" rel="noopener sponsored">Visit Sponsor →</a>`:'';
+  const orderNote=href&&entry.orderNote?`<div class="rus-team-hero-sponsor-order-note">${esc(entry.orderNote)}</div>`:'';
   el.innerHTML=`<div class="rus-team-hero-sponsor-main">${logo}<div class="rus-team-hero-sponsor-copy"><div class="rus-team-hero-sponsor-kicker">${esc(entry.label||'Official RUS School Sponsor')}</div><div class="rus-team-hero-sponsor-name">Presented by ${esc(entry.business||'Sponsor')}</div>${entry.tagline?`<div class="rus-team-hero-sponsor-tagline">${esc(entry.tagline)}</div>`:''}${orderNote}</div></div>${link}`;
   const stats=content.querySelector('.stats');if(stats)content.insertBefore(el,stats);else content.appendChild(el);return true;
 }
