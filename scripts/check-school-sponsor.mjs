@@ -18,6 +18,14 @@ if(config?.ALA?.mode!=='sponsor')fail('ALA should have an active sponsor configu
 for(const token of ['JH3D Printz','Official RUS Sponsor of ALA Coverage','sponsors/jh3d-printz-logo.svg','jh3dprintz@gmail.com','Click the sponsor logo to submit an order via email.','2026-08-19','2026-11-12'])if(!JSON.stringify(config.ALA).includes(token))fail(`ALA sponsor config missing ${token}`);
 if(JSON.stringify(config.ALA).includes('jh3dprints@gmail.com'))fail('Old JH3D email address is still present');
 if(!fs.existsSync('sponsors/jh3d-printz-logo.svg'))fail('JH3D Printz sponsor logo asset is missing');
+if(config?.UINTAH?.mode!=='sponsor')fail('Uintah should have an active Speed Cut sponsor configuration');
+for(const token of ['Speed Cut','Official RUS Sponsor of Uintah Coverage','sponsors/speed-cut-logo.svg','https://x.com/Coach_Burrell1','2026-10-26'])if(!JSON.stringify(config.UINTAH).includes(token))fail(`Uintah sponsor missing ${token}`);
+if(config.UINTAH?.endDate)fail('Uintah Speed Cut sponsor must remain active until manually removed');
+if(!fs.existsSync('sponsors/speed-cut-logo.svg'))fail('Speed Cut sponsor logo is missing');
+for(const token of ['entry.contactUrl','entry.contactLabel'])if(!sponsor.includes(token))fail(`Sponsor contact link support missing ${token}`);
+for(const token of ['s.contactUrl','contactText'])if(!sponsorsPage.includes(token))fail(`Sponsor directory contact support missing ${token}`);
+if(!teams.includes('s.contactUrl'))fail('Team card sponsor contact support is missing');
+
 for(const token of ['activeSponsor','orderHref','mail.google.com/mail/','min-width:901px','externalAttrs','rus-team-hero-sponsor-logo-link','pointer-events:none','rus-team-hero-sponsor-order-note','Presented by','content.insertBefore','DOMContentLoaded','pageshow'])if(!sponsor.includes(token))fail(`school-sponsor.js missing ${token}`);
 for(const token of ['RUSSchoolAssets','logoUrl','rus-team-page-logo','fetchPriority','fallbackLogo','img.loading','DOMContentLoaded','rus:school-assets-ready','pageshow'])if(!logo.includes(token))fail(`team-logo-header.js missing ${token}`);
 for(const token of ['rus-desktop-layout>#page','rus-side-logo','rus-team-page-logo','rus-team-hero-sponsor','desktop-v2.js?v=20260831-sidebar-currentdata1','DOMContentLoaded','matchMedia'])if(!fixes.includes(token))fail(`team-page-fixes.js missing ${token}`);
