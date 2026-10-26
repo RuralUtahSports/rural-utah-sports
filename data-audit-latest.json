@@ -1,11 +1,25 @@
 {
-  "generatedAt": "2026-10-26T16:19:26.764Z",
+  "generatedAt": "2026-10-26T17:43:22.371Z",
   "summary": {
     "errors": 0,
-    "warnings": 12,
+    "warnings": 15,
     "info": 2
   },
   "issues": [
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "BEN LOMOND has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Grantsville"
+          }
+        ]
+      }
+    },
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
@@ -30,6 +44,20 @@
           {
             "date": "2026-10-23",
             "opponent": "North Sanpete"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "CARBON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Richfield"
           }
         ]
       }
@@ -135,6 +163,20 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "OGDEN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Union"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "RICHFIELD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 11,
@@ -179,11 +221,11 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9363,
-        "unmatchedRows": 653,
+        "sourceRows": 9370,
+        "unmatchedRows": 656,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1045,
-        "missingGamePairs": 12
+        "sourceGamePairs": 1048,
+        "missingGamePairs": 15
       }
     },
     {

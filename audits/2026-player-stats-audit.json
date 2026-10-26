@@ -1,36 +1,36 @@
 {
-  "generatedAt": "2026-10-26T16:19:27.226Z",
+  "generatedAt": "2026-10-26T17:43:22.845Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
     "teams": 118,
     "rosterPlayers": 6440,
     "uniqueRosterIDs": 6440,
-    "statRows": 6911,
-    "athletesWithStats": 4057,
+    "statRows": 6915,
+    "athletesWithStats": 4059,
     "gamesWithPlayerRecords": 1070,
-    "gamePlayerRows": 20880,
-    "gameStatLines": 29866,
-    "missingStatPlayers": 2503,
+    "gamePlayerRows": 20895,
+    "gameStatLines": 29884,
+    "missingStatPlayers": 2501,
     "missingTeamStats": [
       "MONUMENT VAL",
       "UMA-HILLFIELD"
     ],
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
-    "seasonAboveGameSum": 555,
+    "seasonAboveGameSum": 586,
     "gameAboveSeasonSum": 280,
     "reviewFlags": 285,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "SEASON_GT_AVAILABLE_GAME_LOG": 544,
+    "SEASON_GT_AVAILABLE_GAME_LOG": 575,
     "GAME_SUM_EXCEEDS_SEASON": 280,
     "RECEIVING_RATE_MISMATCH": 3,
     "COMPACT_FEED_MISMATCH": 2
   },
   "severityCounts": {
-    "info": 544,
+    "info": 575,
     "review": 285
   },
   "teams": [
@@ -191,8 +191,8 @@
     {
       "team": "CARBON",
       "rosterPlayers": 43,
-      "statRows": 52,
-      "rosterPlayersWithoutReportedStats": 13,
+      "statRows": 54,
+      "rosterPlayersWithoutReportedStats": 12,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 0,
@@ -972,8 +972,8 @@
     {
       "team": "RIVERTON",
       "rosterPlayers": 55,
-      "statRows": 52,
-      "rosterPlayersWithoutReportedStats": 22,
+      "statRows": 54,
+      "rosterPlayersWithoutReportedStats": 21,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 3,
@@ -4785,6 +4785,46 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "BINGHAM",
+      "subject": "Jaylee Thompson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 41,
+      "gameLogSum": 35
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "BINGHAM",
+      "subject": "Kash Dawson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 54,
+      "gameLogSum": 51
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "BINGHAM",
+      "subject": "Tali Lautaha",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 27,
+      "gameLogSum": 25
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "BINGHAM",
+      "subject": "Le'o Tafuna",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 15,
+      "gameLogSum": 13
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "BINGHAM",
       "subject": "Lincoln Morgan",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
@@ -5035,11 +5075,131 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "CARBON",
+      "subject": "Daxtyn Mower",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 99,
+      "gameLogSum": 92
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Ricky Sandoval",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 69,
+      "gameLogSum": 61
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Andrew Kifer",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 42,
+      "gameLogSum": 40
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Tayger Timothy",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 48,
+      "gameLogSum": 47
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
       "subject": "Davis Secor",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 34,
+      "season": 38,
       "gameLogSum": 29
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Brodee Collins",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 26,
+      "gameLogSum": 25
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Jared Simmons",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 32,
+      "gameLogSum": 30
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Carson Anderson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 19,
+      "gameLogSum": 18
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Mossimo Rondinelli",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 12,
+      "gameLogSum": 11
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Izzac McIntyre",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 20,
+      "gameLogSum": 15
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Baylor Sanders",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 7
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Mauricio Moreno",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 35,
+      "gameLogSum": 29
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CARBON",
+      "subject": "Oscar Olivas",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 5
     },
     {
       "level": "info",
@@ -7540,6 +7700,156 @@
       "field": "PAT",
       "season": 12,
       "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Blake Weston",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 102,
+      "gameLogSum": 91
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Kos Crowther",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 61,
+      "gameLogSum": 53
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Julius Salgado",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 56,
+      "gameLogSum": 54
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Julius Salgado",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 2,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Julian Ramos",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 37,
+      "gameLogSum": 36
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Ryan Kirkland",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 53,
+      "gameLogSum": 49
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Jack Thompson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 46,
+      "gameLogSum": 41
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Angus Macinnes",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 60,
+      "gameLogSum": 54
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Ethan Wardell",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 52,
+      "gameLogSum": 48
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Trayven Olivieri",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 43,
+      "gameLogSum": 37
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Soren Munoz",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 29,
+      "gameLogSum": 25
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Christian Zarate",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 23,
+      "gameLogSum": 19
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Eli Gastelum",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 21,
+      "gameLogSum": 19
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Eli Gastelum",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 3,
+      "gameLogSum": 2
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "OGDEN",
+      "subject": "Carter Herrick",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 19,
+      "gameLogSum": 14
     },
     {
       "level": "info",
