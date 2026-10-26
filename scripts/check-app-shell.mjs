@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 
 const fail = message => {
   console.error(`APP SHELL CHECK FAILED: ${message}`);
@@ -93,7 +94,20 @@ if (!/^\d{8}-[a-z0-9-]+$/.test(navVersion)) fail('index.html has no valid canoni
 for (const file of fs.readdirSync('.').filter(name => name.endsWith('.html'))) {
   const html = fs.readFileSync(file, 'utf8');
   const versions = [...html.matchAll(/nav-menu\.js\?v=([\w-]+)/gi)].map(match => match[1]);
-  if (!versions.length) fail(`${file} is missing a versioned nav-menu reference.`);
+  // The audit and private award editors intentionally have a self-contained
+  // navigation bar, not the shared .nav-content shell. Require an explicit
+  // semantic navigation marker and working local destinations for that mode.
+  const standalone = html.match(/<nav\b[^>]*\bdata-rus-navigation=["']standalone["'][^>]*>([\s\S]*?)<\/nav>/i);
+  if (standalone) {
+    if (versions.length || /class=["'][^"']*\bnav-content\b/.test(html)) fail(`${file} mixes standalone and shared navigation.`);
+    const links = [...standalone[1].matchAll(/<a\b[^>]*\bhref=["']([^"']+)["']/gi)].map(match => match[1]);
+    const local = links.filter(link => !/^(?:[a-z]+:|\/\/|#)/i.test(link));
+    if (local.length < 2) fail(`${file} standalone navigation must provide at least two local links.`);
+    for (const link of local) {
+      const target = path.resolve(path.dirname(file), link.split(/[?#]/)[0]);
+      if (!target.startsWith(process.cwd() + path.sep) || !fs.existsSync(target)) fail(`${file} has a broken standalone navigation link: ${link}`);
+    }
+  } else if (!versions.length) fail(`${file} is missing a versioned nav-menu reference.`);
   for (const version of versions) {
     if (version !== navVersion) fail(`${file} uses nav-menu version ${version}; expected ${navVersion}.`);
   }

@@ -1,0 +1,1977 @@
+{
+  "node_tests": {
+    "passed": 52,
+    "failed": 0,
+    "command": "node --test tests/*.test.cjs tests/*.test.mjs"
+  },
+  "workflow_steps": [
+    {
+      "workflow": "player-stat-integrity.yml",
+      "step": "node --test tests/player-stat-integrity.test.mjs",
+      "exit": 0
+    },
+    {
+      "workflow": "player-stat-integrity.yml",
+      "step": "node scripts/merge_maxpreps_game_logs.mjs --self-test",
+      "exit": 0
+    },
+    {
+      "workflow": "player-stat-integrity.yml",
+      "step": "node scripts/merge_maxpreps_stats_fallback.mjs --self-test",
+      "exit": 0
+    },
+    {
+      "workflow": "player-stat-integrity.yml",
+      "step": "node scripts/test-shared-runtime.cjs",
+      "exit": 0
+    },
+    {
+      "workflow": "player-stat-integrity.yml",
+      "step": "node scripts/test-search-runtime.cjs",
+      "exit": 0
+    },
+    {
+      "workflow": "player-stat-integrity.yml",
+      "step": "node scripts/test_player_single_game_records_parser.mjs",
+      "exit": 0
+    },
+    {
+      "workflow": "player-stat-integrity.yml",
+      "step": "node scripts/dedupe_player_single_game_records.mjs --self-test",
+      "exit": 0
+    },
+    {
+      "workflow": "player-stat-integrity.yml",
+      "step": "node scripts/validate_player_single_game_records.mjs",
+      "exit": 0
+    },
+    {
+      "workflow": "player-stat-integrity.yml",
+      "step": "node --test tests/*.test.cjs",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Check JavaScript syntax",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Build compact stat payload",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify compact stat payload",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify app shell wiring",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Rebuild and audit quarterly scoring",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify interactive Game Center",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify football records categories and 8-player isolation",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify performance shell",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify homepage Scorigami freshness",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify growth features",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify Record Watch everywhere",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify My Teams dashboard",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify current-week and conditional stat fixes",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Validate compact search and asynchronous interactions",
+      "exit": 0
+    },
+    {
+      "workflow": "app-shell-sanity.yml",
+      "step": "Verify shared runtime under stalled network and cache operations",
+      "exit": 0
+    },
+    {
+      "workflow": "build-share-previews.yml",
+      "step": "Syntax checks",
+      "exit": 0
+    },
+    {
+      "workflow": "build-share-previews.yml",
+      "step": "Validate renderer",
+      "exit": 0
+    }
+  ],
+  "additional_scripts": [
+    {
+      "script": "check-app-shell.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-basketball-brackets.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-credibility.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-current-week-and-stat-corrections.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-first-render.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-football-record-formats.cjs",
+      "exit": 0
+    },
+    {
+      "script": "check-game-center-v2.cjs",
+      "exit": 0
+    },
+    {
+      "script": "check-game-center-v3.cjs",
+      "exit": 0
+    },
+    {
+      "script": "check-growth-features.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-historical-player-season-alerts.cjs",
+      "exit": 0
+    },
+    {
+      "script": "check-home-game-of-week.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-home-scorigami.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-my-teams.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-payload-size.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-performance-shell.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-record-tab-school-colors.cjs",
+      "exit": 0
+    },
+    {
+      "script": "check-record-watch-everywhere.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-region-awards-role-scoring.cjs",
+      "exit": 0
+    },
+    {
+      "script": "check-school-sponsor.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-season-record-alerts.cjs",
+      "exit": 0
+    },
+    {
+      "script": "check-season-record-mobile.cjs",
+      "exit": 0
+    },
+    {
+      "script": "check-season-record-school-colors.cjs",
+      "exit": 0
+    },
+    {
+      "script": "check-state25-sponsor.mjs",
+      "exit": 0
+    },
+    {
+      "script": "check-trust-growth.mjs",
+      "exit": 0
+    },
+    {
+      "script": "test-final-reconciliation.mjs",
+      "exit": 0
+    },
+    {
+      "script": "test-final-score-integrity.mjs",
+      "exit": 0
+    },
+    {
+      "script": "test-search-runtime.cjs",
+      "exit": 0
+    },
+    {
+      "script": "test-shared-runtime.cjs",
+      "exit": 0
+    },
+    {
+      "script": "test_player_single_game_records_parser.mjs",
+      "exit": 0
+    },
+    {
+      "script": "validate_player_single_game_records.mjs",
+      "exit": 0
+    },
+    {
+      "script": "validate_team_stat_single_game_records.mjs",
+      "exit": 0
+    }
+  ],
+  "browser": [
+    {
+      "page": "about.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "about.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "all-state-watch.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "all-state-watch.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "awards-2025.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "all-utah.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "all-utah.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "awards-2025.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-brackets.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "basketball-stat-leaders.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-brackets.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "basketball-stat-leaders.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-scoreboard.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-scoreboard.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-team.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-team.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-teams.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-teams.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "championships.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "championships.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "classification-builder.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "classification-builder.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "coaches.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "coaches.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "compare.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "compare.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "corrections.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "corrections.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-greatest-seasons.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "dynasty.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "dynasty.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "elo.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "boys-basketball-greatest-seasons.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "fantasy-football.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "fantasy-football.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "elo.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "game-week.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "game-week.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "game-center.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "game.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "game.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "game-center.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": true,
+      "passed": true
+    },
+    {
+      "page": "games.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "games.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "historical-rankings.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "historical-rankings.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "history-lab.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "history-lab.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "index.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "index.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "madden-ratings.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": true,
+      "passed": true
+    },
+    {
+      "page": "madden-ratings.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "map.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "map.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "media.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "media.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "methodology.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "methodology.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "milestones.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "milestones.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "mvp-race.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "mvp-race.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "my-teams.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "my-teams.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "official-playoffs.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "greatest-seasons.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "official-playoffs.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "out-of-state.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "out-of-state.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "player-compare.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "player-stats-audit.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 3,
+      "navVersions": [],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "player-stats-audit.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 3,
+      "navVersions": [],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "player.html?id=south-summit-3-ian-mair",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "player.html?id=south-summit-3-ian-mair",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "players.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "players.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "playoff-pickem.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "playoff-pickem.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": true,
+      "passed": true
+    },
+    {
+      "page": "player-compare.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "playoff-picture.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "playoff-picture.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "power-ratings.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "power-ratings.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": true,
+      "passed": true
+    },
+    {
+      "page": "preview-game-center-9d71c46b2a5e83f0.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "preview-game-center-9d71c46b2a5e83f0.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": true,
+      "passed": true
+    },
+    {
+      "page": "promotion-relegation.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "programs.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "programs.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "promotion-relegation.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "greatest-seasons.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "rankings.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "rankings.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "records.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "region-awards-grades.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 3,
+      "navVersions": [],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "region-awards-grades.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 3,
+      "navVersions": [],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "region-awards-latest.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 3,
+      "navVersions": [],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "region-awards-latest.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 3,
+      "navVersions": [],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "region-awards.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 3,
+      "navVersions": [],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "records.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "region-awards.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 3,
+      "navVersions": [],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "rivalry.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "rpi.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "rpi.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "rivalry.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "scoreboard.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "scoreboard.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "search.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "search.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "scorigami.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "scorigami.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "season.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "season.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "simulators.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "sponsors.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "sponsors.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "simulators.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "standings.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "standings.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "stat-leaders-hub.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "stat-leaders-hub.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "stat-leaders.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "storylines.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "storylines.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "stat-leaders.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "streaks.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "team-page-content.html?team=SOUTH%20SUMMIT",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "team-page-content.html?team=SOUTH%20SUMMIT",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "streaks.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "team-stats.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "team-stats.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "team.html?team=SOUTH%20SUMMIT",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "teams.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "team.html?team=SOUTH%20SUMMIT",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": true,
+      "passed": true
+    },
+    {
+      "page": "teams.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "upsets.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "upsets.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "weekly-awards.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "weekly-awards.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "whats-new.html",
+      "width": 1440,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    },
+    {
+      "page": "whats-new.html",
+      "width": 390,
+      "http": 200,
+      "navLinks": 57,
+      "navVersions": [
+        "20261023-region-awards1"
+      ],
+      "errors": [],
+      "overflow": false,
+      "passed": true
+    }
+  ],
+  "statistics_functional_checks": [
+    {
+      "viewport": 390,
+      "check": "Ian Mair profile displays 1397 yards and 101-195",
+      "passed": true
+    },
+    {
+      "viewport": 390,
+      "check": "South Summit Stats tab displays corrected passing yards",
+      "passed": true
+    },
+    {
+      "viewport": 390,
+      "check": "Season yards leaderboard and Week 10 filter render reported rows",
+      "passed": true
+    },
+    {
+      "viewport": 1440,
+      "check": "Ian Mair profile displays 1397 yards and 101-195",
+      "passed": true
+    },
+    {
+      "viewport": 1440,
+      "check": "South Summit Stats tab displays corrected passing yards",
+      "passed": true
+    },
+    {
+      "viewport": 1440,
+      "check": "Season yards leaderboard and Week 10 filter render reported rows",
+      "passed": true
+    }
+  ],
+  "generated_data_review": {
+    "main_commit": "58df10126e6bb10219ec4363256c31f4169aa1f4",
+    "new_main_files_preserved": 125,
+    "unchanged_critical_files": 10,
+    "season_teams": 118,
+    "season_rows": 6915,
+    "team_games": 1127,
+    "explicit_game_cell_conflicts": 6,
+    "changed_json_files_parsed": 262,
+    "locked_awards_unchanged": true,
+    "weekly_winners_unchanged": true,
+    "roster_and_season_identities_unchanged": true
+  },
+  "hosted_checks": "Unconfirmed: GitHub API returned Forbidden. Local workflow commands executed successfully."
+}

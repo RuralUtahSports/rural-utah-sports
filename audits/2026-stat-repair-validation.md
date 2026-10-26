@@ -5,7 +5,7 @@
 | Check | Result |
 | --- | --- |
 | `node --test tests/player-stat-integrity.test.mjs` | **27 passed, 0 failed.** Includes actual import CLI outage simulations that verify saved files remain byte-for-byte unchanged. |
-| `node --test tests/*.test.cjs` | **16 passed, 1 failed.** Pre-existing `Team pages load 2026 grades after current-season record section` expects a literal `ratings-nav1` marker in `team.html`, now a loader for `team-page-content.html`. Not disabled or changed. |
+| `node --test tests/*.test.cjs` | **25 passed, 0 failed** after PR #179 follow-up. The obsolete marker assertion was replaced with tests of the fetched template, sequential script execution, dashboard placement, and historical-season exclusion. Navigation and rankings-runtime regressions are also covered. |
 | `node scripts/test-shared-runtime.cjs` | Passed. |
 | `node scripts/test-search-runtime.cjs` | Passed: 12,874 players, 118 teams, 602 games. |
 | `node scripts/merge_maxpreps_game_logs.mjs --self-test` | Passed. |
@@ -48,6 +48,6 @@ Screenshots and browser observations are in [2026-stat-repair-visuals](2026-stat
 2. Alma Barlow's rushing-TD rules disagree (conditional 9, minimum 27, cached MaxPreps 33). Keep the current 27 with an explicit unresolved status until dated primary evidence resolves the conflict.
 3. Dashawn Gordon/Gordan's alias is repaired, but there are no cached source game rows for that identity. The cached cumulative figure is 875 rushing yards versus 762 in the October 23 issue and 26 retained in RUS; fresh game coverage is required before replacing it.
 4. The original 280 flags are individually traced in `2026-stat-repair-evidence.json`: 219 fields are no longer below the original game sum; 61 still need review. The broader current audit contains additional discrepancies after game recovery and rebuild. Neither number certifies every season total.
-5. GitHub API requests return **Forbidden**, including PR creation. Git push works through the existing repository authentication. PR creation must be retried when API access is available; do not supply secret values in chat.
+5. GitHub API requests still return **Forbidden**. PR #179 now exists and updates can be delivered through Git push, but hosted check status cannot be confirmed through the API. See [PR #179 follow-up validation](pr-179-review.md) for current local results; the initial delivery failure is no longer an outstanding test failure.
 
 No merge, deployment, change to published award winners, or rewrite of the frozen award snapshot was authorized or performed.
