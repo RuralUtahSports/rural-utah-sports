@@ -1,6 +1,6 @@
 # PR #179: CI and review follow-up
 
-The existing `fix/2026-player-statistics-repair` branch was merged with `main` at **58df10126e6bb10219ec4363256c31f4169aa1f4**. All 125 newer upstream data files were preserved byte-for-byte. Speed Cut's Uintah configuration, authentic logo file, contact link, and sponsor runtime are unchanged.
+The existing `fix/2026-player-statistics-repair` branch was merged with `main` at **218ff69943721bc70c5431f4c18b9fc969071510**. All 134 newer upstream source/data files were preserved byte-for-byte. Four conflicting generated audit reports were regenerated against the combined branch, preserving the repair’s discrepancy flags. Speed Cut's Uintah configuration, authentic logo file, contact link, and sponsor runtime are unchanged.
 
 ## Corrections
 
@@ -11,6 +11,8 @@ The existing `fix/2026-player-statistics-repair` branch was merged with `main` a
 - Updated three additional stale checks found during the broader sweep: record themes now verify template loading rather than a superseded wrapper stamp; playoff pending/advancing paths use explicit fixtures rather than expecting unfinished live brackets; Top 25 sponsor checks exercise configured-off and active states instead of requiring a retired sponsor or opening a cache-key URL as a local filename. Current sponsorship settings and game outcomes were not changed.
 
 ## Actual automated results
+
+Final commands were rerun with **Node 22.23.4**, matching CI’s Node 22 major version. The same 52 tests also passed with the existing Node 24 runtime.
 
 | Check | Result |
 | --- | --- |
@@ -35,11 +37,11 @@ No page-level horizontal overflow appeared on the 70 mobile pages. Six desktop p
 
 ## Generated-data and statistics integrity
 
-- Parsed all 262 data JSON files changed by the original repair relative to `main`; no malformed JSON was found.
+- Parsed all 263 changed JSON files, including review evidence, relative to the latest `main`; no malformed JSON was found.
 - Roster contents and all season row identities match the upstream dataset: **118 teams, 6,915 category rows**. No player IDs, names, or jersey numbers changed.
 - Game metadata matches **1,127 team games**; no duplicate player IDs occur within a game. Six contradictory game cells remain explicitly flagged.
 - Repaired full/compact season datasets, game data, and the regular-season overlay are byte-for-byte unchanged by the CI follow-up. The locked awards snapshot and weekly winners remain byte-for-byte identical to `main`.
 - Every candidate correction in the separate award overlay is dated through **October 16**. No playoff figures were added to locked awards.
 - No new player statistics were invented or manually replaced. Alma Barlow's TD conflict, Gordon/Gordan's incomplete source evidence, missing Monument Valley/UMA-Hillfield reporting, and the existing discrepancy flags remain unresolved and visible.
 
-The PR is ready for final code/data review, subject to checking the hosted rerun results. This does not certify unresolved source statistics. No merge, deployment, or published award changes were performed.
+The PR is ready for final code/data review, subject to checking the hosted rerun results. This does not certify unresolved source statistics. PR #179 was not merged, and no deployment or published award changes were performed.

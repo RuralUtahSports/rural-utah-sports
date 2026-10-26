@@ -2,7 +2,8 @@
   "node_tests": {
     "passed": 52,
     "failed": 0,
-    "command": "node --test tests/*.test.cjs tests/*.test.mjs"
+    "command": "node --test tests/*.test.cjs tests/*.test.mjs",
+    "runtime": "Node 22.23.4 (also passed on Node 24.19.0)"
   },
   "workflow_steps": [
     {
@@ -1961,14 +1962,14 @@
     }
   ],
   "generated_data_review": {
-    "main_commit": "58df10126e6bb10219ec4363256c31f4169aa1f4",
-    "new_main_files_preserved": 125,
+    "main_commit": "218ff69943721bc70c5431f4c18b9fc969071510",
+    "new_main_files_preserved": 134,
     "unchanged_critical_files": 10,
     "season_teams": 118,
     "season_rows": 6915,
     "team_games": 1127,
     "explicit_game_cell_conflicts": 6,
-    "changed_json_files_parsed": 262,
+    "changed_json_files_parsed": 263,
     "locked_awards_unchanged": true,
     "weekly_winners_unchanged": true,
     "roster_and_season_identities_unchanged": true
