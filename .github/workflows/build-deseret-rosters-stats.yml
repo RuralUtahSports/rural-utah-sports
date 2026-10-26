@@ -6,6 +6,7 @@ on:
   schedule:
     - cron: '*/15 * * * *'
   push:
+    branches: [main]
     paths:
       - 'scripts/enrich-deseret-game-details.mjs'
       - 'manual-stat-corrections-2026.json'
@@ -18,6 +19,10 @@ on:
       - 'scripts/merge_verified_deseret_kicking.mjs'
       - 'deseret-kicking-game-stats-2026.json'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
+      - 'scripts/lib/player-stat-integrity.mjs'
+      - 'scripts/build_region_award_stat_corrections.mjs'
+      - 'player-stat-aliases-2026.json'
+      - 'tests/player-stat-integrity.test.mjs'
       - 'scripts/build_weekly_awards.mjs'
       - 'scripts/apply_manual_stat_corrections.mjs'
       - 'award-scoring-core.js'
@@ -47,6 +52,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Test player statistic integrity before importing
+        run: node --test tests/player-stat-integrity.test.mjs
       - name: Build rosters and season player stats
         run: |
           node scripts/build_deseret_rosters_stats.mjs
@@ -57,8 +64,10 @@ jobs:
         run: |
           node scripts/build_player_game_stats.mjs
           node scripts/merge_maxpreps_game_logs.mjs
-          node scripts/reconcile_season_stats_from_game_logs.mjs
           node scripts/merge_verified_deseret_kicking.mjs
+          node scripts/reconcile_season_stats_from_game_logs.mjs
+          node scripts/apply_manual_stat_corrections.mjs
+          node scripts/build_region_award_stat_corrections.mjs
           # Re-apply verified athlete-level floors after incomplete game logs have been summed.
           node scripts/apply_manual_stat_corrections.mjs
       - name: Build compact shared stat metrics
@@ -95,7 +104,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
+          git add region-awards-stat-corrections-2026.json audits/2026-stat-reconciliation.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
           if git diff --cached --quiet; then echo "Roster/stat data already current."; exit 0; fi
           git commit -m "Auto-sync Deseret rosters and stats"
           for attempt in 1 2 3 4; do

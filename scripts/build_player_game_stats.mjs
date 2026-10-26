@@ -1,3 +1,4 @@
+import {matchPlayer, atomicJSON, normalizePlayerStatLines, gameIdentity} from './lib/player-stat-integrity.mjs';
 import fs from 'node:fs';
 import {applyGameDetailCorrections} from './apply_manual_stat_corrections.mjs';
 import {suppressInvalidItaStatInMemory} from './suppress_invalid_tage_ita_attempts.mjs';
@@ -18,7 +19,7 @@ function playerId(team,no,name){return `${slug(team)}-${slug(no||'x')}-${slug(na
 function cleanGameName(v){return clean(v).replace(/^\s*[A-Z]\s*\.\s*/i,'').replace(/^\s*[A-Z]\s+/i,m=>m.trim().length===1?'':m).replace(/\s+/g,' ').trim()}
 function nameBits(v){const s=cleanGameName(v).replace(/[^A-Za-z0-9'’.-]+/g,' ').trim();const p=s.split(/\s+/).filter(Boolean);return {raw:s,last:compact(p[p.length-1]||''),first:compact(p[0]||''),initial:compact((p[0]||'').charAt(0))}}
 function rosterIndex(teamData){const byNo=new Map(),all=[];for(const p of teamData?.roster||[]){const x={...p,bits:nameBits(p.name)};all.push(x);const n=compact(p.number);if(n){if(!byNo.has(n))byNo.set(n,[]);byNo.get(n).push(x)}}return{byNo,all}}
-function matchScore(idx,no,name){const n=compact(no),b=nameBits(name),candidates=n?idx.byNo.get(n)||[]:idx.all;let best=null,score=0;for(const p of candidates){let s=0;if(n&&compact(p.number)===n)s+=4;if(b.last&&p.bits.last&&b.last===p.bits.last)s+=6;else if(b.last&&p.bits.last&&(b.last.endsWith(p.bits.last)||p.bits.last.endsWith(b.last)))s+=3;if(b.initial&&p.bits.initial&&b.initial===p.bits.initial)s+=2;if(b.first&&p.bits.first&&b.first===p.bits.first)s+=2;if(s>score){score=s;best=p}}return{player:best,score}}
+function matchScore(idx,no,name){const player=matchPlayer(idx.all,{number:no,name});return{player,score:player?12:0}}
 function teamLabelMatches(label,team){const l=compact(label),t=canon(team);return !!l&&!!t&&(l.includes(t)||t.includes(l))}
 function statRows(table){const headers=(table.headers||[]).map(clean);const hu=headers.map(compact);let noI=hu.findIndex(x=>x==='NO'||x==='NUMBER'||x==='#');let nameI=hu.findIndex(x=>x==='PLAYER'||x.includes('PLAYERNAME'));if(noI<0)noI=0;if(nameI<0)nameI=1;const out=[];for(const raw of table.rows||[]){const row=Array.isArray(raw)?raw.map(clean):[];if(!row.length)continue;const no=clean(row[noI]||''),rawName=cleanGameName(row[nameI]||'');if(!rawName||compact(rawName)==='PLAYER')continue;const values={};for(let i=0;i<headers.length;i++){if(i===noI||i===nameI)continue;values[headers[i]||`Stat ${i+1}`]=clean(row[i]||'')}out.push({number:no,rawName,category:clean(table.category)||'Stats',values})}return out}
 function playMatchesPlayer(play,p){const txt=compact(play),b=nameBits(p.name);if(!b.last||b.last.length<3||!txt.includes(b.last))return false;if(b.first&&txt.includes(b.first+b.last))return true;if(b.initial&&txt.includes(b.initial+b.last))return true;return txt.includes(b.last)}
@@ -70,17 +71,36 @@ let preservedFinalGames=0,replacedEmptyFinalGames=0;
 for(const [priorName,priorTeam] of Object.entries(prior.teams||{})){
   for(const oldGame of priorTeam.games||[]){
     if(!(oldGame.final===true||clean(oldGame.status).toUpperCase().includes('FINAL'))||statCellCount(oldGame)===0)continue;
-    const expected=expectedScheduleGame(scheduleData,priorName,oldGame);if(!expected)continue;
+    const expected=expectedScheduleGame(scheduleData,priorName,oldGame)||{date:oldGame.date,opponent:oldGame.opponent,site:clean(oldGame.location).toLowerCase()};
     let targetKey=Object.keys(teams).find(name=>canon(name)===canon(priorName));
     if(!targetKey){targetKey=priorName;teams[targetKey]={team:priorTeam.team||priorName,games:[]}}
-    const target=teams[targetKey],index=(target.games||[]).findIndex(game=>isoDate(game.date)===isoDate(oldGame.date)&&canon(game.opponent)===canon(oldGame.opponent)),restored=normalizedPreservedGame(priorName,oldGame,expected);
+    const target=teams[targetKey],index=(target.games||[]).findIndex(game=>(isoDate(game.date)===isoDate(oldGame.date)&&canon(game.opponent)===canon(oldGame.opponent))||gameIdentity(game)===gameIdentity(oldGame)),restored=normalizedPreservedGame(priorName,oldGame,expected);
     if(index<0){target.games.push(restored);preservedFinalGames++}
     else if(statCellCount(target.games[index])===0){target.games[index]=restored;replacedEmptyFinalGames++}
+    else {
+      const fresh=target.games[index];
+      for(const oldPlayer of oldGame.players||[]){
+        let player=matchPlayer(fresh.players||[],oldPlayer,priorName);
+        if(!player){(fresh.players||=[]).push(structuredClone(oldPlayer));continue}
+        for(const oldLine of oldPlayer.statLines||[]){
+          let line=(player.statLines||[]).find(l=>compact(l.category)===compact(oldLine.category));
+          if(!line){(player.statLines||=[]).push(structuredClone(oldLine));continue}
+          for(const [header,value] of Object.entries(oldLine.values||{})){
+            const key=Object.keys(line.values||{}).find(h=>compact(h)===compact(header))||header;
+            if(clean(line.values?.[key])===''&&clean(value)!==''||/manual|verified/i.test(clean(oldLine.statSources?.[header]))){
+              (line.values||={})[key]=value;
+              if(oldLine.statSources?.[header])(line.statSources||={})[key]=oldLine.statSources[header];
+            }
+          }
+        }
+      }
+    }
   }
 }
 for(const t of Object.values(teams))t.games.sort((a,b)=>a.date.localeCompare(b.date));
 gameCount=Object.values(teams).reduce((sum,team)=>sum+(team.games||[]).length,0);
 const out={season:2026,updatedAt:new Date().toISOString(),summary:{teams:Object.keys(teams).length,teamGames:gameCount,statRows:rowCount,rosterMatchedRows:matched,preservedFinalGames,replacedEmptyFinalGames},teams};
+for(const team of Object.values(out.teams))for(const game of team.games||[])for(const player of game.players||[])normalizePlayerStatLines(player);
 suppressInvalidItaStatInMemory(out);
-fs.writeFileSync(OUT,JSON.stringify(out,null,2)+'\n');
+atomicJSON(OUT,out);
 console.log(`Player game stats: ${out.summary.teams} teams, ${gameCount} team-games, ${rowCount} stat rows, ${matched} roster-matched; ${preservedFinalGames} prior final game(s) preserved and ${replacedEmptyFinalGames} empty final game(s) restored.`);

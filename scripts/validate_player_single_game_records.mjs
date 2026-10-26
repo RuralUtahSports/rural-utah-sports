@@ -136,6 +136,7 @@ for (let season = START_SEASON; season <= Number(index.endSeason); season += 1) 
 }
 
 validateCategories(statewide.categories, 100, null, true);
+if(fs.existsSync(path.join(ROOT,'2026.json'))){const current=readJson(path.join(ROOT,'2026.json'));validateCategories(current.categories,100);for(const category of current.categories)for(const entry of category.entries)assert(Number(entry.season)===2026,`${category.key}: current-season record has wrong season ${entry.season}`);}
 assert(/2009 to present/.test(clean(statewide.coverageNote)), 'Coverage note must identify the 2009 start of structured game statistics');
 if(!/2001.2008/.test(clean(statewide.coverageNote)))console.warn('Preserved snapshot has older coverage wording; do not change historical data just to satisfy metadata validation.');
 const passing = statewide.categories.find(category => category.key === 'passingYards');

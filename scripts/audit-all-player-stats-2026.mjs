@@ -1,3 +1,4 @@
+import {aggregateGames} from './reconcile_season_stats_from_game_logs.mjs';
 import fs from 'node:fs';
 
 const ROOT='.';
@@ -54,6 +55,9 @@ for(const [team,school] of Object.entries(rosters.teams||{})){
    }
   }
  }
+ const aggregate=aggregateGames({...byGameTeam.get(canon(team)),team},[...roster,...sections.flatMap(s=>s.rows||[])]);
+ const verifiedGameSums=new Map([...aggregate.totals].filter(([,v])=>!v.conflict&&typeof v.value==='number').map(([key,v])=>[key,v.value]));
+ for(const conflict of aggregate.conflicts)flag('review','CONFLICTING_GAME_CELL',team,conflict.name,conflict);
  let playerRowCount=0,missingIdentity=0,mismatches=0;
  const metricTeam=metrics.teams?.[team];
  for(const section of sections){
@@ -76,7 +80,7 @@ for(const [team,school] of Object.entries(rosters.teams||{})){
     if(mini!==undefined&&number(mini)!==null&&number(mini)!==v){
       flag('review','COMPACT_FEED_MISMATCH',team,player.name,{category:section.category,field:key,season:v,compact:number(mini)});mismatches++;
     }
-    const total=gameSums.get(id+'|'+cat+'|'+metric);
+    const total=verifiedGameSums.get(id+'|'+cat+'|'+metric);
     if(total===undefined)continue;
     if(total>v+.01){
       tally.gameAboveSeasonSum++;

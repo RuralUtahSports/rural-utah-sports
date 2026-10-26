@@ -1,0 +1,30 @@
+name: Player statistic integrity
+on:
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - '*stats*2026.json'
+      - '*corrections*2026.json'
+      - 'player-stat-aliases-2026.json'
+      - 'region-awards-hub-2026-r3.js'
+      - '.github/workflows/player-stat-integrity.yml'
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/player-stat-integrity.test.mjs
+      - run: node scripts/merge_maxpreps_game_logs.mjs --self-test
+      - run: node scripts/merge_maxpreps_stats_fallback.mjs --self-test
+      - run: node scripts/test-shared-runtime.cjs
+      - run: node scripts/test-search-runtime.cjs
+      - run: node scripts/test_player_single_game_records_parser.mjs
+      - run: node scripts/dedupe_player_single_game_records.mjs --self-test
+      - run: node scripts/validate_player_single_game_records.mjs
+      - run: node --test tests/*.test.cjs
