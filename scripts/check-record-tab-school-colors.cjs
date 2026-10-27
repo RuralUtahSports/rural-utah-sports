@@ -66,7 +66,8 @@ async function test(){
  assert.ok(tabs.includes('team-player-records.js?v=20261020-school-colors1'));
  assert.ok(tabs.includes('team-stat-records.js?v=20261020-school-colors1'));
  const teamLoader=fs.readFileSync('team.html','utf8');
- assert.ok(teamLoader.includes("const VERSION='20261020-record-school-colors1'"));
+ assert.match(teamLoader,/fetch\(`team-page-content\.html\?v=\$\{VERSION\}`\)/,'Team loader must fetch the content containing the palette runtime');
+ assert.match(teamLoader,/for\(const old of \[\.\.\.document\.querySelectorAll\('script'\)\]\)await copyScript\(old\)/,'Content scripts, including record palettes, must execute in document order');
  const unknown=api.themeFor('UNKNOWN SCHOOL',palettes);
  assert.equal(unknown.primary,'#F14D07','Missing data must show neutral RUS fallback');
  console.log('PASS: '+count+' authentic school themes in player and team records; CSS contrast, mobile scroll, lazy tab loaders');
