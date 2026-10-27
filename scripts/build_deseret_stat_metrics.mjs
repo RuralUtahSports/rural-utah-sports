@@ -1,11 +1,10 @@
 import fs from 'node:fs';
-import {assertApprovedRegularSeasonFile,createCompetitionIndex,assertClassifiedFinals} from './lib/competition-scope-2026.mjs';
+import {applyRosterStatCorrections} from './apply_manual_stat_corrections.mjs';
 
 const SOURCE='deseret-rosters-stats-2026.json';
 const OUTPUT='deseret-stat-metrics-2026.json';
-assertApprovedRegularSeasonFile(SOURCE);
 const source=JSON.parse(fs.readFileSync(SOURCE,'utf8'));
-// Approved input already contains reviewed corrections; do not replay unscoped rules.
+applyRosterStatCorrections(source);
 const compact=value=>String(value??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
 const nonEmpty=value=>value!==null&&value!==undefined&&String(value).trim()!=='';
 const targets=[

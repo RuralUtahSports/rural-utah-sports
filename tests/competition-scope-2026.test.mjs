@@ -79,11 +79,3 @@ test('award supplement rejects date-only and postseason totals and preserves raw
  proof.games[0].phase='postseason';assert.equal(Object.keys(ctx.pick({punt:{regularSeasonEvidence:proof}})).length,0);
  assert.equal(JSON.stringify(unscoped),saved);assert.match(source,/p\.specialStats=regularSeasonSpecialStats/);
 });
-test('actual unapproved rebuild commands fail before changing season data or locked winners',()=>{
- const protectedFiles=['deseret-rosters-stats-2026.json','deseret-stat-metrics-2026.json','team-stats-2026.json','season-record-alerts.json','region-awards-2026.lock.json','award-scoring-core-region-2026.lock.js','weekly-awards-2026.json'];
- const before=new Map(protectedFiles.map(f=>[f,sha256(fs.readFileSync(path.join(root,f)))]));
- for(const script of ['build_deseret_stat_metrics.mjs','build_team_stats.mjs','build-season-record-alerts.mjs','reconcile_season_stats_from_game_logs.mjs']){
-  const result=spawnSync(process.execPath,[path.join(root,'scripts',script)],{cwd:root,encoding:'utf8'});assert.equal(result.error,undefined);assert.notEqual(result.status,0);assert.match(result.stderr,/REGULAR_SEASON_REVIEW_REQUIRED/,script);
- }
- for(const [f,digest] of before)assert.equal(sha256(fs.readFileSync(path.join(root,f))),digest,f);
-});

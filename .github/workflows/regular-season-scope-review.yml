@@ -5,6 +5,11 @@ on:
       - 'scripts/lib/competition-scope-2026.mjs'
       - 'scripts/audit_regular_season_2026.mjs'
       - 'tests/competition-scope-2026.test.mjs'
+      - 'tests/verified-player-corrections-2026.test.mjs'
+      - 'scripts/lib/verified-player-corrections-2026.mjs'
+      - 'scripts/apply_verified_player_batch_2026.mjs'
+      - 'scripts/sync_verified_batch_team_stats_2026.mjs'
+      - 'regular-season-corrections-batch-1-2026.json'
       - 'competition-scope-review-2026.json'
       - 'regular-season-stat-review-2026.json'
       - 'source-audit-observations-2026.json'
@@ -21,7 +26,7 @@ jobs:
         with:
           node-version: '22'
       - name: Test competition classification and preservation guards
-        run: node --test tests/competition-scope-2026.test.mjs
+        run: node --test tests/competition-scope-2026.test.mjs tests/verified-player-corrections-2026.test.mjs
       - name: Audit stored source data without publishing changes
         run: node scripts/audit_regular_season_2026.mjs --output="$RUNNER_TEMP/regular-season-audit"
       - uses: actions/upload-artifact@v4
