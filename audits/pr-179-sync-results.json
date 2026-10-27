@@ -1,0 +1,310 @@
+[
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node --check nav-menu.js\nnode --check rankings-mobile-fix.js\nnode --check back-to-top.js\nnode --check rus-fetch-cache.js\nnode --check mobile-shell.js\nnode --check desktop-optimizations.js\nnode --check desktop-v2.js\nnode --check site-search.js\nnode --check pwa.js\nnode --check sw.js\nnode --check optimization-polish.js\nnode --check school-assets-core.js\nnode --check school-assets-bundle.js\nnode --check school-assets-scoreboard.js\nnode --check school-logo-integration.js\nnode --check school-colors.js\nnode --check school-colors-page.js\nnode --check home-scorigami-carousel.js\nnode --check recently-viewed.js\nnode --check home-personalized.js\nnode --check my-teams-dashboard.js\nnode --check my-teams-dashboard-v4.js\nnode --check rus-lines-dashboard.js\nnode --check game-center.js\nnode --check game-center-v2.js\nnode --check scripts/check-game-center-v2.cjs\nnode --check scripts/build-game-center-quarters.cjs\nnode --check game-center-upgrade.js\nnode --check app-shell-polish.js\nnode --check growth-features.js\nnode --check record-watch-everywhere.js\nnode --check scripts/build_deseret_stat_metrics.mjs\nnode --check scripts/check-app-shell.mjs\nnode --check scripts/check-growth-features.mjs\nnode --check scripts/check-record-watch-everywhere.mjs\nnode --check scripts/check-my-teams.mjs\nnode --check scripts/check-performance-shell.mjs\nnode --check scripts/check-payload-size.mjs\nnode --check scripts/check-home-scorigami.mjs\nnode --check scripts/apply_manual_stat_corrections.mjs\nnode --check scripts/check-current-week-and-stat-corrections.mjs\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/build_deseret_stat_metrics.mjs",
+    "exit": 0,
+    "output": "Manual stat corrections: 1 conflicting field group(s) retained unchanged for source review\nBuilt deseret-stat-metrics-2026.json: 118 teams, 6508 tracked rows, 736.2 KB (89.8% smaller than source).\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-payload-size.mjs",
+    "exit": 0,
+    "output": "Payload check passed: 7233.3 KB full -> 736.2 KB compact (89.8% smaller), 6508 tracked rows.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-app-shell.mjs",
+    "exit": 0,
+    "output": "App shell sanity checks passed.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/build-game-center-quarters.cjs",
+    "exit": 0,
+    "output": "Game Center quarter audit: {\"total\":599,\"verified\":373,\"partial\":55,\"unavailable\":158,\"conflict\":13,\"reasonCounts\":{\"verified\":373,\"partial\":55,\"missing_quarter_cells\":55,\"unavailable\":158,\"no_quarter_values\":66,\"not_in_source\":6,\"team_label_unmatched\":26,\"conflict\":13,\"quarter_sum_conflict\":3,\"final_total_conflict\":10,\"source_not_final\":58,\"no_quarter_box\":2}}\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-game-center-v2.cjs",
+    "exit": 0,
+    "output": "Game Center v2 checks passed: verified-source comparisons, experimental odds, rivalry updates, player leaders and detail-score safeguards.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-football-record-formats.cjs",
+    "exit": 0,
+    "output": "Football record formats: 132 categories / 693 entries; separate watch baselines, missing-data isolation, negative records and search rank preservation passed.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-performance-shell.mjs",
+    "exit": 0,
+    "output": "Performance shell checks passed. Fetch cache 3792 B; core 4794 B; legacy wrapper 1590 B; scoreboard-only 14456 B; color loader 523 B; 37 legacy HTML tags use the lightweight wrapper.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-home-scorigami.mjs",
+    "exit": 0,
+    "output": "Homepage Scorigami Tuesday-reset checks passed for 5 stored alerts.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-growth-features.mjs",
+    "exit": 0,
+    "output": "Growth feature wiring verified with 118 teams and 6440 identified players.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-record-watch-everywhere.mjs",
+    "exit": 0,
+    "output": "Record Watch verified: 7497 active stat rows, 116 stat teams, 167 teams in this week's slate, 116 overlapping teams.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-my-teams.mjs",
+    "exit": 0,
+    "output": "My Teams verified: 118 selectable teams, 167 teams in the loaded week, 118 with standings + stats coverage.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/check-current-week-and-stat-corrections.mjs",
+    "exit": 0,
+    "output": "Manual stat corrections: 1 conflicting field group(s) retained unchanged for source review\nManual stat corrections: 1 conflicting field group(s) retained unchanged for source review\nManual stat corrections: 1 conflicting field group(s) retained unchanged for source review\nManual stat corrections: 1 conflicting field group(s) retained unchanged for source review\nManual stat corrections: 1 conflicting field group(s) retained unchanged for source review\nCurrent-week selection and conditional stat corrections verified.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/build_player_search_index.mjs\nnode scripts/test-search-runtime.cjs\n",
+    "exit": 0,
+    "output": "Wrote 12874 players, 118 teams, 602 games (1070146 bytes)\nSearch regression checks passed: 12874 players, 118 teams, 602 games; lazy fetch, stale-result guard, archive links and retry.\n"
+  },
+  {
+    "workflow": "app-shell-sanity.yml",
+    "command": "node scripts/test-shared-runtime.cjs",
+    "exit": 0,
+    "output": "Shared runtime checks passed: service worker retired, RUS caches cleared, no fetch interception, startup does not wait for window.load, and desktop scans remain batched.\n"
+  },
+  {
+    "workflow": "build-share-previews.yml",
+    "command": "node --check share-preview-links.js\npython -m py_compile scripts/build_share_previews.py\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "build-share-previews.yml",
+    "command": "pip install pillow cairosvg",
+    "exit": 1,
+    "output": "WARNING: The directory '/home/agent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\nDefaulting to user installation because normal site-packages is not writeable\nRequirement already satisfied: pillow in /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages (12.3.0)\nWARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError(\"HTTPSConnection(host='proxy', port=8080): Failed to establish a new connection: [Errno 1] Operation not permitted\")': /simple/cairosvg/\nWARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError(\"HTTPSConnection(host='proxy', port=8080): Failed to establish a new connection: [Errno 1] Operation not permitted\")': /simple/cairosvg/\nWARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError(\"HTTPSConnection(host='proxy', port=8080): Failed to establish a new connection: [Errno 1] Operation not permitted\")': /simple/cairosvg/\nWARNING: Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError(\"HTTPSConnection(host='proxy', port=8080): Failed to establish a new connection: [Errno 1] Operation not permitted\")': /simple/cairosvg/\nWARNING: Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError(\"HTTPSConnection(host='proxy', port=8080): Failed to establish a new connection: [Errno 1] Operation not permitted\")': /simple/cairosvg/\nERROR: Could not find a version that satisfies the requirement cairosvg (from versions: none)\nERROR: No matching distribution found for cairosvg\n"
+  },
+  {
+    "workflow": "credibility-sanity.yml",
+    "command": "node --check site-credibility.js\nnode --check pwa.js\nnode --check sw.js\nnode --check scripts/check-credibility.mjs\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "credibility-sanity.yml",
+    "command": "node scripts/check-credibility.mjs",
+    "exit": 0,
+    "output": "RUS credibility checks passed.\n"
+  },
+  {
+    "workflow": "first-render-sanity.yml",
+    "command": "node --check nav-menu.js\nnode --check team-enhancements.js\nnode --check team-enhancements-runtime.js\nnode --check pwa.js\nnode --check sw.js\nnode --check scripts/check-first-render.mjs\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "first-render-sanity.yml",
+    "command": "node scripts/check-first-render.mjs",
+    "exit": 0,
+    "output": "First-render checks passed. Team head wrapper 646 B -> 6477 B deferred runtime; mobile content-visibility guards and post-paint extras are active.\n"
+  },
+  {
+    "workflow": "game-center-research.yml",
+    "command": "node scripts/build-game-center-research.cjs",
+    "exit": 0,
+    "output": "Compacted corrected player totals: 118 teams\n"
+  },
+  {
+    "workflow": "game-center-research.yml",
+    "command": "node scripts/check-game-center-v2.cjs && node scripts/check-game-center-v3.cjs",
+    "exit": 0,
+    "output": "Game Center v2 checks passed: verified-source comparisons, experimental odds, rivalry updates, player leaders and detail-score safeguards.\nGame Center 3.0: all ten feature regression groups passed.\n"
+  },
+  {
+    "workflow": "home-game-of-week-sanity.yml",
+    "command": "node --check home-game-of-week.js\nnode --check weekly-simulation-promo.js\nnode --check scripts/check-home-game-of-week.mjs\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "home-game-of-week-sanity.yml",
+    "command": "node scripts/check-home-game-of-week.mjs",
+    "exit": 0,
+    "output": "Game of the Week checks passed with 10 weekly games available; homepage now shows the RUS line instead of an exact projected score.\n"
+  },
+  {
+    "workflow": "player-stat-integrity.yml",
+    "command": "node --test tests/player-stat-integrity.test.mjs",
+    "exit": 1,
+    "output": "\u2716 tests/player-stat-integrity.test.mjs (176.737155ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 0\n\u2139 fail 1\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 182.608935\n\n\u2716 failing tests:\n\ntest at tests/player-stat-integrity.test.mjs:1:1\n\u2716 tests/player-stat-integrity.test.mjs (176.737155ms)\n  'test failed'\n"
+  },
+  {
+    "workflow": "player-stat-integrity.yml",
+    "command": "node scripts/merge_maxpreps_game_logs.mjs --self-test",
+    "exit": 0,
+    "output": "MaxPreps game-log merge self-test passed.\n"
+  },
+  {
+    "workflow": "player-stat-integrity.yml",
+    "command": "node scripts/merge_maxpreps_stats_fallback.mjs --self-test",
+    "exit": 0,
+    "output": "MaxPreps fallback self-test passed.\n"
+  },
+  {
+    "workflow": "player-stat-integrity.yml",
+    "command": "node scripts/test-shared-runtime.cjs",
+    "exit": 0,
+    "output": "Shared runtime checks passed: service worker retired, RUS caches cleared, no fetch interception, startup does not wait for window.load, and desktop scans remain batched.\n"
+  },
+  {
+    "workflow": "player-stat-integrity.yml",
+    "command": "node scripts/test-search-runtime.cjs",
+    "exit": 0,
+    "output": "Search regression checks passed: 12874 players, 118 teams, 602 games; lazy fetch, stale-result guard, archive links and retry.\n"
+  },
+  {
+    "workflow": "player-stat-integrity.yml",
+    "command": "node scripts/test_player_single_game_records_parser.mjs",
+    "exit": 0,
+    "output": "Player single-game record parser regression tests passed.\n"
+  },
+  {
+    "workflow": "player-stat-integrity.yml",
+    "command": "node scripts/dedupe_player_single_game_records.mjs --self-test",
+    "exit": 0,
+    "output": "Player record duplicate-normalization tests passed.\n"
+  },
+  {
+    "workflow": "player-stat-integrity.yml",
+    "command": "node scripts/validate_player_single_game_records.mjs",
+    "exit": 0,
+    "output": "Preserved snapshot has older coverage wording; do not change historical data just to satisfy metadata validation.\n{\n  uniqueGamePages: 14561,\n  gamePageFailures: 1,\n  performances: 282914,\n  teams: 118,\n  teamsWithPerformances: 113,\n  categories: 18,\n  teamFiles: 118,\n  verifiedRecords: [\n    'Brad Leggat, Hillcrest, 538 passing yards',\n    'Puka Nacua, Orem, 321 receiving yards',\n    'Cooper Legas, Orem, 628 total-offense yards'\n  ]\n}\n"
+  },
+  {
+    "workflow": "player-stat-integrity.yml",
+    "command": "node --test tests/*.test.cjs",
+    "exit": 0,
+    "output": "\u2714 tests/madden-ratings.test.cjs (84.723768ms)\n\u2714 tests/madden-statewide-calibration.test.cjs (107.189704ms)\n\u2714 tests/navigation-shell.test.cjs (60.476097ms)\n\u2714 tests/power-ratings.test.cjs (45.500339ms)\n\u2714 tests/rankings-ratings-placement.test.cjs (34.089783ms)\n\u2714 tests/ratings-image-share.test.cjs (30.511561ms)\n\u2139 tests 6\n\u2139 suites 0\n\u2139 pass 6\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 368.881813\n"
+  },
+  {
+    "workflow": "record-tab-school-colors.yml",
+    "command": "node --check team-record-theme.js\nnode --check team-player-records.js\nnode --check team-stat-records.js\nnode --check team-tabs.js\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "record-tab-school-colors.yml",
+    "command": "node scripts/check-record-tab-school-colors.cjs",
+    "exit": 0,
+    "output": "PASS: 20 authentic school themes in player and team records; CSS contrast, mobile scroll, lazy tab loaders\n"
+  },
+  {
+    "workflow": "school-sponsor-sanity.yml",
+    "command": "node --check team-enhancements.js\nnode --check team-logo-header.js\nnode --check team-page-fixes.js\nnode --check school-sponsor.js\nnode --check nav-menu.js\nnode --check weekly-simulation-promo.js\nnode --check home-scorigami-carousel.js\nnode --check scripts/check-school-sponsor.mjs\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "school-sponsor-sanity.yml",
+    "command": "node scripts/check-school-sponsor.mjs",
+    "exit": 0,
+    "output": "School sponsor checks passed: JH3D uses the corrected email, desktop sponsor-logo clicks open Gmail compose, mobile keeps mailto, sponsor logos stay protected from school-logo replacement, and the sponsor visibility features remain wired.\n"
+  },
+  {
+    "workflow": "season-record-alerts.yml",
+    "command": "node --check scripts/season-record-metrics.mjs\nnode --check scripts/build-season-record-alerts.mjs\nnode --check scripts/historical-player-season-alerts.mjs\nnode --check home-season-record-alerts.js\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "season-record-alerts.yml",
+    "command": "node scripts/check-season-record-mobile.cjs",
+    "exit": 0,
+    "output": "PASS: 18 separate season record cards, balanced markup, direct horizontal siblings and mobile sizing\n"
+  },
+  {
+    "workflow": "season-record-alerts.yml",
+    "command": "node scripts/check-season-record-school-colors.cjs",
+    "exit": 0,
+    "output": "PASS authentic colors for 8 schools on-screen and export; primary, secondary and accessible stat text\n"
+  },
+  {
+    "workflow": "season-record-alerts.yml",
+    "command": "node scripts/check-historical-player-season-alerts.cjs",
+    "exit": 0,
+    "output": "PASS: school-season comparisons use true historical leaders, exclude 2026 archive rows, exclude ties and one-season baselines; 119 school archives\n"
+  },
+  {
+    "workflow": "season-record-alerts.yml",
+    "command": "node scripts/build-season-record-alerts.mjs",
+    "exit": 0,
+    "output": "Season record alerts: {\"teamBroken\":12,\"teamProvisional\":42,\"playerReportedArchive\":47,\"playerExceedingUhsaa\":0,\"playerHistoricalHighs\":47,\"playerHistoricalArchivedTeams\":118,\"playerCategoriesMonitored\":29,\"teamStatCategoriesMonitored\":28,\"teamReportedArchive\":0,\"unbenchmarkedPlayerStats\":694,\"playerComparisonOnly\":908,\"teamComparisonOnly\":1195}\n"
+  },
+  {
+    "workflow": "season-record-alerts.yml",
+    "command": "node scripts/check-season-record-alerts.cjs",
+    "exit": 0,
+    "output": "PASS season record alerts {\"teamBroken\":12,\"teamProvisional\":42,\"playerReportedArchive\":47,\"playerExceedingUhsaa\":0,\"playerHistoricalHighs\":47,\"playerHistoricalArchivedTeams\":118,\"playerCategoriesMonitored\":29,\"teamStatCategoriesMonitored\":28,\"teamReportedArchive\":0,\"unbenchmarkedPlayerStats\":694,\"playerComparisonOnly\":908,\"teamComparisonOnly\":1195}\n"
+  },
+  {
+    "workflow": "state25-sponsor-sanity.yml",
+    "command": "node --check rankings-sponsor.js\nnode --check scripts/check-state25-sponsor.mjs\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "state25-sponsor-sanity.yml",
+    "command": "node scripts/check-state25-sponsor.mjs",
+    "exit": 0,
+    "output": "State Top 25 sponsor checks passed: explicit configured mode, independent rankings, active/off rendering, contacts, and idempotent export branding.\n"
+  },
+  {
+    "workflow": "trust-growth-sanity.yml",
+    "command": "node --check seo-structured-data.js\nnode --check site-credibility.js\nnode --check pwa.js\nnode --check sw.js\nnode --check scripts/build-sitemap.mjs\nnode --check scripts/audit-football-data.mjs\nnode --check scripts/check-trust-growth.mjs\n",
+    "exit": 0,
+    "output": ""
+  },
+  {
+    "workflow": "trust-growth-sanity.yml",
+    "command": "node scripts/check-trust-growth.mjs",
+    "exit": 0,
+    "output": "RUS Trust & Growth checks passed.\n"
+  },
+  {
+    "command": "node --test tests/*.test.cjs tests/*.test.mjs",
+    "exit": 1,
+    "output": "\u2714 tests/madden-ratings.test.cjs (94.179798ms)\n\u2714 tests/madden-statewide-calibration.test.cjs (124.729977ms)\n\u2714 tests/navigation-shell.test.cjs (61.333649ms)\n\u2716 tests/player-stat-integrity.test.mjs (163.43926ms)\n\u2714 tests/power-ratings.test.cjs (49.718657ms)\n\u2714 tests/rankings-ratings-placement.test.cjs (34.115562ms)\n\u2714 tests/ratings-image-share.test.cjs (30.803ms)\n\u2139 tests 7\n\u2139 suites 0\n\u2139 pass 6\n\u2139 fail 1\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 565.300734\n\n\u2716 failing tests:\n\ntest at tests/player-stat-integrity.test.mjs:1:1\n\u2716 tests/player-stat-integrity.test.mjs (163.43926ms)\n  'test failed'\n"
+  },
+  {
+    "command": "node scripts/check-region-awards-role-scoring.cjs",
+    "exit": 0,
+    "output": "PASS 2026 WR rankings: Hunter Burgess 101.3 > Trey Yardley 40.7\nPASS role filters: QB, RB, WR, TE, DL / defense preserved; locked stats unchanged\n"
+  },
+  {
+    "command": "node scripts/merge_verified_deseret_kicking.mjs --self-test",
+    "exit": 0,
+    "output": "Verified Deseret kicking merge self-test passed.\n"
+  },
+  {
+    "command": "node scripts/validate_team_stat_single_game_records.mjs",
+    "exit": 0,
+    "output": "Validated 11382 ranked rows across 113 teams; 18919 team-game performances total.\n"
+  }
+]
