@@ -1,4 +1,4 @@
-> Historical baseline before correction batch 1 (commit 4edf7362c). This is not a post-correction accuracy report. Current corrections and their sources are in regular-season-corrections-batch-1-2026.json.
+> Historical baseline before correction batch 1 (commit 4edf7362c). This is not a post-correction accuracy report. Current corrections are registered in regular-season-correction-batches-2026.json; see RELEASE-REVIEW.md and current-review-coverage.json for current status.
 
 # 2026 regular-season scope audit
 

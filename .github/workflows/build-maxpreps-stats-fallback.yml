@@ -13,6 +13,13 @@ on:
       - 'deseret-kicking-game-stats-2026.json'
       - 'scripts/suppress_invalid_tage_ita_attempts.mjs'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
+      - 'scripts/protect_regular_season_import_2026.mjs'
+      - 'scripts/lib/regular-season-import-2026.mjs'
+      - 'scripts/lib/verified-player-corrections-2026.mjs'
+      - 'regular-season-corrections-batch-*-2026.json'
+      - 'regular-season-correction-batches-2026.json'
+      - 'scripts/lib/reviewed-batches-2026.mjs'
+      - 'competition-scope-review-2026.json'
       - 'scripts/build_team_current_shards.mjs'
       - '.github/workflows/build-maxpreps-stats-fallback.yml'
   schedule:
@@ -27,9 +34,8 @@ permissions:
   contents: write
 
 concurrency:
-  # Do not share the 15-minute Deseret queue: frequent Deseret runs can otherwise
-  # keep this longer fallback refresh pending indefinitely.
-  group: maxpreps-stats-fallback
+  # Serialize season writers; reject a changed main rather than replay stale outputs.
+  group: current-football-statistics
   cancel-in-progress: false
 
 jobs:
@@ -42,6 +48,11 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+      - name: Capture published statistics before importing
+        run: |
+          echo "STAT_SOURCE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          cp deseret-rosters-stats-2026.json "$RUNNER_TEMP/regular-season-retained.json"
+          cp player-game-stats-2026.json "$RUNNER_TEMP/regular-games-retained.json"
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -63,10 +74,19 @@ jobs:
           node scripts/reconcile_season_stats_from_game_logs.mjs
           node scripts/suppress_invalid_tage_ita_attempts.mjs --games-only
           node scripts/merge_verified_deseret_kicking.mjs
+          node scripts/protect_regular_season_import_2026.mjs --baseline="$RUNNER_TEMP/regular-season-retained.json" --games-baseline="$RUNNER_TEMP/regular-games-retained.json" --candidate-output="$RUNNER_TEMP/regular-season-import-candidate.json"
           node scripts/build_deseret_stat_metrics.mjs
           node scripts/build_weekly_awards.mjs
           node scripts/build_team_current_shards.mjs
           node scripts/suppress_invalid_tage_ita_attempts.mjs --shards-only
+      - name: Retain source import candidate for statistical review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regular-season-import-candidate
+          path: ${{ runner.temp }}/regular-season-import-candidate.json
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Verify fallback output
         run: |
           node - <<'NODE'
@@ -96,28 +116,14 @@ jobs:
           NODE
       - name: Commit fallback data
         run: |
+          git fetch origin main
+          if [ "$(git rev-parse origin/main)" != "$STAT_SOURCE_COMMIT" ]; then
+            echo "Main changed during import. Rerun against latest main; do not overwrite newer data."
+            exit 1
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          publish_dir=$(mktemp -d)
-          cp maxpreps-stats-fallback-2026.json maxpreps-player-game-stats-2026.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json "$publish_dir/"
-          cp -R team-current-data "$publish_dir/"
-          for attempt in 1 2 3 4; do
-            git fetch origin main
-            # Generated outputs are safely copied to publish_dir above. Clear the
-            # checkout before switching to latest main so local generated changes
-            # cannot block the branch switch.
-            git reset --hard
-            git clean -fd
-            git switch -C maxpreps-publish origin/main
-            cp "$publish_dir"/*.json .
-            rm -rf team-current-data
-            cp -R "$publish_dir/team-current-data" .
-            git add maxpreps-stats-fallback-2026.json maxpreps-player-game-stats-2026.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
-            if git diff --cached --quiet; then echo "MaxPreps fallback data already current."; exit 0; fi
-            git commit -m "Auto-fill missing player stats from MaxPreps"
-            if git push origin HEAD:main; then exit 0; fi
-            echo "Push attempt $attempt failed; retrying against latest main."
-            sleep $((attempt * 5))
-          done
-          echo "Failed to push generated MaxPreps fallback data after retries."
-          exit 1
+          git add maxpreps-stats-fallback-2026.json maxpreps-player-game-stats-2026.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
+          if git diff --cached --quiet; then echo "Statistics already current."; exit 0; fi
+          git commit -m "Refresh source data; preserve reviewed regular-season statistics"
+          git push origin HEAD:main

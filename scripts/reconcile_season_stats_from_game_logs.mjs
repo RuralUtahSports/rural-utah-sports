@@ -1,4 +1,7 @@
 import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createCompetitionIndex} from './lib/competition-scope-2026.mjs';
 
 const ROSTERS='deseret-rosters-stats-2026.json';
 const GAMES='player-game-stats-2026.json';
@@ -9,6 +12,7 @@ const compact=value=>clean(value).toUpperCase().replace(/[^A-Z0-9]/g,'');
 const aliases={CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',MONUMENTVAL:'MONUMENTVALLEY',MAPLEMTN:'MAPLEMOUNTAIN',STJOSEPH:'SAINTJOSEPH',JUANDIEGOCATHOLIC:'JUANDIEGO'};
 const canon=value=>aliases[compact(value)]||compact(value);
 const numeric=value=>{
+  if(value===null||value===undefined||clean(value)==='')return null;
   const number=Number(clean(value).replace(/,/g,'').replace(/%$/,''));
   return Number.isFinite(number)?number:null;
 };
@@ -76,7 +80,7 @@ function expectedFinalKeys(teamName,sources={}){
 }
 function availableFinalKeys(gameTeam){const available=new Set();for(const game of gameTeam?.games||[]){if(game?.manualPartialStats||!gameFinal(game)||!gameHasStats(game))continue;const date=isoDate(game.date),opponent=clean(game.opponent);if(date&&opponent)available.add(`${date}|${canon(opponent)}`)}return available}
 
-export function reconcileSeasonStats(rosters,games,sources={}){
+function calculateCandidateSeasonStats(rosters,games,sources={}){
   let teams=0,players=0,categories=0,fields=0,skippedTeams=0;const incompleteTeams=[];
   for(const [teamKey,gameTeam] of Object.entries(games.teams||{})){
     const rosterKey=Object.keys(rosters.teams||{}).find(key=>canon(key)===canon(teamKey));if(!rosterKey)continue;
@@ -121,14 +125,32 @@ export function reconcileSeasonStats(rosters,games,sources={}){
   return{teams,players,categories,fields,skippedTeams,incompleteTeams};
 }
 
+export function reconcileSeasonStats(rosters,games,sources={}){
+  const index=sources.competitionIndex||createCompetitionIndex({brackets:sources.brackets,review:sources.review});
+  const regular=structuredClone(games);let excludedPostseason=0,excludedUnknown=0;
+  for(const [team,data] of Object.entries(regular.teams||{}))data.games=(data.games||[]).filter(game=>{
+    const phase=index.classify(game,team).phase;
+    if(phase==='postseason')excludedPostseason++;
+    else if(phase!=='regular-season')excludedUnknown++;
+    return phase==='regular-season';
+  });
+  // Team-level box-score presence cannot establish any player's field coverage.
+  // Arithmetic is a candidate only; a reviewed evidence batch authorizes writes.
+  const candidates=calculateCandidateSeasonStats(structuredClone(rosters),regular,sources);
+  const summary={...candidates,players:0,categories:0,fields:0,candidatePlayers:candidates.players,excludedPostseason,excludedUnknown,policy:'regular-season-candidates-only; retain published cells until source-reviewed field approval'};
+  rosters.updatedAt=new Date().toISOString();
+  rosters.summary={...rosters.summary,gameLogSeasonReconciliation:summary};
+  return summary;
+}
+
 function selfTest(){
   const makeRoster=(yards='725')=>({teams:{MANTI:{stats:[{category:'Passing',headers:['COMP-ATT','COMP%','YARDS','YARDS/COMP.','TD','Int'],rows:[{playerId:'wright',name:'Kingston Wright',number:'1',values:{'COMP-ATT':'52-70','COMP%':'74.29',YARDS:yards,'YARDS/COMP.':'13.94',TD:'12',Int:'3'}}]}]}}});
   const rows=[['2026-08-14','PINE VIEW','41-56',525,3,3],['2026-08-21','RICHFIELD','11-14',200,4,0],['2026-08-28','GRANTSVILLE','22-37',466,5,1]];
   const makeGame=([date,opponent,attempts,yards,td,int])=>({date,opponent,status:'Final',final:true,players:[{playerId:'wright',name:'Kingston Wright',number:'1',statLines:[{category:'Passing',values:{'Comp-Att':attempts,Yards:String(yards),TD:String(td),Int:String(int)}}]}]});
-  const rosters=makeRoster(),games={teams:{MANTI:{games:rows.map(makeGame)}}},result=reconcileSeasonStats(rosters,games),values=rosters.teams.MANTI.stats[0].rows[0].values;
+  const rosters=makeRoster(),games={teams:{MANTI:{games:rows.map(makeGame)}}},result=calculateCandidateSeasonStats(rosters,games),values=rosters.teams.MANTI.stats[0].rows[0].values;
   if(result.players!==1||values['COMP-ATT']!=='74-107'||values.YARDS!=='1191'||values.TD!=='12'||values.Int!=='4'||values['COMP%']!=='69.16')throw new Error('Season reconciliation self-test failed');
   const guarded=makeRoster('1140'),partial={teams:{MANTI:{games:rows.slice(0,2).map(makeGame)}}},teamData={teams:{MANTI:{team:'MANTI',schedule:rows.map(([date,opponent])=>({date,opponent,teamScore:1,opponentScore:0,result:'W',rusStatus:'Final'}))}}};
-  const guardResult=reconcileSeasonStats(guarded,partial,{teamData});
+  const guardResult=calculateCandidateSeasonStats(guarded,partial,{teamData});
   if(guardResult.skippedTeams!==1||guarded.teams.MANTI.stats[0].rows[0].values.YARDS!=='1140')throw new Error('Incomplete game-log guard self-test failed');
   const defenseRoster={teams:{LCA:{stats:[]}}};
   const defenseGames={
@@ -175,19 +197,22 @@ function selfTest(){
       }
     }
   };
-  const defenseResult=reconcileSeasonStats(defenseRoster,defenseGames);
+  const defenseResult=calculateCandidateSeasonStats(defenseRoster,defenseGames);
   const defenseValues=defenseRoster.teams.LCA.stats[0].rows[0].values;
   if(defenseResult.players!==1||defenseValues['PASS INT.']!=='5')throw new Error('Defensive season reconciliation self-test failed');
   const floorRoster={teams:{CC:{stats:[{category:'Defense/Special Teams',headers:['TACKLES','SACKS'],rows:[{playerId:'tate',name:'Tate Patterson',number:'8',values:{TACKLES:'69',SACKS:'2.5'},statSources:{TACKLES:'MaxPreps season total (higher than primary source)',SACKS:'MaxPreps season total (higher than primary source)'}}]}]}}};
   const floorGames={teams:{CC:{games:[{date:'2026-10-02',opponent:'Cedar Valley',status:'Final',final:true,players:[{playerId:'tate',name:'Tate Patterson',number:'8',statLines:[{category:'Defense',values:{Tackles:'68',Sacks:'2'}}]}]}]}}};
-  reconcileSeasonStats(floorRoster,floorGames);
+  calculateCandidateSeasonStats(floorRoster,floorGames);
   const floorValues=floorRoster.teams.CC.stats[0].rows[0].values;
   if(floorValues.TACKLES!=='69'||floorValues.SACKS!=='2.5')throw new Error('MaxPreps defensive season floor self-test failed');
   console.log('Season reconciliation self-test passed.');
 }
 
+if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1])){
 if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
 if(!fs.existsSync(ROSTERS)||!fs.existsSync(GAMES))throw new Error('Season reconciliation inputs are missing.');
-const rosters=JSON.parse(fs.readFileSync(ROSTERS,'utf8')),games=JSON.parse(fs.readFileSync(GAMES,'utf8')),teamData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null,weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):null,summary=reconcileSeasonStats(rosters,games,{teamData,weekly});
+const rosters=JSON.parse(fs.readFileSync(ROSTERS,'utf8')),games=JSON.parse(fs.readFileSync(GAMES,'utf8')),teamData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null,weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):null,summary=reconcileSeasonStats(rosters,games,{teamData,weekly,brackets:fs.existsSync('official-brackets-2026.json')?JSON.parse(fs.readFileSync('official-brackets-2026.json','utf8')):{},review:fs.existsSync('competition-scope-review-2026.json')?JSON.parse(fs.readFileSync('competition-scope-review-2026.json','utf8')):{}});
 fs.writeFileSync(ROSTERS,JSON.stringify(rosters,null,2)+'\n');
-console.log(`Season totals reconciled from complete game logs for ${summary.players} players across ${summary.teams-summary.skippedTeams} teams; ${summary.skippedTeams} incomplete team(s) preserved (${summary.fields} fields).`);
+console.log(`Regular-season review candidates for ${summary.candidatePlayers} players; published totals retained. Excluded ${summary.excludedPostseason} postseason and ${summary.excludedUnknown} unknown-phase game rows.`);
+
+}
