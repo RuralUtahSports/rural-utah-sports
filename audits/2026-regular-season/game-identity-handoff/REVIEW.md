@@ -36,6 +36,12 @@ Standings and RPI read weekly/final-results and team/OOS inputs, not this scope 
 - Existing out-of-scope historical record-validator failure remains the previously reported duplicate `273541|HERRIMAN|Filisi Filipe`; historical record files were not modified.
 - `validation.json` stores exact before/after counts, all 44 final classifications, protected-file hashes and the held score conflict. `reviewed-changes.json` stores all 31 scope rows before/after and their source-entry mappings. Hosted results are recorded in PR #181.
 
+## Main synchronization hold and hosted checks
+
+After pushing the tested implementation, a read-only fetch found main at `7a5a896c132614889020bb0fd2a9d3a136247ede`, advanced beyond the preserved baseline. `git merge-tree` (no checkout/index merge) reports conflicts in `deseret-stat-metrics-2026.json`, `team-stats-2026.json`, and the Ben Lomond, Duchesne, Monticello and South Summit team-current shards. The preview would change published season-stat sections for **53 teams**; incoming weekly results, standings and RPI also differ semantically from the prior synchronized main.
+
+**Synchronization stopped under the user's STOP-AND-REPORT boundary.** No merge, conflict resolution, incoming score/statistic/record update, or main checkout was applied. Unrelated basketball/logo/navigation changes on main were not edited or overwritten. They remain on main and must be preserved in a separately reviewed synchronization. GitHub reports PR #181 `mergeable_state: dirty`; no pull-request workflow runs have started on the implementation commit. Hosted checks therefore remain **blocked**, not passing. All listed local tests ran against the preserved PR branch. Once synchronization is explicitly resolved without silently changing protected totals, rerun Regular-season scope review, App Shell Sanity, Trust & Growth Sanity, Game Center research, Season Record Alerts and Share Previews.
+
 ## All 31 canonical games
 
 | Game | Canonical key | Exact scope direction before → after | Dates | Venue status |

@@ -1777,5 +1777,22 @@
     "RETAINED_RATE_INCONSISTENCY": 2,
     "MISSING_SCHOOL_STATS": 2,
     "WEB_SOURCE_OBSERVATION": 6
+  },
+  "mainSyncHold": {
+    "latestMain": "7a5a896c132614889020bb0fd2a9d3a136247ede",
+    "previewOnly": true,
+    "applied": false,
+    "seasonTeamSectionsThatWouldChange": 53,
+    "conflicts": [
+      "deseret-stat-metrics-2026.json",
+      "team-current-data/ben-lomond.json",
+      "team-current-data/duchesne.json",
+      "team-current-data/monticello.json",
+      "team-current-data/south-summit.json",
+      "team-stats-2026.json"
+    ],
+    "githubMergeableState": "dirty",
+    "hostedChecks": "blocked; no PR workflow runs started",
+    "stopReason": "User prohibits automatic acceptance of score, record and statistical-total changes."
   }
 }
