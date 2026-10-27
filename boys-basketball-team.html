@@ -144,6 +144,7 @@ const TEAM_KEY_ALIASES={
 };
 const BRAND_KEY_ALIASES={GRANDCOUNTY:'GRAND'};
 const canonicalTeamKey=value=>TEAM_KEY_ALIASES[norm(value)]||norm(value);
+const isActiveDirectoryTeam=row=>row.directory2026?row.directory2026!=='hidden':(row.association==='UHSAA'||row.team==='Utah Prep'||row.team==='Anthem Prep');
 function brandFor(name,colorRows){
   const key=canonicalTeamKey(name);
   const brandKey=BRAND_KEY_ALIASES[key]||key;
@@ -289,7 +290,7 @@ const HISTORICAL_TEAM_ALIASES={
 };
 function historicalTeamMatch(allTeams,name){
   const canonical=HISTORICAL_TEAM_ALIASES[norm(name)]||name;
-  return (allTeams||[]).find(row=>canonicalTeamKey(row.team)===canonicalTeamKey(canonical)&&(row.association==='UHSAA'||row.team==='Utah Prep'));
+  return (allTeams||[]).find(row=>canonicalTeamKey(row.team)===canonicalTeamKey(canonical)&&isActiveDirectoryTeam(row));
 }
 function loadHistoricalResults(){
   if(!historicalResultsPromise){
@@ -1129,7 +1130,7 @@ async function load(){
     const finalsData=responses[5]&&responses[5].ok?await responses[5].json().catch(()=>({teams:{}})):{teams:{}};
     window.RUSBasketballPreviewData={teams,games:Array.isArray(gameFeed.games)?gameFeed.games:[],colors:Array.isArray(colorRows)?colorRows:[]};
     if(window.RUSSchoolAssets&&window.RUSSchoolAssets.load)await window.RUSSchoolAssets.load();
-    const team=teams.find(row=>norm(row.team)===requested&&(row.association==="UHSAA"||row.team==="Utah Prep"));
+    const team=teams.find(row=>(norm(row.team)===requested||(row.aliases||[]).some(alias=>norm(alias)===requested))&&isActiveDirectoryTeam(row));
     if(!team)throw new Error("That school is not in the boys basketball team directory.");
     render(team,teams,Array.isArray(gameFeed.games)?gameFeed.games:[],Array.isArray(colorRows)?colorRows:[],gameFeed.sources||{},allTimeSummary,championshipData);
     setupHistoricalResults(team,teams,Array.isArray(colorRows)?colorRows:[]);
