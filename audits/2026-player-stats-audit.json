@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T02:17:19.452Z",
+  "generatedAt": "2026-10-27T02:22:16.184Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -8,29 +8,30 @@
     "uniqueRosterIDs": 6440,
     "statRows": 6922,
     "athletesWithStats": 4064,
-    "gamesWithPlayerRecords": 1072,
-    "gamePlayerRows": 20977,
-    "gameStatLines": 29990,
+    "gamesWithPlayerRecords": 1070,
+    "gamePlayerRows": 20901,
+    "gameStatLines": 29890,
     "missingStatPlayers": 2496,
     "missingTeamStats": [
       "MONUMENT VAL",
       "UMA-HILLFIELD"
     ],
     "unmatchedSeasonStatPlayers": 168,
-    "unmatchedGamePlayers": 389,
-    "seasonAboveGameSum": 572,
+    "unmatchedGamePlayers": 388,
+    "seasonAboveGameSum": 571,
     "gameAboveSeasonSum": 280,
-    "reviewFlags": 283,
+    "reviewFlags": 285,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
     "SEASON_GT_AVAILABLE_GAME_LOG": 560,
     "GAME_SUM_EXCEEDS_SEASON": 280,
-    "RECEIVING_RATE_MISMATCH": 3
+    "RECEIVING_RATE_MISMATCH": 3,
+    "COMPACT_FEED_MISMATCH": 2
   },
   "severityCounts": {
     "info": 560,
-    "review": 283
+    "review": 285
   },
   "teams": [
     {
@@ -558,7 +559,7 @@
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 0,
-      "compactMismatches": 0,
+      "compactMismatches": 2,
       "sourceStatsFetched": true
     },
     {
@@ -731,8 +732,8 @@
       "rosterPlayers": 87,
       "statRows": 72,
       "rosterPlayersWithoutReportedStats": 37,
-      "finalGameLogs": 10,
-      "finalGameLogsWithPlayerData": 10,
+      "finalGameLogs": 9,
+      "finalGameLogsWithPlayerData": 9,
       "seasonRowsWithUnknownId": 4,
       "compactMismatches": 0,
       "sourceStatsFetched": true
@@ -1292,8 +1293,8 @@
       "rosterPlayers": 81,
       "statRows": 69,
       "rosterPlayersWithoutReportedStats": 38,
-      "finalGameLogs": 10,
-      "finalGameLogsWithPlayerData": 10,
+      "finalGameLogs": 9,
+      "finalGameLogsWithPlayerData": 9,
       "seasonRowsWithUnknownId": 5,
       "compactMismatches": 0,
       "sourceStatsFetched": true
@@ -4415,6 +4416,26 @@
     },
     {
       "level": "review",
+      "code": "COMPACT_FEED_MISMATCH",
+      "team": "MANTI",
+      "subject": "Kingston Wright",
+      "category": "Passing",
+      "field": "YARDS",
+      "season": 2858,
+      "compact": 3032
+    },
+    {
+      "level": "review",
+      "code": "COMPACT_FEED_MISMATCH",
+      "team": "MANTI",
+      "subject": "Kingston Wright",
+      "category": "Passing",
+      "field": "TD",
+      "season": 27,
+      "compact": 29
+    },
+    {
+      "level": "review",
       "code": "RECEIVING_RATE_MISMATCH",
       "team": "GRAND",
       "subject": "Beto Carroll",
@@ -4858,7 +4879,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 96,
-      "gameLogSum": 80
+      "gameLogSum": 68
     },
     {
       "level": "info",
@@ -4868,7 +4889,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 77,
-      "gameLogSum": 72
+      "gameLogSum": 64
     },
     {
       "level": "info",
@@ -4878,7 +4899,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 78,
-      "gameLogSum": 72
+      "gameLogSum": 62
     },
     {
       "level": "info",
@@ -4888,7 +4909,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 40,
-      "gameLogSum": 37
+      "gameLogSum": 35
     },
     {
       "level": "info",
@@ -4898,7 +4919,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 33,
-      "gameLogSum": 31
+      "gameLogSum": 27
     },
     {
       "level": "info",
@@ -4928,7 +4949,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 37,
-      "gameLogSum": 35
+      "gameLogSum": 32
     },
     {
       "level": "info",
@@ -4938,7 +4959,7 @@
       "category": "Defense/Special Teams",
       "field": "SACKS",
       "season": 8.5,
-      "gameLogSum": 7.5
+      "gameLogSum": 4.5
     },
     {
       "level": "info",
@@ -4948,7 +4969,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 36,
-      "gameLogSum": 34
+      "gameLogSum": 28
     },
     {
       "level": "info",
@@ -4958,7 +4979,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 66,
-      "gameLogSum": 60
+      "gameLogSum": 51
     },
     {
       "level": "info",
@@ -4968,7 +4989,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 46,
-      "gameLogSum": 39
+      "gameLogSum": 35
     },
     {
       "level": "info",
@@ -4978,7 +4999,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 43,
-      "gameLogSum": 37
+      "gameLogSum": 33
     },
     {
       "level": "info",
@@ -6628,7 +6649,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 71,
-      "gameLogSum": 59
+      "gameLogSum": 55
     },
     {
       "level": "info",
@@ -6648,7 +6669,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 72,
-      "gameLogSum": 65
+      "gameLogSum": 58
     },
     {
       "level": "info",
@@ -6678,7 +6699,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 60,
-      "gameLogSum": 53
+      "gameLogSum": 49
     },
     {
       "level": "info",
@@ -6688,7 +6709,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 37,
-      "gameLogSum": 35
+      "gameLogSum": 34
     },
     {
       "level": "info",
@@ -6698,7 +6719,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 35,
-      "gameLogSum": 31
+      "gameLogSum": 26
     },
     {
       "level": "info",
@@ -6748,7 +6769,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 20,
-      "gameLogSum": 19
+      "gameLogSum": 13
     },
     {
       "level": "info",
@@ -6758,7 +6779,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 12,
-      "gameLogSum": 10
+      "gameLogSum": 8
     },
     {
       "level": "info",
@@ -6768,7 +6789,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 6,
-      "gameLogSum": 5
+      "gameLogSum": 3
     },
     {
       "level": "info",
@@ -6778,7 +6799,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 18,
-      "gameLogSum": 11
+      "gameLogSum": 9
     },
     {
       "level": "info",
@@ -7108,7 +7129,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 59,
-      "gameLogSum": 57
+      "gameLogSum": 50
     },
     {
       "level": "info",
@@ -7118,7 +7139,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 53,
-      "gameLogSum": 51
+      "gameLogSum": 40
     },
     {
       "level": "info",
@@ -7128,7 +7149,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 30,
-      "gameLogSum": 28
+      "gameLogSum": 25
     },
     {
       "level": "info",
@@ -7138,7 +7159,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 26,
-      "gameLogSum": 20
+      "gameLogSum": 18
     },
     {
       "level": "info",
@@ -7148,7 +7169,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 28,
-      "gameLogSum": 27
+      "gameLogSum": 26
     },
     {
       "level": "info",
@@ -7158,7 +7179,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 28,
-      "gameLogSum": 23
+      "gameLogSum": 21
     },
     {
       "level": "info",
@@ -9998,7 +10019,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 65,
-      "gameLogSum": 63
+      "gameLogSum": 60
     },
     {
       "level": "info",
@@ -10008,7 +10029,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 41,
-      "gameLogSum": 37
+      "gameLogSum": 33
     },
     {
       "level": "info",
@@ -10018,7 +10039,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 36,
-      "gameLogSum": 35
+      "gameLogSum": 33
     },
     {
       "level": "info",
@@ -10028,7 +10049,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 29,
-      "gameLogSum": 28
+      "gameLogSum": 26
     },
     {
       "level": "info",

@@ -1,13 +1,13 @@
 # 2026 Football Player Statistics Audit
 
-Generated: 2026-10-27T02:17:19.452Z
+Generated: 2026-10-27T02:22:16.184Z
 
 **118 schools · 6440 roster IDs · 4064 athletes with reported stats · 6922 category rows.**
 
 ## Coverage
 - 2496 rostered athletes lack an individual season stat row (not necessarily a reporting error)
 - 2 teams have no season stats: MONUMENT VAL, UMA-HILLFIELD
-- 1072 finalized team-game logs include player stats
+- 1070 finalized team-game logs include player stats
 - 1 failed school stats fetches
 - 168 stat rows have IDs missing from their own roster (may be MaxPreps-only entries)
 
@@ -15,6 +15,7 @@ Generated: 2026-10-27T02:17:19.452Z
 - SEASON_GT_AVAILABLE_GAME_LOG: 560
 - GAME_SUM_EXCEEDS_SEASON: 280
 - RECEIVING_RATE_MISMATCH: 3
+- COMPACT_FEED_MISMATCH: 2
 
 ## Highest-priority examples
 - **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Ian Mair; {"category":"Passing","field":"YARDS","season":679,"gameLogSum":1397,"difference":718}
