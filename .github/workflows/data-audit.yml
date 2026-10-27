@@ -48,6 +48,8 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+      - name: Capture source snapshot for publication
+        run: echo "STAT_SOURCE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -80,18 +82,19 @@ jobs:
             audits/2026-player-stats-audit.md
           if-no-files-found: warn
       - name: Save latest audit in repository
-        if: always()
+        if: github.ref == 'refs/heads/main' && (always())
         run: |
           if [ ! -f data-audit-report.json ] || [ ! -f data-audit-report.md ]; then exit 0; fi
           cp data-audit-report.json data-audit-latest.json
           cp data-audit-report.md data-audit-latest.md
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main
+          node scripts/check_stat_publish_2026.mjs --snapshot-only
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data-audit-latest.json data-audit-latest.md audits/2026-player-stats-audit.json audits/2026-player-stats-audit.md
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Refresh latest data audit report'
-          git pull --rebase origin main
-          git push
+          if git diff --cached --quiet; then echo "Derived data already current."; exit 0; fi
+          git commit -m "Refresh derived data from current source snapshot"
+          git push origin HEAD:main
       - name: Fail on critical data errors
         if: steps.audit.outcome == 'failure' || steps.players.outcome == 'failure'
         run: exit 1

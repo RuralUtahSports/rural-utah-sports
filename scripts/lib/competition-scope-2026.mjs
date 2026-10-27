@@ -3,7 +3,7 @@ import crypto from 'node:crypto';
 
 export const POLICY = '2026-regular-season-only-v1';
 const compact = v => String(v ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-const aliases = {
+export const TEAM_ALIASES = {
   LINCOLNCOUNTYNV:'LINCOLNCOUNTY', KIMBERLYID:'KIMBERLY', FAITHLUTHERANNV:'FAITHLUTHERAN', PRESTONID:'PRESTON', BUCKEYEAZ:'BUCKEYE', BEARLAKEID:'BEARLAKE', GRACEID:'GRACE', WHITEPINENV:'WHITEPINE', HAYDENCO:'HAYDEN', RANGELYCO:'RANGELY', MOAPAVALLEYNV:'MOAPAVALLEY', PAHRUMPNV:'PAHRUMPVALLEY', LAKEMEADCHRISTIANACADEMYNV:'LAKEMEADCHRISTIANACADEMY', LMCA:'LAKEMEADCHRISTIANACADEMY', MAELV:'MATERACADEMYEASTLASVEGAS',
   JUANDIEGOCATHOLIC:'JUANDIEGO', CEDAR:'CEDARCITY', GRANDCOUNTY:'GRAND', GUNNISON:'GUNNISONVALLEY', MONUMENTVALLEY:'MONUMENTVAL',
   MAPLEMTN:'MAPLEMOUNTAIN', STJOSEPH:'SAINTJOSEPH', STJOSEPHS:'SAINTJOSEPH',
@@ -14,7 +14,7 @@ const aliases = {
   BEAVERDAMAZ:'BEAVERDAM', BEAVERDAMARIZONA:'BEAVERDAM',
   MOFFATCO:'MOFFATCOUNTY', MOFFATCOUNTYCO:'MOFFATCOUNTY', EVANSTONWY:'EVANSTON', IGNACIOCO:'IGNACIO', DOLORESCO:'DOLORES', NORWOODCO:'NORWOOD'
 };
-export const teamKey = v => aliases[compact(v)] || compact(v);
+export const teamKey = v => TEAM_ALIASES[compact(v)] || compact(v);
 export function isoDate(value) {
   const s=String(value ?? '').trim(); let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
   if(!m){const us=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(us)m=[us[0],us[3],us[1],us[2]];}

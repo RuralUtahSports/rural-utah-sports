@@ -6,6 +6,7 @@ on:
     workflows: ['Build Scorigami Data']
     types: [completed]
   push:
+    branches: [main]
     paths:
       - 'scorigami.json'
       - 'weekly-simulation.json'

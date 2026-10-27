@@ -49,7 +49,7 @@ function misplacedEnterprisePicks(){
  const ids=oldEnterprisePickIds();
  return Object.entries(picks).filter(([,playerId])=>ids.has(playerId));
 }
-let snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false,dirty=false,logoMap={},regionLocked=false,syncTimer=null,syncPending=false;
+let publication=null,snapshot=null,players=[],byID=new Map(),regions=[],region='',mode='first',picks={},winners={},status='draft',published=null,admin=false,session=null,uid='',notes='',busy=false,dirty=false,logoMap={},regionLocked=false,syncTimer=null,syncPending=false;
 function labelRegion(r){return /^\d+$/.test(r)?'Region '+r:r}
 function fieldIDs(section){
  return section==='honorable'?POSITIONS.filter(p=>!SPECIAL_POSITIONS.includes(p)).flatMap(p=>[section+':'+p+':1',section+':'+p+':2']):POSITIONS.map(p=>section+':'+p);
@@ -117,9 +117,11 @@ function playerHTML(p,slot,isWinner=false){
 }
 // A cumulative supplement is not regular-season evidence. Candidate identities
 // remain available, but counts require a reviewed set of classified game cells.
-function regularSeasonSpecialStats(athlete){
+function regularSeasonSpecialStats(athlete,player=null){
  const accepted={};
  for(const [kind,row] of Object.entries(athlete||{})){
+  const certificate=typeof publication!=='undefined'&&player&&publication?.specialTeams?.[player.id+'|'+kind];
+  if(!certificate||JSON.stringify(certificate)!==JSON.stringify(row))continue;
   const proof=row?.regularSeasonEvidence;
   if(proof?.season!==2026||proof.status!=='verified'||proof.scope!=='regular-season'||!proof.reviewedBy||!Array.isArray(proof.games)||!proof.games.length)continue;
   if(proof.games.some(g=>g.phase!=='regular-season'||!g.gameKey||!/^https:\/\/(?:www\.)?(?:maxpreps\.com|sports\.deseret\.com|uhsaa\.org)\//.test(g.sourceUrl||'')||!g.competitionEvidence?.some(e=>e.phase==='regular-season'&&e.url)))continue;
@@ -160,7 +162,7 @@ function collect(r){
   }
  }
  for(const p of out.values()){
-  p.specialStats=regularSeasonSpecialStats(supplemental?.athlete(p.team,p.name));
+  p.specialStats=regularSeasonSpecialStats(supplemental?.athlete(p.team,p.name),p);
   const pRow=p.specialStats.punt,kr=p.specialStats.kr,pr=p.specialStats.pr;
   if(pRow)p.lines.push({category:'Punting (MaxPreps)',values:{PUNTS:String(pRow.attempts),YARDS:String(pRow.yards),AVG:pRow.attempts?(pRow.yards/pRow.attempts).toFixed(2):'',LONG:String(pRow.long),'INSIDE 20':String(pRow.inside20),GP:String(pRow.gp)}});
   if(kr)p.lines.push({category:'Kickoff Returns (MaxPreps)',values:{RETURNS:String(kr.attempts),YARDS:String(kr.yards),AVG:kr.attempts?(kr.yards/kr.attempts).toFixed(2):'',LONG:String(kr.long),GP:String(kr.gp)}});
@@ -1027,8 +1029,8 @@ async function confirmCode(){
 async function init(){
  el('#ar-error').textContent='Loading locked regular-season region data…';
  try{
- const [r,logos]=await Promise.all([fetch('region-awards-2026.lock.json?v=20261023-lock-1',{cache:'no-store'}),fetch('school-logo-cache.json?v=20261023-hub1').catch(()=>null)]);
- if(!r.ok)throw Error('Locked awards data could not be read');snapshot=await r.json();correctLockedFootballAlignment(snapshot);window.RUSVerifiedPlayerStats2026?.apply(snapshot.data);
+ const [r,logos,proof]=await Promise.all([fetch('region-awards-2026.lock.json?v=20261023-lock-1',{cache:'no-store'}),fetch('school-logo-cache.json?v=20261023-hub1').catch(()=>null),fetch('regular-season-publication-2026.json?v=20261027-publication1',{cache:'no-store'})]);
+ if(!r.ok)throw Error('Locked awards data could not be read');if(!proof.ok)throw Error('Regular-season publication unavailable');publication=window.RUSRegularSeasonPolicy2026.requirePublication(await proof.json());snapshot=await window.RUSRegularSeasonPolicy2026.verifyLockedSnapshot(await r.text(),publication);correctLockedFootballAlignment(snapshot);
  if(logos?.ok){const saved=await logos.json();if(saved&&typeof saved==='object')logoMap=saved;}
  if(snapshot.status!=='LOCKED')throw Error('Expected a locked regular-season snapshot');
  await Promise.all([window.RUSSchoolAssets?.load?.().catch(()=>{})||Promise.resolve()]);

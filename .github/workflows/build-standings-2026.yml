@@ -7,6 +7,7 @@ on:
     # Update Live Scoreboard through its workflow_run backup.
     - cron: '7,17,27,37,47,57 * * * *'
   push:
+    branches: [main]
     paths:
       - 'teams-data.json'
       - 'standings.html'

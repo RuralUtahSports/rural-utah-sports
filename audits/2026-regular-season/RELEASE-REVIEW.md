@@ -1,3 +1,5 @@
+> Current technical follow-up: see [PIPELINE-REVIEW.md](PIPELINE-REVIEW.md). Regular-season rankings now use the reviewed publication boundary; retained source caches below are not a complete regular-season certification. Muse owns the unmatched-game investigation.
+
 # PR #181: verified small-school corrections, batch 1
 
 The current focus is actual player corrections, not another audit sweep. This batch changes **56 cells: 44 season fields and 12 individual-game fields**. The evidence ledgers are registered in `regular-season-correction-batches-2026.json` (batches 1 and 2); every decision includes original value, verified replacement, source, reporting date and included games. Larger audit exports in this directory are the earlier baseline and have not been regenerated as new accuracy claims.

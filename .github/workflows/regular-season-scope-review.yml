@@ -4,6 +4,32 @@ on:
     paths:
       - 'scripts/lib/competition-scope-2026.mjs'
       - 'scripts/audit_regular_season_2026.mjs'
+      - 'scripts/lib/stat-import-integrity-2026.mjs'
+      - 'scripts/merge_deseret_stats_endpoints.mjs'
+      - 'scripts/merge_maxpreps_stats_fallback.mjs'
+      - 'scripts/merge_maxpreps_game_logs.mjs'
+      - 'scripts/build_regular_season_publication_2026.mjs'
+      - 'scripts/check_stat_publish_2026.mjs'
+      - 'regular-season-stat-policy-2026.js'
+      - 'regular-season-publication-2026.json'
+      - 'tests/stat-pipeline-safety-2026.test.mjs'
+      - 'scripts/test-stat-pipeline-browser.cjs'
+      - '.github/workflows/build-current-game-stats.yml'
+      - '.github/workflows/build-deseret-rosters-stats.yml'
+      - '.github/workflows/build-maxpreps-stats-fallback.yml'
+      - '.github/workflows/build-team-stats.yml'
+      - '.github/workflows/game-center-research.yml'
+      - '.github/workflows/merge-current-player-single-game-records.yml'
+      - '.github/workflows/build-player-single-game-records.yml'
+      - '.github/workflows/season-record-alerts.yml'
+      - '.github/workflows/build-player-search-index.yml'
+      - '.github/workflows/data-audit.yml'
+      - '.github/workflows/build-standings-2026.yml'
+      - '.github/workflows/build-clean-elo-v2.yml'
+      - '.github/workflows/build-scorigami.yml'
+      - '.github/workflows/build-scorigami-alert.yml'
+      - '.github/workflows/update-live-scoreboard-fast.yml'
+      - '.github/workflows/build-home-week-data.yml'
       - 'tests/competition-scope-2026.test.mjs'
       - 'tests/verified-player-corrections-2026.test.mjs'
       - 'scripts/lib/verified-player-corrections-2026.mjs'
@@ -34,7 +60,9 @@ jobs:
         with:
           node-version: '22'
       - name: Test competition classification and preservation guards
-        run: node --test tests/competition-scope-2026.test.mjs tests/verified-player-corrections-2026.test.mjs tests/regular-season-import-2026.test.mjs
+        run: node --test tests/competition-scope-2026.test.mjs tests/verified-player-corrections-2026.test.mjs tests/regular-season-import-2026.test.mjs tests/stat-pipeline-safety-2026.test.mjs
+      - name: Verify reviewed publication matches evidence and pinned awards
+        run: node scripts/build_regular_season_publication_2026.mjs --check
       - name: Audit stored source data without publishing changes
         run: node scripts/audit_regular_season_2026.mjs --output="$RUNNER_TEMP/regular-season-audit"
       - uses: actions/upload-artifact@v4

@@ -46,6 +46,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+      - name: Capture source snapshot for publication
+        run: echo "STAT_SOURCE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -72,17 +74,13 @@ jobs:
       - name: Verify merged records before committing
         run: node scripts/validate_player_single_game_records.mjs
       - name: Commit record data
+        if: github.ref == 'refs/heads/main'
         run: |
-          git config user.name "RuralUtahSports"
-          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
+          git fetch origin main
+          node scripts/check_stat_publish_2026.mjs --snapshot-only
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add player-single-game-records
-          if git diff --cached --quiet; then echo "Player single-game records already current."; exit 0; fi
-          git commit -m "Auto-sync 2001-present player single-game records"
-          ok=0
-          for attempt in 1 2 3 4; do
-            if git pull --rebase origin main && git push; then ok=1; break; fi
-            sleep 10
-          done
-          if [ "$ok" -ne 1 ]; then exit 1; fi
-
-# Trigger the historical backfill after parser or validation changes reach main.
+          if git diff --cached --quiet; then echo "Derived data already current."; exit 0; fi
+          git commit -m "Refresh derived data from current source snapshot"
+          git push origin HEAD:main

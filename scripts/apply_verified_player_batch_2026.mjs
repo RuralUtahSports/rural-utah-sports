@@ -6,6 +6,7 @@ const batches=loadReviewedBatches(),batch=combineReviewedBatches(batches);
 const rosters=read('deseret-rosters-stats-2026.json'),games=read('player-game-stats-2026.json');
 let result={rosters,games,changes:[]};
 for(const reviewed of batches){const next=applyVerifiedPlayerBatch(result.rosters,result.games,reviewed,{brackets:read('official-brackets-2026.json'),review:read('competition-scope-review-2026.json')});result={...next,changes:[...result.changes,...next.changes]};}
+for(const reviewed of batches)if(applyVerifiedPlayerBatch(result.rosters,result.games,reviewed,{brackets:read('official-brackets-2026.json'),review:read('competition-scope-review-2026.json')}).changes.length)throw Error('Correction batch is not stable');
 const shardFiles=Object.fromEntries([...new Set(batch.evidenceSets.map(e=>e.team))].map(t=>{const f='team-current-data/'+t.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.json';return [f,read(f)]}));
 const views=syncVerifiedBatchViews({rosters:result.rosters,games:result.games,metrics:read('deseret-stat-metrics-2026.json'),shards:shardFiles},batch);
 const full=JSON.stringify(result.rosters,null,2)+'\n';views.metrics.summary.sourceBytes=Buffer.byteLength(full);

@@ -75,7 +75,7 @@ test('award supplement rejects date-only and postseason totals and preserves raw
  const unscoped={punt:{yards:500,throughDate:'2026-10-16'}},saved=JSON.stringify(unscoped);
  assert.equal(Object.keys(ctx.pick(unscoped)).length,0);
  const proof={season:2026,status:'verified',scope:'regular-season',reviewedBy:'fixture reviewer',games:[{phase:'regular-season',gameKey:'g',sourceUrl:url,competitionEvidence:[{phase:'regular-season',url}]}]};
- assert.equal(ctx.pick({punt:{yards:500,regularSeasonEvidence:proof}}).punt.yards,500);
+ assert.equal(Object.keys(ctx.pick({punt:{yards:500,regularSeasonEvidence:proof}})).length,0); // A self-asserted scope label is not a publication certificate.
  proof.games[0].phase='postseason';assert.equal(Object.keys(ctx.pick({punt:{regularSeasonEvidence:proof}})).length,0);
  assert.equal(JSON.stringify(unscoped),saved);assert.match(source,/p\.specialStats=regularSeasonSpecialStats/);
 });

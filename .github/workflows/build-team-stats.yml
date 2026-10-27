@@ -23,11 +23,12 @@ permissions:
   contents: write
 
 concurrency:
-  group: team-statistics-build
+  group: current-football-statistics
   cancel-in-progress: false
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -41,16 +42,12 @@ jobs:
         run: |
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          for attempt in 1 2 3 4; do
-            git fetch origin main
-            git reset --hard origin/main
-            node scripts/build_team_stats.mjs 2026
-            node scripts/build_team_stats.mjs 2025
-            node -e "const fs=require('fs');for(const y of [2025,2026]){const d=JSON.parse(fs.readFileSync('team-stats-'+y+'.json','utf8'));if(d.season!==y)throw new Error('Wrong team stats season '+y);if((d.summary?.teams||0)<90)throw new Error('Too few teams in '+y+' team stats');if(!d.teams||!Object.keys(d.teams).length)throw new Error('Missing team stats data '+y);console.log(y,d.summary)}"
-            git add team-stats-2025.json team-stats-2026.json
-            if git diff --cached --quiet; then echo "Team statistics already current."; exit 0; fi
-            git commit -m "Recalculate team statistics"
-            if git push origin HEAD:main; then exit 0; fi
-            sleep 5
-          done
-          exit 1
+          export STAT_SOURCE_COMMIT=$(git rev-parse HEAD)
+          node scripts/build_team_stats.mjs 2026
+          node -e "const fs=require('fs');for(const y of [2026]){const d=JSON.parse(fs.readFileSync('team-stats-'+y+'.json','utf8'));if(d.season!==y)throw new Error('Wrong team stats season '+y);if((d.summary?.teams||0)<90)throw new Error('Too few teams in '+y+' team stats');if(!d.teams||!Object.keys(d.teams).length)throw new Error('Missing team stats data '+y);console.log(y,d.summary)}"
+          git fetch origin main
+          node scripts/check_stat_publish_2026.mjs
+          git add team-stats-2026.json
+          if git diff --cached --quiet; then echo "Team statistics already current."; exit 0; fi
+          git commit -m "Recalculate team statistics"
+          git push origin HEAD:main

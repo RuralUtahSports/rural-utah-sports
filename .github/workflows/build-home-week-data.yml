@@ -3,6 +3,7 @@ name: Build Home Week Data
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - 'weekly-simulation.json'
       - 'rankings-current-2026.json'

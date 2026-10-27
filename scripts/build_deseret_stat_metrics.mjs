@@ -1,10 +1,8 @@
 import fs from 'node:fs';
-import {applyRosterStatCorrections} from './apply_manual_stat_corrections.mjs';
 
 const SOURCE='deseret-rosters-stats-2026.json';
 const OUTPUT='deseret-stat-metrics-2026.json';
 const source=JSON.parse(fs.readFileSync(SOURCE,'utf8'));
-applyRosterStatCorrections(source);
 const compact=value=>String(value??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
 const nonEmpty=value=>value!==null&&value!==undefined&&String(value).trim()!=='';
 const targets=[

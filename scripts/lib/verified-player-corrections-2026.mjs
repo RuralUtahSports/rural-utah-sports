@@ -63,7 +63,8 @@ export function applyVerifiedPlayerBatch(rosters,games,batch,{brackets,review}){
    const matches=findTeam(gameOutput.teams,d.team).games.filter(g=>gameKey(g,d.team)===gameKey(d,d.team));if(matches.length!==1)throw Error('Ambiguous/missing target game');
    const game=matches[0],observed=e.games.find(g=>gameKey(g,e.team)===gameKey(d,d.team));
    if(index.classify(game,d.team).phase!=='regular-season'||!observed||!same(value(observed.values,d.field),d.verifiedReplacement))throw Error('Game value/phase not verified');
-   let player=game.players.find(p=>p.playerId===d.playerId);
+   const playerHits=game.players.filter(p=>p.playerId===d.playerId);if(playerHits.length>1)throw Error('Duplicate reviewed game player identity');
+   let player=playerHits[0];
    if(!player){player={playerId:person.playerId,number:person.number,name:person.name,position:person.position||'',rosterMatched:true,statLines:[],scoringPlays:[]};game.players.push(player);}
    const lines=player.statLines.filter(l=>category(l.category)===category(d.category));if(lines.length>1)throw Error('Ambiguous target game category');
    row=lines[0];if(!row){row={category:d.category,values:{}};player.statLines.push(row);}

@@ -19,6 +19,7 @@
 <meta property="og:url" content="https://ruralutahsports.github.io/rural-utah-sports/stat-leaders.html">
 <meta property="og:image" content="https://ruralutahsports.github.io/rural-utah-sports/RUSlogoNew.png">
 <meta name="twitter:card" content="summary_large_image">
+<script src="regular-season-stat-policy-2026.js?v=20261027-publication1"></script>
 <script src="verified-player-stats-2026.js?v=20261023-alma-verified1"></script>
 </head>
 <body>
@@ -40,7 +41,7 @@ const categories=['Passing','Rushing','Receiving','Kicking','Defense/Special Tea
 const classes=['ALL','11P','6A','5A','4A','3A','2A','1A','8P'];
 const availableSeasons=[2026,2025];
 const params=new URLSearchParams(location.search),requested=Number(params.get('season')),requestedWeek=Number(params.get('week'));
-let season=availableSeasons.includes(requested)?requested:2026,allStats=null,playerGames=null,weeks=[],timeframe='season',teamMeta=new Map(),longFgMap=new Map(),rowCache=new Map(),category='Passing',classification='ALL',metric='',visibleCount=5;
+let season=availableSeasons.includes(requested)?requested:2026,allStats=null,regularPublication=null,playerGames=null,weeks=[],timeframe='season',teamMeta=new Map(),longFgMap=new Map(),rowCache=new Map(),category='Passing',classification='ALL',metric='',visibleCount=5;
 function numValue(v){const s=String(v??'').trim().replace(/,/g,'');if(!s)return null;const m=s.match(/-?(?:\d+(?:\.\d+)?|\.\d+)/);return m?Number(m[0]):null}
 const ELEVEN_PLAYER_CLASSES=new Set(['6A','5A','4A','3A','2A','1A']);
 function isEightPlayerClass(v){const k=compact(v);return k==='8P'||k==='8PLAYER'}
@@ -50,7 +51,7 @@ function scopeDisplay(){return classification==='ALL'?'All Players':classificati
 function scopedGameCount(wk){if(!wk||!playerGames?.teams)return 0;const seen=new Set();for(const [teamName,t] of Object.entries(playerGames.teams||{})){const meta=teamMeta.get(canon(teamName))||{};if(!scopeMatchesClass(meta.classification))continue;for(const g of t.games||[]){if(weekStart(g.date)!==wk.start)continue;const pair=[canon(teamName),canon(g.opponent)].sort().join('|');seen.add(g.gameKey||`${g.date}|${pair}`)}}return seen.size}
 function catKey(v){const x=String(v||'').toLowerCase();if(x.startsWith('pass'))return'Passing';if(x.startsWith('rush'))return'Rushing';if(x.startsWith('receiv'))return'Receiving';if(x.startsWith('kick')||x.includes('special')||x.includes('field goal')||x==='pat'||x==='pats')return x.includes('defense')?'Defense/Special Teams':'Kicking';if(x.startsWith('defense'))return'Defense/Special Teams';return v}
 function preferredMetric(cat,headers){const wants={Passing:['Yards','TD','Comp-Att','Comp %'],Rushing:['Yards','TD','Carries'],Receiving:['Yards','TD','Receptions'],Kicking:['Points','Pts','FG','PAT','Long FG'],'Defense/Special Teams':['Tackles','Sacks','Pass Int','Interceptions','Return TD']};for(const want of wants[cat]||[]){const hit=headers.find(h=>compact(h)===compact(want)||compact(h).includes(compact(want)));if(hit)return hit}return headers[0]||''}
-function loadLongFieldGoals(details){longFgMap=new Map();for(const d of Object.values(details?.games||{})){for(const play of d?.scoringPlays||[]){const m=String(play).match(/^\s*(.*?)\s+—\s+\([^)]*\)\s*(.*?)\s*,\s*(\d+)-yard\s+FG\b/i);if(!m)continue;const team=canon(m[1]),player=compact(m[2]),yards=Number(m[3]);if(!team||!player||!Number.isFinite(yards))continue;const k=`${team}|${player}`,old=longFgMap.get(k)||0;if(yards>old)longFgMap.set(k,yards)}}}
+function loadLongFieldGoals(details){longFgMap=new Map();if(season===2026)return;for(const d of Object.values(details?.games||{})){for(const play of d?.scoringPlays||[]){const m=String(play).match(/^\s*(.*?)\s+—\s+\([^)]*\)\s*(.*?)\s*,\s*(\d+)-yard\s+FG\b/i);if(!m)continue;const team=canon(m[1]),player=compact(m[2]),yards=Number(m[3]);if(!team||!player||!Number.isFinite(yards))continue;const k=`${team}|${player}`,old=longFgMap.get(k)||0;if(yards>old)longFgMap.set(k,yards)}}}
 const DAY=86400000;
 function dayStamp(v){
  const s=String(v||'').trim();let m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
@@ -147,7 +148,10 @@ function updateScopeCopy(){
  if(wk){copy.textContent=classification==='ALL'?`${season} Week ${wk.number} statewide leaders from games played ${wk.label}, combining 11-player and 8-player reported statistics.`:`${season} Week ${wk.number} ${label} leaders from games played ${wk.label}, using game-level reported statistics.`;note.textContent=classification==='ALL'?`Weekly views add together a player's reported production if that player appeared in more than one game during the selected week. 8-player athletes are included in the statewide rankings and labeled 8-Player; use the filters to isolate 11-player, 8-player, or a classification.`:`Weekly views add together a player's reported production if that player appeared in more than one game during the selected week.`}
  else{copy.textContent=classification==='ALL'?(season===2026?`Statewide football leaders combining 11-player and 8-player reported statistics. Rankings update automatically as schools submit new stats.`:`Final ${season} statewide football leaders combining 11-player and 8-player archived reported statistics.`):(season===2026?`${label} statewide football leaders using reported player statistics. Rankings update automatically as schools submit new stats.`:`Final ${season} ${label} statewide football leaders using archived reported player statistics.`);note.textContent=classification==='ALL'?'Season totals come from each player’s cumulative team stat page. 8-player athletes are included in the statewide rankings and labeled 8-Player; use the filters to isolate 11-player, 8-player, or a classification.':'Season totals come from each player’s cumulative team stat page.'}
 }
+// Reviewed publication is deliberately partial; never imply statewide completeness.
+function showRegularScope(){if(season!==2026)return;document.getElementById('heroCopy').textContent='Reviewed regular-season player statistics. Coverage is incomplete while source verification continues.';document.getElementById('scopeNote').textContent='Only reviewed fields appear in season rankings. Missing, cumulative and unseparated playoff totals are excluded; reported game boxes remain available on player profiles.';}
 function renderTable(){
+ showRegularScope();
  let rows=scopedRows(buildRows(category));
  rows=rows.map(r=>({...r,value:numValue(r.values?.[metric]),display:r.values?.[metric]??''})).filter(r=>r.value!==null).sort((a,b)=>b.value-a.value||a.name.localeCompare(b.name));
  const wk=activeWeek(),scope=wk?`Week ${wk.number} • ${wk.label}`:'Season totals',games=wk?`<span class="pill"><strong>${scopedGameCount(wk)}</strong> games with stats</span>`:'';
@@ -190,16 +194,16 @@ function setupWeekSelect(){
 async function load(){
  try{
   const stamp=Date.now();document.title=`${season} Stat Leaders | Rural Utah Sports`;document.getElementById('heroYear').textContent=season;document.getElementById('seasonBadge').textContent=season===2026?'Current season':'Completed season';
-  const statUrl=`deseret-rosters-stats-${season}.json?v=${stamp}`,gameStatUrl=`player-game-stats-${season}.json?v=${stamp}`;
+  const statUrl=season===2026?`regular-season-publication-2026.json?v=${stamp}`:`deseret-rosters-stats-${season}.json?v=${stamp}`,gameStatUrl=`player-game-stats-${season}.json?v=${stamp}`;
   if(season===2026){
    const [s,g,t,d,w]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)]);
-   if(!s.ok||!t.ok)throw new Error('Unable to load current stat data');allStats=await s.json();window.RUSVerifiedPlayerStats2026?.apply(allStats);playerGames=g?.ok?await g.json():null;allStats.weeklySchedule=w?.ok?(await w.json()).games||[]:[];teamMeta.clear();for(const x of await t.json())teamMeta.set(canon(x.team),x);if(d?.ok)loadLongFieldGoals(await d.json());
+   if(!s.ok||!t.ok)throw new Error('Unable to load current stat data');allStats=regularPublication=window.RUSRegularSeasonPolicy2026.requirePublication(await s.json());playerGames=g?.ok?await g.json():null;if(playerGames)for(const [team,t] of Object.entries(playerGames.teams||{}))t.games=window.RUSRegularSeasonPolicy2026.regularGames(t.games,team,regularPublication);allStats.weeklySchedule=w?.ok?(await w.json()).games||[]:[];teamMeta.clear();for(const x of await t.json())teamMeta.set(canon(x.team),x);if(d?.ok)loadLongFieldGoals(await d.json());
   }else{
    const [s,g,a]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`full-season-alignment-${season}.json?v=${stamp}`,{cache:'no-store'})]);
    if(!s.ok||!a.ok)throw new Error(`Archived ${season} stat data is not available`);allStats=await s.json();playerGames=g?.ok?await g.json():null;longFgMap=new Map();buildPastMeta(await a.json());
   }
   weeks=buildWeeks(playerGames,allStats.weeklySchedule||[]);rowCache.clear();setupWeekSelect();updateScopeCopy();
-  const d=new Date(allStats.updatedAt);document.getElementById('updated').textContent=season===2026?`Last stat sync: ${Number.isFinite(d.getTime())?d.toLocaleString():'recently'} • ${allStats.summary?.teamsWithStats||0} teams currently reporting stats`:`${allStats.summary?.teamsWithStats||0} teams with reported stats in the ${season} archive`;render();
+  const d=new Date(allStats.updatedAt);document.getElementById('updated').textContent=season===2026?`Last source report: ${Number.isFinite(d.getTime())?d.toLocaleString():'recently'} • ${allStats.summary?.teamsWithStats||0} teams with reviewed fields`:`${allStats.summary?.teamsWithStats||0} teams with reported stats in the ${season} archive`;render();
  }catch(e){console.error(e);document.getElementById('updated').textContent=`${season} stat archive unavailable`;document.getElementById('results').innerHTML=`<div class="empty">The ${season} stat leader archive could not be loaded.</div>`}
 }
 const seasonSelect=document.getElementById('leaderSeason');seasonSelect.value=String(season);seasonSelect.addEventListener('change',()=>{const y=Number(seasonSelect.value);const u=new URL(location.href);if(y===2026)u.searchParams.delete('season');else u.searchParams.set('season',String(y));u.searchParams.delete('week');location.href=u.toString()});load();

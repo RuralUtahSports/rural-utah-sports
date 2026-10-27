@@ -5,6 +5,7 @@ on:
   schedule:
     - cron: '*/15 * * * *'
   push:
+    branches: [main]
     paths:
       - 'weekly-simulation.json'
       - 'deseret-game-details.json'

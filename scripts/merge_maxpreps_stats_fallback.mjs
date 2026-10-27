@@ -1,3 +1,5 @@
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import fs from 'node:fs';
 
 const FILE='deseret-rosters-stats-2026.json';
@@ -152,7 +154,7 @@ const MAP={
   Touchdowns:{category:'Defense/Special Teams',fields:{'FR TD':'DEFENSE TD','IR TD':'DEFENSE TD','PR TD':'RETURN TD','KOR TD':'RETURN TD'}},
   'PATs and Field Goals':{category:'Kicking',fields:{PAT:'PAT',FG:'FG','Tot Pts':'Pts'}}
 };
-function parsePrintStats(html){
+export function parsePrintStats(html){
   const parsed=[];
   for(const match of String(html).matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)){
     const title=sectionBefore(html,match.index||0),config=MAP[title];
@@ -197,7 +199,7 @@ function gameField(fieldMap,name){
   }
   return '';
 }
-function parsePlayerGameLogs(html,player){
+export function parsePlayerGameLogs(html,player){
   const logs=nextData(html)?.props?.pageProps?.statsCardProps?.careerGameLogs?.groups||[],games=new Map();
   for(const group of logs)for(const subgroup of group.subgroups||[]){
     const category=gameGroupName(subgroup.name),fieldMap=GAME_FIELD_MAP[category];if(!fieldMap)continue;
@@ -206,8 +208,8 @@ function parsePlayerGameLogs(html,player){
       const key=date+'|'+compact(entry.opponentSchoolName),game=games.get(key)||{date,opponent:clean(entry.opponentSchoolName),score:clean(entry.score),result:clean(entry.result),url:clean(entry.contestUrl),playerId:player.playerId,number:player.number,name:player.name,statLines:[]};
       let line=game.statLines.find(x=>x.category===category);if(!line){line={category,values:{},statSources:{}};game.statLines.push(line)}
       let comp='',att='';
-      for(const stat of entry.stats||[]){const target=gameField(fieldMap,stat.name),value=number(stat.value);if(!target||!value)continue;if(target==='__COMP')comp=value;else if(target==='__ATT')att=value;else line.values[target]=value,line.statSources[target]='MaxPreps'}
-      if(comp&&att){line.values['COMP-ATT']=comp+'-'+att;line.statSources['COMP-ATT']='MaxPreps'}
+      for(const stat of entry.stats||[]){const target=gameField(fieldMap,stat.name),value=number(stat.value);if(!target||!value)continue;if(target==='__COMP')comp=value;else if(target==='__ATT')att=value;else {if(Object.hasOwn(line.values,target)&&line.values[target]!==value)throw Error('Conflicting repeated MaxPreps game field');line.values[target]=value;line.statSources[target]='MaxPreps'}}
+      if(comp&&att){const pair=comp+'-'+att;if(Object.hasOwn(line.values,'COMP-ATT')&&line.values['COMP-ATT']!==pair)throw Error('Conflicting repeated MaxPreps passing counts');line.values['COMP-ATT']=pair;line.statSources['COMP-ATT']='MaxPreps'}
       games.set(key,game);
     }
   }
@@ -225,13 +227,13 @@ function knownPlayers(team){
   for(const section of team.stats||[])for(const row of section.rows||[])add(row);
   return out;
 }
-function rosterMatch(team,row){
+export function rosterMatch(team,row){
   const players=knownPlayers(team),incomingName=cleanPlayerName(row.name),incomingNo=clean(row.number),bits=nameBits(incomingName);
   if(!players.length||!incomingName)return null;
   const exactName=players.filter(p=>compact(cleanPlayerName(p.name))===compact(incomingName));
   const exact=exactName.find(p=>incomingNo&&clean(p.number)===incomingNo);
   if(exact)return exact;
-  if(exactName.length===1)return exactName[0];
+  if(exactName.length===1)return incomingNo&&clean(exactName[0].number)!==incomingNo?null:exactName[0];
 
   const sameLastInitial=p=>{
     const pb=nameBits(p.name);
@@ -242,7 +244,7 @@ function rosterMatch(team,row){
     if(numbered.length===1)return numbered[0];
   }
   const byLastInitial=players.filter(sameLastInitial);
-  return byLastInitial.length===1?byLastInitial[0]:null;
+  return !incomingNo&&byLastInitial.length===1?byLastInitial[0]:null;
 }
 function maxprepsOnlyPlayer(team,row){
   team.roster||(team.roster=[]);
@@ -253,7 +255,7 @@ function maxprepsOnlyPlayer(team,row){
   return{player,created:true};
 }
 const DEFENSE_MAX_FIELDS=new Set(['TACKLES','SACKS','PASSINT','PD','FUMREC','CAUSEDFUM','QBHURRIES','DEFENSETD','RETURNTD']);
-function mergeTeam(team,rows,sourceUrl){
+export function mergeTeam(team,rows,sourceUrl){
   let addedRows=0,filledFields=0,upgradedFields=0,unmatched=0,matchedRows=0,syntheticPlayers=0;
   const allowSynthetic=(team.roster||[]).length===0;
   for(const incoming of rows){
@@ -269,13 +271,7 @@ function mergeTeam(team,rows,sourceUrl){
       row.values||(row.values={});
       const target=Object.keys(row.values).find(existing=>compact(existing)===compact(header))||header;
       const existing=row.values[target],defense=compact(incoming.category)==='DEFENSESPECIALTEAMS',key=compact(header);
-      if(nonEmpty(existing)){
-        const oldNumber=Number(clean(existing).replace(/,/g,'')),newNumber=Number(clean(value).replace(/,/g,''));
-        if(defense&&DEFENSE_MAX_FIELDS.has(key)&&Number.isFinite(oldNumber)&&Number.isFinite(newNumber)&&newNumber>oldNumber){
-          row.values[target]=value;row.statSources||(row.statSources={});row.statSources[target]='MaxPreps season total (higher than primary source)';upgradedFields++;
-        }
-        continue;
-      }
+      if(nonEmpty(existing)||!nonEmpty(value))continue;
       row.values[target]=value;row.statSources||(row.statSources={});row.statSources[target]='MaxPreps';
       if(!section.headers.some(existing=>compact(existing)===compact(target)))section.headers.push(target);filledFields++;
     }
@@ -299,7 +295,7 @@ function selfTest(){
   const defenseUpgrade={team:'CORNER CANYON',roster:[{playerId:'tate',number:'8',name:'Tate Patterson'}],stats:[{category:'Defense/Special Teams',headers:['Tackles','Sacks','Caused Fum'],rows:[{playerId:'tate',number:'8',name:'Tate Patterson',values:{Tackles:'68',Sacks:'2.5','CAUSED FUM':'1'}}]}]};
   const defenseUpgradeResult=mergeTeam(defenseUpgrade,[{category:'Defense/Special Teams',number:'8',name:'T. Patterson',values:{TACKLES:'69',SACKS:'2.5','CAUSED FUM':'2','QB HURRIES':'6'}}],'fixture');
   const upgraded=defenseUpgrade.stats[0].rows[0];
-  if(defenseUpgradeResult.upgradedFields!==2||upgraded.values.Tackles!=='69'||upgraded.values.Sacks!=='2.5'||upgraded.values['CAUSED FUM']!=='2'||upgraded.values['QB HURRIES']!=='6')throw new Error('MaxPreps defensive season-total upgrade self-test failed');
+  if(defenseUpgradeResult.upgradedFields!==0||upgraded.values.Tackles!=='68'||upgraded.values.Sacks!=='2.5'||upgraded.values['CAUSED FUM']!=='1'||upgraded.values['QB HURRIES']!=='6')throw new Error('MaxPreps defensive season-total upgrade self-test failed');
   const rosterless={team:'WHITEHORSE',roster:[],stats:[]};
   const rosterlessResult=mergeTeam(rosterless,[{category:'Rushing',number:'7',name:'M. Begay (Sr)',values:{YARDS:'321'}}],'fixture');
   if(rosterlessResult.syntheticPlayers!==1||rosterlessResult.unmatched!==0||!rosterless.roster[0]?.maxprepsOnly||rosterless.stats[0]?.rows[0]?.values?.YARDS!=='321')throw new Error('MaxPreps rosterless fallback self-test failed');
@@ -316,6 +312,7 @@ function selfTest(){
   if(!sameSchool('CEDAR CITY','Cedar')||!sameSchool('ALA','American Leadership Academy')||!KNOWN_STATS_URLS['CEDAR CITY']||!KNOWN_STATS_URLS.ALA)throw new Error('Verified MaxPreps school mapping self-test failed');
   console.log('MaxPreps fallback self-test passed.');
 }
+if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1])){
 if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
 
 if(!fs.existsSync(FILE))throw new Error(`${FILE} missing`);
@@ -329,7 +326,7 @@ if(process.argv.includes('--apply-cache')){
     available++;const merged=mergeTeam(team,saved.rows,saved.sourceUrl||'');addedRows+=merged.addedRows;filledFields+=merged.filledFields;upgradedFields+=merged.upgradedFields||0;unmatchedRows+=merged.unmatched;
     team.maxprepsStatsUrl=saved.sourceUrl||'';team.maxprepsPrintUrl=saved.printUrl||'';team.maxprepsLastUpdated=saved.lastUpdated||'';
   }
-  data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked:Object.keys(data.teams||{}).length,available,addedRows,filledFields,upgradedFields,unmatchedRows,failures:0,cacheUpdatedAt:cache.updatedAt||'',policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
+  data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked:Object.keys(data.teams||{}).length,available,addedRows,filledFields,upgradedFields,unmatchedRows,failures:0,cacheUpdatedAt:cache.updatedAt||'',policy:'reported candidates only; preserve existing nonblank values; require unambiguous player and jersey matching; no larger-total promotion'}};
   fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
   console.log(`MaxPreps cache: ${available} teams available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped.`);
   process.exit(0);
@@ -357,9 +354,11 @@ for(const team of entries){
 let gameNext=0,gamePlayersFetched=0,gamePlayersFailed=0,gameRows=0;
 async function gameWorker(){while(true){const i=gameNext++;if(i>=playerTasks.length)return;const task=playerTasks[i];try{const html=await fetchHtml(task.url),games=parsePlayerGameLogs(html,task.player);if(games.length){const bucket=gameCache.teams[task.team.team]||(gameCache.teams[task.team.team]={team:task.team.team,games:[]});bucket.games.push(...games);gameRows+=games.length}gamePlayersFetched++}catch(error){gamePlayersFailed++;console.warn(`${task.team.team} ${task.player.name} game logs: ${error.message}`)}await new Promise(resolve=>setTimeout(resolve,80))}}
 await Promise.all(Array.from({length:Math.min(8,playerTasks.length)},()=>gameWorker()));
-data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,upgradedFields,unmatchedRows,failures,policy:'fill blank fields using exact or safe player matches; preserve higher MaxPreps defensive season totals; synthesize MaxPreps-only players only when the primary roster is empty'}};
+data.updatedAt=new Date().toISOString();data.summary={...(data.summary||{}),maxprepsFallback:{checked,available,addedRows,filledFields,upgradedFields,unmatchedRows,failures,policy:'reported candidates only; preserve existing nonblank values; require unambiguous player and jersey matching; no larger-total promotion'}};
 fs.writeFileSync(FILE,JSON.stringify(data,null,2)+'\n');
 cache.updatedAt=new Date().toISOString();fs.writeFileSync(CACHE,JSON.stringify(cache,null,2)+'\n');
 gameCache.updatedAt=new Date().toISOString();gameCache.summary={playersQueued:playerTasks.length,playersFetched:gamePlayersFetched,playersFailed:gamePlayersFailed,playerGames:gameRows};fs.writeFileSync(GAME_CACHE,JSON.stringify(gameCache,null,2)+'\n');
 console.log(`MaxPreps fallback: checked ${checked} teams; ${available} pages available; ${addedRows} missing rows added; ${filledFields} blank fields filled; ${unmatchedRows} unverified rows skipped; ${failures} failures. Game logs: ${gamePlayersFetched}/${playerTasks.length} players fetched, ${gameRows} player-games, ${gamePlayersFailed} failures.`);
 if(checked<Math.max(20,Math.floor(entries.length*.5)))throw new Error(`Too few MaxPreps teams checked: ${checked}/${entries.length}`);
+
+}
