@@ -247,7 +247,7 @@ function render(team,allTeams,allGames,colorRows,scheduleSources,allTimeSummary,
   const asset=window.RUSSchoolAssets;
   const entry=asset&&asset.get?asset.get(team.team):null;
   const alaBasketballLogo=(norm(team.team)==="ALA"||norm(team.team)==="AMERICANLEADERSHIPACADEMY")?"https://www.uhsaa.org/Logos/portfolio150/American%20Leadership%20Academy.png":"";
-  const anthemPrepLogo=norm(team.team)==="ANTHEMPREP"?"https://images.squarespace-cdn.com/content/v1/62c727f044f7140b33832b29/493f261e-2df2-407d-8ce5-24dcd46d98cd/Anthem-horizontal1.PNG?format=1500w":"";
+  const anthemPrepLogo=norm(team.team)==="ANTHEMPREP"?"assets/basketball/anthem-prep-eagle.webp":"";
   const candidates=norm(team.team)==="ANTHEMPREP"?[anthemPrepLogo].filter(Boolean):[alaBasketballLogo,asset&&asset.customLogo?asset.customLogo(team.team):"",entry&&entry.logoUrl?entry.logoUrl:"",asset&&asset.fallbackLogo?asset.fallbackLogo(team.team):""].filter((url,index,array)=>url&&array.indexOf(url)===index);
   const logo=candidates[0]||"";
   const allTimeGames=allTimeRecord?allTimeRecord.g:0;
