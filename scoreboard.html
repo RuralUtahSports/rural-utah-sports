@@ -21,6 +21,13 @@
 .playoff-round-meta{color:#ffb08b;font-size:10px;font-weight:800;line-height:1.5;padding:8px 12px;border-bottom:1px solid #252525}
 @media(max-width:700px){.scoreboard-week-bar{align-items:stretch;gap:7px}.scoreboard-week-bar label,.scoreboard-week-bar select,.scoreboard-week-bar span{width:100%}}
 
+
+/* Sport-specific links live on Scoreboard and Greatest Seasons, not Teams. */
+.rus-sport-switch{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 23px}
+.rus-sport-switch a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 16px;border-radius:999px;border:1px solid #414141;background:#1b1b1b;color:#fff;text-decoration:none;font-size:12px;font-weight:900;text-transform:uppercase;line-height:1.25;text-align:center}
+.rus-sport-switch a:hover,.rus-sport-switch a.active{background:#F14D07;color:#000;border-color:#F14D07}
+.rus-sport-switch a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(max-width:600px){.rus-sport-switch a{flex:1 1 150px}}
 </style>
 <style>
 .game-status-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}.kickoff-time{font-size:9px;font-weight:900;text-transform:uppercase;padding:4px 7px;border-radius:999px;background:#252525;border:1px solid #444;color:#ddd;white-space:nowrap}
@@ -41,6 +48,10 @@
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav><div class="nav-content"><a href="index.html">Home</a><a href="teams.html">Teams</a><a href="games.html">Games</a><a class="active" href="scoreboard.html">Scoreboard</a><a href="rankings.html">Rankings</a><a href="standings.html">Standings</a><a href="stat-leaders.html">Stat Leaders</a><a href="storylines.html">Storylines</a><a href="elo.html">ELO</a><a href="simulators.html">Simulators</a></div></nav>
 <main class="container">
+<div class="rus-sport-switch" aria-label="Choose scoreboard sport">
+  <a href="scoreboard.html" class="active" aria-current="page">Football Scoreboard</a>
+  <a href="boys-basketball-scoreboard.html">Boys Basketball Scoreboard</a>
+</div>
 <h2 class="page-title">Weekly Scoreboard</h2>
 <p class="subtitle">RUS projected lines with verified final scores, quarter-by-quarter box scores, scoring plays and available game stats. Games remain Upcoming until a final result is confirmed.</p>
 <div class="scoreboard-actions"><button id="shareScoreboardGrid" class="scoreboard-share-button" type="button">Share All Games / Graphics</button><span>Export every game as full boards or a readable social carousel.</span></div>
