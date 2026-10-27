@@ -114,11 +114,12 @@ function playoffWeek12FromBrackets(payload){
   const round=rounds[/^(4A|5A|6A)$/.test(classification)?0:1];
   if(!round?.games)continue;
   for(const g of round.games){
-   if(isoDate(g.date)!=='2026-10-30'||!g?.a?.name||!g?.b?.name)continue;
+   const kickoffDate=isoDate(g.date);
+   if(!/^2026-10-(30|31)$/.test(kickoffDate)||!g?.a?.name||!g?.b?.name)continue;
    const homeTeam=g.a.seed?playoffTeamName(g.a.name):g.a.name;
    const awayTeam=g.b.seed?playoffTeamName(g.b.name):g.b.name;
    rows.push({
-    date:'10/30/2026',homeTeam,awayTeam,homeSeed:g.a.seed||null,awaySeed:g.b.seed||null,
+    date:kickoffDate.slice(5,7)+'/'+kickoffDate.slice(8,10)+'/'+kickoffDate.slice(0,4),homeTeam,awayTeam,homeSeed:g.a.seed||null,awaySeed:g.b.seed||null,
     playoff:true,playoffWeek:12,classification,
     round:/^(4A|5A|6A)$/.test(classification)?'First Round':'Quarterfinals',
     time:g.time||'TBA',venue:g.venue||'TBA',
@@ -154,7 +155,7 @@ function updatePlayoffNote(){
   note.innerHTML='<b>Week 11 · Playoff Opening Round</b><p>'+n+' official October 23 matchups in 8-Player through 3A. Byes excluded. RUS lines and totals are projections, not actual scores.</p><a href="official-playoffs.html">See playoff brackets ↗</a>';
  }else{
   const rows=playoffGames.filter(g=>g.playoffWeek===12),known=rows.filter(g=>!waitingOnOpponent(g)).length,waiting=rows.length-known;
-  note.innerHTML='<b>Week 12 · Friday, October 30</b><p><strong>'+rows.length+' playoff games</strong> across seven classes: 8-Player through 3A quarterfinals, and 4A–6A first-round games. '+known+' matchups are set, '+waiting+' are awaiting first-round winners. Lines appear only when both opponents are known. No results are assumed.</p><a href="official-playoffs.html">View official bracket paths ↗</a>';
+  note.innerHTML='<b>Week 12 · October 30–31 (Friday–Saturday)</b><p><strong>'+rows.length+' playoff games</strong> across seven classes: 8-Player through 3A quarterfinals, and 4A–6A first-round games. '+known+' matchups are set, '+waiting+' are awaiting first-round winners. Lines appear only when both opponents are known. No results are assumed.</p><a href="official-playoffs.html">View official bracket paths ↗</a>';
  }
 }
 function showSelectedWeek(){
