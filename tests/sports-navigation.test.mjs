@@ -42,6 +42,7 @@ check(bGreat.includes('href="boys-basketball-greatest-seasons.html"') && bGreat.
 check(!bGreat.includes('Basketball Teams'), 'greatest seasons switch does not show Teams');
 check(nav.includes('["Football Scoreboard", "scoreboard.html"]') && nav.includes('["Boys Basketball Scoreboard", "boys-basketball-scoreboard.html"]'), 'global Scoreboard dropdown lists both sports');
 check(nav.includes('["Football Greatest Seasons", "greatest-seasons.html"]') && nav.includes('["Boys Basketball Greatest Seasons", "boys-basketball-greatest-seasons.html"]'), 'global History dropdown lists both seasons pages');
+check(nav.includes('["Boys Basketball Brackets", "boys-basketball-brackets.html"]'), 'History dropdown retains basketball bracket archive after Teams shortcut removal');
 check(nav.includes('["Stat Leaders", "stat-leaders-hub.html"]'), 'global Stats dropdown remains intact');
 check(footballScoreboard.includes('@media(max-width:600px){.rus-sport-switch a'), 'football scoreboard switch wraps on mobile');
 check(footballGreatest.includes('@media(max-width:600px){.rus-sport-switch a'), 'football greatest switch wraps on mobile');
