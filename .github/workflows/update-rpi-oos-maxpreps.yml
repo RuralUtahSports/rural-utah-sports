@@ -6,6 +6,7 @@ on:
     # MaxPreps records are refreshed several times daily as scores are posted.
     - cron: '17 */6 * * *'
   push:
+    branches: [main]
     paths:
       - 'scripts/update_rpi_oos_from_maxpreps.mjs'
       - '.github/workflows/update-rpi-oos-maxpreps.yml'
@@ -19,6 +20,7 @@ concurrency:
 
 jobs:
   refresh:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

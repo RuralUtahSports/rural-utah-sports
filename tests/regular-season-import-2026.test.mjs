@@ -77,3 +77,11 @@ test('every automatic season publisher captures a baseline, protects before metr
   assert.match(text,/branches: \[main\]/);
  }
 });
+
+test('RPI writers cannot commit generated updates to statistics review branches',()=>{
+ for(const name of ['refresh-rpi-standings','update-rpi-oos-maxpreps']){
+  const text=fs.readFileSync('.github/workflows/'+name+'.yml','utf8');
+  assert.match(text,/push:\n    branches: \[main\]/);
+  assert.match(text,/if: github.ref == 'refs\/heads\/main'/);
+ }
+});

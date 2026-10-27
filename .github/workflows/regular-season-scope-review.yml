@@ -16,6 +16,8 @@ on:
       - 'scripts/protect_regular_season_import_2026.mjs'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
       - 'tests/regular-season-import-2026.test.mjs'
+      - '.github/workflows/refresh-rpi-standings.yml'
+      - '.github/workflows/update-rpi-oos-maxpreps.yml'
       - 'competition-scope-review-2026.json'
       - 'regular-season-stat-review-2026.json'
       - 'source-audit-observations-2026.json'

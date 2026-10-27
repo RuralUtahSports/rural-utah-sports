@@ -31,7 +31,7 @@ Publishing now captures the published season/game baseline before imports. The f
 
 Reconciliation excludes schedule-classified postseason and unknown games from candidates and never promotes a team-level box-score sum directly to a player's season fields. Missing player fields remain unknown. Reviewed Gordon game cells survive stale/missing imported lines; playoff source boxes are retained separately. The applier is repeatable and uses original-value preconditions, unique source games and verified operands.
 
-Three automatic season writers share a concurrency group. Before publication each fetches main and requires the original checkout SHA; it stops on a changed main, and a push race is rejected normally. Removed the fallback job's reset/copy/retry loop and other writers' automatic rebases. This prevents an older generated payload from overwriting new corrections or scores after a concurrent main update. Main will still advance independently through source/score/record workflows: synchronization is a snapshot, not a permanent condition. Long imports can require a rerun when another main writer advances the branch; this favors preserving newer data over publishing a stale snapshot. No live workflow was disabled or dispatched.
+Three automatic season writers share a concurrency group. Before publication each fetches main and requires the original checkout SHA; it stops on a changed main, and a push race is rejected normally. Removed the fallback job's reset/copy/retry loop and other writers' automatic rebases. This prevents an older generated payload from overwriting new corrections or scores after a concurrent main update. An additional cause was reproduced after push: RPI automation committed `1f0beeb8f` directly to the review branch because its push trigger had no branch filter. Both RPI writers now restrict pushes and execution to main. The unrelated generated RPI changes were restored to synchronized main data; no source totals were guessed. Other legacy one-off publishers still warrant a broader trigger review. Main will still advance independently through source/score/record workflows: synchronization is a snapshot, not a permanent condition. Long imports can require a rerun when another main writer advances the branch; this favors preserving newer data over publishing a stale snapshot. No live workflow was disabled or dispatched.
 
 Primary season data, compact metrics, the four affected team shards, Gordon's six game lines, and team aggregates/rankings are synchronized. Team aggregate changes are derived with the existing generator on before/after copies; unrelated saved values must match the before result. Scores, team win/loss records, player record datasets, source caches, all existing awards, locked inputs/winners and Speed Cut assets/configuration remain unchanged. The earlier verified Alma Barlow receiving-rate correction remains.
 
@@ -50,9 +50,9 @@ This draft remains **release-blocked**. Existing retained totals and current sea
 ## Validation
 
 - 27 existing website tests pass after merged PR #180/#182.
-- 26 scope, correction and import-protection tests pass on Node 22 and Node 24.
+- 27 scope, correction and import-protection tests pass on Node 22 and Node 24.
 - Shared-runtime, search-runtime and locked award role-scoring checks pass. Ten additional app-shell, payload, game-center, record-format, performance and feature checks pass.
-- Eighteen Chromium checks cover eight corrected profiles and South Summit's Stats tab at 390px and 1440px, with no JavaScript exceptions; mobile and desktop screenshots reviewed.
+- Twenty Chromium checks cover eight corrected profiles and South Summit's Stats tab and the 8-player receiving leaderboard at 390px and 1440px, with no JavaScript exceptions; mobile and desktop screenshots reviewed.
 - Reapplying both batches and aggregate synchronization produces zero changes. All team games/W-L-T/points/records match synchronized main.
 - The existing player-record validator still fails on duplicate `273541|HERRIMAN|Filisi Filipe` in rushing touchdowns; the protected historical/record dataset is unchanged. Hosted checks must pass on the final commit.
 

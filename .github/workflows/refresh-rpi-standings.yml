@@ -5,6 +5,7 @@ on:
   schedule:
     - cron: '7,22,37,52 * * * *'
   push:
+    branches: [main]
     paths:
       - 'weekly-simulation.json'
       - 'scripts/build_rpi_standings.mjs'
@@ -21,6 +22,7 @@ concurrency:
 
 jobs:
   refresh:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
