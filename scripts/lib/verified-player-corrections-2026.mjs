@@ -44,7 +44,7 @@ export function applyVerifiedPlayerBatch(rosters,games,batch,{brackets,review}){
   if(sets.has(e.id)||e.season!==2026||e.phase!=='regular-season'||e.status!=='source-verified-pending-PR-review')throw Error('Invalid evidence set');
   identity(output,e);
   const seen=new Set();
-  for(const g of e.games||[]){const k=gameKey(g,e.team),url=g.url||g.source;if(!primaryURL(url)||index.classify(g,e.team).phase!=='regular-season'||seen.has(k))throw Error('Duplicate, unknown or postseason source game');seen.add(k);}
+  for(const g of e.games||[]){const k=index.resolveKey({...g,url:g.url||g.source},e.team),url=g.url||g.source;if(!primaryURL(url)||index.classify(g,e.team).phase!=='regular-season'||seen.has(k))throw Error('Duplicate, unknown or postseason source game');seen.add(k);}
   if(!seen.size||seen.size!==e.reportedGameCount)throw Error('Reported game coverage differs');sets.set(e.id,e);
  }
  const seenDecisions=new Set(),changes=[];

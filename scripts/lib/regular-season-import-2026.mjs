@@ -36,19 +36,22 @@ export function retainSeasonStatistics(retained, incoming) {
 // A rebuilt source response may omit games or repeat an old coach submission.
 // Retain previously reported nonblank cells; conflicting replacements remain in
 // the candidate artifact until a reviewed batch explicitly authorizes them.
-export function retainReportedGameCells(retained,incoming){
+export function retainReportedGameCells(retained,incoming,{competitionIndex=null}={}){
+  const keyFor=(game,team)=>competitionIndex?competitionIndex.resolveKey(game,team):gameKey(game,team);
   const output=structuredClone(incoming);
   for(const [name,saved] of Object.entries(retained.teams||{})){
     const targets=Object.entries(output.teams||{}).filter(([t])=>teamKey(t)===teamKey(name));
     if(targets.length>1)throw Error('Ambiguous imported game team');
     if(!targets.length){output.teams[name]=structuredClone(saved);continue;}
     const target=targets[0][1],seen=new Set();target.games||=[];
+    for(const candidate of target.games)if(competitionIndex?.identityMatches[gameKey(candidate,name)]&&!keyFor(candidate,name))throw Error('Unverified source identity for reviewed game');
     for(const prior of saved.games||[]){
-      const key=gameKey(prior,name);if(!key||seen.has(key))throw Error('Duplicate or invalid retained game identity');seen.add(key);
-      const matches=target.games.filter(g=>gameKey(g,name)===key);
+      const key=keyFor(prior,name);if(!key||seen.has(key))throw Error('Duplicate or invalid retained game identity');seen.add(key);
+      const matches=target.games.filter(g=>keyFor(g,name)===key);
       if(matches.length>1)throw Error('Duplicate imported game identity');
       if(!matches.length){target.games.push(structuredClone(prior));continue;}
       const game=matches[0];game.players||=[];
+      if(competitionIndex?.identityMatches[gameKey(prior,name)])for(const field of ['gameKey','date','opponent','url','maxprepsUrl','location'])if(Object.hasOwn(prior,field))game[field]=prior[field];
       for(const key of ['teamScore','opponentScore','final','status'])if(Object.hasOwn(prior,key))game[key]=prior[key];
       const ids=new Set();
       for(const person of prior.players||[]){

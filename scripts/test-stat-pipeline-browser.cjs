@@ -23,6 +23,16 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.match((await p.locator('#results').innerText()).replace(/,/g,''),/1397/);assert.doesNotMatch(await p.locator('#results').innerText(),/987654321/);
   assert.match(await p.locator('#heroCopy').innerText(),/Coverage is incomplete/);results.push({width,test:'season leaderboard rejects poisoned reported cumulative totals'});
   await p.screenshot({path:`${out}/${width}-verified-leaders.png`,fullPage:true});
+  const resumed=await p.evaluate(async()=>{
+   const publication=await(await fetch('regular-season-publication-2026.json')).json(),data=await(await fetch('player-game-stats-2026.json')).json(),policy=window.RUSRegularSeasonPolicy2026;
+   return ['TIMPVIEW','SALEM HILLS'].map(team=>{
+    const opponent=team==='TIMPVIEW'?'MAPLE MOUNTAIN':'TIMPANOGOS',game=data.teams[team].games.find(g=>g.opponent===opponent&&g.date==='2026-09-19'),duplicate={...structuredClone(game),date:'2026-09-18'};
+    const one=policy.regularGames([game],team,publication),both=policy.regularGames([game,duplicate],team,publication);
+    return {team,count:both.length,statsUnchanged:JSON.stringify(one)===JSON.stringify(both),phase:policy.phase(duplicate,team,publication)};
+   });
+  });
+  for(const r of resumed){assert.equal(r.count,1);assert.equal(r.statsUnchanged,true);assert.equal(r.phase,'regular-season');results.push({width,test:r.team+' resumed game counted exactly once'});}
+
   missing=true;await p.reload();await p.waitForFunction(()=>document.querySelector('#results').textContent.includes('could not be loaded'));
   assert.equal(await p.locator('#results table').count(),0);results.push({width,test:'missing reviewed publication fails closed'});missing=false;
   for(const file of ['mvp-race.html','all-utah.html','all-state-watch.html']){

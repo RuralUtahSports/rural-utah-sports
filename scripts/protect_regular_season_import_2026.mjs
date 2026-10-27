@@ -1,3 +1,4 @@
+import {createCompetitionIndex} from './lib/competition-scope-2026.mjs';
 import {loadReviewedBatches} from './lib/reviewed-batches-2026.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -13,7 +14,7 @@ const incoming=read(file),candidate=process.argv.find(x=>x.startsWith('--candida
 if([file,gamesFile].some(f=>[baseline,gamesBaseline,candidate].filter(Boolean).some(p=>path.resolve(p)===path.resolve(f)))||path.resolve(baseline)===path.resolve(gamesBaseline)||candidate&&[baseline,gamesBaseline].some(f=>path.resolve(candidate)===path.resolve(f)))throw Error('Baseline, candidate and published paths must be distinct');
 if(candidate)fs.writeFileSync(candidate,JSON.stringify({season:2026,seasonCandidate:incoming,gameCandidate:read(gamesFile)},null,2)+'\n');
 const retained=retainSeasonStatistics(read(baseline),incoming);
-let result={rosters:retained.rosters,games:retainReportedGameCells(read(gamesBaseline),read(gamesFile)),changes:[]};
+let result={rosters:retained.rosters,games:retainReportedGameCells(read(gamesBaseline),read(gamesFile),{competitionIndex:createCompetitionIndex({review:read('competition-scope-review-2026.json'),brackets:read('official-brackets-2026.json')})}),changes:[]};
 const batches=loadReviewedBatches();
 for(const batch of batches){
  const protectedGames=retainVerifiedGameCells(read(gamesBaseline),result.games,batch);

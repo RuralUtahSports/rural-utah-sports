@@ -128,12 +128,15 @@ function calculateCandidateSeasonStats(rosters,games,sources={}){
 export function reconcileSeasonStats(rosters,games,sources={}){
   const index=sources.competitionIndex||createCompetitionIndex({brackets:sources.brackets,review:sources.review});
   const regular=structuredClone(games);let excludedPostseason=0,excludedUnknown=0;
-  for(const [team,data] of Object.entries(regular.teams||{}))data.games=(data.games||[]).filter(game=>{
-    const phase=index.classify(game,team).phase;
-    if(phase==='postseason')excludedPostseason++;
-    else if(phase!=='regular-season')excludedUnknown++;
-    return phase==='regular-season';
-  });
+  for(const [team,data] of Object.entries(regular.teams||{})){
+    data.games=(data.games||[]).filter(game=>{
+      const phase=index.classify(game,team).phase;
+      if(phase==='postseason')excludedPostseason++;
+      else if(phase!=='regular-season')excludedUnknown++;
+      return phase==='regular-season';
+    });
+    data.games=index.uniqueGames?index.uniqueGames(data.games,team).map(row=>row.game):data.games;
+  }
   // Team-level box-score presence cannot establish any player's field coverage.
   // Arithmetic is a candidate only; a reviewed evidence batch authorizes writes.
   const candidates=calculateCandidateSeasonStats(structuredClone(rosters),regular,sources);

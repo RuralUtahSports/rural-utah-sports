@@ -1,3 +1,4 @@
+import {createCompetitionIndex,gameKey as scopeGameKey} from './lib/competition-scope-2026.mjs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {reportedNumber,samePlayer,uniquePlayerSubmissions} from './lib/stat-import-integrity-2026.mjs';
@@ -83,13 +84,13 @@ function mergeManualGameStats(output,entries=[],scheduleData=null,weekly=null,ve
   }
   return{gamesAdded,playersAdded,linesAdded,fieldsSet};
 }
-export function mergeMaxPrepsGameLogs(output,cache,scheduleData=null,weekly=null,verified=[],{rosters=null}={}){
+export function mergeMaxPrepsGameLogs(output,cache,scheduleData=null,weekly=null,verified=[],{rosters=null,competitionIndex=null}={}){
   let teamsMatched=0,gamesMatched=0,gamesAdded=0,playersAdded=0,linesAdded=0,fieldsFilled=0,correctedFields=0,unmatchedGames=0,conflictingSubmissions=0,identityConflicts=0;
   output.teams||(output.teams={});
   for(const [teamName,saved] of Object.entries(cache?.teams||{})){
     let outputKey=Object.keys(output.teams).find(k=>canon(k)===canon(teamName)),targetTeam=outputKey?output.teams[outputKey]:null,matchedTeam=!!targetTeam;
     if(matchedTeam)teamsMatched++;
-    const submissions=uniquePlayerSubmissions(saved.games);conflictingSubmissions+=submissions.conflicts.length;
+    const submissions=uniquePlayerSubmissions(saved.games,{gameIdentity:competitionIndex?row=>competitionIndex.resolveKey(row,teamName):undefined});conflictingSubmissions+=submissions.conflicts.length;
     for(const incoming of submissions.rows){
       const roster=rosters&&Object.entries(rosters.teams||{}).find(([name])=>canon(name)===canon(teamName))?.[1]?.roster;
       const identityMatches=(roster||[]).filter(p=>p.playerId===incoming.playerId);
@@ -98,10 +99,14 @@ export function mergeMaxPrepsGameLogs(output,cache,scheduleData=null,weekly=null
       if(!targetTeam&&expected){outputKey=teamName;targetTeam={team:teamName,games:[]};output.teams[outputKey]=targetTeam;if(!matchedTeam){teamsMatched++;matchedTeam=true}}
       if(!targetTeam){unmatchedGames++;continue}
       targetTeam.games||(targetTeam.games=[]);
-      const exact=targetTeam.games.filter(g=>isoDate(g.date)===isoDate(incoming.date)&&canon(g.opponent)===canon(incoming.opponent));
+      const reviewed=competitionIndex?.identityMatches[scopeGameKey(incoming,teamName)];
+      const incomingKey=competitionIndex?.resolveKey(incoming,teamName);
+      if(reviewed&&!incomingKey){unmatchedGames++;continue;}
+      if(reviewed&&targetTeam.games.some(g=>competitionIndex.identityMatches[scopeGameKey(g,teamName)]?.canonicalKey===incomingKey&&competitionIndex.resolveKey(g,teamName)!==incomingKey)){conflictingSubmissions++;continue;}
+      const exact=targetTeam.games.filter(g=>reviewed?competitionIndex.resolveKey(g,teamName)===incomingKey:isoDate(g.date)===isoDate(incoming.date)&&canon(g.opponent)===canon(incoming.opponent));
       if(exact.length>1){conflictingSubmissions++;continue;}
       let game=exact[0]||null;
-      // Rescheduled/ambiguous identities await the independent evidence handoff.
+      // Only reviewed source-bound aliases/dates can identify resumed contests.
       // Never attach an import to the only nearby game or a different opponent.
       if(!game&&expected&&isoDate(expected.date)===isoDate(incoming.date)&&canon(expected.opponent)===canon(incoming.opponent)){
        game=shellFromSchedule(teamName,expected,incoming);targetTeam.games.push(game);gamesAdded++;
@@ -190,7 +195,7 @@ if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1
 if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
 if(!fs.existsSync('deseret-rosters-stats-2026.json'))throw Error('Roster identity input required for game import');
 if(!fs.existsSync(FILE)||!fs.existsSync(CACHE)){console.log('MaxPreps game-log inputs missing; skipping.');process.exit(0)}
-const output=JSON.parse(fs.readFileSync(FILE,'utf8')),cache=JSON.parse(fs.readFileSync(CACHE,'utf8')),scheduleData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null,weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):null,verified=fs.existsSync(VERIFIED)?JSON.parse(fs.readFileSync(VERIFIED,'utf8')):[],manual=fs.existsSync(MANUAL)?JSON.parse(fs.readFileSync(MANUAL,'utf8')).manualGameStats||[]:[],summary=mergeMaxPrepsGameLogs(output,cache,scheduleData,weekly,verified,{rosters:fs.existsSync('deseret-rosters-stats-2026.json')?JSON.parse(fs.readFileSync('deseret-rosters-stats-2026.json','utf8')):null}),manualSummary=mergeManualGameStats(output,manual,scheduleData,weekly,verified);
+const output=JSON.parse(fs.readFileSync(FILE,'utf8')),cache=JSON.parse(fs.readFileSync(CACHE,'utf8')),scheduleData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null,weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):null,verified=fs.existsSync(VERIFIED)?JSON.parse(fs.readFileSync(VERIFIED,'utf8')):[],manual=fs.existsSync(MANUAL)?JSON.parse(fs.readFileSync(MANUAL,'utf8')).manualGameStats||[]:[],summary=mergeMaxPrepsGameLogs(output,cache,scheduleData,weekly,verified,{competitionIndex:createCompetitionIndex({review:JSON.parse(fs.readFileSync('competition-scope-review-2026.json','utf8'))}),rosters:fs.existsSync('deseret-rosters-stats-2026.json')?JSON.parse(fs.readFileSync('deseret-rosters-stats-2026.json','utf8')):null}),manualSummary=mergeManualGameStats(output,manual,scheduleData,weekly,verified);
 for(const team of Object.values(output.teams||{}))team.games?.sort((a,b)=>isoDate(a.date).localeCompare(isoDate(b.date))||clean(a.opponent).localeCompare(clean(b.opponent)));
 suppressInvalidItaStatInMemory(output);
 output.updatedAt=new Date().toISOString();output.summary={...(output.summary||{}),maxprepsFallback:{...summary,manualGameStats:manualSummary}};fs.writeFileSync(FILE,JSON.stringify(output,null,2)+'\n');

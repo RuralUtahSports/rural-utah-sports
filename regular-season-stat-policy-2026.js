@@ -11,10 +11,37 @@
   if(!m){const us=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(us)m=[us[0],us[3],us[1],us[2]];}
   return m?`${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`:null;
  }
- function phase(game,team,publication){
+ // Source IDs bind aliases and resumed dates to reviewed contests, never dates alone.
+ function sourceId(value){
+  try{const u=new URL(value);if(!['https:'].includes(u.protocol))return null;
+   if(/^(www\.)?maxpreps\.com$/.test(u.hostname)){const id=u.searchParams.get('c');return /^[a-f0-9-]{36}$/i.test(id||'')?'maxpreps:'+id.toLowerCase():null;}
+   if(u.hostname==='sports.deseret.com'&&u.pathname.includes('/football/game/')){const id=u.pathname.match(/\/(\d+)\/?$/)?.[1];return id?'deseret:'+id:null;}
+  }catch{}return null;
+ }
+ function resolveGameKey(game,team,publication){
   const canon=v=>publication.aliases?.[compact(v)]||compact(v),day=date(game.date);
   const a=canon(game.awayTeam||team||game.team),b=canon(game.homeTeam||game.opponent);
-  return day&&a&&b?publication.gamePhases[`${day}|${[a,b].sort().join('|')}`]||'unknown':'unknown';
+  if(!day||!a||!b||a===b)return null;
+  const key=`${day}|${[a,b].sort().join('|')}`,review=publication.identityMatches?.[key];
+  if(!review)return key;
+  const ids=[game.url,game.maxprepsUrl,game.sourceUrl].map(sourceId).filter(Boolean);
+  return ids.some(id=>review.sourceIds.includes(id))?review.canonicalKey:null;
+ }
+ function phase(game,team,publication){
+  const key=resolveGameKey(game,team,publication);
+  return key?publication.gamePhases[key]||'unknown':'unknown';
+ }
+ function uniqueGames(games,team,publication){
+  const groups=new Map();
+  for(const game of games||[]){const key=resolveGameKey(game,team,publication);if(!key)continue;const rows=groups.get(key)||[];rows.push(game);groups.set(key,rows);}
+  const result=[];
+  for(const [key,rows] of groups){
+   // A repeated date/source view must never add a second result or statistical sum.
+   const payload=g=>JSON.stringify([g.teamScore,g.opponentScore,g.players]);
+   if(rows.some(g=>payload(g)!==payload(rows[0])))continue;
+   result.push({game:rows[0],key});
+  }
+  return result;
  }
  async function verifyLockedSnapshot(text,publication){
   requirePublication(publication);
@@ -27,15 +54,10 @@
  }
  function regularGames(games,team,publication){
   requirePublication(publication);
-  const canon=v=>publication.aliases?.[compact(v)]||compact(v),groups=new Map();
-  for(const game of games||[]){
-   if(phase(game,team,publication)!=='regular-season')continue;
-   const key=date(game.date)+'|'+canon(game.opponent),list=groups.get(key)||[];list.push(game);groups.set(key,list);
-  }
   const result=[];
-  for(const list of groups.values()){
-   if(list.some(g=>JSON.stringify(g.players)!==JSON.stringify(list[0].players)))continue;
-   const game=structuredClone(list[0]),players=new Map(),conflicts=new Set();
+  for(const {game:original} of uniqueGames(games,team,publication)){
+   if(phase(original,team,publication)!=='regular-season')continue;
+   const game=structuredClone(original),players=new Map(),conflicts=new Set();
    for(const p of game.players||[]){
     if(!p.playerId||!p.name)continue;
     if(players.has(p.playerId)&&JSON.stringify(players.get(p.playerId))!==JSON.stringify(p))conflicts.add(p.playerId);
@@ -72,5 +94,5 @@
   }
   return result;
  }
- return {requirePublication,phase,regularGames,verifyLockedSnapshot};
+ return {requirePublication,phase,regularGames,verifyLockedSnapshot,sourceId,resolveGameKey,uniqueGames};
 });

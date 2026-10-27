@@ -28,7 +28,7 @@ export function buildRegularSeasonPublication(rosters,games,batches,context,lock
  const index=createCompetitionIndex(context),gamePhases={};
  for(const [key,rows] of index.observations){const phases=new Set(rows.map(r=>r.phase));gamePhases[key]=phases.size===1?[...phases][0]:'unknown';}
  const updatedAt=batches.flatMap(b=>b.decisions.map(d=>d.reportingDate)).sort().at(-1);
- return {season:2026,scope:'verified-regular-season',policy:'Only source-reviewed fields enter season rankings. Missing fields are unknown; no cumulative fallback.',lockedSnapshotSha256:LOCKED_AWARDS_SHA256,aliases:TEAM_ALIASES,gamePhases,verifiedSeasonFields:seasonFields,verifiedGameFields:gameFields,updatedAt,summary:{teams:Object.keys(teams).length,teamsWithStats:Object.values(teams).filter(t=>t.stats.length).length,reviewComplete:false},teams,eligibleTeamTotals:[],specialTeams:{},regularSeasonStandings:JSON.parse(lockedText).standings,regularSeasonStateTop25:JSON.parse(lockedText).stateTop25};
+ return {season:2026,scope:'verified-regular-season',policy:'Only source-reviewed fields enter season rankings. Missing fields are unknown; no cumulative fallback.',lockedSnapshotSha256:LOCKED_AWARDS_SHA256,aliases:TEAM_ALIASES,gamePhases,identityMatches:index.identityMatches,verifiedSeasonFields:seasonFields,verifiedGameFields:gameFields,updatedAt,summary:{teams:Object.keys(teams).length,teamsWithStats:Object.values(teams).filter(t=>t.stats.length).length,reviewComplete:false},teams,eligibleTeamTotals:[],specialTeams:{},regularSeasonStandings:JSON.parse(lockedText).standings,regularSeasonStateTop25:JSON.parse(lockedText).stateTop25};
 }
 if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1])){
  const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));

@@ -5,10 +5,11 @@ export function samePlayer(a,b){
 }
 // Exact repeated submissions are harmless; differing submissions need review.
 // Do not select the largest value, the last response, or a nearby opponent.
-export function uniquePlayerSubmissions(rows){
+export function uniquePlayerSubmissions(rows,{gameIdentity}={}){
  const grouped=new Map(),conflicts=[];
  for(const row of rows||[]){
-  const key=[row.date,compact(row.opponent),row.playerId||compact(row.name),String(row.number??'')].join('|');
+  const identity=gameIdentity?.(row)||[row.date,compact(row.opponent)].join('|');
+  const key=[identity,row.playerId||compact(row.name),String(row.number??'')].join('|');
   const previous=grouped.get(key);
   if(!previous){grouped.set(key,row);continue;}
   const cells=r=>JSON.stringify((r.statLines||[]).map(l=>[compact(l.category),Object.entries(l.values||{}).sort(([a],[b])=>a.localeCompare(b))]).sort(([a],[b])=>a.localeCompare(b)));

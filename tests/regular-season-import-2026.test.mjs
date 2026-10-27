@@ -24,10 +24,11 @@ test('stale, incomplete and playoff-inclusive season imports remain candidates, 
 test('reconciliation excludes postseason and unknown scope without treating team box presence as player completeness',()=>{
  const before=structuredClone(roster),data=structuredClone(games);
  const playoff=read('maxpreps-player-game-stats-2026.json').teams['BEN LOMOND'].games.find(g=>g.date==='2026-10-23');assert.ok(playoff);data.teams['BEN LOMOND'].games.push({...playoff,players:[playoff]});
+ data.teams['BEN LOMOND'].games.push({date:'2026-08-01',opponent:'UNREVIEWED TEST OPPONENT',players:[]});
  const summary=reconcileSeasonStats(before,data,context);
  assert.ok(summary.excludedPostseason>0);assert.ok(summary.excludedUnknown>0);
  assert.equal(summary.fields,0);assert.equal(summary.players,0);
- assert.deepEqual(before.teams,roster.teams);assert.equal(data.teams['BEN LOMOND'].games.at(-1).date,'2026-10-23');
+ assert.deepEqual(before.teams,roster.teams);assert.ok(data.teams['BEN LOMOND'].games.some(g=>g.date==='2026-10-23'));
 });
 test('verified game fields survive missing or stale imported player lines while playoff boxes remain available',()=>{
  const batch=read('regular-season-corrections-batch-1-2026.json'),incoming=structuredClone(games);

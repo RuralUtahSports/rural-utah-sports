@@ -13,6 +13,8 @@ on:
       - 'regular-season-stat-policy-2026.js'
       - 'regular-season-publication-2026.json'
       - 'tests/stat-pipeline-safety-2026.test.mjs'
+      - 'tests/game-identity-handoff-2026.test.mjs'
+      - 'audits/2026-regular-season/game-identity-handoff/**'
       - 'scripts/test-stat-pipeline-browser.cjs'
       - '.github/workflows/build-current-game-stats.yml'
       - '.github/workflows/build-deseret-rosters-stats.yml'
@@ -60,7 +62,7 @@ jobs:
         with:
           node-version: '22'
       - name: Test competition classification and preservation guards
-        run: node --test tests/competition-scope-2026.test.mjs tests/verified-player-corrections-2026.test.mjs tests/regular-season-import-2026.test.mjs tests/stat-pipeline-safety-2026.test.mjs
+        run: node --test tests/competition-scope-2026.test.mjs tests/verified-player-corrections-2026.test.mjs tests/regular-season-import-2026.test.mjs tests/stat-pipeline-safety-2026.test.mjs tests/game-identity-handoff-2026.test.mjs
       - name: Verify reviewed publication matches evidence and pinned awards
         run: node scripts/build_regular_season_publication_2026.mjs --check
       - name: Audit stored source data without publishing changes

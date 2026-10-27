@@ -1,3 +1,5 @@
+import {createRequire} from 'node:module';
+const identityPolicy=createRequire(import.meta.url)('../../regular-season-stat-policy-2026.js');
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 
@@ -33,9 +35,24 @@ const sourceOK=e=>e&&/^https:\/\/(?:www\.)?(?:maxpreps\.com|sports\.deseret\.com
 // Positive schedule/competition evidence only. A date, a score, or absence from
 // the playoff bracket is never sufficient to mark a game regular-season.
 export function createCompetitionIndex({brackets={},review={}}={}) {
-  const observations=new Map();
+  const observations=new Map(),identityMatches={};
+  for(const g of review.games||[]){
+    const r=g.identityReview;if(!r)continue;
+    if(g.verification!=='schedule-reviewed'||!/^2026-\d\d-\d\d\|[A-Z0-9]+\|[A-Z0-9]+$/.test(r.canonicalKey)||!r.sourceGames?.length)throw Error('Invalid reviewed contest identity');
+    for(const source of r.sourceGames){
+      const sourceIds=[...new Set(source.urls.map(identityPolicy.sourceId))];
+      if(sourceIds.some(id=>!id))throw Error('Reviewed contest lacks a stable source ID');
+      const value={canonicalKey:r.canonicalKey,sourceIds,startDate:r.startDate||g.date,...(r.completionDate?{completionDate:r.completionDate}:{})};
+      if(identityMatches[source.key]&&JSON.stringify(identityMatches[source.key])!==JSON.stringify(value))throw Error('Conflicting reviewed contest identity');
+      identityMatches[source.key]=value;
+    }
+  }
+  const resolveKey=(game,team)=>{
+    // Preserve the existing date parser for all unrelated records.
+    return identityPolicy.resolveGameKey({...game,date:isoDate(game.date)},team,{aliases:TEAM_ALIASES,identityMatches});
+  };
   const add=(game,phase,evidence)=>{
-    const key=gameKey(game);if(!key||!key.startsWith('2026-')||!sourceOK(evidence))return;
+    const key=game.identityReview?.canonicalKey||gameKey(game);if(!key||!key.startsWith('2026-')||!sourceOK(evidence))return;
     const list=observations.get(key)||[];list.push({phase,evidence});observations.set(key,list);
   };
   if(brackets.season===2026)for(const [classification,c] of Object.entries(brackets.classifications||{})){
@@ -52,9 +69,10 @@ export function createCompetitionIndex({brackets={},review={}}={}) {
     for(const e of g.evidence||[])if(e.kind==='schedule-competition-label'&&e.observedAt)add(g,g.phase,e);
   }
   return {
-    observations,
+    observations,identityMatches,resolveKey,
+    uniqueGames(games,team){return identityPolicy.uniqueGames(games.map(g=>({...g,date:isoDate(g.date)})),team,{aliases:TEAM_ALIASES,identityMatches});},
     classify(game,team){
-      const key=gameKey(game,team),rows=observations.get(key)||[],phases=new Set(rows.map(x=>x.phase));
+      const key=resolveKey(game,team),rows=observations.get(key)||[],phases=new Set(rows.map(x=>x.phase));
       return {key,phase:phases.size===1?[...phases][0]:'unknown',reason:phases.size>1?'conflicting-competition-evidence':rows.length?'schedule-or-competition-evidence':'unverified-competition-phase',evidence:rows.map(x=>x.evidence)};
     }
   };
