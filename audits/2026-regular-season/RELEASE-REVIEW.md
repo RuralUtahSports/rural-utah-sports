@@ -25,7 +25,7 @@ Gordon's identity matches school, #2, class 2027, height and weight across provi
 
 ## Publishing and preservation
 
-Synchronized with main at `4156b21fe`, including merged PR #180 navigation/runtime/team fixes, PR #182's hidden unverified homepage record sections, and newer automatic score/record updates. Generated-data conflicts retained main's current payloads before replaying only reviewed player changes; all unrelated scores, records, sponsorships and locked awards were compared to this main snapshot.
+Synchronized with main at `4c74f5177`, including merged PR #180 navigation/runtime/team fixes, PR #182's hidden unverified homepage record sections, and newer automatic score/record updates. Generated-data conflicts retained main's current payloads before replaying only reviewed player changes; all unrelated scores, records, sponsorships and locked awards were compared to this main snapshot.
 
 Publishing now captures the published season/game baseline before imports. The finalizer retains published season cells and their provenance, then validates and applies registered evidence batches before metrics and team shards are built. Raw Deseret/MaxPreps candidates continue to refresh; a 14-day Actions artifact retains the Deseret candidate for review. Roster/game/score publishing can continue. Season imports are proposals until field review; retention does **not** certify existing values as correct or regular-season-only. Unexpected reviewed values or identity changes fail safely instead of silently replacing them.
 
@@ -51,7 +51,7 @@ This draft remains **release-blocked**. Existing retained totals and current sea
 
 - 27 existing website tests pass after merged PR #180/#182.
 - 26 scope, correction and import-protection tests pass on Node 22 and Node 24.
-- Shared-runtime, search-runtime and locked award role-scoring checks pass.
+- Shared-runtime, search-runtime and locked award role-scoring checks pass. Ten additional app-shell, payload, game-center, record-format, performance and feature checks pass.
 - Eighteen Chromium checks cover eight corrected profiles and South Summit's Stats tab at 390px and 1440px, with no JavaScript exceptions; mobile and desktop screenshots reviewed.
 - Reapplying both batches and aggregate synchronization produces zero changes. All team games/W-L-T/points/records match synchronized main.
 - The existing player-record validator still fails on duplicate `273541|HERRIMAN|Filisi Filipe` in rushing touchdowns; the protected historical/record dataset is unchanged. Hosted checks must pass on the final commit.
