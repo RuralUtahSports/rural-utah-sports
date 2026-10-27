@@ -427,7 +427,14 @@
 
     }
 
-  </style>
+  
+/* Sport-specific links live on Scoreboard and Greatest Seasons, not Teams. */
+.rus-sport-switch{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 23px}
+.rus-sport-switch a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 16px;border-radius:999px;border:1px solid #414141;background:#1b1b1b;color:#fff;text-decoration:none;font-size:12px;font-weight:900;text-transform:uppercase;line-height:1.25;text-align:center}
+.rus-sport-switch a:hover,.rus-sport-switch a.active{background:#F14D07;color:#000;border-color:#F14D07}
+.rus-sport-switch a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media(max-width:600px){.rus-sport-switch a{flex:1 1 150px}}
+</style>
 
 
 <style id="rus-mobile-performance">
@@ -481,6 +488,10 @@ html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulati
 
 
 <main class="container">
+  <div class="rus-sport-switch" aria-label="Choose greatest seasons sport">
+    <a href="greatest-seasons.html" class="active" aria-current="page">Football Greatest Seasons</a>
+    <a href="boys-basketball-greatest-seasons.html">Boys Basketball Greatest Seasons</a>
+  </div>
 
   <h2 class="page-title">
     Greatest Seasons

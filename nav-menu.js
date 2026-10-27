@@ -79,6 +79,7 @@
       ["History Lab", "history-lab.html"],
       ["Football Greatest Seasons", "greatest-seasons.html"],
       ["Boys Basketball Greatest Seasons", "boys-basketball-greatest-seasons.html"],
+      ["Boys Basketball Brackets", "boys-basketball-brackets.html"],
       ["Records", "records.html"],
     ],
     rankings: [
