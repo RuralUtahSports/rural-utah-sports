@@ -1,5 +1,7 @@
 (()=>{
 'use strict';
+// Manually re-enable only after every 2026 football final and statistical review.
+const SHOW_2026_SEASON_RECORDS=false;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=v=>Number.isFinite(Number(v))?Number(v).toLocaleString('en-US',{maximumFractionDigits:2}):String(v??'');
 // Reuse the existing verified school palette; never infer or invent team colors.
@@ -145,6 +147,10 @@ function group(title,intro,rows,key){
  return section;
 }
 async function boot(){
+ // Keep 2026 school-season record carousels off the homepage until the
+ // postseason is complete AND regular-season statistics have been reviewed.
+ // No records, archive data, or single-game alerts are deleted or changed.
+ if(!SHOW_2026_SEASON_RECORDS)return;
  const r=await fetch('season-record-alerts.json?v=20261020-all-stats1',{cache:'no-store'});
  if(!r.ok)return;const data=await r.json();
  const team=data.teamBroken||[],teamStats=[],player=(data.playerReportedArchive||[]).filter(a=>['historical-school-high','exceeds-listed-uhsaa'].includes(a.status)),pace=data.teamWatches||[]; // Fail closed: never show 2025-only comparison as a record.
