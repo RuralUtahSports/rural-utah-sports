@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'rankings.html'
+      - 'rankings-mobile-fix.js'
       - 'scoreboard.html'
       - 'stat-leaders.html'
       - 'game-week.html'
@@ -85,6 +87,8 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'rankings.html'
+      - 'rankings-mobile-fix.js'
       - 'scoreboard.html'
       - 'stat-leaders.html'
       - 'game-week.html'
@@ -180,6 +184,7 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check nav-menu.js
+          node --check rankings-mobile-fix.js
           node --check back-to-top.js
           node --check rus-fetch-cache.js
           node --check mobile-shell.js
@@ -219,6 +224,9 @@ jobs:
           node --check scripts/check-home-scorigami.mjs
           node --check scripts/apply_manual_stat_corrections.mjs
           node --check scripts/check-current-week-and-stat-corrections.mjs
+
+      - name: Run website regression tests
+        run: node --test tests/*.test.cjs
 
       - name: Build compact stat payload
         run: node scripts/build_deseret_stat_metrics.mjs
