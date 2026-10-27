@@ -6,6 +6,7 @@ on:
   schedule:
     - cron: '*/15 * * * *'
   push:
+    branches: [main]
     paths:
       - 'scripts/enrich-deseret-game-details.mjs'
       - 'manual-stat-corrections-2026.json'

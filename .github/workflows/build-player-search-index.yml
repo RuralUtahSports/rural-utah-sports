@@ -3,6 +3,7 @@ name: Build Player Search Index
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - 'deseret-rosters-stats-2026.json'
       - 'deseret-rosters-stats-2025.json'

@@ -5,6 +5,7 @@ name: Build MaxPreps Stats Fallback
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'

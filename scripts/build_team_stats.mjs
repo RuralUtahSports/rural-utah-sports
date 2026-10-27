@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import {applyRosterStatCorrections} from './apply_manual_stat_corrections.mjs';
+import {assertApprovedRegularSeasonFile,createCompetitionIndex,assertClassifiedFinals} from './lib/competition-scope-2026.mjs';
 
 const season=Number(process.argv[2]||2026);
 if(![2025,2026].includes(season))throw new Error(`Unsupported season ${season}`);
@@ -89,8 +89,8 @@ if(season===2026){
 
 const rosterFile=`deseret-rosters-stats-${season}.json`;
 if(!fs.existsSync(rosterFile))throw new Error(`${rosterFile} missing`);
+if(season===2026)assertApprovedRegularSeasonFile(rosterFile);
 const rosters=JSON.parse(fs.readFileSync(rosterFile,'utf8'));
-if(season===2026)applyRosterStatCorrections(rosters);
 const rows=new Map();
 for(const [key,m] of meta)rows.set(key,blank(m.team,m));
 for(const [sourceName,entry] of Object.entries(rosters.teams||{})){
@@ -102,9 +102,11 @@ for(const [sourceName,entry] of Object.entries(rosters.teams||{})){
 function applyGame(team,pf,pa){const key=canon(team),x=rows.get(key);if(!x)return;x.games++;x.pointsFor+=Number(pf)||0;x.pointsAgainst+=Number(pa)||0;if(pf>pa)x.wins++;else if(pf<pa)x.losses++;else x.ties++}
 if(season===2026){
   const standings=JSON.parse(fs.readFileSync('standings-2026.json','utf8'));
-  for(const x of Object.values(standings.byClassification||{}).flat()){
-    const row=rows.get(canon(x.team));if(!row)continue;
-    row.wins=Number(x.wins)||0;row.losses=Number(x.losses)||0;row.ties=Number(x.ties)||0;row.games=row.wins+row.losses+row.ties;row.pointsFor=Number(x.pointsFor)||0;row.pointsAgainst=Number(x.pointsAgainst)||0;
+  const scopeIndex=createCompetitionIndex({brackets:JSON.parse(fs.readFileSync('official-brackets-2026.json','utf8')),review:JSON.parse(fs.readFileSync('competition-scope-review-2026.json','utf8'))});
+  const finals=(standings.games||[]).filter(g=>g.actualAway!==null&&g.actualAway!==''&&g.actualHome!==null&&g.actualHome!==''&&Number.isFinite(Number(g.actualAway))&&Number.isFinite(Number(g.actualHome)));
+  for(const g of assertClassifiedFinals(finals,scopeIndex)){
+    applyGame(g.awayTeam,Number(g.actualAway),Number(g.actualHome));
+    applyGame(g.homeTeam,Number(g.actualHome),Number(g.actualAway));
   }
 }else{
   const games=JSON.parse(fs.readFileSync('scorigami.json','utf8'));

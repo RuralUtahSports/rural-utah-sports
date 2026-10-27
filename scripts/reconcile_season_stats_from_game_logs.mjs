@@ -187,7 +187,6 @@ function selfTest(){
 }
 
 if(process.argv.includes('--self-test')){selfTest();process.exit(0)}
-if(!fs.existsSync(ROSTERS)||!fs.existsSync(GAMES))throw new Error('Season reconciliation inputs are missing.');
-const rosters=JSON.parse(fs.readFileSync(ROSTERS,'utf8')),games=JSON.parse(fs.readFileSync(GAMES,'utf8')),teamData=fs.existsSync(TEAM_DATA)?JSON.parse(fs.readFileSync(TEAM_DATA,'utf8')):null,weekly=fs.existsSync(WEEKLY)?JSON.parse(fs.readFileSync(WEEKLY,'utf8')):null,summary=reconcileSeasonStats(rosters,games,{teamData,weekly});
-fs.writeFileSync(ROSTERS,JSON.stringify(rosters,null,2)+'\n');
-console.log(`Season totals reconciled from complete game logs for ${summary.players} players across ${summary.teams-summary.skippedTeams} teams; ${summary.skippedTeams} incomplete team(s) preserved (${summary.fields} fields).`);
+// Team-level box-score coverage cannot prove every player/category/field complete.
+// Retire this unsafe write path; reviewed decisions must be applied separately.
+throw new Error('REGULAR_SEASON_REVIEW_REQUIRED: automatic season reconciliation disabled. Use the competition-scope audit; preserve retained totals until cell-level source review.');

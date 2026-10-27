@@ -3,6 +3,7 @@ name: Build Current Game Stats
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - 'deseret-game-details.json'
       - 'weekly-simulation.json'

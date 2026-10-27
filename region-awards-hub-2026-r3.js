@@ -65,7 +65,7 @@ function returnStats(p,kind){return kind==='kick'?(linesFor(p,'Kickoff Returns')
 function maxprepsSpecialStatus(){const src=window.RUSAwardSpecialTeamsMaxPreps2026;
  const matches=players.filter(p=>p.specialStats?.punt||p.specialStats?.kr||p.specialStats?.pr);
  const punters=matches.filter(p=>p.specialStats.punt).length,returners=matches.filter(p=>p.specialStats.kr||p.specialStats.pr).length;
- return 'MaxPreps 2026 reported stats · '+punters+' punters / '+returners+' return specialists in this region · checked '+(src?.checkedAt||'unknown')+'. Stats are not necessarily complete regular-season totals; some records may include playoff games. Missing ≠ zero.';
+ return 'MaxPreps 2026 reported stats · '+punters+' punters / '+returners+' return specialists in this region · checked '+(src?.checkedAt||'unknown')+'. Unverified cumulative special-team totals are excluded from regular-season scoring. Missing ≠ zero.';
 }
 function strength(p,slot){
  if(!p)return 0;
@@ -115,6 +115,19 @@ function playerHTML(p,slot,isWinner=false){
   '<small>'+esc(statLine(p,slot))+'</small>'+
   warnings.map(s=>'<span class="ar-warn">⚠ '+esc(s)+'</span>').join('')+'</span></span>';
 }
+// A cumulative supplement is not regular-season evidence. Candidate identities
+// remain available, but counts require a reviewed set of classified game cells.
+function regularSeasonSpecialStats(athlete){
+ const accepted={};
+ for(const [kind,row] of Object.entries(athlete||{})){
+  const proof=row?.regularSeasonEvidence;
+  if(proof?.season!==2026||proof.status!=='verified'||proof.scope!=='regular-season'||!proof.reviewedBy||!Array.isArray(proof.games)||!proof.games.length)continue;
+  if(proof.games.some(g=>g.phase!=='regular-season'||!g.gameKey||!/^https:\/\/(?:www\.)?(?:maxpreps\.com|sports\.deseret\.com|uhsaa\.org)\//.test(g.sourceUrl||'')||!g.competitionEvidence?.some(e=>e.phase==='regular-season'&&e.url)))continue;
+  if(new Set(proof.games.map(g=>g.gameKey)).size!==proof.games.length)continue;
+  accepted[kind]=row;
+ }
+ return accepted;
+}
 function collect(r){
  const teams=new Set(snapshot.teamMeta.filter(t=>t.region===r).map(t=>norm(t.team))),out=new Map();
  const supplemental=window.RUSAwardSpecialTeamsMaxPreps2026;
@@ -147,7 +160,7 @@ function collect(r){
   }
  }
  for(const p of out.values()){
-  p.specialStats=supplemental?.athlete(p.team,p.name)||{};
+  p.specialStats=regularSeasonSpecialStats(supplemental?.athlete(p.team,p.name));
   const pRow=p.specialStats.punt,kr=p.specialStats.kr,pr=p.specialStats.pr;
   if(pRow)p.lines.push({category:'Punting (MaxPreps)',values:{PUNTS:String(pRow.attempts),YARDS:String(pRow.yards),AVG:pRow.attempts?(pRow.yards/pRow.attempts).toFixed(2):'',LONG:String(pRow.long),'INSIDE 20':String(pRow.inside20),GP:String(pRow.gp)}});
   if(kr)p.lines.push({category:'Kickoff Returns (MaxPreps)',values:{RETURNS:String(kr.attempts),YARDS:String(kr.yards),AVG:kr.attempts?(kr.yards/kr.attempts).toFixed(2):'',LONG:String(kr.long),GP:String(kr.gp)}});
@@ -480,7 +493,7 @@ function renderSpecialTeams(){
   const ids=fieldIDs(section).filter(id=>SPECIAL_POSITIONS.includes(idSlot(id)));
   return '<section class="ar-special-group"><h3>'+esc(title)+' Special Teams</h3><div class="ar-special-grid">'+ids.map(id=>drawSelector(id,section)).join('')+'</div></section>';
  }).join('');
- return '<div class="ar-special-top"><h2>Kicker · Punter · KR/PR</h2><p>Choose First Team and Second Team special-teams selections (no Honorable Mentions). Kicker comparisons use the frozen regular season; punting and return totals use reported 2026 MaxPreps records (which may include playoffs). Review GP, missing data and roster identity before finalizing.</p><button id="ar-special-share" type="button">Download First Team Special Teams Graphic ↓</button></div>'+blocks+'<p class="ar-muted">'+esc(maxprepsSpecialStatus())+'</p>';
+ return '<div class="ar-special-top"><h2>Kicker · Punter · KR/PR</h2><p>Choose First Team and Second Team special-teams selections (no Honorable Mentions). Kicker comparisons use the frozen regular season; punting and return totals require reviewed regular-season game evidence; unverified cumulative supplements are excluded. Review GP, missing data and roster identity before finalizing.</p><button id="ar-special-share" type="button">Download First Team Special Teams Graphic ↓</button></div>'+blocks+'<p class="ar-muted">'+esc(maxprepsSpecialStatus())+'</p>';
 }
 function renderAwards(){
  return '<div class="ar-winners">'+Object.entries(TITLES).map(([role,title])=>{

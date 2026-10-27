@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {assertApprovedRegularSeasonFile,createCompetitionIndex,assertClassifiedFinals} from './lib/competition-scope-2026.mjs';
 // Rural Utah Sports: conservative, source-backed single-season record alerts.
 // Historical team season data: Greatest Seasons and Scorigami.
 // Player comparisons: reported 2025/2026 Deseret seasons ONLY; not all-time school claims.
@@ -17,6 +18,10 @@ const number = x => { if(x===null||x===undefined||String(x).trim()==='')return n
   const v=Number(String(x).replace(/,/g,''));return Number.isFinite(v)?v:null; };
 const dateKey=d=>{const m=String(d||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
   return m?m[3]+'-'+m[1].padStart(2,'0')+'-'+m[2].padStart(2,'0'):String(d||'');};
+// Keep existing records intact until both player and team inputs are certified.
+assertApprovedRegularSeasonFile('deseret-rosters-stats-2026.json');
+assertApprovedRegularSeasonFile('team-stats-2026.json');
+const scopeIndex=createCompetitionIndex({brackets:JSON.parse(fs.readFileSync('official-brackets-2026.json','utf8')),review:JSON.parse(fs.readFileSync('competition-scope-review-2026.json','utf8'))});
 const teamNames=new Map();
 const standings=read('standings-2026.json'),seasons=read('greatest-seasons-data-v2.json'),
   scorigami=read('scorigami.json'),rosters2025=read('deseret-rosters-stats-2025.json'),
@@ -44,7 +49,7 @@ function addGame(map,team,year,date,opponent,forScore,againstScore){
   map.get(key).push({year,date:dateKey(date),opponent,pointsFor:p,pointsAgainst:a,
     win:p>a,tie:p===a,shutout:p>a&&a===0});
 }
-for(const g of standings.games||[]){
+for(const g of assertClassifiedFinals((standings.games||[]).filter(g=>number(g.actualAway)!==null&&number(g.actualHome)!==null),scopeIndex)){
   if(number(g.actualAway)===null||number(g.actualHome)===null)continue;
   if(number(g.actualAway)===0&&number(g.actualHome)===0)continue; // reject placeholder ties
   addGame(games,g.awayTeam,2026,g.date,g.homeTeam,g.actualAway,g.actualHome);

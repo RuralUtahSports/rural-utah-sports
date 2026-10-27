@@ -8,6 +8,7 @@ on:
   schedule:
     - cron: '5,20,35,50 * * * *'
   push:
+    branches: [main]
     paths:
       - 'deseret-rosters-stats-2026.json'
       - 'standings-2026.json'
