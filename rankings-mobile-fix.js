@@ -34,4 +34,30 @@
   `;
   document.head.appendChild(style);
 
-  const weekFromLabel=(label)=>{\n    const m=String(label||'').match(/Week\\s+(\\d+)/i);\n    return m?\`Week \${m[1]}\`:'';\n  };\n  const latestWeek=(selectId)=>{\n    const select=document.getElementById(selectId);\n    if(!select||!select.options?.length)return'';\n    return weekFromLabel(select.options[0]?.textContent||select.selectedOptions?.[0]?.textContent||'');\n  };\n  const applyLatestStatus=()=>{\n    const classWeek=latestWeek('rankingSnapshot');\n    if(!classWeek)return;\n    const stateWeek=latestWeek('state25Snapshot')||classWeek;\n    const subtitle=document.getElementById('rankingSubtitle');\n    if(subtitle)subtitle.textContent=\`\${stateWeek} State Top 25 and \${classWeek} classification rankings are live.\`;\n    const meta=document.getElementById('rankingMeta');\n    if(meta)meta.innerHTML=\`<div class="badge"><strong>2026</strong> \${classWeek}</div><div class="badge">State Top 25: \${stateWeek}</div><div class="badge">Class Rankings: \${classWeek}</div><div class="badge">RUS Rankings Archive</div>\`;\n    const help=document.querySelector('.archive-controls .archive-help');\n    if(help)help.textContent=\`Class-by-class rankings are archived separately. The latest \${classWeek} snapshot is selected automatically.\`;\n    const note=document.getElementById('classRankingsUpdateNote');\n    if(note)note.innerHTML=\`<strong>Class rankings update:</strong> \${classWeek} class rankings are published.\`;\n  };\n  const ready=window.RUSRankingsInitialDataReady;\n  if(ready&&typeof ready.then==='function')ready.then(()=>{applyLatestStatus();setTimeout(applyLatestStatus,150)}).catch(()=>{});\n  else [0,250,800].forEach(ms=>setTimeout(applyLatestStatus,ms));\n  window.addEventListener('load',()=>setTimeout(applyLatestStatus,50),{once:true});\n})();
+  const weekFromLabel=(label)=>{
+    const m=String(label||'').match(/Week\s+(\d+)/i);
+    return m?`Week ${m[1]}`:'';
+  };
+  const latestWeek=(selectId)=>{
+    const select=document.getElementById(selectId);
+    if(!select||!select.options?.length)return'';
+    return weekFromLabel(select.options[0]?.textContent||select.selectedOptions?.[0]?.textContent||'');
+  };
+  const applyLatestStatus=()=>{
+    const classWeek=latestWeek('rankingSnapshot');
+    if(!classWeek)return;
+    const stateWeek=latestWeek('state25Snapshot')||classWeek;
+    const subtitle=document.getElementById('rankingSubtitle');
+    if(subtitle)subtitle.textContent=`${stateWeek} State Top 25 and ${classWeek} classification rankings are live.`;
+    const meta=document.getElementById('rankingMeta');
+    if(meta)meta.innerHTML=`<div class="badge"><strong>2026</strong> ${classWeek}</div><div class="badge">State Top 25: ${stateWeek}</div><div class="badge">Class Rankings: ${classWeek}</div><div class="badge">RUS Rankings Archive</div>`;
+    const help=document.querySelector('.archive-controls .archive-help');
+    if(help)help.textContent=`Class-by-class rankings are archived separately. The latest ${classWeek} snapshot is selected automatically.`;
+    const note=document.getElementById('classRankingsUpdateNote');
+    if(note)note.innerHTML=`<strong>Class rankings update:</strong> ${classWeek} class rankings are published.`;
+  };
+  const ready=window.RUSRankingsInitialDataReady;
+  if(ready&&typeof ready.then==='function')ready.then(()=>{applyLatestStatus();setTimeout(applyLatestStatus,150)}).catch(()=>{});
+  else [0,250,800].forEach(ms=>setTimeout(applyLatestStatus,ms));
+  window.addEventListener('load',()=>setTimeout(applyLatestStatus,50),{once:true});
+})();
