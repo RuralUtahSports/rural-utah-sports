@@ -116,7 +116,7 @@ check(teamsHtmlForAllTime.includes('allTimeFor(team)'), 'directory card render u
 // invent school colors from the supplied artwork.
 const anthemLogoUrl = 'assets/basketball/anthem-prep-eagle.webp';
 check(teamsHtml.includes(`ANTHEMPREP:'${anthemLogoUrl}'`), 'directory page uses the owner-supplied Anthem Prep eagle logo');
-check(teamHtml.includes(`="${anthemLogoUrl}"`), 'team page uses the matching local Anthem Prep eagle logo');
+check(teamHtml.includes(`?"${anthemLogoUrl}"`), 'team page uses the matching local Anthem Prep eagle logo');
 check(!teamsHtml.includes('Anthem-horizontal1.PNG') && !teamHtml.includes('Anthem-horizontal1.PNG'), 'old external shield logo is no longer referenced');
 check(!teamsHtml.includes('Anthem%20Prep.png') && !teamHtml.includes('Anthem%20Prep.png'), 'no invalid UHSAA Anthem logo URL');
 check(teamsHtml.includes("if(key==='ANTHEMPREP')return"), 'directory logo lookup only uses the owner-supplied logo');
