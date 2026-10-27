@@ -82,4 +82,33 @@ check(teamsHtml.includes('Active Non-UHSAA Independent Programs'), 'teams page h
 check(teamsHtml.includes('Anthem Prep and Utah Prep'), 'teams page names Anthem Prep and Utah Prep in the non-UHSAA section');
 check(teamHtml.includes('aliases') && teamHtml.includes('isActiveDirectoryTeam'), 'team page resolves aliases and active-directory membership');
 
+// All-time record regression (PR #184 fix): the historical file still uses the
+// pre-rename name, and the directory page must resolve it via team aliases
+// without renaming or duplicating the historical record.
+const allTimeFile = JSON.parse(readFileSync(join(root, 'boys-basketball-all-time-records-2002-26.json'), 'utf8'));
+const allTimeTeams = allTimeFile.teams || {};
+check(allTimeTeams['UMA-Camp Williams']?.wins === 64 && allTimeTeams['UMA-Camp Williams']?.losses === 108 && allTimeTeams['UMA-Camp Williams']?.games === 172, 'historical file keeps UMA-Camp Williams at 64 wins, 108 losses, 172 games');
+check(!('UMA-Lehi' in allTimeTeams), 'historical file is NOT renamed to UMA-Lehi and has no duplicate UMA-Lehi record');
+check(allTimeTeams['UMA-Hillfield']?.wins === 38 && allTimeTeams['UMA-Hillfield']?.losses === 148, 'UMA-Hillfield historical record stays separate at 38-148');
+// Run the directory page's own allTimeFor() function, extracted from teams.html,
+// against the real historical map — this proves the page code, not a copy of it.
+const teamsHtmlForAllTime = teamsHtml;
+const allTimeFnStart = teamsHtmlForAllTime.indexOf('function allTimeFor(team){');
+const allTimeFnEnd = teamsHtmlForAllTime.indexOf('\nfunction classSort', allTimeFnStart);
+const allTimeFnMatch = allTimeFnStart >= 0 && allTimeFnEnd > allTimeFnStart ? [teamsHtmlForAllTime.slice(allTimeFnStart, allTimeFnEnd)] : null;
+check(!!allTimeFnMatch, 'teams.html defines an allTimeFor() directory lookup');
+check(teamsHtmlForAllTime.includes('allTimeFor(team)'), 'directory card render uses allTimeFor(team) instead of a direct name lookup');
+{
+  const allTimeRecords = new Map(Object.entries(allTimeTeams).map(([name, record]) => [norm(name), record]));
+  // eslint-disable-next-line no-eval
+  const allTimeFor = eval(`(${allTimeFnMatch[0].replace(/^function allTimeFor/, 'function ')})`);
+  const umaRecord = allTimeFor(byName('UMA-Lehi'));
+  check(umaRecord?.wins === 64 && umaRecord?.losses === 108 && umaRecord?.games === 172, 'directory lookup via aliases returns UMA-Lehi historical record 64-108 (172 games)');
+  const renderedRecord = umaRecord && Number(umaRecord.games) > 0 ? `${Number(umaRecord.wins || 0)}-${Number(umaRecord.losses || 0)}${Number(umaRecord.ties || 0) ? `-${Number(umaRecord.ties)}` : ''}` : '—';
+  check(renderedRecord === '64-108', `directory card would display "64-108" for UMA-Lehi (got "${renderedRecord}")`);
+  const hillfieldRecord = allTimeFor(byName('UMA-Hillfield'));
+  check(hillfieldRecord?.wins === 38 && hillfieldRecord?.losses === 148, 'alias lookup does not merge UMA-Lehi with UMA-Hillfield');
+  check(allTimeFor(byName('Anthem Prep')) === null, 'Anthem Prep correctly has no historical record yet (card shows —, not a wrong record)');
+}
+
 console.log(`\nAll ${checks} directory checks passed.`);
