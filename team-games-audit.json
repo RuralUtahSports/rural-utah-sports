@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-27T01:34:11.432Z",
+  "updatedAt": "2026-10-27T06:55:18.987Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -14,10 +14,10 @@
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 237,
+    "seasonSummaryMismatches": 240,
     "reciprocalMismatches": 989,
     "likelyOpponentTypos": 6,
-    "recent2025PlusIssues": 240
+    "recent2025PlusIssues": 243
   },
   "recent2025PlusIssues": [
     {
@@ -105,6 +105,29 @@
         "pointsAgainst": {
           "expected": 340,
           "actual": 310
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "CANYON VIEW",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 316,
+          "actual": 288
+        },
+        "pointsAgainst": {
+          "expected": 170,
+          "actual": 149
         }
       }
     },
@@ -482,19 +505,23 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 9,
+          "expected": 10,
           "actual": 8
         },
         "wins": {
           "expected": 2,
           "actual": 1
         },
+        "losses": {
+          "expected": 8,
+          "actual": 7
+        },
         "pointsFor": {
-          "expected": 292,
+          "expected": 313,
           "actual": 251
         },
         "pointsAgainst": {
-          "expected": 356,
+          "expected": 384,
           "actual": 340
         }
       }
@@ -574,6 +601,29 @@
         "pointsAgainst": {
           "expected": 250,
           "actual": 258
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "MOUNTAIN RIDGE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 10,
+          "actual": 9
+        },
+        "pointsFor": {
+          "expected": 455,
+          "actual": 434
+        },
+        "pointsAgainst": {
+          "expected": 115,
+          "actual": 102
         }
       }
     },
@@ -869,6 +919,29 @@
         "pointsAgainst": {
           "expected": 347,
           "actual": 337
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "WESTLAKE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "losses": {
+          "expected": 3,
+          "actual": 2
+        },
+        "pointsFor": {
+          "expected": 193,
+          "actual": 180
+        },
+        "pointsAgainst": {
+          "expected": 159,
+          "actual": 138
         }
       }
     },
@@ -5666,6 +5739,29 @@
     },
     {
       "type": "season-summary-mismatch",
+      "team": "CANYON VIEW",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 7,
+          "actual": 6
+        },
+        "pointsFor": {
+          "expected": 316,
+          "actual": 288
+        },
+        "pointsAgainst": {
+          "expected": 170,
+          "actual": 149
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
       "team": "CARBON",
       "season": "1963",
       "mismatches": {
@@ -6882,19 +6978,23 @@
       "season": "2026",
       "mismatches": {
         "games": {
-          "expected": 9,
+          "expected": 10,
           "actual": 8
         },
         "wins": {
           "expected": 2,
           "actual": 1
         },
+        "losses": {
+          "expected": 8,
+          "actual": 7
+        },
         "pointsFor": {
-          "expected": 292,
+          "expected": 313,
           "actual": 251
         },
         "pointsAgainst": {
-          "expected": 356,
+          "expected": 384,
           "actual": 340
         }
       }
@@ -7148,6 +7248,29 @@
         "pointsFor": {
           "expected": 291,
           "actual": 294
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "MOUNTAIN RIDGE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "wins": {
+          "expected": 10,
+          "actual": 9
+        },
+        "pointsFor": {
+          "expected": 455,
+          "actual": 434
+        },
+        "pointsAgainst": {
+          "expected": 115,
+          "actual": 102
         }
       }
     },
@@ -9144,6 +9267,29 @@
         "pointsAgainst": {
           "expected": 424,
           "actual": 386
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "WESTLAKE",
+      "season": "2026",
+      "mismatches": {
+        "games": {
+          "expected": 10,
+          "actual": 9
+        },
+        "losses": {
+          "expected": 3,
+          "actual": 2
+        },
+        "pointsFor": {
+          "expected": 193,
+          "actual": 180
+        },
+        "pointsAgainst": {
+          "expected": 159,
+          "actual": 138
         }
       }
     },
