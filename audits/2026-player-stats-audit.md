@@ -1,6 +1,6 @@
 # 2026 Football Player Statistics Audit
 
-Generated: 2026-10-27T14:23:08.939Z
+Generated: 2026-10-27T15:55:07.563Z
 
 **118 schools · 6440 roster IDs · 4064 athletes with reported stats · 6922 category rows.**
 
