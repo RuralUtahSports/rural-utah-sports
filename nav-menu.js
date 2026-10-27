@@ -403,7 +403,7 @@
         true,
       );
       addScript(
-        "rankings-mobile-fix.js?v=20260926-week8-dynamic1",
+        "rankings-mobile-fix.js?v=20261027-runtime-repair1",
         "rusRankingsMobileFix",
         true,
       );
