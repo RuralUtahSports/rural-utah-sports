@@ -111,4 +111,23 @@ check(teamsHtmlForAllTime.includes('allTimeFor(team)'), 'directory card render u
   check(allTimeFor(byName('Anthem Prep')) === null, 'Anthem Prep correctly has no historical record yet (card shows —, not a wrong record)');
 }
 
+// Anthem Prep branding (final PR #184 change): the verified logo is the
+// shield-and-wordmark header logo from the official South Jordan, Utah
+// school website (anthemprep.com), as loaded in a browser. No eagle logo
+// and no school colors were stated on that site, so no eagle branding and
+// no invented colors may be used, and the UHSAA logo fallback (which does
+// not apply to a non-UHSAA school) must not be attempted for Anthem Prep.
+const anthemLogoUrl = 'https://images.squarespace-cdn.com/content/v1/62c727f044f7140b33832b29/493f261e-2df2-407d-8ce5-24dcd46d98cd/Anthem-horizontal1.PNG?format=1500w';
+check(teamsHtml.includes(`ANTHEMPREP:'${anthemLogoUrl}'`), 'directory page uses the verified official Anthem Prep shield-and-wordmark logo URL');
+check(teamHtml.includes(anthemLogoUrl), 'team page uses the same verified Anthem Prep logo URL');
+check(!teamsHtml.includes('Anthem%20Prep.png') && !teamHtml.includes('Anthem%20Prep.png'), 'no UHSAA Anthem Prep logo URL is referenced for Anthem Prep');
+check(teamsHtml.includes("if(key==='ANTHEMPREP')return"), 'directory logo lookup returns only the verified logo for Anthem Prep, without the UHSAA fallback');
+check(teamHtml.includes('norm(team.team)==="ANTHEMPREP"?[anthemPrepLogo]'), 'team page logo candidates are only the verified logo for Anthem Prep, without the UHSAA fallback');
+check(teamsHtml.includes('Anthem Prep uses the shield-and-wordmark logo from its official school website'), 'branding note states Anthem Prep uses the shield-and-wordmark logo from its official school website');
+check(teamsHtml.includes('no school colors are stated on that site, so no verified colors are shown for Anthem Prep'), 'branding note states no verified colors are shown for Anthem Prep');
+check(!teamsHtml.includes('with Anthem Prep and Utah Prep using their official school branding'), 'branding note no longer claims Anthem Prep and Utah Prep both use official school branding in the same way');
+check(!/eagle/i.test(teamsHtml) && !/eagle/i.test(teamHtml), 'no eagle branding is used in the directory or team page for Anthem Prep');
+check(!teamsHtml.includes('ANTHEMPREP:{'), 'no invented Anthem Prep colors entry is added to the directory branding map');
+check(teamsHtml.includes('UTAHPREP:'), 'Utah Prep branding entry is preserved');
+
 console.log(`\nAll ${checks} directory checks passed.`);
