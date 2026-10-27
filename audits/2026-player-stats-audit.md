@@ -1,13 +1,13 @@
 # 2026 Football Player Statistics Audit
 
-Generated: 2026-10-27T22:37:54.645Z
+Generated: 2026-10-27T22:43:31.974Z
 
-**118 schools · 6440 roster IDs · 4065 athletes with reported stats · 6925 category rows.**
+**118 schools · 6440 roster IDs · 4065 athletes with reported stats · 6926 category rows.**
 
 ## Coverage
 - 2495 rostered athletes lack an individual season stat row (not necessarily a reporting error)
 - 2 teams have no season stats: MONUMENT VAL, UMA-HILLFIELD
-- 1071 finalized team-game logs include player stats
+- 1079 finalized team-game logs include player stats
 - 1 failed school stats fetches
 - 168 stat rows have IDs missing from their own roster (may be MaxPreps-only entries)
 
