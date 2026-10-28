@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-28T16:12:10.554Z",
+  "updatedAt": "2026-10-28T16:45:17.432Z",
   "scope": "Every team-page-data file and every season in its Games section",
   "notes": {
     "suspiciousRepeatGames": "Flag only: same opponent, score and result repeated on a different date within 14 days. These are not auto-deleted because a real rematch is possible.",
@@ -14,7 +14,7 @@
     "sameDayMultipleOpponents": 35,
     "suspiciousRepeatGames": 11,
     "invalidRows": 8,
-    "seasonSummaryMismatches": 234,
+    "seasonSummaryMismatches": 236,
     "reciprocalMismatches": 989,
     "likelyOpponentTypos": 6,
     "recent2025PlusIssues": 239
@@ -6210,20 +6210,20 @@
       "team": "GUNNISON VALLEY",
       "season": "2001",
       "mismatches": {
+        "games": {
+          "expected": 8,
+          "actual": 9
+        },
         "wins": {
           "expected": 4,
           "actual": 5
         },
-        "losses": {
-          "expected": 5,
-          "actual": 4
-        },
         "pointsFor": {
-          "expected": 162,
+          "expected": 148,
           "actual": 167
         },
         "pointsAgainst": {
-          "expected": 207,
+          "expected": 188,
           "actual": 202
         }
       }
@@ -6397,6 +6397,29 @@
         "pointsAgainst": {
           "expected": 230,
           "actual": 236
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "JUAB",
+      "season": "2001",
+      "mismatches": {
+        "games": {
+          "expected": 9,
+          "actual": 10
+        },
+        "wins": {
+          "expected": 4,
+          "actual": 5
+        },
+        "pointsFor": {
+          "expected": 153,
+          "actual": 172
+        },
+        "pointsAgainst": {
+          "expected": 156,
+          "actual": 170
         }
       }
     },
@@ -6956,9 +6979,21 @@
       "team": "MONTICELLO",
       "season": "2022",
       "mismatches": {
+        "games": {
+          "expected": 11,
+          "actual": 12
+        },
+        "wins": {
+          "expected": 7,
+          "actual": 8
+        },
         "pointsFor": {
-          "expected": 465,
+          "expected": 423,
           "actual": 464
+        },
+        "pointsAgainst": {
+          "expected": 254,
+          "actual": 274
         }
       }
     },
@@ -6974,6 +7009,29 @@
         "pointsAgainst": {
           "expected": 250,
           "actual": 258
+        }
+      }
+    },
+    {
+      "type": "season-summary-mismatch",
+      "team": "MONUMENT VALLEY",
+      "season": "2022",
+      "mismatches": {
+        "games": {
+          "expected": 8,
+          "actual": 9
+        },
+        "losses": {
+          "expected": 7,
+          "actual": 8
+        },
+        "pointsFor": {
+          "expected": 138,
+          "actual": 158
+        },
+        "pointsAgainst": {
+          "expected": 445,
+          "actual": 487
         }
       }
     },
