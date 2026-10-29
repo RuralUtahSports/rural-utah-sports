@@ -14,7 +14,9 @@ test('2026 player Stat Leaders controller parses and separates reported from ver
  assert.match(scripts[0],/RUSMaxPrepsPrimary2026\.applyPrimary\(reportedStats,cachedMaxPreps,metadata\)/);
  assert.match(html,/src="maxpreps-primary-reported-2026\.js/);
  assert.match(scripts[0],/statSources:r\.statSources/);
- assert.match(html,/<option value="reported">Reported — MaxPreps first \(4A–6A\)<\/option>/);
+ assert.match(html,/<option value="reported">Season to date — includes reported playoffs<\/option>/);
+ assert.match(scripts[0],/uniqueGames\(t\.games,team,regularPublication\)\.map\(record=>record\.game\)/);
+ assert.match(scripts[0],/playoff games once reported by the source/);
  assert.match(scripts[0],/requirePublication\(await s\.json\(\)\)/);
  assert.match(scripts[0],/deseret-rosters-stats-2026\.json/);
  assert.match(scripts[0],/const unverified=reported2026View\(\)/);
