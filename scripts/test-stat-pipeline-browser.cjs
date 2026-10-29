@@ -20,7 +20,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   const p=await context.newPage();p.setDefaultTimeout(15000);p.on('pageerror',e=>errors.push(e.message));
   await p.goto('https://policy.test/stat-leaders.html');await p.waitForSelector('#results table');
   assert.equal(await p.locator('#leaderSourceMode').inputValue(),'reported');
-  assert.match(await p.locator('#heroCopy').innerText(),/MaxPreps prioritized over older RUS\/Deseret values/);
+  assert.match(await p.locator('#heroCopy').innerText(),/season-to-date.*including playoff games.*MaxPreps first/);
   assert.match(await p.locator('#results').innerText(),/Reported position/i);
   assert.match(await p.locator('#results thead').innerText(),/Source/i);
   assert.match(await p.locator('#scopeNote').innerText(),/MaxPreps is first for 4A–6A/);
