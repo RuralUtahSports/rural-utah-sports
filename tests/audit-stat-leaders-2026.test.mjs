@@ -35,3 +35,11 @@ test('unknown and postseason game phase never increases known regular-game sums'
 test('audits refuse missing verified-season proof rather than promoting reported season totals',()=>{
  assert.throws(()=>auditStatLeaders2026({...args(),publication:{season:2026,scope:'reported',teams:{}}}),/Missing 2026 source evidence/);
 });
+
+test('exactly duplicated MaxPreps cache rows are not treated as distinct athlete identities',()=>{
+ const data=args(),duplicated=structuredClone(data.maxpreps.teams.A.rows[0]);
+ data.maxpreps.teams.A.rows.push(duplicated);
+ const result=auditStatLeaders2026(data);
+ assert.equal(result.summary.providerDisagreements,1);
+ assert.equal(result.summary.nonuniqueProviderMetricMatches,0);
+});
