@@ -126,7 +126,7 @@ test('scheduled and dispatch publishers use a captured current-main snapshot wit
 test('real Git publishing preflight passes a current snapshot and rejects protected changes and a concurrent remote commit',()=>{
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),'rus-publish-cas-'));
  try{
-  const files=['deseret-rosters-stats-2026.json','player-game-stats-2026.json','regular-season-correction-batches-2026.json','regular-season-corrections-batch-1-2026.json','regular-season-corrections-batch-2-2026.json','official-brackets-2026.json','competition-scope-review-2026.json','region-awards-2026.lock.json','regular-season-publication-2026.json','weekly-simulation.json'];
+  const files=['deseret-rosters-stats-2026.json','player-game-stats-2026.json','regular-season-correction-batches-2026.json',...read('regular-season-correction-batches-2026.json').batches,'official-brackets-2026.json','competition-scope-review-2026.json','region-awards-2026.lock.json','regular-season-publication-2026.json','weekly-simulation.json'];
   for(const f of files)fs.copyFileSync(f,path.join(temp,f));
   const git=(...args)=>{const r=spawnSync('git',['-c','user.name=Fixture','-c','user.email=fixture@example.test',...args],{cwd:temp,encoding:'utf8'});assert.equal(r.status,0,r.stderr);return r.stdout.trim();};
   git('init','-q');git('add','.');git('commit','-qm','Source snapshot');const base=git('rev-parse','HEAD');git('update-ref','refs/remotes/origin/main',base);
@@ -145,7 +145,7 @@ test('a later reviewed coach correction can explicitly supersede an older verifi
  const line=evidence.games.flatMap(g=>g.statLines).find(l=>l.category==='Receiving'&&Number(l.values.TD)>0);line.values.TD=String(Number(line.values.TD)+1);
  const replacement={...old,id:'fixture-later-reviewed-td',originalValue:old.verifiedReplacement,verifiedReplacement:'4',reportingDate:evidence.reportingDate,evidenceId:evidence.id,supersedes:{batchId:previous.id,decisionId:old.id}};
  const later={...previous,id:'fixture-later-reviewed-batch',decisions:[replacement],evidenceSets:[evidence]},effective=resolveReviewedBatches([...batches,later]);
- assert.equal(effective.flatMap(b=>b.decisions).length,56);
+ assert.equal(effective.flatMap(b=>b.decisions).length,batches.flatMap(b=>b.decisions).length);
  let state={rosters:roster,games};for(const b of effective)state=applyVerifiedPlayerBatch(state.rosters,state.games,b,context);
  assert.equal(state.rosters.teams['SOUTH SUMMIT'].stats.find(s=>s.category==='Receiving').rows.find(p=>p.playerId===old.playerId).values.TD,'4');
  assert.equal(roster.teams['SOUTH SUMMIT'].stats.find(s=>s.category==='Receiving').rows.find(p=>p.playerId===old.playerId).values.TD,'3');

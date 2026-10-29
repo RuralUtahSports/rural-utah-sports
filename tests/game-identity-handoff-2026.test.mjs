@@ -92,7 +92,7 @@ for(const id of ['G30','G31']){
 }
 test('all 56 existing reviewed corrections remain installed with zero reapplied changes',()=>{
  const roster=read('deseret-rosters-stats-2026.json'),games=caches['player-game-stats-2026.json'];
- const batches=loadReviewedBatches();assert.equal(batches.reduce((n,b)=>n+b.decisions.length,0),56);
+ const batches=loadReviewedBatches();assert.equal(batches.slice(0,2).reduce((n,b)=>n+b.decisions.length,0),56);
  for(const batch of batches)assert.equal(applyVerifiedPlayerBatch(roster,games,batch,context).changes.length,0);
  assert.equal(sha256(fs.readFileSync('audits/2026-regular-season/game-identity-handoff/MUSE-HANDOFF.md')),plan.handoffSha256);
 });

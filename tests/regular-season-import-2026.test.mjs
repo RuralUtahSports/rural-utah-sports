@@ -59,7 +59,7 @@ test('batch 2 installs only the 16 reviewed fields and preserves unrelated defen
 test('real import finalizer retains source-reviewed fields after a simulated stale importer',()=>{
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),'rus-import-policy-'));
  try{
-  for(const f of ['regular-season-correction-batches-2026.json','regular-season-corrections-batch-1-2026.json','regular-season-corrections-batch-2-2026.json','official-brackets-2026.json','competition-scope-review-2026.json'])fs.copyFileSync(f,path.join(temp,f));
+  for(const f of ['regular-season-correction-batches-2026.json',...read('regular-season-correction-batches-2026.json').batches,'official-brackets-2026.json','competition-scope-review-2026.json'])fs.copyFileSync(f,path.join(temp,f));
   const incoming=structuredClone(roster);incoming.teams['SOUTH SUMMIT'].stats=[];
   for(const [f,d] of [['baseline.json',roster],['game-baseline.json',games],['deseret-rosters-stats-2026.json',incoming],['player-game-stats-2026.json',games]])fs.writeFileSync(path.join(temp,f),JSON.stringify(d));
   const run=spawnSync(process.execPath,[path.resolve('scripts/protect_regular_season_import_2026.mjs'),'--baseline=baseline.json','--games-baseline=game-baseline.json'],{cwd:temp,encoding:'utf8'});

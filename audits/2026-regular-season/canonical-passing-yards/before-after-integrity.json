@@ -1,0 +1,168 @@
+{
+  "main": "b17df1d4ee00b7ced2bf75fe570fdb60183d0502",
+  "PRHead": "bc77b3ca384b19c7fc9ad1b6b44f27639ac049b4",
+  "mergeBaseline": "492d8848af966c68ad8e5f1cbf243914fedf4886",
+  "conflicts": [
+    {
+      "file": "deseret-stat-metrics-2026.json",
+      "differentLeafFields": 77,
+      "divergentBothSides": 1,
+      "resolution": "HOLD; exact fields in CSV, no wholesale side selection"
+    },
+    {
+      "file": "team-stats-2026.json",
+      "differentLeafFields": 532,
+      "divergentBothSides": 38,
+      "resolution": "HOLD; exact fields in CSV, no wholesale side selection"
+    },
+    {
+      "file": "team-current-data/ben-lomond.json",
+      "differentLeafFields": 136,
+      "divergentBothSides": 0,
+      "resolution": "HOLD; exact fields in CSV, no wholesale side selection"
+    },
+    {
+      "file": "team-current-data/duchesne.json",
+      "differentLeafFields": 38,
+      "divergentBothSides": 0,
+      "resolution": "HOLD; exact fields in CSV, no wholesale side selection"
+    },
+    {
+      "file": "team-current-data/monticello.json",
+      "differentLeafFields": 442,
+      "divergentBothSides": 0,
+      "resolution": "HOLD; exact fields in CSV, no wholesale side selection"
+    },
+    {
+      "file": "team-current-data/south-summit.json",
+      "differentLeafFields": 396,
+      "divergentBothSides": 0,
+      "resolution": "HOLD; exact fields in CSV, no wholesale side selection"
+    }
+  ],
+  "changedTrackedFiles": [
+    "deseret-rosters-stats-2026.json",
+    "deseret-stat-metrics-2026.json",
+    "player-game-stats-2026.json",
+    "regular-season-correction-batches-2026.json",
+    "scripts/build_regular_season_publication_2026.mjs",
+    "scripts/lib/verified-player-corrections-2026.mjs",
+    "team-current-data/canyon-view.json",
+    "team-current-data/manti.json",
+    "tests/game-identity-handoff-2026.test.mjs",
+    "tests/regular-season-import-2026.test.mjs",
+    "tests/stat-pipeline-safety-2026.test.mjs"
+  ],
+  "canonicalValueChangesIncludingViews": [
+    {
+      "file": "deseret-rosters-stats-2026.json",
+      "field": "/teams/CANYON VIEW/stats/Passing/rows/canyon-view-2-owen-williams/values/YARDS",
+      "before": "1922",
+      "after": "2165"
+    },
+    {
+      "file": "deseret-rosters-stats-2026.json",
+      "field": "/teams/MANTI/stats/Passing/rows/manti-1-kingston-wright/values/YARDS",
+      "before": "2858",
+      "after": "3032"
+    },
+    {
+      "file": "player-game-stats-2026.json",
+      "field": "/teams/CANYON VIEW/games/2026-10-15|MANTI/players/canyon-view-2-owen-williams/statLines/Passing/values/YARDS",
+      "before": null,
+      "after": "243"
+    },
+    {
+      "file": "player-game-stats-2026.json",
+      "field": "/teams/MANTI/games/2026-10-15|CANYON VIEW/players/manti-1-kingston-wright/statLines/Passing/values/YARDS",
+      "before": null,
+      "after": "174"
+    },
+    {
+      "file": "deseret-stat-metrics-2026.json",
+      "field": "/teams/CANYON VIEW/stats/Passing/rows/canyon-view-2-owen-williams/values/Yards",
+      "before": "1922",
+      "after": "2165"
+    },
+    {
+      "file": "team-current-data/manti.json",
+      "field": "/gameStats/games/2026-10-15|CANYON VIEW/players/manti-1-kingston-wright/statLines/Passing/values/YARDS",
+      "before": null,
+      "after": "174"
+    },
+    {
+      "file": "team-current-data/manti.json",
+      "field": "/rosterStats/stats/Passing/rows/manti-1-kingston-wright/values/YARDS",
+      "before": "2858",
+      "after": "3032"
+    },
+    {
+      "file": "team-current-data/canyon-view.json",
+      "field": "/gameStats/games/2026-10-15|MANTI/players/canyon-view-2-owen-williams/statLines/Passing/values/YARDS",
+      "before": null,
+      "after": "243"
+    },
+    {
+      "file": "team-current-data/canyon-view.json",
+      "field": "/rosterStats/stats/Passing/rows/canyon-view-2-owen-williams/values/YARDS",
+      "before": "1922",
+      "after": "2165"
+    }
+  ],
+  "protectedFiles": {
+    "team-stats-2026.json": {
+      "beforeSha256": "527becdc813882774210e201a88203298b8e3bb5c5fb077733bf4b72f048c3bc",
+      "afterSha256": "527becdc813882774210e201a88203298b8e3bb5c5fb077733bf4b72f048c3bc",
+      "unchanged": true
+    },
+    "standings-2026.json": {
+      "beforeSha256": "bd3b876c8303625452368a4d7fb6bb01f1a25fa0f44437981c6e4d058ffb4110",
+      "afterSha256": "bd3b876c8303625452368a4d7fb6bb01f1a25fa0f44437981c6e4d058ffb4110",
+      "unchanged": true
+    },
+    "teams-data.json": {
+      "beforeSha256": "31328ec160e32f0b1a1b696c209e3adabc2c44db7c75523056683109311164bf",
+      "afterSha256": "31328ec160e32f0b1a1b696c209e3adabc2c44db7c75523056683109311164bf",
+      "unchanged": true
+    },
+    "uhsaa-rpi-official-2026.json": {
+      "beforeSha256": "6c14a8076afc7ca99f43da0d45d630eb441f0b2889410ab2780c9fa018129d1c",
+      "afterSha256": "6c14a8076afc7ca99f43da0d45d630eb441f0b2889410ab2780c9fa018129d1c",
+      "unchanged": true
+    },
+    "region-awards-2026.lock.json": {
+      "beforeSha256": "7894e9ae7b3910a075d9ff5b40c59f23c6795bcc47c4a8a165e4b3c413c8246b",
+      "afterSha256": "7894e9ae7b3910a075d9ff5b40c59f23c6795bcc47c4a8a165e4b3c413c8246b",
+      "unchanged": true
+    },
+    "regular-season-publication-2026.json": {
+      "beforeSha256": "4686652a0fb5df39cb6ad9f4fc35543c7443a8ed506925b3a101e5367b28e31d",
+      "afterSha256": "4686652a0fb5df39cb6ad9f4fc35543c7443a8ed506925b3a101e5367b28e31d",
+      "unchanged": true
+    },
+    "competition-scope-review-2026.json": {
+      "beforeSha256": "2fc79a83ab0c2dc4fb2140745b937ff4c873c72aafbd7ae0fe0c0299b4627860",
+      "afterSha256": "2fc79a83ab0c2dc4fb2140745b937ff4c873c72aafbd7ae0fe0c0299b4627860",
+      "unchanged": true
+    },
+    "verified-finals-2026.json": {
+      "beforeSha256": "66af95b1db3d37a29fce86188be6fb33961d49d9d03370daeec66dfc227fd589",
+      "afterSha256": "66af95b1db3d37a29fce86188be6fb33961d49d9d03370daeec66dfc227fd589",
+      "unchanged": true
+    },
+    "regular-season-corrections-batch-1-2026.json": {
+      "beforeSha256": "725b44eeaf7edc352c2baa048b8e33612163a9cf81f1da1bfde933a4d7cd6754",
+      "afterSha256": "725b44eeaf7edc352c2baa048b8e33612163a9cf81f1da1bfde933a4d7cd6754",
+      "unchanged": true
+    },
+    "regular-season-corrections-batch-2-2026.json": {
+      "beforeSha256": "587ef7d40c0d71addbe1cc9b19c88c416bff6cce6ad6225eea1f80669ca10bae",
+      "afterSha256": "587ef7d40c0d71addbe1cc9b19c88c416bff6cce6ad6225eea1f80669ca10bae",
+      "unchanged": true
+    }
+  },
+  "protectedGate": true,
+  "pushed": false,
+  "merged": false,
+  "deployed": false
+}

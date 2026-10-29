@@ -49,7 +49,7 @@ export function applyVerifiedPlayerBatch(rosters,games,batch,{brackets,review}){
  }
  const seenDecisions=new Set(),changes=[];
  for(const d of batch.decisions||[]){
-  if(seenDecisions.has(d.id)||d.status!=='verified'||!primaryURL(d.source)||!/^2026-\d\d-\d\d/.test(d.reportingDate||''))throw Error('Invalid or duplicate decision');seenDecisions.add(d.id);
+  if(seenDecisions.has(d.id)||d.status!=='verified'||!primaryURL(d.source)||!( /^2026-\d\d-\d\d/.test(d.reportingDate||'') || (d.reportingDate===null&&Number.isFinite(Date.parse(d.observedAt))&&d.observedAt===sets.get(d.evidenceId)?.observedAt&&sets.get(d.evidenceId)?.reportingDate===null&&sets.get(d.evidenceId)?.reportingDateNote)))throw Error('Invalid or duplicate decision');seenDecisions.add(d.id);
   const e=sets.get(d.evidenceId);if(!e||teamKey(e.team)!==teamKey(d.team)||e.identity.playerId!==d.playerId)throw Error('Decision identity/evidence mismatch');
   const {school,person}=identity(output,e);let row;
   if(d.target==='season'){
@@ -57,7 +57,8 @@ export function applyVerifiedPlayerBatch(rosters,games,batch,{brackets,review}){
    const sections=(school.stats||[]).filter(s=>category(s.category)===category(d.category));
    const rows=sections.flatMap(s=>(s.rows||[]).filter(p=>p.playerId===d.playerId));if(rows.length!==1)throw Error('Ambiguous/missing season row');row=rows[0];
    if(d.method!=='derived-from-verified-operands'){
-    if(!same(sourceValue(e,d),d.verifiedReplacement)||!same(reportedSum(e,d),d.verifiedReplacement))throw Error('Reported season and unique regular-game evidence disagree: '+d.id);
+    if(d.method==='complete-verified-regular-game-sum' && (d.field!=='YARDS'||d.category!=='Passing'||e.games.some(g=>(g.statLines||[]).filter(l=>category(l.category)===category(d.category)&&number(value(l.values,d.field))!==null).length!==1)))throw Error('Incomplete verified regular-game field coverage');
+    if((d.method!=='complete-verified-regular-game-sum'&&!same(sourceValue(e,d),d.verifiedReplacement))||!same(reportedSum(e,d),d.verifiedReplacement))throw Error('Reported season and unique regular-game evidence disagree: '+d.id);
    }
   }else if(d.target==='game'){
    const matches=findTeam(gameOutput.teams,d.team).games.filter(g=>gameKey(g,d.team)===gameKey(d,d.team));if(matches.length!==1)throw Error('Ambiguous/missing target game');
@@ -72,8 +73,8 @@ export function applyVerifiedPlayerBatch(rosters,games,batch,{brackets,review}){
   row.values||={};const k=header(row.values,d.field)||d.field,current=value(row.values,d.field);
   if(!same(current,d.originalValue)&&!same(current,d.verifiedReplacement))throw Error('Retained value changed; source review required: '+d.id);
   if(!same(current,d.verifiedReplacement)){
-   row.values[k]=d.verifiedReplacement;(row.statSources||={})[k]=`Verified regular-season batch ${batch.id} · ${d.source} · reported ${d.reportingDate}`;
-   (row.statEvidence||={})[k]={batchId:batch.id,evidenceId:d.evidenceId,scope:'regular-season',reportingDate:d.reportingDate,source:d.source,gamesIncluded:d.gamesIncluded,method:d.method};
+   row.values[k]=d.verifiedReplacement;(row.statSources||={})[k]=`Verified regular-season batch ${batch.id} · ${d.source} · ${d.reportingDate?'reported '+d.reportingDate:'report date unknown; observed '+d.observedAt}`;
+   (row.statEvidence||={})[k]={batchId:batch.id,evidenceId:d.evidenceId,scope:'regular-season',reportingDate:d.reportingDate,...(d.observedAt?{observedAt:d.observedAt}:{}),source:d.source,gamesIncluded:d.gamesIncluded,method:d.method};
    changes.push(d.id);
   }
  }
