@@ -1,0 +1,34 @@
+name: 2026 4A-6A playoff preview stat readiness
+on:
+  pull_request:
+    paths:
+      - 'scripts/audit_4a_6a_preview_stats_2026.mjs'
+      - 'tests/audit-4a-6a-preview-2026.test.mjs'
+      - '.github/workflows/preview-stat-readiness-2026.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate 48-team source identity and exclusion gates
+        run: node --test tests/audit-4a-6a-preview-2026.test.mjs
+      - name: Build dated team/player preview reliability report without editing stats
+        run: node scripts/audit_4a_6a_preview_stats_2026.mjs --output="$RUNNER_TEMP/preview-audit"
+      - name: Fail if source files were edited
+        run: |
+          git diff --exit-code -- deseret-rosters-stats-2026.json maxpreps-stats-fallback-2026.json player-game-stats-2026.json maxpreps-player-game-stats-2026.json regular-season-publication-2026.json region-awards-2026.lock.json
+          test -s "$RUNNER_TEMP/preview-audit/audit.json"
+          test -s "$RUNNER_TEMP/preview-audit/PREVIEW-READINESS.md"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 2026-4a-6a-preview-stat-readiness
+          path: ${{ runner.temp }}/preview-audit
+          if-no-files-found: ignore
+          retention-days: 30
