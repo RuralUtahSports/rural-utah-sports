@@ -71,6 +71,6 @@ test('both pages apply source preference while keeping the protected verified pu
  assert.match(leaders,/RUSMaxPrepsPrimary2026\.applyPrimary\(reportedStats,cachedMaxPreps,metadata\)/);
  assert.match(profile,/RUSMaxPrepsPrimary2026\.applyPrimary\(rosters,await response\.json\(\),teams/);
  assert.match(leaders,/RUSReviewedHunt2026\.applyVerified\(regularPublication,reviewed\)/);
- assert.match(leaders,/MaxPreps prioritized over older RUS\/Deseret values/);
+ assert.match(leaders,/MaxPreps first for uniquely matched 4A–6A players/);
  assert.match(profile,/Matched MaxPreps statistics first/);
 });
