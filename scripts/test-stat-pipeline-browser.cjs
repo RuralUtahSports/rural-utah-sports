@@ -53,6 +53,9 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.match(await huntRows.first().innerText(),/3386|3,386/);
   assert.match(await huntRows.first().innerText(),/Reviewed|MaxPreps/);
   await p.locator('#leaderSourceMode').selectOption('verified');
+  const fiefiaRushingTD=await p.evaluate(()=>buildRows('Rushing').find(r=>r.playerId==='ridgeline-30-noah-fiefia')?.values?.TD);
+  assert.equal(fiefiaRushingTD,'36','Fiefia reviewed 36 regular-season rushing TD must render in real leaderboard data');
+  results.push({width,test:'Fiefia 36 regular-season rushing TD are published only in verified view'});
   const huntVerified=p.locator('#results tbody tr').filter({hasText:'Jaxon Hunt'});
   assert.equal(await huntVerified.count(),1,'Verified Hunt regular-season passing should appear once');
   assert.match(await huntVerified.first().innerText(),/3386|3,386/);
