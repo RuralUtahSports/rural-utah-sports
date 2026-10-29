@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url);
 
 test('2026 player Stat Leaders controller parses and separates reported from verified source',()=>{
  const html=fs.readFileSync('stat-leaders.html','utf8');
@@ -32,4 +34,18 @@ test('2026 reported player source does not gain official season certification',(
  // The reported source is deliberately not modified or certified here.
  const reportedFile=fs.statSync('deseret-rosters-stats-2026.json');
  assert.ok(reportedFile.size>100000);
+});
+
+test('postseason game remains eligible for reported weekly view, never for verified regular-season',()=>{
+ const game={date:'2026-10-23',opponent:'NORTH SANPETE',teamScore:31,opponentScore:14,players:[
+  {playerId:'canyon-view-7-test',name:'Test Player',number:'7',statLines:[{category:'Passing',values:{YARDS:'250'}}]}
+ ]};
+ const publication={season:2026,scope:'verified-regular-season',lockedSnapshotSha256:'fixture',gamePhases:{
+  '2026-10-23|CANYONVIEW|NORTHSANPETE':'postseason'
+ }};
+ const {uniqueGames,regularGames}=require('../regular-season-stat-policy-2026.js');
+ const reported=uniqueGames([game,structuredClone(game)],'CANYON VIEW',publication);
+ assert.equal(reported.length,1,'Identical postseason game copies are deduplicated');
+ assert.equal(reported[0].game.players[0].statLines[0].values.YARDS,'250');
+ assert.deepEqual(regularGames([game],'CANYON VIEW',publication),[],'Verified regular-season still excludes playoffs');
 });
