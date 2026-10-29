@@ -25,7 +25,7 @@
 <nav><div class="nav-content"></div></nav>
 <main class="container">
 <h2 class="page-title">Team Stats</h2>
-<p class="subtitle">Statewide football team statistical leaders built from reported player totals and completed game scores. Switch between per-game rates and season totals.</p>
+<p class="subtitle">Football team statistics from reported player totals and completed scores. The 2026 reported values may be incomplete; statewide, classification and region team-stat rankings remain withheld pending verification.</p>
 <div class="method-note" id="methodNote">Loading team statistics…</div>
 <div class="summary-grid" id="summary"></div>
 <div class="filters">
@@ -38,7 +38,7 @@
 </div>
 <section class="leader-board">
 <div class="board-head"><div><h2 id="boardTitle">Team Leaders</h2><p id="boardSubtitle"></p></div><p id="scopeNote"></p></div>
-<div class="table-wrap"><table class="rank-table"><thead><tr><th>Rank</th><th>Team</th><th>Record</th><th id="valueHeader">Value</th><th>State / Class / Region</th><th>Reported</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="table-wrap"><table class="rank-table"><thead><tr><th id="rankHeader">Rank</th><th>Team</th><th>Record</th><th id="valueHeader">Value</th><th id="rankDetailHeader">State / Class / Region</th><th>Reported</th></tr></thead><tbody id="rows"></tbody></table></div>
 <div class="empty" id="empty" hidden>No teams match those filters.</div>
 </section>
 <div class="updated" id="updated"></div>
@@ -67,7 +67,21 @@ function syncModeAvailability(){const key=$('metricFilter').value,cfg=metricMode
 function metricValue(team,key){const cfg=activeModeConfig(key);if(!cfg)return null;if(typeof cfg.calc==='function')return cfg.calc(team);return getPath(team,cfg.path)}
 function metricLabel(key){return activeModeConfig(key)?.label||data?.metrics?.[key]?.label||key}
 function metricFormat(key,value){const digits=activeModeConfig(key)?.digits??1;return value==null||!Number.isFinite(Number(value))?'—':fmtNum(value,digits)}
-function eligibility(team,key){const existing=team?.rankings?.[key];const value=metricValue(team,key);return !!existing&&existing.state!=null&&value!=null&&Number.isFinite(Number(value))}
+function eligibility(team,key){
+  const value=metricValue(team,key);
+  if(value==null||!Number.isFinite(Number(value)))return false;
+  if(Number(data?.season)===2026){
+    // Reported data is useful to view, but complete 2026 team rankings are
+    // NOT certified. Require an actual category report, not an absent zero.
+    const category={passingYardsPerGame:'passing',rushingYardsPerGame:'rushing',sacks:'defense',defensiveInterceptions:'defense'}[key];
+    if(category&&!team.categories?.[category])return false;
+    if(['totalYardsPerGame','yardsPerPlay'].includes(key)&&!(team.categories?.passing||team.categories?.rushing))return false;
+    if(['ppg','pointsAllowedPerGame','scoringMargin'].includes(key)&&!(Number(team.games)>0))return false;
+    return true;
+  }
+  const existing=team?.rankings?.[key];
+  return !!existing&&existing.state!=null;
+}
 function coverageLabel(team,key){if(['ppg','pointsAllowedPerGame','scoringMargin'].includes(key))return `${team.games||0} game${team.games===1?'':'s'}`;if(key==='rushingYardsPerGame')return team.categories?.rushing?'Rushing':'—';if(key==='passingYardsPerGame')return team.categories?.passing?'Passing':'—';if(['sacks','defensiveInterceptions'].includes(key))return team.categories?.defense?'Defense':'—';return (team.statCoverage||[]).map(x=>x[0].toUpperCase()+x.slice(1)).join(', ')||'—'}
 function compareTeams(a,b,key){const dir=data?.metrics?.[key]?.dir||'desc',av=Number(metricValue(a,key)),bv=Number(metricValue(b,key)),delta=dir==='asc'?av-bv:bv-av;return delta||String(a.team).localeCompare(String(b.team))}
 function rankedMap(list,key){const sorted=list.filter(t=>eligibility(t,key)).sort((a,b)=>compareTeams(a,b,key)),map=new Map();let last=null,lastRank=0;sorted.forEach((t,i)=>{const value=Number(metricValue(t,key));if(last===null||Math.abs(value-last)>1e-9)lastRank=i+1;map.set(t.team,lastRank);last=value});return{map,total:sorted.length}}
@@ -75,9 +89,39 @@ function rankSets(key){const state=rankedMap(teamRows,key),classes=new Map(),reg
 function rankInfo(team,ranks){const c=ranks.classes.get(team.classification)||{map:new Map(),total:0},rk=`${team.classification||''}||${team.region||''}`,rg=ranks.regions.get(rk)||{map:new Map(),total:0};return{state:ranks.state.map.get(team.team)??null,stateTotal:ranks.state.total,class:c.map.get(team.team)??null,classTotal:c.total,region:rg.map.get(team.team)??null,regionTotal:rg.total}}
 function scopeRank(team,ranks){const r=rankInfo(team,ranks);if($('regionFilter').value!=='ALL')return r.region;if($('classFilter').value!=='ALL')return r.class;return r.state}
 function rebuildRegions(){const cls=$('classFilter').value,current=$('regionFilter').value;const regions=[...new Set(teamRows.filter(t=>cls==='ALL'||t.classification===cls).map(t=>t.region).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true}));$('regionFilter').innerHTML='<option value="ALL">All Regions</option>'+regions.map(r=>`<option value="${esc(r)}">${esc(r)}</option>`).join('');if(regions.includes(current))$('regionFilter').value=current}
-function render(){if(!data)return;syncModeAvailability();const key=$('metricFilter').value,cls=$('classFilter').value,region=$('regionFilter').value,q=$('search').value.trim().toUpperCase(),ranks=rankSets(key),label=metricLabel(key),mode=$('modeFilter').value;let rows=teamRows.filter(t=>eligibility(t,key)).filter(t=>(cls==='ALL'||t.classification===cls)&&(region==='ALL'||t.region===region)&&(!q||String(t.team).toUpperCase().includes(q)));rows.sort((a,b)=>{const ar=scopeRank(a,ranks),br=scopeRank(b,ranks);if(ar!=null&&br!=null&&ar!==br)return ar-br;return compareTeams(a,b,key)});
-const leader=rows[0];$('boardTitle').textContent=label;$('boardSubtitle').textContent=`${data.season} team leaderboard • ${mode==='total'?'season totals':'per-game / rate view'}`;$('valueHeader').textContent=label;$('scopeNote').textContent=region!=='ALL'?region:cls!=='ALL'?`${cls} classification`:'All Utah';$('rows').innerHTML=rows.map(t=>{const r=rankInfo(t,ranks),rank=scopeRank(t,ranks),src=logo(t.team),teamUrl=`team.html?team=${encodeURIComponent(t.team)}&season=${data.season}`;return `<tr><td class="rank-cell">#${rank??'—'}</td><td class="team-cell"><a class="team-link" href="${teamUrl}">${src?`<img class="team-logo" src="${esc(src)}" alt="${esc(t.team)} logo" onerror="this.style.display='none'">`:''}<span>${esc(t.team)}<small class="team-meta">${esc(t.classification||'')}${t.region?' • '+esc(t.region):''}</small></span></a></td><td class="record">${esc(t.record||'—')}</td><td class="value-cell">${metricFormat(key,metricValue(t,key))}</td><td class="rank-detail">State #${r.state??'—'} / ${r.stateTotal??'—'}<br>Class #${r.class??'—'} / ${r.classTotal??'—'}<br>Region #${r.region??'—'} / ${r.regionTotal??'—'}</td><td class="coverage">${esc(coverageLabel(t,key))}</td></tr>`}).join('');$('empty').hidden=rows.length>0;$('summary').innerHTML=`<div class="summary"><strong>${data.summary?.teams??teamRows.length}</strong><span>Teams Tracked</span></div><div class="summary"><strong>${data.summary?.teamsWithPlayerStats??'—'}</strong><span>With Player Stats</span></div><div class="summary"><strong>${data.summary?.teamsWithGames??'—'}</strong><span>With Games</span></div><div class="summary"><strong>${leader?esc(leader.team):'—'}</strong><span>${esc(label)} Leader${leader?' • '+metricFormat(key,metricValue(leader,key)):''}</span></div>`}
-async function loadSeason(){const season=$('seasonFilter').value;$('methodNote').textContent='Loading team statistics…';try{const res=await fetch(`team-stats-${season}.json?v=${Date.now()}`,{cache:'no-store'});if(!res.ok)throw new Error('Unable to load team statistics');data=await res.json();teamRows=Object.values(data.teams||{});if(String(season)==='2026'){const proof=await fetch('regular-season-publication-2026.json?v='+Date.now(),{cache:'no-store'});if(!proof.ok)throw Error('Reviewed team coverage unavailable');const publication=window.RUSRegularSeasonPolicy2026.requirePublication(await proof.json());teamRows=teamRows.filter(t=>publication.eligibleTeamTotals?.includes(t.team));}const previousMetric=$('metricFilter').value;$('metricFilter').innerHTML=Object.entries(data.metrics||{}).map(([key,m])=>`<option value="${esc(key)}">${esc(m.label)}</option>`).join('');if(data.metrics?.[previousMetric])$('metricFilter').value=previousMetric;const classes=[...new Set(teamRows.map(t=>t.classification).filter(Boolean))].sort((a,b)=>String(b).localeCompare(String(a),undefined,{numeric:true}));$('classFilter').innerHTML='<option value="ALL">All Classifications</option>'+classes.map(c=>`<option>${esc(c)}</option>`).join('');$('regionFilter').innerHTML='<option value="ALL">All Regions</option>';$('methodNote').textContent=(data.method?.note||'Team statistics are calculated from reported player totals and completed game scores.')+' Rankings recalculate for the selected per-game or season-total view.';$('updated').textContent=data.generatedAt?`Last rebuilt ${new Date(data.generatedAt).toLocaleString()}`:'';if(String(season)==='2026')$('methodNote').textContent='Regular-season team rankings await complete source verification. Partial player statistics are not published as complete team totals; reported data remains on team profiles.';syncModeAvailability();render()}catch(err){console.error(err);$('methodNote').textContent='Team statistics could not be loaded.';$('rows').innerHTML='';$('empty').hidden=false}}
+function render(){
+  if(!data)return;
+  syncModeAvailability();
+  const key=$('metricFilter').value,cls=$('classFilter').value,region=$('regionFilter').value,q=$('search').value.trim().toUpperCase();
+  const reported2026=Number(data.season)===2026,ranks=reported2026?null:rankSets(key),label=metricLabel(key),mode=$('modeFilter').value;
+  let rows=teamRows.filter(t=>eligibility(t,key))
+    .filter(t=>(cls==='ALL'||t.classification===cls)&&(region==='ALL'||t.region===region)&&(!q||String(t.team).toUpperCase().includes(q)));
+  rows.sort((a,b)=>{
+    if(!reported2026){
+      const ar=scopeRank(a,ranks),br=scopeRank(b,ranks);
+      if(ar!=null&&br!=null&&ar!==br)return ar-br;
+    }
+    return compareTeams(a,b,key);
+  });
+  const leader=rows[0];
+  $('boardTitle').textContent=reported2026?'Reported '+label:label;
+  $('boardSubtitle').textContent=`${data.season} • ${mode==='total'?'season totals':'per-game / rate view'}${reported2026?' • incomplete, not ranked':''}`;
+  $('valueHeader').textContent=label;
+  $('rankHeader').textContent=reported2026?'Rank held':'Rank';
+  $('rankDetailHeader').textContent=reported2026?'Ranking status':'State / Class / Region';
+  $('scopeNote').textContent=(region!=='ALL'?region:cls!=='ALL'?`${cls} classification`:'All Utah')+(reported2026?' • reported figures only':'');
+  $('rows').innerHTML=rows.map(t=>{
+    const r=reported2026?null:rankInfo(t,ranks),rank=reported2026?null:scopeRank(t,ranks),src=logo(t.team);
+    const teamUrl=`team.html?team=${encodeURIComponent(t.team)}&season=${data.season}`;
+    const rankCell=reported2026?'—':`#${rank??'—'}`;
+    const rankDetail=reported2026?'Not certified':`State #${r.state??'—'} / ${r.stateTotal??'—'}<br>Class #${r.class??'—'} / ${r.classTotal??'—'}<br>Region #${r.region??'—'} / ${r.regionTotal??'—'}`;
+    return `<tr><td class="rank-cell">${rankCell}</td><td class="team-cell"><a class="team-link" href="${teamUrl}">${src?`<img class="team-logo" src="${esc(src)}" alt="${esc(t.team)} logo" onerror="this.style.display='none'">`:''}<span>${esc(t.team)}<small class="team-meta">${esc(t.classification||'')}${t.region?' • '+esc(t.region):''}</small></span></a></td><td class="record">${esc(t.record||'—')}</td><td class="value-cell">${metricFormat(key,metricValue(t,key))}</td><td class="rank-detail">${rankDetail}</td><td class="coverage">${esc(coverageLabel(t,key))}${reported2026?' • unverified':''}</td></tr>`;
+  }).join('');
+  $('empty').hidden=rows.length>0;
+  $('empty').textContent=reported2026?'No reported values match those filters.':'No teams match those filters.';
+  $('summary').innerHTML=`<div class="summary"><strong>${data.summary?.teams??teamRows.length}</strong><span>Teams Tracked</span></div><div class="summary"><strong>${data.summary?.teamsWithPlayerStats??'—'}</strong><span>With Player Stats</span></div><div class="summary"><strong>${data.summary?.teamsWithGames??'—'}</strong><span>With Games</span></div><div class="summary"><strong>${leader?esc(leader.team):'—'}</strong><span>${esc(label)} ${reported2026?'Highest Reported':'Leader'}${leader?' • '+metricFormat(key,metricValue(leader,key)):''}</span></div>`;
+}
+async function loadSeason(){const season=$('seasonFilter').value;$('methodNote').textContent='Loading team statistics…';try{const res=await fetch(`team-stats-${season}.json?v=${Date.now()}`,{cache:'no-store'});if(!res.ok)throw new Error('Unable to load team statistics');data=await res.json();teamRows=Object.values(data.teams||{});if(String(season)==='2026'){const proof=await fetch('regular-season-publication-2026.json?v='+Date.now(),{cache:'no-store'});if(!proof.ok)throw Error('Reviewed team coverage unavailable');window.RUSRegularSeasonPolicy2026.requirePublication(await proof.json()); /* Validate reviewed-source boundary; reported totals are displayed without complete-team certification. */}const previousMetric=$('metricFilter').value;$('metricFilter').innerHTML=Object.entries(data.metrics||{}).map(([key,m])=>`<option value="${esc(key)}">${esc(m.label)}</option>`).join('');if(data.metrics?.[previousMetric])$('metricFilter').value=previousMetric;const classes=[...new Set(teamRows.map(t=>t.classification).filter(Boolean))].sort((a,b)=>String(b).localeCompare(String(a),undefined,{numeric:true}));$('classFilter').innerHTML='<option value="ALL">All Classifications</option>'+classes.map(c=>`<option>${esc(c)}</option>`).join('');$('regionFilter').innerHTML='<option value="ALL">All Regions</option>';$('methodNote').textContent=(data.method?.note||'Team statistics are calculated from reported player totals and completed game scores.')+' Rankings recalculate for the selected per-game or season-total view.';$('updated').textContent=data.generatedAt?`Last rebuilt ${new Date(data.generatedAt).toLocaleString()}`:'';if(String(season)==='2026')$('methodNote').textContent='2026 REPORTED DATA — These player-derived team figures may be incomplete, dated or disputed. They are sorted by available reported values, NOT official statewide/class/region rankings. Those rankings remain withheld pending complete source certification. Missing categories are not treated as zero; verified individual corrections and locked awards remain separate.';syncModeAvailability();render()}catch(err){console.error(err);data=null;teamRows=[];$('methodNote').textContent='Team statistics could not be loaded.';$('rows').innerHTML='';$('summary').innerHTML='';$('empty').hidden=false}}
 $('seasonFilter').addEventListener('change',loadSeason);$('metricFilter').addEventListener('change',()=>{syncModeAvailability();render()});$('modeFilter').addEventListener('change',render);$('classFilter').addEventListener('change',()=>{rebuildRegions();render()});$('regionFilter').addEventListener('change',render);$('search').addEventListener('input',render);loadSeason();
 </script>
 <script src="nav-menu.js?v=20261027-stage1-nav1"></script>
