@@ -59,6 +59,8 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   results.push({width,test:'2026 classification filters retain reported passing teams'});
   missing=true;await p.reload();await p.waitForFunction(()=>document.querySelector('#methodNote')?.textContent.includes('could not be loaded'));
   assert.equal(await p.locator('#rows tr').count(),0);
+  await p.locator('#search').fill('BOX ELDER');
+  assert.equal(await p.locator('#rows tr').count(),0,'A filter event must not bypass missing reviewed-source boundary');
   missing=false;results.push({width,test:'2026 team reported view still fails closed without reviewed publication'});
   await p.locator('#seasonFilter').selectOption('2025');await p.waitForFunction(()=>document.querySelectorAll('#rows tr').length>0);
   assert.equal(await p.locator('#rankHeader').innerText(),'Rank');
