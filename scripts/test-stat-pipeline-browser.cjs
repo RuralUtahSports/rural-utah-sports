@@ -4,14 +4,14 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
  const root=process.cwd(),results=[],out=process.env.RUS_BROWSER_OUTPUT||'/tmp/rus-pipeline-browser';fs.mkdirSync(out,{recursive:true});
  const browser=await chromium.launch({executablePath:process.env.RUS_CHROMIUM_PATH||(fs.existsSync('/usr/bin/chromium')?'/usr/bin/chromium':undefined),args:['--no-sandbox','--disable-dev-shm-usage']});
  for(const width of [390,1440]){
-  const context=await browser.newContext({viewport:{width,height:900}});let missing=false,tamper=false;const errors=[];
+  const context=await browser.newContext({viewport:{width,height:900}});let missing=false,tamper=false,poison=true;const errors=[];
   await context.route('**/*',async route=>{
    const request=route.request(),u=new URL(request.url());
    if(request.method()!=='GET'||!['policy.test','ruralutahsports.com','www.ruralutahsports.com'].includes(u.hostname))return route.abort();
    if(u.pathname==='/regular-season-publication-2026.json'&&missing)return route.fulfill({status:503,body:'Unavailable'});
    const file=path.join(root,decodeURIComponent(u.pathname));if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile())return route.fulfill({status:404,body:''});
    let body=fs.readFileSync(file);
-   if(u.pathname==='/deseret-rosters-stats-2026.json'){
+   if(u.pathname==='/deseret-rosters-stats-2026.json'&&poison){
     const data=JSON.parse(body);for(const t of Object.values(data.teams))for(const s of t.stats||[])for(const p of s.rows||[])for(const key of Object.keys(p.values||{}))if(/yards/i.test(key))p.values[key]='987654321';body=JSON.stringify(data);
    }
    if(u.pathname==='/region-awards-2026.lock.json'&&tamper)body=body.toString()+' ';
@@ -32,6 +32,27 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.equal(await p.locator('.leaders tbody tr:first-child .rank').innerText(),'#1');
   assert.match(await p.locator('#summary').innerText(),/Provisional order/i);
   results.push({width,test:'reported 2026 passing has broad coverage, provisional order, postseason warning'});
+  // The default adversarial fixture poisons reported yards. Use the actual
+  // retained 2026 source for a separate source-reviewed athlete regression.
+  poison=false;
+  await p.reload();await p.waitForSelector('#results table');
+  await p.locator('[data-cat="Passing"]').click();
+  const huntRows=p.locator('#results tbody tr').filter({hasText:'Jaxon Hunt'});
+  assert.equal(await huntRows.count(),1,'Expected Jaxon Hunt exactly once in reported passing');
+  assert.match(await huntRows.first().innerText(),/3386|3,386/);
+  assert.match(await huntRows.first().innerText(),/Reviewed|MaxPreps/);
+  await p.locator('#leaderSourceMode').selectOption('verified');
+  const huntVerified=p.locator('#results tbody tr').filter({hasText:'Jaxon Hunt'});
+  assert.equal(await huntVerified.count(),1,'Verified Hunt regular-season passing should appear once');
+  assert.match(await huntVerified.first().innerText(),/3386|3,386/);
+  await p.goto('https://policy.test/player.html?id=mountain-ridge-11-jaxon-hunt');
+  await p.waitForSelector('.data-table');
+  assert.match(await p.locator('#page').innerText(),/3386|3,386/);
+  assert.match(await p.locator('#page').innerText(),/2026 passing-yard correction/);
+  results.push({width,test:'Hunt 3386 verified regular-season yards in player leaders and player profile'});
+  poison=true;
+  await p.goto('https://policy.test/stat-leaders.html');await p.waitForSelector('#results table');
+
   await p.locator('#leaderSourceMode').selectOption('verified');
   await p.locator('[data-cat="Passing"]').click();await p.locator('[data-class="2A"]').click();
   assert.match((await p.locator('#results').innerText()).replace(/,/g,''),/1397/);assert.doesNotMatch(await p.locator('#results').innerText(),/987654321/);

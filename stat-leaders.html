@@ -21,6 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <script src="regular-season-stat-policy-2026.js?v=20261027-gameidentity1"></script>
 <script src="maxpreps-missing-totals-2026.js?v=20261029-missing1"></script>
+<script src="reviewed-hunt-passing-2026.js?v=20261029-reviewed-hunt1"></script>
 <script src="verified-player-stats-2026.js?v=20261023-alma-verified1"></script>
 </head>
 <body>
@@ -223,6 +224,10 @@ async function load(){
      reportedStats=result.data;missingTotalsSummary=result.summary;
     }catch(error){console.warn('Cached MaxPreps missing-field review unavailable; showing Deseret reporting only',error)}
    }
+   try{
+    const reviewed=window.RUSReviewedHunt2026.applyReported(reportedStats);
+    window.RUSReviewedHunt2026.applyVerified(regularPublication,reviewed);
+   }catch(error){console.warn('Reviewed Jaxon Hunt 2026 passing correction requires source recheck',error)}
    allStats=sourceMode==='reported'?reportedStats:regularPublication;
    playerGames=g?.ok?await g.json():null;if(playerGames)for(const [team,t] of Object.entries(playerGames.teams||{}))t.games=window.RUSRegularSeasonPolicy2026.regularGames(t.games,team,regularPublication);
    const weeklySchedule=w?.ok?(await w.json()).games||[]:[];
