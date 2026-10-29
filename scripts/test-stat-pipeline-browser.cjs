@@ -25,7 +25,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.equal(await p.locator('#shareStatCategory').isDisabled(),true);
   assert.equal(await p.locator('#shareAllStats').isDisabled(),true);
   const reportedTotal=await p.locator('#summary').innerText();
-  assert.ok(Number((reportedTotal.match(/\\d+/)||[])[0])>20,'Reported passing view should include athletes beyond the few verified entries');
+  assert.ok(Number((reportedTotal.match(/\d+/)||[])[0])>20,'Reported passing view should include athletes beyond the few verified entries');
   assert.equal(await p.locator('.leaders tbody tr:first-child .rank').innerText(),'—');
   results.push({width,test:'reported 2026 player-passing view has broad coverage and no certified ranks'});
   await p.locator('#leaderSourceMode').selectOption('verified');
