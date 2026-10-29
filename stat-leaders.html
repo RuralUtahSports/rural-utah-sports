@@ -211,7 +211,7 @@ async function load(){
   const stamp=Date.now();document.title=`${season} Stat Leaders | Rural Utah Sports`;document.getElementById('heroYear').textContent=season;document.getElementById('seasonBadge').textContent=season===2026?'Current season':'Completed season';
   const statUrl=season===2026?`regular-season-publication-2026.json?v=${stamp}`:`deseret-rosters-stats-${season}.json?v=${stamp}`,gameStatUrl=`player-game-stats-${season}.json?v=${stamp}`;
   if(season===2026){
-   const [s,r,m,g,t,d,w]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(`deseret-rosters-stats-2026.json?v=${stamp}`,{cache:'no-store'}),fetch(`maxpreps-stats-fallback-2026.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)]);
+   const [s,r,m,g,t,d,w]=await Promise.all([fetch(statUrl,{cache:'no-store'}),fetch(`deseret-rosters-stats-2026.json?v=${stamp}`,{cache:'no-store'}),fetch('maxpreps-stats-fallback-2026.json',{cache:'default'}).catch(()=>null),fetch(gameStatUrl,{cache:'no-store'}).catch(()=>null),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'}),fetch(`deseret-game-details.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null),fetch(`weekly-simulation.json?v=${stamp}`,{cache:'no-store'}).catch(()=>null)]);
    if(!s.ok||!r.ok||!t.ok)throw new Error('Unable to load reviewed and reported stat sources');
    regularPublication=window.RUSRegularSeasonPolicy2026.requirePublication(await s.json());
    reportedStats=await r.json();
