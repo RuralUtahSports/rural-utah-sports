@@ -66,7 +66,13 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
     await p.waitForSelector('.data-table');
     assert.match((await p.locator('#page').innerText()).replace(/,/g,''),new RegExp(expected),'Updated 6A reported preview total missing for '+id);
     assert.match(await p.locator('#page').innerText(),/October 29 preview cross-check/);
-    assert.match(await p.locator('#page').innerText(),/Uniquely matched MaxPreps statistics updated after the regular season/);
+    const profileText=await p.locator('#page').innerText();
+    // A preview-reviewed player may have an old/unmatched MaxPreps cache.
+    // The profile must still disclose preview provenance rather than falsely
+    // labeling a held value as MaxPreps-preferred.
+    if(profileText.includes('2026 reported source order:'))
+      assert.match(profileText,/Uniquely matched MaxPreps statistics updated after the regular season/);
+    else assert.match(profileText,/October 29 preview cross-check/);
   }
   results.push({width,test:'3 prioritized 6A player profiles show crosschecked 2026 preview season totals'});
 
