@@ -4,6 +4,8 @@ on:
     paths:
       - 'scripts/lib/competition-scope-2026.mjs'
       - 'scripts/audit_regular_season_2026.mjs'
+      - 'scripts/triage_regular_season_audit_2026.mjs'
+      - 'tests/triage-regular-season-audit-2026.test.mjs'
       - 'scripts/lib/stat-import-integrity-2026.mjs'
       - 'scripts/merge_deseret_stats_endpoints.mjs'
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
@@ -93,10 +95,13 @@ jobs:
           node scripts/test-corrected-stat-pages-browser.cjs
       - name: Audit stored source data without publishing changes
         run: node scripts/audit_regular_season_2026.mjs --output="$RUNNER_TEMP/regular-season-audit"
+      - name: Group repeat identity reports and annotate conflicting game cells
+        run: node scripts/triage_regular_season_audit_2026.mjs --audit="$RUNNER_TEMP/regular-season-audit/audit.json" --output="$RUNNER_TEMP/regular-season-triage"
       - uses: actions/upload-artifact@v4
         with:
           name: regular-season-source-review
           path: |
             ${{ runner.temp }}/regular-season-audit
+            ${{ runner.temp }}/regular-season-triage
             ${{ runner.temp }}/pr181-preservation
             ${{ runner.temp }}/pr181-browser
