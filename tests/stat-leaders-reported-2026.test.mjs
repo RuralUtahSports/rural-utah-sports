@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url);
 
 test('2026 player Stat Leaders controller parses and separates reported from verified source',()=>{
  const html=fs.readFileSync('stat-leaders.html','utf8');
@@ -10,9 +12,13 @@ test('2026 player Stat Leaders controller parses and separates reported from ver
  assert.doesNotThrow(()=>new vm.Script(scripts[0],{filename:'stat-leaders.html'}));
  assert.match(html,/id="leaderSourceMode"/);
  assert.match(html,/src="maxpreps-missing-totals-2026\.js/);
- assert.match(scripts[0],/RUSMaxPrepsMissingTotals2026\.applyMissing\(reportedStats,await m\.json\(\)\)/);
+ assert.match(scripts[0],/RUSMaxPrepsMissingTotals2026\.applyMissing\(reportedStats,cachedMaxPreps\)/);
+ assert.match(scripts[0],/RUSMaxPrepsPrimary2026\.applyPrimary\(reportedStats,cachedMaxPreps,metadata\)/);
+ assert.match(html,/src="maxpreps-primary-reported-2026\.js/);
  assert.match(scripts[0],/statSources:r\.statSources/);
- assert.match(html,/<option value="reported">Reported totals — may include playoffs<\/option>/);
+ assert.match(html,/<option value="reported">Season to date — includes reported playoffs<\/option>/);
+ assert.match(scripts[0],/uniqueGames\(t\.games,team,regularPublication\)\.map\(record=>record\.game\)/);
+ assert.match(scripts[0],/playoff games once reported by the source/);
  assert.match(scripts[0],/requirePublication\(await s\.json\(\)\)/);
  assert.match(scripts[0],/deseret-rosters-stats-2026\.json/);
  assert.match(scripts[0],/const unverified=reported2026View\(\)/);
@@ -28,4 +34,18 @@ test('2026 reported player source does not gain official season certification',(
  // The reported source is deliberately not modified or certified here.
  const reportedFile=fs.statSync('deseret-rosters-stats-2026.json');
  assert.ok(reportedFile.size>100000);
+});
+
+test('postseason game remains eligible for reported weekly view, never for verified regular-season',()=>{
+ const game={date:'2026-10-23',opponent:'NORTH SANPETE',teamScore:31,opponentScore:14,players:[
+  {playerId:'canyon-view-7-test',name:'Test Player',number:'7',statLines:[{category:'Passing',values:{YARDS:'250'}}]}
+ ]};
+ const publication={season:2026,scope:'verified-regular-season',teams:{},lockedSnapshotSha256:'fixture',gamePhases:{
+  '2026-10-23|CANYONVIEW|NORTHSANPETE':'postseason'
+ }};
+ const {uniqueGames,regularGames}=require('../regular-season-stat-policy-2026.js');
+ const reported=uniqueGames([game,structuredClone(game)],'CANYON VIEW',publication);
+ assert.equal(reported.length,1,'Identical postseason game copies are deduplicated');
+ assert.equal(reported[0].game.players[0].statLines[0].values.YARDS,'250');
+ assert.deepEqual(regularGames([game],'CANYON VIEW',publication),[],'Verified regular-season still excludes playoffs');
 });
