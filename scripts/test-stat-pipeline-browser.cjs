@@ -49,7 +49,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   await p.waitForFunction(()=>document.querySelectorAll('#rows tr').length>0);
   const passingRows=await p.locator('#rows tr').count();
   assert.equal(passingRows,116,'Reported passing teams must not be filtered by incomplete certification');
-  assert.equal(await p.locator('#rankHeader').innerText(),'Rank held');
+  assert.equal(await p.locator('#rankHeader').textContent(),'Rank held');
   assert.equal(await p.locator('.rank-cell').first().innerText(),'—');
   assert.equal(await p.locator('.rank-detail').first().innerText(),'Not certified');
   assert.match(await p.locator('#rows').innerText(),/BOX ELDER/);
@@ -63,7 +63,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.equal(await p.locator('#rows tr').count(),0,'A filter event must not bypass missing reviewed-source boundary');
   missing=false;results.push({width,test:'2026 team reported view still fails closed without reviewed publication'});
   await p.locator('#seasonFilter').selectOption('2025');await p.waitForFunction(()=>document.querySelectorAll('#rows tr').length>0);
-  assert.equal(await p.locator('#rankHeader').innerText(),'Rank');
+  assert.equal(await p.locator('#rankHeader').textContent(),'Rank');
   assert.match(await p.locator('.rank-cell').first().innerText(),/#/);
   results.push({width,test:'2025 team statistics and rankings remain operational'});
   await p.goto('https://policy.test/region-awards.html');await p.waitForFunction(()=>document.querySelector('#ar-region')?.options.length>0);await p.waitForTimeout(250);
