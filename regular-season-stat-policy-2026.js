@@ -52,11 +52,12 @@
   if(snapshot.season!==2026||snapshot.status!=='LOCKED'||compact(snapshot.seasonPhase)!=='REGULARSEASON')throw Error('Invalid locked regular-season award scope');
   return snapshot;
  }
- function regularGames(games,team,publication){
+ function regularGames(games,team,publication,includePostseason=false){
   requirePublication(publication);
   const result=[];
   for(const {game:original} of uniqueGames(games,team,publication)){
-   if(phase(original,team,publication)!=='regular-season')continue;
+   const competitionPhase=phase(original,team,publication);
+   if(competitionPhase!=='regular-season'&&!(includePostseason&&competitionPhase==='postseason'))continue;
    const game=structuredClone(original),players=new Map(),conflicts=new Set();
    for(const p of game.players||[]){
     if(!p.playerId||!p.name)continue;
