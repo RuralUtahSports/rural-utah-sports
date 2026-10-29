@@ -21,6 +21,7 @@
 <script src="verified-player-stats-2026.js?v=20261023-alma-verified1"></script>
 <script src="regular-season-stat-policy-2026.js?v=20261027-gameidentity1"></script>
 <script src="reviewed-hunt-passing-2026.js?v=20261029-reviewed-hunt1"></script>
+<script src="maxpreps-primary-reported-2026.js?v=20261029-previews1"></script>
 </head>
 <body>
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
@@ -50,7 +51,20 @@ const gameRows=games.length?`<div class="summary"><span class="pill"><strong>${g
 const playRows=plays.length?`<div class="plays">${plays.map(x=>`<div class="play"><strong>${esc(x.date)} vs ${esc(x.opponent)}</strong><br>${esc(x.play)}</div>`).join('')}</div>`:`<div class="empty">No ${seasonYear} scoring plays have been matched to this player.</div>`;
 const links=seasonYear===2025?`<a href="awards-2025.html">2025 Awards</a>`:`<a href="stat-leaders.html">Stat Leaders</a><a href="mvp.html">MVP Race</a><a href="all-state.html">All-State Watch</a>`;
 document.getElementById('page').innerHTML=`<a class="back" href="${teamURL(profile.team,seasonYear)}">← ${esc(profile.team)}</a>${seasonSwitcher(p,seasonYear)}<section class="hero"><div class="hero-top"><div><div class="eyebrow">${seasonYear} Player Profile</div><div class="player-name">${esc(p.name)}</div><a class="team-link" href="${teamURL(profile.team,seasonYear)}">${esc(profile.team)} ${esc(meta?.mascot||profile.data?.mascot||'')}</a></div><div class="number">#${esc(p.number||'—')}</div></div><div class="bio-grid"><div class="bio"><strong>${esc(p.class||'—')}</strong><span>Class</span></div><div class="bio"><strong>${esc(p.position||'—')}</strong><span>Position</span></div><div class="bio"><strong>${esc(p.height||'—')}</strong><span>Height</span></div><div class="bio"><strong>${esc(p.weight||'—')}</strong><span>Weight</span></div><div class="bio"><strong>${esc(profile.data?.classification||meta?.classification||'—')}</strong><span>Classification</span></div><div class="bio"><strong>${esc(profile.data?.region||meta?.region||'—')}</strong><span>Region</span></div></div><div class="profile-links"><a href="${teamURL(profile.team,seasonYear)}">Team Page</a>${links}${profile.data?.rosterUrl?`<a target="_blank" rel="noopener noreferrer" href="${esc(profile.data.rosterUrl)}">Deseret Roster ↗</a>`:''}</div></section><h2 class="section-title">${seasonYear} Season Stats</h2>${seasonRows}<h2 class="section-title">${seasonYear} Game Log</h2>${gameRows}<h2 class="section-title">${seasonYear} Scoring Plays</h2>${playRows}<div class="source-note">Roster and player statistics are based on information reported to Deseret. Missing values are left blank rather than estimated. Game logs are matched back to roster players only when identity can be matched confidently.</div>`}
-async function load(){const id=wanted(),seasonYear=requestedSeason();if(!id){document.getElementById('page').innerHTML='<div class="error">No player was selected.</div>';return}try{const stamp=Date.now(),suffix=seasonYear===2025?'2025':'2026';const [rr,gr,tr]=await Promise.all([fetch(`deseret-rosters-stats-${suffix}.json?v=${stamp}`,{cache:'no-store'}),fetch(`player-game-stats-${suffix}.json?v=${stamp}`,{cache:'no-store'}),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'})]);if(!rr.ok)throw new Error('Roster data unavailable');const rosters=await rr.json();const games=gr.ok?await gr.json():{teams:{}},teams=tr.ok?await tr.json():[];let profile=findProfile(rosters,id);if(!profile&&seasonYear===2025){const looseId=compact(id);outer:for(const [team,t] of Object.entries(rosters.teams||{})){for(const p of t.roster||[]){if(compact(p.playerId)===looseId){profile={team,data:t,player:p};break outer}}}}if(!profile)throw new Error('Player not found');const gkey=Object.keys(games.teams||{}).find(k=>canon(k)===canon(profile.team));const meta=teams.find(t=>canon(t.team)===canon(profile.team))||{};let huntReviewed=false;
+async function load(){const id=wanted(),seasonYear=requestedSeason();if(!id){document.getElementById('page').innerHTML='<div class="error">No player was selected.</div>';return}try{const stamp=Date.now(),suffix=seasonYear===2025?'2025':'2026';const [rr,gr,tr]=await Promise.all([fetch(`deseret-rosters-stats-${suffix}.json?v=${stamp}`,{cache:'no-store'}),fetch(`player-game-stats-${suffix}.json?v=${stamp}`,{cache:'no-store'}),fetch(`teams-data.json?v=${stamp}`,{cache:'no-store'})]);if(!rr.ok)throw new Error('Roster data unavailable');let rosters=await rr.json();const games=gr.ok?await gr.json():{teams:{}},teams=tr.ok?await tr.json():[];let profile=findProfile(rosters,id);if(!profile&&seasonYear===2025){const looseId=compact(id);outer:for(const [team,t] of Object.entries(rosters.teams||{})){for(const p of t.roster||[]){if(compact(p.playerId)===looseId){profile={team,data:t,player:p};break outer}}}}if(!profile)throw new Error('Player not found');const gkey=Object.keys(games.teams||{}).find(k=>canon(k)===canon(profile.team));const meta=teams.find(t=>canon(t.team)===canon(profile.team))||{};
+let maxprepsPreferred=false;
+if(seasonYear===2026&&['4A','5A','6A'].includes(meta.classification)){
+ try{
+  const response=await fetch('maxpreps-stats-fallback-2026.json',{cache:'default'});
+  if(response.ok){
+   const updated=window.RUSMaxPrepsPrimary2026.applyPrimary(rosters,await response.json(),teams,{targetTeam:profile.team});
+   rosters=updated.data;profile=findProfile(rosters,id);
+   if(!profile)throw Error('Player disappeared after source selection');
+   maxprepsPreferred=updated.summary.schoolsWithMaxPreps>0;
+  }
+ }catch(error){console.warn('MaxPreps-first 4A–6A profile unavailable; retaining Deseret source',error)}
+}
+let huntReviewed=false;
 if(seasonYear===2026&&id==='mountain-ridge-11-jaxon-hunt'){
  try{
   window.RUSReviewedHunt2026.applyReported(rosters);
@@ -59,6 +73,7 @@ if(seasonYear===2026&&id==='mountain-ridge-11-jaxon-hunt'){
  }catch(error){console.warn('Hunt passing yard correction needs re-review',error);}
 }
 render(profile,meta,gkey?games.teams[gkey]:null,seasonYear);
+if(maxprepsPreferred){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>2026 reported stat sources:</strong> MaxPreps is used first for uniquely matched 4A–6A players, with Deseret News as fallback. These season totals are source-reported, not certified regular-season figures.</p>';}
 if(huntReviewed){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>2026 passing-yard correction:</strong> Jaxon Hunt has 3,386 verified regular-season passing yards (10 games). The Chaparral box score reports 336 yards and the Westlake game report 225. <a href="https://www.uhsaa.org/stats/football.php" target="_blank" rel="noopener noreferrer">UHSAA leaderboard</a>.</p>';}}catch(e){console.error(e);document.getElementById('page').innerHTML=`<div class="error">This ${requestedSeason()} player profile could not be loaded. That player may not have archived data for this season.</div>`}}
 async function loadBasketball(){
  const page=document.getElementById('page');
