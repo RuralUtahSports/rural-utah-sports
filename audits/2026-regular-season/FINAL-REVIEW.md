@@ -1,6 +1,12 @@
 # PR #181 — final technical reconciliation
 
-This review supersedes the synchronization holds in the earlier pipeline, release and game-handoff reviews. Existing PR and branch retained. Nothing merged into main or deployed. Main snapshot: **872857cad9efbb8d2dd6ebb533b203bbc920c5b6**; previous shared baseline **492d8848af966c68ad8e5f1cbf243914fedf4886**; previous published PR head **bc77b3ca384b19c7fc9ad1b6b44f27639ac049b4**. The subsequent local canonical migration is preserved as commit b803925a7. Final commit and hosted check status are recorded in PR #181 after the authorized push; they cannot be embedded into their own commit.
+This review supersedes the synchronization holds in the earlier pipeline, release and game-handoff reviews. Existing PR and branch retained. Nothing merged into main or deployed. Initial main snapshot: **872857cad9efbb8d2dd6ebb533b203bbc920c5b6**; final synchronized main snapshot: **87278ff2aed8898107c5d7d600abe228bb2cf781**; previous shared baseline **492d8848af966c68ad8e5f1cbf243914fedf4886**; previous published PR head **bc77b3ca384b19c7fc9ad1b6b44f27639ac049b4**. The subsequent local canonical migration is preserved as commit b803925a7. Final commit and hosted check status are recorded in PR #181 after the authorized push; they cannot be embedded into their own commit.
+
+## Final automatic-main advancement
+
+While initial hosted checks ran, main advanced through seven automatic commits to 87278ff2a. Its verified-finals sync independently restored both October 15 finals. All 604 normalized contest keys, designated teams and scores, all 118 classification records and region records/order are identical to the proposed restoration. Raw sheet dates use slash formatting where the earlier proposal used ISO; provenance counts are 55 sheet/549 Deseret rather than 53 sheet/551 pinned Deseret. The only new Git conflict is standings serialization/provenance. Retain current main's exact standings payload, its newer weekly/schedule/historical/site data, and the two protective owner-verified pins. No source-player cache changed in that main advancement.
+
+**Against final main: zero final additions, zero record/points/order changes and zero RPI changes.** Both verified finals remain counted once. The four team-page caches retain the corresponding correct final scores/records. The restoration table below documents the initial missing-final snapshot and its authorized result, now already present on main. The refreshed preservation report and three-way tables use final main, not the obsolete 53-team snapshot.
 
 ## Reconciliation and exact change boundaries
 
@@ -12,7 +18,7 @@ The original six conflicts are resolved: compact metrics, team statistics, Ben L
 - Compact metrics and nine affected team shards: update only the corresponding reviewed fields and metadata; preserve main's other sections. The preservation gate constructs the expected overlay independently and checks exact semantic equality.
 - Team statistics: **41 existing reviewed reported-aggregate adjustments**, comprising South Summit 21, Monticello 19 and Duchesne 1. For every field, current main equals the actual isolated before-calculation and the isolated after-result equals the previously reviewed PR value. The manifest stores these preconditions and source-batch references. These are reported-field sums/rates, **not complete regular-season team certificates**.
 - **Zero ranking changes from current main.** All 118 ranking objects are compared exactly. The prior 51-field ranking proposal is not applied. Canyon View remains **26**. Manti's combined offense remains **4,208**, its reported passing 3,401 and rushing 807.
-- Two owner-verified final pins and the focused standings restoration are accepted. No existing final is edited or deleted; only these two contests are added, once each. No player statistics are inferred from scores. The four affected team-page shards receive only the matching restored record fields and the missing final-score/status fields on the existing October 15 schedule row. Game IDs, other schedules and all player-stat sections remain intact.
+- Two owner-verified final pins and the focused standings restoration are accepted. No existing final is edited or deleted; only these two contests are preserved, once each (already present on final main). No player statistics are inferred from scores. The four affected team-page shards receive only the matching restored record fields and the missing final-score/status fields on the existing October 15 schedule row. Game IDs, other schedules and all player-stat sections remain intact.
 
 [All 118 team before/after quantities, records and ranks](final-review/all-team-before-after.csv) · [All primary season-cell differences, including newer-main reports retained](final-review/all-season-cell-differences.csv) · [Executable preservation result](final-review/preservation.json).
 
@@ -43,7 +49,7 @@ The first removal was d28ebf7a2: the standings builder dropped rows whose weekly
 
 Both owner-confirmed finals are pinned with regular-season phase and primary sources; the builder independently excludes positively classified postseason games by competition evidence, not date. The October 23 Manti 35–17 Canyon View playoff remains separate and unmodified in source boxes/brackets.
 
-| Team | Current main record / PF–PA / region | Restored regular-season record / PF–PA / region |
+| Team | Initial missing-final snapshot / PF–PA / region | Restored regular-season record / PF–PA / region |
 |---|---|---|
 | Mountain Ridge | 9–0 / 434–102 / 5–0 | 10–0 / 455–115 / 6–0 |
 | Westlake | 7–2 / 180–138 / 4–1 | 7–3 / 193–159 / 4–2 |
