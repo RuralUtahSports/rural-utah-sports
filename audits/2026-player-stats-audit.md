@@ -1,6 +1,6 @@
 # 2026 Football Player Statistics Audit
 
-Generated: 2026-10-29T16:54:11.037Z
+Generated: 2026-10-29T17:40:18.605Z
 
 **118 schools · 6440 roster IDs · 4065 athletes with reported stats · 6926 category rows.**
 
@@ -12,17 +12,15 @@ Generated: 2026-10-29T16:54:11.037Z
 - 168 stat rows have IDs missing from their own roster (may be MaxPreps-only entries)
 
 ## Review flags
-- SEASON_GT_AVAILABLE_GAME_LOG: 591
-- GAME_SUM_EXCEEDS_SEASON: 295
-- RECEIVING_RATE_MISMATCH: 3
-- COMPACT_FEED_MISMATCH: 2
+- SEASON_GT_AVAILABLE_GAME_LOG: 604
+- GAME_SUM_EXCEEDS_SEASON: 271
+- RECEIVING_RATE_MISMATCH: 2
+- COMPACT_FEED_MISMATCH: 1
 
 ## Highest-priority examples
-- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Ian Mair; {"category":"Passing","field":"YARDS","season":679,"gameLogSum":1397,"difference":718}
-- **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Cache Young; {"category":"Passing","field":"YARDS","season":1461,"gameLogSum":2083,"difference":622}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Colton Johns; {"category":"Passing","field":"YARDS","season":1171,"gameLogSum":1751,"difference":580}
-- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Brody Larsen; {"category":"Rushing","field":"YARDS","season":623,"gameLogSum":1146,"difference":523}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Chris Munroe; {"category":"Rushing","field":"YARDS","season":886,"gameLogSum":1315,"difference":429}
+- **GAME_SUM_EXCEEDS_SEASON** BEN LOMOND — DaShawn Gordan; {"category":"Rushing","field":"YARDS","season":26,"gameLogSum":420,"difference":394}
 - **GAME_SUM_EXCEEDS_SEASON** KEARNS — Mason Rodarte; {"category":"Passing","field":"YARDS","season":134,"gameLogSum":506,"difference":372}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Synic Harvey; {"category":"Receiving","field":"YARDS","season":288,"gameLogSum":577,"difference":289}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Corbin Black; {"category":"Passing","field":"YARDS","season":1270,"gameLogSum":1556,"difference":286}
@@ -31,7 +29,6 @@ Generated: 2026-10-29T16:54:11.037Z
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Kalvin Hopkins; {"category":"Receiving","field":"YARDS","season":59,"gameLogSum":275,"difference":216}
 - **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Deacon Virgin; {"category":"Passing","field":"YARDS","season":1584,"gameLogSum":1799,"difference":215}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Beto Carroll; {"category":"Receiving","field":"YARDS","season":861,"gameLogSum":1060,"difference":199}
-- **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Cash Mack; {"category":"Receiving","field":"YARDS","season":407,"gameLogSum":602,"difference":195}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Corbin Black; {"category":"Rushing","field":"YARDS","season":31,"gameLogSum":221,"difference":190}
 - **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Deagan Williams; {"category":"Passing","field":"YARDS","season":1073,"gameLogSum":1241,"difference":168}
 - **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Brandtson Mack; {"category":"Receiving","field":"YARDS","season":559,"gameLogSum":726,"difference":167}
@@ -40,14 +37,12 @@ Generated: 2026-10-29T16:54:11.037Z
 - **GAME_SUM_EXCEEDS_SEASON** KEARNS — Abdifatah Osman; {"category":"Receiving","field":"YARDS","season":64,"gameLogSum":216,"difference":152}
 - **GAME_SUM_EXCEEDS_SEASON** ALTAMONT — Dallan Ledbetter; {"category":"Rushing","field":"YARDS","season":1240,"gameLogSum":1383,"difference":143}
 - **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Miles Coleman; {"category":"Receiving","field":"YARDS","season":13,"gameLogSum":156,"difference":143}
-- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Brody Larsen; {"category":"Receiving","field":"YARDS","season":64,"gameLogSum":203,"difference":139}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Everett Hill; {"category":"Receiving","field":"YARDS","season":34,"gameLogSum":170,"difference":136}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Jahmi Harrison-Bismillah; {"category":"Receiving","field":"YARDS","season":366,"gameLogSum":502,"difference":136}
 - **GAME_SUM_EXCEEDS_SEASON** KEARNS — Ismail Muse; {"category":"Receiving","field":"YARDS","season":6,"gameLogSum":136,"difference":130}
 - **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Pili Mounga; {"category":"Rushing","field":"YARDS","season":255,"gameLogSum":357,"difference":102}
-- **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Canyon Christensen; {"category":"Receiving","field":"YARDS","season":48,"gameLogSum":150,"difference":102}
+- **GAME_SUM_EXCEEDS_SEASON** BEN LOMOND — DaShawn Gordan; {"category":"Rushing","field":"CARRIES","season":10,"gameLogSum":108,"difference":98}
 - **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Marshall Durfey; {"category":"Passing","field":"YARDS","season":306,"gameLogSum":400,"difference":94}
-- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Cash Rockhill; {"category":"Receiving","field":"YARDS","season":51,"gameLogSum":140,"difference":89}
 - **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Kash Atkinson; {"category":"Receiving","field":"YARDS","season":14,"gameLogSum":103,"difference":89}
 - **GAME_SUM_EXCEEDS_SEASON** CLEARFIELD — Jayce Ellis; {"category":"Passing","field":"YARDS","season":3,"gameLogSum":88,"difference":85}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Everett Hill; {"category":"Rushing","field":"YARDS","season":10,"gameLogSum":94,"difference":84}
@@ -55,13 +50,11 @@ Generated: 2026-10-29T16:54:11.037Z
 - **GAME_SUM_EXCEEDS_SEASON** ALTAMONT — Payson Evans; {"category":"Rushing","field":"YARDS","season":291,"gameLogSum":367,"difference":76}
 - **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Tuff Thornton; {"category":"Receiving","field":"YARDS","season":99,"gameLogSum":175,"difference":76}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Jonathan Gonzalez; {"category":"Rushing","field":"YARDS","season":43,"gameLogSum":117,"difference":74}
-- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Ian Mair; {"category":"Rushing","field":"YARDS","season":81,"gameLogSum":153,"difference":72}
 - **GAME_SUM_EXCEEDS_SEASON** TAYLORSVILLE — Skyler Bills; {"category":"Receiving","field":"YARDS","season":-2,"gameLogSum":70,"difference":72}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Chris Munroe; {"category":"Rushing","field":"CARRIES","season":62,"gameLogSum":132,"difference":70}
 - **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Brandtson Mack; {"category":"Rushing","field":"YARDS","season":48,"gameLogSum":118,"difference":70}
 - **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Dillon Sykes; {"category":"Receiving","field":"YARDS","season":141,"gameLogSum":205,"difference":64}
 - **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Seth Brown; {"category":"Rushing","field":"YARDS","season":886,"gameLogSum":949,"difference":63}
-- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Brody Larsen; {"category":"Rushing","field":"CARRIES","season":83,"gameLogSum":146,"difference":63}
 - **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Isaac Andresen; {"category":"Receiving","field":"YARDS","season":363,"gameLogSum":425,"difference":62}
 - **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Miles Coleman; {"category":"Rushing","field":"YARDS","season":343,"gameLogSum":403,"difference":60}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Djaylan Gomes; {"category":"Receiving","field":"YARDS","season":240,"gameLogSum":299,"difference":59}
@@ -92,12 +85,19 @@ Generated: 2026-10-29T16:54:11.037Z
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Henry Zinnecker; {"category":"Rushing","field":"YARDS","season":55,"gameLogSum":82,"difference":27}
 - **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Tagg Brinton; {"category":"Receiving","field":"YARDS","season":391,"gameLogSum":417,"difference":26}
 - **GAME_SUM_EXCEEDS_SEASON** KEARNS — Elijah Castillo; {"category":"Receiving","field":"YARDS","season":4,"gameLogSum":30,"difference":26}
-- **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Cash Mack; {"category":"Rushing","field":"YARDS","season":49,"gameLogSum":75,"difference":26}
 - **GAME_SUM_EXCEEDS_SEASON** TAYLORSVILLE — Skyler Bills; {"category":"Rushing","field":"YARDS","season":0,"gameLogSum":26,"difference":26}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Everett Hill; {"category":"Rushing","field":"CARRIES","season":7,"gameLogSum":32,"difference":25}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Reupeni Salaba; {"category":"Rushing","field":"YARDS","season":13,"gameLogSum":38,"difference":25}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Kotoni Kitekeiaho; {"category":"Receiving","field":"YARDS","season":24,"gameLogSum":49,"difference":25}
 - **GAME_SUM_EXCEEDS_SEASON** TAYLORSVILLE — Gary Lomu; {"category":"Rushing","field":"CARRIES","season":12,"gameLogSum":36,"difference":24}
+- **GAME_SUM_EXCEEDS_SEASON** CLEARFIELD — Jayce Ellis; {"category":"Rushing","field":"YARDS","season":13,"gameLogSum":35,"difference":22}
+- **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Sawyer Horsley; {"category":"Receiving","field":"YARDS","season":129,"gameLogSum":151,"difference":22}
+- **GAME_SUM_EXCEEDS_SEASON** ALTAMONT — Memphis Avila; {"category":"Rushing","field":"YARDS","season":149,"gameLogSum":170,"difference":21}
+- **GAME_SUM_EXCEEDS_SEASON** GRAND — Griffin Oldroyd; {"category":"Rushing","field":"YARDS","season":9,"gameLogSum":30,"difference":21}
+- **GAME_SUM_EXCEEDS_SEASON** GRAND — Beto Carroll; {"category":"Receiving","field":"RECEPTIONS","season":11,"gameLogSum":32,"difference":21}
+- **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Andrew Musser; {"category":"Receiving","field":"YARDS","season":3,"gameLogSum":24,"difference":21}
+- **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Seth Brown; {"category":"Receiving","field":"YARDS","season":180,"gameLogSum":200,"difference":20}
+- **GAME_SUM_EXCEEDS_SEASON** GRAND — Corbin Black; {"category":"Rushing","field":"CARRIES","season":8,"gameLogSum":28,"difference":20}
 
 ## Method / limitations
 This is a comprehensive machine audit of the stored roster, season stat sections, and linked game logs. A flag is **not proof of error**. School-reported gaps, incomplete per-game player stats, and source snapshot timing require review. No automated changes to player scores, awards, or draft selections were made.

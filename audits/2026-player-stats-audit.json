@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-29T16:54:11.037Z",
+  "generatedAt": "2026-10-29T17:40:18.605Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -9,8 +9,8 @@
     "statRows": 6926,
     "athletesWithStats": 4065,
     "gamesWithPlayerRecords": 1079,
-    "gamePlayerRows": 20928,
-    "gameStatLines": 29945,
+    "gamePlayerRows": 20934,
+    "gameStatLines": 29951,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -18,20 +18,20 @@
     ],
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
-    "seasonAboveGameSum": 602,
-    "gameAboveSeasonSum": 295,
-    "reviewFlags": 300,
+    "seasonAboveGameSum": 615,
+    "gameAboveSeasonSum": 271,
+    "reviewFlags": 274,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "SEASON_GT_AVAILABLE_GAME_LOG": 591,
-    "GAME_SUM_EXCEEDS_SEASON": 295,
-    "RECEIVING_RATE_MISMATCH": 3,
-    "COMPACT_FEED_MISMATCH": 2
+    "GAME_SUM_EXCEEDS_SEASON": 271,
+    "SEASON_GT_AVAILABLE_GAME_LOG": 604,
+    "RECEIVING_RATE_MISMATCH": 2,
+    "COMPACT_FEED_MISMATCH": 1
   },
   "severityCounts": {
-    "info": 591,
-    "review": 300
+    "review": 274,
+    "info": 604
   },
   "teams": [
     {
@@ -559,7 +559,7 @@
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 0,
-      "compactMismatches": 2,
+      "compactMismatches": 1,
       "sourceStatsFetched": true
     },
     {
@@ -1337,28 +1337,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Ian Mair",
-      "category": "Passing",
-      "field": "YARDS",
-      "season": 679,
-      "gameLogSum": 1397,
-      "difference": 718
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Cache Young",
-      "category": "Passing",
-      "field": "YARDS",
-      "season": 1461,
-      "gameLogSum": 2083,
-      "difference": 622
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "LAYTON CHRISTIAN",
       "subject": "Colton Johns",
       "category": "Passing",
@@ -1370,17 +1348,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Brody Larsen",
-      "category": "Rushing",
-      "field": "YARDS",
-      "season": 623,
-      "gameLogSum": 1146,
-      "difference": 523
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "LAYTON CHRISTIAN",
       "subject": "Chris Munroe",
       "category": "Rushing",
@@ -1388,6 +1355,17 @@
       "season": 886,
       "gameLogSum": 1315,
       "difference": 429
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "BEN LOMOND",
+      "subject": "DaShawn Gordan",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 26,
+      "gameLogSum": 420,
+      "difference": 394
     },
     {
       "level": "review",
@@ -1480,17 +1458,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Cash Mack",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 407,
-      "gameLogSum": 602,
-      "difference": 195
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GRAND",
       "subject": "Corbin Black",
       "category": "Rushing",
@@ -1579,17 +1546,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Brody Larsen",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 64,
-      "gameLogSum": 203,
-      "difference": 139
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GRAND",
       "subject": "Everett Hill",
       "category": "Receiving",
@@ -1634,13 +1590,13 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Canyon Christensen",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 48,
-      "gameLogSum": 150,
-      "difference": 102
+      "team": "BEN LOMOND",
+      "subject": "DaShawn Gordan",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 10,
+      "gameLogSum": 108,
+      "difference": 98
     },
     {
       "level": "review",
@@ -1652,17 +1608,6 @@
       "season": 306,
       "gameLogSum": 400,
       "difference": 94
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Cash Rockhill",
-      "category": "Receiving",
-      "field": "YARDS",
-      "season": 51,
-      "gameLogSum": 140,
-      "difference": 89
     },
     {
       "level": "review",
@@ -1744,17 +1689,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Ian Mair",
-      "category": "Rushing",
-      "field": "YARDS",
-      "season": 81,
-      "gameLogSum": 153,
-      "difference": 72
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "TAYLORSVILLE",
       "subject": "Skyler Bills",
       "category": "Receiving",
@@ -1805,17 +1739,6 @@
       "field": "YARDS",
       "season": 886,
       "gameLogSum": 949,
-      "difference": 63
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Brody Larsen",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 83,
-      "gameLogSum": 146,
       "difference": 63
     },
     {
@@ -2151,17 +2074,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Cash Mack",
-      "category": "Rushing",
-      "field": "YARDS",
-      "season": 49,
-      "gameLogSum": 75,
-      "difference": 26
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "TAYLORSVILLE",
       "subject": "Skyler Bills",
       "category": "Rushing",
@@ -2377,17 +2289,6 @@
       "field": "CARRIES",
       "season": 59,
       "gameLogSum": 76,
-      "difference": 17
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Cache Young",
-      "category": "Rushing",
-      "field": "YARDS",
-      "season": 81,
-      "gameLogSum": 98,
       "difference": 17
     },
     {
@@ -2679,17 +2580,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Cash Mack",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
-      "season": 22,
-      "gameLogSum": 32,
-      "difference": 10
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "SOUTH SUMMIT",
       "subject": "Nash Harline",
       "category": "Defense/Special Teams",
@@ -2734,17 +2624,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Cache Young",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 26,
-      "gameLogSum": 35,
-      "difference": 9
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "ALTAMONT",
       "subject": "Payson Evans",
       "category": "Passing",
@@ -2782,39 +2661,6 @@
       "subject": "JP Mafi",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
-      "season": 9,
-      "gameLogSum": 17,
-      "difference": 8
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Brody Larsen",
-      "category": "Rushing",
-      "field": "TD",
-      "season": 6,
-      "gameLogSum": 14,
-      "difference": 8
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Ian Mair",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 6,
-      "gameLogSum": 14,
-      "difference": 8
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Brody Larsen",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
       "season": 9,
       "gameLogSum": 17,
       "difference": 8
@@ -2872,17 +2718,6 @@
       "field": "YARDS",
       "season": 43,
       "gameLogSum": 50,
-      "difference": 7
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Ian Mair",
-      "category": "Passing",
-      "field": "TD",
-      "season": 7,
-      "gameLogSum": 14,
       "difference": 7
     },
     {
@@ -3009,17 +2844,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Cash Rockhill",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
-      "season": 5,
-      "gameLogSum": 11,
-      "difference": 6
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "TAYLORSVILLE",
       "subject": "Gary Lomu",
       "category": "Receiving",
@@ -3103,28 +2927,6 @@
       "field": "CARRIES",
       "season": 8,
       "gameLogSum": 13,
-      "difference": 5
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Cache Young",
-      "category": "Passing",
-      "field": "TD",
-      "season": 29,
-      "gameLogSum": 34,
-      "difference": 5
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Canyon Christensen",
-      "category": "Receiving",
-      "field": "RECEPTIONS",
-      "season": 2,
-      "gameLogSum": 7,
       "difference": 5
     },
     {
@@ -3493,28 +3295,6 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Cash Mack",
-      "category": "Receiving",
-      "field": "TD",
-      "season": 9,
-      "gameLogSum": 12,
-      "difference": 3
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Brody Larsen",
-      "category": "Receiving",
-      "field": "TD",
-      "season": 0,
-      "gameLogSum": 3,
-      "difference": 3
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "TAYLORSVILLE",
       "subject": "Mason Wilcox",
       "category": "Rushing",
@@ -3857,22 +3637,22 @@
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "SOUTH SUMMIT",
-      "subject": "Jesse Clegg",
-      "category": "Receiving",
-      "field": "TD",
-      "season": 3,
-      "gameLogSum": 5,
+      "subject": "Ian Mair",
+      "category": "Passing",
+      "field": "Int",
+      "season": 2,
+      "gameLogSum": 4,
       "difference": 2
     },
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "SOUTH SUMMIT",
-      "subject": "Cash Rockhill",
+      "subject": "Jesse Clegg",
       "category": "Receiving",
       "field": "TD",
-      "season": 1,
-      "gameLogSum": 3,
+      "season": 3,
+      "gameLogSum": 5,
       "difference": 2
     },
     {
@@ -4319,44 +4099,11 @@
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "MONTICELLO",
-      "subject": "Cash Mack",
-      "category": "Rushing",
-      "field": "CARRIES",
-      "season": 6,
-      "gameLogSum": 7,
-      "difference": 1
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Cash Mack",
-      "category": "Rushing",
-      "field": "TD",
-      "season": 0,
-      "gameLogSum": 1,
-      "difference": 1
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
       "subject": "Brandtson Mack",
       "category": "Rushing",
       "field": "TD",
       "season": 1,
       "gameLogSum": 2,
-      "difference": 1
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "MONTICELLO",
-      "subject": "Canyon Christensen",
-      "category": "Receiving",
-      "field": "TD",
-      "season": 3,
-      "gameLogSum": 4,
       "difference": 1
     },
     {
@@ -4423,17 +4170,6 @@
       "field": "YARDS",
       "season": 67,
       "gameLogSum": 68,
-      "difference": 1
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "SOUTH SUMMIT",
-      "subject": "Ian Mair",
-      "category": "Rushing",
-      "field": "TD",
-      "season": 2,
-      "gameLogSum": 3,
       "difference": 1
     },
     {
@@ -4585,16 +4321,6 @@
       "team": "MANTI",
       "subject": "Kingston Wright",
       "category": "Passing",
-      "field": "YARDS",
-      "season": 2858,
-      "compact": 3032
-    },
-    {
-      "level": "review",
-      "code": "COMPACT_FEED_MISMATCH",
-      "team": "MANTI",
-      "subject": "Kingston Wright",
-      "category": "Passing",
       "field": "TD",
       "season": 27,
       "compact": 29
@@ -4616,15 +4342,6 @@
       "yards": 333,
       "receptions": 15,
       "yardsPerReception": 33.33
-    },
-    {
-      "level": "review",
-      "code": "RECEIVING_RATE_MISMATCH",
-      "team": "WATER CANYON",
-      "subject": "Alma Barlow",
-      "yards": 118,
-      "receptions": 16,
-      "yardsPerReception": 8.33
     },
     {
       "level": "info",
@@ -5923,7 +5640,7 @@
       "subject": "Alec Thomas",
       "category": "Kicking",
       "field": "PAT",
-      "season": 19,
+      "season": 54,
       "gameLogSum": 8
     },
     {
@@ -7132,9 +6849,79 @@
       "team": "MONTICELLO",
       "subject": "Cache Young",
       "category": "Rushing",
+      "field": "CARRIES",
+      "season": 37,
+      "gameLogSum": 35
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Cache Young",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 119,
+      "gameLogSum": 98
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Cache Young",
+      "category": "Rushing",
       "field": "TD",
       "season": 2,
       "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Cache Young",
+      "category": "Passing",
+      "field": "TD",
+      "season": 40,
+      "gameLogSum": 34
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Cache Young",
+      "category": "Passing",
+      "field": "YARDS",
+      "season": 2230,
+      "gameLogSum": 2083
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Canyon Christensen",
+      "category": "Receiving",
+      "field": "TD",
+      "season": 5,
+      "gameLogSum": 4
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Canyon Christensen",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 9,
+      "gameLogSum": 7
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Canyon Christensen",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 187,
+      "gameLogSum": 150
     },
     {
       "level": "info",
@@ -7145,6 +6932,36 @@
       "field": "TD",
       "season": 10,
       "gameLogSum": 9
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Cash Mack",
+      "category": "Receiving",
+      "field": "TD",
+      "season": 13,
+      "gameLogSum": 12
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Cash Mack",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 36,
+      "gameLogSum": 32
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MONTICELLO",
+      "subject": "Cash Mack",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 672,
+      "gameLogSum": 602
     },
     {
       "level": "info",
@@ -9255,6 +9072,36 @@
       "field": "TACKLES",
       "season": 15,
       "gameLogSum": 13
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "SOUTH SUMMIT",
+      "subject": "Brody Larsen",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 158,
+      "gameLogSum": 146
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "SOUTH SUMMIT",
+      "subject": "Brody Larsen",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 1251,
+      "gameLogSum": 1146
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "SOUTH SUMMIT",
+      "subject": "Ian Mair",
+      "category": "Passing",
+      "field": "TD",
+      "season": 16,
+      "gameLogSum": 14
     },
     {
       "level": "info",

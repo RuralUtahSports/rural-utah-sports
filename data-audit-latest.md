@@ -1,11 +1,15 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-29T16:54:10.494Z
+Generated: 2026-10-29T17:40:18.088Z
 
-**0 errors • 18 warnings**
+**0 errors • 22 warnings**
 
-## Warnings (18)
+## Warnings (22)
 
+- **RECORD_MISMATCH** — MOUNTAIN RIDGE standings record does not match completed games in weekly-simulation.json. `{"standings":"10-0-0","calculated":"9-0-1"}`
+- **RECORD_MISMATCH** — WESTLAKE standings record does not match completed games in weekly-simulation.json. `{"standings":"7-3-0","calculated":"7-2-1"}`
+- **RECORD_MISMATCH** — CANYON VIEW standings record does not match completed games in weekly-simulation.json. `{"standings":"7-3-0","calculated":"6-3-1"}`
+- **RECORD_MISMATCH** — MANTI standings record does not match completed games in weekly-simulation.json. `{"standings":"2-8-0","calculated":"2-7-1"}`
 - **MAXPREPS_HIGH_UNMATCHED** — PANGUITCH rejected 57 of 61 MaxPreps stat rows during player matching. `{"sourceRows":61,"unmatchedRows":57,"rosterPlayers":1,"sourceUrl":"https://www.maxpreps.com/ut/panguitch/panguitch-bobcats/football/stats/"}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — BEN LOMOND has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Grantsville"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CANYON VIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Manti"}]}`
