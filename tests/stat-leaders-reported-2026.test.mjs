@@ -9,12 +9,12 @@ test('2026 player Stat Leaders controller parses and separates reported from ver
  assert.equal(scripts.length,1,'Expected one inline stat-leaders controller');
  assert.doesNotThrow(()=>new vm.Script(scripts[0],{filename:'stat-leaders.html'}));
  assert.match(html,/id="leaderSourceMode"/);
- assert.match(html,/<option value="reported">Reported totals — not verified<\/option>/);
+ assert.match(html,/<option value="reported">Reported totals — may include playoffs<\/option>/);
  assert.match(scripts[0],/requirePublication\(await s\.json\(\)\)/);
  assert.match(scripts[0],/deseret-rosters-stats-2026\.json/);
  assert.match(scripts[0],/const unverified=reported2026View\(\)/);
- assert.match(scripts[0],/unverified\?'—':i\+1/);
- assert.match(scripts[0],/playoff and regular-season totals are not reliably separated/i);
+ assert.match(scripts[0],/unverified\?'#'\+\(i\+1\):i\+1/);
+ assert.match(scripts[0],/NOT regular-season-only/i);
  assert.match(scripts[0],/share\.disabled=share\.disabled\|\|unverified/);
 });
 test('2026 reported player source does not gain official season certification',()=>{
