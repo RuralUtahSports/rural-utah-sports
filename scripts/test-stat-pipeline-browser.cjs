@@ -50,6 +50,14 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.match(await p.locator('#page').innerText(),/3386|3,386/);
   assert.match(await p.locator('#page').innerText(),/2026 passing-yard correction/);
   results.push({width,test:'Hunt 3386 verified regular-season yards in player leaders and player profile'});
+  for(const [id,expected] of [['farmington-17-alton-dahl','2347'],['lone-peak-23-ayden-laws','525'],['mountain-ridge-7-xander-thayer','892']]){
+    await p.goto('https://policy.test/player.html?id='+id);
+    await p.waitForSelector('.data-table');
+    assert.match((await p.locator('#page').innerText()).replace(/,/g,''),new RegExp(expected),'Updated 6A reported preview total missing for '+id);
+    assert.match(await p.locator('#page').innerText(),/October 29 preview source cross-check/);
+  }
+  results.push({width,test:'3 prioritized 6A player profiles show crosschecked 2026 preview season totals'});
+
   poison=true;
   await p.goto('https://policy.test/stat-leaders.html');await p.waitForSelector('#results table');
 
