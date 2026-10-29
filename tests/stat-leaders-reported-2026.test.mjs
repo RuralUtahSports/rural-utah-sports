@@ -40,7 +40,7 @@ test('postseason game remains eligible for reported weekly view, never for verif
  const game={date:'2026-10-23',opponent:'NORTH SANPETE',teamScore:31,opponentScore:14,players:[
   {playerId:'canyon-view-7-test',name:'Test Player',number:'7',statLines:[{category:'Passing',values:{YARDS:'250'}}]}
  ]};
- const publication={season:2026,scope:'verified-regular-season',lockedSnapshotSha256:'fixture',gamePhases:{
+ const publication={season:2026,scope:'verified-regular-season',teams:{},lockedSnapshotSha256:'fixture',gamePhases:{
   '2026-10-23|CANYONVIEW|NORTHSANPETE':'postseason'
  }};
  const {uniqueGames,regularGames}=require('../regular-season-stat-policy-2026.js');
