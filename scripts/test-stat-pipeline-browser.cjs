@@ -20,10 +20,10 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   const p=await context.newPage();p.setDefaultTimeout(15000);p.on('pageerror',e=>errors.push(e.message));
   await p.goto('https://policy.test/stat-leaders.html');await p.waitForSelector('#results table');
   assert.equal(await p.locator('#leaderSourceMode').inputValue(),'reported');
-  assert.match(await p.locator('#heroCopy').innerText(),/provisional listed positions, not certified rankings/);
+  assert.match(await p.locator('#heroCopy').innerText(),/MaxPreps takes priority over older RUS\/Deseret totals/);
   assert.match(await p.locator('#results').innerText(),/Reported position/i);
   assert.match(await p.locator('#results thead').innerText(),/Source/i);
-  assert.match(await p.locator('#scopeNote').innerText(),/stored MaxPreps totals fill only blank fields/i);
+  assert.match(await p.locator('#scopeNote').innerText(),/MaxPreps is first for 4A–6A/);
   assert.match(await p.locator('#scopeNote').innerText(),/NOT regular-season-only/);
   assert.equal(await p.locator('#shareStatCategory').isDisabled(),true);
   assert.equal(await p.locator('#shareAllStats').isDisabled(),true);
@@ -37,6 +37,23 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   poison=false;
   await p.reload();await p.waitForSelector('#results table');
   await p.locator('[data-cat="Passing"]').click();
+  const fresh=await p.evaluate(()=>{
+   const player=(c,id)=>buildRows(c).find(r=>r.playerId===id);
+   const dahl=player('Passing','farmington-17-alton-dahl');
+   const laws=player('Rushing','lone-peak-23-ayden-laws');
+   return {dahl:{yards:dahl?.values?.YARDS,source:dahl?.statSources?.YARDS},
+    laws:{yards:laws?.values?.YARDS,source:laws?.statSources?.YARDS}};
+  });
+  assert.equal(fresh.dahl.yards,'2347','6A Farmington Dahl must prefer MaxPreps 2347 vs older 2157');
+  assert.match(fresh.dahl.source,/MaxPreps/);
+  assert.equal(fresh.laws.yards,'505','6A Lone Peak Laws uses cached MaxPreps 505 vs older RUS 360');
+  assert.match(fresh.laws.source,/MaxPreps/);
+  await p.goto('https://policy.test/player.html?id=farmington-17-alton-dahl');
+  await p.waitForSelector('.data-table');
+  assert.match((await p.locator('#page').innerText()).replace(/,/g,''),/2347/);
+  assert.match(await p.locator('#page').innerText(),/MaxPreps is used first for uniquely matched/);
+  results.push({width,test:'4A–6A player leaderboard and profiles prioritize cached MaxPreps over nonblank RUS'});
+  await p.goto('https://policy.test/stat-leaders.html');await p.waitForSelector('#results table');
   const huntRows=p.locator('#results tbody tr').filter({hasText:'Jaxon Hunt'});
   assert.equal(await huntRows.count(),1,'Expected Jaxon Hunt exactly once in reported passing');
   assert.match(await huntRows.first().innerText(),/3386|3,386/);
