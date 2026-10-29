@@ -82,5 +82,44 @@
   if(!section.headers.includes('YARDS'))section.headers.push('YARDS');
   return proof;
  }
- return {evidence,applyReported,applyVerified};
+ // Repair only the two audited game-box cells in the in-memory player profile.
+ // These cannot be used to update teammates or team totals.
+ function applyProfileGames(teamGames){
+  assertEvidence();
+  if(!Array.isArray(teamGames?.games))throw Error('Player-game cache unavailable');
+  const find=(opponent)=>teamGames.games.filter(g=>norm(g.opponent)===norm(opponent)&&
+    typeof g.date==='string'&&g.date.startsWith(opponent==='WESTLAKE'?'2026-10':'2026-09'));
+  const chap=find('CHAPARRAL, CA');
+  if(chap.length!==1)throw Error('Ambiguous Chaparral contest');
+  function passing(game,allowCreate){
+   game.players||=[];
+   const hits=game.players.filter(p=>p.playerId===id);
+   if(hits.length>1)throw Error('Duplicate Hunt game identity');
+   let player=hits[0];
+   if(!player){
+    if(!allowCreate)throw Error('Missing Chaparral Hunt player');
+    player={playerId:id,number:'11',name:'Jaxon Hunt',statLines:[],scoringPlays:[]};
+    game.players.push(player);
+   }
+   if(norm(player.name)!=='JAXONHUNT'||String(player.number)!=='11')throw Error('Hunt game identity changed');
+   let lines=(player.statLines||[]).filter(l=>norm(l.category)==='PASSING');
+   if(lines.length>1)throw Error('Duplicate Hunt passing game category');
+   if(!lines.length){const line={category:'Passing',values:{}};(player.statLines||=[]).push(line);lines=[line];}
+   return lines[0];
+  }
+  const ch=passing(chap[0],false),chKey=Object.keys(ch.values||{}).find(k=>norm(k)==='YARDS')||'YARDS';
+  if(!['339','336'].includes(String(ch.values?.[chKey])))throw Error('Chaparral game yards changed; source recheck required');
+  (ch.values||={})[chKey]='336';(ch.statSources||={})[chKey]='Reviewed MaxPreps Chaparral box score';
+  const west=find('WESTLAKE');
+  if(west.length>1)throw Error('Ambiguous Westlake contest');
+  const g=west[0]||{date:'2026-10-15',opponent:'WESTLAKE',teamScore:21,opponentScore:13,final:true,status:'Final',
+    url:evidence.westlake,players:[]};
+  const wl=passing(g,true),wlKey=Object.keys(wl.values||{}).find(k=>norm(k)==='YARDS')||'YARDS';
+  if(wl.values?.[wlKey]!==undefined&&!['','0','225'].includes(String(wl.values[wlKey])))
+   throw Error('Westlake passing yards changed; source recheck required');
+  (wl.values||={})[wlKey]='225';(wl.statSources||={})[wlKey]='Reviewed MaxPreps Westlake game report';
+  if(!west.length)teamGames.games.push(g);
+  return {chaparral:336,westlake:225};
+ }
+ return {evidence,applyReported,applyVerified,applyProfileGames};
 });
