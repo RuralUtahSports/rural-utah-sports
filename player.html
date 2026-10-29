@@ -21,6 +21,7 @@
 <script src="verified-player-stats-2026.js?v=20261023-alma-verified1"></script>
 <script src="regular-season-stat-policy-2026.js?v=20261027-gameidentity1"></script>
 <script src="reviewed-hunt-passing-2026.js?v=20261029-reviewed-hunt1"></script>
+<script src="preview-stat-checks-2026.js?v=20261029-6a-preview1"></script>
 </head>
 <body>
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
@@ -58,7 +59,14 @@ if(seasonYear===2026&&id==='mountain-ridge-11-jaxon-hunt'){
   huntReviewed=true;
  }catch(error){console.warn('Hunt passing yard correction needs re-review',error);}
 }
+let checkedPreview=null;
+if(seasonYear===2026&&id!=='mountain-ridge-11-jaxon-hunt'){
+ try{const checked=window.RUSPreviewSourceChecks2026.apply(rosters,{onlyId:id});
+  if(checked.applied.includes(id)||checked.alreadyCurrent.includes(id))checkedPreview=true;
+ }catch(error){console.warn('Oct 29 preview source check unavailable',error)}
+}
 render(profile,meta,gkey?games.teams[gkey]:null,seasonYear);
+if(checkedPreview){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>October 29 preview source cross-check:</strong> Updated season totals are based on reported 2026 regular-season figures cited in the <a href="https://www.deseret.com/sports/2026/10/29/high-school-football-6a-first-round-previews/" target="_blank" rel="noopener noreferrer">Deseret News 6A first-round preview</a>, with the retained MaxPreps cache used where it agrees. Full player-by-game certification is still in progress; the older game log on this page may have incomplete stat cells.</p>';}
 if(huntReviewed){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>2026 passing-yard correction:</strong> Jaxon Hunt has 3,386 verified regular-season passing yards (10 games). The Chaparral box score reports 336 yards and the Westlake game report 225. <a href="https://www.uhsaa.org/stats/football.php" target="_blank" rel="noopener noreferrer">UHSAA leaderboard</a>.</p>';}}catch(e){console.error(e);document.getElementById('page').innerHTML=`<div class="error">This ${requestedSeason()} player profile could not be loaded. That player may not have archived data for this season.</div>`}}
 async function loadBasketball(){
  const page=document.getElementById('page');
