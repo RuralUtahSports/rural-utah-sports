@@ -7,6 +7,7 @@ on:
     # Update Live Scoreboard through its workflow_run backup.
     - cron: '7,17,27,37,47,57 * * * *'
   push:
+    branches: [main]
     paths:
       - 'teams-data.json'
       - 'standings.html'
@@ -16,20 +17,29 @@ on:
       - 'verified-finals-2026.json'
       - 'scripts/reconcile-final-games.mjs'
       - 'scripts/build_standings_2026.mjs'
+      - 'scripts/check_standings_publish_2026.mjs'
+      - 'competition-scope-review-2026.json'
+      - 'official-brackets-2026.json'
       - '.github/workflows/build-standings-2026.yml'
 
 permissions:
   contents: write
 
 concurrency:
-  group: standings-2026-build
+  group: current-football-statistics
   cancel-in-progress: false
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Capture source snapshot
+        run: echo "STAT_SOURCE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
       - name: Test final-score reconciliation
         run: node scripts/test-final-reconciliation.mjs
@@ -62,6 +72,8 @@ jobs:
 
       - name: Commit standings
         run: |
+          git fetch origin main
+          node scripts/check_standings_publish_2026.mjs
           git config user.name "RuralUtahSports"
           git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
           if [ -z "$(git status --porcelain -- standings-2026.json team-current-data)" ]; then
@@ -70,5 +82,4 @@ jobs:
           fi
           git add standings-2026.json team-current-data
           git commit -m "Auto-sync 2026 standings"
-          git pull --rebase origin main
-          git push
+          git push origin HEAD:main

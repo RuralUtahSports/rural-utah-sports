@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Capture source snapshot for publication
+        run: echo "STAT_SOURCE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -25,12 +27,13 @@ jobs:
       - run: node scripts/check-game-center-v2.cjs && node scripts/check-game-center-v3.cjs
       - if: github.event_name != 'pull_request'
         run: node scripts/archive-game-center-predictions.cjs
-      - if: github.event_name != 'pull_request'
+      - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
+          git fetch origin main
+          node scripts/check_stat_publish_2026.mjs --snapshot-only
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add game-center-player-totals-2026.json game-center-predictions-2026.json
-          if git diff --cached --quiet; then exit 0; fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'Refresh corrected Game Center totals and append pregame snapshots'
-          git pull --rebase origin main
+          if git diff --cached --quiet; then echo "Derived data already current."; exit 0; fi
+          git commit -m "Refresh derived data from current source snapshot"
           git push origin HEAD:main

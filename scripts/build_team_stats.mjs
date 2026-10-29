@@ -1,12 +1,12 @@
 import fs from 'node:fs';
-import {applyRosterStatCorrections} from './apply_manual_stat_corrections.mjs';
 
 const season=Number(process.argv[2]||2026);
 if(![2025,2026].includes(season))throw new Error(`Unsupported season ${season}`);
 
 const clean=v=>String(v??'').trim();
 const compact=v=>clean(v).toUpperCase().replace(/[^A-Z0-9]/g,'');
-const num=v=>{const m=clean(v).replace(/,/g,'').match(/-?(?:\d+(?:\.\d+)?|\.\d+)/);return m?Number(m[0]):0};
+const num=v=>{const text=clean(v).replace(/,/g,'');return /^-?(?:\d+(?:\.\d+)?|\.\d+)$/.test(text)?Number(text):null};
+const legacyNum=v=>{const m=clean(v).replace(/,/g,'').match(/-?(?:\d+(?:\.\d+)?|\.\d+)/);return m?Number(m[0]):0};
 const round=(v,d=2)=>Number.isFinite(Number(v))?+Number(v).toFixed(d):null;
 const aliases={
   CEDAR:'CEDARCITY',CEDARCITY:'CEDARCITY',GRANDCOUNTY:'GRAND',GUNNISON:'GUNNISONVALLEY',
@@ -17,14 +17,11 @@ const canon=v=>aliases[compact(v)]||compact(v);
 const statKey=v=>compact(v).replace(/PERCENT|PCT/g,'');
 
 function valueExact(values,...wanted){
-  const entries=Object.entries(values||{});
-  for(const w of wanted){
-    const target=statKey(w);
-    const hit=entries.find(([k])=>statKey(k)===target);
-    if(hit)return num(hit[1]);
-  }
-  return 0;
+  if(season===2025){for(const want of wanted){const hit=Object.entries(values||{}).find(([key])=>statKey(key)===statKey(want));if(hit)return legacyNum(hit[1]);}return 0;}
+  const keys=new Set(wanted.map(statKey)),reported=Object.entries(values||{}).filter(([key])=>keys.has(statKey(key))).map(([,value])=>num(value)).filter(value=>value!==null);
+  const unique=new Set(reported);return unique.size===1?[...unique][0]:null;
 }
+function addReported(out,group,field,value){if(value===null||value===undefined)return;out[group][field]+=value;out._reported.add(group+'.'+field);}
 function compAtt(values){
   const hit=Object.entries(values||{}).find(([k])=>statKey(k)==='COMPATT');
   const m=hit?clean(hit[1]).match(/(\d+)\s*[-/]\s*(\d+)/):null;
@@ -32,12 +29,12 @@ function compAtt(values){
 }
 function fieldMade(values,key){
   const hit=Object.entries(values||{}).find(([k])=>statKey(k)===statKey(key));
-  if(!hit)return 0;
+  if(!hit)return season===2025?0:null;
   const m=clean(hit[1]).match(/(\d+)\s*[-/]\s*(\d+)/);
-  return m?+m[1]:num(hit[1]);
+  return m?+m[1]:(season===2025?legacyNum(hit[1]):num(hit[1]));
 }
 function blank(team,meta={}){
-  return {team,classification:clean(meta.classification),region:clean(meta.region),games:0,wins:0,losses:0,ties:0,pointsFor:0,pointsAgainst:0,categories:{passing:false,rushing:false,receiving:false,defense:false,kicking:false},passing:{completions:0,attempts:0,yards:0,td:0,interceptions:0},rushing:{carries:0,yards:0,td:0},receiving:{receptions:0,yards:0,td:0},defense:{tackles:0,sacks:0,interceptions:0,td:0,returnTd:0},kicking:{fieldGoals:0,pat:0}};
+  return {_reported:new Set(),team,classification:clean(meta.classification),region:clean(meta.region),games:0,wins:0,losses:0,ties:0,pointsFor:0,pointsAgainst:0,categories:{passing:false,rushing:false,receiving:false,defense:false,kicking:false},passing:{completions:0,attempts:0,yards:0,td:0,interceptions:0},rushing:{carries:0,yards:0,td:0},receiving:{receptions:0,yards:0,td:0},defense:{tackles:0,sacks:0,interceptions:0,td:0,returnTd:0},kicking:{fieldGoals:0,pat:0}};
 }
 function aggregateStats(teamEntry,out){
   for(const sec of teamEntry?.stats||[]){
@@ -50,28 +47,30 @@ function aggregateStats(teamEntry,out){
     for(const row of sec.rows||[]){
       const v=row.values||{};
       if(/^Pass/i.test(cat)){
-        const ca=compAtt(v);out.passing.completions+=ca.completions;out.passing.attempts+=ca.attempts;
-        out.passing.yards+=valueExact(v,'YARDS','PASS YARDS');out.passing.td+=valueExact(v,'TD','TDS','PASS TD','PASS TDS');out.passing.interceptions+=valueExact(v,'INT','INTS','INTERCEPTIONS');
+        const ca=compAtt(v);addReported(out,'passing','completions',ca.completions);addReported(out,'passing','attempts',ca.attempts);
+        addReported(out,'passing','yards',valueExact(v,'YARDS','PASS YARDS'));addReported(out,'passing','td',valueExact(v,'TD','TDS','PASS TD','PASS TDS'));addReported(out,'passing','interceptions',valueExact(v,'INT','INTS','INTERCEPTIONS'));
       }else if(/^Rush/i.test(cat)){
-        out.rushing.carries+=valueExact(v,'CARRIES','RUSH ATT','RUSH ATTEMPTS');out.rushing.yards+=valueExact(v,'YARDS','RUSH YARDS');out.rushing.td+=valueExact(v,'TD','TDS','RUSH TD','RUSH TDS');
+        addReported(out,'rushing','carries',valueExact(v,'CARRIES','RUSH ATT','RUSH ATTEMPTS'));addReported(out,'rushing','yards',valueExact(v,'YARDS','RUSH YARDS'));addReported(out,'rushing','td',valueExact(v,'TD','TDS','RUSH TD','RUSH TDS'));
       }else if(/^Receiv/i.test(cat)){
-        out.receiving.receptions+=valueExact(v,'RECEPTIONS','REC');out.receiving.yards+=valueExact(v,'YARDS','REC YARDS','RECEIVING YARDS');out.receiving.td+=valueExact(v,'TD','TDS','REC TD','RECEIVING TD');
+        addReported(out,'receiving','receptions',valueExact(v,'RECEPTIONS','REC'));addReported(out,'receiving','yards',valueExact(v,'YARDS','REC YARDS','RECEIVING YARDS'));addReported(out,'receiving','td',valueExact(v,'TD','TDS','REC TD','RECEIVING TD'));
       }else if(/Defense/i.test(cat)){
-        out.defense.tackles+=valueExact(v,'TACKLES');out.defense.sacks+=valueExact(v,'SACKS');out.defense.interceptions+=Math.max(valueExact(v,'PASS INT','PASS INTS'),valueExact(v,'INTERCEPTIONS','INTS'));out.defense.td+=valueExact(v,'DEFENSE TD','DEFENSIVE TD');out.defense.returnTd+=valueExact(v,'RETURN TD','RETURN TDS');
+        addReported(out,'defense','tackles',valueExact(v,'TACKLES'));addReported(out,'defense','sacks',valueExact(v,'SACKS'));addReported(out,'defense','interceptions',season===2025?Math.max(valueExact(v,'PASS INT','PASS INTS'),valueExact(v,'INTERCEPTIONS','INTS')):valueExact(v,'PASS INT','PASS INTS','INTERCEPTIONS','INTS'));addReported(out,'defense','td',valueExact(v,'DEFENSE TD','DEFENSIVE TD'));addReported(out,'defense','returnTd',valueExact(v,'RETURN TD','RETURN TDS'));
       }else if(/^Kick/i.test(cat)){
-        out.kicking.fieldGoals+=fieldMade(v,'FG');out.kicking.pat+=fieldMade(v,'PAT');
+        addReported(out,'kicking','fieldGoals',fieldMade(v,'FG'));addReported(out,'kicking','pat',fieldMade(v,'PAT'));
       }
     }
   }
 }
 function finalize(x){
-  const plays=x.passing.attempts+x.rushing.carries,totalOffense=x.passing.yards+x.rushing.yards;
+  if(season===2026)for(const group of ['passing','rushing','receiving','defense','kicking'])for(const field of Object.keys(x[group]))if(!x._reported.has(group+'.'+field))x[group][field]=null;
+  delete x._reported;
+  const sum=(a,b)=>a===null||b===null?null:a+b,plays=sum(x.passing.attempts,x.rushing.carries),totalOffense=sum(x.passing.yards,x.rushing.yards);
   x.record=`${x.wins}-${x.losses}${x.ties?'-'+x.ties:''}`;
   x.ppg=x.games?round(x.pointsFor/x.games,1):null;x.pointsAllowedPerGame=x.games?round(x.pointsAgainst/x.games,1):null;x.scoringMargin=x.games?round((x.pointsFor-x.pointsAgainst)/x.games,1):null;
-  x.totalOffense=totalOffense;x.totalYardsPerGame=x.games&&((x.categories.passing||x.categories.rushing))?round(totalOffense/x.games,1):null;x.yardsPerPlay=plays?round(totalOffense/plays,2):null;
-  x.passing.compPct=x.passing.attempts?round(x.passing.completions/x.passing.attempts*100,1):null;x.passing.yardsPerAttempt=x.passing.attempts?round(x.passing.yards/x.passing.attempts,2):null;x.passing.yardsPerGame=x.games&&x.categories.passing?round(x.passing.yards/x.games,1):null;
-  x.rushing.yardsPerCarry=x.rushing.carries?round(x.rushing.yards/x.rushing.carries,2):null;x.rushing.yardsPerGame=x.games&&x.categories.rushing?round(x.rushing.yards/x.games,1):null;
-  x.receiving.yardsPerCatch=x.receiving.receptions?round(x.receiving.yards/x.receiving.receptions,2):null;x.receiving.yardsPerGame=x.games&&x.categories.receiving?round(x.receiving.yards/x.games,1):null;
+  x.totalOffense=totalOffense;x.totalYardsPerGame=x.games&&totalOffense!==null&&((x.categories.passing||x.categories.rushing))?round(totalOffense/x.games,1):null;x.yardsPerPlay=plays&&totalOffense!==null?round(totalOffense/plays,2):null;
+  x.passing.compPct=x.passing.attempts&&x.passing.completions!==null?round(x.passing.completions/x.passing.attempts*100,1):null;x.passing.yardsPerAttempt=x.passing.attempts&&x.passing.yards!==null?round(x.passing.yards/x.passing.attempts,2):null;x.passing.yardsPerGame=x.games&&x.categories.passing&&x.passing.yards!==null?round(x.passing.yards/x.games,1):null;
+  x.rushing.yardsPerCarry=x.rushing.carries&&x.rushing.yards!==null?round(x.rushing.yards/x.rushing.carries,2):null;x.rushing.yardsPerGame=x.games&&x.categories.rushing&&x.rushing.yards!==null?round(x.rushing.yards/x.games,1):null;
+  x.receiving.yardsPerCatch=x.receiving.receptions&&x.receiving.yards!==null?round(x.receiving.yards/x.receiving.receptions,2):null;x.receiving.yardsPerGame=x.games&&x.categories.receiving&&x.receiving.yards!==null?round(x.receiving.yards/x.games,1):null;
   x.statCoverage=Object.entries(x.categories).filter(([,v])=>v).map(([k])=>k);
   x.hasPlayerStats=x.statCoverage.length>0;
   return x;
@@ -90,7 +89,6 @@ if(season===2026){
 const rosterFile=`deseret-rosters-stats-${season}.json`;
 if(!fs.existsSync(rosterFile))throw new Error(`${rosterFile} missing`);
 const rosters=JSON.parse(fs.readFileSync(rosterFile,'utf8'));
-if(season===2026)applyRosterStatCorrections(rosters);
 const rows=new Map();
 for(const [key,m] of meta)rows.set(key,blank(m.team,m));
 for(const [sourceName,entry] of Object.entries(rosters.teams||{})){
@@ -129,7 +127,7 @@ const metricDefs={
 };
 const getPath=(o,path)=>path.split('.').reduce((v,k)=>v?.[k],o);
 function rankScope(pool,def){
-  const eligible=pool.filter(def.eligible).filter(x=>Number.isFinite(Number(getPath(x,def.path))));
+  const eligible=pool.filter(def.eligible).filter(x=>(season===2025||getPath(x,def.path)!==null&&getPath(x,def.path)!==undefined)&&Number.isFinite(Number(getPath(x,def.path))));
   eligible.sort((a,b)=>{const av=Number(getPath(a,def.path)),bv=Number(getPath(b,def.path));return def.dir==='asc'?av-bv:bv-av||a.team.localeCompare(b.team)});
   const map=new Map();let last=null,rank=0;eligible.forEach((x,i)=>{const v=Number(getPath(x,def.path));if(last===null||v!==last)rank=i+1;last=v;map.set(canon(x.team),rank)});return {map,total:eligible.length};
 }
@@ -147,7 +145,7 @@ for(const [metric,def] of Object.entries(metricDefs)){
 }
 
 teams.sort((a,b)=>a.team.localeCompare(b.team));
-const out={season,generatedAt:new Date().toISOString(),method:{note:'Team statistics are calculated from reported player season totals. Passing yards + rushing yards = total offense; receiving yards are displayed separately and are not added again. Points for/against come from completed game finals. Rankings only include teams with the required reported category.',totalOffense:'passing yards + rushing yards'},summary:{teams:teams.length,teamsWithPlayerStats:teams.filter(x=>x.hasPlayerStats).length,teamsWithGames:teams.filter(x=>x.games>0).length},metrics:metricDefs,teams:Object.fromEntries(teams.map(x=>[x.team,x]))};
+const out={season,generatedAt:new Date().toISOString(),method:{note:(season===2025?'Team statistics are calculated from reported player season totals. Passing yards + rushing yards = total offense; receiving yards are displayed separately and are not added again. Points for/against come from completed game finals. Rankings only include teams with the required reported category.':'Team statistics are calculated from reported player season totals. Passing yards + rushing yards = total offense; receiving yards are displayed separately and are not added again. Points for/against come from completed game finals. Missing player-stat fields are unknown, not zero. Partial reports are not complete regular-season team certification. Rankings require reported values.'),totalOffense:'passing yards + rushing yards'},summary:{teams:teams.length,teamsWithPlayerStats:teams.filter(x=>x.hasPlayerStats).length,teamsWithGames:teams.filter(x=>x.games>0).length},metrics:metricDefs,teams:Object.fromEntries(teams.map(x=>[x.team,x]))};
 const outputFile=`team-stats-${season}.json`;
 if(fs.existsSync(outputFile)){
   try{

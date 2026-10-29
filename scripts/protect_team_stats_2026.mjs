@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {preservePublishedTeamStatistics} from './lib/reviewed-team-stat-adjustments-2026.mjs';
+const arg=name=>process.argv.find(x=>x.startsWith('--'+name+'='))?.slice(name.length+3),baseline=arg('baseline'),candidate=arg('candidate-output'),file='team-stats-2026.json';
+if(!baseline||!candidate||new Set([file,baseline,candidate].map(p=>path.resolve(p))).size!==3)throw Error('Distinct pre-build baseline, candidate artifact and published output required');
+const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
+const imported=read(file),result=preservePublishedTeamStatistics(read(baseline),imported,read('reviewed-team-stat-adjustments-2026.json'));
+fs.writeFileSync(candidate,JSON.stringify(imported,null,2)+'\n');
+fs.writeFileSync(file,JSON.stringify(result.data,null,2)+'\n');
+console.log('Preserved published team statistics and rankings. Rebuilt quantities remain a review artifact; no complete-team certificate inferred.');

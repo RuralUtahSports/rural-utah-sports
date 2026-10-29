@@ -1,0 +1,54 @@
+> Current reconciliation and limitations: [FINAL-REVIEW.md](FINAL-REVIEW.md). Historical phase notes below are retained; the Muse handoff is complete and its prior synchronization hold is superseded by the final review.
+
+# PR #181 — technical pipeline follow-up
+
+This follow-up changes importing, publication and read boundaries only. No new player correction, game-identity resolution or manual statistical investigation is included. Muse owns the 44 unmatched entries; `competition-scope-review-2026.json`, the two existing correction ledgers and all existing statistics datasets remain unchanged during this follow-up. Main through `90a665ce1`, including PRs #180, #182 and #183, was synchronized before implementation.
+
+## Before and after
+
+| Fix | Before | After |
+| --- | --- | --- |
+| Stale and delayed imports | Season values were retained, but rebuilding game logs could lose earlier reports or replace known player fields. A reused ID could point at changed roster details. | Capture pre-import season and game snapshots. Preserve published statistics and identity metadata; keep original known player lines, missing games, zeroes, provenance and final-score metadata. Conflicts and late coach submissions remain in a 14-day source-candidate artifact containing both season and game payloads. Reviewed batches alone authorize replacements. |
+| Hidden correction bypasses | Derived metrics/team builders and player profiles could reapply old hardcoded corrections after the import guard. | Derived builders and profiles read the canonical published values. No downstream manual floor silently overrides a later reviewed lower correction. |
+| Source disagreements | Deseret endpoint merging selected larger values; MaxPreps could raise defensive season totals because they were larger. | Deseret candidates follow the selected endpoint instead of a maximum. MaxPreps retains existing nonblank fields; larger is not proof of accuracy or freshness. All season candidates still require review. |
+| Unknown versus zero | Game numeric conversion accepted blank strings as zero, and missing fields could be copied into empty stat lines. | Blank/null/invalid fields remain unknown. Explicit zero and negative yardage remain valid reports. The regular-season read view omits unsupported fields. The 2026 team builder emits null for unreported fields and dependent rates, excludes them from ranks, and never fabricates complete team totals from partial players; the 2025 builder behavior remains unchanged. |
+| Duplicate submissions and identity | Repeated or conflicting rows could be selected by order. A matching ID could bypass a contradictory name/jersey, and the only nearby game could be selected. | Identical submissions are idempotent; conflicting submissions are withheld. Require unique exact target games and consistent player ID/name/jersey, with the current roster checked in production. No nearby-date/opponent guesses are used. No unmatched identities were resolved. |
+| Reviewed correction updates | A second batch for the same field could conflict with the original batch or implicitly reopen old data. | A later reviewed batch must explicitly identify the superseded batch/decision, use its replacement as the original value and provide a non-older provider reporting date. Revalidate all effective batches after application. Ordinary delayed imports cannot supersede a correction. |
+| Regular-season publication | Season leaderboards and live projections still read cumulative caches. Long-FG extraction and full team aggregates could bypass field-level review. | `regular-season-publication-2026.json` contains only 44 reviewed season fields, with source/reporting-date evidence. The 12 reviewed game fields remain protected. Season leaders, live award projections and player ranking comparisons use this view with no raw-cache fallback. Weekly read views exclude postseason/unknown scope and deduplicate player/category fields. Unsupported team rankings remain unavailable until complete-team evidence exists. Reported source tables, profiles, box scores and the 2025 archive remain available. |
+| All-Region candidate isolation | The locked snapshot was selected by URL/status; supplements could authorize themselves with a scope label. | Pin and verify the exact SHA-256 of the existing locked snapshot before candidate collection. Reject changed bytes or missing publication data. No live correction overlay modifies the frozen inputs, and no unreviewed special-team supplement enters candidate statistics. Locked winners, scoring inputs and editorial storage are unchanged. |
+| Concurrent publication | Four season writers had partial safeguards; downstream jobs still used rebase/reset/retry publication paths. | Twelve relevant publishers capture the checkout SHA, fetch main and require the same source snapshot before committing. Publishing is main-only. Four primary/aggregate writers additionally validate the reviewed publication and protected inputs. All pushes are ordinary fast-forward pushes: a later race is rejected by Git. No stale payload is reset/copied/rebased onto a newer main. The 2026 team job no longer rebuilds the final 2025 archive. |
+
+## Workflow coverage
+
+The complete-data preflight covers **Build Deseret Rosters and Stats**, **Build Current Game Stats**, **Build MaxPreps Stats Fallback**, and **Build Team Statistics**. These share the existing `current-football-statistics` concurrency group. They verify the installed corrections, derived reviewed publication and unchanged protected score/record/award/sponsor/bracket/school inputs before publication.
+
+The snapshot-only preflight covers **Game Center Research**, **Merge Current Player Single-Game Records**, **Build Player Single-Game Records**, **Refresh Season Record Alerts**, **Build Player Search Index**, **Data Audit**, **Refresh Football RPI Standings**, and **Refresh RPI Out-of-State Data**. These publish only their previously declared derived outputs; the preflight additionally rejects dirty correction stores and protected source inputs. They do not write the season/game correction stores. Existing PR validation and audit-artifact steps remain available. Historical record files were not regenerated or edited in this task.
+
+Six additional main-only push filters cover standings, Elo, Scorigami, Scorigami alerts, live scoreboard and home-week regeneration. These paths would otherwise be triggered by synchronizing main’s weekly data into the review branch. Their main schedules and numeric behavior are unchanged; no score, standings or historical dataset was edited.
+
+Main may advance independently while any job is running. Such a job now fails safely and must be rerun from current main. Long network imports can therefore be delayed by frequent main updates; this is an explicit availability tradeoff, not a successful freshness claim. No live scheduled writer was dispatched during this task.
+
+## Data and publication guarantees
+
+- Both existing correction batches still contain **56 fields: 44 season and 12 game fields**. Their primary values, compact metrics, team aggregates and team shards are unchanged by this technical follow-up. Reapplication reports zero changes.
+- Previously published source totals are retained for review, not newly certified. A processing timestamp never becomes a provider reporting date.
+- Source import/rebuilds cannot change the frozen award hash `7894e9ae7b3910a075d9ff5b40c59f23c6795bcc47c4a8a165e4b3c413c8246b`.
+- Unknown competition phase remains unknown. No date cutoff, incomplete playoff subtraction, alias investigation or missing-to-zero conversion is used.
+- The reviewed public view is deliberately partial: seven athletes currently have reviewed season fields. No complete team total or additional punting/return certificate has been approved. Those rankings are held rather than extrapolated.
+
+## Validation
+
+Local results: 44 pipeline tests pass on Node 22 and 24; 29 website tests pass, including the merged PR #183 regression. Forty browser checks pass at 390px and 1440px (20 corrected-profile/team/leaderboard checks plus 20 publication-boundary/archival/locked-award checks). Shared/search runtime, locked award role scoring and ten additional app-shell/feature checks pass. The existing player-record validator failure is listed below. Before/after 2025 builder output was also compared in isolation: archive values, rankings and metadata are identical. Final hosted check links are recorded in PR #181. Tests include the real cached MaxPreps/manual/game rebuild/reconciliation/finalizer/metrics/publication chain in an isolated temporary directory; explicit zero/blank/negative fields; missing and duplicate games; player mismatches; delayed submissions and explicit reviewed supersession; canonical lower corrections; a real temporary Git repository with concurrent-reference and protected-file failures; and all twelve workflow publication contracts.
+
+`node scripts/test-stat-pipeline-browser.cjs` runs the committed read-only browser regressions with Playwright and Chromium installed. It blocks all external and non-GET requests. At 390px and 1440px it checks poisoned cumulative data, missing-publication failure, live projection reads, held 2026 team totals, the functioning 2025 archive, original frozen award loading and tampered-snapshot rejection. Browser output defaults to `/tmp/rus-pipeline-browser`.
+
+## What still prevents full statistical publication
+
+1. The 44 unmatched game entries await Muse's evidence handoff. This task leaves them and their findings untouched.
+2. Most player fields still lack source-reviewed regular-season coverage. The 44 season fields are not a statewide certification. Existing reported caches may contain mixed-season or incomplete totals and must not be promoted into the reviewed view.
+3. Complete-team coverage, defensive completeness, separate kick/punt return fields and additional special-team certificates remain unverified. Team and unsupported specialist rankings intentionally stay unavailable.
+4. Locked award inputs are preserved exactly as requested; their original policy does not independently certify every player. Any future change requires explicit review rather than an importer or supplement replacing the snapshot.
+5. The existing player-record validator still reports the previously documented `273541|HERRIMAN|Filisi Filipe` duplicate. Repairing that protected dataset is outside this assignment.
+6. Live Deseret/MaxPreps scraping and scheduled writes to main were not run. Parser fixtures, cached pipeline replay, Git race tests, browser tests and PR checks verify the technical paths; they do not establish freshness of every provider report.
+
+No merge, deployment, replacement PR, award edit or speculative data correction is authorized or performed.

@@ -6,6 +6,7 @@ on:
   schedule:
     - cron: '*/15 * * * *'
   push:
+    branches: [main]
     paths:
       - 'scripts/enrich-deseret-game-details.mjs'
       - 'manual-stat-corrections-2026.json'
@@ -18,6 +19,16 @@ on:
       - 'scripts/merge_verified_deseret_kicking.mjs'
       - 'deseret-kicking-game-stats-2026.json'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
+      - 'scripts/protect_regular_season_import_2026.mjs'
+      - 'scripts/lib/regular-season-import-2026.mjs'
+      - 'scripts/lib/verified-player-corrections-2026.mjs'
+      - 'regular-season-corrections-batch-*-2026.json'
+      - 'regular-season-correction-batches-2026.json'
+      - 'scripts/lib/reviewed-batches-2026.mjs'
+      - 'scripts/lib/stat-import-integrity-2026.mjs'
+      - 'scripts/build_regular_season_publication_2026.mjs'
+      - 'scripts/check_stat_publish_2026.mjs'
+      - 'competition-scope-review-2026.json'
       - 'scripts/build_weekly_awards.mjs'
       - 'scripts/apply_manual_stat_corrections.mjs'
       - 'award-scoring-core.js'
@@ -28,11 +39,12 @@ permissions:
   contents: write
 
 concurrency:
-  group: deseret-rosters-stats
+  group: current-football-statistics
   cancel-in-progress: false
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     # Deseret occasionally rate-limits the full statewide pass. Leave enough
     # time for bounded retries instead of discarding the entire refresh.
@@ -43,6 +55,11 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+      - name: Capture published statistics before importing
+        run: |
+          echo "STAT_SOURCE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          cp deseret-rosters-stats-2026.json "$RUNNER_TEMP/regular-season-retained.json"
+          cp player-game-stats-2026.json "$RUNNER_TEMP/regular-games-retained.json"
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -61,12 +78,24 @@ jobs:
           node scripts/merge_verified_deseret_kicking.mjs
           # Re-apply verified athlete-level floors after incomplete game logs have been summed.
           node scripts/apply_manual_stat_corrections.mjs
+      - name: Preserve reviewed season and game cells
+        run: node scripts/protect_regular_season_import_2026.mjs --baseline="$RUNNER_TEMP/regular-season-retained.json" --games-baseline="$RUNNER_TEMP/regular-games-retained.json" --candidate-output="$RUNNER_TEMP/regular-season-import-candidate.json"
+      - name: Build reviewed regular-season publication
+        run: node scripts/build_regular_season_publication_2026.mjs
       - name: Build compact shared stat metrics
         run: node scripts/build_deseret_stat_metrics.mjs
       - name: Build automatic weekly awards
         run: node scripts/build_weekly_awards.mjs
       - name: Build compact per-team payloads
         run: node scripts/build_team_current_shards.mjs
+      - name: Retain source import candidate for statistical review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regular-season-import-candidate
+          path: ${{ runner.temp }}/regular-season-import-candidate.json
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Verify roster/stat data
         run: |
           node - <<'NODE'
@@ -93,18 +122,15 @@ jobs:
           NODE
       - name: Commit roster/stat data
         run: |
+          git fetch origin main
+          if [ "$(git rev-parse origin/main)" != "$STAT_SOURCE_COMMIT" ]; then
+            echo "Main changed during import. Rerun against latest main; do not overwrite newer data."
+            exit 1
+          fi
+          node scripts/check_stat_publish_2026.mjs
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
-          if git diff --cached --quiet; then echo "Roster/stat data already current."; exit 0; fi
-          git commit -m "Auto-sync Deseret rosters and stats"
-          for attempt in 1 2 3 4; do
-            if git pull --rebase origin main && git push origin HEAD:main; then
-              exit 0
-            fi
-            echo "Push attempt $attempt failed; retrying against latest main."
-            git rebase --abort || true
-            sleep $((attempt * 5))
-          done
-          echo "Failed to push generated Deseret data after retries."
-          exit 1
+          git add regular-season-publication-2026.json deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json player-game-stats-2026.json weekly-awards-2026.json team-current-data
+          if git diff --cached --quiet; then echo "Statistics already current."; exit 0; fi
+          git commit -m "Refresh source data; preserve reviewed regular-season statistics"
+          git push origin HEAD:main

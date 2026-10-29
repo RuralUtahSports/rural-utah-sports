@@ -1,0 +1,73 @@
+{
+  "season": 2026,
+  "observedAt": "2026-10-27",
+  "access": "Web retrieval; returned pages can be cached. This is not a fresh live-import certification.",
+  "observations": [
+    {
+      "team": "SOUTH SUMMIT",
+      "playerId": "south-summit-3-ian-mair",
+      "category": "Passing",
+      "field": "YARDS",
+      "value": 1542,
+      "url": "https://sports.deseret.com/high-school/school/south-summit/football/stats/",
+      "scope": "regular-season-schedule-reviewed",
+      "status": "source-disagreement-not-approved"
+    },
+    {
+      "team": "SOUTH SUMMIT",
+      "playerId": "south-summit-3-ian-mair",
+      "category": "Passing",
+      "field": "YARDS",
+      "value": 1397,
+      "url": "https://www.maxpreps.com/ut/kamas/south-summit-wildcats/athletes/ian-mair/?careerid=b78d5l6f5nv77",
+      "scope": "regular-season-schedule-reviewed",
+      "status": "source-disagreement-not-approved"
+    },
+    {
+      "team": "WATER CANYON",
+      "playerId": "water-canyon-35-alma-barlow",
+      "category": "Rushing",
+      "field": "YARDS",
+      "value": 2424,
+      "url": "https://sports.deseret.com/high-school/school/water-canyon/football/stats/",
+      "scope": "regular-season-schedule-reviewed",
+      "status": "preserve-existing-value-no-change"
+    },
+    {
+      "team": "WATER CANYON",
+      "playerId": "water-canyon-35-alma-barlow",
+      "category": "Rushing",
+      "field": "TD",
+      "value": 27,
+      "url": "https://sports.deseret.com/high-school/school/water-canyon/football/stats/",
+      "scope": "regular-season-schedule-reviewed",
+      "status": "preserve-existing-value-conflicting-other-source-needs-review"
+    },
+    {
+      "team": "WATER CANYON",
+      "playerId": "water-canyon-35-alma-barlow",
+      "category": "Receiving",
+      "field": "YARDS/RECEP.",
+      "value": 7.38,
+      "url": "https://sports.deseret.com/high-school/school/water-canyon/football/stats/",
+      "scope": "regular-season-schedule-reviewed",
+      "status": "verified-derived-rate-correction-applied-in-draft-see-cell-decisions"
+    },
+    {
+      "team": "BEN LOMOND",
+      "playerId": "ben-lomond-2-dashawn-gordan",
+      "category": "Rushing",
+      "field": "YARDS",
+      "value": 740,
+      "url": "https://sports.deseret.com/high-school/school/ben-lomond/football/stats/",
+      "scope": "unseparated-cumulative-season",
+      "status": "not-approved-game-coverage-and-identity-review-required"
+    }
+  ],
+  "limitations": [
+    "Only South Summit, Water Canyon and Ben Lomond schedules received a fresh web review in this pass; remaining schedule phases are unknown unless present in stored official bracket evidence.",
+    "No file-level or replacement-total approvals were granted.",
+    "Ben Lomond identity/cumulative totals, all conflicting game cells and missing school reporting remain unverified.",
+    "Additional Deseret spot checks: Ben Lomond cumulative Gordan rushing yards now show 740; Monticello passing-yard cells are blank. Neither source observation authorizes a replacement or a zero."
+  ]
+}

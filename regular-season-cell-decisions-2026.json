@@ -1,0 +1,34 @@
+{
+  "season": 2026,
+  "policy": "2026-regular-season-only-v1",
+  "decisions": [
+    {
+      "team": "WATER CANYON",
+      "playerId": "water-canyon-35-alma-barlow",
+      "category": "Receiving",
+      "field": "YARDS/RECEP.",
+      "before": "8.33",
+      "after": "7.38",
+      "status": "verified-derived-rate-correction",
+      "observedAt": "2026-10-27",
+      "evidence": {
+        "url": "https://sports.deseret.com/high-school/school/water-canyon/football/stats/",
+        "reportedRate": 7.38,
+        "reportedYards": 118,
+        "reportedReceptions": 16,
+        "scheduleUrl": "https://www.maxpreps.com/ut/hildale/water-canyon-wildcats/football/schedule/",
+        "scope": "reviewed schedule has no completed playoff game; next game marked Playoff",
+        "derivation": "round(118 / 16, 2) = 7.38"
+      },
+      "unchanged": [
+        "receptions",
+        "receiving yards",
+        "touchdowns",
+        "all other totals",
+        "locked award snapshot",
+        "saved winner identities"
+      ]
+    }
+  ],
+  "noOtherTotalsApproved": true
+}

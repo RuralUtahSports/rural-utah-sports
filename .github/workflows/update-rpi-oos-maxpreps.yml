@@ -6,6 +6,7 @@ on:
     # MaxPreps records are refreshed several times daily as scores are posted.
     - cron: '17 */6 * * *'
   push:
+    branches: [main]
     paths:
       - 'scripts/update_rpi_oos_from_maxpreps.mjs'
       - '.github/workflows/update-rpi-oos-maxpreps.yml'
@@ -19,10 +20,13 @@ concurrency:
 
 jobs:
   refresh:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - name: Capture source snapshot for publication
+        run: echo "STAT_SOURCE_COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Refresh out-of-state records from MaxPreps
         env:
           MAXPREPS_SEASON: 26-27
@@ -45,20 +49,13 @@ jobs:
           node scripts/build_rpi_standings.mjs
 
       - name: Commit refreshed RPI data
+        if: github.ref == 'refs/heads/main'
         run: |
-          git config user.name "RuralUtahSports"
-          git config user.email "60403147+RuralUtahSports@users.noreply.github.com"
-          if [ -z "$(git status --porcelain -- rpi-oos-2026.json uhsaa-rpi-official-2026.json rpi-standings-2026.json)" ]; then
-            echo "RPI out-of-state data already current."
-            exit 0
-          fi
+          git fetch origin main
+          node scripts/check_stat_publish_2026.mjs --snapshot-only
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add rpi-oos-2026.json uhsaa-rpi-official-2026.json rpi-standings-2026.json
-          git commit -m "Auto-refresh RPI out-of-state data from MaxPreps"
-          for attempt in 1 2 3 4; do
-            if git push; then
-              exit 0
-            fi
-            git pull --rebase -X theirs origin main || { git rebase --abort || true; exit 1; }
-            sleep 5
-          done
-          exit 1
+          if git diff --cached --quiet; then echo "Derived data already current."; exit 0; fi
+          git commit -m "Refresh derived data from current source snapshot"
+          git push origin HEAD:main
