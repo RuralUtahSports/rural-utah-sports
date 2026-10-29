@@ -31,6 +31,16 @@ The `Regular-season scope review` pull-request workflow runs these steps and upl
 3. **Cross-check against PR #181:** do not rewrite the 60 verified corrected cells. Separate disputed Manti attempts/completions, the Canyon View full-team rank and unresolved venues/scores from game-cell decisions.
 4. **Approve exact corrections individually:** source dates, positive regular-season classification, full expected game coverage, original-value preconditions and stable player identity required. Use a new reviewed correction batch and separate data PR; unknown stays unknown.
 
+## First independently checked game-level lead (held)
+
+**South Summit at Juab, August 28, 2026 — Brody Larsen (#8).** MaxPreps' game-specific box score explicitly reports **16 rushes for 98 yards and one rushing TD**, and its contemporaneous game recap also reports 98 yards and one touchdown. The Deseret News August 28 roundup corroborates the 34–13 result and his touchdown run. This is a regular-season matchup. Source links:
+
+- [MaxPreps game box score](https://www.maxpreps.com/ut/football/game/juab-nephi-vs-south-summit-kamas/8-28-2026/?c=3bf0f953-365a-4dd1-a40c-fe2dd49f0785&tab=Stats)
+- [MaxPreps game recap](https://www.maxpreps.com/news/T-sUysYbGkO7ywNimhmfGQ/football-recap-clayton-pay-leads-juabs-defense-on-friday.htm)
+- [Deseret News game roundup](https://www.deseret.com/sports/2026/08/28/high-school-football-week-3-roundup/)
+
+The repository's **historical, pre-PR-181** audit logged conflicting cached game-cell values: **4 versus 16 carries** and **-7 versus 98 rushing yards** for this exact canonical matchup. PR #181 already approved Larsen's **season total** of 158 carries/1,251 yards. Neither old cached game value is assumed to remain on current `main` without reading the fresh triage artifact. **No game-cell correction is made in this diagnostic PR.** Next decision must inspect the current game cache, identify the wrong source record and verify that changing an individual box-score entry will not alter the already-reviewed season total.
+
 ## Holds
 
 - A provider-cache disagreement alone does not establish which value is correct.
