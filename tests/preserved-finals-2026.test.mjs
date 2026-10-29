@@ -10,12 +10,13 @@ const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
 const corrections=read('verified-finals-2026.json').filter(g=>g.date==='2026-10-15'&&['MANTI','MOUNTAIN RIDGE'].includes(g.awayTeam));
 const metadata=read('teams-data.json').filter(t=>['MANTI','CANYON VIEW','MOUNTAIN RIDGE','WESTLAKE','MONTICELLO','MONUMENT VAL','PANGUITCH','GRAND'].includes(t.team));
 const rows=['10/15/2026,MOUNTAIN RIDGE,WESTLAKE,,,,,,,','10/15/2026,MANTI,CANYON VIEW,,,,,,,'];
-function build({pins=corrections,sheet=rows,playoff=false}={}){
+function build({pins=corrections,sheet=rows,playoff=false,published=null,sourceMetadata=metadata}={}){
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rus-preserved-finals-'));
  try{
   fs.mkdirSync(path.join(dir,'scripts/lib'),{recursive:true});
   for(const f of ['scripts/build_standings_2026.mjs','scripts/reconcile-final-games.mjs','scripts/lib/competition-scope-2026.mjs','regular-season-stat-policy-2026.js'])fs.copyFileSync(f,path.join(dir,f));
-  for(const [file,data] of Object.entries({'teams-data.json':metadata,'weekly-simulation.json':{games:[]},'deseret-game-details.json':{games:{}},'verified-finals-2026.json':pins,'competition-scope-review-2026.json':{season:2026,games:playoff?[{date:'2026-10-23',awayTeam:'CANYON VIEW',homeTeam:'MANTI',phase:'postseason',verification:'schedule-reviewed',evidence:[{url:'https://www.maxpreps.com/ut/manti/manti-templars/football/schedule/',kind:'schedule-competition-label',observedAt:'2026-10-27'}]}]:[]}}))fs.writeFileSync(path.join(dir,file),JSON.stringify(data));
+  for(const [file,data] of Object.entries({'teams-data.json':sourceMetadata,'weekly-simulation.json':{games:[]},'deseret-game-details.json':{games:{}},'verified-finals-2026.json':pins,'competition-scope-review-2026.json':{...read('competition-scope-review-2026.json'),games:[...read('competition-scope-review-2026.json').games,...(playoff?[{date:'2026-10-23',awayTeam:'CANYON VIEW',homeTeam:'MANTI',phase:'postseason',verification:'schedule-reviewed',evidence:[{url:'https://www.maxpreps.com/ut/manti/manti-templars/football/schedule/',kind:'schedule-competition-label',observedAt:'2026-10-27'}]}]:[])]}}))fs.writeFileSync(path.join(dir,file),JSON.stringify(data));
+  if(published)fs.writeFileSync(path.join(dir,'standings-2026.json'),JSON.stringify({games:published}));
   const csv='date,away,home,a,b,c,d,actualAway,actualHome,x,y\n'+sheet.join('\n');
   fs.writeFileSync(path.join(dir,'fetch.cjs'),'globalThis.fetch=async()=>({ok:true,text:async()=>'+JSON.stringify(csv)+'});');
   const r=spawnSync(process.execPath,['--require','./fetch.cjs','scripts/build_standings_2026.mjs'],{cwd:dir,encoding:'utf8'});assert.equal(r.status,0,r.stderr);
@@ -71,4 +72,30 @@ test('the four team pages retain one restored final and matching standings witho
  const output=restoreVerifiedFinalTeamViews(files,read('standings-2026.json'),read('verified-finals-2026.json'));assert.deepEqual(output,files);
  for(const [key,shard] of Object.entries(output)){assert.deepEqual(shard.rosterStats,files[key].rosterStats);assert.deepEqual(shard.gameStats,files[key].gameStats);assert.equal(shard.standing.games,10);}
  const conflict=structuredClone(files);conflict.manti.current.schedule.find(g=>g.date==='2026-10-15').opponentScore=17;assert.throws(()=>restoreVerifiedFinalTeamViews(conflict,read('standings-2026.json'),read('verified-finals-2026.json')),/Conflicting final/);
+});
+
+test('new unclassified finals are blocked in either August or October without a date-cutoff guess',()=>{
+ for(const date of ['08/14/2026','10/30/2026'])assert.throws(()=>build({sheet:[date+',MANTI,WESTLAKE,,,,,1,0,,']}),/Unclassified new or changed final/);
+});
+test('identical published legacy finals are retained, but changed unclassified scores are blocked',()=>{
+ const prior={date:'2026-08-14',awayTeam:'MANTI',homeTeam:'WESTLAKE',actualAway:1,actualHome:0};
+ const result=build({sheet:['08/14/2026,MANTI,WESTLAKE,,,,,1,0,,'],published:[prior]});assert.equal(result.games.length,3);
+ assert.throws(()=>build({sheet:['08/14/2026,MANTI,WESTLAKE,,,,,2,0,,'],published:[prior]}),/Unclassified new or changed final/);
+});
+
+test('partial responses cannot silently remove an already published final',()=>{
+ const prior={date:'2026-08-14',awayTeam:'MANTI',homeTeam:'WESTLAKE',actualAway:1,actualHome:0};
+ assert.throws(()=>build({sheet:rows,published:[prior]}),/Published final missing or duplicated/);
+});
+test('changed published results need an explicit reviewed final, even when regular-season phase is known',()=>{
+ const prior={date:'2026-10-15',awayTeam:'MANTI',homeTeam:'CANYON VIEW',actualAway:21,actualHome:17};
+ assert.throws(()=>build({pins:[],sheet:['10/15/2026,MANTI,CANYON VIEW,,,,,21,28,,'],published:[prior]}),/Published result change needs a verified-final correction/);
+ const approved=build({sheet:rows,published:[prior]});const game=approved.games.find(g=>g.awayTeam==='MANTI');assert.equal(game.actualHome,28);
+});
+
+test('all 604 published finals survive a complete cached response with identical scores and records',()=>{
+ const previous=read('standings-2026.json'),sheet=previous.games.map(g=>[g.date,g.awayTeam,g.homeTeam,'','','','',g.actualAway,g.actualHome,'',''].map(v=>'\"'+String(v).replaceAll('\"','\"\"')+'\"').join(','));
+ const rebuilt=build({sheet,published:previous.games,sourceMetadata:read('teams-data.json')});assert.equal(rebuilt.games.length,604);
+ const byTeam=d=>Object.fromEntries(Object.values(d.byClassification).flat().map(r=>[r.team,r]));const old=byTeam(previous),next=byTeam(rebuilt);
+ for(const team of Object.keys(old))for(const key of ['wins','losses','ties','regionWins','regionLosses','pointsFor','pointsAgainst'])assert.equal(next[team][key],old[team][key],team+'.'+key);
 });

@@ -1,4 +1,4 @@
-import {createCompetitionIndex} from './lib/competition-scope-2026.mjs';
+import {createCompetitionIndex,gameKey as competitionGameKey} from './lib/competition-scope-2026.mjs';
 import fs from 'node:fs';
 import {reconcileFinalGames} from './reconcile-final-games.mjs';
 
@@ -167,10 +167,31 @@ const competitionIndex=createCompetitionIndex({
   review:fs.existsSync('competition-scope-review-2026.json')?JSON.parse(fs.readFileSync('competition-scope-review-2026.json','utf8')):{},
   brackets:fs.existsSync('official-brackets-2026.json')?JSON.parse(fs.readFileSync('official-brackets-2026.json','utf8')):{}
 });
-// Keep postseason results in their source boxes/brackets, never in regular
-// standings. Unknown legacy inputs are retained for review, not certified.
+// Retain published legacy finals without pretending their bare schedule keys
+// certify phase. A new/changed unknown contest must not become a season game.
+const retainedFinals=fs.existsSync('standings-2026.json')?JSON.parse(fs.readFileSync('standings-2026.json','utf8')).games||[]:[];
 const games=reconcileFinalGames(candidates,{details:deseretGames,corrections})
-  .filter(game=>competitionIndex.classify(game).phase!=='postseason');
+  .filter(game=>{
+    const phase=competitionIndex.classify(game).phase;
+    if(phase==='postseason')return false;
+    if(phase==='unknown'){
+      const prior=retainedFinals.filter(g=>competitionGameKey(g)===competitionGameKey(game));
+      if(prior.length!==1||Number(prior[0].actualAway)!==Number(game.actualAway)||Number(prior[0].actualHome)!==Number(game.actualHome))throw Error('Unclassified new or changed final needs competition evidence: '+competitionGameKey(game));
+    }
+    return true;
+  });
+// A partial response must not erase an already published final. Existing
+// result corrections require an explicit verified-final record, not freshness.
+for(const prior of retainedFinals){
+  if(competitionIndex.classify(prior).phase==='postseason')continue;
+  const matches=games.filter(g=>competitionGameKey(g)===competitionGameKey(prior));
+  if(matches.length!==1)throw Error('Published final missing or duplicated in new inputs: '+competitionGameKey(prior));
+  const current=matches[0];
+  if(Number(prior.actualAway)!==Number(current.actualAway)||Number(prior.actualHome)!==Number(current.actualHome)){
+    const reviewed=corrections.some(c=>competitionGameKey(c)===competitionGameKey(current)&&Number(c.actualAway)===Number(current.actualAway)&&Number(c.actualHome)===Number(current.actualHome)&&/^https:\/\/(?:sports\.deseret\.com|(?:www\.)?maxpreps\.com)\//.test(c.sourceUrl||''));
+    if(!reviewed)throw Error('Published result change needs a verified-final correction: '+competitionGameKey(prior));
+  }
+}
 for(const g of games){
   completed++;
   if(g.source==='sheet')sheetFinals++;
