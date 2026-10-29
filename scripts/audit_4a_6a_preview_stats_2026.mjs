@@ -18,8 +18,19 @@ const sameName=(a,b)=>{
 };
 function playerMatch(rows,person,c){
  const hits=(rows||[]).filter(p=>cat(p.category)===c&&String(p.number??'')===String(person.number??'')&&sameName(p.name,person.name));
- const unique=[...new Map(hits.map(p=>[JSON.stringify(p.values||{}),p])).values()];
- return unique.length===1?{kind:'unique',person:unique[0]}:{kind:unique.length?'ambiguous':'missing'};
+ if(!hits.length)return {kind:'missing'};
+ // A provider may split one athlete into multiple category rows that hold
+ // complementary fields. Merge only non-conflicting observations, per field.
+ const firstNames=new Set(hits.map(p=>String(p.name||'').trim().split(/\s+/)[0]).map(norm).filter(n=>n.length>1));
+ if(firstNames.size>1)return {kind:'ambiguous'};
+ const values={},conflicts=new Set();
+ for(const row of hits)for(const [head,raw] of Object.entries(row.values||{})){
+  const label=field(c,head),n=num(raw);
+  if(n===null)continue;
+  if(Object.hasOwn(values,label)&&Number(values[label])!==n)conflicts.add(label);
+  else if(!Object.hasOwn(values,label))values[label]=String(n);
+ }
+ return {kind:'unique',person:{values},conflicts};
 }
 function gameIndex(sources,scope){
  const out=new Map(),seen=new Set();
@@ -69,7 +80,7 @@ export function auditPreview({rosters,maxpreps,mergedGames,maxprepsGames,bracket
     const identity=rosterIndex.get(p.playerId),stable=!!identity&&norm(identity.name)===norm(p.name)&&String(identity.number)===String(p.number);
     const alt=stable?playerMatch(mp?.rows,p,c):{kind:'identity-hold'};
     for(const [mc,f] of metrics.filter(m=>m[0]===c)){
-     const retained=numberIn(p.values,c,f),source=alt.kind==='unique'?numberIn(alt.person.values,c,f):null;
+     const retained=numberIn(p.values,c,f),source=alt.kind==='unique'&&!alt.conflicts.has(f)?numberIn(alt.person.values,c,f):null;
      if(retained===null&&source===null)continue;
      const raw=gameData.get([teamKey(team),norm(p.name),String(p.number??''),c,f].join('|'))||new Map();
      const cellEvidence=[...raw.entries()].map(([key,reports])=>{
@@ -80,6 +91,7 @@ export function auditPreview({rosters,maxpreps,mergedGames,maxprepsGames,bracket
      const sum=known.length?known.reduce((n,g)=>n+g.values[0],0):null,flags=[];
      if(!stable)flags.push('identity-hold');
      if(alt.kind==='ambiguous')flags.push('ambiguous-maxpreps-player');
+     if(alt.kind==='unique'&&alt.conflicts.has(f))flags.push('conflicting-maxpreps-field');
      if(retained===null&&source!==null)flags.push('missing-deseret');
      if(retained!==null&&source!==null&&retained!==source)flags.push('provider-disagreement');
      if(disputed.length)flags.push('game-stat-conflict');
