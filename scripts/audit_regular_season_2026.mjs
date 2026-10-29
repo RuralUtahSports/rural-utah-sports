@@ -15,7 +15,7 @@ const field=(c,v)=>{const k=norm(v);return c==='DEFENSESPECIALTEAMS'&&['INTERCEP
 const fields=new Set(['YARDS','TD','CARRIES','RECEPTIONS','TACKLES','SACKS','PASSINT','DEFENSETD','RETURNTD','FG','PAT','PTS','INT','CAUSEDFUM','FUMREC','PD','PASSINTYDS','FRYDS']);
 const number=v=>{if(v===null||v===undefined||String(v).trim()==='')return null;const s=String(v).replace(/,/g,'');return /^-?\d+(?:\.\d+)?$/.test(s)?Number(s):null};
 const games=[],postseasonBoxes=[],counts={teams:0,seasonRows:0,scalarCells:0,regularTeamGames:0,postseasonTeamGames:0,unknownTeamGames:0,sourceComparisons:0};
-const buckets=new Map();
+const buckets=new Map(), sourceCells=new Map();
 for(const [file,source] of [[names[1],'RUS merged game cache'],[names[3],'MaxPreps game cache']])for(const [team,t] of Object.entries(inputs[file].teams||{})){
  const unique=new Map();for(const g of t.games||[])unique.set(gameKey(g,team)||JSON.stringify([g.date,g.opponent]),g);
  const parts=partitionGames([...unique.values()],scope,team);
@@ -29,6 +29,11 @@ for(const [file,source] of [[names[1],'RUS merged game cache'],[names[3],'MaxPre
   for(const p of g.players||[g])for(const line of p.statLines||[]){const c=cat(line.category);
    for(const [h,v] of Object.entries(line.values||{})){const f=field(c,h),n=number(v);if(!fields.has(f)||n===null||!p.playerId)continue;
     const key=[teamKey(team),p.playerId,c,f].join('|'),byGame=buckets.get(key)||new Map(),values=byGame.get(s.key)||new Set();values.add(n);byGame.set(s.key,values);buckets.set(key,byGame);
+    // Retain the provenance behind every disagreeing field. This evidence
+    // does not choose a winner or establish when a provider updated a stat.
+    const bySourceGame=sourceCells.get(key)||new Map(),reports=bySourceGame.get(s.key)||[];
+    reports.push({source,sourceFile:file,url:g.url||g.maxprepsUrl||null,date:g.date,opponent:g.opponent,value:n});
+    bySourceGame.set(s.key,reports);sourceCells.set(key,bySourceGame);
    }
   }
  }
@@ -41,7 +46,10 @@ for(const [team,t] of Object.entries(inputs[names[0]].teams||{})){
  const m=Object.entries(inputs[names[2]].teams||{}).find(([name])=>teamKey(name)===teamKey(team))?.[1];
  for(const section of t.stats||[])for(const row of section.rows||[]){counts.seasonRows++;const c=cat(section.category);
   for(const [h,v] of Object.entries(row.values||{})){const f=field(c,h),n=number(v);if(!fields.has(f)||n===null)continue;counts.scalarCells++;
-   const key=[teamKey(team),row.playerId,c,f].join('|'),byGame=buckets.get(key)||new Map(),conflicts=[...byGame].filter(([,s])=>s.size!==1).map(([k,s])=>({gameKey:k,values:[...s]}));
+   const key=[teamKey(team),row.playerId,c,f].join('|'),byGame=buckets.get(key)||new Map(),conflicts=[...byGame].filter(([,s])=>s.size!==1).map(([k,s])=>({
+    gameKey:k,values:[...s].sort((a,b)=>a-b),
+    reports:[...new Map((sourceCells.get(key)?.get(k)||[]).map(report=>[JSON.stringify(report),report])).values()]
+   }));
    const knownSum=[...byGame.values()].filter(s=>s.size===1).reduce((sum,s)=>sum+[...s][0],0);
    const matches=(m?.rows||[]).filter(p=>cat(p.category)===c&&norm(p.name)===norm(row.name));
    const sourceValue=matches.length===1?number(Object.entries(matches[0].values||{}).find(([k])=>field(c,k)===f)?.[1]):null;
