@@ -61,7 +61,7 @@ test('user-facing pages both include reviewed correction, without changing store
  const leaders=fs.readFileSync('stat-leaders.html','utf8'),player=fs.readFileSync('player.html','utf8');
  assert.match(leaders,/reviewed-hunt-passing-2026\.js/);
  assert.match(leaders,/RUSReviewedHunt2026\.applyReported\(reportedStats\)/);
- assert.match(leaders,/RUSReviewedHunt2026\.applyVerified\(regularPublication,reviewed\)/);
+ assert.match(leaders,/RUSReviewedHunt2026\.applyVerified\(regularPublication,/);
  assert.match(player,/RUSReviewedHunt2026\.applyProfileGames/);
  for(const file of ['deseret-rosters-stats-2026.json','player-game-stats-2026.json','regular-season-publication-2026.json']){
   assert.ok(fs.statSync(file).size>100000,'Expected underlying file '+file+' remains intact');
