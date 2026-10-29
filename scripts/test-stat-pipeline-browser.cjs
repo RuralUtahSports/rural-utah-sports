@@ -23,7 +23,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.match(await p.locator('#heroCopy').innerText(),/season-to-date.*including playoff games.*MaxPreps first/);
   assert.match(await p.locator('#results').innerText(),/Reported position/i);
   assert.match(await p.locator('#results thead').innerText(),/Source/i);
-  assert.match(await p.locator('#scopeNote').innerText(),/MaxPreps is first for 4A–6A/);
+  assert.match(await p.locator('#scopeNote').innerText(),/MaxPreps is first for (?:matched )?4A–6A/);
   assert.match(await p.locator('#scopeNote').innerText(),/NOT regular-season-only/);
   assert.equal(await p.locator('#shareStatCategory').isDisabled(),true);
   assert.equal(await p.locator('#shareAllStats').isDisabled(),true);
