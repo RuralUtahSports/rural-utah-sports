@@ -1,3 +1,5 @@
+> Current reconciliation and limitations: [FINAL-REVIEW.md](FINAL-REVIEW.md). Historical phase notes below are retained; the Muse handoff is complete and its prior synchronization hold is superseded by the final review.
+
 # PR #181 — technical pipeline follow-up
 
 This follow-up changes importing, publication and read boundaries only. No new player correction, game-identity resolution or manual statistical investigation is included. Muse owns the 44 unmatched entries; `competition-scope-review-2026.json`, the two existing correction ledgers and all existing statistics datasets remain unchanged during this follow-up. Main through `90a665ce1`, including PRs #180, #182 and #183, was synchronized before implementation.

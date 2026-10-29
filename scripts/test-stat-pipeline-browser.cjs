@@ -2,7 +2,7 @@
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
 (async()=>{
  const root=process.cwd(),results=[],out=process.env.RUS_BROWSER_OUTPUT||'/tmp/rus-pipeline-browser';fs.mkdirSync(out,{recursive:true});
- const browser=await chromium.launch({executablePath:process.env.RUS_CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});
+ const browser=await chromium.launch({executablePath:process.env.RUS_CHROMIUM_PATH||(fs.existsSync('/usr/bin/chromium')?'/usr/bin/chromium':undefined),args:['--no-sandbox','--disable-dev-shm-usage']});
  for(const width of [390,1440]){
   const context=await browser.newContext({viewport:{width,height:900}});let missing=false,tamper=false;const errors=[];
   await context.route('**/*',async route=>{

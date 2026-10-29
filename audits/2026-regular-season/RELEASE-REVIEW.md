@@ -1,3 +1,5 @@
+> Current reconciliation and limitations: [FINAL-REVIEW.md](FINAL-REVIEW.md). Historical phase notes below are retained; the Muse handoff is complete and its prior synchronization hold is superseded by the final review.
+
 > Current technical follow-up: see [PIPELINE-REVIEW.md](PIPELINE-REVIEW.md). Regular-season rankings now use the reviewed publication boundary; retained source caches below are not a complete regular-season certification. Muse owns the unmatched-game investigation.
 
 # PR #181: verified small-school corrections, batch 1

@@ -1,37 +1,37 @@
 {
-  "generatedAt": "2026-10-27T04:05:28.565Z",
+  "generatedAt": "2026-10-29T16:07:11.769Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
     "teams": 118,
     "rosterPlayers": 6440,
     "uniqueRosterIDs": 6440,
-    "statRows": 6922,
-    "athletesWithStats": 4064,
-    "gamesWithPlayerRecords": 1070,
-    "gamePlayerRows": 20901,
-    "gameStatLines": 29890,
-    "missingStatPlayers": 2496,
+    "statRows": 6926,
+    "athletesWithStats": 4065,
+    "gamesWithPlayerRecords": 1079,
+    "gamePlayerRows": 20928,
+    "gameStatLines": 29945,
+    "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
       "UMA-HILLFIELD"
     ],
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
-    "seasonAboveGameSum": 571,
-    "gameAboveSeasonSum": 280,
-    "reviewFlags": 285,
+    "seasonAboveGameSum": 602,
+    "gameAboveSeasonSum": 295,
+    "reviewFlags": 300,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "SEASON_GT_AVAILABLE_GAME_LOG": 560,
-    "GAME_SUM_EXCEEDS_SEASON": 280,
+    "SEASON_GT_AVAILABLE_GAME_LOG": 591,
+    "GAME_SUM_EXCEEDS_SEASON": 295,
     "RECEIVING_RATE_MISMATCH": 3,
     "COMPACT_FEED_MISMATCH": 2
   },
   "severityCounts": {
-    "info": 560,
-    "review": 285
+    "info": 591,
+    "review": 300
   },
   "teams": [
     {
@@ -105,8 +105,8 @@
       "rosterPlayers": 9,
       "statRows": 16,
       "rosterPlayersWithoutReportedStats": 2,
-      "finalGameLogs": 7,
-      "finalGameLogsWithPlayerData": 7,
+      "finalGameLogs": 8,
+      "finalGameLogsWithPlayerData": 8,
       "seasonRowsWithUnknownId": 0,
       "compactMismatches": 0,
       "sourceStatsFetched": true
@@ -862,8 +862,8 @@
     {
       "team": "PAROWAN",
       "rosterPlayers": 45,
-      "statRows": 54,
-      "rosterPlayersWithoutReportedStats": 13,
+      "statRows": 55,
+      "rosterPlayersWithoutReportedStats": 12,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 1,
@@ -897,8 +897,8 @@
       "rosterPlayers": 1,
       "statRows": 4,
       "rosterPlayersWithoutReportedStats": 0,
-      "finalGameLogs": 3,
-      "finalGameLogsWithPlayerData": 1,
+      "finalGameLogs": 9,
+      "finalGameLogsWithPlayerData": 9,
       "seasonRowsWithUnknownId": 0,
       "compactMismatches": 0,
       "sourceStatsFetched": true
@@ -1225,7 +1225,7 @@
     {
       "team": "TIMPANOGOS",
       "rosterPlayers": 64,
-      "statRows": 64,
+      "statRows": 65,
       "rosterPlayersWithoutReportedStats": 24,
       "finalGameLogs": 10,
       "finalGameLogsWithPlayerData": 10,
@@ -1291,7 +1291,7 @@
     {
       "team": "WESTLAKE",
       "rosterPlayers": 81,
-      "statRows": 69,
+      "statRows": 71,
       "rosterPlayersWithoutReportedStats": 38,
       "finalGameLogs": 9,
       "finalGameLogsWithPlayerData": 9,
@@ -1557,6 +1557,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Dallan Ledbetter",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 1240,
+      "gameLogSum": 1383,
+      "difference": 143
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "MONTICELLO",
       "subject": "Miles Coleman",
       "category": "Receiving",
@@ -1696,6 +1707,17 @@
       "season": 29,
       "gameLogSum": 113,
       "difference": 84
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Payson Evans",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 291,
+      "gameLogSum": 367,
+      "difference": 76
     },
     {
       "level": "review",
@@ -1894,6 +1916,28 @@
       "season": 450,
       "gameLogSum": 501,
       "difference": 51
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Dallan Ledbetter",
+      "category": "Passing",
+      "field": "YARDS",
+      "season": 331,
+      "gameLogSum": 379,
+      "difference": 48
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Porter Lazenby",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 84,
+      "gameLogSum": 132,
+      "difference": 48
     },
     {
       "level": "review",
@@ -2195,6 +2239,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Memphis Avila",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 149,
+      "gameLogSum": 170,
+      "difference": 21
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GRAND",
       "subject": "Griffin Oldroyd",
       "category": "Rushing",
@@ -2279,6 +2334,17 @@
       "season": -3,
       "gameLogSum": 15,
       "difference": 18
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Payson Evans",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 46,
+      "gameLogSum": 63,
+      "difference": 17
     },
     {
       "level": "review",
@@ -2525,6 +2591,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Dallan Ledbetter",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 112,
+      "gameLogSum": 124,
+      "difference": 12
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "LAYTON CHRISTIAN",
       "subject": "Jahmi Harrison-Bismillah",
       "category": "Receiving",
@@ -2624,6 +2701,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Memphis Avila",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 233,
+      "gameLogSum": 242,
+      "difference": 9
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GRAND",
       "subject": "Everett Hill",
       "category": "Receiving",
@@ -2653,6 +2741,17 @@
       "season": 26,
       "gameLogSum": 35,
       "difference": 9
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Payson Evans",
+      "category": "Passing",
+      "field": "YARDS",
+      "season": 46,
+      "gameLogSum": 54,
+      "difference": 8
     },
     {
       "level": "review",
@@ -3064,6 +3163,28 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Porter Lazenby",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 250,
+      "gameLogSum": 254,
+      "difference": 4
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Memphis Avila",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 24,
+      "gameLogSum": 28,
+      "difference": 4
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "DESERT HILLS",
       "subject": "Isaac Andresen",
       "category": "Receiving",
@@ -3438,6 +3559,39 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Dallan Ledbetter",
+      "category": "Rushing",
+      "field": "TD",
+      "season": 15,
+      "gameLogSum": 17,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Porter Lazenby",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 43,
+      "gameLogSum": 45,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Porter Lazenby",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 9,
+      "gameLogSum": 11,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "CARBON",
       "subject": "Kayden Dunn",
       "category": "Passing",
@@ -3742,6 +3896,17 @@
       "season": 7,
       "gameLogSum": 9,
       "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "ALTAMONT",
+      "subject": "Memphis Avila",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 16,
+      "gameLogSum": 17,
+      "difference": 1
     },
     {
       "level": "review",
@@ -4799,7 +4964,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 54,
-      "gameLogSum": 51
+      "gameLogSum": 36
     },
     {
       "level": "info",
@@ -4895,6 +5060,16 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "CANYON VIEW",
+      "subject": "Bryson Barnes",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 4,
+      "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CANYON VIEW",
       "subject": "Chase Jacobsen",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
@@ -4905,11 +5080,31 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "CANYON VIEW",
+      "subject": "Chase Jacobsen",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 4.5,
+      "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CANYON VIEW",
       "subject": "Kayl Hutchinson",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 40,
       "gameLogSum": 35
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CANYON VIEW",
+      "subject": "Kayl Hutchinson",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 4,
+      "gameLogSum": 3.5
     },
     {
       "level": "info",
@@ -5005,11 +5200,41 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "CANYON VIEW",
+      "subject": "Asher Ishihara",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 17,
+      "gameLogSum": 16
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CANYON VIEW",
       "subject": "Ari Groft",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 4,
       "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CANYON VIEW",
+      "subject": "Karson Greenland",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 4,
+      "gameLogSum": 3
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "CANYON VIEW",
+      "subject": "Ian Williams",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 4,
+      "gameLogSum": 1
     },
     {
       "level": "info",
@@ -6685,6 +6910,16 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "MANTI",
+      "subject": "Kooper Lund",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 31,
+      "gameLogSum": 29
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
       "subject": "Kolten Layton",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
@@ -6725,11 +6960,31 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "MANTI",
+      "subject": "Tyler Steinfeldt",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 29,
+      "gameLogSum": 26
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
       "subject": "Austin Perry",
       "category": "Defense/Special Teams",
       "field": "SACKS",
       "season": 2,
       "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Connor Dotson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 16,
+      "gameLogSum": 14
     },
     {
       "level": "info",
@@ -6755,6 +7010,16 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "MANTI",
+      "subject": "James Goodwin",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 14,
+      "gameLogSum": 12
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
       "subject": "Emmett Gray",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
@@ -6775,11 +7040,31 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "MANTI",
+      "subject": "Tyson Buchanan",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 2,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
       "subject": "Wally Everitt",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 12,
       "gameLogSum": 8
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Easton Schoppe",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 4,
+      "gameLogSum": 3
     },
     {
       "level": "info",
@@ -6800,6 +7085,16 @@
       "field": "TACKLES",
       "season": 18,
       "gameLogSum": 9
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MANTI",
+      "subject": "Henry Krzymowski",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 10,
+      "gameLogSum": 8
     },
     {
       "level": "info",
@@ -7145,6 +7440,26 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "MOUNTAIN RIDGE",
+      "subject": "Kyler Christiansen",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 4.5,
+      "gameLogSum": 3.5
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Scooby Tulau",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 58,
+      "gameLogSum": 48
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
       "subject": "Boston Kojima",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
@@ -7180,6 +7495,96 @@
       "field": "TACKLES",
       "season": 28,
       "gameLogSum": 21
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Jayce Helm",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 36,
+      "gameLogSum": 27
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Braxton Best",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 16,
+      "gameLogSum": 15
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Caysen Nicolosi",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 16,
+      "gameLogSum": 14
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Siaosi Mamao",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 6
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Siaosi Mamao",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 2,
+      "gameLogSum": 1
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Jariace Togiasala Gaoa",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 10,
+      "gameLogSum": 8
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Blake Benson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 21,
+      "gameLogSum": 20
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Gavin Roberts",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 5,
+      "gameLogSum": 2
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "MOUNTAIN RIDGE",
+      "subject": "Lincoln Revill",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 14,
+      "gameLogSum": 9
     },
     {
       "level": "info",
@@ -8059,7 +8464,7 @@
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 55,
-      "gameLogSum": 50
+      "gameLogSum": 46
     },
     {
       "level": "info",
@@ -10015,11 +10420,41 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "WESTLAKE",
+      "subject": "Linkin Lee",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 69,
+      "gameLogSum": 65
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "WESTLAKE",
+      "subject": "Cooper White",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 6,
+      "gameLogSum": 5
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "WESTLAKE",
       "subject": "Malakai Leilua",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 65,
       "gameLogSum": 60
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "WESTLAKE",
+      "subject": "Spencer Dickerson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 45,
+      "gameLogSum": 43
     },
     {
       "level": "info",
@@ -10035,11 +10470,31 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "WESTLAKE",
+      "subject": "Zealand Afuvai",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 44,
+      "gameLogSum": 39
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "WESTLAKE",
       "subject": "Daxon Schaugaard",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 36,
       "gameLogSum": 33
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "WESTLAKE",
+      "subject": "Daxon Schaugaard",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 2,
+      "gameLogSum": 1
     },
     {
       "level": "info",
@@ -10055,11 +10510,31 @@
       "level": "info",
       "code": "SEASON_GT_AVAILABLE_GAME_LOG",
       "team": "WESTLAKE",
+      "subject": "Ashton Taylor",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 52,
+      "gameLogSum": 47
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "WESTLAKE",
       "subject": "Siosiua Fiefia",
       "category": "Defense/Special Teams",
       "field": "TACKLES",
       "season": 6,
       "gameLogSum": 5
+    },
+    {
+      "level": "info",
+      "code": "SEASON_GT_AVAILABLE_GAME_LOG",
+      "team": "WESTLAKE",
+      "subject": "Jude Lagafuaina",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 20,
+      "gameLogSum": 19
     }
   ]
 }

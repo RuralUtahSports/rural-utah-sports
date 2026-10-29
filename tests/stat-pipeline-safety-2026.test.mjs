@@ -126,7 +126,7 @@ test('scheduled and dispatch publishers use a captured current-main snapshot wit
 test('real Git publishing preflight passes a current snapshot and rejects protected changes and a concurrent remote commit',()=>{
  const temp=fs.mkdtempSync(path.join(os.tmpdir(),'rus-publish-cas-'));
  try{
-  const files=['deseret-rosters-stats-2026.json','player-game-stats-2026.json','regular-season-correction-batches-2026.json',...read('regular-season-correction-batches-2026.json').batches,'official-brackets-2026.json','competition-scope-review-2026.json','region-awards-2026.lock.json','regular-season-publication-2026.json','weekly-simulation.json'];
+  const files=['deseret-rosters-stats-2026.json','player-game-stats-2026.json','regular-season-correction-batches-2026.json',...read('regular-season-correction-batches-2026.json').batches,'official-brackets-2026.json','competition-scope-review-2026.json','region-awards-2026.lock.json','regular-season-publication-2026.json','weekly-simulation.json','team-stats-2026.json','reviewed-team-stat-adjustments-2026.json'];
   for(const f of files)fs.copyFileSync(f,path.join(temp,f));
   const git=(...args)=>{const r=spawnSync('git',['-c','user.name=Fixture','-c','user.email=fixture@example.test',...args],{cwd:temp,encoding:'utf8'});assert.equal(r.status,0,r.stderr);return r.stdout.trim();};
   git('init','-q');git('add','.');git('commit','-qm','Source snapshot');const base=git('rev-parse','HEAD');git('update-ref','refs/remotes/origin/main',base);

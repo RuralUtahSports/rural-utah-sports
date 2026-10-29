@@ -1,3 +1,4 @@
+import {createCompetitionIndex} from './lib/competition-scope-2026.mjs';
 import fs from 'node:fs';
 import {reconcileFinalGames} from './reconcile-final-games.mjs';
 
@@ -162,7 +163,14 @@ for(const r of rows){
   const a=resolve(r[1]),h=resolve(r[2]);if(!a&&!h)continue;
   candidates.push({date:clean(r[0]),awayTeam:a||clean(r[1]),homeTeam:h||clean(r[2]),actualAway:aa,actualHome:ah,source});
 }
-const games=reconcileFinalGames(candidates,{details:deseretGames,corrections});
+const competitionIndex=createCompetitionIndex({
+  review:fs.existsSync('competition-scope-review-2026.json')?JSON.parse(fs.readFileSync('competition-scope-review-2026.json','utf8')):{},
+  brackets:fs.existsSync('official-brackets-2026.json')?JSON.parse(fs.readFileSync('official-brackets-2026.json','utf8')):{}
+});
+// Keep postseason results in their source boxes/brackets, never in regular
+// standings. Unknown legacy inputs are retained for review, not certified.
+const games=reconcileFinalGames(candidates,{details:deseretGames,corrections})
+  .filter(game=>competitionIndex.classify(game).phase!=='postseason');
 for(const g of games){
   completed++;
   if(g.source==='sheet')sheetFinals++;

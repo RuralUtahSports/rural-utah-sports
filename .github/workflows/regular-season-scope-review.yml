@@ -14,6 +14,17 @@ on:
       - 'regular-season-publication-2026.json'
       - 'tests/stat-pipeline-safety-2026.test.mjs'
       - 'tests/game-identity-handoff-2026.test.mjs'
+      - 'tests/canonical-passing-yards-2026.test.mjs'
+      - 'tests/reviewed-team-stat-adjustments-2026.test.mjs'
+      - 'tests/preserved-finals-2026.test.mjs'
+      - 'scripts/lib/reviewed-team-stat-adjustments-2026.mjs'
+      - 'scripts/protect_team_stats_2026.mjs'
+      - 'scripts/check_standings_publish_2026.mjs'
+      - 'scripts/verify_pr181_preservation_2026.mjs'
+      - 'scripts/test-corrected-stat-pages-browser.cjs'
+      - 'scripts/restore_verified_october_finals_2026.mjs'
+      - 'reviewed-team-stat-adjustments-2026.json'
+      - 'verified-finals-2026.json'
       - 'audits/2026-regular-season/game-identity-handoff/**'
       - 'scripts/test-stat-pipeline-browser.cjs'
       - '.github/workflows/build-current-game-stats.yml'
@@ -58,16 +69,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - name: Test competition classification and preservation guards
-        run: node --test tests/competition-scope-2026.test.mjs tests/verified-player-corrections-2026.test.mjs tests/regular-season-import-2026.test.mjs tests/stat-pipeline-safety-2026.test.mjs tests/game-identity-handoff-2026.test.mjs
+        run: node --test tests/*.test.mjs
+      - name: Verify the exact approved synchronization snapshot
+        run: node scripts/verify_pr181_preservation_2026.mjs --baseline="$(node -p 'require("./reviewed-team-stat-adjustments-2026.json").mainSnapshot')" --output="$RUNNER_TEMP/pr181-preservation"
       - name: Verify reviewed publication matches evidence and pinned awards
         run: node scripts/build_regular_season_publication_2026.mjs --check
+      - name: Install pinned browser test runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.62.1
+          npx playwright install --with-deps chromium
+      - name: Verify mobile and desktop statistics pages and publication boundaries
+        env:
+          RUS_BROWSER_OUTPUT: ${{ runner.temp }}/pr181-browser
+        run: |
+          node scripts/test-stat-pipeline-browser.cjs
+          node scripts/test-corrected-stat-pages-browser.cjs
       - name: Audit stored source data without publishing changes
         run: node scripts/audit_regular_season_2026.mjs --output="$RUNNER_TEMP/regular-season-audit"
       - uses: actions/upload-artifact@v4
         with:
           name: regular-season-source-review
-          path: ${{ runner.temp }}/regular-season-audit
+          path: |
+            ${{ runner.temp }}/regular-season-audit
+            ${{ runner.temp }}/pr181-preservation
+            ${{ runner.temp }}/pr181-browser

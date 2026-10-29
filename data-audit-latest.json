@@ -1,45 +1,20 @@
 {
-  "generatedAt": "2026-10-27T04:05:28.088Z",
+  "generatedAt": "2026-10-29T16:07:11.166Z",
   "summary": {
     "errors": 0,
-    "warnings": 20,
+    "warnings": 18,
     "info": 2
   },
   "issues": [
     {
       "severity": "warning",
-      "code": "RECORD_MISMATCH",
-      "message": "MOUNTAIN RIDGE standings record does not match completed games in weekly-simulation.json.",
+      "code": "MAXPREPS_HIGH_UNMATCHED",
+      "message": "PANGUITCH rejected 57 of 61 MaxPreps stat rows during player matching.",
       "context": {
-        "standings": "10-0-0",
-        "calculated": "9-0-1"
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "RECORD_MISMATCH",
-      "message": "WESTLAKE standings record does not match completed games in weekly-simulation.json.",
-      "context": {
-        "standings": "7-3-0",
-        "calculated": "7-2-1"
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "RECORD_MISMATCH",
-      "message": "CANYON VIEW standings record does not match completed games in weekly-simulation.json.",
-      "context": {
-        "standings": "7-3-0",
-        "calculated": "6-3-1"
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "RECORD_MISMATCH",
-      "message": "MANTI standings record does not match completed games in weekly-simulation.json.",
-      "context": {
-        "standings": "2-8-0",
-        "calculated": "2-7-1"
+        "sourceRows": 61,
+        "unmatchedRows": 57,
+        "rosterPlayers": 1,
+        "sourceUrl": "https://www.maxpreps.com/ut/panguitch/panguitch-bobcats/football/stats/"
       }
     },
     {
@@ -227,6 +202,20 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PANGUITCH has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 10,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Utah Military Academy - Hill Field"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "RICHFIELD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 11,
@@ -271,11 +260,11 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9380,
-        "unmatchedRows": 656,
+        "sourceRows": 9441,
+        "unmatchedRows": 714,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1049,
-        "missingGamePairs": 16
+        "sourceGamePairs": 1059,
+        "missingGamePairs": 17
       }
     },
     {
