@@ -23,7 +23,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.match(await p.locator('#heroCopy').innerText(),/season-to-date.*including playoff games.*MaxPreps first/);
   assert.match(await p.locator('#results').innerText(),/Reported position/i);
   assert.match(await p.locator('#results thead').innerText(),/Source/i);
-  assert.match(await p.locator('#scopeNote').innerText(),/MaxPreps is first for (?:matched )?4A–6A/);
+  assert.match(await p.locator('#scopeNote').innerText(),/MaxPreps is first for uniquely matched players in every classification/);
   assert.match(await p.locator('#scopeNote').innerText(),/NOT regular-season-only/);
   assert.equal(await p.locator('#shareStatCategory').isDisabled(),true);
   assert.equal(await p.locator('#shareAllStats').isDisabled(),true);
@@ -47,7 +47,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.match(sourced.dahl.source,/MaxPreps/);
   assert.equal(sourced.laws.value,'505','Explicit MaxPreps-first priority replaces older 360 and Deseret preview 525');
   assert.match(sourced.laws.source,/MaxPreps/);
-  results.push({width,test:'4A–6A reported leaderboard prioritizes MaxPreps over nonblank and reviewed Deseret preview totals'});
+  results.push({width,test:'Statewide reported leaderboard prioritizes post-regular-season MaxPreps reports with unique player matches'});
   const huntRows=p.locator('#results tbody tr').filter({hasText:'Jaxon Hunt'});
   assert.equal(await huntRows.count(),1,'Expected Jaxon Hunt exactly once in reported passing');
   assert.match(await huntRows.first().innerText(),/3386|3,386/);
@@ -66,7 +66,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
     await p.waitForSelector('.data-table');
     assert.match((await p.locator('#page').innerText()).replace(/,/g,''),new RegExp(expected),'Updated 6A reported preview total missing for '+id);
     assert.match(await p.locator('#page').innerText(),/October 29 preview cross-check/);
-    assert.match(await p.locator('#page').innerText(),/Matched MaxPreps statistics first/);
+    assert.match(await p.locator('#page').innerText(),/Uniquely matched MaxPreps statistics updated after the regular season/);
   }
   results.push({width,test:'3 prioritized 6A player profiles show crosschecked 2026 preview season totals'});
 
