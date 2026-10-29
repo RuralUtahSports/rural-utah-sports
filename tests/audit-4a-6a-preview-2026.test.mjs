@@ -46,3 +46,17 @@ test('refuse wrong playoff date and duplicate team brackets',()=>{
  input.brackets.classifications['6A'].rounds[0].games[0].date='Oct 23, 2026';
  assert.throws(()=>auditPreview(input),/Postseason start changed/);
 });
+
+test('split complementary MaxPreps rows are one athlete while conflicting values remain held',()=>{
+ const input=sample(),team='4A AWAY 0';
+ input.maxpreps.teams[team].rows.push({name:'Alex Jones',number:'9',category:'Passing',values:{TD:'3'}});
+ let result=auditPreview(input);
+ let yards=result.cases.find(x=>x.team===team&&x.field==='YARDS');
+ assert.equal(yards.maxpreps,100);
+ assert.ok(!yards.flags.includes('ambiguous-maxpreps-player'));
+ input.maxpreps.teams[team].rows.push({name:'Alex Jones',number:'9',category:'Passing',values:{YARDS:'110'}});
+ result=auditPreview(input);
+ yards=result.cases.find(x=>x.team===team&&x.field==='YARDS');
+ assert.equal(yards.maxpreps,null);
+ assert.ok(yards.flags.includes('conflicting-maxpreps-field'));
+});
