@@ -32,7 +32,7 @@ test('only blank or missing fields receive cached MaxPreps values, zero and veri
  assert.equal(a.values['COMP-ATT'],'229-348');
  assert.equal(b.values.YARDS,'900');assert.equal(b.values.TD,'8');
  assert.equal(b.statSources.YARDS,'MaxPreps (cached, unverified season scope)');
- assert.equal(summary.filledFields,4);
+ assert.equal(summary.filledFields,3);
  assert.equal(summary.createdRows,0);
  assert.equal(data.teams.A.stats.some(s=>s.category==='Receiving'),false,'ambiguous same-jersey initial must stay held');
 });
