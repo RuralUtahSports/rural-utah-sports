@@ -22,6 +22,7 @@
 <script src="regular-season-stat-policy-2026.js?v=20261027-gameidentity1"></script>
 <script src="maxpreps-missing-totals-2026.js?v=20261029-missing1"></script>
 <script src="reviewed-hunt-passing-2026.js?v=20261029-reviewed-hunt1"></script>
+<script src="preview-stat-checks-2026.js?v=20261029-6a-preview1"></script>
 <script src="verified-player-stats-2026.js?v=20261023-alma-verified1"></script>
 </head>
 <body>
@@ -176,7 +177,7 @@ function renderTable(){
  const maxRows=unverified?500:100,top=rows.slice(0,Math.min(visibleCount,maxRows)),hasMore=Math.min(rows.length,maxRows)>top.length;
  const safeTeamColor=(value,fallback)=>/^#[0-9a-f]{6}$/i.test(String(value||''))?String(value):fallback;
  const leaderLabel=`${unverified?'Reported '+category+' totals':'Verified '+category+' leaders'} • ${scopeDisplay()}`;
- document.getElementById('results').innerHTML=`<div class="leaderboard-actions"><strong>${esc(leaderLabel)}</strong>${unverified?'':'<button type="button" id="shareCurrentLeaderboard" class="leaderboard-share-btn">Share This Leaderboard</button>'}</div><div class="table-wrap"><table class="leaders"><thead><tr><th>${unverified?'Reported position*':'Rank'}</th><th>Player</th><th>Team</th><th>Class</th><th>${esc(metric)}</th>${unverified?'<th>Source</th>':''}</tr></thead><tbody>${top.map((r,i)=>{const meta=teamMeta.get(canon(r.team))||{},teamColor=safeTeamColor(meta.backgroundColor,'#555555'),teamInk=safeTeamColor(meta.textColor,'#FFFFFF');return `<tr style="--team:${teamColor};--ink:${teamInk}"><td class="rank">${unverified?'#'+(i+1):i+1}</td><td class="player">${r.playerId?`<a href="player.html?id=${encodeURIComponent(r.playerId)}${seasonSuffix()}">${esc(r.name)}</a>`:esc(r.name)}</td><td class="team"><a href="team.html?team=${encodeURIComponent(r.team)}${seasonSuffix()}">${esc(r.team)}</a></td><td>${esc(isEightPlayerClass(r.classification)?'8-Player':r.classification||'—')}</td><td class="metric">${esc(r.display)}</td>${unverified?`<td>${r.source.includes('MaxPreps')?'MaxPreps':r.source?'Deseret / reviewed':'Deseret / reported'}</td>`:''}</tr>`}).join('')}</tbody></table></div>${hasMore?`<div class="more-wrap"><button id="showMoreLeaders" class="more-btn" type="button">Show 10 more</button></div>`:''}`;
+ document.getElementById('results').innerHTML=`<div class="leaderboard-actions"><strong>${esc(leaderLabel)}</strong>${unverified?'':'<button type="button" id="shareCurrentLeaderboard" class="leaderboard-share-btn">Share This Leaderboard</button>'}</div><div class="table-wrap"><table class="leaders"><thead><tr><th>${unverified?'Reported position*':'Rank'}</th><th>Player</th><th>Team</th><th>Class</th><th>${esc(metric)}</th>${unverified?'<th>Source</th>':''}</tr></thead><tbody>${top.map((r,i)=>{const meta=teamMeta.get(canon(r.team))||{},teamColor=safeTeamColor(meta.backgroundColor,'#555555'),teamInk=safeTeamColor(meta.textColor,'#FFFFFF');return `<tr style="--team:${teamColor};--ink:${teamInk}"><td class="rank">${unverified?'#'+(i+1):i+1}</td><td class="player">${r.playerId?`<a href="player.html?id=${encodeURIComponent(r.playerId)}${seasonSuffix()}">${esc(r.name)}</a>`:esc(r.name)}</td><td class="team"><a href="team.html?team=${encodeURIComponent(r.team)}${seasonSuffix()}">${esc(r.team)}</a></td><td>${esc(isEightPlayerClass(r.classification)?'8-Player':r.classification||'—')}</td><td class="metric">${esc(r.display)}</td>${unverified?`<td>${r.source.includes('Preview cross-checked')?'Preview checked':r.source.includes('MaxPreps')?'MaxPreps':r.source?'Deseret / reviewed':'Deseret / reported'}</td>`:''}</tr>`}).join('')}</tbody></table></div>${hasMore?`<div class="more-wrap"><button id="showMoreLeaders" class="more-btn" type="button">Show 10 more</button></div>`:''}`;
  const shareHere=document.getElementById('shareCurrentLeaderboard');if(shareHere)shareHere.onclick=()=>document.getElementById('shareStatCategory')?.click();
  const more=document.getElementById('showMoreLeaders');if(more)more.onclick=()=>{visibleCount=Math.min(visibleCount+(unverified?25:10),unverified?500:100);renderTable()};
 }
@@ -228,6 +229,10 @@ async function load(){
     const reviewed=window.RUSReviewedHunt2026.applyReported(reportedStats);
     window.RUSReviewedHunt2026.applyVerified(regularPublication,reviewed);
    }catch(error){console.warn('Reviewed Jaxon Hunt 2026 passing correction requires source recheck',error)}
+   try{
+    const preview=window.RUSPreviewSourceChecks2026.apply(reportedStats);
+    if(preview.held.length)console.warn('Six-A preview fields held for source recheck',preview.held);
+   }catch(error){console.warn('Six-A current preview corrections could not be applied',error)}
    allStats=sourceMode==='reported'?reportedStats:regularPublication;
    playerGames=g?.ok?await g.json():null;if(playerGames)for(const [team,t] of Object.entries(playerGames.teams||{}))t.games=window.RUSRegularSeasonPolicy2026.regularGames(t.games,team,regularPublication);
    const weeklySchedule=w?.ok?(await w.json()).games||[]:[];
