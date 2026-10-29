@@ -1,4 +1,4 @@
-/* 2026 football reported-view source preference for 4A/5A/6A.
+/* 2026 football reported-view source preference statewide.
  * MaxPreps cached reports FIRST; Deseret retains fields missing or ambiguous
  * at MaxPreps. This is NOT certified regular-season publication.
  */
@@ -58,7 +58,7 @@
    missingOrAmbiguousPlayer:0,conflictingProviderFields:0,invalidProviderValues:0};
   for(const [teamName,school] of Object.entries(output.teams)){
    if(options.targetTeam&&norm(teamName)!==norm(options.targetTeam))continue;
-   if(!['4A','5A','6A'].includes(classMap.get(norm(teamName))))continue;
+   if(!['6A','5A','4A','3A','2A','1A','8PLAYER','8P'].includes(norm(classMap.get(norm(teamName)))))continue;
    summary.schoolsInScope++;
    const providers=Object.entries(cache.teams).filter(([k])=>norm(k)===norm(teamName));
    if(providers.length!==1||!isMaxpreps(providers[0][1].sourceUrl))continue;
