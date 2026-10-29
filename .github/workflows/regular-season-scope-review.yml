@@ -27,6 +27,8 @@ on:
       - 'verified-finals-2026.json'
       - 'audits/2026-regular-season/game-identity-handoff/**'
       - 'scripts/test-stat-pipeline-browser.cjs'
+      - 'stat-leaders.html'
+      - 'tests/stat-leaders-reported-2026.test.mjs'
       - '.github/workflows/build-current-game-stats.yml'
       - '.github/workflows/build-deseret-rosters-stats.yml'
       - '.github/workflows/build-maxpreps-stats-fallback.yml'
@@ -85,7 +87,7 @@ jobs:
           CHANGED="$(git diff --name-only "$BASE" HEAD)"
           # The fixed PR #181 baseline predates newer main commits. The
           # presentation-only path may not change any stats, awards or evidence.
-          NOT_PRESENTATION="$(printf '%s\n' "$CHANGED" | grep -Ev '^(team-stats\.html|scripts/test-stat-pipeline-browser\.cjs|tests/team-stats-reported-2026\.test\.mjs|\.github/workflows/regular-season-scope-review\.yml)$' || true)"
+          NOT_PRESENTATION="$(printf '%s\n' "$CHANGED" | grep -Ev '^(team-stats\.html|stat-leaders\.html|scripts/test-stat-pipeline-browser\.cjs|tests/team-stats-reported-2026\.test\.mjs|tests/stat-leaders-reported-2026\.test\.mjs|\.github/workflows/regular-season-scope-review\.yml)$' || true)"
           if [ -z "$NOT_PRESENTATION" ]; then
             echo "Presentation-only PR: protected datasets remain identical to current main."
           else
