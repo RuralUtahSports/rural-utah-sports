@@ -19,9 +19,21 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   });
   const p=await context.newPage();p.setDefaultTimeout(15000);p.on('pageerror',e=>errors.push(e.message));
   await p.goto('https://policy.test/stat-leaders.html');await p.waitForSelector('#results table');
+  assert.equal(await p.locator('#leaderSourceMode').inputValue(),'reported');
+  assert.match(await p.locator('#heroCopy').innerText(),/may be incomplete, disputed or include postseason/);
+  assert.match(await p.locator('#results').innerText(),/Rank held/i);
+  assert.equal(await p.locator('#shareStatCategory').isDisabled(),true);
+  assert.equal(await p.locator('#shareAllStats').isDisabled(),true);
+  const reportedTotal=await p.locator('#summary').innerText();
+  assert.ok(Number((reportedTotal.match(/\\d+/)||[])[0])>20,'Reported passing view should include athletes beyond the few verified entries');
+  assert.equal(await p.locator('.leaders tbody tr:first-child .rank').innerText(),'—');
+  results.push({width,test:'reported 2026 player-passing view has broad coverage and no certified ranks'});
+  await p.locator('#leaderSourceMode').selectOption('verified');
   await p.locator('[data-cat="Passing"]').click();await p.locator('[data-class="2A"]').click();
   assert.match((await p.locator('#results').innerText()).replace(/,/g,''),/1397/);assert.doesNotMatch(await p.locator('#results').innerText(),/987654321/);
-  assert.match(await p.locator('#heroCopy').innerText(),/Coverage is incomplete/);results.push({width,test:'season leaderboard rejects poisoned reported cumulative totals'});
+  assert.match(await p.locator('#heroCopy').innerText(),/Coverage is incomplete/);
+  assert.equal(await p.locator('#shareStatCategory').isDisabled(),false);
+  results.push({width,test:'verified 2026 season leaderboard ignores poisoned reported cumulative totals'});
   await p.screenshot({path:`${out}/${width}-verified-leaders.png`,fullPage:true});
   const resumed=await p.evaluate(async()=>{
    const publication=await(await fetch('regular-season-publication-2026.json')).json(),data=await(await fetch('player-game-stats-2026.json')).json(),policy=window.RUSRegularSeasonPolicy2026;
