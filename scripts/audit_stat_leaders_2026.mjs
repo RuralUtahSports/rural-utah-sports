@@ -19,7 +19,11 @@ function maxprepsLookup(data){
  const map=new Map();
  for(const [team,t] of Object.entries(data?.teams||{}))for(const p of t.rows||[]){
   const k=playerIdentity(team,p,category(p.category)),list=map.get(k)||[];
-  list.push({values:p.values||{},url:t.sourceUrl||null,updatedAt:t.lastUpdated||null});map.set(k,list);
+  // Identical cached provider rows are one source observation, not multiple
+  // athletes or a conflicting athlete identity.
+  const record={values:p.values||{},url:t.sourceUrl||null,updatedAt:t.lastUpdated||null};
+  if(!list.some(existing=>JSON.stringify(existing.values)===JSON.stringify(record.values)))list.push(record);
+  map.set(k,list);
  }
  return map;
 }
@@ -50,7 +54,7 @@ function gameLookup(sources,index){
 export function auditStatLeaders2026({rosters,maxpreps,mergedGames,maxprepsGames,publication,brackets,review,hashes={}}){
  if(publication?.scope!=='verified-regular-season'||publication.season!==2026||!rosters?.teams||!maxpreps?.teams)throw Error('Missing 2026 source evidence or reviewed publication');
  const mp=maxprepsLookup(maxpreps),verified=verifiedLookup(publication),games=gameLookup([['RUS game cache',mergedGames],['MaxPreps game cache',maxprepsGames]],createCompetitionIndex({brackets,review}));
- const cases=[],summary={schools:Object.keys(rosters.teams).length,athleteCategoryRows:0,reportedMetricCells:0,verifiedMetricCells:0,providerDisagreements:0,regularSumExceedsRetained:0,conflictingRegularCells:0,unknownGamePhaseCells:0,postseasonGameCells:0,ambiguousIdentities:0};
+ const cases=[],summary={schools:Object.keys(rosters.teams).length,athleteCategoryRows:0,reportedMetricCells:0,verifiedMetricCells:0,providerDisagreements:0,regularSumExceedsRetained:0,conflictingRegularCells:0,unknownGamePhaseCells:0,postseasonGameCells:0,nonuniqueProviderMetricMatches:0};
  for(const [team,t] of Object.entries(rosters.teams)){
   for(const s of t.stats||[])for(const p of s.rows||[]){
    summary.athleteCategoryRows++;
@@ -65,7 +69,7 @@ export function auditStatLeaders2026({rosters,maxpreps,mergedGames,maxprepsGames
     const lowerBound=confirmed.length?confirmed.reduce((n,x)=>n+x.values[0],0):null;
     const postseason=contest.filter(x=>x.phase==='postseason'),unknown=contest.filter(x=>!['regular-season','postseason'].includes(x.phase));
     const flags=[];
-    if(match.length>1){flags.push('ambiguous-provider-identity');summary.ambiguousIdentities++}
+    if(match.length>1){flags.push('nonunique-provider-stat-row');summary.nonuniqueProviderMetricMatches++}
     if(comp!==null&&retained!==comp){flags.push('provider-disagreement');summary.providerDisagreements++}
     if(lowerBound!==null&&lowerBound>retained){flags.push('regular-game-lower-bound-exceeds-retained');summary.regularSumExceedsRetained++}
     if(disputed.length){flags.push('conflicting-regular-game-cell');summary.conflictingRegularCells+=disputed.length}
@@ -117,5 +121,5 @@ if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1
  const result=auditStatLeaders2026({rosters:data[0],maxpreps:data[1],mergedGames:data[2],maxprepsGames:data[3],publication:data[4],brackets:data[5],review:data[6],hashes});
  fs.mkdirSync(dir,{recursive:true});fs.writeFileSync(path.join(dir,'audit.json'),JSON.stringify(result,null,2)+'\n');fs.writeFileSync(path.join(dir,'AUDIT.md'),markdown(result));
  for(const [f,v] of Object.entries(hashes))if(sha256(fs.readFileSync(f))!==v)throw Error('Audit altered input '+f);
- console.log(JSON.stringify({summary:result.summary,hunt:result.hunt?{reported:result.hunt.reported,maxpreps:result.hunt.maxpreps,knownRegularSum:result.hunt.knownRegularSum,games:result.hunt.games.map(g=>({key:g.key,phase:g.phase,values:g.values}))}:null,output:dir}));
+ console.log(JSON.stringify({summary:result.summary,largestDifferences:result.largestProviderDifferences.slice(0,12).map(x=>({team:x.team,name:x.name,stat:x.metric,reported:x.reported,maxpreps:x.maxpreps,difference:x.deltaToMaxpreps})),hunt:result.hunt?{reported:result.hunt.reported,maxpreps:result.hunt.maxpreps,knownRegularSum:result.hunt.knownRegularSum,games:result.hunt.games.map(g=>({key:g.key,phase:g.phase,values:g.values}))}:null,output:dir}));
 }
