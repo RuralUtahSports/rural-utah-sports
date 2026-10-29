@@ -68,9 +68,9 @@ test('updates only the selected profile team when targetTeam is specified',()=>{
 });
 test('both pages apply source preference while keeping the protected verified publication separate',()=>{
  const leaders=fs.readFileSync('stat-leaders.html','utf8'),profile=fs.readFileSync('player.html','utf8');
- assert.match(leaders,/RUSMaxPrepsPrimary2026\.applyPrimary\(reportedStats,cached,metadata\)/);
+ assert.match(leaders,/RUSMaxPrepsPrimary2026\.applyPrimary\(reportedStats,cachedMaxPreps,metadata\)/);
  assert.match(profile,/RUSMaxPrepsPrimary2026\.applyPrimary\(rosters,await response\.json\(\),teams/);
  assert.match(leaders,/RUSReviewedHunt2026\.applyVerified\(regularPublication,reviewed\)/);
- assert.match(leaders,/MaxPreps takes priority over older RUS\/Deseret totals/);
- assert.match(profile,/MaxPreps is used first for uniquely matched 4A–6A players/);
+ assert.match(leaders,/MaxPreps prioritized over older RUS\/Deseret values/);
+ assert.match(profile,/Matched MaxPreps statistics first/);
 });
