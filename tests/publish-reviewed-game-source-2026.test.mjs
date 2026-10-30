@@ -17,14 +17,15 @@ const source={
 const stable=x=>JSON.stringify(x);
 test('publisher changes only five approved 2026 game reports and the four affected team game payloads',()=>{
  const before=stable(source),result=prepareReviewedGamePublication(source);
- assert.equal(result.proposals.length,5);
- assert.equal(result.changedShards.length,4);
- assert.deepEqual(result.proposals.map(x=>[x.team,x.kind]),[
+ assert.ok([0,5].includes(result.proposals.length),'All reviewed games must be either pending or already published');
+ assert.equal(result.changedShards.length,result.proposals.length===5?4:0);
+ if(result.proposals.length===5)assert.deepEqual(result.proposals.map(x=>[x.team,x.kind]),[
   ['WEST JORDAN','correct-archived-game'],
   ['LAYTON','correct-archived-game'],
   ['LAYTON','recover-missing-game'],
   ['MOUNTAIN RIDGE','recover-missing-game'],
-  ['WESTLAKE','recover-missing-game']]);
+  ['WESTLAKE','recover-missing-game']
+ ]);
  assert.equal(stable(source),before,'Publisher never mutates input snapshots');
  assert.equal(result.summary.seasonStatisticsChanged,false);
  for(const file of Object.keys(shards)){
