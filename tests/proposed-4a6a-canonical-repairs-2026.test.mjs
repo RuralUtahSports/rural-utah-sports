@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {proposeSourceRepairs} from '../scripts/propose_4a6a_canonical_game_repairs_2026.mjs';
+import {createCompetitionIndex} from '../scripts/lib/competition-scope-2026.mjs';
 
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const liveSource=read('player-game-stats-2026.json');
@@ -178,4 +179,41 @@ test('current published source is either still awaiting reviewed repair or alrea
  const second=proposeSourceRepairs(r.repaired,rosters,doc,{index:fake,taylorReview:taylor});
  assert.equal(second.proposals.length,0);
  assert.equal(second.holds.length,0);
+});
+
+
+const dahl=read('audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json');
+const scope=createCompetitionIndex({brackets:read('official-brackets-2026.json'),review:read('competition-scope-review-2026.json')});
+test('Farmington Dahl Oct 14 is a positively classified regular-season game and adds only four explicit passing fields',()=>{
+ const before=JSON.stringify(liveSource);
+ const phase=scope.classify({date:'2026-10-14',opponent:'LAYTON',url:dahl.game.sourceUrl},'FARMINGTON');
+ assert.equal(phase.phase,'regular-season');
+ const r=proposeSourceRepairs(liveSource,rosters,doc,{index:scope,dahlReview:dahl});
+ assert.deepEqual(r.holds,[]);
+ const news=r.proposals.filter(p=>p.team==='FARMINGTON');
+ assert.ok(news.length<=1,'Only one Farmington game may be proposed');
+ const matching=r.repaired.teams.FARMINGTON.games.filter(g=>g.date==='2026-10-14'&&norm(g.opponent)==='LAYTON');
+ assert.equal(matching.length,1);
+ const athlete=matching[0].players.filter(p=>p.playerId==='farmington-17-alton-dahl');
+ assert.equal(athlete.length,1);
+ const line=athlete[0].statLines.filter(s=>s.category==='Passing');
+ assert.equal(line.length,1);
+ assert.deepEqual(Object.fromEntries(['YARDS','COMP-ATT','TD','Int'].map(key=>[key,line[0].values[key]??line[0].values[Object.keys(line[0].values).find(k=>norm(k)===norm(key))]])),{YARDS:'190','COMP-ATT':'17-29',TD:'0',Int:'0'});
+ assert.equal(JSON.stringify(liveSource),before,'Evidence proposal must not mutate original source');
+ const repeat=proposeSourceRepairs(r.repaired,rosters,doc,{index:scope,dahlReview:dahl});
+ assert.equal(repeat.proposals.filter(p=>p.team==='FARMINGTON').length,0,'Dahl recovery is idempotent');
+});
+test('Farmington Dahl source recovery fails closed if previous games or identity are changed',()=>{
+ const damaged=structuredClone(liveSource);
+ const row=damaged.teams.FARMINGTON.games.find(g=>g.date==='2026-08-14');
+ const athlete=row.players.find(p=>p.playerId==='farmington-17-alton-dahl');
+ assert.ok(athlete,'Required Dahl source-game record');
+ const passing=athlete.statLines.find(l=>l.category==='Passing');
+ assert.ok(passing);
+ const key=Object.keys(passing.values).find(k=>norm(k)==='YARDS');
+ passing.values[key]=String(Number(passing.values[key])+1);
+ assert.throws(()=>proposeSourceRepairs(damaged,rosters,doc,{index:scope,dahlReview:dahl}),/historical nine-game subtotal/);
+ const unknown={classify:()=>({phase:'unknown'})};
+ const held=proposeSourceRepairs(liveSource,rosters,doc,{index:unknown,dahlReview:dahl});
+ assert.ok(held.holds.some(h=>h.team==='FARMINGTON'));
 });
