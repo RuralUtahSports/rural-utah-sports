@@ -17,9 +17,9 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
      // Regular-season reviewed yardage is tested in canonical field tests.
      // The player profile is explicitly a reported cumulative source view,
      // which may include the October 23 playoff.
-     assert.match(totals,/Passing[\\s\\S]*?YARDS:\\s*\\d+/i);
+     assert.match(totals,/Passing[\s\S]*?YARDS:\s*\d+/i);
      assert.match(await p.locator('#page').innerText(),/Season to date: Playoff games are included/);
-   }else assert.match(totals,new RegExp('\\\\b'+yards+'\\\\b'));
+   }else assert.match(totals,new RegExp('\\b'+yards+'\\b'));
    assert.deepEqual(errors,[]);p.off('pageerror',listener);
    const overflow=await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);assert.equal(overflow,false,id+' viewport overflow');results.push({width,page:'player',id,expectedRegularValue:yards,profileScope:id==='manti-1-kingston-wright'||id==='canyon-view-2-owen-williams'?'reported-cumulative-with-possible-playoffs':'reported-checked'});
   }
