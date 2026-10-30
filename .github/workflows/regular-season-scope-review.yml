@@ -143,6 +143,13 @@ jobs:
             echo "Other source changes still require the PR181 preservation gate."
             node scripts/verify_pr181_preservation_2026.mjs --baseline="$(node -p 'require("./reviewed-team-stat-adjustments-2026.json").mainSnapshot')" --output="$RUNNER_TEMP/pr181-preservation"
           fi
+      - name: Validate focused source publisher YAML and GitHub Actions schema
+        run: |
+          python3 -m pip install --quiet pyyaml
+          python3 -c "import yaml; p='.github/workflows/publish-reviewed-player-game-repairs-2026.yml'; d=yaml.safe_load(open(p)); print('Source publisher parsed:', d.get('name'))"
+          curl -fsSL https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz -o /tmp/source-actionlint.tar.gz
+          tar -xzf /tmp/source-actionlint.tar.gz -C /tmp actionlint
+          /tmp/actionlint .github/workflows/publish-reviewed-player-game-repairs-2026.yml
       - name: Verify reviewed publication matches evidence and pinned awards
         run: node scripts/build_regular_season_publication_2026.mjs --check
       - name: Install pinned browser test runtime
