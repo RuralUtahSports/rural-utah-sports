@@ -33,7 +33,7 @@ jobs:
       - name: Validate every reviewed game, athlete, scope and preserved season field
         run: |
           node --test tests/proposed-4a6a-canonical-repairs-2026.test.mjs tests/publish-reviewed-game-source-2026.test.mjs
-      - name: Apply only reviewed player-game fields and four team source payloads
+      - name: Apply only reviewed player-game fields and five team source payloads
         run: node scripts/publish_reviewed_game_source_2026.mjs --apply --output="$RUNNER_TEMP/reviewed-game-publication"
       - name: Confirm idempotent replay with no remaining pending source corrections
         run: |
@@ -42,9 +42,12 @@ jobs:
           const fs=require('fs');
           const a=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+'/reviewed-game-publication/publication-audit.json','utf8'));
           const b=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+'/reviewed-game-publication-second-pass/publication-audit.json','utf8'));
-          if(![0,5].includes(a.reviewedGameChanges)||b.reviewedGameChanges!==0||b.changedFiles.length!==0)throw Error('Source repair failed source validation or idempotence');
-          const expected=['player-game-stats-2026.json','team-current-data/layton.json','team-current-data/mountain-ridge.json','team-current-data/west-jordan.json','team-current-data/westlake.json'];
-          if(a.changedFiles.some(file=>!expected.includes(file))||(a.reviewedGameChanges===5&&JSON.stringify(a.changedFiles.slice().sort())!==JSON.stringify(expected.sort())))throw Error('Unexpected publication scope: '+JSON.stringify(a.changedFiles));
+          if(![0,1,5,6].includes(a.reviewedGameChanges)||b.reviewedGameChanges!==0||b.changedFiles.length!==0)throw Error('Source repair failed source validation or idempotence');
+          const expected=['player-game-stats-2026.json','team-current-data/layton.json','team-current-data/mountain-ridge.json','team-current-data/west-jordan.json','team-current-data/westlake.json','team-current-data/farmington.json'];
+          if(a.changedFiles.some(file=>!expected.includes(file)))throw Error('Unexpected publication scope: '+JSON.stringify(a.changedFiles));
+          const teams=new Set((a.proposals||[]).map(x=>x.team));
+          const required=a.reviewedGameChanges?['player-game-stats-2026.json',...[...teams].map(x=>'team-current-data/'+x.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.json')].sort():[];
+          if(JSON.stringify(a.changedFiles.slice().sort())!==JSON.stringify(required))throw Error('Missing reviewed game shard or unreviewed extra source: '+JSON.stringify(a.changedFiles));
           NODE
       - name: Preserve source boundaries and all other site content
         run: |
@@ -52,7 +55,7 @@ jobs:
           test -z "$(git diff --name-only -- deseret-rosters-stats-2026.json deseret-stat-metrics-2026.json regular-season-publication-2026.json region-awards-2026.lock.json standings-2026.json team-stats-2026.json deseret-team-data-2026.json)"
           git diff --name-only | while IFS= read -r file; do
             case "$file" in
-              player-game-stats-2026.json|team-current-data/layton.json|team-current-data/mountain-ridge.json|team-current-data/west-jordan.json|team-current-data/westlake.json) ;;
+              player-game-stats-2026.json|team-current-data/layton.json|team-current-data/mountain-ridge.json|team-current-data/west-jordan.json|team-current-data/westlake.json|team-current-data/farmington.json) ;;
               *) echo "Unreviewed source changed: $file"; exit 1 ;;
             esac
           done
@@ -72,7 +75,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add player-game-stats-2026.json team-current-data/layton.json team-current-data/mountain-ridge.json team-current-data/west-jordan.json team-current-data/westlake.json
+          git add player-game-stats-2026.json team-current-data/layton.json team-current-data/mountain-ridge.json team-current-data/west-jordan.json team-current-data/westlake.json team-current-data/farmington.json
           if git diff --cached --quiet; then echo "Reviewed source games already installed."; exit 0; fi
-          git commit -m "Publish reviewed 2026 game boxes for Shockey, Thomas, Thayer and Taylor"
+          git commit -m "Publish reviewed 2026 game boxes for Shockey, Thomas, Thayer, Taylor and Dahl"
           git push origin HEAD:main
