@@ -12,6 +12,7 @@ const source={
  manifest:read('audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json'),
  taylorReview:read('audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'),
  dahlReview:read('audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json'),
+ farmingtonSkillReview:read('audits/2026-regular-season/farmington-layton-oct14-skills-reviewed-2026.json'),
  index:createCompetitionIndex({brackets:read('official-brackets-2026.json'),review:read('competition-scope-review-2026.json')}),
  shards
 };
@@ -19,7 +20,7 @@ const stable=x=>JSON.stringify(x);
 test('publisher only changes previously reviewed player game fields in the five approved schools',()=>{
  const before=stable(source),result=prepareReviewedGamePublication(source);
  const approved=new Set(['WEST JORDAN','LAYTON','MOUNTAIN RIDGE','WESTLAKE','FARMINGTON']);
- assert.ok(result.proposals.length<=6,'No more than six reviewed game changes');
+ assert.ok(result.proposals.length<=7,'No more than seven reviewed source operations');
  assert.ok(result.proposals.every(p=>approved.has(p.team)));
  const changedTeams=new Set(result.proposals.map(p=>p.team));
  const expected=[...changedTeams].map(t=>'team-current-data/'+t.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.json').sort();
@@ -48,6 +49,10 @@ test('player game box repairs use exact reviewed values and do not fill undocume
  const dahl=get('FARMINGTON','2026-10-14','farmington-17-alton-dahl','Passing');
  assert.deepEqual(dahl,[{YARDS:'190','COMP-ATT':'17-29',TD:'0',Int:'0'}]);
  assert.equal(repaired.teams.FARMINGTON.games.filter(x=>x.date==='2026-10-14').length,1);
+ const jeppesen=get('FARMINGTON','2026-10-14','farmington-32-brogan-jeppesen','Rushing');
+ const boyle=get('FARMINGTON','2026-10-14','farmington-14-thayne-boyle','Receiving');
+ assert.deepEqual(jeppesen,[{YARDS:'94',CARRIES:'18',TD:'1'}]);
+ assert.deepEqual(boyle,[{YARDS:'54',RECEPTIONS:'5',TD:'0'}]);
 });
 test('on a second run every game and team shard is byte-equivalent with no new proposals',()=>{
  const first=prepareReviewedGamePublication(source),copy={...source,games:first.updatedGames,shards:first.updatedShards};
