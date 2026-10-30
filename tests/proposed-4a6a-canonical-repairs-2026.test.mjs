@@ -69,3 +69,22 @@ test('all reviewed games have unique player-game identity and approved source UR
  for(const x of res.proposals)assert.match(x.source,/^https:\/\/www\.maxpreps\.com\//);
  assert.ok(!res.proposals.some(x=>x.team==='KEARNS'||x.team==='WESTLAKE'));
 });
+
+test('a repeated rebuild is idempotent and cannot duplicate recovered player games',()=>{
+ const repaired=proposeSourceRepairs(games,rosters,doc,{index:fake});
+ assert.equal(repaired.proposals.length,4);
+ const repeat=proposeSourceRepairs(repaired.repaired,rosters,doc,{index:fake});
+ assert.equal(repeat.proposals.length,0);
+ assert.equal(repeat.holds.length,0);
+ assert.equal(JSON.stringify(repeat.repaired),JSON.stringify(repaired.repaired));
+ const layton=repeat.repaired.teams.LAYTON.games.filter(g=>g.date==='2026-10-14'&&norm(g.opponent)==='FARMINGTON');
+ const ridge=repeat.repaired.teams['MOUNTAIN RIDGE'].games.filter(g=>g.date==='2026-10-15'&&norm(g.opponent)==='WESTLAKE');
+ assert.equal(layton.length,1);
+ assert.equal(ridge.length,1);
+});
+test('an already-recovered partial box with a changed stat is a hard source conflict',()=>{
+ const first=proposeSourceRepairs(games,rosters,doc,{index:fake}).repaired;
+ const layton=first.teams.LAYTON.games.find(g=>g.date==='2026-10-14');
+ layton.players[0].statLines[0].values.YARDS='238';
+ assert.throws(()=>proposeSourceRepairs(first,rosters,doc,{index:fake}),/Recovered partial source field changed/);
+});
