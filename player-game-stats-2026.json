@@ -1,9 +1,9 @@
 {
   "season": 2026,
-  "updatedAt": "2026-10-28T17:26:31.610Z",
+  "updatedAt": "2026-10-30T04:19:10.765Z",
   "summary": {
     "teams": 136,
-    "teamGames": 954,
+    "teamGames": 1122,
     "statRows": 16844,
     "rosterMatchedRows": 16523,
     "preservedFinalGames": 0,
@@ -31,6 +31,12 @@
       "fieldsApplied": 15,
       "fieldsReplaced": 3,
       "skipped": 0
+    },
+    "verified2026SourceRepairs": {
+      "manifestId": "2026-4a6a-five-player-review-batch-1",
+      "reviewDate": "2026-10-29",
+      "method": "unique source game + reviewed competition phase + stable player ID",
+      "changes": 5
     }
   },
   "teams": {
@@ -32044,6 +32050,39 @@
             "Mountain Ridge — (2:56 3Q) Tytan DeJong , 2-yard pass from Jaxon Hunt (kick from Will O'Neil )"
           ],
           "maxprepsUrl": "https://www.maxpreps.com/ut/football/game/bingham-south-jordan-vs-mountain-ridge-herriman/10-9-2026/?c=fe6bcb57-e262-4610-b603-d2a0f4795868"
+        },
+        {
+          "gameKey": "2026-10-15|MOUNTAINRIDGE|WESTLAKE",
+          "date": "2026-10-15",
+          "opponent": "WESTLAKE",
+          "status": "Final",
+          "final": true,
+          "teamScore": 21,
+          "opponentScore": 13,
+          "url": "https://www.maxpreps.com/news/C_po543N-Uu9gMLPBDOp2A/xander-thayer-game-report-%40-westlake.htm",
+          "maxprepsUrl": "https://www.maxpreps.com/news/C_po543N-Uu9gMLPBDOp2A/xander-thayer-game-report-%40-westlake.htm",
+          "manualPartialStats": true,
+          "playerDataCoverage": "reviewed-partial-box; other athletes and fields unknown",
+          "players": [
+            {
+              "playerId": "mountain-ridge-7-xander-thayer",
+              "name": "Xander Thayer",
+              "number": "7",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Receiving",
+                  "values": {
+                    "YARDS": "141"
+                  },
+                  "statSources": {
+                    "YARDS": "Reviewed MaxPreps game source"
+                  }
+                }
+              ],
+              "scoringPlays": []
+            }
+          ]
         }
       ]
     },
@@ -261761,15 +261800,18 @@
                 {
                   "category": "Passing",
                   "values": {
-                    "Comp-Att": "20-35",
+                    "Comp-Att": "7-15",
                     "Comp %": "57%",
-                    "Yards": "176",
+                    "Yards": "29",
                     "TD": "1",
-                    "Int": "0",
+                    "Int": "2",
                     "YARDS/COMP.": "4.1"
                   },
                   "statSources": {
-                    "YARDS/COMP.": "MaxPreps"
+                    "YARDS/COMP.": "MaxPreps",
+                    "Yards": "Reviewed MaxPreps box, https://www.maxpreps.com/ut/football/game/copper-hills-west-jordan-vs-west-jordan/8-21-2026/?c=86e93802-4e88-40e3-acc4-90c3fe6ac2ec",
+                    "Comp-Att": "Reviewed MaxPreps box, https://www.maxpreps.com/ut/football/game/copper-hills-west-jordan-vs-west-jordan/8-21-2026/?c=86e93802-4e88-40e3-acc4-90c3fe6ac2ec",
+                    "Int": "Reviewed MaxPreps box, https://www.maxpreps.com/ut/football/game/copper-hills-west-jordan-vs-west-jordan/8-21-2026/?c=86e93802-4e88-40e3-acc4-90c3fe6ac2ec"
                   }
                 }
               ],
@@ -277390,15 +277432,17 @@
                 {
                   "category": "Passing",
                   "values": {
-                    "Comp-Att": "23-34",
+                    "Comp-Att": "25-36",
                     "Comp %": "68%",
-                    "Yards": "275",
+                    "Yards": "315",
                     "TD": "2",
                     "Int": "0",
                     "YARDS/COMP.": "12.6"
                   },
                   "statSources": {
-                    "YARDS/COMP.": "MaxPreps"
+                    "YARDS/COMP.": "MaxPreps",
+                    "Yards": "Reviewed MaxPreps box, https://www.maxpreps.com/ut/football/game/layton-vs-northridge-layton/8-21-2026/?c=4d331ebf-d1ac-42a1-9c57-304f3d95b885",
+                    "Comp-Att": "Reviewed MaxPreps box, https://www.maxpreps.com/ut/football/game/layton-vs-northridge-layton/8-21-2026/?c=4d331ebf-d1ac-42a1-9c57-304f3d95b885"
                   }
                 }
               ],
@@ -281799,6 +281843,43 @@
             "Layton — (3:01 3Q) Jack Anderson , 25-yard pass from Tillman Thomas (kick failed)"
           ],
           "maxprepsUrl": "https://www.maxpreps.com/ut/football/game/davis-kaysville-vs-layton/10-8-2026/?c=43ccbe28-2cde-42be-a4bc-7320619f8aef"
+        },
+        {
+          "gameKey": "2026-10-14|LAYTON|FARMINGTON",
+          "date": "2026-10-14",
+          "opponent": "FARMINGTON",
+          "status": "Final",
+          "final": true,
+          "teamScore": 17,
+          "opponentScore": 27,
+          "url": "https://www.maxpreps.com/ut/football/game/farmington-vs-layton/10-14-2026/?c=3d420072-cdf0-4e47-aa5d-8cad041b3bee",
+          "maxprepsUrl": "https://www.maxpreps.com/ut/football/game/farmington-vs-layton/10-14-2026/?c=3d420072-cdf0-4e47-aa5d-8cad041b3bee",
+          "manualPartialStats": true,
+          "playerDataCoverage": "reviewed-partial-box; other athletes and fields unknown",
+          "players": [
+            {
+              "playerId": "layton-5-tillman-thomas",
+              "name": "Tillman Thomas",
+              "number": "5",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Passing",
+                  "values": {
+                    "YARDS": "239",
+                    "COMP-ATT": "25-41",
+                    "Int": "2"
+                  },
+                  "statSources": {
+                    "YARDS": "Reviewed MaxPreps game source",
+                    "COMP-ATT": "Reviewed MaxPreps game source",
+                    "Int": "Reviewed MaxPreps game source"
+                  }
+                }
+              ],
+              "scoringPlays": []
+            }
+          ]
         }
       ]
     },
@@ -392421,6 +392502,39 @@
             "Westlake — (3:23 4Q) Slone Sua , 32-yard pass from Silas Taumoepeau (run from Malakai Leilua )"
           ],
           "maxprepsUrl": "https://www.maxpreps.com/ut/football/game/cedar-valley-eagle-mountain-vs-westlake-saratoga-springs/10-9-2026/?c=6e5d6ad2-c211-4be0-aa9d-a314b13fbe82"
+        },
+        {
+          "gameKey": "2026-10-15|MOUNTAINRIDGE|WESTLAKE",
+          "date": "2026-10-15",
+          "opponent": "MOUNTAIN RIDGE",
+          "status": "Final",
+          "final": true,
+          "teamScore": 13,
+          "opponentScore": 21,
+          "url": "https://www.maxpreps.com/news/_cgcyUcwn0-cNa0ktq3Nbw/football-recap-westlake-comes-up-short-in-high-profile-matchup-with-mountain-ridge.htm",
+          "maxprepsUrl": "https://www.maxpreps.com/news/_cgcyUcwn0-cNa0ktq3Nbw/football-recap-westlake-comes-up-short-in-high-profile-matchup-with-mountain-ridge.htm",
+          "manualPartialStats": true,
+          "playerDataCoverage": "reviewed partial rushing-yard report; carries/TD and other athletes remain unknown",
+          "players": [
+            {
+              "playerId": "westlake-5-ashton-taylor",
+              "name": "Ashton Taylor",
+              "number": "5",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Rushing",
+                  "values": {
+                    "YARDS": "203"
+                  },
+                  "statSources": {
+                    "YARDS": "2026-10-27 updated MaxPreps recap, corroborated by second Oct 27 recap"
+                  }
+                }
+              ],
+              "scoringPlays": []
+            }
+          ]
         }
       ]
     },
