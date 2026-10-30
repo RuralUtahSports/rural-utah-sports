@@ -9,6 +9,9 @@ on:
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
       - 'scripts/propose_4a6a_canonical_game_repairs_2026.mjs'
+      - 'scripts/publish_reviewed_game_source_2026.mjs'
+      - 'tests/publish-reviewed-game-source-2026.test.mjs'
+      - '.github/workflows/publish-reviewed-player-game-repairs-2026.yml'
       - 'tests/proposed-4a6a-canonical-repairs-2026.test.mjs'
       - 'audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'
       - '.github/workflows/propose-4a6a-source-repairs-2026.yml'
@@ -122,7 +125,7 @@ jobs:
           SOURCE_ONLY=1
           while IFS= read -r file; do
             case "$file" in
-              scripts/propose_4a6a_canonical_game_repairs_2026.mjs|tests/proposed-4a6a-canonical-repairs-2026.test.mjs|audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json|.github/workflows/build-current-game-stats.yml|.github/workflows/build-deseret-rosters-stats.yml|.github/workflows/propose-4a6a-source-repairs-2026.yml|.github/workflows/regular-season-scope-review.yml)
+              scripts/propose_4a6a_canonical_game_repairs_2026.mjs|tests/proposed-4a6a-canonical-repairs-2026.test.mjs|scripts/publish_reviewed_game_source_2026.mjs|tests/publish-reviewed-game-source-2026.test.mjs|.github/workflows/publish-reviewed-player-game-repairs-2026.yml|audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json|.github/workflows/build-current-game-stats.yml|.github/workflows/build-deseret-rosters-stats.yml|.github/workflows/propose-4a6a-source-repairs-2026.yml|.github/workflows/regular-season-scope-review.yml)
                 ;;
               *) SOURCE_ONLY=0 ;;
             esac
