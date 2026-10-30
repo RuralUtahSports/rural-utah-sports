@@ -26,6 +26,7 @@
 <script src="reviewed-fiefia-rushing-2026.js?v=20261029-fiefia36"></script>
 <script src="reviewed-4a6a-passing-batch-2026.js?v=20261029-4a6a-virgin1"></script>
 <script src="reviewed-4a-rushing-brown-2026.js?v=20261029-4a-brown1"></script>
+<script src="reviewed-4a6a-offense-bulk-2026.js?v=20261029-bulk1"></script>
 <script src="preview-stat-checks-2026.js?v=20261029-6a-preview1"></script>
 <script src="verified-player-stats-2026.js?v=20261023-alma-verified1"></script>
 </head>
@@ -262,6 +263,11 @@ async function load(){
     if(!ev.ok)throw Error('Reviewed rushing evidence ledger unavailable');
     window.RUSReviewed4ARushingBrown2026.applyVerified(regularPublication,await ev.json());
    }catch(error){console.warn('Seth Brown 10-game verified rushing fields unavailable; held from ranks',error)}
+   try{
+    const source=await fetch('audits/2026-regular-season/4a6a-reviewed-offense-corrections-batch-1.json',{cache:'no-store'});
+    if(!source.ok)throw Error('Reviewed 4A-6A correction evidence unavailable');
+    window.RUSReviewed4A6AOffense2026.applyVerified(regularPublication,await source.json());
+   }catch(error){console.warn('2026 reviewed 4A-6A correction batch held; source data unchanged',error)}
    allStats=sourceMode==='reported'?reportedStats:regularPublication;
    playerGames=g?.ok?await g.json():null;if(playerGames)for(const [team,t] of Object.entries(playerGames.teams||{}))t.games=window.RUSRegularSeasonPolicy2026.uniqueGames(t.games,team,regularPublication).map(record=>record.game);
    const weeklySchedule=w?.ok?(await w.json()).games||[]:[];
