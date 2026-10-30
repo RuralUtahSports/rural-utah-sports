@@ -72,6 +72,19 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.equal(deaconRush?.values?.CARRIES,'30','Deacon Virgin 10-game verified rushing carries');
   assert.equal(deaconRush?.values?.TD,undefined,'Unknown game TD cells must not be converted to 0');
   results.push({width,test:'4A-6A bulk review applies only Deacon Virgin documented rushing totals in verified mode'});
+  const reviewedCases=await p.evaluate(()=>({
+    shockey:buildRows('Passing').find(r=>r.playerId==='west-jordan-3-kenyon-shockey')?.values,
+    thomas:buildRows('Passing').find(r=>r.playerId==='layton-5-tillman-thomas')?.values,
+    thayer:buildRows('Receiving').find(r=>r.playerId==='mountain-ridge-7-xander-thayer')?.values
+  }));
+  for(const [name,actual,expected] of [
+    ['Shockey',reviewedCases.shockey,{YARDS:'1110','COMP-ATT':'105-201',Int:'12'}],
+    ['Thomas',reviewedCases.thomas,{YARDS:'2175','COMP-ATT':'180-311',Int:'15'}],
+    ['Thayer',reviewedCases.thayer,{YARDS:'892'}]
+  ])for(const [field,v] of Object.entries(expected))assert.equal(actual?.[field],v,name+' verified regular-season '+field);
+  assert.equal(reviewedCases.thayer?.RECEPTIONS,undefined,'Unverified Thayer catches stay unavailable');
+  results.push({width,test:'Shockey, Thomas and Thayer corrected totals appear in verified 4A-6A leaderboards'});
+
 
 
   const huntVerified=p.locator('#results tbody tr').filter({hasText:'Jaxon Hunt'});
