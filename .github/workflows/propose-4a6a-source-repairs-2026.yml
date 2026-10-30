@@ -4,6 +4,7 @@ on:
     paths:
       - 'scripts/propose_4a6a_canonical_game_repairs_2026.mjs'
       - 'tests/proposed-4a6a-canonical-repairs-2026.test.mjs'
+      - 'audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'
       - '.github/workflows/propose-4a6a-source-repairs-2026.yml'
   workflow_dispatch:
 permissions:
@@ -36,11 +37,12 @@ jobs:
           mkdir -p "$WORK/audits/2026-regular-season"
           cp player-game-stats-2026.json deseret-rosters-stats-2026.json official-brackets-2026.json competition-scope-review-2026.json "$WORK/"
           cp audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json "$WORK/audits/2026-regular-season/"
+          cp audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json "$WORK/audits/2026-regular-season/"
           (cd "$WORK"; node "$GITHUB_WORKSPACE/scripts/propose_4a6a_canonical_game_repairs_2026.mjs" --apply --output="$RUNNER_TEMP/first-repair-pass")
           cp "$WORK/player-game-stats-2026.json" "$RUNNER_TEMP/first-repair-result.json"
           (cd "$WORK"; node "$GITHUB_WORKSPACE/scripts/propose_4a6a_canonical_game_repairs_2026.mjs" --apply --output="$RUNNER_TEMP/second-repair-pass")
           cmp "$WORK/player-game-stats-2026.json" "$RUNNER_TEMP/first-repair-result.json"
-          node -e "const fs=require('fs');const g=JSON.parse(fs.readFileSync(process.argv[1]));const w=g.teams['WEST JORDAN'].games.find(x=>x.date==='2026-08-21');if(w.players.find(x=>x.playerId==='west-jordan-3-kenyon-shockey').statLines.find(x=>x.category==='Passing').values.Yards!=='29')process.exit(1);for(const [team,date] of [['LAYTON','2026-10-14'],['MOUNTAIN RIDGE','2026-10-15']]){const rows=g.teams[team].games.filter(x=>x.date===date);if(rows.length!==1||!rows[0].manualPartialStats)process.exit(1);}" "$RUNNER_TEMP/first-repair-result.json"
+          node -e "const fs=require('fs');const g=JSON.parse(fs.readFileSync(process.argv[1]));const w=g.teams['WEST JORDAN'].games.find(x=>x.date==='2026-08-21');if(w.players.find(x=>x.playerId==='west-jordan-3-kenyon-shockey').statLines.find(x=>x.category==='Passing').values.Yards!=='29')process.exit(1);for(const [team,date] of [['LAYTON','2026-10-14'],['MOUNTAIN RIDGE','2026-10-15'],['WESTLAKE','2026-10-15']]){const rows=g.teams[team].games.filter(x=>x.date===date);if(rows.length!==1||!rows[0].manualPartialStats)process.exit(1);}" "$RUNNER_TEMP/first-repair-result.json"
       - name: Verify canonical datasets are unchanged
         run: |
           git diff --exit-code -- player-game-stats-2026.json deseret-rosters-stats-2026.json deseret-team-data-2026.json deseret-stat-metrics-2026.json team-current-data

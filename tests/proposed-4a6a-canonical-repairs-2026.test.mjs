@@ -8,6 +8,7 @@ const games=read('player-game-stats-2026.json');
 const rosters=read('deseret-rosters-stats-2026.json');
 const doc=read('audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json');
 const fake={classify:()=>({phase:'regular-season'})};
+const taylor=read('audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json');
 const norm=x=>String(x||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 
 test('source repair proposes only two dated game corrections and two missing partial games',()=>{
@@ -87,4 +88,44 @@ test('an already-recovered partial box with a changed stat is a hard source conf
  const layton=first.teams.LAYTON.games.find(g=>g.date==='2026-10-14');
  layton.players[0].statLines[0].values.YARDS='238';
  assert.throws(()=>proposeSourceRepairs(first,rosters,doc,{index:fake}),/Recovered partial source field changed/);
+});
+
+test('Westlake Ashton Taylor Oct 15 adds exactly 203 rushing yards as partial game, not a complete season value',()=>{
+ const input=JSON.stringify(games);
+ const result=proposeSourceRepairs(games,rosters,doc,{index:fake,taylorReview:taylor});
+ assert.equal(result.proposals.length,5);
+ assert.equal(result.holds.length,0);
+ const p=result.proposals.at(-1);
+ assert.deepEqual([p.kind,p.team,p.date,p.reviewedValue,p.manualPartialStats],
+  ['recover-missing-game','WESTLAKE','2026-10-15',203,true]);
+ const data=result.repaired.teams.WESTLAKE.games.filter(g=>g.date==='2026-10-15');
+ assert.equal(data.length,1);
+ assert.equal(data[0].manualPartialStats,true);
+ assert.equal(data[0].players.length,1);
+ assert.deepEqual(data[0].players[0].statLines[0].values,{YARDS:'203'});
+ assert.equal(data[0].players[0].statLines[0].values.CARRIES,undefined);
+ assert.equal(data[0].players[0].statLines[0].values.TD,undefined);
+ assert.equal(JSON.stringify(games),input);
+ // Four current complete lines (152, 70, 93, 109) plus 203 are only a
+ // partial five-game subtotal, not a ten-game certified season total.
+ const playerId='westlake-5-ashton-taylor';
+ const existing=games.teams.WESTLAKE.games.flatMap(g=>(g.players||[]).filter(p=>p.playerId===playerId).flatMap(p=>(p.statLines||[]).filter(x=>x.category==='Rushing').map(x=>x.values.Yards??x.values.YARDS))).filter(x=>String(x??'').trim()!=='').map(Number);
+ assert.deepEqual(existing.sort((a,b)=>a-b),[70,93,109,152]);
+ assert.equal(existing.reduce((a,b)=>a+b,0)+203,627);
+});
+test('Westlake source conflict is resolved only for this individual game, never certified for season or carries',()=>{
+ const altered=structuredClone(taylor);altered.verifiedValue=211;
+ assert.throws(()=>proposeSourceRepairs(games,rosters,doc,{index:fake,taylorReview:altered}),/source conflict/);
+ const out=proposeSourceRepairs(games,rosters,doc,{index:fake,taylorReview:taylor});
+ const repeated=proposeSourceRepairs(out.repaired,rosters,doc,{index:fake,taylorReview:taylor});
+ assert.equal(repeated.proposals.length,0);
+ assert.equal(repeated.holds.length,0);
+ assert.equal(JSON.stringify(repeated.repaired),JSON.stringify(out.repaired));
+ const changed=structuredClone(out.repaired);
+ changed.teams.WESTLAKE.games.find(g=>g.date==='2026-10-15').players[0].statLines[0].values.YARDS='211';
+ const held=proposeSourceRepairs(changed,rosters,doc,{index:fake,taylorReview:taylor});
+ assert.equal(held.holds.length,1);
+ assert.equal(held.proposals.length,0);
+ const phaseHold=proposeSourceRepairs(games,rosters,doc,{index:{classify:g=>({phase:g.date==='2026-10-15'?'unknown':'regular-season'})},taylorReview:taylor});
+ assert.equal(phaseHold.holds.length,2,'Mountain Ridge and Westlake Oct 15 games both held if phase unknown');
 });
