@@ -9,6 +9,9 @@ on:
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
       - 'scripts/propose_4a6a_canonical_game_repairs_2026.mjs'
+      - 'scripts/publish_reviewed_game_source_2026.mjs'
+      - 'tests/publish-reviewed-game-source-2026.test.mjs'
+      - '.github/workflows/publish-reviewed-player-game-repairs-2026.yml'
       - 'tests/proposed-4a6a-canonical-repairs-2026.test.mjs'
       - 'audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'
       - '.github/workflows/propose-4a6a-source-repairs-2026.yml'
@@ -122,7 +125,7 @@ jobs:
           SOURCE_ONLY=1
           while IFS= read -r file; do
             case "$file" in
-              scripts/propose_4a6a_canonical_game_repairs_2026.mjs|tests/proposed-4a6a-canonical-repairs-2026.test.mjs|audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json|.github/workflows/build-current-game-stats.yml|.github/workflows/build-deseret-rosters-stats.yml|.github/workflows/propose-4a6a-source-repairs-2026.yml|.github/workflows/regular-season-scope-review.yml)
+              scripts/propose_4a6a_canonical_game_repairs_2026.mjs|tests/proposed-4a6a-canonical-repairs-2026.test.mjs|scripts/publish_reviewed_game_source_2026.mjs|tests/publish-reviewed-game-source-2026.test.mjs|.github/workflows/publish-reviewed-player-game-repairs-2026.yml|audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json|.github/workflows/build-current-game-stats.yml|.github/workflows/build-deseret-rosters-stats.yml|.github/workflows/propose-4a6a-source-repairs-2026.yml|.github/workflows/regular-season-scope-review.yml)
                 ;;
               *) SOURCE_ONLY=0 ;;
             esac
@@ -132,13 +135,21 @@ jobs:
             test -z "$(git diff --name-only "$BASE" HEAD -- deseret-rosters-stats-2026.json player-game-stats-2026.json deseret-stat-metrics-2026.json deseret-team-data-2026.json regular-season-publication-2026.json team-current-data team-stats-2026.json standings-2026.json region-awards-2026.lock.json)"
             node --test tests/proposed-4a6a-canonical-repairs-2026.test.mjs
             node scripts/propose_4a6a_canonical_game_repairs_2026.mjs --output="$RUNNER_TEMP/source-repair-preservation"
-            node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync(process.argv[1]));if(p.proposals.length!==5||p.holds.length!==0||p.proposals.filter(x=>x.kind==='recover-missing-game').length!==3)process.exit(1)" "$RUNNER_TEMP/source-repair-preservation/proposed-source-fixes.json"
+            node scripts/publish_reviewed_game_source_2026.mjs --output="$RUNNER_TEMP/source-publisher-preservation"
+            node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync(process.argv[1]));if(![0,5].includes(p.proposals.length)||p.holds.length!==0||(p.proposals.length===5&&p.proposals.filter(x=>x.kind==='recover-missing-game').length!==3))process.exit(1)" "$RUNNER_TEMP/source-repair-preservation/proposed-source-fixes.json"
           elif [ -z "$NOT_PRESENTATION" ]; then
             echo "Presentation-only PR: protected datasets remain identical to current main."
           else
             echo "Other source changes still require the PR181 preservation gate."
             node scripts/verify_pr181_preservation_2026.mjs --baseline="$(node -p 'require("./reviewed-team-stat-adjustments-2026.json").mainSnapshot')" --output="$RUNNER_TEMP/pr181-preservation"
           fi
+      - name: Validate focused source publisher YAML and GitHub Actions schema
+        run: |
+          python3 -m pip install --quiet pyyaml
+          python3 -c "import yaml; p='.github/workflows/publish-reviewed-player-game-repairs-2026.yml'; d=yaml.safe_load(open(p)); print('Source publisher parsed:', d.get('name'))"
+          curl -fsSL https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz -o /tmp/source-actionlint.tar.gz
+          tar -xzf /tmp/source-actionlint.tar.gz -C /tmp actionlint
+          /tmp/actionlint .github/workflows/publish-reviewed-player-game-repairs-2026.yml
       - name: Verify reviewed publication matches evidence and pinned awards
         run: node scripts/build_regular_season_publication_2026.mjs --check
       - name: Install pinned browser test runtime
