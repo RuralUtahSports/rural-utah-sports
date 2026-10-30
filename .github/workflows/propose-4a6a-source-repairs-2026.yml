@@ -6,6 +6,7 @@ on:
       - 'tests/proposed-4a6a-canonical-repairs-2026.test.mjs'
       - 'audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'
       - 'audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json'
+      - 'audits/2026-regular-season/farmington-layton-oct14-skills-reviewed-2026.json'
       - '.github/workflows/propose-4a6a-source-repairs-2026.yml'
   workflow_dispatch:
 permissions:
@@ -40,6 +41,7 @@ jobs:
           cp audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json "$WORK/audits/2026-regular-season/"
           cp audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json "$WORK/audits/2026-regular-season/"
           cp audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json "$WORK/audits/2026-regular-season/"
+          cp audits/2026-regular-season/farmington-layton-oct14-skills-reviewed-2026.json "$WORK/audits/2026-regular-season/"
           (cd "$WORK"; node "$GITHUB_WORKSPACE/scripts/propose_4a6a_canonical_game_repairs_2026.mjs" --apply --output="$RUNNER_TEMP/first-repair-pass")
           cp "$WORK/player-game-stats-2026.json" "$RUNNER_TEMP/first-repair-result.json"
           (cd "$WORK"; node "$GITHUB_WORKSPACE/scripts/propose_4a6a_canonical_game_repairs_2026.mjs" --apply --output="$RUNNER_TEMP/second-repair-pass")
