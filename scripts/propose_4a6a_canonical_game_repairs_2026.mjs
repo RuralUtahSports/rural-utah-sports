@@ -15,7 +15,46 @@ const choose=(teams,team)=>{const rows=Object.entries(teams||{}).filter(([k])=>t
 const same=(a,b)=>String(a)===String(b);
 const unverified=(d,g,reason)=>({team:d.team,playerId:d.playerId,date:g.date,opponent:g.opponent,reason,source:g.sourceUrl});
 
-export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPhase=true}={}){
+function attachTaylorGame({out,rosters,review,index,proposals,holds,strictPhase}){
+ if(!review)return;
+ if(review.id!=='westlake-ashton-taylor-2026-10-15-rushing-yards'||review.season!==2026||review.scope!=='regular-season-single-game-only'||review.status!=='source-reviewed-conflict-resolved'||
+    review.team!=='WESTLAKE'||review.identity?.playerId!=='westlake-5-ashton-taylor'||review.identity?.name!=='Ashton Taylor'||String(review.identity?.number)!=='5'||
+    review.game?.date!=='2026-10-15'||teamKey(review.game?.opponent)!==teamKey('MOUNTAIN RIDGE')||
+    review.game?.teamScore!==13||review.game?.opponentScore!==21||
+    review.category!=='Rushing'||review.field!=='YARDS'||review.verifiedValue!==203||
+    review.priorConflictValue!==211||review.priorConflictPublished!=='2026-10-19'||
+    review.primaryPublished!=='2026-10-27'||
+    !/^https:\/\/www\.maxpreps\.com\/news\//.test(review.primarySource)||
+    !/^https:\/\/www\.maxpreps\.com\/news\//.test(review.additionalSource))
+  throw Error('Westlake source conflict or athlete/game identity changed; re-review required');
+ const roster=choose(rosters.teams,review.team).roster.filter(p=>p.playerId===review.identity.playerId&&p.name===review.identity.name&&String(p.number)==='5');
+ if(roster.length!==1)throw Error('Missing/ambiguous Westlake roster identity');
+ const phase=index.classify({date:review.game.date,opponent:review.game.opponent,url:review.primarySource},review.team);
+ if(phase.phase!=='regular-season'){holds.push({team:review.team,playerId:review.identity.playerId,date:review.game.date,opponent:review.game.opponent,reason:'Competition index lacks positively reviewed regular-season phase',source:review.primarySource});return;}
+ const games=choose(out.teams,review.team).games||[];
+ const matches=games.filter(g=>g.date===review.game.date&&teamKey(g.opponent)===teamKey(review.game.opponent));
+ if(matches.length>1)throw Error('Duplicate Westlake Oct 15 game');
+ if(matches.length===1){
+  const game=matches[0],people=(game.players||[]).filter(p=>p.playerId===review.identity.playerId);
+  if(game.manualPartialStats&&people.length===1&&people[0].name===review.identity.name&&String(people[0].number)==='5'){
+   const lines=(people[0].statLines||[]).filter(l=>norm(l.category)==='RUSHING'),v=lines.length===1?get(lines[0].values,'YARDS'):null;
+   if(v&&same(v.value,'203')&&game.teamScore===13&&game.opponentScore===21)return;
+  }
+  holds.push({team:review.team,playerId:review.identity.playerId,date:review.game.date,opponent:review.game.opponent,reason:'A complete or changed Oct 15 game already exists; do not overwrite it with a partial player report',source:review.primarySource});
+  return;
+ }
+ const game={gameKey:'2026-10-15|MOUNTAINRIDGE|WESTLAKE',date:review.game.date,opponent:review.game.opponent,
+  status:'Final',final:true,teamScore:13,opponentScore:21,url:review.primarySource,maxprepsUrl:review.primarySource,
+  manualPartialStats:true,playerDataCoverage:'reviewed partial rushing-yard report; carries/TD and other athletes remain unknown',
+  players:[{playerId:review.identity.playerId,name:review.identity.name,number:'5',rosterMatched:true,statLines:[{category:'Rushing',values:{YARDS:'203'},statSources:{YARDS:'2026-10-27 updated MaxPreps recap, corroborated by second Oct 27 recap'}}],scoringPlays:[]}]};
+ if(!stableGameKey(game,review.team))throw Error('Westlake recovered game has invalid competition identity');
+ games.push(game);games.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ proposals.push({kind:'recover-missing-game',team:review.team,playerId:review.identity.playerId,date:game.date,
+  opponent:game.opponent,source:review.primarySource,fields:['YARDS'],reviewedValue:203,manualPartialStats:true,
+  conflictingOlderRecap:review.priorConflictSource,seasonTotalHeld:true});
+}
+
+export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPhase=true,taylorReview=null}={}){
  if(typeof index?.classify!=='function')throw Error('Explicit reviewed competition identity index required');
  validate(manifest);
  const out=structuredClone(gameStats),proposals=[],holds=[];
@@ -90,6 +129,7 @@ export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPha
    }
   }
  }
+ attachTaylorGame({out,rosters,review:taylorReview,index,proposals,holds,strictPhase});
  // Reconcile the metadata only after all source-field approvals are checked.
  if(proposals.length){
   out.summary||={};
@@ -101,10 +141,10 @@ export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPha
 
 function read(filename){return JSON.parse(fs.readFileSync(filename,'utf8'));}
 if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1])){
- const files=['player-game-stats-2026.json','deseret-rosters-stats-2026.json','audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json','official-brackets-2026.json','competition-scope-review-2026.json'];
+ const files=['player-game-stats-2026.json','deseret-rosters-stats-2026.json','audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json','official-brackets-2026.json','competition-scope-review-2026.json','audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'];
  const raw=Object.fromEntries(files.map(file=>[file,fs.readFileSync(file,'utf8')]));
- const [games,rosters,manifest,brackets,review]=files.map(file=>JSON.parse(raw[file]));
- const result=proposeSourceRepairs(games,rosters,manifest,{index:createCompetitionIndex({brackets,review})});
+ const [games,rosters,manifest,brackets,review,taylorReview]=files.map(file=>JSON.parse(raw[file]));
+ const result=proposeSourceRepairs(games,rosters,manifest,{index:createCompetitionIndex({brackets,review}),taylorReview});
  if(process.argv.includes('--apply')){
   if(result.holds.length)throw Error('Cannot publish canonical source while unverified game phases remain');
   const pathToSource='player-game-stats-2026.json';
