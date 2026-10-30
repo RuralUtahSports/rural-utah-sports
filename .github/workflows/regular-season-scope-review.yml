@@ -8,6 +8,9 @@ on:
       - 'scripts/merge_deseret_stats_endpoints.mjs'
       - 'scripts/merge_maxpreps_stats_fallback.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
+      - 'scripts/propose_4a6a_canonical_game_repairs_2026.mjs'
+      - 'tests/proposed-4a6a-canonical-repairs-2026.test.mjs'
+      - '.github/workflows/propose-4a6a-source-repairs-2026.yml'
       - 'scripts/build_regular_season_publication_2026.mjs'
       - 'scripts/check_stat_publish_2026.mjs'
       - 'regular-season-stat-policy-2026.js'
@@ -113,10 +116,26 @@ jobs:
           # The fixed PR #181 baseline predates newer main commits. The
           # presentation-only path may not change any stats, awards or evidence.
           NOT_PRESENTATION="$(printf '%s\n' "$CHANGED" | grep -Ev '^(team-stats\.html|stat-leaders\.html|player\.html|reviewed-hunt-passing-2026\.js|tests/reviewed-hunt-passing-2026\.test\.mjs|reviewed-fiefia-rushing-2026\.js|tests/reviewed-fiefia-rushing-2026\.test\.mjs|reviewed-4a6a-passing-batch-2026\.js|tests/reviewed-4a6a-passing-batch-2026\.test\.mjs|audits/2026-regular-season/4a-6a-passing-batch-1-evidence\.json|reviewed-4a-rushing-brown-2026\.js|tests/reviewed-4a-rushing-brown-2026\.test\.mjs|audits/2026-regular-season/4a-rushing-seth-brown-evidence\.json|reviewed-4a6a-offense-bulk-2026\.js|tests/reviewed-4a6a-offense-bulk-2026\.test\.mjs|audits/2026-regular-season/4a6a-reviewed-offense-corrections-batch-1\.json|reviewed-4a6a-five-player-2026\.js|tests/reviewed-4a6a-five-player-2026\.test\.mjs|audits/2026-regular-season/reconciled-4a6a-player-cases-2026\.json|scripts/audit_4a6a_stat_coverage_2026\.mjs|tests/audit-4a6a-stat-coverage-2026\.test\.mjs|\.github/workflows/audit-4a6a-offense-2026\.yml|preview-stat-checks-2026\.js|tests/preview-stat-checks-2026\.test\.mjs|maxpreps-missing-totals-2026\.js|maxpreps-primary-reported-2026\.js|tests/maxpreps-primary-reported-2026\.test\.mjs|tests/maxpreps-missing-totals-2026\.test\.mjs|scripts/test-stat-pipeline-browser\.cjs|scripts/test-corrected-stat-pages-browser\.cjs|tests/team-stats-reported-2026\.test\.mjs|tests/stat-leaders-reported-2026\.test\.mjs|\.github/workflows/regular-season-scope-review\.yml)$' || true)"
-          if [ -z "$NOT_PRESENTATION" ]; then
+          # Source-repair-only branches use a current-main, exact-diff source guard.
+          # The historic PR181 baseline is too old for current shard timestamps.
+          SOURCE_ONLY=1
+          while IFS= read -r file; do
+            case "$file" in
+              scripts/propose_4a6a_canonical_game_repairs_2026.mjs|tests/proposed-4a6a-canonical-repairs-2026.test.mjs|.github/workflows/build-current-game-stats.yml|.github/workflows/build-deseret-rosters-stats.yml|.github/workflows/propose-4a6a-source-repairs-2026.yml|.github/workflows/regular-season-scope-review.yml)
+                ;;
+              *) SOURCE_ONLY=0 ;;
+            esac
+          done <<< "$CHANGED"
+          if [ "$SOURCE_ONLY" -eq 1 ]; then
+            echo "Reviewed source repair: verify unchanged datasets and four exact approved game changes."
+            test -z "$(git diff --name-only "$BASE" HEAD -- deseret-rosters-stats-2026.json player-game-stats-2026.json deseret-stat-metrics-2026.json deseret-team-data-2026.json regular-season-publication-2026.json team-current-data team-stats-2026.json standings-2026.json region-awards-2026.lock.json)"
+            node --test tests/proposed-4a6a-canonical-repairs-2026.test.mjs
+            node scripts/propose_4a6a_canonical_game_repairs_2026.mjs --output="$RUNNER_TEMP/source-repair-preservation"
+            node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync(process.argv[1]));if(p.proposals.length!==4||p.holds.length!==0||p.proposals.filter(x=>x.kind==='recover-missing-game').length!==2)process.exit(1)" "$RUNNER_TEMP/source-repair-preservation/proposed-source-fixes.json"
+          elif [ -z "$NOT_PRESENTATION" ]; then
             echo "Presentation-only PR: protected datasets remain identical to current main."
           else
-            echo "Non-presentation change requires the source-reviewed correction preservation gate."
+            echo "Other source changes still require the PR181 preservation gate."
             node scripts/verify_pr181_preservation_2026.mjs --baseline="$(node -p 'require("./reviewed-team-stat-adjustments-2026.json").mainSnapshot')" --output="$RUNNER_TEMP/pr181-preservation"
           fi
       - name: Verify reviewed publication matches evidence and pinned awards

@@ -16,6 +16,8 @@ on:
       - 'scripts/build_deseret_stat_metrics.mjs'
       - 'scripts/build_player_game_stats.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
+      - 'scripts/propose_4a6a_canonical_game_repairs_2026.mjs'
+      - 'audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json'
       - 'scripts/merge_verified_deseret_kicking.mjs'
       - 'deseret-kicking-game-stats-2026.json'
       - 'scripts/reconcile_season_stats_from_game_logs.mjs'
@@ -80,6 +82,8 @@ jobs:
           node scripts/apply_manual_stat_corrections.mjs
       - name: Preserve reviewed season and game cells
         run: node scripts/protect_regular_season_import_2026.mjs --baseline="$RUNNER_TEMP/regular-season-retained.json" --games-baseline="$RUNNER_TEMP/regular-games-retained.json" --candidate-output="$RUNNER_TEMP/regular-season-import-candidate.json"
+      - name: Reapply approved 4A-6A source game corrections after import protection
+        run: node scripts/propose_4a6a_canonical_game_repairs_2026.mjs --apply --output="$RUNNER_TEMP/4a6a-source-repairs"
       - name: Build reviewed regular-season publication
         run: node scripts/build_regular_season_publication_2026.mjs
       - name: Build compact shared stat metrics
