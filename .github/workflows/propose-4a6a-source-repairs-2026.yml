@@ -16,6 +16,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Validate source-preservation workflow YAML with a strict parser
+        run: |
+          python3 -m pip install --quiet pyyaml
+          python3 -c "import yaml; p='.github/workflows/regular-season-scope-review.yml'; d=yaml.safe_load(open(p)); print('YAML parsed:', d.get('name'))"
+      - name: Validate source-preservation workflow with actionlint
+        run: |
+          curl -fsSL https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz -o /tmp/actionlint.tar.gz
+          tar -xzf /tmp/actionlint.tar.gz -C /tmp actionlint
+          /tmp/actionlint .github/workflows/regular-season-scope-review.yml
       - name: Check exact original game fields, eligibility and missing-value holds
         run: node --test tests/proposed-4a6a-canonical-repairs-2026.test.mjs
       - name: Reconstruct game repair proposals from current saved data
