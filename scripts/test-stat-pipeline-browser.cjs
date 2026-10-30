@@ -56,6 +56,12 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   const fiefiaRushingTD=await p.evaluate(()=>buildRows('Rushing').find(r=>r.playerId==='ridgeline-30-noah-fiefia')?.values?.TD);
   assert.equal(fiefiaRushingTD,'36','Fiefia reviewed 36 regular-season rushing TD must render in real leaderboard data');
   results.push({width,test:'Fiefia 36 regular-season rushing TD are published only in verified view'});
+  const virgin=await p.evaluate(()=>buildRows('Passing').find(r=>r.playerId==='desert-hills-3-deacon-virgin'));
+  assert.equal(virgin?.values?.YARDS,'1904','Deacon Virgin has 1,904 independently reviewed regular-season passing yards');
+  assert.equal(virgin?.values?.['COMP-ATT'],'144-276');
+  assert.equal(virgin?.values?.TD,'17');
+  assert.equal(virgin?.values?.Int,'16');
+  results.push({width,test:'Deacon Virgin 10-game regular-season passing proof is loaded only into reviewed leaderboard'});
   const huntVerified=p.locator('#results tbody tr').filter({hasText:'Jaxon Hunt'});
   assert.equal(await huntVerified.count(),1,'Verified Hunt regular-season passing should appear once');
   assert.match(await huntVerified.first().innerText(),/3386|3,386/);
