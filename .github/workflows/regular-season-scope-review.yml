@@ -15,6 +15,7 @@ on:
       - 'tests/proposed-4a6a-canonical-repairs-2026.test.mjs'
       - 'audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'
       - 'audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json'
+      - 'audits/2026-regular-season/farmington-layton-oct14-skills-reviewed-2026.json'
       - '.github/workflows/propose-4a6a-source-repairs-2026.yml'
       - 'scripts/build_regular_season_publication_2026.mjs'
       - 'scripts/check_stat_publish_2026.mjs'
@@ -126,7 +127,7 @@ jobs:
           SOURCE_ONLY=1
           while IFS= read -r file; do
             case "$file" in
-              scripts/propose_4a6a_canonical_game_repairs_2026.mjs|tests/proposed-4a6a-canonical-repairs-2026.test.mjs|tests/reviewed-4a6a-five-player-2026.test.mjs|scripts/publish_reviewed_game_source_2026.mjs|tests/publish-reviewed-game-source-2026.test.mjs|.github/workflows/publish-reviewed-player-game-repairs-2026.yml|audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json|audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json|.github/workflows/build-current-game-stats.yml|.github/workflows/build-deseret-rosters-stats.yml|.github/workflows/propose-4a6a-source-repairs-2026.yml|.github/workflows/regular-season-scope-review.yml)
+              scripts/propose_4a6a_canonical_game_repairs_2026.mjs|tests/proposed-4a6a-canonical-repairs-2026.test.mjs|tests/reviewed-4a6a-five-player-2026.test.mjs|scripts/publish_reviewed_game_source_2026.mjs|tests/publish-reviewed-game-source-2026.test.mjs|.github/workflows/publish-reviewed-player-game-repairs-2026.yml|audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json|audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json|audits/2026-regular-season/farmington-layton-oct14-skills-reviewed-2026.json|.github/workflows/build-current-game-stats.yml|.github/workflows/build-deseret-rosters-stats.yml|.github/workflows/propose-4a6a-source-repairs-2026.yml|.github/workflows/regular-season-scope-review.yml)
                 ;;
               *) SOURCE_ONLY=0 ;;
             esac
@@ -137,7 +138,7 @@ jobs:
             node --test tests/proposed-4a6a-canonical-repairs-2026.test.mjs
             node scripts/propose_4a6a_canonical_game_repairs_2026.mjs --output="$RUNNER_TEMP/source-repair-preservation"
             node scripts/publish_reviewed_game_source_2026.mjs --output="$RUNNER_TEMP/source-publisher-preservation"
-            node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync(process.argv[1]));if(![0,1,5,6].includes(p.proposals.length)||p.holds.length!==0||(p.proposals.length===6&&p.proposals.filter(x=>x.kind==='recover-missing-game').length!==4))process.exit(1)" "$RUNNER_TEMP/source-repair-preservation/proposed-source-fixes.json"
+            node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync(process.argv[1]));if(![0,1,2,5,6,7].includes(p.proposals.length)||p.holds.length!==0||(p.proposals.length===6&&p.proposals.filter(x=>x.kind==='recover-missing-game').length!==4))process.exit(1)" "$RUNNER_TEMP/source-repair-preservation/proposed-source-fixes.json"
           elif [ -z "$NOT_PRESENTATION" ]; then
             echo "Presentation-only PR: protected datasets remain identical to current main."
           else
