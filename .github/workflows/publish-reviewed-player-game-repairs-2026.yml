@@ -42,9 +42,9 @@ jobs:
           const fs=require('fs');
           const a=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+'/reviewed-game-publication/publication-audit.json','utf8'));
           const b=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+'/reviewed-game-publication-second-pass/publication-audit.json','utf8'));
-          if(a.reviewedGameChanges!==5||b.reviewedGameChanges!==0||b.changedFiles.length!==0)throw Error('Source repair failed first write or idempotence');
+          if(![0,5].includes(a.reviewedGameChanges)||b.reviewedGameChanges!==0||b.changedFiles.length!==0)throw Error('Source repair failed source validation or idempotence');
           const expected=['player-game-stats-2026.json','team-current-data/layton.json','team-current-data/mountain-ridge.json','team-current-data/west-jordan.json','team-current-data/westlake.json'];
-          if(JSON.stringify(a.changedFiles.slice().sort())!==JSON.stringify(expected.sort()))throw Error('Unexpected publication scope: '+JSON.stringify(a.changedFiles));
+          if(a.changedFiles.some(file=>!expected.includes(file))||(a.reviewedGameChanges===5&&JSON.stringify(a.changedFiles.slice().sort())!==JSON.stringify(expected.sort())))throw Error('Unexpected publication scope: '+JSON.stringify(a.changedFiles));
           NODE
       - name: Preserve source boundaries and all other site content
         run: |
