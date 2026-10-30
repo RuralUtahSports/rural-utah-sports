@@ -1,9 +1,9 @@
 {
   "season": 2026,
-  "updatedAt": "2026-10-30T04:19:10.765Z",
+  "updatedAt": "2026-10-30T15:20:41.269Z",
   "summary": {
     "teams": 136,
-    "teamGames": 1122,
+    "teamGames": 1123,
     "statRows": 16844,
     "rosterMatchedRows": 16523,
     "preservedFinalGames": 0,
@@ -36,7 +36,7 @@
       "manifestId": "2026-4a6a-five-player-review-batch-1",
       "reviewDate": "2026-10-29",
       "method": "unique source game + reviewed competition phase + stable player ID",
-      "changes": 5
+      "changes": 1
     }
   },
   "teams": {
@@ -442135,6 +442135,45 @@
             "Farmington — (8:19 4Q) Benson Rogers , 64-yard pass from Alton Dahl (kick from Owen Morris )"
           ],
           "maxprepsUrl": "https://www.maxpreps.com/ut/football/game/farmington-vs-syracuse/10-8-2026/?c=8666ece7-b418-4076-8f06-7343a88ea6a3"
+        },
+        {
+          "gameKey": "2026-10-14|FARMINGTON|LAYTON",
+          "date": "2026-10-14",
+          "opponent": "LAYTON",
+          "status": "Final",
+          "final": true,
+          "teamScore": 27,
+          "opponentScore": 17,
+          "url": "https://www.maxpreps.com/ut/football/game/farmington-vs-layton/10-14-2026/?c=3d420072-cdf0-4e47-aa5d-8cad041b3bee",
+          "maxprepsUrl": "https://www.maxpreps.com/ut/football/game/farmington-vs-layton/10-14-2026/?c=3d420072-cdf0-4e47-aa5d-8cad041b3bee",
+          "manualPartialStats": true,
+          "playerDataCoverage": "reviewed Dahl passing-only box; other players and categories unknown",
+          "players": [
+            {
+              "playerId": "farmington-17-alton-dahl",
+              "name": "Alton Dahl",
+              "number": "17",
+              "rosterMatched": true,
+              "statLines": [
+                {
+                  "category": "Passing",
+                  "values": {
+                    "YARDS": "190",
+                    "COMP-ATT": "17-29",
+                    "TD": "0",
+                    "Int": "0"
+                  },
+                  "statSources": {
+                    "YARDS": "Reviewed 2026-10-14 MaxPreps game box",
+                    "COMP-ATT": "Reviewed 2026-10-14 MaxPreps game box",
+                    "TD": "Reviewed 2026-10-14 MaxPreps game box",
+                    "Int": "Reviewed 2026-10-14 MaxPreps game box"
+                  }
+                }
+              ],
+              "scoringPlays": []
+            }
+          ]
         }
       ]
     },
