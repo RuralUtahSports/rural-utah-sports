@@ -13,23 +13,24 @@ const read=path=>JSON.parse(fs.readFileSync(path,'utf8'));
 const norm=v=>String(v??'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 const pretty=v=>JSON.stringify(v,null,2)+'\n';
 
-export function prepareReviewedGamePublication({games,rosters,manifest,taylorReview,dahlReview,index,shards}){
+export function prepareReviewedGamePublication({games,rosters,manifest,taylorReview,dahlReview,farmingtonSkillReview,index,shards}){
  if(!games||!rosters||!index||!shards)throw Error('Complete source snapshot and reviewed phase index are mandatory');
- const repair=proposeSourceRepairs(games,rosters,manifest,{index,taylorReview,dahlReview});
+ const repair=proposeSourceRepairs(games,rosters,manifest,{index,taylorReview,dahlReview,farmingtonSkillReview});
  if(repair.holds.length)throw Error('Unresolved reviewed game source conflicts: '+JSON.stringify(repair.holds));
  const allowedIds=new Set(manifest.decisions.map(d=>d.playerId));
  allowedIds.add(taylorReview.identity.playerId);
  if(dahlReview)allowedIds.add(dahlReview.identity.playerId);
+ for(const d of farmingtonSkillReview?.decisions||[])allowedIds.add(d.identity.playerId);
  for(const p of repair.proposals){
   if(!TEAM_NAMES.includes(p.team)||!allowedIds.has(p.playerId)||
-     !['correct-archived-game','recover-missing-game'].includes(p.kind))
+     !['correct-archived-game','recover-missing-game','augment-reviewed-partial-game'].includes(p.kind))
    throw Error('Unapproved game-stat change in reviewed proposal: '+JSON.stringify(p));
  }
- if(repair.proposals.length!==0&&repair.proposals.length>6)throw Error('Source repair expanded beyond five approved game changes');
+ if(repair.proposals.length!==0&&repair.proposals.length>7)throw Error('Source repair expanded beyond five approved game changes');
  const expected={...repair.repaired,updatedAt:repair.proposals.length?new Date().toISOString():repair.repaired.updatedAt};
  // Every reviewed correction must now be satisfied. Unknown or partial source
  // fields are not allowed to certify a season; no inferred zero, TD, or catches.
- const again=proposeSourceRepairs(expected,rosters,manifest,{index,taylorReview,dahlReview});
+ const again=proposeSourceRepairs(expected,rosters,manifest,{index,taylorReview,dahlReview,farmingtonSkillReview});
  if(again.proposals.length||again.holds.length)throw Error('Applied canonical source is not idempotent and fully supported');
  const updatedShards={},changedShards=[],originalShards={};
  for(const team of TEAM_NAMES){
@@ -67,6 +68,7 @@ if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1
   manifest:read('audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json'),
   taylorReview:read('audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'),
   dahlReview:read('audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json'),
+  farmingtonSkillReview:read('audits/2026-regular-season/farmington-layton-oct14-skills-reviewed-2026.json'),
   index:createCompetitionIndex({brackets:read('official-brackets-2026.json'),review:read('competition-scope-review-2026.json')}),
   shards
  };
