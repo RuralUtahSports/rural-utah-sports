@@ -1,0 +1,735 @@
+{
+  "id": "2026-4a6a-five-player-review-batch-1",
+  "season": 2026,
+  "scope": "verified-regular-season",
+  "reviewDate": "2026-10-29",
+  "status": "source-reviewed-display-only",
+  "sourcePolicy": "MaxPreps game report first, corroborate with current provider team totals; never infer missing zeroes",
+  "decisions": [
+    {
+      "team": "WEST JORDAN",
+      "playerId": "west-jordan-3-kenyon-shockey",
+      "name": "Kenyon Shockey",
+      "number": "3",
+      "classification": "5A",
+      "category": "Passing",
+      "baseline": {
+        "YARDS": "1257",
+        "COMP-ATT": "118-221",
+        "Int": "10"
+      },
+      "verified": {
+        "YARDS": 1110,
+        "COMP-ATT": "105-201",
+        "Int": 12
+      },
+      "expectedRegGames": 10,
+      "sourceShard": "team-current-data/west-jordan.json",
+      "schedule": [
+        {
+          "date": "2026-08-14",
+          "opp": "RIVERTON",
+          "teamScore": 17,
+          "opponentScore": 35
+        },
+        {
+          "date": "2026-08-21",
+          "opp": "COPPER HILLS",
+          "teamScore": 7,
+          "opponentScore": 55
+        },
+        {
+          "date": "2026-08-28",
+          "opp": "HERRIMAN",
+          "teamScore": 7,
+          "opponentScore": 55
+        },
+        {
+          "date": "2026-09-04",
+          "opp": "TAYLORSVILLE",
+          "teamScore": 47,
+          "opponentScore": 9
+        },
+        {
+          "date": "2026-09-11",
+          "opp": "CYPRUS",
+          "teamScore": 21,
+          "opponentScore": 17
+        },
+        {
+          "date": "2026-09-18",
+          "opp": "HUNTER",
+          "teamScore": 27,
+          "opponentScore": 37
+        },
+        {
+          "date": "2026-09-25",
+          "opp": "HILLCREST",
+          "teamScore": 8,
+          "opponentScore": 48
+        },
+        {
+          "date": "2026-10-01",
+          "opp": "WEST",
+          "teamScore": 0,
+          "opponentScore": 63
+        },
+        {
+          "date": "2026-10-09",
+          "opp": "KEARNS",
+          "teamScore": 48,
+          "opponentScore": 0
+        },
+        {
+          "date": "2026-10-14",
+          "opp": "GRANGER",
+          "teamScore": 14,
+          "opponentScore": 21
+        }
+      ],
+      "sourceGames": [
+        {
+          "date": "2026-08-14",
+          "opponent": "RIVERTON",
+          "gameKey": "2026-08-14|WESTJORDAN|RIVERTON",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/riverton-vs-west-jordan/8-14-2026/?c=bb2f44a8-9ffd-4da9-8354-042956733836",
+          "sourceFieldValues": {
+            "YARDS": 176,
+            "COMP-ATT": "20-35",
+            "Int": 0,
+            "TD": 1
+          },
+          "change": null
+        },
+        {
+          "date": "2026-08-21",
+          "opponent": "COPPER HILLS",
+          "gameKey": "2026-08-21|COPPERHILLS|WESTJORDAN",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/copper-hills-west-jordan-vs-west-jordan/8-21-2026/?c=86e93802-4e88-40e3-acc4-90c3fe6ac2ec",
+          "sourceFieldValues": {
+            "YARDS": 29,
+            "COMP-ATT": "7-15",
+            "Int": 2,
+            "TD": 1
+          },
+          "change": {
+            "oldValues": {
+              "Comp-Att": "20-35",
+              "Comp %": "57%",
+              "Yards": "176",
+              "TD": "1",
+              "Int": "0",
+              "YARDS/COMP.": "4.1"
+            },
+            "newValues": {
+              "YARDS": 29,
+              "COMP-ATT": "7-15",
+              "Int": 2,
+              "TD": 1
+            },
+            "correctedSource": "https://www.maxpreps.com/ut/football/game/copper-hills-west-jordan-vs-west-jordan/8-21-2026/?c=86e93802-4e88-40e3-acc4-90c3fe6ac2ec"
+          }
+        },
+        {
+          "date": "2026-08-28",
+          "opponent": "HERRIMAN",
+          "gameKey": "2026-08-28|HERRIMAN|WESTJORDAN",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/herriman-west-herriman-vs-west-jordan/8-28-2026/?c=47f1041f-bc2e-4d97-bea1-601342801c36",
+          "sourceFieldValues": {
+            "YARDS": 70,
+            "COMP-ATT": "9-15",
+            "Int": 2,
+            "TD": 1
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-04",
+          "opponent": "TAYLORSVILLE",
+          "gameKey": "2026-09-04|TAYLORSVILLE|WESTJORDAN",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/taylorsville-vs-west-jordan/9-4-2026/?c=1c866d11-3718-4d75-a736-a121fdf96d3b",
+          "sourceFieldValues": {
+            "YARDS": 93,
+            "COMP-ATT": "7-13",
+            "Int": 0,
+            "TD": 2
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-11",
+          "opponent": "CYPRUS",
+          "gameKey": "2026-09-11|WESTJORDAN|CYPRUS",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/cyprus-magna-vs-west-jordan/9-11-2026/?c=e99a3fde-7996-4f09-8eb3-421d5d0cd96f",
+          "sourceFieldValues": {
+            "YARDS": 198,
+            "COMP-ATT": "13-26",
+            "Int": 1,
+            "TD": 3
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-18",
+          "opponent": "HUNTER",
+          "gameKey": "2026-09-18|HUNTER|WESTJORDAN",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/hunter-west-valley-city-vs-west-jordan/9-18-2026/?c=c1d4b8c2-9770-4d0a-bca6-b07cf19362b0",
+          "sourceFieldValues": {
+            "YARDS": 201,
+            "COMP-ATT": "17-32",
+            "Int": 2,
+            "TD": 1
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-25",
+          "opponent": "HILLCREST",
+          "gameKey": "2026-09-25|WESTJORDAN|HILLCREST",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/hillcrest-midvale-vs-west-jordan/9-25-2026/?c=898030ac-5ca8-4301-8d0c-953978096056",
+          "sourceFieldValues": {
+            "YARDS": 90,
+            "COMP-ATT": "6-15",
+            "Int": 1,
+            "TD": 0
+          },
+          "change": null
+        },
+        {
+          "date": "2026-10-01",
+          "opponent": "WEST",
+          "gameKey": "2026-10-01|WEST|WESTJORDAN",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/west-jordan-vs-west-salt-lake-city/10-1-2026/?c=d7dacde7-d66e-495b-9c82-97ad352024c2",
+          "sourceFieldValues": {
+            "YARDS": 31,
+            "COMP-ATT": "3-16",
+            "Int": 1,
+            "TD": 0
+          },
+          "change": null
+        },
+        {
+          "date": "2026-10-09",
+          "opponent": "KEARNS",
+          "gameKey": "2026-10-09|WESTJORDAN|KEARNS",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/kearns-vs-west-jordan/10-9-2026/?c=de13b4ec-515d-42a6-9b82-91fe9e4a895e",
+          "sourceFieldValues": {
+            "YARDS": 130,
+            "COMP-ATT": "9-12",
+            "Int": 1,
+            "TD": 2
+          },
+          "change": null
+        },
+        {
+          "date": "2026-10-14",
+          "opponent": "GRANGER",
+          "gameKey": "2026-10-14|WESTJORDAN|GRANGER",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/granger-west-valley-city-vs-west-jordan/10-14-2026/?c=78ca7c36-f63c-4d84-9488-5324163c00ea",
+          "sourceFieldValues": {
+            "YARDS": 92,
+            "COMP-ATT": "14-22",
+            "Int": 2,
+            "TD": 1
+          },
+          "change": null
+        }
+      ],
+      "sourceVerifiedAt": "2026-10-29",
+      "corrections": [
+        {
+          "date": "2026-08-21",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/copper-hills-west-jordan-vs-west-jordan/8-21-2026/?c=86e93802-4e88-40e3-acc4-90c3fe6ac2ec",
+          "newValues": {
+            "YARDS": 29,
+            "COMP-ATT": "7-15",
+            "Int": 2,
+            "TD": 1
+          }
+        }
+      ],
+      "added": null,
+      "holds": []
+    },
+    {
+      "team": "LAYTON",
+      "playerId": "layton-5-tillman-thomas",
+      "name": "Tillman Thomas",
+      "number": "5",
+      "classification": "6A",
+      "category": "Passing",
+      "baseline": {
+        "YARDS": "1896",
+        "COMP-ATT": "153-268",
+        "Int": "13"
+      },
+      "verified": {
+        "YARDS": 2175,
+        "COMP-ATT": "180-311",
+        "Int": 15
+      },
+      "expectedRegGames": 10,
+      "sourceShard": "team-current-data/layton.json",
+      "schedule": [
+        {
+          "date": "2026-08-14",
+          "opp": "TIMPVIEW",
+          "teamScore": 21,
+          "opponentScore": 40
+        },
+        {
+          "date": "2026-08-21",
+          "opp": "NORTHRIDGE",
+          "teamScore": 30,
+          "opponentScore": 0
+        },
+        {
+          "date": "2026-08-28",
+          "opp": "CLEARFIELD",
+          "teamScore": 47,
+          "opponentScore": 0
+        },
+        {
+          "date": "2026-09-04",
+          "opp": "COPPER HILLS",
+          "teamScore": 29,
+          "opponentScore": 33
+        },
+        {
+          "date": "2026-09-11",
+          "opp": "AMERICAN FORK",
+          "teamScore": 0,
+          "opponentScore": 45
+        },
+        {
+          "date": "2026-09-18",
+          "opp": "SYRACUSE",
+          "teamScore": 0,
+          "opponentScore": 30
+        },
+        {
+          "date": "2026-09-25",
+          "opp": "WEBER",
+          "teamScore": 23,
+          "opponentScore": 30
+        },
+        {
+          "date": "2026-10-02",
+          "opp": "WEST FIELD",
+          "teamScore": 20,
+          "opponentScore": 21
+        },
+        {
+          "date": "2026-10-08",
+          "opp": "DAVIS",
+          "teamScore": 13,
+          "opponentScore": 49
+        }
+      ],
+      "sourceGames": [
+        {
+          "date": "2026-08-14",
+          "opponent": "TIMPVIEW",
+          "gameKey": "2026-08-14|TIMPVIEW|LAYTON",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/layton-vs-timpview-provo/8-14-2026/?c=34570ae6-6b04-435f-8ea6-20f7190f2215",
+          "sourceFieldValues": {
+            "YARDS": 246,
+            "COMP-ATT": "21-31",
+            "Int": 2,
+            "TD": 3
+          },
+          "change": null
+        },
+        {
+          "date": "2026-08-21",
+          "opponent": "NORTHRIDGE",
+          "gameKey": "2026-08-21|NORTHRIDGE|LAYTON",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/layton-vs-northridge-layton/8-21-2026/?c=4d331ebf-d1ac-42a1-9c57-304f3d95b885",
+          "sourceFieldValues": {
+            "YARDS": 315,
+            "COMP-ATT": "25-36",
+            "Int": 0,
+            "TD": 2
+          },
+          "change": {
+            "oldValues": {
+              "Comp-Att": "23-34",
+              "Comp %": "68%",
+              "Yards": "275",
+              "TD": "2",
+              "Int": "0",
+              "YARDS/COMP.": "12.6"
+            },
+            "newValues": {
+              "YARDS": 315,
+              "COMP-ATT": "25-36",
+              "Int": 0,
+              "TD": 2
+            },
+            "correctedSource": "https://www.maxpreps.com/ut/football/game/layton-vs-northridge-layton/8-21-2026/?c=4d331ebf-d1ac-42a1-9c57-304f3d95b885"
+          }
+        },
+        {
+          "date": "2026-08-28",
+          "opponent": "CLEARFIELD",
+          "gameKey": "2026-08-28|CLEARFIELD|LAYTON",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/clearfield-vs-layton/8-28-2026/?c=51ade762-64ba-47a5-b5e3-cdf3e1f2c9c3",
+          "sourceFieldValues": {
+            "YARDS": 191,
+            "COMP-ATT": "14-16",
+            "Int": 0,
+            "TD": 4
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-04",
+          "opponent": "COPPER HILLS",
+          "gameKey": "2026-09-04|LAYTON|COPPERHILLS",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/copper-hills-west-jordan-vs-layton/9-4-2026/?c=0955362f-efd5-4bdc-b633-4433ffc37b93",
+          "sourceFieldValues": {
+            "YARDS": 272,
+            "COMP-ATT": "18-39",
+            "Int": 2,
+            "TD": 2
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-11",
+          "opponent": "AMERICAN FORK",
+          "gameKey": "2026-09-11|LAYTON|AMERICANFORK",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/american-fork-vs-layton/9-11-2026/?c=9f81b237-592e-4e66-9f1a-262bdea44b84",
+          "sourceFieldValues": {
+            "YARDS": 55,
+            "COMP-ATT": "11-22",
+            "Int": 2
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-18",
+          "opponent": "SYRACUSE",
+          "gameKey": "2026-09-18|SYRACUSE|LAYTON",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/layton-vs-syracuse/9-18-2026/?c=a01a8cfa-10a1-4f50-88c5-7eb24f3e75fc",
+          "sourceFieldValues": {
+            "YARDS": 145,
+            "COMP-ATT": "16-30",
+            "Int": 3
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-25",
+          "opponent": "WEBER",
+          "gameKey": "2026-09-25|WEBER|LAYTON",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/layton-vs-weber-pleasant-view/9-25-2026/?c=6ac3e52f-315f-4f6e-bce5-a373e9c339a5",
+          "sourceFieldValues": {
+            "YARDS": 186,
+            "COMP-ATT": "18-32",
+            "Int": 1
+          },
+          "change": null
+        },
+        {
+          "date": "2026-10-02",
+          "opponent": "WEST FIELD",
+          "gameKey": "2026-10-02|WESTFIELD|LAYTON",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/layton-vs-west-field-taylor/10-2-2026/?c=ae54e81a-73f5-4d39-bf16-a37ef53e4f9b",
+          "sourceFieldValues": {
+            "YARDS": 260,
+            "COMP-ATT": "18-30",
+            "Int": 1,
+            "TD": 3
+          },
+          "change": null
+        },
+        {
+          "date": "2026-10-08",
+          "opponent": "DAVIS",
+          "gameKey": "2026-10-08|LAYTON|DAVIS",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/davis-kaysville-vs-layton/10-8-2026/?c=43ccbe28-2cde-42be-a4bc-7320619f8aef",
+          "sourceFieldValues": {
+            "YARDS": 266,
+            "COMP-ATT": "14-34",
+            "Int": 2,
+            "TD": 2
+          },
+          "change": null
+        },
+        {
+          "date": "2026-10-14",
+          "opponent": "FARMINGTON",
+          "gameKey": "2026-10-14|LAYTON|FARMINGTON",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/farmington-vs-layton/10-14-2026/?c=3d420072-cdf0-4e47-aa5d-8cad041b3bee",
+          "sourceFieldValues": {
+            "YARDS": 239,
+            "COMP-ATT": "25-41",
+            "Int": 2,
+            "TD": 2
+          },
+          "verifiedScore": {
+            "for": 17,
+            "against": 27
+          },
+          "newlyRecovered": true
+        }
+      ],
+      "sourceVerifiedAt": "2026-10-29",
+      "corrections": [
+        {
+          "date": "2026-08-21",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/layton-vs-northridge-layton/8-21-2026/?c=4d331ebf-d1ac-42a1-9c57-304f3d95b885",
+          "newValues": {
+            "YARDS": 315,
+            "COMP-ATT": "25-36",
+            "Int": 0,
+            "TD": 2
+          }
+        }
+      ],
+      "added": {
+        "date": "2026-10-14",
+        "opponent": "FARMINGTON",
+        "gameKey": "2026-10-14|LAYTON|FARMINGTON",
+        "url": "https://www.maxpreps.com/ut/football/game/farmington-vs-layton/10-14-2026/?c=3d420072-cdf0-4e47-aa5d-8cad041b3bee",
+        "fields": {
+          "YARDS": 239,
+          "COMP-ATT": "25-41",
+          "Int": 2,
+          "TD": 2
+        },
+        "score": {
+          "for": 17,
+          "against": 27
+        }
+      },
+      "holds": [
+        "Passing touchdowns: provider season lists 18, but older game logs have blank TD cells; hold pending explicit per-game zero verification."
+      ]
+    },
+    {
+      "team": "MOUNTAIN RIDGE",
+      "playerId": "mountain-ridge-7-xander-thayer",
+      "name": "Xander Thayer",
+      "number": "7",
+      "classification": "6A",
+      "category": "Receiving",
+      "baseline": {
+        "YARDS": "751"
+      },
+      "verified": {
+        "YARDS": 892
+      },
+      "expectedRegGames": 10,
+      "sourceShard": "team-current-data/mountain-ridge.json",
+      "schedule": [
+        {
+          "date": "2026-08-13",
+          "opp": "SKYRIDGE",
+          "teamScore": 41,
+          "opponentScore": 26
+        },
+        {
+          "date": "2026-08-21",
+          "opp": "LEHI",
+          "teamScore": 42,
+          "opponentScore": 0
+        },
+        {
+          "date": "2026-08-27",
+          "opp": "DAVIS",
+          "teamScore": 42,
+          "opponentScore": 7
+        },
+        {
+          "date": "2026-09-04",
+          "opp": "CEDAR VALLEY",
+          "teamScore": 59,
+          "opponentScore": 0
+        },
+        {
+          "date": "2026-09-11",
+          "opp": "COPPER HILLS",
+          "teamScore": 43,
+          "opponentScore": 7
+        },
+        {
+          "date": "2026-09-18",
+          "opp": "CHAPARRAL, CA",
+          "teamScore": 54,
+          "opponentScore": 41
+        },
+        {
+          "date": "2026-09-25",
+          "opp": "RIVERTON",
+          "teamScore": 56,
+          "opponentScore": 7
+        },
+        {
+          "date": "2026-10-02",
+          "opp": "HERRIMAN",
+          "teamScore": 45,
+          "opponentScore": 7
+        },
+        {
+          "date": "2026-10-09",
+          "opp": "BINGHAM",
+          "teamScore": 52,
+          "opponentScore": 7
+        },
+        {
+          "date": "2026-10-15",
+          "opp": "WESTLAKE",
+          "teamScore": 21,
+          "opponentScore": 13
+        }
+      ],
+      "sourceGames": [
+        {
+          "date": "2026-08-13",
+          "opponent": "SKYRIDGE",
+          "gameKey": "2026-08-13|SKYRIDGE|MOUNTAINRIDGE",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/mountain-ridge-herriman-vs-skyridge-lehi/8-13-2026/?c=0941a463-f8b5-4695-82e5-c8345dca5f89",
+          "sourceFieldValues": {
+            "YARDS": 82,
+            "TD": 1
+          },
+          "change": null
+        },
+        {
+          "date": "2026-08-21",
+          "opponent": "LEHI",
+          "gameKey": "2026-08-21|MOUNTAINRIDGE|LEHI",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/lehi-vs-mountain-ridge-herriman/8-21-2026/?c=14591b52-c15a-4d93-88a4-87c506562a62",
+          "sourceFieldValues": {
+            "YARDS": 119,
+            "TD": 1
+          },
+          "change": null
+        },
+        {
+          "date": "2026-08-27",
+          "opponent": "DAVIS",
+          "gameKey": "2026-08-27|DAVIS|MOUNTAINRIDGE",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/davis-kaysville-vs-mountain-ridge-herriman/8-27-2026/?c=c43ce9f6-77cb-4fa1-91d9-fc36f32680f7",
+          "sourceFieldValues": {
+            "YARDS": 77,
+            "TD": 1
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-04",
+          "opponent": "CEDAR VALLEY",
+          "gameKey": "2026-09-04|CEDARVALLEY|MOUNTAINRIDGE",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/cedar-valley-eagle-mountain-vs-mountain-ridge-herriman/9-4-2026/?c=ddbe9534-4912-4923-a5c0-e2d819687f13",
+          "sourceFieldValues": {
+            "YARDS": 42,
+            "TD": 1
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-11",
+          "opponent": "COPPER HILLS",
+          "gameKey": "2026-09-11|MOUNTAINRIDGE|COPPERHILLS",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/copper-hills-west-jordan-vs-mountain-ridge-herriman/9-11-2026/?c=33dfc8cf-16d0-4d68-9f19-2936a3ed10e1",
+          "sourceFieldValues": {
+            "YARDS": 73
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-18",
+          "opponent": "CHAPARRAL, CA",
+          "gameKey": "2026-09-18|MOUNTAINRIDGE|CHAPARRALCA",
+          "sourceUrl": "https://www.maxpreps.com/inter-state/football/game/chaparral-temecula-ca-vs-mountain-ridge-herriman-ut/9-18-2026/?c=a57e41a5-aec9-411d-adbb-c1f9cf2d6590",
+          "sourceFieldValues": {
+            "YARDS": 67,
+            "TD": 1
+          },
+          "change": null
+        },
+        {
+          "date": "2026-09-25",
+          "opponent": "RIVERTON",
+          "gameKey": "2026-09-25|RIVERTON|MOUNTAINRIDGE",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/mountain-ridge-herriman-vs-riverton/9-25-2026/?c=0fc83e4d-ad15-4a17-8012-196c17b6695e",
+          "sourceFieldValues": {
+            "YARDS": 109
+          },
+          "change": null
+        },
+        {
+          "date": "2026-10-02",
+          "opponent": "HERRIMAN",
+          "gameKey": "2026-10-02|HERRIMAN|MOUNTAINRIDGE",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/herriman-west-herriman-vs-mountain-ridge-herriman/10-2-2026/?c=b9a427e4-f419-4d53-8fad-d72ba078d3a6",
+          "sourceFieldValues": {
+            "YARDS": 12
+          },
+          "change": null
+        },
+        {
+          "date": "2026-10-09",
+          "opponent": "BINGHAM",
+          "gameKey": "2026-10-09|MOUNTAINRIDGE|BINGHAM",
+          "sourceUrl": "https://www.maxpreps.com/ut/football/game/bingham-south-jordan-vs-mountain-ridge-herriman/10-9-2026/?c=fe6bcb57-e262-4610-b603-d2a0f4795868",
+          "sourceFieldValues": {
+            "YARDS": 170,
+            "TD": 3
+          },
+          "change": null
+        },
+        {
+          "date": "2026-10-15",
+          "opponent": "WESTLAKE",
+          "gameKey": "2026-10-15|MOUNTAINRIDGE|WESTLAKE",
+          "sourceUrl": "https://www.maxpreps.com/news/C_po543N-Uu9gMLPBDOp2A/xander-thayer-game-report-%40-westlake.htm",
+          "sourceFieldValues": {
+            "YARDS": 141,
+            "TD": 2
+          },
+          "verifiedScore": {
+            "for": 21,
+            "against": 13
+          },
+          "newlyRecovered": true
+        }
+      ],
+      "sourceVerifiedAt": "2026-10-29",
+      "corrections": [],
+      "added": {
+        "date": "2026-10-15",
+        "opponent": "WESTLAKE",
+        "gameKey": "2026-10-15|MOUNTAINRIDGE|WESTLAKE",
+        "url": "https://www.maxpreps.com/news/C_po543N-Uu9gMLPBDOp2A/xander-thayer-game-report-%40-westlake.htm",
+        "fields": {
+          "YARDS": 141,
+          "TD": 2
+        },
+        "score": {
+          "for": 21,
+          "against": 13
+        }
+      },
+      "holds": [
+        "Receiving catches: source totals 35 vs 29 retained, but recovered game report lacks catches.",
+        "Receiving TD: MaxPreps game and season imply 10, while Deseret preview reports 9; hold."
+      ]
+    }
+  ],
+  "holds": [
+    {
+      "team": "KEARNS",
+      "playerId": "kearns-4-mason-rodarte",
+      "reason": "MaxPreps 506 passing yards over five reported games and school has nine games; absent game entries are unknown."
+    },
+    {
+      "team": "WESTLAKE",
+      "playerId": "westlake-5-ashton-taylor",
+      "reason": "Oct 15 game source conflicts across MaxPreps recap revisions: 211 yards on Oct 19 and 203 yards on Oct 27; other games missing; do not certify 565."
+    }
+  ]
+}
