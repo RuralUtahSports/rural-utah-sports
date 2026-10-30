@@ -1,4 +1,4 @@
-/* 2026 football reported-view source preference for 4A/5A/6A.
+/* 2026 football reported-view source preference statewide.
  * MaxPreps cached reports FIRST; Deseret retains fields missing or ambiguous
  * at MaxPreps. This is NOT certified regular-season publication.
  */
@@ -29,6 +29,11 @@
   return {first:norm(words[0]||''),last:norm(words.at(-1)||''),full:norm(words.join(' '))};
  };
  const isMaxpreps=url=>/^https:\/\/(?:www\.)?maxpreps\.com\//i.test(text(url));
+ // Utah regular-season schedules were complete by October 17. An earlier or
+ // undated MaxPreps snapshot cannot replace the newer Deseret season totals.
+ // This does not certify regular-only scope or game-by-game accuracy.
+ const lastRegularFinalUtc=Date.parse('2026-10-18T00:00:00Z');
+ const completeSource=provider=>{const stamp=Date.parse(text(provider?.lastUpdated));return Number.isFinite(stamp)&&stamp>=lastRegularFinalUtc;};
  const numberValue=(canonical,raw)=>{
   if(canonical==='COMPATT'){
    const match=text(raw).match(/^(\d+)\s*-\s*(\d+)$/);
@@ -55,14 +60,15 @@
   const classMap=new Map(metadata.map(m=>[norm(m.team),text(m.classification)]));
   const summary={schoolsInScope:0,schoolsWithMaxPreps:0,playerCategoriesMatched:0,
    preferredFields:0,overwrittenFields:0,addedFields:0,sameValueFields:0,deseretFallbackFields:0,
-   missingOrAmbiguousPlayer:0,conflictingProviderFields:0,invalidProviderValues:0};
+   missingOrAmbiguousPlayer:0,conflictingProviderFields:0,invalidProviderValues:0,staleOrUndatedSchools:0};
   for(const [teamName,school] of Object.entries(output.teams)){
    if(options.targetTeam&&norm(teamName)!==norm(options.targetTeam))continue;
-   if(!['4A','5A','6A'].includes(classMap.get(norm(teamName))))continue;
+   if(!['6A','5A','4A','3A','2A','1A','8PLAYER','8P'].includes(norm(classMap.get(norm(teamName)))))continue;
    summary.schoolsInScope++;
    const providers=Object.entries(cache.teams).filter(([k])=>norm(k)===norm(teamName));
    if(providers.length!==1||!isMaxpreps(providers[0][1].sourceUrl))continue;
    const provider=providers[0][1];if(!Array.isArray(provider.rows))continue;
+   if(!completeSource(provider)){summary.staleOrUndatedSchools++;continue;}
    summary.schoolsWithMaxPreps++;
    const group=new Map();
    for(const p of provider.rows){
