@@ -153,7 +153,7 @@ function attachFarmingtonSkillBoxes({out,rosters,review,index,proposals,holds}){
   review.decisions?.length!==2)throw Error('Farmington skill-game review manifest changed; re-review required');
  const expected=[
   {id:'farmington-32-brogan-jeppesen',name:'Brogan Jeppesen',number:'32',category:'Rushing',
-   old:{YARDS:316,CARRIES:73},newFields:{YARDS:'94',CARRIES:'18',TD:'1'},final:{YARDS:410,CARRIES:91,TD:3}},
+   old:{YARDS:316,CARRIES:73,TD:2},newFields:{YARDS:'94',CARRIES:'18',TD:'1'},final:{YARDS:410,CARRIES:91,TD:3}},
   {id:'farmington-14-thayne-boyle',name:'Thayne Boyle',number:'14',category:'Receiving',
    old:{YARDS:326,RECEPTIONS:34,TD:3},newFields:{YARDS:'54',RECEPTIONS:'5',TD:'0'},final:{YARDS:380,RECEPTIONS:39,TD:3}}
  ];
@@ -180,7 +180,7 @@ function attachFarmingtonSkillBoxes({out,rosters,review,index,proposals,holds}){
   if(d.identity?.playerId!==e.id||d.identity?.name!==e.name||String(d.identity?.number)!==e.number||
    d.category!==e.category||JSON.stringify(d.gameValues)!==JSON.stringify(e.newFields)||
    JSON.stringify(d.reconciledReportedTotals)!==JSON.stringify(e.final)||
-   Object.entries(e.old).some(([f,v])=>d.previousNineGameSubtotal?.[f]!==v))
+   Object.entries(e.old).some(([f,v])=>d.previousNineGameSubtotal?.[f==='TD'&&e.category==='Rushing'?'knownTD':f]!==v))
    throw Error('Farmington skill-player source manifest fields changed '+e.name);
   if(roster.filter(p=>p.playerId===e.id&&p.name===e.name&&String(p.number)===e.number).length!==1)
    throw Error('Farmington skill athlete roster missing or ambiguous '+e.id);
