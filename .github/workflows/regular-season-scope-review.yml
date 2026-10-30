@@ -38,6 +38,11 @@ on:
       - 'reviewed-4a-rushing-brown-2026.js'
       - 'tests/reviewed-4a-rushing-brown-2026.test.mjs'
       - 'audits/2026-regular-season/4a-rushing-seth-brown-evidence.json'
+      - 'reviewed-4a6a-offense-bulk-2026.js'
+      - 'tests/reviewed-4a6a-offense-bulk-2026.test.mjs'
+      - 'audits/2026-regular-season/4a6a-reviewed-offense-corrections-batch-1.json'
+      - 'scripts/audit_4a6a_stat_coverage_2026.mjs'
+      - 'tests/audit-4a6a-stat-coverage-2026.test.mjs'
       - 'preview-stat-checks-2026.js'
       - 'tests/preview-stat-checks-2026.test.mjs'
       - 'tests/reviewed-hunt-passing-2026.test.mjs'
@@ -104,7 +109,7 @@ jobs:
           CHANGED="$(git diff --name-only "$BASE" HEAD)"
           # The fixed PR #181 baseline predates newer main commits. The
           # presentation-only path may not change any stats, awards or evidence.
-          NOT_PRESENTATION="$(printf '%s\n' "$CHANGED" | grep -Ev '^(team-stats\.html|stat-leaders\.html|player\.html|reviewed-hunt-passing-2026\.js|tests/reviewed-hunt-passing-2026\.test\.mjs|reviewed-fiefia-rushing-2026\.js|tests/reviewed-fiefia-rushing-2026\.test\.mjs|reviewed-4a6a-passing-batch-2026\.js|tests/reviewed-4a6a-passing-batch-2026\.test\.mjs|audits/2026-regular-season/4a-6a-passing-batch-1-evidence\.json|reviewed-4a-rushing-brown-2026\.js|tests/reviewed-4a-rushing-brown-2026\.test\.mjs|audits/2026-regular-season/4a-rushing-seth-brown-evidence\.json|preview-stat-checks-2026\.js|tests/preview-stat-checks-2026\.test\.mjs|maxpreps-missing-totals-2026\.js|maxpreps-primary-reported-2026\.js|tests/maxpreps-primary-reported-2026\.test\.mjs|tests/maxpreps-missing-totals-2026\.test\.mjs|scripts/test-stat-pipeline-browser\.cjs|scripts/test-corrected-stat-pages-browser\.cjs|tests/team-stats-reported-2026\.test\.mjs|tests/stat-leaders-reported-2026\.test\.mjs|\.github/workflows/regular-season-scope-review\.yml)$' || true)"
+          NOT_PRESENTATION="$(printf '%s\n' "$CHANGED" | grep -Ev '^(team-stats\.html|stat-leaders\.html|player\.html|reviewed-hunt-passing-2026\.js|tests/reviewed-hunt-passing-2026\.test\.mjs|reviewed-fiefia-rushing-2026\.js|tests/reviewed-fiefia-rushing-2026\.test\.mjs|reviewed-4a6a-passing-batch-2026\.js|tests/reviewed-4a6a-passing-batch-2026\.test\.mjs|audits/2026-regular-season/4a-6a-passing-batch-1-evidence\.json|reviewed-4a-rushing-brown-2026\.js|tests/reviewed-4a-rushing-brown-2026\.test\.mjs|audits/2026-regular-season/4a-rushing-seth-brown-evidence\.json|reviewed-4a6a-offense-bulk-2026\.js|tests/reviewed-4a6a-offense-bulk-2026\.test\.mjs|audits/2026-regular-season/4a6a-reviewed-offense-corrections-batch-1\.json|scripts/audit_4a6a_stat_coverage_2026\.mjs|tests/audit-4a6a-stat-coverage-2026\.test\.mjs|\.github/workflows/audit-4a6a-offense-2026\.yml|preview-stat-checks-2026\.js|tests/preview-stat-checks-2026\.test\.mjs|maxpreps-missing-totals-2026\.js|maxpreps-primary-reported-2026\.js|tests/maxpreps-primary-reported-2026\.test\.mjs|tests/maxpreps-missing-totals-2026\.test\.mjs|scripts/test-stat-pipeline-browser\.cjs|scripts/test-corrected-stat-pages-browser\.cjs|tests/team-stats-reported-2026\.test\.mjs|tests/stat-leaders-reported-2026\.test\.mjs|\.github/workflows/regular-season-scope-review\.yml)$' || true)"
           if [ -z "$NOT_PRESENTATION" ]; then
             echo "Presentation-only PR: protected datasets remain identical to current main."
           else

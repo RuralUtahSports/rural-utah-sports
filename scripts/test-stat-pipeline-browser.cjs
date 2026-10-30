@@ -67,6 +67,12 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),ass
   assert.equal(seth?.values?.CARRIES,'149','Seth Brown reviewed 10-game rushing attempts');
   assert.equal(seth?.values?.TD,undefined,'Seth Brown rushing touchdowns not separately certified by this overlay');
   results.push({width,test:'Seth Brown 1008 rushing yards and 149 carries displayed only in verified regular season'});
+  const deaconRush=await p.evaluate(()=>buildRows('Rushing').find(r=>r.playerId==='desert-hills-3-deacon-virgin'));
+  assert.equal(deaconRush?.values?.YARDS,'-9','Deacon Virgin 10-game verified rushing yards');
+  assert.equal(deaconRush?.values?.CARRIES,'30','Deacon Virgin 10-game verified rushing carries');
+  assert.equal(deaconRush?.values?.TD,undefined,'Unknown game TD cells must not be converted to 0');
+  results.push({width,test:'4A-6A bulk review applies only Deacon Virgin documented rushing totals in verified mode'});
+
 
   const huntVerified=p.locator('#results tbody tr').filter({hasText:'Jaxon Hunt'});
   assert.equal(await huntVerified.count(),1,'Verified Hunt regular-season passing should appear once');
