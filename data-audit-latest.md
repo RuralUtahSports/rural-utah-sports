@@ -1,10 +1,10 @@
 # RUS Football Data Audit
 
-Generated: 2026-10-30T15:05:47.543Z
+Generated: 2026-10-30T16:33:22.702Z
 
-**0 errors • 19 warnings**
+**0 errors • 18 warnings**
 
-## Warnings (19)
+## Warnings (18)
 
 - **RECORD_MISMATCH** — MOUNTAIN RIDGE standings record does not match completed games in weekly-simulation.json. `{"standings":"10-0-0","calculated":"9-0-1"}`
 - **RECORD_MISMATCH** — WESTLAKE standings record does not match completed games in weekly-simulation.json. `{"standings":"7-3-0","calculated":"7-2-1"}`
@@ -16,7 +16,6 @@ Generated: 2026-10-30T15:05:47.543Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CEDAR CITY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"North Sanpete"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CARBON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Richfield"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — EMERY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Judge Memorial Catholic"}]}`
-- **MAXPREPS_GAME_STATS_NOT_MERGED** — FARMINGTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-14","opponent":"Layton"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MANTI has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Canyon View"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — LAYTON CHRISTIAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":9,"missing":[{"date":"2026-10-16","opponent":"Mater Academy East Las Vegas"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — NORTH SANPETE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Cedar"}]}`
@@ -28,6 +27,6 @@ Generated: 2026-10-30T15:05:47.543Z
 
 ## Infos (2)
 
-- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9441,"unmatchedRows":714,"rosterlessTeams":0,"sourceGamePairs":1059,"missingGamePairs":14}`
+- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9441,"unmatchedRows":714,"rosterlessTeams":0,"sourceGamePairs":1059,"missingGamePairs":13}`
 - **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":602,"standings":118,"rankedTeams":68,"playerIds":6440}`
 

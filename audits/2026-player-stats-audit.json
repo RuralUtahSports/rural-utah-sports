@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T15:05:48.085Z",
+  "generatedAt": "2026-10-30T16:33:23.226Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -8,9 +8,9 @@
     "uniqueRosterIDs": 6440,
     "statRows": 6926,
     "athletesWithStats": 4065,
-    "gamesWithPlayerRecords": 1082,
-    "gamePlayerRows": 20937,
-    "gameStatLines": 29954,
+    "gamesWithPlayerRecords": 1083,
+    "gamePlayerRows": 20940,
+    "gameStatLines": 29957,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -19,18 +19,18 @@
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
     "seasonAboveGameSum": 616,
-    "gameAboveSeasonSum": 276,
-    "reviewFlags": 279,
+    "gameAboveSeasonSum": 282,
+    "reviewFlags": 285,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "GAME_SUM_EXCEEDS_SEASON": 276,
+    "GAME_SUM_EXCEEDS_SEASON": 282,
     "SEASON_GT_AVAILABLE_GAME_LOG": 605,
     "RECEIVING_RATE_MISMATCH": 2,
     "COMPACT_FEED_MISMATCH": 1
   },
   "severityCounts": {
-    "review": 279,
+    "review": 285,
     "info": 605
   },
   "teams": [
@@ -468,8 +468,8 @@
       "rosterPlayers": 80,
       "statRows": 71,
       "rosterPlayersWithoutReportedStats": 39,
-      "finalGameLogs": 9,
-      "finalGameLogsWithPlayerData": 9,
+      "finalGameLogs": 10,
+      "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 2,
       "compactMismatches": 0,
       "sourceStatsFetched": true
@@ -1480,6 +1480,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "FARMINGTON",
+      "subject": "Alton Dahl",
+      "category": "Passing",
+      "field": "YARDS",
+      "season": 2157,
+      "gameLogSum": 2347,
+      "difference": 190
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GRAND",
       "subject": "Corbin Black",
       "category": "Rushing",
@@ -1630,6 +1641,17 @@
       "season": 10,
       "gameLogSum": 108,
       "difference": 98
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "FARMINGTON",
+      "subject": "Brogan Jeppesen",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 316,
+      "gameLogSum": 410,
+      "difference": 94
     },
     {
       "level": "review",
@@ -1850,6 +1872,17 @@
       "season": 31,
       "gameLogSum": 86,
       "difference": 55
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "FARMINGTON",
+      "subject": "Thayne Boyle",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 326,
+      "gameLogSum": 380,
+      "difference": 54
     },
     {
       "level": "review",
@@ -2267,6 +2300,17 @@
       "field": "YARDS",
       "season": 103,
       "gameLogSum": 121,
+      "difference": 18
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "FARMINGTON",
+      "subject": "Brogan Jeppesen",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 73,
+      "gameLogSum": 91,
       "difference": 18
     },
     {
@@ -2916,6 +2960,17 @@
       "field": "CARRIES",
       "season": 20,
       "gameLogSum": 25,
+      "difference": 5
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "FARMINGTON",
+      "subject": "Thayne Boyle",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 34,
+      "gameLogSum": 39,
       "difference": 5
     },
     {
@@ -3848,6 +3903,17 @@
       "team": "DESERT HILLS",
       "subject": "Brett Heiner",
       "category": "Receiving",
+      "field": "TD",
+      "season": 2,
+      "gameLogSum": 3,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "FARMINGTON",
+      "subject": "Brogan Jeppesen",
+      "category": "Rushing",
       "field": "TD",
       "season": 2,
       "gameLogSum": 3,
