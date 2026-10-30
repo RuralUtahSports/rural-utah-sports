@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-30T03:13:13.803Z",
+  "generatedAt": "2026-10-30T06:41:39.393Z",
   "summary": {
     "errors": 0,
-    "warnings": 22,
+    "warnings": 19,
     "info": 2
   },
   "issues": [
@@ -154,20 +154,6 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "LAYTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
-      "context": {
-        "sourceGamePairs": 10,
-        "missing": [
-          {
-            "date": "2026-10-14",
-            "opponent": "Farmington"
-          }
-        ]
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "LAYTON CHRISTIAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 9,
@@ -175,20 +161,6 @@
           {
             "date": "2026-10-16",
             "opponent": "Mater Academy East Las Vegas"
-          }
-        ]
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "MOUNTAIN RIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
-      "context": {
-        "sourceGamePairs": 10,
-        "missing": [
-          {
-            "date": "2026-10-15",
-            "opponent": "Westlake"
           }
         ]
       }
@@ -278,20 +250,6 @@
       }
     },
     {
-      "severity": "warning",
-      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "WESTLAKE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
-      "context": {
-        "sourceGamePairs": 10,
-        "missing": [
-          {
-            "date": "2026-10-15",
-            "opponent": "Mountain Ridge"
-          }
-        ]
-      }
-    },
-    {
       "severity": "info",
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
@@ -300,7 +258,7 @@
         "unmatchedRows": 714,
         "rosterlessTeams": 0,
         "sourceGamePairs": 1059,
-        "missingGamePairs": 17
+        "missingGamePairs": 14
       }
     },
     {
