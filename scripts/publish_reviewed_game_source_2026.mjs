@@ -71,7 +71,7 @@ if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1
  const beforeRoster=fs.readFileSync('deseret-rosters-stats-2026.json','utf8');
  const out=prepareReviewedGamePublication(inputs);
  if(beforeRoster!==fs.readFileSync('deseret-rosters-stats-2026.json','utf8'))throw Error('Verified source publisher mutated roster season stats');
- const targetFiles=new Map([['player-game-stats-2026.json',pretty(out.updatedGames)],...Object.entries(out.updatedShards).map(([file,obj])=>[file,JSON.stringify(obj)+'\n'])]);
+ const targetFiles=new Map([['player-game-stats-2026.json',pretty(out.updatedGames)],...Object.entries(out.updatedShards).map(([file,obj])=>[file,JSON.stringify(obj)])]);
  const changed=[...targetFiles].filter(([file,text])=>fs.readFileSync(file,'utf8')!==text);
  if(changed.some(([file])=>file!=='player-game-stats-2026.json'&&!TEAM_NAMES.some(t=>fileFor(t)===file)))throw Error('Out-of-scope file write');
  const base=process.argv.find(x=>x.startsWith('--output='))?.slice(9);
