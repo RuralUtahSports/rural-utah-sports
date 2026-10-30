@@ -24,6 +24,7 @@
 <script src="maxpreps-primary-reported-2026.js?v=20261029-statewide1"></script>
 <script src="reviewed-hunt-passing-2026.js?v=20261029-reviewed-hunt1"></script>
 <script src="reviewed-fiefia-rushing-2026.js?v=20261029-fiefia36"></script>
+<script src="reviewed-4a6a-passing-batch-2026.js?v=20261029-4a6a-virgin1"></script>
 <script src="preview-stat-checks-2026.js?v=20261029-6a-preview1"></script>
 <script src="verified-player-stats-2026.js?v=20261023-alma-verified1"></script>
 </head>
@@ -250,6 +251,11 @@ async function load(){
    try{
     window.RUSReviewedFiefia2026.applyVerified(regularPublication);
    }catch(error){console.warn('Verified Fiefia rushing touchdowns unavailable',error)}
+   try{
+    const ev=await fetch('audits/2026-regular-season/4a-6a-passing-batch-1-evidence.json',{cache:'no-store'});
+    if(!ev.ok)throw Error('Passing evidence ledger unavailable');
+    window.RUSReviewedPassingBatch2026.applyVerified(regularPublication,await ev.json());
+   }catch(error){console.warn('Deacon Virgin ten-game regular-season proof unavailable; no speculative total promoted',error)}
    allStats=sourceMode==='reported'?reportedStats:regularPublication;
    playerGames=g?.ok?await g.json():null;if(playerGames)for(const [team,t] of Object.entries(playerGames.teams||{}))t.games=window.RUSRegularSeasonPolicy2026.uniqueGames(t.games,team,regularPublication).map(record=>record.game);
    const weeklySchedule=w?.ok?(await w.json()).games||[]:[];
