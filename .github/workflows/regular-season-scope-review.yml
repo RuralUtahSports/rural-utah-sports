@@ -10,6 +10,7 @@ on:
       - 'scripts/merge_maxpreps_game_logs.mjs'
       - 'scripts/propose_4a6a_canonical_game_repairs_2026.mjs'
       - 'tests/proposed-4a6a-canonical-repairs-2026.test.mjs'
+      - 'audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'
       - '.github/workflows/propose-4a6a-source-repairs-2026.yml'
       - 'scripts/build_regular_season_publication_2026.mjs'
       - 'scripts/check_stat_publish_2026.mjs'
@@ -121,7 +122,7 @@ jobs:
           SOURCE_ONLY=1
           while IFS= read -r file; do
             case "$file" in
-              scripts/propose_4a6a_canonical_game_repairs_2026.mjs|tests/proposed-4a6a-canonical-repairs-2026.test.mjs|.github/workflows/build-current-game-stats.yml|.github/workflows/build-deseret-rosters-stats.yml|.github/workflows/propose-4a6a-source-repairs-2026.yml|.github/workflows/regular-season-scope-review.yml)
+              scripts/propose_4a6a_canonical_game_repairs_2026.mjs|tests/proposed-4a6a-canonical-repairs-2026.test.mjs|audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json|.github/workflows/build-current-game-stats.yml|.github/workflows/build-deseret-rosters-stats.yml|.github/workflows/propose-4a6a-source-repairs-2026.yml|.github/workflows/regular-season-scope-review.yml)
                 ;;
               *) SOURCE_ONLY=0 ;;
             esac
@@ -131,7 +132,7 @@ jobs:
             test -z "$(git diff --name-only "$BASE" HEAD -- deseret-rosters-stats-2026.json player-game-stats-2026.json deseret-stat-metrics-2026.json deseret-team-data-2026.json regular-season-publication-2026.json team-current-data team-stats-2026.json standings-2026.json region-awards-2026.lock.json)"
             node --test tests/proposed-4a6a-canonical-repairs-2026.test.mjs
             node scripts/propose_4a6a_canonical_game_repairs_2026.mjs --output="$RUNNER_TEMP/source-repair-preservation"
-            node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync(process.argv[1]));if(p.proposals.length!==4||p.holds.length!==0||p.proposals.filter(x=>x.kind==='recover-missing-game').length!==2)process.exit(1)" "$RUNNER_TEMP/source-repair-preservation/proposed-source-fixes.json"
+            node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync(process.argv[1]));if(p.proposals.length!==5||p.holds.length!==0||p.proposals.filter(x=>x.kind==='recover-missing-game').length!==3)process.exit(1)" "$RUNNER_TEMP/source-repair-preservation/proposed-source-fixes.json"
           elif [ -z "$NOT_PRESENTATION" ]; then
             echo "Presentation-only PR: protected datasets remain identical to current main."
           else
