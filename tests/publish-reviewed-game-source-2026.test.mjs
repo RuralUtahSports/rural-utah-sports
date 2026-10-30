@@ -4,28 +4,26 @@ import fs from 'node:fs';
 import {prepareReviewedGamePublication} from '../scripts/publish_reviewed_game_source_2026.mjs';
 import {createCompetitionIndex} from '../scripts/lib/competition-scope-2026.mjs';
 const read=f=>JSON.parse(fs.readFileSync(f,'utf8'));
-const files=['west-jordan','layton','mountain-ridge','westlake'];
+const files=['west-jordan','layton','mountain-ridge','westlake','farmington'];
 const shards=Object.fromEntries(files.map(name=>['team-current-data/'+name+'.json',read('team-current-data/'+name+'.json')]));
 const source={
  games:read('player-game-stats-2026.json'),
  rosters:read('deseret-rosters-stats-2026.json'),
  manifest:read('audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json'),
  taylorReview:read('audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json'),
+ dahlReview:read('audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json'),
  index:createCompetitionIndex({brackets:read('official-brackets-2026.json'),review:read('competition-scope-review-2026.json')}),
  shards
 };
 const stable=x=>JSON.stringify(x);
-test('publisher changes only five approved 2026 game reports and the four affected team game payloads',()=>{
+test('publisher only changes previously reviewed player game fields in the five approved schools',()=>{
  const before=stable(source),result=prepareReviewedGamePublication(source);
- assert.ok([0,5].includes(result.proposals.length),'All reviewed games must be either pending or already published');
- assert.equal(result.changedShards.length,result.proposals.length===5?4:0);
- if(result.proposals.length===5)assert.deepEqual(result.proposals.map(x=>[x.team,x.kind]),[
-  ['WEST JORDAN','correct-archived-game'],
-  ['LAYTON','correct-archived-game'],
-  ['LAYTON','recover-missing-game'],
-  ['MOUNTAIN RIDGE','recover-missing-game'],
-  ['WESTLAKE','recover-missing-game']
- ]);
+ const approved=new Set(['WEST JORDAN','LAYTON','MOUNTAIN RIDGE','WESTLAKE','FARMINGTON']);
+ assert.ok(result.proposals.length<=6,'No more than six reviewed game changes');
+ assert.ok(result.proposals.every(p=>approved.has(p.team)));
+ const changedTeams=new Set(result.proposals.map(p=>p.team));
+ const expected=[...changedTeams].map(t=>'team-current-data/'+t.toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.json').sort();
+ assert.deepEqual(result.changedShards.slice().sort(),expected);
  assert.equal(stable(source),before,'Publisher never mutates input snapshots');
  assert.equal(result.summary.seasonStatisticsChanged,false);
  for(const file of Object.keys(shards)){
@@ -47,6 +45,9 @@ test('player game box repairs use exact reviewed values and do not fill undocume
  const taylor=get('WESTLAKE','2026-10-15','westlake-5-ashton-taylor','Rushing');
  assert.deepEqual(taylor,[{YARDS:'203'}]);
  assert.equal(repaired.teams.WESTLAKE.games.find(x=>x.date==='2026-10-15').manualPartialStats,true);
+ const dahl=get('FARMINGTON','2026-10-14','farmington-17-alton-dahl','Passing');
+ assert.deepEqual(dahl,[{YARDS:'190','COMP-ATT':'17-29',TD:'0',Int:'0'}]);
+ assert.equal(repaired.teams.FARMINGTON.games.filter(x=>x.date==='2026-10-14').length,1);
 });
 test('on a second run every game and team shard is byte-equivalent with no new proposals',()=>{
  const first=prepareReviewedGamePublication(source),copy={...source,games:first.updatedGames,shards:first.updatedShards};
