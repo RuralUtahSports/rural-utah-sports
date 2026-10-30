@@ -55,7 +55,20 @@ export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPha
     }
     if(changes.length){proposals.push({kind:'correct-archived-game',team:d.team,playerId:d.playerId,date:g.date,opponent:g.opponent,source:g.sourceUrl,fields:changes});}
    }else if(g.newlyRecovered){
-    if(matches.length!==0){holds.push(unverified(d,g,'Newly recovered game already exists in canonical games; inspect before attaching player'));continue;}
+    if(matches.length===1){
+     // A later build is allowed to preserve an already reviewed, explicitly
+     // partial record. Any altered metadata/player/cell requires new review.
+     const old=matches[0],players=(old.players||[]).filter(p=>p.playerId===d.playerId&&p.name===d.name&&String(p.number)===String(d.number));
+     const lines=players.flatMap(p=>(p.statLines||[]).filter(l=>norm(l.category)===norm(d.category)));
+     if(!old.manualPartialStats||old.gameKey!==g.gameKey||old.teamScore!==g.verifiedScore.for||old.opponentScore!==g.verifiedScore.against||players.length!==1||lines.length!==1)
+      throw Error('Recovered game was changed after source review: '+d.team+' '+g.date);
+     for(const field of approved){
+      const cell=get(lines[0].values,field);
+      if(!cell||!same(cell.value,g.sourceFieldValues?.[field]))throw Error('Recovered partial source field changed: '+d.team+' '+g.date+' '+field);
+     }
+     continue;
+    }
+    if(matches.length!==0){holds.push(unverified(d,g,'Newly recovered game has duplicate canonical records'));continue;}
     if(!g.verifiedScore||!Number.isInteger(g.verifiedScore.for)||!Number.isInteger(g.verifiedScore.against)||!/^https:\/\/(?:www\.)?maxpreps\.com\//.test(g.sourceUrl))throw Error('Missing independent game evidence');
     const values={};
     for(const field of approved){
@@ -77,7 +90,13 @@ export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPha
    }
   }
  }
- return {repaired:out,proposals,holds,status:'PROPOSAL ONLY: canonical data unchanged; publishing requires source-reviewed approval'};
+ // Reconcile the metadata only after all source-field approvals are checked.
+ if(proposals.length){
+  out.summary||={};
+  out.summary.teamGames=Object.values(out.teams||{}).reduce((n,t)=>n+(t.games||[]).length,0);
+  out.summary.verified2026SourceRepairs={manifestId:manifest.id,reviewDate:manifest.reviewDate,method:'unique source game + reviewed competition phase + stable player ID',changes:proposals.length};
+ }
+ return {repaired:out,proposals,holds,status:'REVIEWED: only exact permitted game fields or explicitly partial sourced games are changed'};
 }
 
 function read(filename){return JSON.parse(fs.readFileSync(filename,'utf8'));}
@@ -86,10 +105,20 @@ if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1
  const raw=Object.fromEntries(files.map(file=>[file,fs.readFileSync(file,'utf8')]));
  const [games,rosters,manifest,brackets,review]=files.map(file=>JSON.parse(raw[file]));
  const result=proposeSourceRepairs(games,rosters,manifest,{index:createCompetitionIndex({brackets,review})});
+ if(process.argv.includes('--apply')){
+  if(result.holds.length)throw Error('Cannot publish canonical source while unverified game phases remain');
+  const pathToSource='player-game-stats-2026.json';
+  // No unreviewed source file, game identity, TD or award data is ever written.
+  if(result.proposals.length){
+   const tmp=pathToSource+'.source-review-tmp';
+   fs.writeFileSync(tmp,JSON.stringify(result.repaired,null,2)+'\n');
+   fs.renameSync(tmp,pathToSource);
+  }
+ }
  const output=process.argv.find(x=>x.startsWith('--output='))?.slice(9)||'/tmp/rus-2026-player-source-repairs';
  if(!path.isAbsolute(output)||path.resolve(output)===process.cwd())throw Error('Output must be outside the repository');
  fs.mkdirSync(output,{recursive:true});
- const simple={status:result.status,proposals:result.proposals,holds:result.holds,playersCovered:manifest.decisions.map(x=>x.name)};
+ const simple={status:process.argv.includes('--apply')?'APPLIED VERIFIED SOURCE GAME CORRECTIONS: no season or playoff value changed':result.status,proposals:result.proposals,holds:result.holds,playersCovered:manifest.decisions.map(x=>x.name)};
  fs.writeFileSync(path.join(output,'proposed-source-fixes.json'),JSON.stringify(simple,null,2)+'\n');
  fs.writeFileSync(path.join(output,'REVIEW.md'),[
   '# Proposed 2026 4A–6A source game repairs',
@@ -105,6 +134,6 @@ if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1
   'Existing reviewed leaderboard corrections remain unchanged. Newly reconstructed game rows are explicitly partial; no other players or unknown stat fields are filled with zeros.',
   ''
  ].join('\n'));
- for(const f of files)if(fs.readFileSync(f,'utf8')!==raw[f])throw Error('Read-only audit changed source '+f);
+ for(const f of files)if(f!=='player-game-stats-2026.json'||!process.argv.includes('--apply'))if(fs.readFileSync(f,'utf8')!==raw[f])throw Error('Source repair unexpectedly changed protected input '+f);
  console.log(JSON.stringify(simple));
 }
