@@ -24,8 +24,20 @@ test('Shockey/Thomas/Thayer exactly reconcile distinct ten regular games and sou
    assert.ok(!seen.has(g.gameKey),'Duplicate games '+d.name);seen.add(g.gameKey);
    const cached=source.gameStats.games.filter(x=>x.gameKey===g.gameKey&&x.date===g.date);
    if(g.newlyRecovered){
-    assert.equal(cached.length,0,'Only truly missing game may be inserted into review manifest');
+    assert.ok(cached.length<=1,'A previously recovered game must never be duplicated');
     assert.ok(g.verifiedScore&&Number.isInteger(g.verifiedScore.for)&&Number.isInteger(g.verifiedScore.against));
+    if(cached.length===1){
+     const entry=cached[0];
+     assert.equal(entry.manualPartialStats,true,'Recovered report must remain explicitly partial');
+     assert.equal(entry.teamScore,g.verifiedScore.for);
+     assert.equal(entry.opponentScore,g.verifiedScore.against);
+     const lines=entry.players.filter(p=>p.playerId===d.playerId&&p.name===d.name&&p.number===d.number)
+      .flatMap(p=>p.statLines.filter(s=>s.category===d.category));
+     assert.equal(lines.length,1,'Published recovery must retain a single reviewed player row');
+     for(const f of Object.keys(d.verified)){
+      assert.equal(String(value(lines[0].values,f)),String(g.sourceFieldValues[f]),'Reviewed recovered source field drifted');
+     }
+    }
     continue;
    }
    assert.equal(cached.length,1,'Original regular game entry '+g.gameKey);
@@ -33,7 +45,14 @@ test('Shockey/Thomas/Thayer exactly reconcile distinct ten regular games and sou
    assert.equal(lines.length,1);
    if(g.change){
     assert.equal(g.change.correctedSource,g.sourceUrl);
-    for(const [f,v] of Object.entries(g.change.oldValues))assert.equal(String(value(lines[0].values,f)),String(v));
+    for(const [f,v] of Object.entries(g.change.oldValues)){
+     const actual=String(value(lines[0].values,f));
+     const revised=value(g.change.newValues,f);
+     // A previous guarded main-branch publication is just as valid as
+     // the original archived input, but a third value is never accepted.
+     assert.ok(actual===String(v)||(revised!==null&&actual===String(revised)),
+      'Reviewed source changed beyond original/approved values: '+g.gameKey+' '+f);
+    }
     for(const [f,v] of Object.entries(g.change.newValues))assert.equal(String(g.sourceFieldValues[f]),String(v));
    }else{
     for(const [f,v] of Object.entries(g.sourceFieldValues))assert.equal(String(value(lines[0].values,f)),String(v),'Archived game stat changed: '+g.gameKey+' '+f);
