@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-30T16:33:22.702Z",
+  "generatedAt": "2026-10-30T18:07:31.921Z",
   "summary": {
     "errors": 0,
-    "warnings": 18,
+    "warnings": 19,
     "info": 2
   },
   "issues": [
@@ -51,6 +51,17 @@
         "unmatchedRows": 57,
         "rosterPlayers": 1,
         "sourceUrl": "https://www.maxpreps.com/ut/panguitch/panguitch-bobcats/football/stats/"
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_HIGH_UNMATCHED",
+      "message": "PINE VIEW rejected 53 of 72 MaxPreps stat rows during player matching.",
+      "context": {
+        "sourceRows": 72,
+        "unmatchedRows": 53,
+        "rosterPlayers": 54,
+        "sourceUrl": "https://www.maxpreps.com/ut/st-george/pine-view-panthers/football/stats/"
       }
     },
     {
@@ -240,10 +251,10 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9441,
-        "unmatchedRows": 714,
+        "sourceRows": 9459,
+        "unmatchedRows": 1058,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1059,
+        "sourceGamePairs": 1063,
         "missingGamePairs": 13
       }
     },
