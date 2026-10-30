@@ -42,7 +42,7 @@ jobs:
           const fs=require('fs');
           const a=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+'/reviewed-game-publication/publication-audit.json','utf8'));
           const b=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP+'/reviewed-game-publication-second-pass/publication-audit.json','utf8'));
-          if(![0,1,5,6].includes(a.reviewedGameChanges)||b.reviewedGameChanges!==0||b.changedFiles.length!==0)throw Error('Source repair failed source validation or idempotence');
+          if(![0,1,2,5,6,7].includes(a.reviewedGameChanges)||b.reviewedGameChanges!==0||b.changedFiles.length!==0)throw Error('Source repair failed source validation or idempotence');
           const expected=['player-game-stats-2026.json','team-current-data/layton.json','team-current-data/mountain-ridge.json','team-current-data/west-jordan.json','team-current-data/westlake.json','team-current-data/farmington.json'];
           if(a.changedFiles.some(file=>!expected.includes(file)))throw Error('Unexpected publication scope: '+JSON.stringify(a.changedFiles));
           const teams=new Set((a.proposals||[]).map(x=>x.team));

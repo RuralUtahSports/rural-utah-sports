@@ -217,3 +217,42 @@ test('Farmington Dahl source recovery fails closed if previous games or identity
  const held=proposeSourceRepairs(liveSource,rosters,doc,{index:unknown,dahlReview:dahl});
  assert.ok(held.holds.some(h=>h.team==='FARMINGTON'));
 });
+
+
+const farmingtonSkills=read('audits/2026-regular-season/farmington-layton-oct14-skills-reviewed-2026.json');
+test('Farmington skill-game evidence adds only Jeppesen and Boyle exact October 14 box values',()=>{
+ const old=JSON.stringify(liveSource);
+ const args={index:scope,dahlReview:dahl,farmingtonSkillReview:farmingtonSkills};
+ const out=proposeSourceRepairs(liveSource,rosters,doc,args);
+ assert.deepEqual(out.holds,[]);
+ const games=out.repaired.teams.FARMINGTON.games.filter(g=>g.date==='2026-10-14'&&norm(g.opponent)==='LAYTON');
+ assert.equal(games.length,1);
+ assert.equal(games[0].manualPartialStats,true);
+ assert.equal(games[0].teamScore,27);
+ assert.equal(games[0].opponentScore,17);
+ const expected=[
+  ['farmington-32-brogan-jeppesen','Rushing',{YARDS:'94',CARRIES:'18',TD:'1'}],
+  ['farmington-14-thayne-boyle','Receiving',{YARDS:'54',RECEPTIONS:'5',TD:'0'}]
+ ];
+ for(const [id,category,values] of expected){
+  const players=games[0].players.filter(x=>x.playerId===id);
+  assert.equal(players.length,1);
+  assert.deepEqual(players[0].statLines.filter(x=>x.category===category).map(x=>x.values),[values]);
+ }
+ assert.equal(JSON.stringify(liveSource),old);
+ const after=proposeSourceRepairs(out.repaired,rosters,doc,args);
+ assert.deepEqual(after.holds,[]);
+ assert.equal(after.proposals.filter(x=>x.kind==='augment-reviewed-partial-game').length,0);
+});
+test('Farmington skill source mismatch or missing player prior-game values blocks partial game publication',()=>{
+ const args={index:scope,dahlReview:dahl,farmingtonSkillReview:farmingtonSkills};
+ const damaged=structuredClone(liveSource);
+ const old=damaged.teams.FARMINGTON.games.find(g=>g.date==='2026-09-18');
+ const rec=old.players.find(p=>p.playerId==='farmington-14-thayne-boyle').statLines.find(l=>l.category==='Receiving');
+ const key=Object.keys(rec.values).find(k=>norm(k)==='YARDS');
+ rec.values[key]=String(Number(rec.values[key])+1);
+ assert.throws(()=>proposeSourceRepairs(damaged,rosters,doc,args),/nine-game skill subtotal/);
+ const corrupt=structuredClone(farmingtonSkills);
+ corrupt.decisions[0].gameValues.YARDS='95';
+ assert.throws(()=>proposeSourceRepairs(liveSource,rosters,doc,{...args,farmingtonSkillReview:corrupt}),/manifest fields changed/);
+});

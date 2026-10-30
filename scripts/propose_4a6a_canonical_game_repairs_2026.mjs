@@ -139,7 +139,101 @@ function attachDahlGame({out,rosters,review,index,proposals,holds}){
   manualPartialStats:true,seasonTotalHeld:true});
 }
 
-export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPhase=true,taylorReview=null,dahlReview=null}={}){
+
+function attachFarmingtonSkillBoxes({out,rosters,review,index,proposals,holds}){
+ if(!review)return;
+ const gameSource='https://www.maxpreps.com/ut/football/game/farmington-vs-layton/10-14-2026/?c=3d420072-cdf0-4e47-aa5d-8cad041b3bee';
+ if(review.id!=='farmington-layton-oct14-2026-skill-player-boxes'||review.season!==2026||
+  review.scope!=='regular-season-single-game-only'||review.status!=='source-reviewed-partial-game-addendum'||
+  review.team!=='FARMINGTON'||review.classification!=='6A'||
+  review.game?.date!=='2026-10-14'||review.game?.opponent!=='LAYTON'||
+  review.game?.teamScore!==27||review.game?.opponentScore!==17||
+  review.game?.canonicalKey!=='2026-10-14|FARMINGTON|LAYTON'||review.game?.url!==gameSource||
+  review.independentSeasonCorroboration?.url!=='https://www.deseret.com/sports/2026/10/29/high-school-football-6a-first-round-previews/'||
+  review.decisions?.length!==2)throw Error('Farmington skill-game review manifest changed; re-review required');
+ const expected=[
+  {id:'farmington-32-brogan-jeppesen',name:'Brogan Jeppesen',number:'32',category:'Rushing',
+   old:{YARDS:316,CARRIES:73,TD:2},newFields:{YARDS:'94',CARRIES:'18',TD:'1'},final:{YARDS:410,CARRIES:91,TD:3}},
+  {id:'farmington-14-thayne-boyle',name:'Thayne Boyle',number:'14',category:'Receiving',
+   old:{YARDS:326,RECEPTIONS:34,TD:3},newFields:{YARDS:'54',RECEPTIONS:'5',TD:'0'},final:{YARDS:380,RECEPTIONS:39,TD:3}}
+ ];
+ const roster=choose(rosters.teams,'FARMINGTON').roster;
+ const sourceGames=choose(out.teams,'FARMINGTON').games;
+ if(!Array.isArray(sourceGames))throw Error('Farmington missing source games');
+ const prior=sourceGames.filter(g=>String(g.date).startsWith('2026-')&&g.date!=='2026-10-14');
+ if(prior.length!==9||new Set(prior.map(g=>g.date+'|'+teamKey(g.opponent))).size!==9)
+  throw Error('Farmington nine historical source games have changed');
+ const scope=index.classify({date:'2026-10-14',opponent:'LAYTON',url:gameSource},'FARMINGTON');
+ if(scope.phase!=='regular-season'){
+  holds.push({team:'FARMINGTON',date:'2026-10-14',reason:'Skill-player reports lack positive regular-season phase',source:gameSource});return;
+ }
+ const node=sourceGames.filter(g=>g.date==='2026-10-14'&&teamKey(g.opponent)==='LAYTON');
+ if(node.length!==1){holds.push({team:'FARMINGTON',date:'2026-10-14',reason:'Missing or duplicated reviewed Dahl Farmington game; publish first',source:gameSource});return;}
+ const game=node[0];
+ if(game.teamScore!==27||game.opponentScore!==17||
+  stableGameKey(game,'FARMINGTON')!=='2026-10-14|FARMINGTON|LAYTON'||
+  !game.manualPartialStats||game.maxprepsUrl!==gameSource)
+  throw Error('Farmington October 14 has unexpected existing source game data');
+ const inserted=[];
+ for(let i=0;i<expected.length;i++){
+  const e=expected[i],d=review.decisions[i];
+  if(d.identity?.playerId!==e.id||d.identity?.name!==e.name||String(d.identity?.number)!==e.number||
+   d.category!==e.category||JSON.stringify(d.gameValues)!==JSON.stringify(e.newFields)||
+   JSON.stringify(d.reconciledReportedTotals)!==JSON.stringify(e.final)||
+   Object.entries(e.old).some(([f,v])=>d.previousNineGameSubtotal?.[f==='TD'&&e.category==='Rushing'?'knownTD':f]!==v))
+   throw Error('Farmington skill-player source manifest fields changed '+e.name);
+  if(roster.filter(p=>p.playerId===e.id&&p.name===e.name&&String(p.number)===e.number).length!==1)
+   throw Error('Farmington skill athlete roster missing or ambiguous '+e.id);
+  const totals=Object.fromEntries(Object.keys(e.old).map(f=>[f,0]));
+  let missingTD=0;
+  for(const old of prior){
+   if(!/^https:\/\/(?:www\.)?maxpreps\.com\//.test(old.maxprepsUrl||''))
+    throw Error('Farmington previous game has no MaxPreps source '+old.date);
+   const people=(old.players||[]).filter(p=>p.playerId===e.id&&p.name===e.name&&String(p.number)===e.number);
+   if(people.length!==1)throw Error('Missing prior skill player game '+e.id+' '+old.date);
+   const lines=(people[0].statLines||[]).filter(l=>norm(l.category)===norm(e.category));
+   if(lines.length!==1)throw Error('Missing prior skill category '+e.id+' '+old.date);
+   for(const field of Object.keys(e.old)){
+    const cell=get(lines[0].values,field);
+    if(!cell||!/^[-]?\d+$/.test(String(cell.value))){
+     if(field==='TD'){missingTD++;continue;}
+     throw Error('Unreported prior skill field '+e.id+' '+old.date+' '+field);
+    }
+    totals[field]+=Number(cell.value);
+   }
+  }
+  if(Object.entries(e.old).some(([f,v])=>totals[f]!==v)||missingTD!==d.previousNineGameSubtotal.tdSourceFieldGaps)
+   throw Error('Farmington nine-game skill subtotal changed '+e.name);
+  for(const field of Object.keys(e.old)){
+   if(field!=='TD'&&totals[field]+Number(e.newFields[field])!==e.final[field])
+    throw Error('Farmington skill ten-game sum changed '+e.name+' '+field);
+  }
+  if(e.category==='Rushing'&&d.seasonTDCertification!=='held-game-source-blank-in-one-of-nine-earlier-boxes')
+   throw Error('Cannot certify Jeppesen touchdown total');
+  const rows=(game.players||[]).filter(p=>p.playerId===e.id);
+  if(rows.length>1)throw Error('Duplicate October 14 Farmington athlete '+e.id);
+  if(rows.length===1){
+   if(rows[0].name!==e.name||String(rows[0].number)!==e.number)throw Error('Changed October 14 athlete identity');
+   const lines=(rows[0].statLines||[]).filter(l=>norm(l.category)===norm(e.category));
+   if(lines.length!==1||Object.entries(e.newFields).some(([field,value])=>String(get(lines[0].values,field)?.value)!==value))
+    throw Error('Conflicting Farmington Oct 14 skill values '+e.id);
+   continue; // Previously published exact reviewed game stats.
+  }
+  game.players.push({playerId:e.id,name:e.name,number:e.number,rosterMatched:true,
+   statLines:[{category:e.category,values:structuredClone(e.newFields),statSources:Object.fromEntries(Object.keys(e.newFields).map(f=>[f,'Reviewed October 14 MaxPreps game box']))}],
+   scoringPlays:[]});
+  inserted.push(e.id);
+ }
+ if(inserted.length){
+  game.playerDataCoverage='reviewed partial Dahl/Jeppesen/Boyle game lines; all other athlete fields remain unknown';
+  proposals.push({kind:'augment-reviewed-partial-game',team:'FARMINGTON',
+   playerId:inserted[0],playerIds:inserted,date:'2026-10-14',opponent:'LAYTON',
+   source:gameSource,fields:['Jeppesen rushing YARDS/CARRIES/TD','Boyle receiving YARDS/RECEPTIONS/TD'],
+   manualPartialStats:true,seasonTotalsHeld:true});
+ }
+}
+
+export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPhase=true,taylorReview=null,dahlReview=null,farmingtonSkillReview=null}={}){
  if(typeof index?.classify!=='function')throw Error('Explicit reviewed competition identity index required');
  validate(manifest);
  const out=structuredClone(gameStats),proposals=[],holds=[];
@@ -216,6 +310,7 @@ export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPha
  }
  attachTaylorGame({out,rosters,review:taylorReview,index,proposals,holds,strictPhase});
  attachDahlGame({out,rosters,review:dahlReview,index,proposals,holds});
+ attachFarmingtonSkillBoxes({out,rosters,review:farmingtonSkillReview,index,proposals,holds});
  // Reconcile the metadata only after all source-field approvals are checked.
  if(proposals.length){
   out.summary||={};
@@ -227,10 +322,10 @@ export function proposeSourceRepairs(gameStats,rosters,manifest,{index,strictPha
 
 function read(filename){return JSON.parse(fs.readFileSync(filename,'utf8'));}
 if(process.argv[1]&&fileURLToPath(import.meta.url)===path.resolve(process.argv[1])){
- const files=['player-game-stats-2026.json','deseret-rosters-stats-2026.json','audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json','official-brackets-2026.json','competition-scope-review-2026.json','audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json','audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json'];
+ const files=['player-game-stats-2026.json','deseret-rosters-stats-2026.json','audits/2026-regular-season/reconciled-4a6a-player-cases-2026.json','official-brackets-2026.json','competition-scope-review-2026.json','audits/2026-regular-season/westlake-taylor-oct15-reviewed-2026.json','audits/2026-regular-season/farmington-dahl-oct14-reviewed-2026.json','audits/2026-regular-season/farmington-layton-oct14-skills-reviewed-2026.json'];
  const raw=Object.fromEntries(files.map(file=>[file,fs.readFileSync(file,'utf8')]));
- const [games,rosters,manifest,brackets,review,taylorReview,dahlReview]=files.map(file=>JSON.parse(raw[file]));
- const result=proposeSourceRepairs(games,rosters,manifest,{index:createCompetitionIndex({brackets,review}),taylorReview,dahlReview});
+ const [games,rosters,manifest,brackets,review,taylorReview,dahlReview,farmingtonSkillReview]=files.map(file=>JSON.parse(raw[file]));
+ const result=proposeSourceRepairs(games,rosters,manifest,{index:createCompetitionIndex({brackets,review}),taylorReview,dahlReview,farmingtonSkillReview});
  if(process.argv.includes('--apply')){
   if(result.holds.length)throw Error('Cannot publish canonical source while unverified game phases remain');
   const pathToSource='player-game-stats-2026.json';
