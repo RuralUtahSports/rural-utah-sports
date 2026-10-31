@@ -1,5 +1,5 @@
 (() => {
-  const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20261002-fresh-finals1';
+  const LEGACY_HELPER = 'scoreboard-week-helper.js?v=20261031-week13-lines1';
   const LIVE_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-live-details-2026.json';
   const SUPABASE_DETAILS = 'https://pleggeciqvaoyxtuvczd.supabase.co/functions/v1/live-scoreboard';
   const FULL_DETAILS = 'https://raw.githubusercontent.com/RuralUtahSports/rural-utah-sports/main/deseret-game-details.json';
