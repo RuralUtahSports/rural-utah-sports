@@ -195,7 +195,7 @@ function updatePlayoffNote(){
  }else if(selected===12){
   const rows=playoffGames.filter(g=>g.playoffWeek===12),known=rows.filter(g=>!waitingOnOpponent(g)).length,waiting=rows.length-known;
   note.innerHTML='<b>Week 12 · October 30–31 (Friday–Saturday)</b><p><strong>'+rows.length+' playoff games</strong> across seven classes: 8-Player through 3A quarterfinals, and 4A–6A first-round games. '+known+' matchups are set, '+waiting+' are awaiting first-round winners. Lines appear only when both opponents are known. No results are assumed.</p><a href="official-playoffs.html">View official bracket paths ↗</a>';
- else{
+ }else{
   const rows=playoffGames.filter(g=>g.playoffWeek===13);
   note.innerHTML='<b>Week 13 · November 6–7</b><p><strong>'+rows.length+' next-round games</strong> across all seven classifications: 4A–6A quarterfinals and 3A–8-Player semifinals. RUS projected lines and totals are model estimates, not actual scores or sportsbook odds.</p><a href="official-playoffs.html">See next-round brackets ↗</a>';
  }
