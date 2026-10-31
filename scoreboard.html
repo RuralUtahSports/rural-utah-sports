@@ -134,7 +134,12 @@ function playoffWeek12FromBrackets(payload){
     playoff:true,playoffWeek:12,classification,
     round:/^(4A|5A|6A)$/.test(classification)?'First Round':'Quarterfinals',
     time:g.time||'TBA',venue:g.venue||'TBA',
-    awayScore:null,homeScore:null,actualAway:null,actualHome:null
+    awayScore:null,homeScore:null,
+    // Only verified bracket finals have scores and explicit winner flags.
+    // Live/partial results must never be promoted to FINAL on the scoreboard.
+    actualAway:g.b.score!==undefined&&g.b.score!==null&&g.a.score!==undefined&&g.a.score!==null&&typeof g.a.winner==='boolean'&&typeof g.b.winner==='boolean'?Number(g.b.score):null,
+    actualHome:g.a.score!==undefined&&g.a.score!==null&&g.b.score!==undefined&&g.b.score!==null&&typeof g.a.winner==='boolean'&&typeof g.b.winner==='boolean'?Number(g.a.score):null,
+    actualWinner:g.a.winner===true?homeTeam:g.b.winner===true?awayTeam:null
    });
   }
  }
