@@ -34,7 +34,7 @@ function project(g,overrides){
   const o=findOverride(overrides,g);
   if(o){const a=num(o.awayScore),h=num(o.homeScore);if(a!==null&&h!==null)return{away:a,home:h,edited:true}}
   const a=num(g.awayScore),h=num(g.homeScore);
-  return a===null||h===null?null:{away:a,home:h+HOME_FIELD_POINTS,edited:false};
+  return a===null||h===null?null:{away:a,home:h+(g.playoffModel?0:HOME_FIELD_POINTS),edited:false};
 }
 
 function info(g,overrides){
@@ -66,8 +66,14 @@ function selectedWeekNumber(){
 function activeWeekGames(allGames){
   const selected=selectedWeekNumber();
   if(!selected)return allGames;
+  // Week 11–13 postseason predictions come from the official bracket feed,
+  // not the regular-season weekly simulation (which ends Oct 16).
+  if(selected>=11&&typeof window.RUSScoreboardWeekGames==='function'){
+    const bracketRows=window.RUSScoreboardWeekGames(selected,allGames);
+    if(Array.isArray(bracketRows)&&bracketRows.length)return bracketRows;
+  }
   const filtered=allGames.filter(g=>gameWeekNumber(g)===selected);
-  return filtered.length?filtered:allGames;
+  return filtered.length?filtered:selected>=11?[]:allGames;
 }
 
 function addStyles(){
