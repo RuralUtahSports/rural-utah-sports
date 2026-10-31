@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T15:26:21.618Z",
+  "generatedAt": "2026-10-31T17:18:03.258Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -9,8 +9,8 @@
     "statRows": 6926,
     "athletesWithStats": 4065,
     "gamesWithPlayerRecords": 1085,
-    "gamePlayerRows": 21092,
-    "gameStatLines": 30151,
+    "gamePlayerRows": 21094,
+    "gameStatLines": 30153,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -3393,6 +3393,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "RIVERTON",
+      "subject": "Bronco Osness",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 13,
+      "gameLogSum": 21,
+      "difference": 8
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "SOUTH SUMMIT",
       "subject": "Kash Atkinson",
       "category": "Receiving",
@@ -3498,17 +3509,6 @@
       "field": "YARDS",
       "season": 43,
       "gameLogSum": 50,
-      "difference": 7
-    },
-    {
-      "level": "review",
-      "code": "GAME_SUM_EXCEEDS_SEASON",
-      "team": "RIVERTON",
-      "subject": "Bronco Osness",
-      "category": "Defense/Special Teams",
-      "field": "TACKLES",
-      "season": 13,
-      "gameLogSum": 20,
       "difference": 7
     },
     {
