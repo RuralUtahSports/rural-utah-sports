@@ -153,11 +153,11 @@
 
   function buildWeekBuckets() {
     // The weekly simulation feed ends with regular-season Week 10. Include
-    // verified playoff bracket fixtures so Week 11/12 remain selectable after
+    // verified playoff bracket fixtures so Weeks 11–13 remain selectable after
     // live refreshes, which otherwise rebuild this navigator from that feed.
     const dated = (seasonGames || []).filter(g => dateVal(g.date)).slice();
     const scheduledPlayoffs = (typeof playoffGames !== 'undefined' && Array.isArray(playoffGames))
-      ? playoffGames.filter(g => (g.playoffWeek === 11 || g.playoffWeek === 12) && dateVal(g.date))
+      ? playoffGames.filter(g => (g.playoffWeek === 11 || g.playoffWeek === 12 || g.playoffWeek === 13) && dateVal(g.date))
       : [];
     const matchupKey = g => isoDate(g.date) + '|' + [norm(g.awayTeam), norm(g.homeTeam)].sort().join('|');
     const seen = new Set(dated.map(matchupKey));
