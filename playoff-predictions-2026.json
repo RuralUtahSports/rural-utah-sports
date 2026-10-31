@@ -1,14 +1,14 @@
 {
-  "title": "2026 RUS Week 11–12 football playoff model projections",
+  "title": "2026 RUS football playoff model projections • Weeks 11–13",
   "season": 2026,
-  "generatedFrom": "2026-10-17 standings and ELO snapshots",
-  "sourceUpdatedAt": "2026-10-17T16:48:41.129Z",
+  "generatedFrom": "2026 scoring/results through Oct 31; ELO baseline through Oct 16",
+  "sourceUpdatedAt": "2026-10-31T22:18:54.210Z",
   "type": "model-projection-not-actual-result",
-  "description": "Preliminary RUS football playoff projections based on October 17 current-season scoring and ELO snapshots. Not sportsbook odds or actual results.",
+  "description": "RUS football playoff projections including Nov. 6–7 next-round lines. Projections are based on published 2026 results through Oct. 31 with RUS ELO context through Oct. 16; not sportsbook odds or actual results.",
   "method": {
-    "spread": "55% current-season points-per-game differential gap plus 45% (current ELO difference / 19), plus 3 points for home field; target capped at ±55",
-    "overUnder": "Mean of both teams' 2026 PF/G and PA/G, with a floor of |margin| + 12, classification-dependent limits",
-    "scores": "Rounded (total ± projected home margin) / 2",
+    "spread": "55% 2026 scoring differential gap plus 45% (RUS ELO difference / 19), plus 3 points at home-site quarterfinals and 0 at neutral-site semifinals; margin capped at ±55.",
+    "overUnder": "Average of each team's points for and against per game, with floor |margin| + 12; 11-player limits 28-98, 8-player limits 38-108. Adjust total by up to 1 for whole-number predicted scores and exact stated margin.",
+    "scores": "Home = (total + projected margin)/2; away = (total - margin)/2. Neutral-site semifinal teams retain seeded a/b position for display, but no home bonus.",
     "homeFieldPoints": 3
   },
   "games": [
@@ -911,7 +911,388 @@
         "homeGames": 9,
         "awayGames": 9
       }
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "6A",
+      "round": "Quarterfinals",
+      "homeTeam": "SKYRIDGE",
+      "awayTeam": "AMERICAN FORK",
+      "homeSeed": 1,
+      "awaySeed": 8,
+      "homeScore": 29,
+      "awayScore": 19,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 2209,
+        "awayElo": 2014,
+        "homeGames": 10,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "6A",
+      "round": "Quarterfinals",
+      "homeTeam": "HERRIMAN",
+      "awayTeam": "DAVIS",
+      "homeSeed": 4,
+      "awaySeed": 5,
+      "homeScore": 31,
+      "awayScore": 25,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 1901,
+        "awayElo": 1997,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "6A",
+      "round": "Quarterfinals",
+      "homeTeam": "MOUNTAIN RIDGE",
+      "awayTeam": "LONE PEAK",
+      "homeSeed": 2,
+      "awaySeed": 7,
+      "homeScore": 35,
+      "awayScore": 15,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 2027,
+        "awayElo": 2048,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "6A",
+      "round": "Quarterfinals",
+      "homeTeam": "CORNER CANYON",
+      "awayTeam": "SYRACUSE",
+      "homeSeed": 3,
+      "awaySeed": 11,
+      "homeScore": 39,
+      "awayScore": 16,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 2280,
+        "awayElo": 1823,
+        "homeGames": 11,
+        "awayGames": 10
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "5A",
+      "round": "Quarterfinals",
+      "homeTeam": "WEST",
+      "awayTeam": "FREMONT",
+      "homeSeed": 1,
+      "awaySeed": 8,
+      "homeScore": 41,
+      "awayScore": 14,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 1896,
+        "awayElo": 1805,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "5A",
+      "round": "Quarterfinals",
+      "homeTeam": "BOUNTIFUL",
+      "awayTeam": "SPRINGVILLE",
+      "homeSeed": 4,
+      "awaySeed": 5,
+      "homeScore": 23,
+      "awayScore": 21,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 1917,
+        "awayElo": 1959,
+        "homeGames": 10,
+        "awayGames": 10
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "5A",
+      "round": "Quarterfinals",
+      "homeTeam": "OREM",
+      "awayTeam": "PLEASANT GROVE",
+      "homeSeed": 2,
+      "awaySeed": 10,
+      "homeScore": 33,
+      "awayScore": 14,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 2023,
+        "awayElo": 1746,
+        "homeGames": 10,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "5A",
+      "round": "Quarterfinals",
+      "homeTeam": "ALTA",
+      "awayTeam": "WOODS CROSS",
+      "homeSeed": 6,
+      "awaySeed": 14,
+      "homeScore": 34,
+      "awayScore": 20,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 1784,
+        "awayElo": 1711,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "4A",
+      "round": "Quarterfinals",
+      "homeTeam": "RIDGELINE",
+      "awayTeam": "HIGHLAND",
+      "homeSeed": 1,
+      "awaySeed": 8,
+      "homeScore": 41,
+      "awayScore": 21,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 2118,
+        "awayElo": 1594,
+        "homeGames": 11,
+        "awayGames": 10
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "4A",
+      "round": "Quarterfinals",
+      "homeTeam": "SNOW CANYON",
+      "awayTeam": "CRIMSON CLIFFS",
+      "homeSeed": 4,
+      "awaySeed": 5,
+      "homeScore": 18,
+      "awayScore": 31,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 1721,
+        "awayElo": 2004,
+        "homeGames": 10,
+        "awayGames": 10
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "4A",
+      "round": "Quarterfinals",
+      "homeTeam": "HURRICANE",
+      "awayTeam": "SALEM HILLS",
+      "homeSeed": 2,
+      "awaySeed": 7,
+      "homeScore": 31,
+      "awayScore": 21,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 1707,
+        "awayElo": 1705,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "4A",
+      "round": "Quarterfinals",
+      "homeTeam": "SKYLINE",
+      "awayTeam": "PROVO",
+      "homeSeed": 6,
+      "awaySeed": 14,
+      "homeScore": 26,
+      "awayScore": 26,
+      "modelHomeFieldIncluded": true,
+      "modelInputs": {
+        "homeElo": 1626,
+        "awayElo": 1787,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/07/2026",
+      "classification": "3A",
+      "round": "Semifinals",
+      "homeTeam": "MORGAN",
+      "awayTeam": "RICHFIELD",
+      "homeSeed": 1,
+      "awaySeed": 5,
+      "homeScore": 30,
+      "awayScore": 24,
+      "modelHomeFieldIncluded": false,
+      "modelInputs": {
+        "homeElo": 1965,
+        "awayElo": 1755,
+        "homeGames": 11,
+        "awayGames": 12
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/07/2026",
+      "classification": "3A",
+      "round": "Semifinals",
+      "homeTeam": "JUAB",
+      "awayTeam": "LOGAN",
+      "homeSeed": 2,
+      "awaySeed": 3,
+      "homeScore": 29,
+      "awayScore": 28,
+      "modelHomeFieldIncluded": false,
+      "modelInputs": {
+        "homeElo": 1732,
+        "awayElo": 1523,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "2A",
+      "round": "Semifinals",
+      "homeTeam": "SAN JUAN",
+      "awayTeam": "SOUTH SUMMIT",
+      "homeSeed": 1,
+      "awaySeed": 4,
+      "homeScore": 38,
+      "awayScore": 22,
+      "modelHomeFieldIncluded": false,
+      "modelInputs": {
+        "homeElo": 1933,
+        "awayElo": 1589,
+        "homeGames": 10,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "2A",
+      "round": "Semifinals",
+      "homeTeam": "DELTA",
+      "awayTeam": "SUMMIT ACADEMY",
+      "homeSeed": 2,
+      "awaySeed": 3,
+      "homeScore": 26,
+      "awayScore": 25,
+      "modelHomeFieldIncluded": false,
+      "modelInputs": {
+        "homeElo": 1464,
+        "awayElo": 1550,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "1A",
+      "round": "Semifinals",
+      "homeTeam": "DUCHESNE",
+      "awayTeam": "NORTH SUMMIT",
+      "homeSeed": 1,
+      "awaySeed": 4,
+      "homeScore": 36,
+      "awayScore": 14,
+      "modelHomeFieldIncluded": false,
+      "modelInputs": {
+        "homeElo": 1756,
+        "awayElo": 1548,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/06/2026",
+      "classification": "1A",
+      "round": "Semifinals",
+      "homeTeam": "KANAB",
+      "awayTeam": "BEAVER",
+      "homeSeed": 2,
+      "awaySeed": 3,
+      "homeScore": 23,
+      "awayScore": 22,
+      "modelHomeFieldIncluded": false,
+      "modelInputs": {
+        "homeElo": 1775,
+        "awayElo": 1830,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/07/2026",
+      "classification": "8-Player",
+      "round": "Semifinals",
+      "homeTeam": "RICH",
+      "awayTeam": "WATER CANYON",
+      "homeSeed": 1,
+      "awaySeed": 4,
+      "homeScore": 39,
+      "awayScore": 31,
+      "modelHomeFieldIncluded": false,
+      "modelInputs": {
+        "homeElo": 1570,
+        "awayElo": 1331,
+        "homeGames": 11,
+        "awayGames": 11
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
+    },
+    {
+      "date": "11/07/2026",
+      "classification": "8-Player",
+      "round": "Semifinals",
+      "homeTeam": "MILFORD",
+      "awayTeam": "MONTICELLO",
+      "homeSeed": 2,
+      "awaySeed": 3,
+      "homeScore": 30,
+      "awayScore": 37,
+      "modelHomeFieldIncluded": false,
+      "modelInputs": {
+        "homeElo": 1532,
+        "awayElo": 1473,
+        "homeGames": 10,
+        "awayGames": 10
+      },
+      "projectionBasis": "Postseason-augmented 2026 scoring through Oct 31; RUS Elo snapshot last games Oct 16. Not a betting line."
     }
   ],
-  "bracketMatchupsConfirmedThrough": "2026-10-24"
+  "bracketMatchupsConfirmedThrough": "2026-10-31",
+  "nextRoundNotes": "Includes official completed bracket results October 23–31; Water Canyon 44–8 Whitehorse was directly reported by Rural Utah Sports and awaits public-source confirmation. Previously published Week 11/12 projections remain unchanged."
 }
