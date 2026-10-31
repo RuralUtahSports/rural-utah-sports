@@ -56,7 +56,7 @@
 <p class="subtitle">RUS projected lines with verified final scores, quarter-by-quarter box scores, scoring plays and available game stats. Games remain Upcoming until a final result is confirmed.</p>
 <div class="scoreboard-actions"><button id="shareScoreboardGrid" class="scoreboard-share-button" type="button">Share All Games / Graphics</button><span>Export every game as full boards or a readable social carousel.</span></div>
 <p class="rus-line-note">RUS spread and O/U are model projections with a 3-point home-field adjustment, not sportsbook or wagering lines.</p>
-<div class="scoreboard-week-bar"><label for="scoreboardWeekSelect">Football Week</label><select id="scoreboardWeekSelect" aria-label="Choose football week"><option value="12">Week 12 — Quarterfinals / 4A–6A First Round · Oct 30</option><option value="11">Week 11 — Playoff Opening Round · Oct 23</option><option value="10">Week 10 — Regular Season Finals</option><option value="9">Week 9</option><option value="8">Week 8</option><option value="7">Week 7</option><option value="6">Week 6</option><option value="5">Week 5</option><option value="4">Week 4</option><option value="3">Week 3</option><option value="2">Week 2</option><option value="1">Week 1</option></select><span>Playoff games are listed separately from regular-season finals.</span></div><div id="scoreboardPlayoffNote" class="scoreboard-playoff-note" hidden></div>
+<div class="scoreboard-week-bar"><label for="scoreboardWeekSelect">Football Week</label><select id="scoreboardWeekSelect" aria-label="Choose football week"><option value="13">Week 13 — Quarterfinals / Semifinals · Nov 6–7</option><option value="12">Week 12 — Quarterfinals / 4A–6A First Round · Oct 30</option><option value="11">Week 11 — Playoff Opening Round · Oct 23</option><option value="10">Week 10 — Regular Season Finals</option><option value="9">Week 9</option><option value="8">Week 8</option><option value="7">Week 7</option><option value="6">Week 6</option><option value="5">Week 5</option><option value="4">Week 4</option><option value="3">Week 3</option><option value="2">Week 2</option><option value="1">Week 1</option></select><span>Playoff games are listed separately from regular-season finals.</span></div><div id="scoreboardPlayoffNote" class="scoreboard-playoff-note" hidden></div>
 <div id="summary" class="summary-grid"></div>
 <div class="filters"><select id="classFilter"><option value="ALL">All Classifications</option><option>6A</option><option>5A</option><option>4A</option><option>3A</option><option>2A</option><option>1A</option><option value="8P">8-Player</option></select><select id="statusFilter"><option value="ALL">All Games</option><option value="UPCOMING">Upcoming</option><option value="FINAL">Final</option><option value="MERCY">44+ Mercy Rule</option></select><input id="search" type="search" placeholder="Search team…"></div>
 <div id="board"><div class="empty">Loading weekly scoreboard…</div></div>
@@ -69,13 +69,13 @@ const canon=v=>aliases[norm(v)]||norm(v),HOME_FIELD_POINTS=3,DAY=86400000,WEEK=7
 function yearOf(d){const m=String(d||'').match(/(20\d{2})/);return m?+m[1]:0}function dateVal(d){const t=Date.parse(String(d||''));return Number.isFinite(t)?t:0}function isoDate(d){const s=String(d||'').trim();let m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);if(m)return`${m[3]}-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`;m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);if(m)return`${m[1]}-${String(m[2]).padStart(2,'0')}-${String(m[3]).padStart(2,'0')}`;const t=dateVal(d);if(!t)return'';const x=new Date(t);return`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`}function gameKey(g){return`${isoDate(g.date)}|${compact(g.awayTeam)}|${compact(g.homeTeam)}`}function fmtDate(d){const t=dateVal(d);if(!t)return d||'Date TBA';return new Date(t).toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'})}function deseretUrl(d){const iso=isoDate(d);return iso?`https://sports.deseret.com/high-school/football/scores-schedule/${iso}`:'https://sports.deseret.com/high-school/football/scores-schedule'}
 function startOfDay(value){const d=new Date(value);d.setHours(0,0,0,0);return d.getTime()}function thursdayStart(value){const d=new Date(startOfDay(value)),day=d.getDay();if(day>=1&&day<=3)d.setDate(d.getDate()+(4-day));else d.setDate(d.getDate()-((day+3)%7));return d.getTime()}function seasonWeekOneStart(year){const d=new Date(Number(year),7,8);d.setHours(0,0,0,0);while(d.getDay()!==4)d.setDate(d.getDate()+1);return d.getTime()}function gameWeekNumber(g){const date=isoDate(g.date);if(!date)return null;const t=Date.parse(`${date}T12:00:00`);if(!Number.isFinite(t))return null;return Math.floor((thursdayStart(t)-seasonWeekOneStart(new Date(t).getFullYear()))/WEEK)+1}function currentWeek(){const today=new Date(),mt=new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',weekday:'short',hour:'numeric',hourCycle:'h23'}).formatToParts(today),sundayRelease=mt.some(p=>p.type==='weekday'&&p.value==='Sun')&&Number(mt.find(p=>p.type==='hour')?.value)>=8,week=Math.floor((thursdayStart(today)-seasonWeekOneStart(today.getFullYear()))/WEEK)+1+(sundayRelease?1:0);const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(today).map(x=>[x.type,x.value]));
  const released=Number(parts.year)===2026&&(Number(parts.month)>10||(Number(parts.month)===10&&Number(parts.day)>=17));
- const oct30=Number(parts.year)===2026&&(Number(parts.month)>10||(Number(parts.month)===10&&Number(parts.day)>=30));return Math.max(1,Math.min(12,oct30?Math.max(week,12):released?Math.max(week,11):week))}function playoffGameKey(g){
+ const oct30=Number(parts.year)===2026&&(Number(parts.month)>10||(Number(parts.month)===10&&Number(parts.day)>=30));return Math.max(1,Math.min(13,oct30?Math.max(week,12):released?Math.max(week,11):week))}function playoffGameKey(g){
  const names=[canon(g.awayTeam),canon(g.homeTeam)].sort();
  return isoDate(g.date)+'|'+names.join('|');
 }
 function selectWeekGames(week,seasonFeed=allGames){
  const regular=seasonFeed.filter(g=>gameWeekNumber(g)===week);
- if(week!==11&&week!==12)return regular;
+ if(week!==11&&week!==12&&week!==13)return regular;
  const known=new Set(regular.map(playoffGameKey));
  const upcoming=playoffGames.filter(g=>g.playoffWeek===week&&!known.has(playoffGameKey(g)));
  return [...regular,...upcoming];
@@ -145,6 +145,29 @@ function playoffWeek12FromBrackets(payload){
  }
  return rows;
 }
+function playoffWeek13FromBrackets(payload){
+ const groups=['8-Player','1A','2A','3A','4A','5A','6A'],rows=[];
+ for(const classification of groups){
+  const rounds=payload?.classifications?.[classification]?.rounds||[];
+  const round=rounds[/^(4A|5A|6A)$/.test(classification)?1:2];
+  if(!round?.games)continue;
+  for(const g of round.games){
+   const kickoffDate=isoDate(g.date);
+   if(!/^2026-11-(06|07)$/.test(kickoffDate)||!g?.a?.name||!g?.b?.name)continue;
+   // Only real, seeded opponents have a valid line. Placeholder brackets are not games.
+   if(!g.a.seed||!g.b.seed)continue;
+   const homeTeam=playoffTeamName(g.a.name),awayTeam=playoffTeamName(g.b.name);
+   rows.push({
+    date:kickoffDate.slice(5,7)+'/'+kickoffDate.slice(8,10)+'/'+kickoffDate.slice(0,4),
+    homeTeam,awayTeam,homeSeed:g.a.seed,awaySeed:g.b.seed,playoff:true,playoffWeek:13,classification,
+    round:/^(4A|5A|6A)$/.test(classification)?'Quarterfinals':'Semifinals',
+    time:g.time||'TBA',venue:g.venue||'TBA',awayScore:null,homeScore:null,
+    actualAway:null,actualHome:null,actualWinner:null
+   });
+  }
+ }
+ return rows;
+}
 function waitingOnOpponent(g){return !!g.playoff&&(!g.homeSeed||!g.awaySeed)}
 
 function applyPlayoffModel(rows,forecasts){
@@ -164,14 +187,17 @@ function applyPlayoffModel(rows,forecasts){
 }
 function updatePlayoffNote(){
  const selected=Number($('scoreboardWeekSelect').value),note=$('scoreboardPlayoffNote');
- note.hidden=selected!==11&&selected!==12;
+ note.hidden=selected!==11&&selected!==12&&selected!==13;
  if(note.hidden)return;
  if(selected===11){
   const n=playoffGames.filter(g=>g.playoffWeek===11).length;
   note.innerHTML='<b>Week 11 · Playoff Opening Round</b><p>'+n+' official October 23 matchups in 8-Player through 3A. Byes excluded. RUS lines and totals are projections, not actual scores.</p><a href="official-playoffs.html">See playoff brackets ↗</a>';
- }else{
+ }else if(selected===12){
   const rows=playoffGames.filter(g=>g.playoffWeek===12),known=rows.filter(g=>!waitingOnOpponent(g)).length,waiting=rows.length-known;
   note.innerHTML='<b>Week 12 · October 30–31 (Friday–Saturday)</b><p><strong>'+rows.length+' playoff games</strong> across seven classes: 8-Player through 3A quarterfinals, and 4A–6A first-round games. '+known+' matchups are set, '+waiting+' are awaiting first-round winners. Lines appear only when both opponents are known. No results are assumed.</p><a href="official-playoffs.html">View official bracket paths ↗</a>';
+ else{
+  const rows=playoffGames.filter(g=>g.playoffWeek===13);
+  note.innerHTML='<b>Week 13 · November 6–7</b><p><strong>'+rows.length+' next-round games</strong> across all seven classifications: 4A–6A quarterfinals and 3A–8-Player semifinals. RUS projected lines and totals are model estimates, not actual scores or sportsbook odds.</p><a href="official-playoffs.html">See next-round brackets ↗</a>';
  }
 }
 function showSelectedWeek(){
@@ -218,7 +244,7 @@ function card(g){const centerEligible=!!teamInfo(g.awayTeam)&&!!teamInfo(g.homeT
 function utahNow(){const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()),get=type=>parts.find(x=>x.type===type)?.value||'';return{date:`${get('year')}-${get('month')}-${get('day')}`,minutes:Number(get('hour'))*60+Number(get('minute'))}}
 function thursdayAfterFridayCutoff(value){const iso=isoDate(value),now=utahNow();if(!iso||!now.date)return false;const weekday=new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',weekday:'short'}).format(new Date(`${iso}T12:00:00Z`));if(weekday!=='Thu')return false;const current=Date.parse(`${now.date}T12:00:00Z`),group=Date.parse(`${iso}T12:00:00Z`);if(!Number.isFinite(current)||!Number.isFinite(group))return false;const dayDiff=Math.round((current-group)/DAY);return dayDiff>1||(dayDiff===1&&now.minutes>=960)}
 function render(){const cf=$('classFilter').value,sf=$('statusFilter').value,q=norm($('search').value);const filtered=games.filter(g=>{const done=finalGame(g),live=liveGame(g),mercy=mercyGame(g),classOK=cf==='ALL'||(g.playoff?gameClass(g)===cf:cls(g.awayTeam)===cf||cls(g.homeTeam)===cf),statusOK=sf==='ALL'||(sf==='FINAL'&&done)||(sf==='LIVE'&&live)||(sf==='UPCOMING'&&!done&&!live)||(sf==='MERCY'&&mercy),searchOK=!q||norm(g.awayTeam).includes(q)||norm(g.homeTeam).includes(q);return classOK&&statusOK&&searchOK});const groups=new Map();for(const g of filtered){const k=g.date||'Date TBA';if(!groups.has(k))groups.set(k,[]);groups.get(k).push(g)}const ordered=[...groups].sort((a,b)=>Number(b[1].some(liveGame))-Number(a[1].some(liveGame))||Number(thursdayAfterFridayCutoff(a[0]))-Number(thursdayAfterFridayCutoff(b[0]))||dateVal(a[0])-dateVal(b[0]));$('board').innerHTML=ordered.length?ordered.map(([date,rows])=>`<section class="date-section"><div class="date-head"><h2>${esc(fmtDate(date))}</h2><span>${rows.length} game${rows.length===1?'':'s'}</span></div><div class="games">${[...rows].sort((a,b)=>Number(liveGame(b))-Number(liveGame(a))||Number(finalGame(a))-Number(finalGame(b))||String(a.awayTeam).localeCompare(String(b.awayTeam))).map(card).join('')}</div></section>`).join(''):'<div class="empty">No games match those filters.</div>';const finals=games.filter(finalGame),mercy=games.filter(mercyGame).length,live=games.filter(liveGame).length,wins=finals.filter(g=>outcome(g)==='W').length,losses=finals.filter(g=>outcome(g)==='L').length,acc=(wins+losses)?(wins/(wins+losses)*100).toFixed(1)+'%':'—';$('summary').innerHTML=`<div class="summary"><strong>${games.length}</strong><span>Games This Week</span></div><div class="summary"><strong>${finals.length}</strong><span>Final</span></div><div class="summary"><strong>${mercy}</strong><span>44+ Mercy Rule</span></div><div class="summary"><strong>${wins}-${losses}</strong><span>RUS Picks • ${acc}</span></div>`}
-(async()=>{try{const stamp=Date.now(),[wr,tr,pr,br,fr]=await Promise.all([fetch('weekly-simulation.json?v='+stamp,{cache:'no-store'}),fetch('standings-2026.json?v='+stamp,{cache:'no-store'}),fetch('game-preview-overrides.json?v='+stamp,{cache:'no-store'}).catch(()=>null),fetch('official-brackets-2026.json?v='+stamp,{cache:'no-store'}).catch(()=>null),fetch('playoff-predictions-2026.json?v='+stamp,{cache:'no-store'}).catch(()=>null)]);if(!wr.ok||!tr.ok)throw new Error('data');const weekly=await wr.json(),standingsPayload=await tr.json(),teams=Object.values(standingsPayload?.byClassification||{}).flat(),details={games:{}},previews=pr&&pr.ok?await pr.json():{overrides:[]};window.RUSScoreboardStandingsData=standingsPayload;for(const t of teams||[])if(t?.team){teamMap.set(norm(t.team),t);teamMap.set(canon(t.team),t)}for(const[k,v]of Object.entries(details.games||{}))detailMap.set(k,v);for(const o of previews.overrides||[])if(o?.awayTeam&&o?.homeTeam)previewOverrideMap.set(gameKey(o),o);allGames=(weekly.games||[]).filter(g=>g.awayTeam&&g.homeTeam&&yearOf(g.date)===2026).sort((a,b)=>dateVal(a.date)-dateVal(b.date)||String(a.awayTeam).localeCompare(String(b.awayTeam)));const bracketPayload=br&&br.ok?await br.json():null;playoffGames=applyPlayoffModel([...(bracketPayload?playoffRowsFromBrackets(bracketPayload):[]),...(bracketPayload?playoffWeek12FromBrackets(bracketPayload):[])],fr&&fr.ok?await fr.json():null);const requested=Number(new URLSearchParams(location.search).get('week'));$('scoreboardWeekSelect').value=Number.isInteger(requested)&&requested>=1&&requested<=12?String(requested):String(currentWeek());showSelectedWeek()}catch(e){console.error(e);$('board').innerHTML='<div class="empty">Weekly scoreboard data could not be loaded.</div>'}})();
+(async()=>{try{const stamp=Date.now(),[wr,tr,pr,br,fr]=await Promise.all([fetch('weekly-simulation.json?v='+stamp,{cache:'no-store'}),fetch('standings-2026.json?v='+stamp,{cache:'no-store'}),fetch('game-preview-overrides.json?v='+stamp,{cache:'no-store'}).catch(()=>null),fetch('official-brackets-2026.json?v='+stamp,{cache:'no-store'}).catch(()=>null),fetch('playoff-predictions-2026.json?v='+stamp,{cache:'no-store'}).catch(()=>null)]);if(!wr.ok||!tr.ok)throw new Error('data');const weekly=await wr.json(),standingsPayload=await tr.json(),teams=Object.values(standingsPayload?.byClassification||{}).flat(),details={games:{}},previews=pr&&pr.ok?await pr.json():{overrides:[]};window.RUSScoreboardStandingsData=standingsPayload;for(const t of teams||[])if(t?.team){teamMap.set(norm(t.team),t);teamMap.set(canon(t.team),t)}for(const[k,v]of Object.entries(details.games||{}))detailMap.set(k,v);for(const o of previews.overrides||[])if(o?.awayTeam&&o?.homeTeam)previewOverrideMap.set(gameKey(o),o);allGames=(weekly.games||[]).filter(g=>g.awayTeam&&g.homeTeam&&yearOf(g.date)===2026).sort((a,b)=>dateVal(a.date)-dateVal(b.date)||String(a.awayTeam).localeCompare(String(b.awayTeam)));const bracketPayload=br&&br.ok?await br.json():null;playoffGames=applyPlayoffModel([...(bracketPayload?playoffRowsFromBrackets(bracketPayload):[]),...(bracketPayload?playoffWeek12FromBrackets(bracketPayload):[]),...(bracketPayload?playoffWeek13FromBrackets(bracketPayload):[])],fr&&fr.ok?await fr.json():null);const requested=Number(new URLSearchParams(location.search).get('week'));$('scoreboardWeekSelect').value=Number.isInteger(requested)&&requested>=1&&requested<=13?String(requested):String(currentWeek());showSelectedWeek()}catch(e){console.error(e);$('board').innerHTML='<div class="empty">Weekly scoreboard data could not be loaded.</div>'}})();
 $('scoreboardWeekSelect').addEventListener('change',()=>{const week=Number($('scoreboardWeekSelect').value);const params=new URLSearchParams(location.search);params.set('week',String(week));history.replaceState(null,'',location.pathname+'?'+params.toString());showSelectedWeek()});
 ['classFilter','statusFilter'].forEach(id=>$(id).addEventListener('change',render));$('search').addEventListener('input',render);
 </script>
