@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T15:43:19.892Z",
+  "generatedAt": "2026-11-03T19:45:00.398Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -8,9 +8,9 @@
     "uniqueRosterIDs": 6440,
     "statRows": 6926,
     "athletesWithStats": 4065,
-    "gamesWithPlayerRecords": 1085,
-    "gamePlayerRows": 21094,
-    "gameStatLines": 30153,
+    "gamesWithPlayerRecords": 1086,
+    "gamePlayerRows": 21098,
+    "gameStatLines": 30157,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -19,17 +19,17 @@
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
     "seasonAboveGameSum": 590,
-    "gameAboveSeasonSum": 430,
-    "reviewFlags": 432,
+    "gameAboveSeasonSum": 433,
+    "reviewFlags": 435,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "GAME_SUM_EXCEEDS_SEASON": 430,
+    "GAME_SUM_EXCEEDS_SEASON": 433,
     "SEASON_GT_AVAILABLE_GAME_LOG": 579,
     "RECEIVING_RATE_MISMATCH": 2
   },
   "severityCounts": {
-    "review": 432,
+    "review": 435,
     "info": 579
   },
   "teams": [
@@ -214,8 +214,8 @@
       "rosterPlayers": 62,
       "statRows": 50,
       "rosterPlayersWithoutReportedStats": 26,
-      "finalGameLogs": 9,
-      "finalGameLogsWithPlayerData": 9,
+      "finalGameLogs": 10,
+      "finalGameLogsWithPlayerData": 10,
       "seasonRowsWithUnknownId": 0,
       "compactMismatches": 0,
       "sourceStatsFetched": true
@@ -3470,6 +3470,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Westin Tate",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 63,
+      "gameLogSum": 70,
+      "difference": 7
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "DESERT HILLS",
       "subject": "Deacon Virgin",
       "category": "Rushing",
@@ -3586,6 +3597,17 @@
       "field": "RECEPTIONS",
       "season": 20,
       "gameLogSum": 26,
+      "difference": 6
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Carter Poulsen",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 50,
+      "gameLogSum": 56,
       "difference": 6
     },
     {
@@ -4532,6 +4554,17 @@
       "field": "Int",
       "season": 3,
       "gameLogSum": 5,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Solomon Sekona",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 32,
+      "gameLogSum": 34,
       "difference": 2
     },
     {

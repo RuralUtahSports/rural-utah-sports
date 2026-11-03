@@ -1,10 +1,10 @@
 # RUS Football Data Audit
 
-Generated: 2026-11-03T15:43:19.328Z
+Generated: 2026-11-03T19:44:59.930Z
 
-**0 errors • 66 warnings**
+**0 errors • 71 warnings**
 
-## Warnings (66)
+## Warnings (71)
 
 - **RECORD_MISMATCH** — MOUNTAIN RIDGE standings record does not match completed games in weekly-simulation.json. `{"standings":"10-0-0","calculated":"9-0-1"}`
 - **RECORD_MISMATCH** — WESTLAKE standings record does not match completed games in weekly-simulation.json. `{"standings":"7-3-0","calculated":"7-2-1"}`
@@ -13,6 +13,7 @@ Generated: 2026-11-03T15:43:19.328Z
 - **MAXPREPS_HIGH_UNMATCHED** — PANGUITCH rejected 57 of 61 MaxPreps stat rows during player matching. `{"sourceRows":61,"unmatchedRows":57,"rosterPlayers":1,"sourceUrl":"https://www.maxpreps.com/ut/panguitch/panguitch-bobcats/football/stats/"}`
 - **MAXPREPS_HIGH_UNMATCHED** — PINE VIEW rejected 54 of 74 MaxPreps stat rows during player matching. `{"sourceRows":74,"unmatchedRows":54,"rosterPlayers":54,"sourceUrl":"https://www.maxpreps.com/ut/st-george/pine-view-panthers/football/stats/"}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — BEN LOMOND has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Grantsville"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — AMERICAN FORK has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Copper Hills"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — BEAVER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Enterprise"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — ALA has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"South Summit"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CANYON VIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Manti"}]}`
@@ -23,6 +24,7 @@ Generated: 2026-11-03T15:43:19.328Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — BOUNTIFUL has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Granger"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — BOX ELDER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Woods Cross"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CARBON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Richfield"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — COPPER HILLS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"American Fork"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CRIMSON CLIFFS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Murray"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — DAVIS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Farmington"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CORNER CANYON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Bingham"}]}`
@@ -46,6 +48,7 @@ Generated: 2026-11-03T15:43:19.328Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MILFORD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Panguitch"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MOUNTAIN RIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Cedar Valley"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — NORTH SANPETE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Cedar"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — MURRAY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Crimson Cliffs"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — NORTH SUMMIT has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Millard"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — OGDEN has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":12,"missing":[{"date":"2026-10-30","opponent":"Juab"},{"date":"2026-10-23","opponent":"Union"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — PARK CITY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Hurricane"}]}`
@@ -64,6 +67,7 @@ Generated: 2026-11-03T15:43:19.328Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — SAN JUAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Emery"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — SKYLINE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Pine View"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — SKYRIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Riverton"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — SOUTH SEVIER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Summit Academy"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — SPANISH FORK has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Pleasant Grove"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — SPRINGVILLE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Olympus"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — SUMMIT ACADEMY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"South Sevier"}]}`
@@ -72,9 +76,10 @@ Generated: 2026-11-03T15:43:19.328Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — WATER CANYON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-31","opponent":"Whitehorse"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — WEST has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Roy"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — WEST FIELD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Fremont"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — WESTLAKE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Syracuse"}]}`
 
 ## Infos (2)
 
-- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9594,"unmatchedRows":1088,"rosterlessTeams":0,"sourceGamePairs":1114,"missingGamePairs":64}`
+- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9601,"unmatchedRows":1088,"rosterlessTeams":0,"sourceGamePairs":1120,"missingGamePairs":69}`
 - **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":602,"standings":118,"rankedTeams":68,"playerIds":6440}`
 
