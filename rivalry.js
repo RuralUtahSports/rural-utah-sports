@@ -7,23 +7,24 @@ const dateValue=d=>{const p=dateParts(d);if(p)return Date.UTC(p.y,p.m-1,p.d);con
 const dateKey=d=>{const p=dateParts(d);return p?`${p.y}-${String(p.m).padStart(2,'0')}-${String(p.d).padStart(2,'0')}`:String(d||'').trim()};
 const displayDate=d=>{const p=dateParts(d);return p?`${p.m}/${p.d}/${p.y}`:String(d||'')};
 // A corrected result is the same meeting, even when its score changes.
-function gameKey(x){const p=[norm(x.team1).replace(/[^A-Z0-9]/g,''),norm(x.team2).replace(/[^A-Z0-9]/g,'')].sort();return `${dateKey(x.date)}|${p.join('|')}`}
+function meetingKey(x){const p=[norm(x.team1).replace(/[^A-Z0-9]/g,''),norm(x.team2).replace(/[^A-Z0-9]/g,'')].sort();return `${dateKey(x.date)}|${p.join('|')}`}
+function gameKey(x){const p=[[norm(x.team1).replace(/[^A-Z0-9]/g,''),x.score1],[norm(x.team2).replace(/[^A-Z0-9]/g,''),x.score2]].sort((a,b)=>a[0].localeCompare(b[0]));return `${dateKey(x.date)}|${p[0][0]}:${p[0][1]}|${p[1][0]}:${p[1][1]}`}
 function flatten(data,weekly,brackets){
- const out=[],seen=new Map(),pushGame=x=>{
+ const out=[],seen=new Set(),playoffFinals=new Map(),pushGame=(x,official=false)=>{
   x.date=displayDate(x.date);x.year=Number(x.year)||yearOf(x.date);
   if(!x.date||!x.team1||!x.team2||norm(x.team1)===norm(x.team2)||!Number.isInteger(x.score1)||!Number.isInteger(x.score2)||x.score1<0||x.score2<0)return;
-  const k=gameKey(x);
-  if(seen.has(k)){out[seen.get(k)]=x;return}
-  seen.set(k,out.length);out.push(x);
+  if(official){playoffFinals.set(meetingKey(x),x);return}
+  const k=gameKey(x);if(seen.has(k))return;
+  seen.add(k);out.push(x);
  };
  for(const e of (data?.scores||[]))for(const g of (Array.isArray(e.games)?e.games:[])){
   if(g.tie){if(g.score1==null||g.score2==null)continue;pushGame({date:g.date||'',team1:canonical(g.team1),team2:canonical(g.team2),score1:Number(g.score1),score2:Number(g.score2),tie:true,year:g.year})}
   else{if(g.winnerScore==null||g.loserScore==null)continue;pushGame({date:g.date||'',team1:canonical(g.winner),team2:canonical(g.loser),score1:Number(g.winnerScore),score2:Number(g.loserScore),tie:false,year:g.year})}
  }
- const pushResult=(date,away,home,awayScore,homeScore)=>{
+ const pushResult=(date,away,home,awayScore,homeScore,official=false)=>{
   if(awayScore==null||homeScore==null||String(awayScore).trim()===''||String(homeScore).trim()==='')return;
   const a=Number(awayScore),h=Number(homeScore),tie=a===h;
-  pushGame(a>=h?{date,team1:canonical(away),team2:canonical(home),score1:a,score2:h,tie}:{date,team1:canonical(home),team2:canonical(away),score1:h,score2:a,tie});
+  pushGame(a>=h?{date,team1:canonical(away),team2:canonical(home),score1:a,score2:h,tie}:{date,team1:canonical(home),team2:canonical(away),score1:h,score2:a,tie},official);
  };
  for(const g of (weekly?.games||[]))pushResult(g.date||'',g.awayTeam,g.homeTeam,g.actualAway,g.actualHome);
  // The scoreboard's bracket feed owns playoff finals; never use model scores.
@@ -32,9 +33,9 @@ function flatten(data,weekly,brackets){
   if(!a?.seed||!b?.seed||!a.name||!b.name||!dateParts(g.date)||typeof a.winner!=='boolean'||typeof b.winner!=='boolean'||a.winner===b.winner)continue;
   const as=Number(a.score),bs=Number(b.score);
   if(a.score==null||b.score==null||String(a.score).trim()===''||String(b.score).trim()===''||!Number.isInteger(as)||!Number.isInteger(bs)||as<0||bs<0||(a.winner?as<=bs:bs<=as))continue;
-  pushResult(g.date,b.name,a.name,bs,as);
+  pushResult(g.date,b.name,a.name,bs,as,true);
  }
- return out;
+ return out.filter(g=>!playoffFinals.has(meetingKey(g))).concat([...playoffFinals.values()]);
 }
 let games=[],teams=[],allowed=new Set(),pairCounts=[];
 function pairKey(a,b){return [norm(a),norm(b)].sort().join('|')}
