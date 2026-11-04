@@ -1,16 +1,16 @@
 # RUS Football Data Audit
 
-Generated: 2026-11-04T18:47:25.771Z
+Generated: 2026-11-04T19:55:54.130Z
 
-**0 errors • 73 warnings**
+**0 errors • 76 warnings**
 
-## Warnings (73)
+## Warnings (76)
 
 - **RECORD_MISMATCH** — MOUNTAIN RIDGE standings record does not match completed games in weekly-simulation.json. `{"standings":"10-0-0","calculated":"9-0-1"}`
 - **RECORD_MISMATCH** — WESTLAKE standings record does not match completed games in weekly-simulation.json. `{"standings":"7-3-0","calculated":"7-2-1"}`
 - **RECORD_MISMATCH** — CANYON VIEW standings record does not match completed games in weekly-simulation.json. `{"standings":"7-3-0","calculated":"6-3-1"}`
 - **RECORD_MISMATCH** — MANTI standings record does not match completed games in weekly-simulation.json. `{"standings":"2-8-0","calculated":"2-7-1"}`
-- **MAXPREPS_HIGH_UNMATCHED** — PANGUITCH rejected 57 of 61 MaxPreps stat rows during player matching. `{"sourceRows":61,"unmatchedRows":57,"rosterPlayers":1,"sourceUrl":"https://www.maxpreps.com/ut/panguitch/panguitch-bobcats/football/stats/"}`
+- **MAXPREPS_HIGH_UNMATCHED** — PANGUITCH rejected 60 of 64 MaxPreps stat rows during player matching. `{"sourceRows":64,"unmatchedRows":60,"rosterPlayers":1,"sourceUrl":"https://www.maxpreps.com/ut/panguitch/panguitch-bobcats/football/stats/"}`
 - **MAXPREPS_HIGH_UNMATCHED** — PINE VIEW rejected 54 of 74 MaxPreps stat rows during player matching. `{"sourceRows":74,"unmatchedRows":54,"rosterPlayers":54,"sourceUrl":"https://www.maxpreps.com/ut/st-george/pine-view-panthers/football/stats/"}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — BEN LOMOND has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Grantsville"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — AMERICAN FORK has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Copper Hills"}]}`
@@ -42,12 +42,14 @@ Generated: 2026-11-04T18:47:25.771Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — JUAB has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Ogden"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MANTI has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":12,"missing":[{"date":"2026-10-23","opponent":"Canyon View"},{"date":"2026-10-30","opponent":"Logan"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — KANAB has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Gunnison Valley"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — LEHI has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Lone Peak"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — LAYTON CHRISTIAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":9,"missing":[{"date":"2026-10-16","opponent":"Mater Academy East Las Vegas"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — LOGAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Manti"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MORGAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Cedar"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — LONE PEAK has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Lehi"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MILFORD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Panguitch"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MOUNTAIN RIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Cedar Valley"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — MOUNTAIN VIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Ridgeline"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — NORTH SANPETE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Cedar"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — MURRAY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Crimson Cliffs"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — NORTH SUMMIT has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Millard"}]}`
@@ -57,8 +59,8 @@ Generated: 2026-11-04T18:47:25.771Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — PAROWAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"North Sevier"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — PLEASANT GROVE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Spanish Fork"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — PINE VIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Skyline"}]}`
-- **MAXPREPS_GAME_STATS_NOT_MERGED** — PANGUITCH has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-23","opponent":"Utah Military Academy - Hill Field"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — RICH has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"St. Joseph"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — PANGUITCH has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Utah Military Academy - Hill Field"},{"date":"2026-10-30","opponent":"Milford"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — RIDGELINE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Mountain View"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — ROY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"West"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — RIVERTON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Skyridge"}]}`
@@ -79,9 +81,10 @@ Generated: 2026-11-04T18:47:25.771Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — WEST has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Roy"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — WEST FIELD has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Fremont"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — WESTLAKE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Syracuse"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — WOODS CROSS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Box Elder"}]}`
 
 ## Infos (2)
 
-- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9601,"unmatchedRows":1086,"rosterlessTeams":0,"sourceGamePairs":1122,"missingGamePairs":71}`
+- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9650,"unmatchedRows":1091,"rosterlessTeams":0,"sourceGamePairs":1126,"missingGamePairs":75}`
 - **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":602,"standings":118,"rankedTeams":68,"playerIds":6440}`
 

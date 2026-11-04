@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-04T18:47:25.771Z",
+  "generatedAt": "2026-11-04T19:55:54.130Z",
   "summary": {
     "errors": 0,
-    "warnings": 73,
+    "warnings": 76,
     "info": 2
   },
   "issues": [
@@ -45,10 +45,10 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_HIGH_UNMATCHED",
-      "message": "PANGUITCH rejected 57 of 61 MaxPreps stat rows during player matching.",
+      "message": "PANGUITCH rejected 60 of 64 MaxPreps stat rows during player matching.",
       "context": {
-        "sourceRows": 61,
-        "unmatchedRows": 57,
+        "sourceRows": 64,
+        "unmatchedRows": 60,
         "rosterPlayers": 1,
         "sourceUrl": "https://www.maxpreps.com/ut/panguitch/panguitch-bobcats/football/stats/"
       }
@@ -495,6 +495,20 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "LEHI has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Lone Peak"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "LAYTON CHRISTIAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 9,
@@ -572,6 +586,20 @@
           {
             "date": "2026-10-30",
             "opponent": "Cedar Valley"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "MOUNTAIN VIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Ridgeline"
           }
         ]
       }
@@ -709,20 +737,6 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "PANGUITCH has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
-      "context": {
-        "sourceGamePairs": 10,
-        "missing": [
-          {
-            "date": "2026-10-23",
-            "opponent": "Utah Military Academy - Hill Field"
-          }
-        ]
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "RICH has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 11,
@@ -730,6 +744,24 @@
           {
             "date": "2026-10-30",
             "opponent": "St. Joseph"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PANGUITCH has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Utah Military Academy - Hill Field"
+          },
+          {
+            "date": "2026-10-30",
+            "opponent": "Milford"
           }
         ]
       }
@@ -1019,15 +1051,29 @@
       }
     },
     {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "WOODS CROSS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Box Elder"
+          }
+        ]
+      }
+    },
+    {
       "severity": "info",
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9601,
-        "unmatchedRows": 1086,
+        "sourceRows": 9650,
+        "unmatchedRows": 1091,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1122,
-        "missingGamePairs": 71
+        "sourceGamePairs": 1126,
+        "missingGamePairs": 75
       }
     },
     {

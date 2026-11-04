@@ -1,6 +1,6 @@
 # 2026 Football Player Statistics Audit
 
-Generated: 2026-11-04T18:47:26.264Z
+Generated: 2026-11-04T19:55:54.499Z
 
 **118 schools · 6440 roster IDs · 4065 athletes with reported stats · 6926 category rows.**
 
@@ -13,7 +13,7 @@ Generated: 2026-11-04T18:47:26.264Z
 
 ## Review flags
 - SEASON_GT_AVAILABLE_GAME_LOG: 579
-- GAME_SUM_EXCEEDS_SEASON: 445
+- GAME_SUM_EXCEEDS_SEASON: 469
 - RECEIVING_RATE_MISMATCH: 2
 
 ## Highest-priority examples
@@ -90,13 +90,13 @@ Generated: 2026-11-04T18:47:26.264Z
 - **GAME_SUM_EXCEEDS_SEASON** MANTI — Ben Taulapapa; {"category":"Receiving","field":"YARDS","season":123,"gameLogSum":170,"difference":47}
 - **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Steele Woodward; {"category":"Rushing","field":"YARDS","season":67,"gameLogSum":114,"difference":47}
 - **GAME_SUM_EXCEEDS_SEASON** TAYLORSVILLE — Gary Lomu; {"category":"Rushing","field":"YARDS","season":52,"gameLogSum":99,"difference":47}
+- **GAME_SUM_EXCEEDS_SEASON** WASATCH — Peyton Morris; {"category":"Defense/Special Teams","field":"TACKLES","season":14,"gameLogSum":60,"difference":46}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Jamari Connelly; {"category":"Receiving","field":"YARDS","season":110,"gameLogSum":154,"difference":44}
 - **GAME_SUM_EXCEEDS_SEASON** CANYON VIEW — Camden Sheridan; {"category":"Rushing","field":"YARDS","season":804,"gameLogSum":847,"difference":43}
 - **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Krew Berezay; {"category":"Receiving","field":"YARDS","season":42,"gameLogSum":85,"difference":43}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Memphis Hunkin; {"category":"Receiving","field":"YARDS","season":130,"gameLogSum":173,"difference":43}
+- **GAME_SUM_EXCEEDS_SEASON** WASATCH — Mac Kohler; {"category":"Defense/Special Teams","field":"TACKLES","season":8,"gameLogSum":49,"difference":41}
 - **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Tytan DeJong; {"category":"Receiving","field":"YARDS","season":692,"gameLogSum":732,"difference":40}
-- **GAME_SUM_EXCEEDS_SEASON** TAYLORSVILLE — Gary Lomu; {"category":"Receiving","field":"YARDS","season":4,"gameLogSum":44,"difference":40}
-- **GAME_SUM_EXCEEDS_SEASON** GRAND — Cooper Swasey; {"category":"Rushing","field":"CARRIES","season":20,"gameLogSum":58,"difference":38}
 
 ## Method / limitations
 This is a comprehensive machine audit of the stored roster, season stat sections, and linked game logs. A flag is **not proof of error**. School-reported gaps, incomplete per-game player stats, and source snapshot timing require review. No automated changes to player scores, awards, or draft selections were made.

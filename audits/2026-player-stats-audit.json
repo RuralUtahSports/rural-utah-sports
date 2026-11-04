@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T18:47:26.264Z",
+  "generatedAt": "2026-11-04T19:55:54.499Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -9,8 +9,8 @@
     "statRows": 6926,
     "athletesWithStats": 4065,
     "gamesWithPlayerRecords": 1086,
-    "gamePlayerRows": 21110,
-    "gameStatLines": 30169,
+    "gamePlayerRows": 21192,
+    "gameStatLines": 30251,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -19,17 +19,17 @@
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
     "seasonAboveGameSum": 590,
-    "gameAboveSeasonSum": 445,
-    "reviewFlags": 447,
+    "gameAboveSeasonSum": 469,
+    "reviewFlags": 471,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "GAME_SUM_EXCEEDS_SEASON": 445,
+    "GAME_SUM_EXCEEDS_SEASON": 469,
     "SEASON_GT_AVAILABLE_GAME_LOG": 579,
     "RECEIVING_RATE_MISMATCH": 2
   },
   "severityCounts": {
-    "review": 447,
+    "review": 471,
     "info": 579
   },
   "teams": [
@@ -2139,6 +2139,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Peyton Morris",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 14,
+      "gameLogSum": 60,
+      "difference": 46
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GRAND",
       "subject": "Jamari Connelly",
       "category": "Receiving",
@@ -2179,6 +2190,17 @@
       "season": 130,
       "gameLogSum": 173,
       "difference": 43
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Mac Kohler",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 49,
+      "difference": 41
     },
     {
       "level": "review",
@@ -2282,6 +2304,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Andrew Hola",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 10,
+      "gameLogSum": 45,
+      "difference": 35
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GUNNISON VALLEY",
       "subject": "Krew Donaldson",
       "category": "Rushing",
@@ -2300,6 +2333,17 @@
       "season": 421,
       "gameLogSum": 455,
       "difference": 34
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Burke Seiter",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 4,
+      "gameLogSum": 37,
+      "difference": 33
     },
     {
       "level": "review",
@@ -2370,6 +2414,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Talon Slye",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 9,
+      "gameLogSum": 37,
+      "difference": 28
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "CANYON VIEW",
       "subject": "Jace Floyd",
       "category": "Rushing",
@@ -2409,6 +2464,17 @@
       "field": "YARDS",
       "season": 55,
       "gameLogSum": 82,
+      "difference": 27
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Jack Wells",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 16,
+      "gameLogSum": 43,
       "difference": 27
     },
     {
@@ -2513,6 +2579,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Easton Colby",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 13,
+      "gameLogSum": 37,
+      "difference": 24
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "VIEWMONT",
       "subject": "Owen Seeley",
       "category": "Defense/Special Teams",
@@ -2579,6 +2656,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Brecken Wagstaff",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 3,
+      "gameLogSum": 24,
+      "difference": 21
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "WATER CANYON",
       "subject": "Andrew Musser",
       "category": "Receiving",
@@ -2640,6 +2728,17 @@
       "field": "TACKLES",
       "season": 40,
       "gameLogSum": 59,
+      "difference": 19
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Ryne Ball",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 7,
+      "gameLogSum": 26,
       "difference": 19
     },
     {
@@ -3074,6 +3173,28 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Riley McPhie",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 21,
+      "difference": 13
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Jaydon O’Dell",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 21,
+      "difference": 13
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "ALTAMONT",
       "subject": "Dallan Ledbetter",
       "category": "Rushing",
@@ -3124,6 +3245,17 @@
       "field": "YARDS",
       "season": 293,
       "gameLogSum": 305,
+      "difference": 12
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Brody Harr",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 10,
+      "gameLogSum": 22,
       "difference": 12
     },
     {
@@ -3322,6 +3454,17 @@
       "field": "TACKLES",
       "season": 17,
       "gameLogSum": 26,
+      "difference": 9
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Stran Kelley",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 2,
+      "gameLogSum": 11,
       "difference": 9
     },
     {
@@ -4141,6 +4284,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Ryne Ball",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 0,
+      "gameLogSum": 4,
+      "difference": 4
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "WATER CANYON",
       "subject": "Alma Barlow",
       "category": "Rushing",
@@ -4510,6 +4664,17 @@
       "field": "TACKLES",
       "season": 17,
       "gameLogSum": 20,
+      "difference": 3
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Ben Reese",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 1,
+      "gameLogSum": 4,
       "difference": 3
     },
     {
@@ -5060,6 +5225,17 @@
       "field": "YARDS",
       "season": 132,
       "gameLogSum": 134,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Jeremiah Bailey",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 1,
+      "gameLogSum": 3,
       "difference": 2
     },
     {
@@ -6138,6 +6314,94 @@
       "field": "TACKLES",
       "season": 1,
       "gameLogSum": 2,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Easton Colby",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 0,
+      "gameLogSum": 1,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Andrew Hola",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 0,
+      "gameLogSum": 1,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Brody Harr",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 0,
+      "gameLogSum": 1,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Ryne Ball",
+      "category": "Defense/Special Teams",
+      "field": "PASS INT.",
+      "season": 0,
+      "gameLogSum": 1,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Peyton Morris",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 0,
+      "gameLogSum": 1,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Burke Seiter",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 0,
+      "gameLogSum": 1,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Tukai Malani",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 1,
+      "gameLogSum": 2,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WASATCH",
+      "subject": "Ben Reese",
+      "category": "Defense/Special Teams",
+      "field": "SACKS",
+      "season": 0,
+      "gameLogSum": 1,
       "difference": 1
     },
     {
