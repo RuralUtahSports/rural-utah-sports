@@ -1,10 +1,10 @@
 # RUS Football Data Audit
 
-Generated: 2026-11-03T22:52:02.431Z
+Generated: 2026-11-04T01:33:08.428Z
 
-**0 errors • 71 warnings**
+**0 errors • 73 warnings**
 
-## Warnings (71)
+## Warnings (73)
 
 - **RECORD_MISMATCH** — MOUNTAIN RIDGE standings record does not match completed games in weekly-simulation.json. `{"standings":"10-0-0","calculated":"9-0-1"}`
 - **RECORD_MISMATCH** — WESTLAKE standings record does not match completed games in weekly-simulation.json. `{"standings":"7-3-0","calculated":"7-2-1"}`
@@ -24,6 +24,7 @@ Generated: 2026-11-03T22:52:02.431Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — BOUNTIFUL has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Granger"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — BOX ELDER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Woods Cross"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CARBON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-23","opponent":"Richfield"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — CEDAR VALLEY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Mountain Ridge"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — COPPER HILLS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"American Fork"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — CRIMSON CLIFFS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Murray"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — DAVIS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Farmington"}]}`
@@ -72,6 +73,7 @@ Generated: 2026-11-03T22:52:02.431Z
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — SPRINGVILLE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Olympus"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — SUMMIT ACADEMY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"South Sevier"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — SNOW CANYON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Sky View"}]}`
+- **MAXPREPS_GAME_STATS_NOT_MERGED** — SYRACUSE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-30","opponent":"Westlake"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — UNION has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":10,"missing":[{"date":"2026-10-23","opponent":"Ogden"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — WATER CANYON has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-31","opponent":"Whitehorse"}]}`
 - **MAXPREPS_GAME_STATS_NOT_MERGED** — WEST has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json. `{"sourceGamePairs":11,"missing":[{"date":"2026-10-30","opponent":"Roy"}]}`
@@ -80,6 +82,6 @@ Generated: 2026-11-03T22:52:02.431Z
 
 ## Infos (2)
 
-- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9601,"unmatchedRows":1088,"rosterlessTeams":0,"sourceGamePairs":1120,"missingGamePairs":69}`
+- **MAXPREPS_COVERAGE** — MaxPreps fallback coverage. `{"sourceRows":9601,"unmatchedRows":1086,"rosterlessTeams":0,"sourceGamePairs":1122,"missingGamePairs":71}`
 - **AUDIT_COUNTS** — Audit input counts. `{"teams":118,"games":602,"standings":118,"rankedTeams":68,"playerIds":6440}`
 

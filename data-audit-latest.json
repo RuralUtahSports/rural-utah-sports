@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-03T22:52:02.431Z",
+  "generatedAt": "2026-11-04T01:33:08.428Z",
   "summary": {
     "errors": 0,
-    "warnings": 71,
+    "warnings": 73,
     "info": 2
   },
   "issues": [
@@ -232,6 +232,20 @@
           {
             "date": "2026-10-23",
             "opponent": "Richfield"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "CEDAR VALLEY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Mountain Ridge"
           }
         ]
       }
@@ -923,6 +937,20 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SYRACUSE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 10,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Westlake"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "UNION has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 10,
@@ -996,10 +1024,10 @@
       "message": "MaxPreps fallback coverage.",
       "context": {
         "sourceRows": 9601,
-        "unmatchedRows": 1088,
+        "unmatchedRows": 1086,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1120,
-        "missingGamePairs": 69
+        "sourceGamePairs": 1122,
+        "missingGamePairs": 71
       }
     },
     {

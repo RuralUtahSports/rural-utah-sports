@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T22:52:02.873Z",
+  "generatedAt": "2026-11-04T01:33:08.904Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -9,8 +9,8 @@
     "statRows": 6926,
     "athletesWithStats": 4065,
     "gamesWithPlayerRecords": 1086,
-    "gamePlayerRows": 21098,
-    "gameStatLines": 30157,
+    "gamePlayerRows": 21110,
+    "gameStatLines": 30169,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -19,17 +19,17 @@
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
     "seasonAboveGameSum": 590,
-    "gameAboveSeasonSum": 433,
-    "reviewFlags": 435,
+    "gameAboveSeasonSum": 445,
+    "reviewFlags": 447,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "GAME_SUM_EXCEEDS_SEASON": 433,
+    "GAME_SUM_EXCEEDS_SEASON": 445,
     "SEASON_GT_AVAILABLE_GAME_LOG": 579,
     "RECEIVING_RATE_MISMATCH": 2
   },
   "severityCounts": {
-    "review": 435,
+    "review": 447,
     "info": 579
   },
   "teams": [
@@ -3085,6 +3085,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Cash Poulsen",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 96,
+      "gameLogSum": 108,
+      "difference": 12
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GUNNISON VALLEY",
       "subject": "Gavin Willden",
       "category": "Defense/Special Teams",
@@ -3322,6 +3333,17 @@
       "field": "YARDS",
       "season": 46,
       "gameLogSum": 54,
+      "difference": 8
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Drake Hill",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 43,
+      "gameLogSum": 51,
       "difference": 8
     },
     {
@@ -3613,6 +3635,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Peter Taylor",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 34,
+      "gameLogSum": 40,
+      "difference": 6
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "CLEARFIELD",
       "subject": "Jayce Ellis",
       "category": "Rushing",
@@ -3751,6 +3784,17 @@
       "field": "RECEPTIONS",
       "season": 2,
       "gameLogSum": 7,
+      "difference": 5
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Antonio Sanchez",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 23,
+      "gameLogSum": 28,
       "difference": 5
     },
     {
@@ -3938,6 +3982,17 @@
       "field": "CARRIES",
       "season": 24,
       "gameLogSum": 28,
+      "difference": 4
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Kulia Kaplar",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 11,
+      "gameLogSum": 15,
       "difference": 4
     },
     {
@@ -4570,6 +4625,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Braxton Tucker",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 3,
+      "gameLogSum": 5,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "CLEARFIELD",
       "subject": "Micah Salazar",
       "category": "Rushing",
@@ -4922,6 +4988,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "RIVERTON",
+      "subject": "Colton Serr",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 10,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "SOUTH SEVIER",
       "subject": "Narees DeJesus",
       "category": "Kicking",
@@ -5049,6 +5126,61 @@
       "field": "FG",
       "season": 0,
       "gameLogSum": 1,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Taeten Christiansen",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 16,
+      "gameLogSum": 17,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Bronson Caldwell",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 7,
+      "gameLogSum": 8,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Keaton Leatham",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 1,
+      "gameLogSum": 2,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "Jake Sherwood",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 3,
+      "gameLogSum": 4,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "CEDAR VALLEY",
+      "subject": "RJ Thygerson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 1,
+      "gameLogSum": 2,
       "difference": 1
     },
     {
