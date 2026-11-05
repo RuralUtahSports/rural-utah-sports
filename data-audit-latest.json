@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-05T18:25:10.857Z",
+  "generatedAt": "2026-11-05T20:09:30.667Z",
   "summary": {
     "errors": 0,
-    "warnings": 76,
+    "warnings": 80,
     "info": 2
   },
   "issues": [
@@ -681,6 +681,20 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PROVO has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Stansbury"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "OREM has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 10,
@@ -737,6 +751,24 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PANGUITCH has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Utah Military Academy - Hill Field"
+          },
+          {
+            "date": "2026-10-30",
+            "opponent": "Milford"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "RICH has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 11,
@@ -751,17 +783,13 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "PANGUITCH has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "PROVIDENCE HALL has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 11,
         "missing": [
           {
-            "date": "2026-10-23",
-            "opponent": "Utah Military Academy - Hill Field"
-          },
-          {
             "date": "2026-10-30",
-            "opponent": "Milford"
+            "opponent": "Delta"
           }
         ]
       }
@@ -969,6 +997,20 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "STANSBURY has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Provo"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "SYRACUSE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 10,
@@ -1039,6 +1081,20 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "WEBER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Herriman"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "WESTLAKE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 11,
@@ -1069,11 +1125,11 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9650,
-        "unmatchedRows": 1091,
+        "sourceRows": 9657,
+        "unmatchedRows": 1092,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1126,
-        "missingGamePairs": 75
+        "sourceGamePairs": 1130,
+        "missingGamePairs": 79
       }
     },
     {
