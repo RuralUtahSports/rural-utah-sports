@@ -105,7 +105,7 @@
       const us = isAway ? g.away : g.home, them = isAway ? g.home : g.away;
       const kind = us > them ? "win" : us < them ? "loss" : "tie";
       const flag = kind==="win"?"W":kind==="loss"?"L":"T";
-      return '<div class="result-row"><span class="date">'+esc(g.date)+'</span><span class="opponent"><span class="wl '+kind+'">'+flag+'</span>'+ (isAway?"@ ":"vs ") +esc(other)+'</span><span class="score">'+us+'–'+them+'</span></div>';
+      return '<div class="result-row"><span class="date">'+esc(g.date)+'</span><span class="opponent"><span class="wl '+kind+'">'+flag+'</span>'+ (g.playoffNeutral?"vs ":(isAway?"@ ":"vs ")) +esc(other)+'</span><span class="score">'+us+'–'+them+'</span></div>';
     }).join("");
   }
 
@@ -367,7 +367,30 @@
       }));
       if (!window.RUSPowerRatings) throw new Error("RUS ratings engine not loaded");
       state.ratings=window.RUSPowerRatings.build(data[0],data[1],data[2]);
-      state.games=finals(data[0].games);
+      // Add confirmed postseason results to team form and research without changing
+      // the pregame RUS power-rating calculation. Avoid duplicate schedule entries.
+      let bracketRows=[];
+      try{
+        const playoff=await window.RUSPlayoff2026?.load();
+        if(playoff){
+          const api=window.RUSPlayoff2026,canonicalNames=new Map((data[1]||[]).map(t=>[api.key(t.team),String(t.team).toUpperCase()]));
+          const display=name=>canonicalNames.get(api.key(name))||String(name).toUpperCase();
+          for(const cl of Object.values(playoff.classifications||{}))for(const round of cl?.rounds||[])for(const g of round?.games||[]){
+            if(!g.a?.seed||!g.b?.seed||g.a?.winner===undefined||g.b?.winner===undefined)continue;
+            if(!(g.a.winner===true&&g.b.winner===false)&&!(g.b.winner===true&&g.a.winner===false))continue;
+            const date=api.isoDate(g.date);
+            if(!date||!Number.isFinite(Number(g.a.score))||!Number.isFinite(Number(g.b.score)))continue;
+            const homeTeam=display(g.a.name),awayTeam=display(g.b.name),homeScore=Number(g.a.score),awayScore=Number(g.b.score);
+            bracketRows.push({
+              date:Number(date.slice(5,7))+'/'+Number(date.slice(8,10))+'/2026',
+              awayTeam,homeTeam,actualAway:awayScore,actualHome:homeScore,
+              actualWinner:awayScore>homeScore?awayTeam:homeTeam,
+              playoff:true,playoffNeutral:!/higher seed home field/i.test(String(g.venue||''))
+            });
+          }
+        }
+      }catch(e){console.warn('Game Center playoff game feed:',e)}
+      state.games=finals([...(data[0].games||[]),...bracketRows]);
       const params=readQuery();
       state.format=params.format;state.venue=params.venue;state.home=params.home;
       populate(params.a,params.b);
