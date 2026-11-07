@@ -15,7 +15,10 @@
     GUNNISON:'GUNNISONVALLEY',
     MONUMENTVAL:'MONUMENTVALLEY',
     MAPLEMTN:'MAPLEMOUNTAIN',
-    STJOSEPH:'SAINTJOSEPH'
+    STJOSEPH:'SAINTJOSEPH',
+    JUDGEMEMORIALCATHOLIC:'JUDGEMEMORIAL',
+    UTAHMILITARYACADEMYHILLFIELD:'UMAHILLFIELD',
+    UTAHMILITARYACADEMYCAMPWILLIAMS:'UMALEHI'
   };
   const key = value => {
     const n = String(value ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -145,5 +148,65 @@
     }
     return pageData;
   }
-  window.RUSPlayoff2026 = {load, gamesForTeam, mergeRows, mergeCurrent, mergeHistory, isoDate, key};
+
+  // Apply completed postseason games to display-only 2026 overall standings.
+  // Region records and RPI inputs remain separate from postseason results.
+  function applyStandings(standings, payload) {
+    if (!standings?.byClassification || !payload?.classifications) return 0;
+    const teams = new Map();
+    const add = row => {
+      const name = key(row?.team);
+      if (!name) return;
+      if (!teams.has(name)) teams.set(name, new Set());
+      teams.get(name).add(row);
+    };
+    for (const group of Object.values(standings.byClassification || {}))
+      for (const row of group || []) add(row);
+    for (const groups of Object.values(standings.byRegion || {}))
+      for (const group of Object.values(groups || {}))
+        for (const row of group || []) add(row);
+    const gameKey = (date,a,b) => isoDate(date)+'|'+[key(a),key(b)].sort().join('|');
+    const seen = new Set((standings.games || []).map(g => gameKey(g.date,g.awayTeam,g.homeTeam)));
+    const fresh = [];
+    for (const cls of Object.values(payload.classifications)) {
+      for (const round of cls?.rounds || []) {
+        for (const g of round?.games || []) {
+          if (!isFinal(g) || !g.a?.seed || !g.b?.seed || !isoDate(g.date) ||
+              placeholder(g.a.name) || placeholder(g.b.name)) continue;
+          const id = gameKey(g.date,g.a.name,g.b.name);
+          if (seen.has(id)) continue;
+          seen.add(id);
+          fresh.push(g);
+        }
+      }
+    }
+    fresh.sort((a,b) => isoDate(a.date).localeCompare(isoDate(b.date)));
+    for (const g of fresh) {
+      for (const [side,opp] of [[g.a,g.b],[g.b,g.a]]) {
+        const result = side.winner === true ? 'W' : opp.winner === true ? 'L' : 'T';
+        for (const row of teams.get(key(side.name)) || []) {
+          row.wins = Number(row.wins||0) + (result === 'W' ? 1 : 0);
+          row.losses = Number(row.losses||0) + (result === 'L' ? 1 : 0);
+          row.ties = Number(row.ties||0) + (result === 'T' ? 1 : 0);
+          row.pointsFor = Number(row.pointsFor||0) + Number(side.score);
+          row.pointsAgainst = Number(row.pointsAgainst||0) + Number(opp.score);
+          row.nonRegionWins = Number(row.nonRegionWins||0) + (result === 'W' ? 1 : 0);
+          row.nonRegionLosses = Number(row.nonRegionLosses||0) + (result === 'L' ? 1 : 0);
+          row.nonRegionTies = Number(row.nonRegionTies||0) + (result === 'T' ? 1 : 0);
+          row.nonRegionPointsFor = Number(row.nonRegionPointsFor||0) + Number(side.score);
+          row.nonRegionPointsAgainst = Number(row.nonRegionPointsAgainst||0) + Number(opp.score);
+          const previous = String(row.streak||'').match(/^([WLT])(\d+)$/);
+          row.streak = result + (previous && previous[1] === result ? Number(previous[2])+1 : 1);
+        }
+      }
+      (standings.games || (standings.games=[])).push({
+        date:isoDate(g.date),homeTeam:g.a.name,awayTeam:g.b.name,
+        actualHome:Number(g.a.score),actualAway:Number(g.b.score),
+        playoff:true,source:'official-playoff-bracket'
+      });
+    }
+    if (standings.summary) standings.summary.completedGames = Number(standings.summary.completedGames||0)+fresh.length;
+    return fresh.length;
+  }
+  window.RUSPlayoff2026 = {load, gamesForTeam, mergeRows, mergeCurrent, mergeHistory, applyStandings, isoDate, key};
 })();
