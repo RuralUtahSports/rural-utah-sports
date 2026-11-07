@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T16:24:34.045Z",
+  "generatedAt": "2026-11-07T17:48:51.911Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -9,8 +9,8 @@
     "statRows": 6926,
     "athletesWithStats": 4065,
     "gamesWithPlayerRecords": 1086,
-    "gamePlayerRows": 21192,
-    "gameStatLines": 30251,
+    "gamePlayerRows": 21193,
+    "gameStatLines": 30252,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -19,17 +19,17 @@
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
     "seasonAboveGameSum": 590,
-    "gameAboveSeasonSum": 469,
-    "reviewFlags": 471,
+    "gameAboveSeasonSum": 470,
+    "reviewFlags": 472,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "GAME_SUM_EXCEEDS_SEASON": 469,
+    "GAME_SUM_EXCEEDS_SEASON": 470,
     "SEASON_GT_AVAILABLE_GAME_LOG": 579,
     "RECEIVING_RATE_MISMATCH": 2
   },
   "severityCounts": {
-    "review": 471,
+    "review": 472,
     "info": 579
   },
   "teams": [
@@ -4125,6 +4125,17 @@
       "field": "CARRIES",
       "season": 24,
       "gameLogSum": 28,
+      "difference": 4
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "BINGHAM",
+      "subject": "Cooper Johnson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 42,
+      "gameLogSum": 46,
       "difference": 4
     },
     {

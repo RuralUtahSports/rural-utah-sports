@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-07T16:24:33.638Z",
+  "generatedAt": "2026-11-07T17:48:51.454Z",
   "summary": {
     "errors": 0,
-    "warnings": 80,
+    "warnings": 83,
     "info": 2
   },
   "issues": [
@@ -95,13 +95,17 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "BEAVER has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "BEAVER has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 11,
+        "sourceGamePairs": 12,
         "missing": [
           {
             "date": "2026-10-30",
             "opponent": "Enterprise"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Kanab"
           }
         ]
       }
@@ -137,13 +141,17 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "ALTA has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "ALTA has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 11,
+        "sourceGamePairs": 12,
         "missing": [
           {
             "date": "2026-10-30",
             "opponent": "Hillcrest"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Woods Cross"
           }
         ]
       }
@@ -309,10 +317,14 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "DELTA has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "DELTA has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 11,
+        "sourceGamePairs": 12,
         "missing": [
+          {
+            "date": "2026-11-06",
+            "opponent": "Summit Academy"
+          },
           {
             "date": "2026-10-30",
             "opponent": "Providence Hall"
@@ -379,13 +391,17 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "HERRIMAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "HERRIMAN has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 11,
+        "sourceGamePairs": 12,
         "missing": [
           {
             "date": "2026-10-30",
             "opponent": "Weber"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Davis"
           }
         ]
       }
@@ -435,13 +451,17 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "HIGHLAND has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "HIGHLAND has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 10,
+        "sourceGamePairs": 11,
         "missing": [
           {
             "date": "2026-10-30",
             "opponent": "Bear River"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Ridgeline"
           }
         ]
       }
@@ -579,13 +599,31 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "MOUNTAIN RIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "MOUNTAIN CREST has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 11,
         "missing": [
           {
             "date": "2026-10-30",
+            "opponent": "Salem Hills"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "MOUNTAIN RIDGE has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 12,
+        "missing": [
+          {
+            "date": "2026-10-30",
             "opponent": "Cedar Valley"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Lone Peak"
           }
         ]
       }
@@ -723,13 +761,17 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "PLEASANT GROVE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "PLEASANT GROVE has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 11,
+        "sourceGamePairs": 12,
         "missing": [
           {
             "date": "2026-10-30",
             "opponent": "Spanish Fork"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Orem"
           }
         ]
       }
@@ -797,13 +839,17 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "RIDGELINE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "RIDGELINE has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 11,
+        "sourceGamePairs": 12,
         "missing": [
           {
             "date": "2026-10-30",
             "opponent": "Mountain View"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Highland"
           }
         ]
       }
@@ -871,13 +917,17 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "SALEM HILLS has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "SALEM HILLS has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 11,
+        "sourceGamePairs": 12,
         "missing": [
           {
             "date": "2026-10-30",
             "opponent": "Mountain Crest"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Hurricane"
           }
         ]
       }
@@ -885,13 +935,17 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "SAN JUAN has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "SAN JUAN has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 10,
+        "sourceGamePairs": 11,
         "missing": [
           {
             "date": "2026-10-30",
             "opponent": "Emery"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "South Summit"
           }
         ]
       }
@@ -913,13 +967,31 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "SKYRIDGE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "SKYRIDGE has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Riverton"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "American Fork"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "SOUTH SUMMIT has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 10,
         "missing": [
           {
             "date": "2026-10-30",
-            "opponent": "Riverton"
+            "opponent": "American Leadership Academy"
           }
         ]
       }
@@ -990,6 +1062,20 @@
           {
             "date": "2026-10-30",
             "opponent": "Sky View"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "TIMPVIEW has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-30",
+            "opponent": "Orem"
           }
         ]
       }
@@ -1125,11 +1211,11 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9657,
-        "unmatchedRows": 1092,
+        "sourceRows": 9676,
+        "unmatchedRows": 1095,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1130,
-        "missingGamePairs": 79
+        "sourceGamePairs": 1144,
+        "missingGamePairs": 93
       }
     },
     {
