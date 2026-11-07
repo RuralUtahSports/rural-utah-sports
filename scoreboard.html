@@ -162,7 +162,9 @@ function playoffWeek13FromBrackets(payload){
     homeTeam,awayTeam,homeSeed:g.a.seed,awaySeed:g.b.seed,playoff:true,playoffWeek:13,classification,
     round:/^(4A|5A|6A)$/.test(classification)?'Quarterfinals':'Semifinals',
     time:g.time||'TBA',venue:g.venue||'TBA',awayScore:null,homeScore:null,
-    actualAway:null,actualHome:null,actualWinner:null
+    actualAway:g.b.score!==undefined&&g.b.score!==null&&g.a.score!==undefined&&g.a.score!==null&&typeof g.a.winner==='boolean'&&typeof g.b.winner==='boolean'?Number(g.b.score):null,
+     actualHome:g.a.score!==undefined&&g.a.score!==null&&g.b.score!==undefined&&g.b.score!==null&&typeof g.a.winner==='boolean'&&typeof g.b.winner==='boolean'?Number(g.a.score):null,
+     actualWinner:g.a.winner===true?homeTeam:g.b.winner===true?awayTeam:null
    });
   }
  }
