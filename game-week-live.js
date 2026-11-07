@@ -23,13 +23,19 @@ style.textContent=`
 document.head.appendChild(style);
 function teamPill(name,map){const t=map.get(norm(name)),bg=t?.backgroundColor||'#222',fg=t?.textColor||'#fff';return `<a class="team-pill" style="--bg:${esc(bg)};--fg:${esc(fg)}" href="team.html?team=${encodeURIComponent(t?.team||name)}">${esc(name)}</a>`}
 function rankedTeam(name,map,rankMap,showRank){const info=rankMap?.get(norm(name));if(!showRank||!info)return teamPill(name,map);const cls=String(info.cls||'').toUpperCase()==='8P'?'8P':info.cls;const top=info.rank<=3?` top${info.rank}`:'';return `<span class="rus-week-ranked-team"><span class="rus-week-rank${top}">${esc(cls)} #${esc(info.rank)}</span>${teamPill(name,map)}</span>`}
-function gameHref(g){return `game.html?${new URLSearchParams({date:g.date||'',away:g.awayTeam||'',home:g.homeTeam||''})}`}
-function card(g,map,rankMap=null,showRanks=false){const isFinal=final(g),pa=num(g.awayScore),ph=num(g.homeScore),aa=num(g.actualAway),ah=num(g.actualHome);let score='',label='Scheduled';if(isFinal){score=`${aa}-${ah}`;label='Final'}else if(pa!==null&&ph!==null){score=`${pa}-${ph}`;label='RUS projection'}return `<article class="rus-week-card"><div class="rus-week-top"><div class="rus-week-matchup">${rankedTeam(g.awayTeam,map,rankMap,showRanks)}<span class="at">at</span>${rankedTeam(g.homeTeam,map,rankMap,showRanks)}</div>${score?`<div class="rus-week-score ${isFinal?'':'projected'}">${esc(score)}</div>`:''}</div><div class="rus-week-bottom"><div class="rus-week-meta">${esc(fmtDate(g.date))} • ${label}</div><a class="rus-week-view" href="${gameHref(g)}">View Game →</a></div></article>`}
+function gameHref(g){return g.playoff?'official-playoffs.html':`game.html?${new URLSearchParams({date:g.date||'',away:g.awayTeam||'',home:g.homeTeam||''})}`}
+function card(g,map,rankMap=null,showRanks=false){const isFinal=final(g),pa=num(g.awayScore),ph=num(g.homeScore),aa=num(g.actualAway),ah=num(g.actualHome);let score='',label='Scheduled';if(isFinal){score=`${aa}-${ah}`;label='Final'}else if(pa!==null&&ph!==null){score=`${pa}-${ph}`;label='RUS projection'}return `<article class="rus-week-card"><div class="rus-week-top"><div class="rus-week-matchup">${rankedTeam(g.awayTeam,map,rankMap,showRanks)}<span class="at">${g.playoffNeutral?"vs":"at"}</span>${rankedTeam(g.homeTeam,map,rankMap,showRanks)}</div>${score?`<div class="rus-week-score ${isFinal?'':'projected'}">${esc(score)}</div>`:''}</div><div class="rus-week-bottom"><div class="rus-week-meta">${esc(fmtDate(g.date))} • ${label}</div><a class="rus-week-view" href="${gameHref(g)}">View Game →</a></div></article>`}
 function section(title,games,map,rankMap=null,showRanks=false){return `<h2 class="section-title">${esc(title)}</h2>${games.length?`<div class="rus-week-grid">${games.map(g=>card(g,map,rankMap,showRanks)).join('')}</div>`:'<div class="rus-week-empty">No games to show here yet.</div>'}`}
 async function run(){
  root.innerHTML='<div class="loading">Loading the newest game week…</div>';
- const [week,weekly,teams,rankings]=await Promise.all([get('home-week-data.json',{}),get('weekly-simulation.json',{}),get('teams-data.json',[]),get('rankings-current-2026.json',{})]);
- const currentGames=gamesForCurrentWeek(weekly?.games),homeGames=gamesForCurrentWeek(week?.games);
+ const [week,weekly,teams,rankings,playoffs]=await Promise.all([get('home-week-data.json',{}),get('weekly-simulation.json',{}),get('teams-data.json',[]),get('rankings-current-2026.json',{}),window.RUSPlayoff2026?.load().catch(()=>null)||Promise.resolve(null)]);
+ const regular=weekly?.games||[],extra=window.RUSPlayoff2026?.weeklyRows(playoffs,teams)||[],ident=g=>{
+  const m=String(g.date||'').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/),day=m?`${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`:g.date;
+  const k=n=>String(n||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  return day+'|'+[k(g.awayTeam),k(g.homeTeam)].sort().join('|')
+ };
+ const known=new Set(regular.map(ident));
+ const currentGames=gamesForCurrentWeek([...regular,...extra.filter(g=>!known.has(ident(g)))]),homeGames=gamesForCurrentWeek(week?.games);
  const games=(currentGames.length?currentGames:homeGames).slice().sort((a,b)=>dateNum(a.date)-dateNum(b.date)||String(a.awayTeam).localeCompare(String(b.awayTeam)));
  const map=new Map((teams||week?.teams||[]).map(t=>[norm(t.team),t]));
  const fav=favorites();
