@@ -11,7 +11,7 @@
 <script>
 (()=>{
   'use strict';
-  const VERSION='20261026-uintah-speed-cut1';
+  const VERSION='20261106-playoff-team-schedule1';
   const copyScript=old=>new Promise(resolve=>{
     const s=document.createElement('script');
     for(const a of old.attributes)s.setAttribute(a.name,a.value);
@@ -28,7 +28,7 @@
   fetch(`team-page-content.html?v=${VERSION}`)
     .then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.text()})
     .then(async html=>{
-      html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20261026-uintah-speed-cut1');
+      html=html.replace('team-enhancements.js?v=20260818-perf1','team-enhancements.js?v=20261106-playoff-team-schedule1');
       html=html.replace(/<script src="nav-menu\.js\?v=[^"]+"(?: defer)?><\/script>/,'<script src="nav-menu.js?v=20261027-stage1-nav1"><\/script>');
       html=html.replace('</body>','<script src="team-tabs.js?v='+VERSION+'" data-rus-team-tabs="1"><\/script><script src="team-record-tabs-repair.js?v=20260827-streaks-fix1"><\/script><script src="team-coaches.js?v=20261001-coach-loader1"><\/script><script src="team-coaches-tab.js?v=20261001-coach-loader1"><\/script></body>');
 
