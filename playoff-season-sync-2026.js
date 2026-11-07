@@ -208,5 +208,37 @@
     if (standings.summary) standings.summary.completedGames = Number(standings.summary.completedGames||0)+fresh.length;
     return fresh.length;
   }
-  window.RUSPlayoff2026 = {load, gamesForTeam, mergeRows, mergeCurrent, mergeHistory, applyStandings, isoDate, key};
+
+  // Shape bracket fixtures for weekly dashboards. Unplayed games intentionally
+  // omit actualAway/actualHome so they can never be mistaken for completed finals.
+  function weeklyRows(payload, teamList = []) {
+    const names=new Map((teamList || []).map(t => {
+      const name=typeof t === 'string' ? t : t?.team;
+      return [key(name),String(name||'').toUpperCase()];
+    }));
+    const standard=name=>names.get(key(name))||String(name||'').toUpperCase();
+    const rows=[],seen=new Set();
+    for(const [classification,cls] of Object.entries(payload?.classifications||{})){
+      for(const round of cls?.rounds||[])for(const g of round?.games||[]){
+        const a=g?.a,b=g?.b,date=isoDate(g?.date);
+        if(!a?.name||!b?.name||!a.seed||!b.seed||!date||placeholder(a.name)||placeholder(b.name))continue;
+        const id=date+'|'+[key(a.name),key(b.name)].sort().join('|');
+        if(seen.has(id))continue;
+        seen.add(id);
+        const row={
+          date:Number(date.slice(5,7))+'/'+Number(date.slice(8,10))+'/2026',
+          homeTeam:standard(a.name),awayTeam:standard(b.name),
+          playoff:true,classification,round:round.name||'',venue:g.venue||'',
+          playoffNeutral:!/higher seed home field/i.test(String(g.venue||''))
+        };
+        if(isFinal(g)){
+          row.actualHome=Number(a.score);row.actualAway=Number(b.score);
+          row.actualWinner=a.winner===true?row.homeTeam:row.awayTeam;
+        }
+        rows.push(row);
+      }
+    }
+    return rows;
+  }
+  window.RUSPlayoff2026 = {load, gamesForTeam, mergeRows, mergeCurrent, mergeHistory, applyStandings, weeklyRows, isoDate, key};
 })();
