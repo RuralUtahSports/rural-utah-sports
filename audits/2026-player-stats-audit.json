@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T20:24:26.086Z",
+  "generatedAt": "2026-11-10T23:50:59.818Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -9,8 +9,8 @@
     "statRows": 6926,
     "athletesWithStats": 4065,
     "gamesWithPlayerRecords": 1086,
-    "gamePlayerRows": 21193,
-    "gameStatLines": 30252,
+    "gamePlayerRows": 21204,
+    "gameStatLines": 30269,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -19,17 +19,17 @@
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
     "seasonAboveGameSum": 590,
-    "gameAboveSeasonSum": 470,
-    "reviewFlags": 472,
+    "gameAboveSeasonSum": 495,
+    "reviewFlags": 497,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "GAME_SUM_EXCEEDS_SEASON": 470,
+    "GAME_SUM_EXCEEDS_SEASON": 495,
     "SEASON_GT_AVAILABLE_GAME_LOG": 579,
     "RECEIVING_RATE_MISMATCH": 2
   },
   "severityCounts": {
-    "review": 472,
+    "review": 497,
     "info": 579
   },
   "teams": [
@@ -1501,6 +1501,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Crew Allred",
+      "category": "Passing",
+      "field": "YARDS",
+      "season": 557,
+      "gameLogSum": 748,
+      "difference": 191
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "FARMINGTON",
       "subject": "Alton Dahl",
       "category": "Passing",
@@ -1567,6 +1578,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Carter Bell",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 530,
+      "gameLogSum": 690,
+      "difference": 160
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "KEARNS",
       "subject": "Abdifatah Osman",
       "category": "Receiving",
@@ -1574,6 +1596,17 @@
       "season": 64,
       "gameLogSum": 216,
       "difference": 152
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Dawson Dunlavy",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 333,
+      "gameLogSum": 480,
+      "difference": 147
     },
     {
       "level": "review",
@@ -1827,6 +1860,17 @@
       "season": 437,
       "gameLogSum": 510,
       "difference": 73
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Ty Holm",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 332,
+      "gameLogSum": 404,
+      "difference": 72
     },
     {
       "level": "review",
@@ -2238,6 +2282,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Colt Thomas",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 20,
+      "gameLogSum": 58,
+      "difference": 38
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "MANTI",
       "subject": "Kooper Lund",
       "category": "Receiving",
@@ -2315,6 +2370,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Brigham Mouritsen",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 215,
+      "gameLogSum": 249,
+      "difference": 34
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GUNNISON VALLEY",
       "subject": "Krew Donaldson",
       "category": "Rushing",
@@ -2344,6 +2410,17 @@
       "season": 4,
       "gameLogSum": 37,
       "difference": 33
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Carter Bell",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 106,
+      "gameLogSum": 137,
+      "difference": 31
     },
     {
       "level": "review",
@@ -2700,6 +2777,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Graeson Warren",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 39,
+      "gameLogSum": 59,
+      "difference": 20
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "MOUNTAIN RIDGE",
       "subject": "Bennett Neilson",
       "category": "Receiving",
@@ -2718,6 +2806,17 @@
       "season": 242,
       "gameLogSum": 262,
       "difference": 20
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Crew Allred",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 148,
+      "gameLogSum": 167,
+      "difference": 19
     },
     {
       "level": "review",
@@ -3327,6 +3426,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Beck Mondragon",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 190,
+      "gameLogSum": 200,
+      "difference": 10
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GUNNISON VALLEY",
       "subject": "Chance Hammond",
       "category": "Rushing",
@@ -3844,6 +3954,28 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Graeson Warren",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 162,
+      "gameLogSum": 168,
+      "difference": 6
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Dawson Dunlavy",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 15,
+      "gameLogSum": 21,
+      "difference": 6
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "KEARNS",
       "subject": "Ismail Muse",
       "category": "Receiving",
@@ -3960,6 +4092,17 @@
       "field": "RECEPTIONS",
       "season": 34,
       "gameLogSum": 39,
+      "difference": 5
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Crew Allred",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 33,
+      "gameLogSum": 38,
       "difference": 5
     },
     {
@@ -4169,6 +4312,28 @@
       "field": "CARRIES",
       "season": 1,
       "gameLogSum": 5,
+      "difference": 4
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Brigham Mouritsen",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 23,
+      "gameLogSum": 27,
+      "difference": 4
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Colt Thomas",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 3,
+      "gameLogSum": 7,
       "difference": 4
     },
     {
@@ -4444,6 +4609,17 @@
       "field": "YARDS",
       "season": 51,
       "gameLogSum": 54,
+      "difference": 3
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Ty Holm",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 27,
+      "gameLogSum": 30,
       "difference": 3
     },
     {
@@ -4895,6 +5071,39 @@
       "field": "RECEPTIONS",
       "season": 2,
       "gameLogSum": 4,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Crew Allred",
+      "category": "Passing",
+      "field": "TD",
+      "season": 8,
+      "gameLogSum": 10,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Crew Allred",
+      "category": "Passing",
+      "field": "Int",
+      "season": 3,
+      "gameLogSum": 5,
+      "difference": 2
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Graeson Warren",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 3,
+      "gameLogSum": 5,
       "difference": 2
     },
     {
@@ -5544,6 +5753,72 @@
       "field": "TD",
       "season": 1,
       "gameLogSum": 2,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Carter Bell",
+      "category": "Rushing",
+      "field": "TD",
+      "season": 7,
+      "gameLogSum": 8,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Brigham Mouritsen",
+      "category": "Rushing",
+      "field": "TD",
+      "season": 1,
+      "gameLogSum": 2,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Graeson Warren",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 36,
+      "gameLogSum": 37,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Ty Holm",
+      "category": "Receiving",
+      "field": "TD",
+      "season": 8,
+      "gameLogSum": 9,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Beck Mondragon",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 11,
+      "gameLogSum": 12,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Beck Mondragon",
+      "category": "Receiving",
+      "field": "TD",
+      "season": 4,
+      "gameLogSum": 5,
       "difference": 1
     },
     {

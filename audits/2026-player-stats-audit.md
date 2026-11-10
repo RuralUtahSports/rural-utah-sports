@@ -1,6 +1,6 @@
 # 2026 Football Player Statistics Audit
 
-Generated: 2026-11-10T20:24:26.086Z
+Generated: 2026-11-10T23:50:59.818Z
 
 **118 schools · 6440 roster IDs · 4065 athletes with reported stats · 6926 category rows.**
 
@@ -13,7 +13,7 @@ Generated: 2026-11-10T20:24:26.086Z
 
 ## Review flags
 - SEASON_GT_AVAILABLE_GAME_LOG: 579
-- GAME_SUM_EXCEEDS_SEASON: 470
+- GAME_SUM_EXCEEDS_SEASON: 495
 - RECEIVING_RATE_MISMATCH: 2
 
 ## Highest-priority examples
@@ -32,13 +32,16 @@ Generated: 2026-11-10T20:24:26.086Z
 - **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Deacon Virgin; {"category":"Passing","field":"YARDS","season":1584,"gameLogSum":1799,"difference":215}
 - **GAME_SUM_EXCEEDS_SEASON** WESTLAKE — Ashton Taylor; {"category":"Rushing","field":"YARDS","season":424,"gameLogSum":627,"difference":203}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Beto Carroll; {"category":"Receiving","field":"YARDS","season":861,"gameLogSum":1060,"difference":199}
+- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Crew Allred; {"category":"Passing","field":"YARDS","season":557,"gameLogSum":748,"difference":191}
 - **GAME_SUM_EXCEEDS_SEASON** FARMINGTON — Alton Dahl; {"category":"Passing","field":"YARDS","season":2157,"gameLogSum":2347,"difference":190}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Corbin Black; {"category":"Rushing","field":"YARDS","season":31,"gameLogSum":221,"difference":190}
 - **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Deagan Williams; {"category":"Passing","field":"YARDS","season":1073,"gameLogSum":1241,"difference":168}
 - **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Brandtson Mack; {"category":"Receiving","field":"YARDS","season":559,"gameLogSum":726,"difference":167}
 - **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Deagan Williams; {"category":"Rushing","field":"YARDS","season":323,"gameLogSum":489,"difference":166}
 - **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Ayden Laws; {"category":"Rushing","field":"YARDS","season":360,"gameLogSum":525,"difference":165}
+- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Carter Bell; {"category":"Rushing","field":"YARDS","season":530,"gameLogSum":690,"difference":160}
 - **GAME_SUM_EXCEEDS_SEASON** KEARNS — Abdifatah Osman; {"category":"Receiving","field":"YARDS","season":64,"gameLogSum":216,"difference":152}
+- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Dawson Dunlavy; {"category":"Receiving","field":"YARDS","season":333,"gameLogSum":480,"difference":147}
 - **GAME_SUM_EXCEEDS_SEASON** ALTAMONT — Dallan Ledbetter; {"category":"Rushing","field":"YARDS","season":1240,"gameLogSum":1383,"difference":143}
 - **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Miles Coleman; {"category":"Receiving","field":"YARDS","season":13,"gameLogSum":156,"difference":143}
 - **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Xander Thayer; {"category":"Receiving","field":"YARDS","season":751,"gameLogSum":892,"difference":141}
@@ -62,6 +65,7 @@ Generated: 2026-11-10T20:24:26.086Z
 - **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Tuff Thornton; {"category":"Receiving","field":"YARDS","season":99,"gameLogSum":175,"difference":76}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Jonathan Gonzalez; {"category":"Rushing","field":"YARDS","season":43,"gameLogSum":117,"difference":74}
 - **GAME_SUM_EXCEEDS_SEASON** CANYON VIEW — Karson Greenland; {"category":"Receiving","field":"YARDS","season":437,"gameLogSum":510,"difference":73}
+- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Ty Holm; {"category":"Receiving","field":"YARDS","season":332,"gameLogSum":404,"difference":72}
 - **GAME_SUM_EXCEEDS_SEASON** TAYLORSVILLE — Skyler Bills; {"category":"Receiving","field":"YARDS","season":-2,"gameLogSum":70,"difference":72}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Chris Munroe; {"category":"Rushing","field":"CARRIES","season":62,"gameLogSum":132,"difference":70}
 - **GAME_SUM_EXCEEDS_SEASON** MANTI — Hudson Crane; {"category":"Receiving","field":"YARDS","season":785,"gameLogSum":855,"difference":70}
@@ -93,10 +97,6 @@ Generated: 2026-11-10T20:24:26.086Z
 - **GAME_SUM_EXCEEDS_SEASON** WASATCH — Peyton Morris; {"category":"Defense/Special Teams","field":"TACKLES","season":14,"gameLogSum":60,"difference":46}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Jamari Connelly; {"category":"Receiving","field":"YARDS","season":110,"gameLogSum":154,"difference":44}
 - **GAME_SUM_EXCEEDS_SEASON** CANYON VIEW — Camden Sheridan; {"category":"Rushing","field":"YARDS","season":804,"gameLogSum":847,"difference":43}
-- **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Krew Berezay; {"category":"Receiving","field":"YARDS","season":42,"gameLogSum":85,"difference":43}
-- **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Memphis Hunkin; {"category":"Receiving","field":"YARDS","season":130,"gameLogSum":173,"difference":43}
-- **GAME_SUM_EXCEEDS_SEASON** WASATCH — Mac Kohler; {"category":"Defense/Special Teams","field":"TACKLES","season":8,"gameLogSum":49,"difference":41}
-- **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Tytan DeJong; {"category":"Receiving","field":"YARDS","season":692,"gameLogSum":732,"difference":40}
 
 ## Method / limitations
 This is a comprehensive machine audit of the stored roster, season stat sections, and linked game logs. A flag is **not proof of error**. School-reported gaps, incomplete per-game player stats, and source snapshot timing require review. No automated changes to player scores, awards, or draft selections were made.
