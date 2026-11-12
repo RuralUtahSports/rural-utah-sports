@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T18:29:55.603Z",
+  "generatedAt": "2026-11-12T20:10:49.671Z",
   "summary": {
     "errors": 0,
     "warnings": 85,
@@ -104,12 +104,12 @@
         "sourceGamePairs": 12,
         "missing": [
           {
-            "date": "2026-10-30",
-            "opponent": "Enterprise"
-          },
-          {
             "date": "2026-11-06",
             "opponent": "Kanab"
+          },
+          {
+            "date": "2026-10-30",
+            "opponent": "Enterprise"
           }
         ]
       }
@@ -324,12 +324,12 @@
         "sourceGamePairs": 12,
         "missing": [
           {
-            "date": "2026-11-06",
-            "opponent": "Syracuse"
-          },
-          {
             "date": "2026-10-30",
             "opponent": "Bingham"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Syracuse"
           }
         ]
       }
@@ -342,12 +342,12 @@
         "sourceGamePairs": 12,
         "missing": [
           {
-            "date": "2026-11-06",
-            "opponent": "Summit Academy"
-          },
-          {
             "date": "2026-10-30",
             "opponent": "Providence Hall"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Summit Academy"
           }
         ]
       }
@@ -424,12 +424,12 @@
         "sourceGamePairs": 12,
         "missing": [
           {
-            "date": "2026-10-23",
-            "opponent": "Ben Lomond"
-          },
-          {
             "date": "2026-10-30",
             "opponent": "Richfield"
+          },
+          {
+            "date": "2026-10-23",
+            "opponent": "Ben Lomond"
           }
         ]
       }
@@ -460,12 +460,12 @@
         "sourceGamePairs": 12,
         "missing": [
           {
-            "date": "2026-11-06",
-            "opponent": "Salem Hills"
-          },
-          {
             "date": "2026-10-30",
             "opponent": "Park City"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Salem Hills"
           }
         ]
       }
@@ -524,12 +524,12 @@
         "sourceGamePairs": 12,
         "missing": [
           {
-            "date": "2026-10-30",
-            "opponent": "Ogden"
-          },
-          {
             "date": "2026-11-07",
             "opponent": "Logan"
+          },
+          {
+            "date": "2026-10-30",
+            "opponent": "Ogden"
           }
         ]
       }
@@ -897,24 +897,6 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "PANGUITCH has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
-      "context": {
-        "sourceGamePairs": 11,
-        "missing": [
-          {
-            "date": "2026-10-23",
-            "opponent": "Utah Military Academy - Hill Field"
-          },
-          {
-            "date": "2026-10-30",
-            "opponent": "Milford"
-          }
-        ]
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
       "message": "RICH has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
         "sourceGamePairs": 12,
@@ -926,6 +908,24 @@
           {
             "date": "2026-11-07",
             "opponent": "Water Canyon"
+          }
+        ]
+      }
+    },
+    {
+      "severity": "warning",
+      "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
+      "message": "PANGUITCH has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "context": {
+        "sourceGamePairs": 11,
+        "missing": [
+          {
+            "date": "2026-10-23",
+            "opponent": "Utah Military Academy - Hill Field"
+          },
+          {
+            "date": "2026-10-30",
+            "opponent": "Milford"
           }
         ]
       }
@@ -1143,13 +1143,17 @@
     {
       "severity": "warning",
       "code": "MAXPREPS_GAME_STATS_NOT_MERGED",
-      "message": "SPRINGVILLE has 1 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
+      "message": "SPRINGVILLE has 2 MaxPreps game-stat matchup(s) missing from player-game-stats-2026.json.",
       "context": {
-        "sourceGamePairs": 10,
+        "sourceGamePairs": 11,
         "missing": [
           {
             "date": "2026-10-30",
             "opponent": "Olympus"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Bountiful"
           }
         ]
       }
@@ -1339,11 +1343,11 @@
       "code": "MAXPREPS_COVERAGE",
       "message": "MaxPreps fallback coverage.",
       "context": {
-        "sourceRows": 9709,
+        "sourceRows": 9712,
         "unmatchedRows": 1103,
         "rosterlessTeams": 0,
-        "sourceGamePairs": 1173,
-        "missingGamePairs": 120
+        "sourceGamePairs": 1174,
+        "missingGamePairs": 121
       }
     },
     {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T18:29:56.165Z",
+  "generatedAt": "2026-11-12T20:10:49.971Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -9,8 +9,8 @@
     "statRows": 6926,
     "athletesWithStats": 4065,
     "gamesWithPlayerRecords": 1086,
-    "gamePlayerRows": 21204,
-    "gameStatLines": 30269,
+    "gamePlayerRows": 21220,
+    "gameStatLines": 30285,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -19,17 +19,17 @@
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
     "seasonAboveGameSum": 590,
-    "gameAboveSeasonSum": 495,
-    "reviewFlags": 497,
+    "gameAboveSeasonSum": 504,
+    "reviewFlags": 506,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "GAME_SUM_EXCEEDS_SEASON": 495,
+    "GAME_SUM_EXCEEDS_SEASON": 504,
     "SEASON_GT_AVAILABLE_GAME_LOG": 579,
     "RECEIVING_RATE_MISMATCH": 2
   },
   "severityCounts": {
-    "review": 497,
+    "review": 506,
     "info": 579
   },
   "teams": [
@@ -2689,6 +2689,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Cruze Anderson",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 34,
+      "gameLogSum": 56,
+      "difference": 22
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "WATER CANYON",
       "subject": "Sawyer Horsley",
       "category": "Receiving",
@@ -2816,6 +2827,17 @@
       "field": "YARDS",
       "season": 148,
       "gameLogSum": 167,
+      "difference": 19
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Robert Rounds",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 50,
+      "gameLogSum": 69,
       "difference": 19
     },
     {
@@ -3316,6 +3338,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Trevor Thomas",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 25,
+      "gameLogSum": 37,
+      "difference": 12
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GUNNISON VALLEY",
       "subject": "Gavin Willden",
       "category": "Defense/Special Teams",
@@ -3366,6 +3399,17 @@
       "field": "YARDS",
       "season": 127,
       "gameLogSum": 138,
+      "difference": 11
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Zaiden Clark",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 27,
+      "gameLogSum": 38,
       "difference": 11
     },
     {
@@ -3531,6 +3575,17 @@
       "field": "RECEPTIONS",
       "season": 4,
       "gameLogSum": 13,
+      "difference": 9
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Zane Carter",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 5,
+      "gameLogSum": 14,
       "difference": 9
     },
     {
@@ -3773,6 +3828,17 @@
       "field": "CARRIES",
       "season": 2,
       "gameLogSum": 9,
+      "difference": 7
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Kanon Fields",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 12,
+      "gameLogSum": 19,
       "difference": 7
     },
     {
@@ -4103,6 +4169,28 @@
       "field": "CARRIES",
       "season": 33,
       "gameLogSum": 38,
+      "difference": 5
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Isaiah Williams",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 12,
+      "gameLogSum": 17,
+      "difference": 5
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Zaxton Ellis",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 9,
+      "gameLogSum": 14,
       "difference": 5
     },
     {
@@ -4620,6 +4708,17 @@
       "field": "RECEPTIONS",
       "season": 27,
       "gameLogSum": 30,
+      "difference": 3
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "GRANTSVILLE",
+      "subject": "Jaymesen Held",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 5,
+      "gameLogSum": 8,
       "difference": 3
     },
     {
