@@ -64,7 +64,6 @@
   const groups = {
     teams: [
       ["Football Teams", "teams.html"],
-      ["Boys Basketball Teams", "boys-basketball-teams.html"],
     ],
     history: [
       ["Championships", "championships.html"],
@@ -78,8 +77,6 @@
       ["Dynasty Explorer", "dynasty.html"],
       ["History Lab", "history-lab.html"],
       ["Football Greatest Seasons", "greatest-seasons.html"],
-      ["Boys Basketball Greatest Seasons", "boys-basketball-greatest-seasons.html"],
-      ["Boys Basketball Brackets", "boys-basketball-brackets.html"],
       ["Records", "records.html"],
     ],
     rankings: [
@@ -102,7 +99,6 @@
     ],
     scoreboard: [
       ["Football Scoreboard", "scoreboard.html"],
-      ["Boys Basketball Scoreboard", "boys-basketball-scoreboard.html"],
     ],
     stats: [
       ["Stat Leaders", "stat-leaders-hub.html"],
