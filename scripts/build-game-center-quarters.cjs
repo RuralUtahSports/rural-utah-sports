@@ -73,7 +73,30 @@ for(const g of weekly.games||[]){
  if(item.reason)tallies[item.reason]=(tallies[item.reason]||0)+1;
  out.push(item);
 }
+// Include only postseason quarter boxes explicitly verified in the canonical bracket.
+// Other playoff final scores are not given fabricated quarter values.
+const brackets=read("official-brackets-2026.json");
+const known=new Set(out.map(g=>g.iso+"|"+compact(g.away)+"|"+compact(g.home)));
+for(const cls of Object.values(brackets.classifications||{})){
+ for(const round of cls.rounds||[]){
+  for(const g of round.games||[]){
+   const q=g.quarterScores;
+   if(!g.a?.seed||!g.b?.seed||!q||!Array.isArray(q.a)||!Array.isArray(q.b))continue;
+   const t=Date.parse(g.date||""),day=Number.isFinite(t)?new Date(t).toISOString().slice(0,10):"";
+   const home=String(g.a.name||"").toUpperCase(),away=String(g.b.name||"").toUpperCase();
+   const homeTotal=numeric(g.a.score),awayTotal=numeric(g.b.score);
+   if(!day||homeTotal===null||awayTotal===null||g.a.winner!==true&&g.b.winner!==true)throw Error("Incomplete confirmed playoff quarter source");
+   if(q.a.length!==4||q.b.length!==4||[...q.a,...q.b].some(v=>numeric(v)===null)||q.a.reduce((a,b)=>a+b,0)!==homeTotal||q.b.reduce((a,b)=>a+b,0)!==awayTotal)
+    throw Error("Postseason quarter scores do not match final "+day+" "+away+" "+home);
+   const id=day+"|"+compact(away)+"|"+compact(home);
+   if(known.has(id))continue;
+   known.add(id);
+   const item={iso:day,away,home,awayTotal,homeTotal,status:"verified",periods:["Q1","Q2","Q3","Q4"],quarters:[q.b,q.a],source:"user-provided-deseret-screenshot"};
+   out.push(item);tallies.verified=(tallies.verified||0)+1;
+  }
+ }
+}
 out.sort((a,b)=>b.iso.localeCompare(a.iso)||a.away.localeCompare(b.away));
-const generated={season:2026,method:"Verified weekly finals crosschecked with Deseret quarter boxes; source blanks are never inferred.",sourceFiles:["weekly-simulation.json","deseret-game-details.json","game-center-quarter-overrides-2026.json"],summary:{total:out.length,verified:tallies.verified||0,partial:tallies.partial||0,unavailable:tallies.unavailable||0,conflict:tallies.conflict||0,reasonCounts:tallies},games:out};
+const generated={season:2026,method:"Verified weekly finals crosschecked with Deseret quarter boxes; source blanks are never inferred.",sourceFiles:["weekly-simulation.json","deseret-game-details.json","game-center-quarter-overrides-2026.json","official-brackets-2026.json"],summary:{total:out.length,verified:tallies.verified||0,partial:tallies.partial||0,unavailable:tallies.unavailable||0,conflict:tallies.conflict||0,reasonCounts:tallies},games:out};
 fs.writeFileSync(path.join(root,"game-center-quarter-scores-2026.json"),JSON.stringify(generated)+"\n");
 console.log("Game Center quarter audit:",JSON.stringify(generated.summary));

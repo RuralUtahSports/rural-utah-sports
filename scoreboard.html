@@ -189,7 +189,10 @@ function playoffWeeks14And15FromBrackets(payload){
      playoff:true,playoffWeek,classification,round:isChamp?'State Championship':'Semifinals',
      time:g.time||'TBA',venue:g.venue||'TBA',awayScore:null,homeScore:null,
      actualAway:final?Number(g.b.score):null,actualHome:final?Number(g.a.score):null,
-     actualWinner:final?(g.a.winner===true?homeTeam:g.b.winner===true?awayTeam:null):null
+     actualWinner:final?(g.a.winner===true?homeTeam:g.b.winner===true?awayTeam:null):null,
+     quarterScores:g.quarterScores?{home:g.quarterScores.a,away:g.quarterScores.b}:undefined,
+     scoringPlays:Array.isArray(g.scoringPlays)?g.scoringPlays:[],
+     stats:Array.isArray(g.stats)?g.stats:[]
     });
    }
   }
@@ -245,6 +248,7 @@ function gameClass(g){return g.playoff?(g.classification==='8-Player'?'8P':g.cla
  if(!exact&&compact(g.awayTeam)==='WEBER'&&compact(g.homeTeam)==='ROY'&&isoDate(g.date)==='2026-08-27')exact=detailMap.get('2026-08-28|WEBER|ROY')||null;
  // Preserve screenshot-verified quarter scores on finalized playoff games even
  // when the external Deseret detail feeds have no matching entry yet.
+ if(g.playoff&&(g.scoringPlays?.length||g.stats?.length))exact={...(exact||{}),status:'Final',scoringPlays:g.scoringPlays||[],stats:g.stats||[]};
  const quarters=g.quarterScores;
  const final=g.actualAway!==null&&g.actualAway!==undefined&&g.actualHome!==null&&g.actualHome!==undefined;
  if(final&&Array.isArray(quarters?.away)&&Array.isArray(quarters?.home)&&quarters.away.length===4&&quarters.home.length===4){
