@@ -97,6 +97,6 @@ for(const cls of Object.values(brackets.classifications||{})){
  }
 }
 out.sort((a,b)=>b.iso.localeCompare(a.iso)||a.away.localeCompare(b.away));
-const generated={season:2026,method:"Verified weekly finals crosschecked with Deseret quarter boxes; source blanks are never inferred.",sourceFiles:["weekly-simulation.json","deseret-game-details.json","game-center-quarter-overrides-2026.json","official-brackets-2026.json"],summary:{total:out.length,verified:tallies.verified||0,partial:tallies.partial||0,unavailable:tallies.unavailable||0,conflict:tallies.conflict||0,reasonCounts:tallies},games:out};
+const generated={season:2026,method:"Verified weekly finals crosschecked with Deseret quarter boxes; source blanks are never inferred. Postseason quarter boxes are added only when explicitly supported by the official-bracket screenshot evidence.",sourceFiles:["weekly-simulation.json","deseret-game-details.json","game-center-quarter-overrides-2026.json","official-brackets-2026.json"],summary:{total:out.length,verified:tallies.verified||0,partial:tallies.partial||0,unavailable:tallies.unavailable||0,conflict:tallies.conflict||0,reasonCounts:tallies},games:out};
 fs.writeFileSync(path.join(root,"game-center-quarter-scores-2026.json"),JSON.stringify(generated)+"\n");
 console.log("Game Center quarter audit:",JSON.stringify(generated.summary));
