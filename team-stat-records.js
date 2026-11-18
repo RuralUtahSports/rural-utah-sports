@@ -23,7 +23,7 @@ async function renderSeasonScoringRecords(team){
       {key:'ppg',label:'Points per Game (PPG)',high:'Highest',low:'Lowest',digits:1},
       {key:'papg',label:'Points Allowed per Game (PAPG)',high:'Highest',low:'Lowest',digits:1}
     ];
-    const valueOf=(s,key)=>{const n=Number(s[key]);return Number.isFinite(n)?n:null};
+    const valueOf=(s,key)=>{const raw=s[key];if(raw===null||raw===undefined||String(raw).trim()==='')return null;const n=Number(raw);return Number.isFinite(n)?n:null};
     const yearsFor=(rows)=>rows.map(s=>{const ties=Number(s.ties)||0,record=`${s.wins}-${s.losses}${ties?`-${ties}`:''}`;return `${s.year} (${record})`}).join(', ');
     const fmt=(v,d)=>Number(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
     const cards=defs.map(def=>{
