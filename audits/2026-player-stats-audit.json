@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T22:28:56.539Z",
+  "generatedAt": "2026-11-18T02:42:39.271Z",
   "scope": "2026 Utah football, all available schools and every roster/stat/game-log player",
   "limitations": "Audits all local records; source fetches can be stale, school reporting incomplete, and game log gaps cannot be assumed to mean zero.",
   "counts": {
@@ -8,9 +8,9 @@
     "uniqueRosterIDs": 6440,
     "statRows": 6926,
     "athletesWithStats": 4065,
-    "gamesWithPlayerRecords": 1086,
-    "gamePlayerRows": 21220,
-    "gameStatLines": 30285,
+    "gamesWithPlayerRecords": 1087,
+    "gamePlayerRows": 21229,
+    "gameStatLines": 30298,
     "missingStatPlayers": 2495,
     "missingTeamStats": [
       "MONUMENT VAL",
@@ -19,17 +19,17 @@
     "unmatchedSeasonStatPlayers": 168,
     "unmatchedGamePlayers": 388,
     "seasonAboveGameSum": 590,
-    "gameAboveSeasonSum": 504,
-    "reviewFlags": 506,
+    "gameAboveSeasonSum": 524,
+    "reviewFlags": 526,
     "sourceStatsFetchFailures": 1
   },
   "issueCounts": {
-    "GAME_SUM_EXCEEDS_SEASON": 504,
+    "GAME_SUM_EXCEEDS_SEASON": 524,
     "SEASON_GT_AVAILABLE_GAME_LOG": 579,
     "RECEIVING_RATE_MISMATCH": 2
   },
   "severityCounts": {
-    "review": 506,
+    "review": 526,
     "info": 579
   },
   "teams": [
@@ -1315,7 +1315,7 @@
       "statRows": 25,
       "rosterPlayersWithoutReportedStats": 0,
       "finalGameLogs": 4,
-      "finalGameLogsWithPlayerData": 2,
+      "finalGameLogsWithPlayerData": 3,
       "seasonRowsWithUnknownId": 0,
       "compactMismatches": 0,
       "sourceStatsFetched": true
@@ -1435,6 +1435,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Tyrell Black",
+      "category": "Passing",
+      "field": "YARDS",
+      "season": 281,
+      "gameLogSum": 526,
+      "difference": 245
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "GUNNISON VALLEY",
       "subject": "Axton Sorensen",
       "category": "Passing",
@@ -1530,6 +1541,17 @@
       "season": 31,
       "gameLogSum": 221,
       "difference": 190
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Hunter Tsinigine",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 379,
+      "gameLogSum": 562,
+      "difference": 183
     },
     {
       "level": "review",
@@ -1677,6 +1699,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Adam Joe",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 166,
+      "gameLogSum": 296,
+      "difference": 130
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "MOUNTAIN RIDGE",
       "subject": "Tyson Dunn",
       "category": "Rushing",
@@ -1738,6 +1771,17 @@
       "field": "YARDS",
       "season": 19,
       "gameLogSum": 117,
+      "difference": 98
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Dillion Leo",
+      "category": "Receiving",
+      "field": "YARDS",
+      "season": 108,
+      "gameLogSum": 206,
       "difference": 98
     },
     {
@@ -2766,6 +2810,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Hunter Tsinigine",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 52,
+      "gameLogSum": 73,
+      "difference": 21
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "DESERT HILLS",
       "subject": "Seth Brown",
       "category": "Receiving",
@@ -2816,6 +2871,17 @@
       "field": "YARDS",
       "season": 242,
       "gameLogSum": 262,
+      "difference": 20
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Jacoby Long",
+      "category": "Rushing",
+      "field": "YARDS",
+      "season": 2,
+      "gameLogSum": 22,
       "difference": 20
     },
     {
@@ -3311,6 +3377,28 @@
       "field": "TACKLES",
       "season": 8,
       "gameLogSum": 21,
+      "difference": 13
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Hunter Tsinigine",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 23,
+      "gameLogSum": 36,
+      "difference": 13
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Adam Joe",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 22,
+      "gameLogSum": 35,
       "difference": 13
     },
     {
@@ -3932,6 +4020,17 @@
     {
       "level": "review",
       "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Adam Joe",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 12,
+      "gameLogSum": 19,
+      "difference": 7
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
       "team": "CANYON VIEW",
       "subject": "Karson Greenland",
       "category": "Receiving",
@@ -4114,6 +4213,39 @@
       "field": "RECEPTIONS",
       "season": 14,
       "gameLogSum": 20,
+      "difference": 6
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Jacoby Long",
+      "category": "Rushing",
+      "field": "CARRIES",
+      "season": 2,
+      "gameLogSum": 8,
+      "difference": 6
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Dillion Leo",
+      "category": "Receiving",
+      "field": "RECEPTIONS",
+      "season": 5,
+      "gameLogSum": 11,
+      "difference": 6
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Tyrell Black",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 11,
+      "gameLogSum": 17,
       "difference": 6
     },
     {
@@ -4334,6 +4466,28 @@
       "field": "RECEPTIONS",
       "season": 27,
       "gameLogSum": 32,
+      "difference": 5
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Dillion Leo",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 8,
+      "gameLogSum": 13,
+      "difference": 5
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Tysahun Begay",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 9,
+      "gameLogSum": 14,
       "difference": 5
     },
     {
@@ -4587,6 +4741,17 @@
       "field": "RECEPTIONS",
       "season": 13,
       "gameLogSum": 17,
+      "difference": 4
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Alexander Begay",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 6,
+      "gameLogSum": 10,
       "difference": 4
     },
     {
@@ -5016,6 +5181,28 @@
       "field": "TACKLES",
       "season": 69,
       "gameLogSum": 72,
+      "difference": 3
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Cayden Leo",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 7,
+      "gameLogSum": 10,
+      "difference": 3
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Tristan Tohtsonie",
+      "category": "Defense/Special Teams",
+      "field": "TACKLES",
+      "season": 3,
+      "gameLogSum": 6,
       "difference": 3
     },
     {
@@ -6864,6 +7051,39 @@
       "field": "TACKLES",
       "season": 9,
       "gameLogSum": 10,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Tyrell Black",
+      "category": "Passing",
+      "field": "TD",
+      "season": 5,
+      "gameLogSum": 6,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Tyrell Black",
+      "category": "Passing",
+      "field": "Int",
+      "season": 2,
+      "gameLogSum": 3,
+      "difference": 1
+    },
+    {
+      "level": "review",
+      "code": "GAME_SUM_EXCEEDS_SEASON",
+      "team": "WHITEHORSE",
+      "subject": "Adam Joe",
+      "category": "Receiving",
+      "field": "TD",
+      "season": 3,
+      "gameLogSum": 4,
       "difference": 1
     },
     {

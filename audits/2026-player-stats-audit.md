@@ -1,19 +1,19 @@
 # 2026 Football Player Statistics Audit
 
-Generated: 2026-11-17T22:28:56.539Z
+Generated: 2026-11-18T02:42:39.271Z
 
 **118 schools · 6440 roster IDs · 4065 athletes with reported stats · 6926 category rows.**
 
 ## Coverage
 - 2495 rostered athletes lack an individual season stat row (not necessarily a reporting error)
 - 2 teams have no season stats: MONUMENT VAL, UMA-HILLFIELD
-- 1086 finalized team-game logs include player stats
+- 1087 finalized team-game logs include player stats
 - 1 failed school stats fetches
 - 168 stat rows have IDs missing from their own roster (may be MaxPreps-only entries)
 
 ## Review flags
 - SEASON_GT_AVAILABLE_GAME_LOG: 579
-- GAME_SUM_EXCEEDS_SEASON: 504
+- GAME_SUM_EXCEEDS_SEASON: 524
 - RECEIVING_RATE_MISMATCH: 2
 
 ## Highest-priority examples
@@ -26,6 +26,7 @@ Generated: 2026-11-17T22:28:56.539Z
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Cooper Swasey; {"category":"Rushing","field":"YARDS","season":63,"gameLogSum":348,"difference":285}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON — Tillman Thomas; {"category":"Passing","field":"YARDS","season":1896,"gameLogSum":2175,"difference":279}
 - **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Jesse Clegg; {"category":"Receiving","field":"YARDS","season":297,"gameLogSum":549,"difference":252}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Tyrell Black; {"category":"Passing","field":"YARDS","season":281,"gameLogSum":526,"difference":245}
 - **GAME_SUM_EXCEEDS_SEASON** GUNNISON VALLEY — Axton Sorensen; {"category":"Passing","field":"YARDS","season":0,"gameLogSum":227,"difference":227}
 - **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Jaxon Hunt; {"category":"Passing","field":"YARDS","season":3164,"gameLogSum":3389,"difference":225}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Kalvin Hopkins; {"category":"Receiving","field":"YARDS","season":59,"gameLogSum":275,"difference":216}
@@ -35,6 +36,7 @@ Generated: 2026-11-17T22:28:56.539Z
 - **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Crew Allred; {"category":"Passing","field":"YARDS","season":557,"gameLogSum":748,"difference":191}
 - **GAME_SUM_EXCEEDS_SEASON** FARMINGTON — Alton Dahl; {"category":"Passing","field":"YARDS","season":2157,"gameLogSum":2347,"difference":190}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Corbin Black; {"category":"Rushing","field":"YARDS","season":31,"gameLogSum":221,"difference":190}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Hunter Tsinigine; {"category":"Rushing","field":"YARDS","season":379,"gameLogSum":562,"difference":183}
 - **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Deagan Williams; {"category":"Passing","field":"YARDS","season":1073,"gameLogSum":1241,"difference":168}
 - **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Brandtson Mack; {"category":"Receiving","field":"YARDS","season":559,"gameLogSum":726,"difference":167}
 - **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Deagan Williams; {"category":"Rushing","field":"YARDS","season":323,"gameLogSum":489,"difference":166}
@@ -48,12 +50,14 @@ Generated: 2026-11-17T22:28:56.539Z
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Everett Hill; {"category":"Receiving","field":"YARDS","season":34,"gameLogSum":170,"difference":136}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Jahmi Harrison-Bismillah; {"category":"Receiving","field":"YARDS","season":366,"gameLogSum":502,"difference":136}
 - **GAME_SUM_EXCEEDS_SEASON** KEARNS — Ismail Muse; {"category":"Receiving","field":"YARDS","season":6,"gameLogSum":136,"difference":130}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Adam Joe; {"category":"Receiving","field":"YARDS","season":166,"gameLogSum":296,"difference":130}
 - **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Tyson Dunn; {"category":"Rushing","field":"YARDS","season":496,"gameLogSum":610,"difference":114}
 - **GAME_SUM_EXCEEDS_SEASON** VIEWMONT — Miles Frey; {"category":"Rushing","field":"YARDS","season":405,"gameLogSum":516,"difference":111}
 - **GAME_SUM_EXCEEDS_SEASON** CANYON VIEW — Preston Higgins; {"category":"Receiving","field":"YARDS","season":523,"gameLogSum":629,"difference":106}
 - **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Pili Mounga; {"category":"Rushing","field":"YARDS","season":255,"gameLogSum":357,"difference":102}
 - **GAME_SUM_EXCEEDS_SEASON** BEN LOMOND — DaShawn Gordan; {"category":"Rushing","field":"CARRIES","season":10,"gameLogSum":108,"difference":98}
 - **GAME_SUM_EXCEEDS_SEASON** GUNNISON VALLEY — Mccoy Coates; {"category":"Rushing","field":"YARDS","season":19,"gameLogSum":117,"difference":98}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Dillion Leo; {"category":"Receiving","field":"YARDS","season":108,"gameLogSum":206,"difference":98}
 - **GAME_SUM_EXCEEDS_SEASON** FARMINGTON — Brogan Jeppesen; {"category":"Rushing","field":"YARDS","season":316,"gameLogSum":410,"difference":94}
 - **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Marshall Durfey; {"category":"Passing","field":"YARDS","season":306,"gameLogSum":400,"difference":94}
 - **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Kash Atkinson; {"category":"Receiving","field":"YARDS","season":14,"gameLogSum":103,"difference":89}
@@ -93,10 +97,6 @@ Generated: 2026-11-17T22:28:56.539Z
 - **GAME_SUM_EXCEEDS_SEASON** CLEARFIELD — Bryson Ridge; {"category":"Receiving","field":"YARDS","season":278,"gameLogSum":325,"difference":47}
 - **GAME_SUM_EXCEEDS_SEASON** MANTI — Ben Taulapapa; {"category":"Receiving","field":"YARDS","season":123,"gameLogSum":170,"difference":47}
 - **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Steele Woodward; {"category":"Rushing","field":"YARDS","season":67,"gameLogSum":114,"difference":47}
-- **GAME_SUM_EXCEEDS_SEASON** TAYLORSVILLE — Gary Lomu; {"category":"Rushing","field":"YARDS","season":52,"gameLogSum":99,"difference":47}
-- **GAME_SUM_EXCEEDS_SEASON** WASATCH — Peyton Morris; {"category":"Defense/Special Teams","field":"TACKLES","season":14,"gameLogSum":60,"difference":46}
-- **GAME_SUM_EXCEEDS_SEASON** GRAND — Jamari Connelly; {"category":"Receiving","field":"YARDS","season":110,"gameLogSum":154,"difference":44}
-- **GAME_SUM_EXCEEDS_SEASON** CANYON VIEW — Camden Sheridan; {"category":"Rushing","field":"YARDS","season":804,"gameLogSum":847,"difference":43}
 
 ## Method / limitations
 This is a comprehensive machine audit of the stored roster, season stat sections, and linked game logs. A flag is **not proof of error**. School-reported gaps, incomplete per-game player stats, and source snapshot timing require review. No automated changes to player scores, awards, or draft selections were made.
