@@ -938,15 +938,15 @@ async function loadData() {
         const dateKey =
           value => {
             const text = String(value ?? "").trim();
-            let match = text.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})$/);
+            let match = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
             if (match) {
               return match[1] + "-" + match[2].padStart(2, "0") + "-" + match[3].padStart(2, "0");
             }
-            match = text.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$/);
+            match = text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
             if (match) {
               return match[3] + "-" + match[1].padStart(2, "0") + "-" + match[2].padStart(2, "0");
             }
-            match = text.match(/^([A-Za-z]{3})\\s+(\\d{1,2}),?\\s+(\\d{4})$/);
+            match = text.match(/^([A-Za-z]{3})\s+(\d{1,2}),?\s+(\d{4})$/);
             const months = { JAN: "01", FEB: "02", MAR: "03", APR: "04", MAY: "05", JUN: "06", JUL: "07", AUG: "08", SEP: "09", OCT: "10", NOV: "11", DEC: "12" };
             if (match && months[match[1].toUpperCase()]) {
               return match[3] + "-" + months[match[1].toUpperCase()] + "-" + match[2].padStart(2, "0");
