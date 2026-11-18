@@ -346,7 +346,7 @@ function makeFullGraphic(cls,data,images,format=FORMATS.full,forecasts={games:[]
  }
  const footerY=h-(portrait?145:77)*sc;
  c.fillStyle='#414141';c.fillRect(pad,footerY,w-2*pad,2*sc);
- fitDraw(c,'UHSAA / MaxPreps  •  No winners selected',pad,footerY+34*sc,w*.70,18*sc,13*sc,'left','#a7a7a7');
+ fitDraw(c,'UHSAA / MaxPreps  •  Official bracket',pad,footerY+34*sc,w*.70,18*sc,13*sc,'left','#a7a7a7');
  fitDraw(c,'@ruralutahsports77',w-pad,footerY+34*sc,w*.28,20*sc,14*sc,'right',ORANGE);
  return view.element;
 }
