@@ -990,7 +990,7 @@ async function loadData() {
                 !date ||
                 !Number.isFinite(aScore) ||
                 !Number.isFinite(bScore) ||
-                !(a?.winner === true || b?.winner === true || aScore !== bScore)
+                !(a?.winner === true || b?.winner === true)
               ) {
                 continue;
               }
