@@ -4,7 +4,7 @@ if(window.__rusOfficialBracketShare) return;
 window.__rusOfficialBracketShare=true;
 const ORANGE='#F14D07';
 const FORMATS={
- instagram:{width:1080,height:1350,name:'Instagram Portrait Full Bracket',kind:'full'},
+ instagram:{width:1080,height:1350,name:'Instagram Portrait Full Bracket',kind:'full',layout:'portrait'},
  square:{width:1600,height:1600,name:'Instagram Square Bracket',kind:'full'},
  full:{width:2000,height:1400,name:'Wide Full Bracket',kind:'full'},
  poster:{width:1080,height:1350,name:'Instagram Portrait Matchups',kind:'round'},
@@ -281,24 +281,33 @@ function roundSubtitle(round,type){
 }
 
 function makeFullGraphic(cls,data,images,format=FORMATS.full,forecasts={games:[],overrides:[]}){
- const w=format.width,h=format.height,sc=Math.min(w/1600,h/1500),view=canvas(w,h),c=view.c;
+ const w=format.width,h=format.height,sc=Math.min(w/1600,h/1500),portrait=format.layout==='portrait',view=canvas(w,h),c=view.c;
  const stages=data.rounds.filter(r=>r.games?.length);
  if(stages.length<4)throw Error('Missing official bracket rounds');
  const first=stages[0].games,qf=stages[1].games,sf=stages[2].games,final=stages[3].games;
  if(!first.length||qf.length!==4||sf.length!==2||final.length!==1)throw Error('Unexpected tournament size');
- const pad=w*.035,gap=w*.018,space=w-2*pad-4*gap;
- const widths=[.325,.215,.171,.121,.168].map(r=>space*r),xs=[pad];
- for(let i=1;i<5;i++)xs.push(xs[i-1]+widths[i-1]+gap);
- c.fillStyle=ORANGE;c.fillRect(pad,22*sc,w-2*pad,3*sc);
- fitDraw(c,'RURAL UTAH SPORTS',pad,64*sc,w-2*pad,30*sc,20*sc,'left',ORANGE);
- fitDraw(c,'2026 OFFICIAL FOOTBALL PLAYOFFS',pad,133*sc,w-2*pad,60*sc,36*sc,'left','#fff');
- fitDraw(c,cls+'  |  OFFICIAL PLAYOFF BRACKET',pad,190*sc,w-2*pad,34*sc,23*sc,'left','#ffc09d');
- c.fillStyle='rgba(255,255,255,.28)';c.fillRect(pad,222*sc,w-2*pad,1*sc);
- const top=Math.max(h*.194,272*sc),bottom=h-115*sc,span=bottom-top;
+ const pad=w*.035,gap=w*(portrait?.016:.018),columns=portrait?4:5,space=w-2*pad-(columns-1)*gap;
+ const widths=(portrait?[.30,.23,.20,.27]:[.325,.215,.171,.121,.168]).map(r=>space*r),xs=[pad];
+ for(let i=1;i<columns;i++)xs.push(xs[i-1]+widths[i-1]+gap);
+ if(portrait){
+  c.fillStyle=ORANGE;c.fillRect(pad,22*sc,w-2*pad,3*sc);
+  fitDraw(c,'THE ROAD TO A STATE TITLE',w/2,64*sc,w-2*pad,29*sc,20*sc,'center','#ffc09d');
+  fitDraw(c,'RURAL UTAH SPORTS',pad,111*sc,w-2*pad,30*sc,20*sc,'left',ORANGE);
+  fitDraw(c,'2026 OFFICIAL FOOTBALL PLAYOFFS',pad,169*sc,w-2*pad,56*sc,34*sc,'left','#fff');
+  fitDraw(c,cls+'  |  OFFICIAL PLAYOFF BRACKET',pad,218*sc,w-2*pad,32*sc,22*sc,'left','#ffc09d');
+  c.fillStyle='rgba(255,255,255,.28)';c.fillRect(pad,247*sc,w-2*pad,1*sc);
+ }else{
+  c.fillStyle=ORANGE;c.fillRect(pad,22*sc,w-2*pad,3*sc);
+  fitDraw(c,'RURAL UTAH SPORTS',pad,64*sc,w-2*pad,30*sc,20*sc,'left',ORANGE);
+  fitDraw(c,'2026 OFFICIAL FOOTBALL PLAYOFFS',pad,133*sc,w-2*pad,60*sc,36*sc,'left','#fff');
+  fitDraw(c,cls+'  |  OFFICIAL PLAYOFF BRACKET',pad,190*sc,w-2*pad,34*sc,23*sc,'left','#ffc09d');
+  c.fillStyle='rgba(255,255,255,.28)';c.fillRect(pad,222*sc,w-2*pad,1*sc);
+ }
+ const top=portrait?Math.max(h*.245,490*sc):Math.max(h*.194,272*sc),bottom=h-(portrait?145:115)*sc,span=bottom-top;
  const yQ=[0,1,2,3].map(i=>top+(i+.5)*span/4),yS=[(yQ[0]+yQ[1])/2,(yQ[2]+yQ[3])/2],yF=[(yS[0]+yS[1])/2];
  const yFirst=first.length===8?first.map((_,i)=>top+(i+.5)*span/8):first.length===3?[yQ[0],yQ[2],yQ[3]]:first.length===1?[yQ[0]]:first.map((_,i)=>top+(i+.5)*span/first.length);
- const centers=[yFirst,yQ,yS,yF,yF],groups=[first,qf,sf,final];
- ['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP','CHAMPION'].forEach((name,i)=>{
+ const centers=portrait?[yFirst,yQ,yS,yF]:[yFirst,yQ,yS,yF,yF],groups=portrait?[first,qf,sf,final]:[first,qf,sf,final],stageNames=portrait?['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP']:['FIRST ROUND','QUARTERFINALS','SEMIFINALS','CHAMPIONSHIP','CHAMPION'];
+ stageNames.forEach((name,i)=>{
    fitDraw(c,name,xs[i]+widths[i]/2,top-76*sc,widths[i],22*sc,14*sc,'center',i===4?ORANGE:'#ddd');
    if(i<4){
     const sub=roundSubtitle(stages[i],i);
@@ -313,7 +322,7 @@ function makeFullGraphic(cls,data,images,format=FORMATS.full,forecasts={games:[]
  first.forEach((_,i)=>edges.push([0,i,1,mapped(i)]));
  qf.forEach((_,i)=>edges.push([1,i,2,Math.floor(i/2)]));
  sf.forEach((_,i)=>edges.push([2,i,3,0]));
- edges.push([3,0,4,0]);
+ if(!portrait)edges.push([3,0,4,0]);
  c.strokeStyle=ORANGE;c.lineWidth=3*sc;c.lineJoin='round';
  edges.forEach(([source,i,target,j])=>{
   const y1=centers[source][i],y2=centers[target][j],x1=xs[source]+widths[source],x2=xs[target],mid=(x1+x2)/2;
@@ -321,31 +330,32 @@ function makeFullGraphic(cls,data,images,format=FORMATS.full,forecasts={games:[]
  });
  groups.forEach((games,r)=>games.forEach((g,i)=>drawBracketMatch(c,g,first,images,xs[r],centers[r][i],widths[r],cardH,sc)));
  first.forEach((g,i)=>drawOpeningLine(c,g,forecasts,xs[0],centers[0][i]+cardH/2+17*sc,widths[0],sc));
- if(!compact)drawByes(c,qf,first,xs[0]+9*sc,top+span*.30,widths[0]-18*sc,sc);
- const cX=xs[4],cW=widths[4],cH=Math.max(cardH*.98,110*sc),cY=yF[0]-cH/2;
- rect(c,cX,cY,cW,cH,12*sc);
- c.fillStyle='#2b160f';c.fill();c.strokeStyle=ORANGE;c.lineWidth=3*sc;c.stroke();
- fitDraw(c,'CHAMPION',cX+cW/2,yF[0]-21*sc,cW-20*sc,25*sc,17*sc,'center','#ffb38b');
- c.fillStyle='#b74718';c.fillRect(cX+25*sc,yF[0]-2*sc,cW-50*sc,2*sc);
- fitDraw(c,'TBD',cX+cW/2,yF[0]+26*sc,cW-20*sc,42*sc,28*sc,'center','#fff');
- c.fillStyle='#414141';c.fillRect(pad,h-77*sc,w-2*pad,2*sc);
- fitDraw(c,'UHSAA / MaxPreps  •  No winners selected',pad,h-44*sc,w*.70,18*sc,13*sc,'left','#a7a7a7');
- fitDraw(c,'@ruralutahsports77',w-pad,h-44*sc,w*.28,20*sc,14*sc,'right',ORANGE);
+ if(!compact&&!portrait)drawByes(c,qf,first,xs[0]+9*sc,top+span*.30,widths[0]-18*sc,sc);
+ if(portrait){
+  const cX=xs[3],cW=widths[3],cY=yF[0]+cardH/2+18*sc,cH=76*sc,winner=final[0]?.a?.winner===true?final[0].a:final[0]?.b?.winner===true?final[0].b:null;
+  rect(c,cX,cY,cW,cH,10*sc);c.fillStyle='#2b160f';c.fill();c.strokeStyle=ORANGE;c.lineWidth=2*sc;c.stroke();
+  fitDraw(c,'STATE CHAMPION',cX+cW/2,cY+24*sc,cW-20*sc,20*sc,14*sc,'center','#ffb38b');
+  fitDraw(c,winner?brief(getName(winner)):'TBD',cX+cW/2,cY+52*sc,cW-20*sc,26*sc,18*sc,'center','#fff');
+ }else{
+  const cX=xs[4],cW=widths[4],cH=Math.max(cardH*.98,110*sc),cY=yF[0]-cH/2;
+  rect(c,cX,cY,cW,cH,12*sc);
+  c.fillStyle='#2b160f';c.fill();c.strokeStyle=ORANGE;c.lineWidth=3*sc;c.stroke();
+  fitDraw(c,'CHAMPION',cX+cW/2,yF[0]-21*sc,cW-20*sc,25*sc,17*sc,'center','#ffb38b');
+  c.fillStyle='#b74718';c.fillRect(cX+25*sc,yF[0]-2*sc,cW-50*sc,2*sc);
+  fitDraw(c,'TBD',cX+cW/2,yF[0]+26*sc,cW-20*sc,42*sc,28*sc,'center','#fff');
+ }
+ const footerY=h-(portrait?145:77)*sc;
+ c.fillStyle='#414141';c.fillRect(pad,footerY,w-2*pad,2*sc);
+ fitDraw(c,'UHSAA / MaxPreps  •  No winners selected',pad,footerY+34*sc,w*.70,18*sc,13*sc,'left','#a7a7a7');
+ fitDraw(c,'@ruralutahsports77',w-pad,footerY+34*sc,w*.28,20*sc,14*sc,'right',ORANGE);
  return view.element;
 }
 // Contain the complete connected bracket in a 4:5 carousel frame. Never crop
 // or stretch the source: the first round and champion must both remain visible.
 function makeInstagramGraphic(cls,data,images,forecasts){
- const source=makeFullGraphic(cls,data,images,FORMATS.square,forecasts);
- const {element,c}=canvas(FORMATS.instagram.width,FORMATS.instagram.height);
- const scale=Math.min(element.width/source.width,element.height/source.height);
- const width=source.width*scale,height=source.height*scale;
- const x=(element.width-width)/2,y=(element.height-height)/2;
- c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
- c.drawImage(source,x,y,width,height);
- fitDraw(c,'THE ROAD TO A STATE TITLE',element.width/2,67,element.width-76,27,20,'center','#ffc09d');
- fitDraw(c,'RUS lines / O-U: model projections, not UHSAA information or betting odds.',element.width/2,1282,element.width-76,19,14,'center','#b9bcc2');
- return element;
+ const view=makeFullGraphic(cls,data,images,FORMATS.instagram,forecasts),c=view.getContext('2d');
+ fitDraw(c,'RUS lines / O-U: model projections, not UHSAA information or betting odds.',view.width/2,view.height-27,view.width-76,19,14,'center','#b9bcc2');
+ return view;
 }
 function closePopup(el){el?.remove()}
 function popup(html){
