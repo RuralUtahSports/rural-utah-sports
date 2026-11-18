@@ -181,7 +181,14 @@ function drawBracketSlot(c,team,opening,images,x,y,w,h,sc){
  }
  const seed=team?.seed?'#'+team.seed:'',tx=x+17*sc,mid=y+h/2;
  if(seed)fitDraw(c,seed,tx,mid,47*sc,21*sc,14*sc,'left','#ffb98d');
- const textX=tx+(seed?52*sc:0),room=Math.max(25,x+w-textX-(img?size+25*sc:14*sc));
+ const hasScore=team?.score!==null&&team?.score!==undefined&&String(team.score).trim()!==''&&Number.isFinite(Number(team.score));
+ const logoLeft=img?x+w-size-12*sc:x+w,scoreW=hasScore?44*sc:0,scoreRight=img?logoLeft-8*sc:x+w-10*sc,scoreX=scoreRight-scoreW;
+ if(hasScore){
+  rect(c,scoreX,y+h*.19,scoreW,h*.62,6*sc);
+  c.fillStyle=team?.winner===true?'#185b34':team?.winner===false?'#36383c':'#24282d';c.fill();
+  fitDraw(c,String(team.score),scoreRight-5*sc,mid,scoreW-8*sc,22*sc,15*sc,'right',team?.winner===true?'#c6ffd5':'#f1f1f1');
+ }
+ const textX=tx+(seed?52*sc:0),contentRight=hasScore?scoreX-7*sc:(img?logoLeft-12*sc:x+w-14*sc),room=Math.max(25,contentRight-textX);
  fitDraw(c,bracketSlotLabel(team,opening),textX,mid,room,(h>70*sc?27:23)*sc,15*sc,'left',real?'#fff':'#c7c9ce');
 }
 function drawBracketMatch(c,g,opening,images,x,yCenter,w,h,sc){
