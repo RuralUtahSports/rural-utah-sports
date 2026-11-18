@@ -892,11 +892,13 @@ async function loadData() {
       const [
         standingsResponse,
         rpiResponse,
-        oosResponse
+        oosResponse,
+        bracketResponse
       ] = await Promise.all([
         fetch("standings-2026.json?v=" + stamp, { cache: "no-store" }),
         fetch("rpi-standings-2026.json?v=" + stamp, { cache: "no-store" }),
-        fetch("rpi-oos-2026.json?v=" + stamp, { cache: "no-store" })
+        fetch("rpi-oos-2026.json?v=" + stamp, { cache: "no-store" }),
+        fetch("official-brackets-2026.json?v=" + stamp, { cache: "no-store" })
       ]);
 
 
@@ -925,6 +927,115 @@ async function loadData() {
           Object.values(
             rpi.classifications || {}
           ).flat();
+
+
+        const bracketData =
+          bracketResponse.ok
+            ? await bracketResponse.json()
+            : { classifications: {} };
+
+
+        const dateKey =
+          value => {
+            const text = String(value ?? "").trim();
+            let match = text.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})$/);
+            if (match) {
+              return match[1] + "-" + match[2].padStart(2, "0") + "-" + match[3].padStart(2, "0");
+            }
+            match = text.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$/);
+            if (match) {
+              return match[3] + "-" + match[1].padStart(2, "0") + "-" + match[2].padStart(2, "0");
+            }
+            match = text.match(/^([A-Za-z]{3})\\s+(\\d{1,2}),?\\s+(\\d{4})$/);
+            const months = { JAN: "01", FEB: "02", MAR: "03", APR: "04", MAY: "05", JUN: "06", JUL: "07", AUG: "08", SEP: "09", OCT: "10", NOV: "11", DEC: "12" };
+            if (match && months[match[1].toUpperCase()]) {
+              return match[3] + "-" + months[match[1].toUpperCase()] + "-" + match[2].padStart(2, "0");
+            }
+            return text;
+          };
+
+
+        const playedGameKeys =
+          new Set(
+            (standings.games || []).map(
+              game =>
+                [
+                  dateKey(game.date),
+                  [
+                    normalizeTeamName(game.awayTeam),
+                    normalizeTeamName(game.homeTeam)
+                  ].sort().join("|")
+                ].join("|")
+            )
+          );
+
+
+        const playoffTotals = new Map();
+
+
+        for (const classification of Object.values(bracketData.classifications || {})) {
+          for (const round of classification.rounds || []) {
+            for (const game of round.games || []) {
+              const a = game?.a;
+              const b = game?.b;
+              const aName = String(a?.name || "").trim();
+              const bName = String(b?.name || "").trim();
+              const aScore = Number(a?.score);
+              const bScore = Number(b?.score);
+              const date = dateKey(game?.date);
+
+              if (
+                !aName ||
+                !bName ||
+                !date ||
+                !Number.isFinite(aScore) ||
+                !Number.isFinite(bScore) ||
+                !(a?.winner === true || b?.winner === true || aScore !== bScore)
+              ) {
+                continue;
+              }
+
+
+              const gameKey = [
+                date,
+                [
+                  normalizeTeamName(aName),
+                  normalizeTeamName(bName)
+                ].sort().join("|")
+              ].join("|");
+
+
+              if (playedGameKeys.has(gameKey)) {
+                continue;
+              }
+              playedGameKeys.add(gameKey);
+
+
+              const aResult =
+                aScore > bScore ? "W" : aScore < bScore ? "L" : "T";
+              const bResult =
+                aResult === "W" ? "L" : aResult === "L" ? "W" : "T";
+
+
+              for (const [name, result, pointsFor, pointsAgainst] of [
+                [aName, aResult, aScore, bScore],
+                [bName, bResult, bScore, aScore]
+              ]) {
+                const key = normalizeTeamName(name);
+                const totals = playoffTotals.get(key) || {
+                  wins: 0, losses: 0, ties: 0,
+                  pointsFor: 0, pointsAgainst: 0
+                };
+                if (result === "W") totals.wins++;
+                else if (result === "L") totals.losses++;
+                else totals.ties++;
+                totals.pointsFor += pointsFor;
+                totals.pointsAgainst += pointsAgainst;
+                playoffTotals.set(key, totals);
+              }
+            }
+          }
+        }
 
 
         const recordMap =
@@ -1186,20 +1297,29 @@ async function loadData() {
             .map(
               current => {
 
+                const playoff =
+                  playoffTotals.get(
+                    normalizeTeamName(current.team)
+                  ) || {
+                    wins: 0, losses: 0, ties: 0,
+                    pointsFor: 0, pointsAgainst: 0
+                  };
+
+
                 const wins =
                   Number(
                     current.wins || 0
-                  );
+                  ) + playoff.wins;
 
                 const losses =
                   Number(
                     current.losses || 0
-                  );
+                  ) + playoff.losses;
 
                 const ties =
                   Number(
                     current.ties || 0
-                  );
+                  ) + playoff.ties;
 
                 const games =
                   wins +
@@ -1217,12 +1337,12 @@ async function loadData() {
                 const pointsFor =
                   Number(
                     current.pointsFor || 0
-                  );
+                  ) + playoff.pointsFor;
 
                 const pointsAgainst =
                   Number(
                     current.pointsAgainst || 0
-                  );
+                  ) + playoff.pointsAgainst;
 
                 const winPct =
                   (
