@@ -14,8 +14,17 @@ async function check(page, origin) {
   await row.scrollIntoViewIfNeeded();
   const markup = await row.evaluate(tr => tr.outerHTML);
   assert.equal(await row.locator('td').count(), 12, markup);
-  assert.equal(await row.locator('td').nth(1).innerText(), '3A', markup);
-  assert.equal(await row.locator('td').nth(2).innerText(), 'Region 2', markup);
+  const classCell = row.locator('td').nth(1);
+  await classCell.scrollIntoViewIfNeeded();
+  const cellLayout = await classCell.evaluate(td => {
+    const range = document.createRange();
+    range.selectNodeContents(td);
+    const bounds = range.getBoundingClientRect();
+    return {width: bounds.width, height: bounds.height, visibility: getComputedStyle(td).visibility};
+  });
+  assert(cellLayout.width > 0 && cellLayout.height > 0 && cellLayout.visibility === 'visible', JSON.stringify(cellLayout));
+  assert.equal(await classCell.textContent(), '3A', markup);
+  assert.equal(await row.locator('td').nth(2).textContent(), 'Region 2', markup);
   assert.equal(await row.locator('a').getAttribute('href'), 'https://utah-football.com/s/1971/3areg2.htm');
   const layout = await row.evaluate(tr => {
     const wrap = tr.closest('.history-wrap');
@@ -25,7 +34,7 @@ async function check(page, origin) {
   assert(layout.scrolled > 0 && layout.width <= 390 && layout.viewport === 390, JSON.stringify(layout));
   assert(await page.locator('.rus-alignment-subtitle').count() > 0);
   await page.locator('#historyYearFilter').selectOption('1972');
-  assert.match(await row.innerText(), /4A\s+Region 3/);
+  assert.deepEqual(await row.locator('td').allTextContents().then(cells => cells.slice(1, 3)), ['4A', 'Region 3']);
 
   await page.goto(origin + '/teams.html');
   await page.locator('#historicalTeams summary').click();
