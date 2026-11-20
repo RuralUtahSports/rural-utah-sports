@@ -63,7 +63,47 @@
 
   function matchup(a,sa,b,sb,note='',wonA=false,wonB=false) {
     const side = (team,score,won) => `<div class="side${won?' winner':''}"><span>${esc(team || 'TBD')}</span><span>${esc(score)}</span></div>`;
-    return '<div class="game">'+side(a,sa,wonA)+side(b,sb,wonB)+(note?'<small>'+esc(note)+'</small>':'')+'</div>';
+    const key = name => {
+      const value = String(name || '').replace(/^#\d+\s*/, '').trim();
+      return !value || /^(bye|tbd|winner|loser)\b/i.test(value) ? '' : window.RUSPlayoff2026.key(value);
+    };
+    const teams = [key(a),key(b)];
+    const bye = /^(bye)$/i;
+    const winner = wonA || bye.test(b) ? teams[0] : wonB || bye.test(a) ? teams[1] : '';
+    return {teams,winner,feeders:[],html:side(a,sa,wonA)+side(b,sb,wonB)+(note?'<small>'+esc(note)+'</small>':'')};
+  }
+
+  function drawBracket(rounds,classification) {
+    // Work back from each destination. Sparse historical rounds and byes can have fewer than two feeders.
+    for (let r=1;r<rounds.length;r++) {
+      for (const game of rounds[r][1]) {
+        for (const team of game.teams.filter(Boolean)) {
+          const feeders = rounds[r-1][1].filter(g=>!g.next && (g.winner ? g.winner===team : g.teams.includes(team)));
+          if (feeders.length!==1) continue;
+          const feeder=feeders[0];
+          feeder.next=game;
+          game.feeders.push(feeder);
+        }
+      }
+    }
+    let slots=0;
+    function place(game) {
+      if (!game.feeders.length) game.center=slots++ + 0.5;
+      else {
+        game.feeders.forEach(place);
+        game.center=(game.feeders[0].center+game.feeders.at(-1).center)/2;
+      }
+    }
+    for (const [,games] of rounds.slice().reverse()) games.filter(g=>!g.next).forEach(place);
+    const columns=rounds.map(([name,games],i)=>{
+      const cards=games.slice().sort((a,b)=>a.center-b.center).map(g=>{
+        const delta=g.next ? g.next.center-g.center : 0;
+        const wire=g.next ? `<i aria-hidden="true" class="recap-wire" style="--rise:${Math.min(0,delta)};--span:${Math.abs(delta)}"></i>` : '';
+        return `<div class="recap-position" style="--center:${g.center}">${wire}<div class="recap-game${g.feeders.length?' has-feeders':''}">${g.html}</div></div>`;
+      }).join('');
+      return `<section class="recap-round" style="--col:${i+1}"><h4>${esc(name)}</h4><div class="recap-lane">${cards}</div></section>`;
+    }).join('');
+    return `<div class="bracket-scroll" tabindex="0" role="region" aria-label="${esc(classification)} playoff bracket"><div class="rounds" style="--count:${rounds.length};--slots:${Math.max(1,slots)}">${columns}</div></div>`;
   }
   async function playoffs() {
     let classes;
@@ -91,10 +131,9 @@
       }
     }
     const sections = Object.keys(classes).sort(byClass).map((c,i)=>{
-      const rounds = classes[c].slice().reverse().map(([r,games])=>'<section><h4>'+esc(r)+'</h4>'+games.join('')+'</section>').join('');
-      return `<details${i===0?' open':''}><summary>${esc(c)} playoffs</summary><div class="rounds">${rounds}</div></details>`;
+      return `<details${i===0?' open':''}><summary>${esc(c)} playoffs</summary>${drawBracket(classes[c],c)}</details>`;
     });
-    return '<p class="note">'+(year==='2026'?'Final scores and upcoming games from the current playoff brackets.':'Archived rounds are shown with the championship first. Earlier rounds are missing for some seasons.')+'</p>'+sections.join('');
+    return '<p class="note">'+(year==='2026'?'Final scores and upcoming games from the current playoff brackets.':'Earlier rounds are missing for some seasons.')+'</p>'+sections.join('');
   }
   for (const [id,fn] of [['recapStandings',standings],['recapPlayoffs',playoffs]]) {
     fn().then(html=>{$(id).innerHTML=html;}).catch(()=>{$(id).textContent='Unable to load this section. Refresh to try again.';});

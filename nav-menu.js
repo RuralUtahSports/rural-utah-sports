@@ -66,6 +66,7 @@
       ["Football Teams", "teams.html"],
     ],
     history: [
+      ["Season Recaps", "season-recap.html"],
       ["Championships", "championships.html"],
       ["Season Explorer", "season.html"],
       ["Past Season Rankings", "historical-rankings.html"],
@@ -495,7 +496,6 @@
         dropdown("Scoreboard", "scoreboard"),
         dropdown("Rankings", "rankings"),
         link("Standings", "standings.html"),
-        link("Season Recaps", "season-recap.html"),
         link("Playoff Pick’em", "playoff-pickem.html"),
         link("Pick'em", "simulators.html?tab=weekly"),
         dropdown("Stats", "stats"),
