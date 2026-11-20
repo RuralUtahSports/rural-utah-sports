@@ -25,7 +25,16 @@ async function check(page, origin) {
   assert(cellLayout.width > 0 && cellLayout.height > 0 && cellLayout.visibility === 'visible', JSON.stringify(cellLayout));
   assert.equal(await classCell.textContent(), '3A', markup);
   assert.equal(await row.locator('td').nth(2).textContent(), 'Region 2', markup);
-  assert.equal(await row.locator('a').getAttribute('href'), 'https://utah-football.com/s/1971/3areg2.htm');
+  const originalUrl = page.url();
+  await row.getByRole('button', {name: 'View 1971 season'}).click();
+  const dialog = page.getByRole('dialog');
+  await dialog.getByRole('cell', {name: 'EAST', exact: true}).waitFor();
+  assert.equal(await dialog.locator('tbody tr').count(), 11);
+  assert.deepEqual(await dialog.locator('.selected-school td').allTextContents(), ['EAST','7-3-0','7-3-0']);
+  assert.match(await dialog.innerText(), /3A · Region 2/);
+  assert.equal(page.url(), originalUrl);
+  assert(await dialog.evaluate(el => el.scrollWidth <= el.clientWidth + 1));
+  await dialog.getByRole('button', {name:'Close'}).click();
   const layout = await row.evaluate(tr => {
     const wrap = tr.closest('.history-wrap');
     wrap.scrollLeft = wrap.scrollWidth;
@@ -40,13 +49,13 @@ async function check(page, origin) {
   await page.locator('#historicalTeams summary').click();
   await page.getByRole('link', {name: 'Granite', exact: true}).click();
   await page.getByRole('heading', {name: 'Seasons', exact: true}).waitFor();
-  const older = page.getByRole('link', {name: '1945 ↗', exact: true});
-  assert.match(await older.locator('..').locator('..').innerText(), /Class A/);
-  const bracketUrl = await older.getAttribute('href');
-  await page.goto(new URL(bracketUrl, page.url()).href);
-  await page.locator('#bracketGrid .bracket-round').first().waitFor();
-  assert.equal(await page.locator('#bracketYear').inputValue(), '1945');
-  assert.match(await page.locator('#bracketGrid').innerText(), /Granite/i);
+  await page.getByRole('button', {name: 'View 1945 season'}).click();
+  await dialog.getByRole('cell', {name: 'Granite', exact:true}).waitFor();
+  assert.match(await dialog.innerText(), /Class A/);
+  assert.match(await dialog.innerText(), /Region unverified/);
+  assert.equal(await dialog.locator('a').count(), 0);
+  await page.keyboard.press('Escape');
+  assert.equal(await dialog.count(), 0);
 }
 
 (async () => {
