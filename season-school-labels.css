@@ -1,0 +1,13 @@
+/* Used on recap standings, playoff cards and the team Seasons panel. */
+.region a.rus-school-label,.recap-game .rus-school-label,.season-sheet .rus-school-label {
+  display:inline-block;
+  max-width:100%;
+  min-width:0;
+  padding:1px 6px;
+  border-left:3px solid var(--school-edge);
+  border-radius:3px;
+  background:var(--school-fill);
+  color:var(--school-ink);
+  overflow-wrap:anywhere;
+}
+.region a.rus-school-label:focus-visible {outline:2px solid white;outline-offset:2px}

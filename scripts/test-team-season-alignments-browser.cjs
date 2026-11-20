@@ -72,6 +72,38 @@ async function check(page, origin) {
   await page.locator('#recapPlayoffs details summary').first().waitFor();
   await page.locator('.region tbody tr').first().waitFor();
   assert(await page.locator('#recapPlayoffs details').count() >= 7);
+  const nav = page.locator('nav .rus-nav');
+  assert.equal(await nav.locator(':scope > a[href="season-recap.html"]').count(),0);
+  const history = nav.locator('details').filter({has:page.locator('summary').filter({hasText:'History'})});
+  assert.equal(await history.locator('a[href="season-recap.html"]').count(),1);
+  const bracket = page.locator('#recapPlayoffs details').first();
+  assert.match(await bracket.locator('summary').innerText(),/6A/);
+  const headings = await bracket.locator('h4').allTextContents();
+  assert.match(headings[0], /First Round/);
+  assert.match(headings.at(-1), /Championship/);
+  assert.equal(await bracket.locator('.recap-wire').count(),14);
+  const championSlot = bracket.locator('.recap-round').last();
+  const skyridge = championSlot.locator('.rus-school-label',{hasText:'Skyridge'});
+  const canyon = championSlot.locator('.rus-school-label',{hasText:'Corner Canyon'});
+  const ink = el=>getComputedStyle(el).color;
+  assert.equal(await skyridge.evaluate(ink),'rgb(204, 204, 204)');
+  assert.equal(await canyon.evaluate(ink),'rgb(176, 186, 202)');
+  const listed = page.locator('.region a.rus-school-label',{hasText:'Skyridge'}).first();
+  assert.equal(await listed.evaluate(ink),await skyridge.evaluate(ink));
+  for (const width of [390,1100]) {
+    await page.setViewportSize({width,height:844});
+    const metrics = await bracket.evaluate(el => {
+      const scroll = el.querySelector('.bracket-scroll');
+      const columns = [...el.querySelectorAll('.recap-lane')];
+      const center = (col,index) => columns[col].children[index].getBoundingClientRect().top;
+      return {centred:Math.abs(center(3,0)-(center(2,0)+center(2,1))/2)<2,
+        pageFits:document.documentElement.scrollWidth<=window.innerWidth+1,
+        scrolls:scroll.scrollWidth>scroll.clientWidth};
+    });
+    assert(metrics.centred && metrics.pageFits,JSON.stringify(metrics));
+    if(width===390) assert(metrics.scrolls);
+  }
+
 }
 
 (async () => {
