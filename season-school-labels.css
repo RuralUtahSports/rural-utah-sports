@@ -10,4 +10,10 @@
   color:var(--school-ink);
   overflow-wrap:anywhere;
 }
+/* Include historical schools that have no color palette. */
+.region tbody td:first-child a,
+.recap-game .side > span:first-child,
+.season-sheet tbody td:first-child > span {
+  font-weight:800;
+}
 .region a.rus-school-label:focus-visible {outline:2px solid white;outline-offset:2px}

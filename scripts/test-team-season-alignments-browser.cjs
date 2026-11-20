@@ -90,6 +90,10 @@ async function check(page, origin) {
   assert.equal(await canyon.evaluate(ink),'rgb(176, 186, 202)');
   const listed = page.locator('.region a.rus-school-label',{hasText:'Skyridge'}).first();
   assert.equal(await listed.evaluate(ink),await skyridge.evaluate(ink));
+  const weight = el=>Number(getComputedStyle(el).fontWeight);
+  assert(await listed.evaluate(weight)>=800);
+  assert(await skyridge.evaluate(weight)>=800);
+  assert(await listed.locator('xpath=ancestor::tr/td[last()]').evaluate(weight)<800);
   for (const width of [390,1100]) {
     await page.setViewportSize({width,height:844});
     const metrics = await bracket.evaluate(el => {
