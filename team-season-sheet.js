@@ -29,7 +29,7 @@
     const rows = members.map(([id]) => {
       const [overall, group, source] = records[id] || [];
       const name = programDetails[id]?.team || archive[id]?.name || id;
-      return {id,name,overall,group,mark:source === 'opponents' ? '*' : '',swatch:color(programDetails[id]?.backgroundColor,'#737373')};
+      return {id,name,overall,group,mark:source === 'opponents' ? '*' : '',team:programDetails[id]};
     });
     rows.sort((a,b) => (isLeague ? ratio(b.group)-ratio(a.group) : 0) || ratio(b.overall)-ratio(a.overall) || a.name.localeCompare(b.name));
     const groupTitle = year === '2026' ? 'Region' : 'Vs. region';
@@ -39,7 +39,7 @@
     const partial = rows.some(r => r.mark) ? '* Recorded games from opponents’ RUS schedules. Additional games may be missing.' : '';
     const coverage = !alignment.region ? 'Region unverified. Showing known teams in this classification.' : '';
     body.innerHTML = `<table><thead><tr><th scope="col">School</th>${isLeague ? '<th scope="col">'+groupTitle+'</th>' : ''}<th scope="col">Overall</th></tr></thead><tbody>${rows.map(r =>
-      `<tr${r.id === selected ? ' class="selected-school"' : ''}><td><span aria-hidden="true" class="school-swatch" style="background:${r.swatch}"></span>${escapeHTML(r.name)}</td>${isLeague ? '<td>'+(r.group ? r.group+r.mark : '—')+'</td>' : ''}<td>${r.overall ? r.overall+r.mark : '—'}</td></tr>`
+      `<tr${r.id === selected ? ' class="selected-school"' : ''}><td><span${window.RUSSeasonData.labelStyle(r.team)}>${escapeHTML(r.name)}</span></td>${isLeague ? '<td>'+(r.group ? r.group+r.mark : '—')+'</td>' : ''}<td>${r.overall ? r.overall+r.mark : '—'}</td></tr>`
     ).join('')}</tbody></table><small>${[coverage,note,partial,status].filter(Boolean).join(' ')}</small>`;
   });
 })();

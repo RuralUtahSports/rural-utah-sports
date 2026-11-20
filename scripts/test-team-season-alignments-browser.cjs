@@ -82,6 +82,14 @@ async function check(page, origin) {
   assert.match(headings[0], /First Round/);
   assert.match(headings.at(-1), /Championship/);
   assert.equal(await bracket.locator('.recap-wire').count(),14);
+  const championSlot = bracket.locator('.recap-round').last();
+  const skyridge = championSlot.locator('.rus-school-label',{hasText:'Skyridge'});
+  const canyon = championSlot.locator('.rus-school-label',{hasText:'Corner Canyon'});
+  const ink = el=>getComputedStyle(el).color;
+  assert.equal(await skyridge.evaluate(ink),'rgb(204, 204, 204)');
+  assert.equal(await canyon.evaluate(ink),'rgb(176, 186, 202)');
+  const listed = page.locator('.region a.rus-school-label',{hasText:'Skyridge'}).first();
+  assert.equal(await listed.evaluate(ink),await skyridge.evaluate(ink));
   for (const width of [390,1100]) {
     await page.setViewportSize({width,height:844});
     const metrics = await bracket.evaluate(el => {
