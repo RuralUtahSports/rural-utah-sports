@@ -11,9 +11,11 @@ async function check(page, origin) {
   await page.locator('.rus-team-tab[data-tab="seasons"]').click();
   await page.locator('#historyYearFilter').selectOption('1971');
   const row = page.locator('#historyBody tr');
-  assert.equal(await row.locator('td').count(), 12);
-  assert.equal(await row.locator('td').nth(1).innerText(), '3A');
-  assert.equal(await row.locator('td').nth(2).innerText(), 'Region 2');
+  await row.scrollIntoViewIfNeeded();
+  const markup = await row.evaluate(tr => tr.outerHTML);
+  assert.equal(await row.locator('td').count(), 12, markup);
+  assert.equal(await row.locator('td').nth(1).innerText(), '3A', markup);
+  assert.equal(await row.locator('td').nth(2).innerText(), 'Region 2', markup);
   assert.equal(await row.locator('a').getAttribute('href'), 'https://utah-football.com/s/1971/3areg2.htm');
   const layout = await row.evaluate(tr => {
     const wrap = tr.closest('.history-wrap');
