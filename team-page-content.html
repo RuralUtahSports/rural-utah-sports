@@ -23,7 +23,9 @@ nav{background:#000;border-bottom:1px solid #333}.nav-content{max-width:1400px;m
 .elo-chart-box{position:relative;background:#000;border:1px solid #333;border-radius:7px;padding:12px;margin-bottom:12px;overflow:hidden}.elo-chart-box svg{display:block;width:100%;height:auto;min-height:230px}.elo-grid{stroke:#333;stroke-width:1}.elo-axis-text{fill:#888;font-size:12px}.elo-line{fill:none;stroke:#F14D07;stroke-width:4;stroke-linejoin:round;stroke-linecap:round}.elo-baseline{stroke:#666;stroke-width:1;stroke-dasharray:7 6}.elo-hover-line{stroke:#aaa;stroke-width:1;stroke-dasharray:4 4;pointer-events:none}.elo-hover-point{fill:#fff;stroke:#F14D07;stroke-width:4;pointer-events:none}.elo-hover-area{fill:transparent;cursor:crosshair}.elo-tooltip{position:absolute;display:none;z-index:10;pointer-events:none;min-width:165px;max-width:240px;background:#161616;border:1px solid #F14D07;border-radius:6px;padding:9px 11px;box-shadow:0 6px 18px rgba(0,0,0,.45);font-size:12px;line-height:1.4;color:#fff}.elo-tooltip strong{display:block;color:#F14D07;font-size:15px;margin-bottom:2px}.elo-tooltip-meta{color:#aaa;margin-top:2px}.elo-empty{padding:50px 15px;text-align:center;color:#999}.note{color:#888;font-size:13px;margin-top:10px;line-height:1.45}.loading,.error{text-align:center;padding:60px;color:#999}
 footer{background:#000;border-top:4px solid #F14D07;text-align:center;padding:30px 20px;color:#888}footer strong{color:#F14D07}
 @media(max-width:1000px){.record-grid{grid-template-columns:1fr}.data-summary{grid-template-columns:repeat(3,1fr)}}@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.achievement-grid{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:repeat(2,1fr)}.single-game-controls{grid-template-columns:1fr 1fr}.single-game-controls .control-group:first-child{grid-column:1/-1}}@media(max-width:600px){.header-content{flex-direction:column;text-align:center}.site-title h1{font-size:24px}nav a{flex:1 1 50%;text-align:center;padding:13px 8px}.container{padding:25px 12px 45px}.team-title{font-size:32px}.stats{grid-template-columns:repeat(2,1fr)}.achievement-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}.history-controls{align-items:stretch;flex-direction:column}.history-controls select{width:100%}.history-count{padding:0}.history-wrap{max-height:72vh}.record-wrap{max-height:65vh}.data-summary{grid-template-columns:repeat(2,1fr)}.single-game-explorer{padding:14px}.single-game-records,.single-game-controls{grid-template-columns:1fr}.single-game-controls .control-group:first-child{grid-column:auto}.single-game-status{align-items:flex-start;flex-direction:column}.single-game-wrap{max-height:72vh}}
-.rus-season-standings-link{color:#F14D07;text-decoration:none;font-weight:900;white-space:nowrap}.rus-season-standings-link:hover,.rus-season-standings-link:focus{text-decoration:underline}.rus-alignment-subtitle{display:block;color:#999;font-size:10px;line-height:1.4;margin-top:4px;font-weight:700;white-space:nowrap}.season-alignment-table thead th:nth-child(2),.season-alignment-table thead th:nth-child(3){min-width:90px}
+.rus-season-button{border:0;border-bottom:1px dotted #f58251;background:transparent;color:#ff884f;font:inherit;font-weight:900;cursor:pointer;padding:6px 2px}.rus-season-button:focus-visible,.season-sheet button:focus-visible{outline:2px solid white;outline-offset:3px}
+.season-sheet{position:fixed;inset:0;box-sizing:border-box;margin:auto;width:min(540px,calc(100% - 24px));max-height:82vh;max-height:82dvh;overflow:auto;border:1px solid #444;border-top:4px solid #f14d07;border-radius:10px;background:#141414;color:white;padding:18px;box-shadow:0 16px 56px #000c}.season-sheet::backdrop{background:#000b}.season-sheet header{border:0;background:transparent;padding:0;display:flex;align-items:start;justify-content:space-between;gap:10px}.season-sheet h2{color:#fff;font-size:24px;margin:0}.season-sheet header button{padding:9px 13px;background:#222;border:1px solid #666;border-radius:6px;color:white;cursor:pointer}.season-sheet .season-context{font-weight:700;color:#ff8a55;margin:5px 0 15px}.season-sheet table{width:100%;min-width:0;border-collapse:collapse}.season-sheet th,.season-sheet td{font-size:14px;white-space:normal;padding:9px 5px;text-align:right}.season-sheet th:first-child,.season-sheet td:first-child{text-align:left}.season-sheet td:first-child{overflow-wrap:anywhere}.season-sheet td:not(:first-child){white-space:nowrap;font-variant-numeric:tabular-nums}.season-sheet .selected-school{background:#382317}.season-sheet .selected-school td:first-child{box-shadow:inset 3px 0 #f14d07;padding-left:9px}.season-sheet .school-swatch{display:inline-block;width:8px;height:8px;margin-right:7px;border:1px solid #aaa;border-radius:50%}.season-sheet small{display:block;margin:12px 0 0;color:#bbb;line-height:1.5}
+.rus-alignment-subtitle{display:block;color:#999;font-size:10px;line-height:1.4;margin-top:4px;font-weight:700;white-space:nowrap}.season-alignment-table thead th:nth-child(2),.season-alignment-table thead th:nth-child(3){min-width:90px}
 /* Keep the selected season measurable inside its horizontal scroller on iOS. */
 #page .history-wrap:has(.season-alignment-table){content-visibility:visible}
 </style>
@@ -50,6 +52,9 @@ html{-webkit-text-size-adjust:100%}button,a,select,input{touch-action:manipulati
 <header><div class="header-content"><img src="RUSlogoNew.png" alt="Rural Utah Sports" class="logo"><div class="site-title"><h1>Rural Utah Sports</h1><p>Utah High School Sports History &amp; Data</p></div></div></header>
 <nav><div class="nav-content"><a href="index.html">Home</a><a href="teams.html" class="active">Teams</a><a href="greatest-seasons.html">Greatest Seasons</a><a href="championships.html">Championships</a><a href="records.html">Records</a><a href="scorigami.html">Scorigami</a><a href="games.html">Games</a><a href="out-of-state.html">Out of State</a><a href="elo.html">ELO</a><a href="rankings.html">Rankings</a><a href="standings.html">Standings</a><a href="simulators.html">Simulators</a></div></nav>
 <main class="container"><div id="page"><div class="loading">Loading team...</div></div></main>
+<dialog class="season-sheet" id="seasonSheet" aria-labelledby="seasonSheetTitle">
+<header><h2 id="seasonSheetTitle"></h2><button type="button" onclick="this.closest('dialog').close()">Close</button></header>
+<p class="season-context" id="seasonSheetContext"></p><div id="seasonSheetBody" aria-live="polite"></div></dialog>
 <footer><p><strong>RURAL UTAH SPORTS</strong></p><p>Utah High School Sports History &amp; Data</p></footer>
 <script>
 function clean(v){return String(v??'').trim()}
@@ -70,10 +75,13 @@ function playoffRecordSummary(schedules){let wins=0,losses=0,ties=0;for(const ga
 function teamURL(name){return `team.html?team=${encodeURIComponent(name)}`}
 let currentHistory=[];let currentYearAlignments={};let currentSchedules={};let currentElo=[];let currentBreakdown={decades:{},opponents:{}};const singleGamePageSize=50;let singleGameVisible=singleGamePageSize;
 
+let allAlignments = {};
+let programDetails = {};
 async function loadAlignmentBook() {
   try {
     const response = await fetch('team-season-alignments.json?v=20261120-archive2');
-    return response.ok ? await response.json() : {};
+    allAlignments = response.ok ? await response.json() : {};
+    return allAlignments;
   } catch {
     return {};
   }
@@ -92,7 +100,7 @@ async function showHistoricalProgram(id, book) {
   document.getElementById('page').innerHTML = `<a class="back" href="teams.html">← Teams</a><h1 class="team-title">${escapeHTML(program.name)}</h1><h2 class="section-title">Seasons</h2><div class="history-wrap table-scroll"><table class="season-alignment-table"><thead><tr><th>Year</th><th>Class</th><th>Region</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-async function load(){try{const stamp=Date.now(),requested=paramsTeam(),requestedSlug=({"monument-val":"monument-valley"}[teamSlug(requested)]||teamSlug(requested));const alignmentPromise=loadAlignmentBook();const historyPromise=fetch(`team-page-data/${requestedSlug}.json?v=${stamp}`).catch(()=>null);const [teamResponse,recordResponse,optimisticHistory]=await Promise.all([fetch('teams-data.json?v='+stamp),fetch('team-records.json?v='+stamp),historyPromise]);if(!teamResponse.ok)throw new Error('Unable to load team data');if(!recordResponse.ok)throw new Error('Unable to load record book data');const teams=await teamResponse.json(),records=await recordResponse.json(),wanted=normalize(requested),team=teams.find(t=>normalize(t.team)===wanted);if(!team){await showHistoricalProgram(wanted,await alignmentPromise);return}const canonicalSlug=({"monument-val":"monument-valley"}[teamSlug(team.team)]||teamSlug(team.team));let pageDataResponse=optimisticHistory;if(!pageDataResponse?.ok||canonicalSlug!==requestedSlug)pageDataResponse=await fetch(`team-page-data/${canonicalSlug}.json?v=${stamp}`);if(!pageDataResponse.ok)throw new Error('Unable to load team history data');const pageData=await pageDataResponse.json();try{const playoffPayload=await window.RUSPlayoff2026?.load();if(playoffPayload)window.RUSPlayoff2026.mergeHistory(pageData,team.team,playoffPayload)}catch(e){console.warn('Playoff 2026 schedule sync:',e)}const aliases={"GUNNISON VALLEY":"GUNNISON","MAPLE MOUNTAIN":"MAPLE MTN","MONUMENT VALLEY":"MONUMENT VAL"};const recordKey=team.team in records?team.team:(aliases[team.team]||team.team);const alignmentBook=await alignmentPromise;currentYearAlignments=alignmentBook[normalize(team.team)]||{};render(team,records[recordKey]||null,pageData)}catch(e){console.error(e);document.getElementById('page').innerHTML='<div class="error">Team information could not be loaded.<br><br><a class="back" href="teams.html">← Back to Teams</a></div>'}}
+async function load(){try{const stamp=Date.now(),requested=paramsTeam(),requestedSlug=({"monument-val":"monument-valley"}[teamSlug(requested)]||teamSlug(requested));const alignmentPromise=loadAlignmentBook();const historyPromise=fetch(`team-page-data/${requestedSlug}.json?v=${stamp}`).catch(()=>null);const [teamResponse,recordResponse,optimisticHistory]=await Promise.all([fetch('teams-data.json?v='+stamp),fetch('team-records.json?v='+stamp),historyPromise]);if(!teamResponse.ok)throw new Error('Unable to load team data');if(!recordResponse.ok)throw new Error('Unable to load record book data');const teams=await teamResponse.json();programDetails=Object.fromEntries(teams.map(t=>[normalize(t.team),t]));const records=await recordResponse.json(),wanted=normalize(requested),team=teams.find(t=>normalize(t.team)===wanted);if(!team){await showHistoricalProgram(wanted,await alignmentPromise);return}const canonicalSlug=({"monument-val":"monument-valley"}[teamSlug(team.team)]||teamSlug(team.team));let pageDataResponse=optimisticHistory;if(!pageDataResponse?.ok||canonicalSlug!==requestedSlug)pageDataResponse=await fetch(`team-page-data/${canonicalSlug}.json?v=${stamp}`);if(!pageDataResponse.ok)throw new Error('Unable to load team history data');const pageData=await pageDataResponse.json();try{const playoffPayload=await window.RUSPlayoff2026?.load();if(playoffPayload)window.RUSPlayoff2026.mergeHistory(pageData,team.team,playoffPayload)}catch(e){console.warn('Playoff 2026 schedule sync:',e)}const aliases={"GUNNISON VALLEY":"GUNNISON","MAPLE MOUNTAIN":"MAPLE MTN","MONUMENT VALLEY":"MONUMENT VAL"};const recordKey=team.team in records?team.team:(aliases[team.team]||team.team);const alignmentBook=await alignmentPromise;currentYearAlignments=alignmentBook[normalize(team.team)]||{};render(team,records[recordKey]||null,pageData)}catch(e){console.error(e);document.getElementById('page').innerHTML='<div class="error">Team information could not be loaded.<br><br><a class="back" href="teams.html">← Back to Teams</a></div>'}}
 
 // Season history includes every year with a completed recorded game, even
 // when the source summary only contains seasons eligible for rankings.
@@ -139,18 +147,9 @@ function sortHistoryList(list,mode){
   });
 }
 function seasonAlignment(year){return currentYearAlignments[String(year)]||{}}
-function seasonStandingsUrl(year) {
-  const {standingsUrl, sourceUrl} = seasonAlignment(year);
-  if (standingsUrl?.startsWith('https://utah-football.com/s/'+year+'/')) return standingsUrl;
-  if (sourceUrl === 'brackets-'+year+'.json') return 'championships.html?year='+year+'#bracketHeading';
-  if (sourceUrl?.startsWith('https://')) return sourceUrl;
-  return year>=1950 && year<=2026 ? 'https://utah-football.com/s/'+year+'/fb'+String(year%100).padStart(2,'0')+'.htm' : '';
-}
 function yearCell(year) {
-  const url = seasonStandingsUrl(year);
-  if (!url) return escapeHTML(year);
-  const title = seasonAlignment(year).standingsUrl || url.includes('utah-football.com/s/') ? 'View season standings' : 'View classification source';
-  return `<a class="rus-season-standings-link" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer" title="${title}">${escapeHTML(year)} ↗</a>`;
+  if (!currentYearAlignments[year]) return escapeHTML(year);
+  return `<button type="button" class="rus-season-button" data-season="${Number(year)}" aria-label="View ${Number(year)} season" aria-haspopup="dialog">${Number(year)}</button>`;
 }
 function alignmentTag(year){const a=seasonAlignment(year),label=[a.classification,a.region].filter(Boolean).join(' · ');return label?'<small class="rus-alignment-subtitle">'+escapeHTML(label)+'</small>':''}
 function historyRow(s){const a=seasonAlignment(s.year);
@@ -191,5 +190,6 @@ load();
 <script src="school-logo-integration.js?v=20260817-ridgeline6"></script>
 <script src="back-to-top.js" defer></script>
 <script src="weekly-simulation-promo.js" defer></script>
+<script src="team-season-sheet.js?v=1"></script>
 </body>
 </html>

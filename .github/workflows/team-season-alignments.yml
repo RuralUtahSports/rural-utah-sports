@@ -3,6 +3,9 @@ on:
   pull_request:
     paths:
       - 'team-season-alignments.json'
+      - 'team-season-sheet.js'
+      - 'team-season-record-display.json'
+      - 'scripts/build-team-season-standings.mjs'
       - 'historical-football-programs.json'
       - 'audits/team-season-archive-counts.json'
       - 'team-page-content.html'
@@ -26,6 +29,14 @@ jobs:
         with:
           node-version: '22'
       - run: node scripts/validate-team-season-alignments.mjs
+      # The live refresh can temporarily remove historical postseason flags.
+      - name: Read the reviewed RUS schedules for seasons through 2025
+        uses: actions/checkout@v4
+        with:
+          ref: be9acef8729922fcabe1f76bb46e39dbed8eb5ea
+          path: standings-source
+          sparse-checkout: team-page-data
+      - run: node scripts/build-team-season-standings.mjs standings-source/team-page-data && git diff --exit-code --stat -- team-season-record-display.json
       - run: npm install --no-save --package-lock=false playwright@1.62.1
       - run: npx playwright install --with-deps webkit
       - name: Check team seasons on an iPhone viewport
