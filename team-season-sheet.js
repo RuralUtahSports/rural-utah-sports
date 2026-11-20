@@ -47,18 +47,19 @@
     if (token !== request || !dialog.open) return;
     const archive = archiveResult.value || {}, records = recordsResult.value || {};
     const rows = members.map(([id]) => {
-      const [overall, group] = records[id] || [];
+      const [overall, group, source] = records[id] || [];
       const name = programDetails[id]?.team || archive[id]?.name || id;
-      return {id,name,overall,group,swatch:color(programDetails[id]?.backgroundColor,'#737373')};
+      return {id,name,overall,group,mark:source === 'opponents' ? '*' : '',swatch:color(programDetails[id]?.backgroundColor,'#737373')};
     });
     rows.sort((a,b) => (isLeague ? ratio(b.group)-ratio(a.group) : 0) || ratio(b.overall)-ratio(a.overall) || a.name.localeCompare(b.name));
     const groupTitle = year === '2026' ? 'Region' : 'Vs. region';
     const note = isLeague && year !== '2026' ? 'Vs. region counts RUS regular-season results against teams in this region. Official league tiebreakers may differ.' : '';
     const status = recordsResult.status === 'rejected' ? 'Season records could not be loaded. Close and reopen to retry.' :
       rows.some(r => !r.overall || (isLeague && !r.group)) ? 'A dash means RUS has no verified record for that field.' : '';
+    const partial = rows.some(r => r.mark) ? '* Recorded games from opponents’ RUS schedules. Additional games may be missing.' : '';
     const coverage = !alignment.region ? 'Region unverified. Showing known teams in this classification.' : '';
     body.innerHTML = `<table><thead><tr><th scope="col">School</th>${isLeague ? '<th scope="col">'+groupTitle+'</th>' : ''}<th scope="col">Overall</th></tr></thead><tbody>${rows.map(r =>
-      `<tr${r.id === selected ? ' class="selected-school"' : ''}><td><span aria-hidden="true" class="school-swatch" style="background:${r.swatch}"></span>${escapeHTML(r.name)}</td>${isLeague ? '<td>'+(r.group || '—')+'</td>' : ''}<td>${r.overall || '—'}</td></tr>`
-    ).join('')}</tbody></table><small>${[coverage,note,status].filter(Boolean).join(' ')}</small>`;
+      `<tr${r.id === selected ? ' class="selected-school"' : ''}><td><span aria-hidden="true" class="school-swatch" style="background:${r.swatch}"></span>${escapeHTML(r.name)}</td>${isLeague ? '<td>'+(r.group ? r.group+r.mark : '—')+'</td>' : ''}<td>${r.overall ? r.overall+r.mark : '—'}</td></tr>`
+    ).join('')}</tbody></table><small>${[coverage,note,partial,status].filter(Boolean).join(' ')}</small>`;
   });
 })();
