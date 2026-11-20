@@ -25,7 +25,7 @@ for (const [team, years] of Object.entries(book)) {
     assert(/^\d{4}$/.test(year) && +year >= 1800 && +year <= new Date().getFullYear(), context);
     for (const field of ['classification', 'region']) assert.equal(typeof row[field], 'string', context);
     assert(row.classification || row.region, context + ' has no verified fact');
-    if (row.classification) assert.match(row.classification, /^(?:[1-6]A|3AA|Class (?:A|AA|B)|1A 8-Man|Six-Player)$/, context);
+    if (row.classification) assert.match(row.classification, /^(?:[1-6]A|3AA|Class (?:A|AA|B)|1A 8-Man|8-Man|Six-Player)$/, context);
     assert(row.standingsUrl || row.sourceUrl, context + ' has no source');
     if (row.standingsUrl) {
       const archive = new URL(row.standingsUrl);
@@ -51,8 +51,8 @@ for (const [team, years] of Object.entries(book)) {
   }
 }
 assert.deepEqual(groupCounts, counts, 'Standings membership counts differ from the reviewed pages');
-assert.equal(seasons['2024'], 115);
-assert.equal(seasons['2025'], 117);
+assert.equal(seasons['2024'], 116);
+assert.equal(seasons['2025'], 118);
 assert.equal(seasons['2026'], 118);
 assert.equal(book.EAST['1971'].classification, '3A');
 assert.equal(book.EAST['1972'].classification, '4A');
