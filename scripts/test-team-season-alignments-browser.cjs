@@ -50,7 +50,9 @@ async function check(page, origin) {
   await page.getByRole('link', {name: 'Granite', exact: true}).click();
   await page.getByRole('heading', {name: 'Seasons', exact: true}).waitFor();
   await page.getByRole('button', {name: 'View 1945 season'}).click();
-  await dialog.getByRole('cell', {name: 'Granite', exact:true}).waitFor();
+  const graniteName = dialog.getByRole('cell', {name: 'Granite', exact:true}).locator('span');
+  await graniteName.waitFor();
+  assert(Number(await graniteName.evaluate(el=>getComputedStyle(el).fontWeight))>=800);
   assert.match(await dialog.innerText(), /Class A/);
   assert.match(await dialog.innerText(), /Region unverified/);
   assert.equal(await dialog.getByRole('link',{name:'Full season recap'}).getAttribute('href'), 'season-recap.html?year=1945');
