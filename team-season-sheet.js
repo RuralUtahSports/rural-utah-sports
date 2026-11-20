@@ -1,27 +1,6 @@
 // The team loader supplies the verified alignment book and the current team names.
 (() => {
-  const cache = new Map();
-  function read(path) {
-    if (!cache.has(path)) cache.set(path, fetch(path).then(response => {
-      if (!response.ok) throw new Error(path);
-      return response.json();
-    }).catch(error => { cache.delete(path); throw error; }));
-    return cache.get(path);
-  }
-  const ratio = record => {
-    if (!record) return -1;
-    const [w,l,t] = record.split('-').map(Number);
-    return (w + t / 2) / (w + l + t || 1);
-  };
-  async function recordsFor(year) {
-    if (year !== '2026') return (await read('team-season-record-display.json'))[year] || {};
-    const standings = structuredClone(await read('standings-2026.json'));
-    const playoffs = await window.RUSPlayoff2026?.load().catch(() => null);
-    if (playoffs) window.RUSPlayoff2026.applyStandings(standings, playoffs);
-    return Object.fromEntries(Object.values(standings.byClassification).flat().map(t => [
-      normalize(t.team), [record(t.wins,t.losses,t.ties),record(t.regionWins,t.regionLosses,t.regionTies)]
-    ]));
-  }
+  const {read,ratio,recordsFor} = window.RUSSeasonData;
   let request = 0;
   document.addEventListener('click', async event => {
     const button = event.target.closest('button[data-season].rus-season-button');
@@ -42,6 +21,7 @@
     document.getElementById('seasonSheetTitle').textContent = year + (isLeague ? ' Region Standings' : ' Football');
     document.getElementById('seasonSheetContext').textContent = [classes.join(' / '),alignment.region].filter(Boolean).join(' · ');
     body.textContent = 'Loading season records…';
+    document.getElementById('seasonRecapLink').href = 'season-recap.html?year=' + year;
     dialog.showModal();
     const [archiveResult, recordsResult] = await Promise.allSettled([read('historical-football-programs.json'),recordsFor(year)]);
     if (token !== request || !dialog.open) return;

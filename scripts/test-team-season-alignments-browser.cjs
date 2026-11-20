@@ -53,9 +53,25 @@ async function check(page, origin) {
   await dialog.getByRole('cell', {name: 'Granite', exact:true}).waitFor();
   assert.match(await dialog.innerText(), /Class A/);
   assert.match(await dialog.innerText(), /Region unverified/);
-  assert.equal(await dialog.locator('a').count(), 0);
+  assert.equal(await dialog.getByRole('link',{name:'Full season recap'}).getAttribute('href'), 'season-recap.html?year=1945');
   await page.keyboard.press('Escape');
   assert.equal(await dialog.count(), 0);
+  await page.goto(origin+'/season-recap.html?year=1971');
+  await page.getByRole('heading',{name:'1971 Season Recap'}).waitFor();
+  const region = page.locator('.region').filter({has:page.getByRole('heading',{name:'Region 2',exact:true})}).filter({has:page.getByRole('link',{name:'EAST',exact:true})});
+  await region.waitFor();
+  assert.equal(await region.locator('tbody tr').count(),11);
+  const playoff = page.locator('#recapPlayoffs details').filter({has:page.getByText('3A playoffs',{exact:true})});
+  await playoff.waitFor();
+  assert.match(await playoff.textContent(), /Viewmont12Layton10/i);
+  assert.match(await playoff.textContent(), /Semifinals/);
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1));
+  await page.locator('#year').selectOption('1942');
+  await page.getByText('No state playoffs were held this season.').waitFor();
+  await page.locator('#year').selectOption('2026');
+  await page.locator('#recapPlayoffs details summary').first().waitFor();
+  await page.locator('.region tbody tr').first().waitFor();
+  assert(await page.locator('#recapPlayoffs details').count() >= 7);
 }
 
 (async () => {

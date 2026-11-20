@@ -495,6 +495,7 @@
         dropdown("Scoreboard", "scoreboard"),
         dropdown("Rankings", "rankings"),
         link("Standings", "standings.html"),
+        link("Season Recaps", "season-recap.html"),
         link("Playoff Pick’em", "playoff-pickem.html"),
         link("Pick'em", "simulators.html?tab=weekly"),
         dropdown("Stats", "stats"),
