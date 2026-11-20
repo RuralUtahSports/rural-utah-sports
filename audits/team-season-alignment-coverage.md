@@ -1,6 +1,6 @@
 # Utah football classification and region coverage
 
-Updated November 20, 2026. The database has 139 programs and 6,506 dated school-seasons from 1925 to 2026. All 118 current RUS programs are represented. The other 21 have historical program pages in the Teams directory.
+Updated November 20, 2026. The database has 139 programs and 6,542 dated school-seasons from 1925 to 2026. All 118 current RUS programs are represented. The other 21 have historical program pages in the Teams directory.
 
 ## Coverage
 
@@ -10,8 +10,8 @@ All 77 annual indexes from 1950 through 2026 and all 1,044 linked conference pag
 
 - Complete against the reviewed sources (42 years): 1950–1953, 1956–1961, 1963, 1970–1971, 1973–1980, 1983, 1985–1988, 1992, 1998–1999, 2001–2005, 2009, 2011, 2013–2014, 2017–2018, 2022–2023.
 - All indexed groups reviewed, with open questions: 1954–1955, 1962, 1964–1969, 1972, 1981–1982, 1984, 1989–1991, 1993–1997, 2000, 2006–2008, 2010, 2012, 2015–2016, 2019–2021, 2024–2026.
-- Partial before the annual index: 1925, 1927–1928, 1937–1949. Class or format can often be established for playoff entrants and six-player teams. Complete statewide region rosters were unavailable in the sources reviewed. The remaining earlier years have no dated alignment in this edition.
-- Existing rows with a blank classification: 42. Existing rows with a blank region: 111. The CSV also identifies known school-seasons with no alignment, including 1,026 pre-1950 school-seasons from current programs’ RUS game histories. The pre-1950 figures are lower bounds because the current team pages do not enumerate all discontinued programs.
+- Partial before the annual index: 1925, 1927–1929, 1937–1949. Class or format can often be established for playoff entrants and six-player teams. Complete statewide region rosters were unavailable in the sources reviewed. The remaining earlier years have no dated alignment in this edition.
+- Existing rows with a blank classification: 78. Existing rows with a blank region: 111. The CSV also identifies known school-seasons with no alignment, including 995 pre-1950 school-seasons from current programs’ RUS game histories. The pre-1950 figures are lower bounds because the current team pages do not enumerate all discontinued programs.
 
 The [verification list](team-season-alignment-gaps.csv) names the program, year, missing information and research lead. The [source counts](team-season-archive-counts.json) give accepted memberships for every conference page. Counts exclude five cross-listed memberships described below. A blank field does not count as a class or region.
 
@@ -136,7 +136,7 @@ The name matches include American Leadership Academy → ALA, Cedar → Cedar Ci
 | 1932 | 0 | 0 | 0 | 0 | No assignment verified |
 | 1931 | 0 | 0 | 0 | 0 | No assignment verified |
 | 1930 | 0 | 0 | 0 | 0 | No assignment verified |
-| 1929 | 0 | 0 | 0 | 0 | No assignment verified |
+| 1929 | 0 | 36 | 36 | 0 | Partial · 47 printed entries across eight districts, 11 program identities pending |
 | 1928 | 0 | 5 | 0 | 5 | Partial |
 | 1927 | 0 | 4 | 0 | 4 | Partial |
 | 1926 | 0 | 0 | 0 | 0 | No assignment verified |

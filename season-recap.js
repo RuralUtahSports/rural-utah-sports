@@ -23,8 +23,12 @@
   const colorsReady = read('teams-data.json').then(teams=>{
     for(const team of teams) palettes.set(window.RUSPlayoff2026.key(team.team),team);
   }).catch(()=>{});
-  async function october1944Standings() {
-    const [groups] = await Promise.all([read('standings-1944-10-24.json'), colorsReady]);
+  const newspaperStandings = {
+    '1929': {file:'standings-1929-11-10.json', date:'November 10', note:'Five districts are marked final in the clipping.'},
+    '1944': {file:'standings-1944-10-24.json', date:'October 24', note:'Midseason records.'}
+  };
+  async function datedStandings(snapshot) {
+    const [groups] = await Promise.all([read(snapshot.file), colorsReady]);
     const cards = groups.map(group => {
       const entries = Object.entries(group.records);
       const columns = entries[0][1].split('-').length === 3 ? 'W–L–T' : 'W–L';
@@ -36,13 +40,13 @@
         return `<tr><td>${label}</td><td>${esc(record)}</td></tr>`;
       }).join('');
       const note = group.note ? `<p class="note">${esc(group.note)}</p>` : '';
-      return `<article class="region"><h4>${esc(group.title)}</h4><table><thead><tr><th>School</th><th>${columns}</th></tr></thead><tbody>${rows}</tbody></table>${note}</article>`;
+      return `<article class="region"><h4>${esc(group.title)}${group.final ? ' · Final' : ''}</h4><table><thead><tr><th>School</th><th>${columns}</th></tr></thead><tbody>${rows}</tbody></table>${note}</article>`;
     });
-    return '<h3 class="classification">October 24 standings</h3><p class="note">Midseason records from the October 24, 1944 clipping “High School Grid Standings.”</p><div class="grid">'+cards.join('')+'</div>';
+    return '<h3 class="classification">'+snapshot.date+' standings</h3><p class="note">From the '+snapshot.date+', '+year+' clipping “High School Grid Standings.” '+snapshot.note+'</p><div class="grid">'+cards.join('')+'</div>';
   }
 
   async function standings() {
-    if (year === '1944') return october1944Standings();
+    if (newspaperStandings[year]) return datedStandings(newspaperStandings[year]);
     const [book,teams,archive,records] = await Promise.all([
       read('team-season-alignments.json'),read('teams-data.json'),read('historical-football-programs.json'),recordsFor(year)
     ]);
