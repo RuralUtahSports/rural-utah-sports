@@ -23,7 +23,26 @@
   const colorsReady = read('teams-data.json').then(teams=>{
     for(const team of teams) palettes.set(window.RUSPlayoff2026.key(team.team),team);
   }).catch(()=>{});
+  async function october1944Standings() {
+    const [groups] = await Promise.all([read('standings-1944-10-24.json'), colorsReady]);
+    const cards = groups.map(group => {
+      const entries = Object.entries(group.records);
+      const columns = entries[0][1].split('-').length === 3 ? 'W–L–T' : 'W–L';
+      const rows = entries.map(([name, record]) => {
+        const team = palettes.get(window.RUSPlayoff2026.key(name));
+        const label = team
+          ? `<a${window.RUSSeasonData.labelStyle(team)} href="team.html?team=${encodeURIComponent(team.team)}&amp;tab=seasons">${esc(name)}</a>`
+          : `<strong>${esc(name)}</strong>`;
+        return `<tr><td>${label}</td><td>${esc(record)}</td></tr>`;
+      }).join('');
+      const note = group.note ? `<p class="note">${esc(group.note)}</p>` : '';
+      return `<article class="region"><h4>${esc(group.title)}</h4><table><thead><tr><th>School</th><th>${columns}</th></tr></thead><tbody>${rows}</tbody></table>${note}</article>`;
+    });
+    return '<h3 class="classification">October 24 standings</h3><p class="note">Midseason records from the October 24, 1944 clipping “High School Grid Standings.”</p><div class="grid">'+cards.join('')+'</div>';
+  }
+
   async function standings() {
+    if (year === '1944') return october1944Standings();
     const [book,teams,archive,records] = await Promise.all([
       read('team-season-alignments.json'),read('teams-data.json'),read('historical-football-programs.json'),recordsFor(year)
     ]);
