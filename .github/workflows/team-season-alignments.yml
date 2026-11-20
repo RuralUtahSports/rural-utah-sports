@@ -4,6 +4,9 @@ on:
     paths:
       - 'team-season-alignments.json'
       - 'team-season-sheet.js'
+      - 'football-season-data.js'
+      - 'season-recap*'
+      - 'scripts/build-season-recap-rounds.mjs'
       - 'team-season-record-display.json'
       - 'scripts/build-team-season-standings.mjs'
       - 'historical-football-programs.json'
@@ -37,6 +40,7 @@ jobs:
           path: standings-source
           sparse-checkout: team-page-data
       - run: node scripts/build-team-season-standings.mjs standings-source/team-page-data && git diff --exit-code --stat -- team-season-record-display.json
+      - run: node scripts/build-season-recap-rounds.mjs standings-source/team-page-data && git diff --exit-code --stat -- season-recap-rounds.json
       - run: npm install --no-save --package-lock=false playwright@1.62.1
       - run: npx playwright install --with-deps webkit
       - name: Check team seasons on an iPhone viewport
