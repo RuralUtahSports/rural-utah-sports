@@ -25,6 +25,7 @@
   }).catch(()=>{});
   const newspaperStandings = {
     '1929': {file:'standings-1929-11-10.json', date:'November 10', note:'Five districts are marked final in the clipping.'},
+    '1930': {file:'standings-1930-11-09.json', date:'November 9', title:'H. S. Grid Standings', note:'District Six is absent from this clipping. Four districts are marked final.'},
     '1944': {file:'standings-1944-10-24.json', date:'October 24', note:'Midseason records.'}
   };
   async function datedStandings(snapshot) {
@@ -42,7 +43,7 @@
       const note = group.note ? `<p class="note">${esc(group.note)}</p>` : '';
       return `<article class="region"><h4>${esc(group.title)}${group.final ? ' · Final' : ''}</h4><table><thead><tr><th>School</th><th>${columns}</th></tr></thead><tbody>${rows}</tbody></table>${note}</article>`;
     });
-    return '<h3 class="classification">'+snapshot.date+' standings</h3><p class="note">From the '+snapshot.date+', '+year+' clipping “High School Grid Standings.” '+snapshot.note+'</p><div class="grid">'+cards.join('')+'</div>';
+    return '<h3 class="classification">'+snapshot.date+' standings</h3><p class="note">From the '+snapshot.date+', '+year+' clipping “'+(snapshot.title || 'High School Grid Standings')+'.” '+snapshot.note+'</p><div class="grid">'+cards.join('')+'</div>';
   }
 
   async function standings() {
