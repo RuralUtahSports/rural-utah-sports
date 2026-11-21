@@ -81,8 +81,10 @@ function updateChampionBar(championBar,grid,tabs,yearSelect){
   const lose=rows.find(r=>r!==win),nameEl=win.querySelector('.bracket-team-name'),name=rowLabel(win),score=clean(win.querySelector('.bracket-score')?.textContent),opp=rowLabel(lose),oppScore=clean(lose?.querySelector('.bracket-score')?.textContent),href=nameEl?.getAttribute('href');
   const cs=getComputedStyle(win),bg=cs.backgroundColor&&cs.backgroundColor!=='rgba(0, 0, 0, 0)'?cs.backgroundColor:'#F14D07',fg=cs.color||'#fff';
   const count=titleCountThrough(name,yearSelect.value),titleNote=count?` • ${ordinal(count)} state championship`:'';
+  const specialNote=clean(game.querySelector('.bracket-game-note')?.textContent);
+  const outcome=specialNote?esc(specialNote):`Won ${esc(score)}–${esc(oppScore)} vs. ${esc(opp)}`;
   championBar.style.borderLeftColor=bg;
-  championBar.innerHTML=`<div><span class="bracket-champion-kicker">${esc(yearSelect.value)} ${esc(cls)} Champion</span><div class="bracket-champion-name" style="background:${bg};color:${fg};display:inline-block;padding:5px 9px;border-radius:5px">${href?`<a href="${esc(href)}">${esc(name)}</a>`:esc(name)}</div></div><div class="bracket-champion-result">Won ${esc(score)}–${esc(oppScore)} vs. ${esc(opp)}${esc(titleNote)}</div>`;
+  championBar.innerHTML=`<div><span class="bracket-champion-kicker">${esc(yearSelect.value)} ${esc(cls)} Champion</span><div class="bracket-champion-name" style="background:${bg};color:${fg};display:inline-block;padding:5px 9px;border-radius:5px">${href?`<a href="${esc(href)}">${esc(name)}</a>`:esc(name)}</div></div><div class="bracket-champion-result">${outcome}${esc(titleNote)}</div>`;
   championBar.classList.add('show');
 }
 
