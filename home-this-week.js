@@ -1,5 +1,17 @@
 (()=>{
 'use strict';
+/*
+ * "5 Games to Watch" / Featured Games DISABLED 2026-11-22 (accuracy audit S5).
+ * The picks are selected from the current RUS Top 10 rankings and ELO (see
+ * gameScore()/teamScore() below, fed by home-week-data.json), but the rankings
+ * are frozen at Week 9 (Oct 3, 2026) and ELO at Oct 16, 2026, and the 2026
+ * season ended Nov 20 - so the feature would rank teams on regular-season-end
+ * data. The rankings refresh is pending with the site owner. Do NOT re-enable
+ * until rankings/ELO have a post-season refresh: set FEATURED_GAMES_DISABLED
+ * to false below AND restore the commented-out "5 Games to Watch" box in
+ * index.html. Both must be undone to restore the feature.
+ */
+const FEATURED_GAMES_DISABLED=true;
 const norm=v=>String(v??'').trim().toUpperCase();
 const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 const parseDate=v=>{const t=Date.parse(String(v||''));return Number.isFinite(t)?t:0};
@@ -11,7 +23,6 @@ const CLASS_ORDER=['6A','5A','4A','3A','2A','1A','8P'];
 const RURAL_CLASSES=new Set(['3A','2A','1A','8P']);
 const classLabel=c=>c==='8P'?'8-Player':c;
 const box=document.querySelector('.featured-placeholder');
-if(!box)return;
 const style=document.createElement('style');
 style.textContent=`
 .watch-home{display:block}.featured-games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:12px}.featured-game{display:block;position:relative;overflow:hidden;background:#090909;border:1px solid #3a3a3a;border-top:4px solid #F14D07;border-radius:8px;padding:11px 12px;color:#fff;text-decoration:none}.featured-game.rural{border-top-color:#e7c35a}.featured-game:hover{border-color:#F14D07}.featured-game.rural:hover{border-color:#e7c35a}.featured-game-kicker{font-size:8px;font-weight:1000;letter-spacing:.55px;text-transform:uppercase;color:#F14D07;margin-bottom:7px}.featured-game.rural .featured-game-kicker{color:#e7c35a}.featured-game-matchup{display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:14px;font-weight:1000}.featured-game-date{font-size:9px;color:#888;margin-top:7px}.featured-game-note{font-size:9px;color:#aaa;margin-top:7px;line-height:1.35}.more-watch-label{font-size:9px;font-weight:1000;letter-spacing:.45px;text-transform:uppercase;color:#aaa;margin:0 0 7px}.watch-list{display:grid;gap:7px}.watch-game{display:block;background:#0d0d0d;border:1px solid #333;border-radius:7px;padding:9px 10px;color:#fff;text-decoration:none}.watch-game:hover{border-color:#F14D07}.watch-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.watch-matchup{font-weight:900;font-size:13px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}.watch-team{display:inline-block;padding:3px 6px;border-radius:5px;background:var(--team-bg,#222);color:var(--team-fg,#fff)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);line-height:1.15}.watch-at{font-size:8px;color:#777;text-transform:uppercase;font-weight:900}.watch-date{font-size:9px;color:#888;white-space:nowrap}.watch-meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}.watch-badge{font-size:8px;font-weight:900;text-transform:uppercase;border-radius:999px;padding:3px 6px;background:#222;color:#bbb;border:1px solid #383838}.watch-badge.rank{background:var(--team-bg,#F14D07);color:var(--team-fg,#000)}.watch-badge.elo{color:#e7c35a}.watch-note{font-size:9px;color:#777;margin-top:5px}.watch-empty{color:#888;line-height:1.5}.class-watch{margin-top:11px;padding-top:10px;border-top:1px solid #333}.class-watch>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#111;border:1px solid #333;border-radius:6px;padding:9px 11px;color:#ddd;font-size:9px;font-weight:1000;text-transform:uppercase;letter-spacing:.35px}.class-watch>summary::-webkit-details-marker{display:none}.class-watch>summary:after{content:'+';color:#F14D07;font-size:16px;line-height:1}.class-watch[open]>summary:after{content:'−'}.class-watch-summary-note{color:#777;font-size:8px;font-weight:800;letter-spacing:0}.class-watch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}.class-watch-game{display:block;background:#0d0d0d;border:1px solid #333;border-radius:7px;padding:9px 10px;color:#fff;text-decoration:none}.class-watch-link{display:block;color:inherit;text-decoration:none}.class-watch-share-actions{margin-top:10px}.class-watch-share-actions>.rus-feature-share-btn{min-height:44px}.class-watch-game:hover{border-color:#F14D07}.class-watch-label{font-size:8px;font-weight:900;color:#F14D07;text-transform:uppercase;margin-bottom:5px}.class-watch-matchup{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:11px;font-weight:900}.class-watch-date,.class-watch-reason{color:#777;font-size:8px;margin-top:5px}
@@ -20,6 +31,12 @@ style.textContent=`
 @media(max-width:800px){.featured-games,.class-watch-grid,.first-meeting-grid{grid-template-columns:1fr}.watch-top{align-items:flex-start}.rus-scorigami-wrap{grid-template-columns:auto 1fr;padding:11px 13px;gap:9px 10px}.rus-scorigami-burst{font-size:27px}.rus-scorigami-main{font-size:18px}.rus-scorigami-main .rus-scorigami-score{font-size:25px;margin:0 3px}.rus-scorigami-link{grid-column:1/-1;text-align:center}.rus-scorigami-sub{font-size:8px}.class-watch-summary-note{display:none}}@media(prefers-reduced-motion:no-preference){.rus-scorigami-burst{animation:rusScorigamiPulse 1.8s ease-in-out infinite}@keyframes rusScorigamiPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}}
 `;
 document.head.appendChild(style);
+// Featured games are disabled (see note at the top of this file): skip load(),
+// which only renders the featured-games / class-watch lists from the stale
+// rankings + ELO. The Scorigami alert rendered below is a separate homepage
+// feature, so it keeps running. (The old `if(!box)return;` guard used to stop
+// this whole script, Scorigami included, when the box was absent.)
+if(FEATURED_GAMES_DISABLED||!box){renderScorigami();return;}
 function rankMap(data){const map=new Map();for(const [cls,arr] of Object.entries(data||{}))(arr||[]).forEach((team,i)=>map.set(norm(team),{class:cls,rank:i+1}));return map}
 function teamMap(data){const map=new Map();for(const t of data||[])if(t?.team)map.set(norm(t.team),t);return map}
 function teamScore(team,ranks,elo){const key=norm(team),r=ranks.get(key),e=Number(elo?.[key]?.currentElo);return{rank:r,elo:Number.isFinite(e)?e:null,quality:(r?Math.max(0,11-r.rank)*12:0)+(Number.isFinite(e)?Math.max(0,(e-1200)/8):0)}}
