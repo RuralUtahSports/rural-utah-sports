@@ -10,7 +10,7 @@ This document records the historical and 2026-season changes proposed in the aud
 - **1943 Union 37–32 Dixie:** preserved here from the previous RUS championship log. UHSAA lists only Dixie for the 1943 state six-player title. The match could be regional or an incorrectly assigned year; the title designation is not supported by the official year-by-year list. Do not automatically reinsert it as an official title without corroboration.
 - **1944 six-player bracket:** former RUS `brackets-1944.json` showed Union 37–32 Dixie, contradicting the official 1944 champion (Roosevelt). The unsupported championship matchup was removed from that year’s bracket; Roosevelt's opponent and championship-game score remain unverified.
 - RUS archive bracket scores still need independent documentary verification: 1945 Dixie 30–8 Cedar; 1946 Dixie 38–18 Cedar; 1947 Hurricane 44–39 Beaver; 1948 Hurricane 45–32 Parowan. These were retained/reconciled from the corresponding RUS bracket files, **not confirmed by the UHSAA champions-only record book**. They should not be used as fully verified scores by an AI assistant until supported by a game-specific source.
-- Six team-page data shards were reconciled: Dixie, Hurricane, Parowan, Union, Beaver, Cedar City. Union's state championship total decreases by one because the 1943 Union entry is unsupported as a state title. New title years are applied to affected teams. Historical Roosevelt appears in the title log but currently lacks a modern `team-page-data` shard.
+- Six team-page data shards were reconciled: Dixie, Hurricane, Parowan, Union, Beaver, Cedar City. **Roosevelt High's official 1944 six-player championship is now credited to Union's predecessor-school history**, because Union High opened in 1952 from Roosevelt High and Alterra High. Union's title total remains **3** including this legacy championship (rather than counting the unsupported 1943 Union–Dixie entry). The 1944 title remains labelled as won by Roosevelt High, linked to Union's page. Historical school names are not silently rewritten. School lineage source: https://www.deseret.com/2009/9/10/20339334/high-school-football-felt-s-facts-week-4/ . UHSAA official six-player record: https://uhsaa.org/RecordsBook/Records_Book6MF.pdf
 
 ## Regular-season final scores verified October 15, 2026
 
@@ -36,3 +36,7 @@ This document records the historical and 2026-season changes proposed in the aud
 6. Track sources and verification status in the proposed Ask RUS data indexing layer; do not let the AI claim that the archival game-score fields are independently verified.
 
 GitHub audit issue: https://github.com/RuralUtahSports/rural-utah-sports/issues/224
+
+## 2026-11-23 clarification — UHSAA-recognized format
+
+The six-player classification was a **UHSAA-recognized state championship format**, and its 1939–1948 championships are listed in a separate official UHSAA records-book section. Some published career summaries focus on 11-player football rather than all historical formats; this is a reporting scope difference, **not a reason to discard the six-player championships**. Source: https://www.deseret.com/2012/11/15/20444411/high-school-football-felt-s-facts-week-14/ . The RUS policy is to count six-player state titles, clearly attributing inherited school histories (e.g., Roosevelt to Union) and retaining unknown scores as unknown.
