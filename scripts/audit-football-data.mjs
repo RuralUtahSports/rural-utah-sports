@@ -5,7 +5,7 @@ const error=(code,message,context={})=>issues.push({severity:'error',code,messag
 const warn=(code,message,context={})=>issues.push({severity:'warning',code,message,context});
 const info=(code,message,context={})=>issues.push({severity:'info',code,message,context});
 const norm=v=>String(v??'').trim().toUpperCase().replace(/\s+/g,' ');
-const num=v=>{const n=Number(v);return Number.isFinite(n)?n:null};
+const num=v=>{if(v===null||v===undefined||String(v).trim()==='')return null;const n=Number(v);return Number.isFinite(n)?n:null};
 const ALIASES={
   'MONUMENT VAL':'MONUMENT VALLEY',
   'CEDAR':'CEDAR CITY',
