@@ -19,6 +19,7 @@
 <meta property="og:url" content="https://ruralutahsports.github.io/rural-utah-sports/stat-leaders.html">
 <meta property="og:image" content="https://ruralutahsports.github.io/rural-utah-sports/RUSlogoNew.png">
 <meta name="twitter:card" content="summary_large_image">
+<script src="reviewed-whitehorse-late-2026.js?v=20261124-late1"></script>
 <script src="regular-season-stat-policy-2026.js?v=20261027-gameidentity1"></script>
 <script src="maxpreps-missing-totals-2026.js?v=20261029-missing1"></script>
 <script src="maxpreps-primary-reported-2026.js?v=20261029-statewide1"></script>
@@ -273,6 +274,7 @@ async function load(){
     if(!evidence.ok)throw Error('Five-case evidence review missing');
     window.RUSReviewedFivePlayer2026.applyVerified(regularPublication,await evidence.json());
    }catch(error){console.warn('4A-6A corrected player evidence held; do not promote incomplete stats',error)}
+   window.RUSWhitehorseLate2026?.apply(reportedStats);
    allStats=sourceMode==='reported'?reportedStats:regularPublication;
    playerGames=g?.ok?await g.json():null;if(playerGames)for(const [team,t] of Object.entries(playerGames.teams||{}))t.games=window.RUSRegularSeasonPolicy2026.uniqueGames(t.games,team,regularPublication).map(record=>record.game);
    const weeklySchedule=w?.ok?(await w.json()).games||[]:[];
