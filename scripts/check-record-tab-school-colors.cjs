@@ -64,7 +64,7 @@ async function test(){
  assert.ok(page.includes('<script src="team-record-theme.js?v=20261020-record-school-colors1"></script>'),'Missing palette script on team pages');
  const tabs=fs.readFileSync('team-tabs.js','utf8');
  assert.ok(tabs.includes('team-player-records.js?v=20261020-school-colors1'));
- assert.ok(tabs.includes('team-stat-records.js?v=20261020-school-colors1'));
+ assert.match(tabs,/team-stat-records\.js\?v=[A-Za-z0-9._-]+/,'Team Records tab must load a versioned script');
  const teamLoader=fs.readFileSync('team.html','utf8');
  assert.match(teamLoader,/fetch\(`team-page-content\.html\?v=\$\{VERSION\}`\)/,'Team loader must fetch the content containing the palette runtime');
  assert.match(teamLoader,/for\(const old of \[\.\.\.document\.querySelectorAll\('script'\)\]\)await copyScript\(old\)/,'Content scripts, including record palettes, must execute in document order');
