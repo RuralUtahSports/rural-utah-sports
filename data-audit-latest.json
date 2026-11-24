@@ -1,29 +1,11 @@
 {
-  "generatedAt": "2026-11-24T04:01:53.392Z",
+  "generatedAt": "2026-11-24T11:52:06.093Z",
   "summary": {
     "errors": 0,
-    "warnings": 87,
+    "warnings": 85,
     "info": 2
   },
   "issues": [
-    {
-      "severity": "warning",
-      "code": "RECORD_MISMATCH",
-      "message": "MOUNTAIN RIDGE standings record does not match completed games in weekly-simulation.json.",
-      "context": {
-        "standings": "10-0-0",
-        "calculated": "9-0-1"
-      }
-    },
-    {
-      "severity": "warning",
-      "code": "RECORD_MISMATCH",
-      "message": "WESTLAKE standings record does not match completed games in weekly-simulation.json.",
-      "context": {
-        "standings": "7-3-0",
-        "calculated": "7-2-1"
-      }
-    },
     {
       "severity": "warning",
       "code": "RECORD_MISMATCH",
@@ -104,16 +86,16 @@
         "sourceGamePairs": 13,
         "missing": [
           {
-            "date": "2026-10-30",
-            "opponent": "Enterprise"
-          },
-          {
             "date": "2026-11-06",
             "opponent": "Kanab"
           },
           {
             "date": "2026-11-14",
             "opponent": "Duchesne"
+          },
+          {
+            "date": "2026-10-30",
+            "opponent": "Enterprise"
           }
         ]
       }
@@ -318,12 +300,12 @@
         "sourceGamePairs": 12,
         "missing": [
           {
-            "date": "2026-11-06",
-            "opponent": "Herriman"
-          },
-          {
             "date": "2026-10-30",
             "opponent": "Farmington"
+          },
+          {
+            "date": "2026-11-06",
+            "opponent": "Herriman"
           }
         ]
       }
@@ -344,12 +326,12 @@
             "opponent": "Syracuse"
           },
           {
-            "date": "2026-11-20",
-            "opponent": "Skyridge"
-          },
-          {
             "date": "2026-11-12",
             "opponent": "Mountain Ridge"
+          },
+          {
+            "date": "2026-11-20",
+            "opponent": "Skyridge"
           }
         ]
       }
@@ -362,16 +344,16 @@
         "sourceGamePairs": 13,
         "missing": [
           {
+            "date": "2026-10-30",
+            "opponent": "Providence Hall"
+          },
+          {
             "date": "2026-11-06",
             "opponent": "Summit Academy"
           },
           {
             "date": "2026-11-14",
             "opponent": "San Juan"
-          },
-          {
-            "date": "2026-10-30",
-            "opponent": "Providence Hall"
           }
         ]
       }
@@ -384,16 +366,16 @@
         "sourceGamePairs": 13,
         "missing": [
           {
+            "date": "2026-10-30",
+            "opponent": "Parowan"
+          },
+          {
             "date": "2026-11-06",
             "opponent": "North Summit"
           },
           {
             "date": "2026-11-14",
             "opponent": "Beaver"
-          },
-          {
-            "date": "2026-10-30",
-            "opponent": "Parowan"
           }
         ]
       }
@@ -466,12 +448,12 @@
         "sourceGamePairs": 12,
         "missing": [
           {
-            "date": "2026-10-30",
-            "opponent": "Richfield"
-          },
-          {
             "date": "2026-10-23",
             "opponent": "Ben Lomond"
+          },
+          {
+            "date": "2026-10-30",
+            "opponent": "Richfield"
           }
         ]
       }
@@ -506,16 +488,16 @@
         "sourceGamePairs": 13,
         "missing": [
           {
-            "date": "2026-10-30",
-            "opponent": "Park City"
+            "date": "2026-11-13",
+            "opponent": "Skyline"
           },
           {
             "date": "2026-11-06",
             "opponent": "Salem Hills"
           },
           {
-            "date": "2026-11-13",
-            "opponent": "Skyline"
+            "date": "2026-10-30",
+            "opponent": "Park City"
           }
         ]
       }
@@ -700,16 +682,16 @@
         "sourceGamePairs": 13,
         "missing": [
           {
+            "date": "2026-10-30",
+            "opponent": "Cedar"
+          },
+          {
             "date": "2026-11-07",
             "opponent": "Richfield"
           },
           {
             "date": "2026-11-14",
             "opponent": "Logan"
-          },
-          {
-            "date": "2026-10-30",
-            "opponent": "Cedar"
           }
         ]
       }
@@ -1142,16 +1124,16 @@
         "sourceGamePairs": 12,
         "missing": [
           {
-            "date": "2026-10-30",
-            "opponent": "Emery"
-          },
-          {
             "date": "2026-11-06",
             "opponent": "South Summit"
           },
           {
             "date": "2026-11-14",
             "opponent": "Delta"
+          },
+          {
+            "date": "2026-10-30",
+            "opponent": "Emery"
           }
         ]
       }
@@ -1504,7 +1486,7 @@
       "message": "Audit input counts.",
       "context": {
         "teams": 118,
-        "games": 602,
+        "games": 606,
         "standings": 118,
         "rankedTeams": 68,
         "playerIds": 6440
