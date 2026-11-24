@@ -26,7 +26,7 @@ h2{margin:28px 0 12px;font-size:21px;text-transform:uppercase;border-left:6px so
 <body>
 <header><div><h1>Rural Utah Sports</h1><p>George Felt historical team records · Isolated test preview</p></div></header>
 <main>
-<p class="notice"><strong>Test page only:</strong> This is a lightweight preview of the record-book data, not the published RUS website. It deliberately skips the large team schedules, Elo history and other tabs.</p>
+<p class="notice"><strong>Test page only:</strong> This preview contains the record-book data directly and does not request other website files. It is not the published RUS website. It deliberately skips the large team schedules, Elo history and other tabs.</p>
 <div class="controls"><div><label for="team">Choose school</label><select id="team"></select></div></div>
 <div id="summary" class="summary"></div>
 <div id="records"></div>
@@ -50,7 +50,7 @@ h2{margin:28px 0 12px;font-size:21px;text-transform:uppercase;border-left:6px so
      if(!cats.length)return '';
      const cards=cats.map(function(key){
        const cat=book.categories[key];
-       const rows=entries.filter(function(e){return e.metric===key}).sort(function(a,b){return b.value-a.value||b.year-a.year}).map(function(e){
+       const rows=entries.filter(function(e){return e.metric===key}).sort(function(a,b){return (/^Fewest/.test(cat.label)?a.value-b.value:b.value-a.value)||b.year-a.year}).map(function(e){
          return '<tr><td>'+Number(e.value).toLocaleString()+'</td><td>'+esc(e.date||e.year)+'</td><td>'+esc(e.context)+'</td></tr>'
        }).join('');
        return '<div class="card"><h3>'+esc(cat.label)+'</h3><table><thead><tr><th>'+esc(cat.unit)+'</th><th>Date</th><th>Source details</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
