@@ -71,7 +71,7 @@ async function renderSeasonScoringRecords(team){
     return `<section class='rus-season-scoring' aria-labelledby='rusSeasonScoringTitle'><h3 class='rus-season-scoring-title' id='rusSeasonScoringTitle'>Single-Season Scoring Records</h3><p class='rus-season-scoring-note'>Highest and lowest marks are calculated automatically from this team’s available season history. Tied seasons are all shown.</p><div class='rus-season-scoring-grid'>${cards}</div></section>`;
   }catch(e){console.warn('Team season scoring records:',e);return ''}
 }
-async async function install(){
+async function install(){
  styles();
  let tries=0,team='';
  while(!(team=document.querySelector('.team-title')?.textContent?.trim())&&tries++<300)await new Promise(r=>setTimeout(r,100));
