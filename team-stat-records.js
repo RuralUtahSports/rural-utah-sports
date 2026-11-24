@@ -47,11 +47,17 @@ function renderFeltListings(team,data){
  }).join('');
  return `<div class="rus-felt-records"><div class="rus-team-stat-records-source"><strong>Historical source: George Felt</strong> — Utah High School Football All-Time Statistical Records, through 2026. These are documented entries from statewide leaderboards, <strong>not a complete ranking of every statistical performance in this school's history</strong>. Historical statistics can be incomplete or provisional.</div>${html}</div>`;
 }
+async function fetchTeamRecordsJson(path,timeoutMs=10000){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
+ try{
+  const response=await fetch(path,{signal:controller.signal,cache:'force-cache'});
+  if(!response.ok)throw new Error('HTTP '+response.status+' for '+path);
+  return await response.json();
+ }finally{clearTimeout(timer)}
+}
 async function renderSeasonScoringRecords(team){
   try{
-    const r=await fetch(`team-page-data/${slug(team)}.json?v=${Date.now()}`,{cache:'no-store'});
-    if(!r.ok)return '';
-    const data=await r.json(),seasons=(data.seasonHistory||[]).filter(s=>Number(s.games)>0&&Number.isFinite(Number(s.year)));
+    const data=await fetchTeamRecordsJson(`team-page-data/${slug(team)}.json?v=20261123-felt-preview3`,12000),seasons=(data.seasonHistory||[]).filter(s=>Number(s.games)>0&&Number.isFinite(Number(s.year)));
     const defs=[
       {key:'pointsFor',label:'Points Scored (PS)',high:'Most',low:'Fewest',digits:0},
       {key:'pointsAgainst',label:'Points Allowed (PA)',high:'Most',low:'Fewest',digits:0},
@@ -74,51 +80,68 @@ async function renderSeasonScoringRecords(team){
 async function install(){
  styles();
  let tries=0,team='';
- while(!(team=document.querySelector('.team-title')?.textContent?.trim())&&tries++<300)await new Promise(r=>setTimeout(r,100));
- if(!team||document.getElementById('rusTeamStatRecords'))return;
+ while(!(team=document.querySelector('.team-title')?.textContent?.trim())&&tries++<150)await new Promise(r=>setTimeout(r,100));
+ if(!team){
+  const panel=document.getElementById('rus-panel-team-records');
+  const empty=panel?.querySelector('.rus-tab-empty');
+  if(empty)empty.textContent='Team information did not finish loading. Please refresh the preview.';
+  return false;
+ }
+ if(document.getElementById('rusTeamStatRecords'))return true;
  const section=document.createElement('section');
  section.id='rusTeamStatRecords';
  section.className='rus-team-stat-records-section';
- section.innerHTML='<div class="rus-team-stat-records-empty">Loading team records…</div>';
+ section.innerHTML='<div class="rus-team-stat-records-empty">Loading historical records…</div>';
  if(window.RUSTeamRecordTheme)void window.RUSTeamRecordTheme.apply(section,team).catch(e=>console.warn('Team record colors:',e));
  if(!mount(section,'team-records','Team Records')){
   const player=document.getElementById('rusPlayerRecords');
   if(player)player.insertAdjacentElement('beforebegin',section);
-  else{
-   const headings=[...document.querySelectorAll('#page .section-title')],heading=headings.find(h=>h.textContent.trim()==='ELO History')||headings.find(h=>h.textContent.trim()==='Historical Records');
+  else {
+   const headings=[...document.querySelectorAll('#page .section-title')];
+   const heading=headings.find(h=>h.textContent.trim()==='ELO History')||headings.find(h=>h.textContent.trim()==='Historical Records');
    if(heading)heading.insertAdjacentElement('beforebegin',section);
    else document.getElementById('page')?.appendChild(section);
   }
   watchMount(section,'team-records','Team Records');
  }
- const seasonHTML=await renderSeasonScoringRecords(team);
- let feltHTML='';
+ const seasonPromise=renderSeasonScoringRecords(team);
+ const deseretPromise=fetchTeamRecordsJson('team-stat-single-game-records/by-team/'+slug(team)+'.json?v=20261123-felt-preview3',12000).catch(e=>{console.warn('Deseret team records:',e);return null});
+ let feltHTML='',historicalError='';
  try{
-  const r=await fetch('george-felt-team-records.json?v=20261123-felt1',{cache:'no-store'});
-  if(r.ok)feltHTML=renderFeltListings(team,await r.json());
- }catch(e){console.warn('George Felt team record listings:',e)}
- let d={},cats=[];
- try{
-  const r=await fetch(`team-stat-single-game-records/by-team/${slug(team)}.json?v=20261123-felt1`,{cache:'no-store'});
-  if(r.ok){
-   d=await r.json();
-   cats=Array.isArray(d?.categories)?d.categories.filter(c=>c.entries?.length):[];
-  }
- }catch(e){console.warn('Deseret News team single-game records:',e)}
- mount(section,'team-records','Team Records');
- if(!cats.length){
-  const missing=`<div class="rus-team-stat-records-empty"><strong>No additional Deseret News single-game statistic listings</strong><span>${esc(team)} may still have historical performances shown above. Not every historical game has a complete stat sheet.</span></div>`;
-  section.innerHTML=`${renderHead(team)}${seasonHTML}${feltHTML}${missing}`;
-  return;
+  const source=await fetchTeamRecordsJson('george-felt-team-records.json?v=20261123-felt-preview3',10000);
+  feltHTML=renderFeltListings(team,source);
+ }catch(e){
+  console.warn('George Felt team records:',e);
+  historicalError='<div class="rus-team-stat-records-empty">Historical records could not be loaded from this preview. Refresh or try another browser.</div>';
  }
- section.innerHTML=`${renderHead(team)}${seasonHTML}${feltHTML}<h3 class="rus-season-scoring-title">Deseret News Single-Game Statistical Records</h3><p class="rus-season-scoring-note">Ranked within the available Deseret News game-stat dataset for this school, which is not necessarily a complete historical record.</p><div class="rus-team-stat-records-grid">${cats.map(table).join('')}</div><div class="rus-team-stat-records-source">Source: Deseret News game statistics. ${esc(d.coverageNote||'Historical reporting may be incomplete.')}</div>`;
+ section.innerHTML=renderHead(team)+feltHTML+historicalError+
+   '<div class="rus-team-stat-records-empty" role="status">Loading available season and game statistics…</div>';
+ const [seasonHTML,d]=await Promise.all([seasonPromise,deseretPromise]);
+ const cats=Array.isArray(d?.categories)?d.categories.filter(c=>c.entries?.length):[];
+ const deseretHTML=cats.length?
+   '<h3 class="rus-season-scoring-title">Deseret News Single-Game Statistical Records</h3>'+
+   '<p class="rus-season-scoring-note">Ranked within available Deseret News game stats; not necessarily complete historical records.</p>'+
+   '<div class="rus-team-stat-records-grid">'+cats.map(table).join('')+'</div>'+
+   '<div class="rus-team-stat-records-source">Source: Deseret News game statistics. '+esc(d.coverageNote||'Historical reporting may be incomplete.')+'</div>':
+   '<div class="rus-team-stat-records-empty"><strong>No additional Deseret News game-stat records available</strong><span>Historical listings above remain available where documented.</span></div>';
+ section.innerHTML=renderHead(team)+seasonHTML+feltHTML+historicalError+deseretHTML;
+ mount(section,'team-records','Team Records');
+ return true;
 }
 let started=false;
 function startForTeamRecords(event){
   const requested=event?.detail?.key||new URLSearchParams(location.search).get('tab');
   if(requested!=='team-records'||started)return;
   started=true;
-  install();
+  install().then(ok=>{if(!ok)started=false}).catch(error=>{
+    started=false;
+    console.error('Team Records loader failed:',error);
+    const panel=document.getElementById('rus-panel-team-records');
+    const empty=panel?.querySelector('.rus-tab-empty');
+    if(empty)empty.textContent='Team Records could not be loaded. Refresh the page to retry.';
+    const section=document.getElementById('rusTeamStatRecords');
+    if(section)section.innerHTML='<div class="rus-team-stat-records-empty">Team Records could not finish loading. Refresh the page to retry.</div>';
+  });
 }
 document.addEventListener('rus-team-tab-shown',startForTeamRecords);
 startForTeamRecords();
