@@ -12,7 +12,7 @@ function wanted(){const q=(new URLSearchParams(location.search).get('tab')||'').
 const lazyTabScripts={
   'coaches':[['team-coaches.js?v=20260921-load-audit2','rusTeamCoaches'],['team-coaches-tab.js?v=20260921-load-audit2','rusTeamCoachesTab']],
   'streaks':[['team-streaks-tab.js?v=20260921-load-audit2','rusTeamStreaksTab']],
-  'team-records':[['team-stat-records.js?v=20261118-season-scoring-records1','rusTeamStatRecords']],
+  'team-records':[['team-stat-records.js?v=20261123-george-felt-team-records1','rusTeamStatRecords']],
   'player-records':[['team-player-records.js?v=20261020-school-colors1','rusPlayerRecords'],['player-records-mode-toggle.js?v=20260921-load-audit2','rusPlayerRecordsMode']]
 };
 function ensureLazyTabScripts(key){
