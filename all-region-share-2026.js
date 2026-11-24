@@ -27,7 +27,7 @@ function collect(snap,scopeName){
  const contexts=scoring?.buildTeamContexts?.(snap.standings,snap.stateTop25);
  for(const [school,entry] of Object.entries(snap.data?.teams||{})){
   if(!teamList.has(key(school)))continue;
-  const live=typeof data!=='undefined'?Object.entries(data?.teams||{}).find(([name])=>key(name)===key(school))?.[1]:null;
+  const live=typeof regularPublication!=='undefined'?Object.entries(regularPublication?.teams||{}).find(([name])=>key(name)===key(school))?.[1]:null;
   const years=new Map((live?.roster||[]).map(p=>[p.playerId,abbrev(p.class)]));
   for(const p of entry.roster||[]){
    const id=p.playerId||school+'|'+p.number+'|'+p.name;
