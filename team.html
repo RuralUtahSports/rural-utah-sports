@@ -11,7 +11,7 @@
 <script>
 (()=>{
   'use strict';
-  const VERSION='20261123-felt-preview2';
+  const VERSION='20261123-felt-tabfix4';
   const copyScript=old=>new Promise(resolve=>{
     const s=document.createElement('script');
     for(const a of old.attributes)s.setAttribute(a.name,a.value);
@@ -34,7 +34,7 @@
       // Direct preview links should load Team Records independently of the lazy-tab loader.
       // Keep lazy loading when visitors navigate to the tab from another section.
       if(new URLSearchParams(location.search).get('tab')==='team-records'){
-        html=html.replace('</body>','<script src="team-stat-records.js?v=20261123-eager-preview2" data-rus-team-stat-records="1"><\/script></body>');
+        html=html.replace('</body>','<script src="team-stat-records.js?v=20261123-teamrecords-syntaxfix" data-rus-team-stat-records="1"><\/script></body>');
       }
 
       const parsed=new DOMParser().parseFromString(html,'text/html');
