@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {applyStoredMuseRecovery} from './apply_muse_postseason_2026.mjs';
 import {createRequire} from 'node:module';
 import {postseasonFinals} from './lib/postseason-finals-2026.mjs';
 import {teamKey} from './lib/competition-scope-2026.mjs';
@@ -36,6 +37,8 @@ const gameStats=read('player-game-stats-2026.json');
  }))};
  const reported=primary.applyPrimary(roster,eligible,read('teams-data.json')).data;
  hunt.apply(reported);
+ const muse=applyStoredMuseRecovery(gameStats,roster,read('official-brackets-2026.json'));
+ console.log('Muse display recovery:',JSON.stringify(muse));
  const mountain=Object.entries(gameStats.teams||{}).find(([name])=>teamKey(name)==='MOUNTAINRIDGE');
  if(mountain)hunt.applyGames(mountain[1]);
 
