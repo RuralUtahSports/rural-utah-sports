@@ -1,0 +1,41 @@
+name: Audit 2026 season-end MVP turnovers and playoff coverage
+on:
+  pull_request:
+    paths:
+      - 'scripts/audit_season_end_mvp_turnovers_2026.mjs'
+      - 'scripts/build_team_current_shards.mjs'
+      - 'scripts/protect_regular_season_import_2026.mjs'
+      - 'award-postseason-turnovers-2026.js'
+      - '.github/workflows/audit-season-end-mvp-2026.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compare old and new MVP leaders on identical inputs
+        run: |
+          node --test tests/postseason-turnover-scoring-2026.test.cjs tests/postseason-coverage-2026.test.mjs
+          node scripts/audit_season_end_mvp_turnovers_2026.mjs
+      - name: Verify rebuilt Mountain Ridge display
+        run: |
+          node scripts/build_team_current_shards.mjs
+          node - <<'NODE'
+          const s=require('./team-current-data/mountain-ridge.json');
+          const p=s.rosterStats.stats.find(x=>x.category==='Passing').rows.find(r=>r.playerId==='mountain-ridge-11-jaxon-hunt');
+          const game=s.gameStats.games.find(g=>g.date==='2026-11-12'&&g.opponent.toUpperCase()==='CORNER CANYON');
+          const line=game.players.find(x=>x.playerId===p.playerId).statLines.find(l=>l.category==='Passing');
+          if(String(p.values.YARDS)!=='4275'||String(p.values.TD)!=='53'||String(line.values.Int)!=='7')throw Error('Reviewed postseason display was not preserved');
+          console.log('Mountain Ridge postseason display verified');
+          NODE
+          git diff --exit-code -- deseret-rosters-stats-2026.json player-game-stats-2026.json region-awards-2026.lock.json regular-season-publication-2026.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 2026-mvp-turnover-comparison
+          path: audit-output/

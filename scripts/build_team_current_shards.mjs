@@ -1,4 +1,9 @@
 import fs from 'node:fs';
+import {applyStoredMuseRecovery} from './apply_muse_postseason_2026.mjs';
+import {createRequire} from 'node:module';
+import {postseasonFinals} from './lib/postseason-finals-2026.mjs';
+import {teamKey} from './lib/competition-scope-2026.mjs';
+const require=createRequire(import.meta.url);
 
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 const norm=value=>String(value??'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -17,6 +22,26 @@ const hasScore=value=>value!==null&&value!==undefined&&value!==''&&Number.isFini
 const current=read('deseret-team-data-2026.json');
 const roster=read('deseret-rosters-stats-2026.json');
 const gameStats=read('player-game-stats-2026.json');
+ // Rebuild reported full-season display from the source cache each time;
+ // canonical reviewed regular-season totals are not rewritten.
+ const primary=require('../maxpreps-primary-reported-2026.js');
+ const hunt=require('../reviewed-hunt-postseason-2026.js');
+ const lastPlayoff=new Map();
+ for(const g of postseasonFinals(read('official-brackets-2026.json')))for(const t of [g.awayTeam,g.homeTeam]){
+  const key=teamKey(t);if(!lastPlayoff.has(key)||lastPlayoff.get(key)<g.date)lastPlayoff.set(key,g.date);
+ }
+ const cache=read('maxpreps-stats-fallback-2026.json');
+ const eligible={...cache,teams:Object.fromEntries(Object.entries(cache.teams||{}).filter(([name,provider])=>{
+  const key=teamKey(name),last=lastPlayoff.get(key),stamp=Date.parse(provider.lastUpdated||'');
+  return key!=='WHITEHORSE'&&Boolean(last)&&Number.isFinite(stamp)&&new Date(stamp).toISOString().slice(0,10)>=last;
+ }))};
+ const reported=primary.applyPrimary(roster,eligible,read('teams-data.json')).data;
+ hunt.apply(reported);
+ const muse=applyStoredMuseRecovery(gameStats,roster,read('official-brackets-2026.json'));
+ console.log('Muse display recovery:',JSON.stringify(muse));
+ const mountain=Object.entries(gameStats.teams||{}).find(([name])=>teamKey(name)==='MOUNTAINRIDGE');
+ if(mountain)hunt.applyGames(mountain[1]);
+
 const details=read('deseret-game-details.json');
 const standings=read('standings-2026.json');
 const weekly=read('weekly-simulation.json');
@@ -84,7 +109,7 @@ function mergedStanding(base,key){
 fs.mkdirSync('team-current-data',{recursive:true});
 let built=0,supplemented=0;
 for(const key of keys){
-  const rawTeam=find(current.teams,key),rosterStats=find(roster.teams,key),playerGames=find(gameStats.teams,key);
+  const rawTeam=find(current.teams,key),rosterStats=find(reported.teams,key),playerGames=find(gameStats.teams,key);
   const team=mergeSchedule(rawTeam,key);
   const name=team?.team||rosterStats?.team||playerGames?.team||key;
   const urls=new Set((team?.schedule||[]).map(game=>game?.gameUrl).filter(Boolean));

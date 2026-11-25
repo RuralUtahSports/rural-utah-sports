@@ -1,6 +1,9 @@
 import {createCompetitionIndex} from './lib/competition-scope-2026.mjs';
 import {loadReviewedBatches} from './lib/reviewed-batches-2026.mjs';
 import fs from 'node:fs';
+import {applyStoredMuseRecovery} from './apply_muse_postseason_2026.mjs';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url);
 import path from 'node:path';
 import {retainSeasonStatistics,retainVerifiedGameCells,retainReportedGameCells} from './lib/regular-season-import-2026.mjs';
 import {applyVerifiedPlayerBatch} from './lib/verified-player-corrections-2026.mjs';
@@ -22,6 +25,19 @@ for(const batch of batches){
  result={...next,changes:[...result.changes,...next.changes]};
 }
 for(const batch of batches)if(applyVerifiedPlayerBatch(result.rosters,result.games,batch,{brackets:read('official-brackets-2026.json'),review:read('competition-scope-review-2026.json')}).changes.length)throw Error('Correction batch is not stable');
+// Reapply the reviewed postseason-only Hunt correction after retaining prior
+// reported game cells; otherwise a fresh MaxPreps import can restore six INTs.
+const hunt=require('../reviewed-hunt-postseason-2026.js');
+const mountain=Object.entries(result.games.teams||{}).find(([name])=>String(name).toUpperCase().replace(/[^A-Z0-9]/g,'')==='MOUNTAINRIDGE');
+if(mountain){
+ const school=mountain[1],before=structuredClone(school.games||[]);
+ const allowed=g=>hunt.evidence.contests.some(c=>g.date===c.date&&String(g.opponent).toUpperCase().replace(/[^A-Z0-9]/g,'')===String(c.opponent).toUpperCase().replace(/[^A-Z0-9]/g,''));
+ hunt.applyGames(school);
+ const retainedRows=rows=>rows.filter(g=>!allowed(g)).map(g=>JSON.stringify(g)).sort();
+ if(JSON.stringify(retainedRows(before))!==JSON.stringify(retainedRows(school.games||[])))throw Error('Postseason correction changed unrelated games');
+}
+const muse=applyStoredMuseRecovery(result.games,result.rosters,read('official-brackets-2026.json'));
+console.log('Muse playoff recovery:',JSON.stringify(muse));
 // Validate every selected cell before replacing either output. A changed
 // identity or reviewed value fails the publishing job rather than guessing.
 fs.writeFileSync(file,JSON.stringify(result.rosters,null,2)+'\n');
