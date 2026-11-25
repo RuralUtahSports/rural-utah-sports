@@ -1,6 +1,7 @@
 import {createCompetitionIndex} from './lib/competition-scope-2026.mjs';
 import {loadReviewedBatches} from './lib/reviewed-batches-2026.mjs';
 import fs from 'node:fs';
+import {applyStoredMuseRecovery} from './apply_muse_postseason_2026.mjs';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 import path from 'node:path';
@@ -35,6 +36,8 @@ if(mountain){
  const retainedRows=rows=>rows.filter(g=>!allowed(g)).map(g=>JSON.stringify(g)).sort();
  if(JSON.stringify(retainedRows(before))!==JSON.stringify(retainedRows(school.games||[])))throw Error('Postseason correction changed unrelated games');
 }
+const muse=applyStoredMuseRecovery(result.games,result.rosters,read('official-brackets-2026.json'));
+console.log('Muse playoff recovery:',JSON.stringify(muse));
 // Validate every selected cell before replacing either output. A changed
 // identity or reviewed value fails the publishing job rather than guessing.
 fs.writeFileSync(file,JSON.stringify(result.rosters,null,2)+'\n');
