@@ -14,6 +14,7 @@ test('official bracket recovery excludes nonfinals and requires URL date for rol
 test('Hunt postseason evidence only fills reviewed games and preserves conflicting reported fields',()=>{
  const data={games:[]};hunt.applyGames(data);assert.equal(data.games.length,3);assert.equal(data.games[0].players[0].statLines[0].values.YARDS,'167');
  assert.equal(data.games[2].players[0].statLines[0].values.YARDS,'350');hunt.applyGames(data);assert.equal(data.games.length,3);
+ const passing=data.games[2].players[0].statLines[0];assert.equal(passing.values.Int,'7');assert.match(passing.statEvidence.Int.source,/deseret\.com/);passing.values.Int='6';hunt.applyGames(data);assert.equal(passing.values.Int,'7');passing.values.Int='8';hunt.applyGames(data);assert.equal(passing.values.Int,'8');
  data.games[0].players[0].statLines[0].values.YARDS='166';hunt.applyGames(data);assert.equal(data.games[0].players[0].statLines[0].values.YARDS,'166');
  assert.equal(hunt.apply({season:2025,teams:{}}),0);
 });
