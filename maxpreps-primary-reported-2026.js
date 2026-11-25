@@ -43,15 +43,59 @@
   if(n===null||!Number.isFinite(n))return null;
   return String(n);
  };
- function rosterMatch(roster,incoming){
+ function providerId(p){
+  return text(p?.athleteUrl).match(/[?&]athleteid=([0-9a-f-]{36})(?:&|$)/i)?.[1]?.toLowerCase()||'';
+ }
+ function rosterMatch(roster,incoming,providerNames){
   const jersey=text(incoming?.number),name=names(incoming?.name);
-  if(!jersey||!name.last||!name.first)return null;
+  if(!name.last||!name.first)return null;
   const matches=(roster||[]).filter(p=>{
    const r=names(p.name);
-   return p.playerId&&text(p.number)===jersey&&r.last===name.last&&r.first[0]===name.first[0]&&
+   return p.playerId&&jersey&&text(p.number)===jersey&&r.last===name.last&&r.first[0]===name.first[0]&&
     (name.first.length===1||r.first===name.first);
   });
-  return matches.length===1?matches[0]:null;
+  if(matches.length===1)return {member:matches[0],method:'jersey'};
+  if(matches.length||name.first.length<2||name.last.length<2)return null;
+  // Full-name fallback only for a unique, stable MaxPreps athlete identity
+  // and a unique exact full name on the same school's roster.
+  const ids=providerNames.get(name.full);
+  if(!providerId(incoming)||ids?.size!==1||!ids.has(providerId(incoming)))return null;
+  const exact=(roster||[]).filter(p=>p.playerId&&names(p.name).full===name.full);
+  if(exact.length!==1)return null;
+  return {member:exact[0],method:'full-name'};
+ }
+ function reconcileRates(row,section,category,accepted,summary){
+  const vals=row.values||{},source=row.statSources||={};
+  const read=f=>{
+   if(!accepted.has(f))return null;
+   const keys=Object.keys(vals).filter(k=>field(k)===f);
+   const values=new Set(keys.map(k=>numberValue(f,vals[k])));
+   return values.size===1?[...values][0]:null;
+  };
+  const setRate=(f,label,required,compute)=>{
+   if(accepted.has(f)||!required.some(k=>accepted.has(k)))return;
+   const existing=Object.keys(vals).filter(k=>field(k)===f);
+   const operands=required.map(read);
+   // A rate cannot mix a regular-season denominator with a full-season numerator.
+   const n=operands.every(v=>v!==null)?compute(...operands):null;
+   if(n===null||!Number.isFinite(n)){
+    for(const k of existing)if(text(vals[k])!==''){vals[k]='';source[k]='Unavailable: incomplete MaxPreps operands';summary.clearedMixedScopeRates++;}
+    return;
+   }
+   const value=n.toFixed(2),keys=existing.length?existing:[label];
+   for(const k of keys){
+    if(number(vals[k])!==number(value))summary.recalculatedRates++;
+    vals[k]=value;source[k]='Calculated from MaxPreps reported totals';
+    if(!(section.headers||[]).some(h=>field(h)===f))(section.headers||=[]).push(k);
+   }
+  };
+  const ratio=(yards,count)=>Number(count)>0?Number(yards)/Number(count):null;
+  const comp=s=>String(s).split('-').map(Number);
+  if(category==='PASSING'){
+   setRate('COMP','COMP%',['COMPATT'],s=>{const [c,a]=comp(s);return a>0?100*c/a:null});
+   setRate('YARDSCOMP','YARDS/COMP.',['YARDS','COMPATT'],(y,s)=>ratio(y,comp(s)[0]));
+  }else if(category==='RUSHING')setRate('YARDSCARRY','YARDS/CARRY',['YARDS','CARRIES'],ratio);
+  else if(category==='RECEIVING')setRate('YARDSRECEP','YARDS/RECEP.',['YARDS','RECEPTIONS'],ratio);
  }
  function applyPrimary(reported,cache,metadata,options={}){
   if(reported?.season!==2026||cache?.season!==2026||!reported.teams||!cache.teams||!Array.isArray(metadata))
@@ -60,21 +104,29 @@
   const classMap=new Map(metadata.map(m=>[norm(m.team),text(m.classification)]));
   const summary={schoolsInScope:0,schoolsWithMaxPreps:0,playerCategoriesMatched:0,
    preferredFields:0,overwrittenFields:0,addedFields:0,sameValueFields:0,deseretFallbackFields:0,
-   missingOrAmbiguousPlayer:0,conflictingProviderFields:0,invalidProviderValues:0,staleOrUndatedSchools:0};
+   missingOrAmbiguousPlayer:0,conflictingProviderFields:0,invalidProviderValues:0,staleOrUndatedSchools:0,whitehorseExcluded:0,fullNameMatchedRows:0,duplicateAliasesReconciled:0,recalculatedRates:0,clearedMixedScopeRates:0};
   for(const [teamName,school] of Object.entries(output.teams)){
    if(options.targetTeam&&norm(teamName)!==norm(options.targetTeam))continue;
    if(!['6A','5A','4A','3A','2A','1A','8PLAYER','8P'].includes(norm(classMap.get(norm(teamName)))))continue;
+   if(norm(teamName)==='WHITEHORSE'){summary.whitehorseExcluded++;continue;}
    summary.schoolsInScope++;
    const providers=Object.entries(cache.teams).filter(([k])=>norm(k)===norm(teamName));
    if(providers.length!==1||!isMaxpreps(providers[0][1].sourceUrl))continue;
    const provider=providers[0][1];if(!Array.isArray(provider.rows))continue;
    if(!completeSource(provider)){summary.staleOrUndatedSchools++;continue;}
    summary.schoolsWithMaxPreps++;
-   const group=new Map();
+   const group=new Map(),providerNames=new Map();
+   for(const p of provider.rows){
+    const n=names(p.name).full,ids=providerNames.get(n)||new Set();
+    // Missing IDs are deliberately a separate observation and block name-only matching.
+    ids.add(providerId(p));providerNames.set(n,ids);
+   }
    for(const p of provider.rows){
     const c=cat(p.category);if(!c)continue;
-    const member=rosterMatch(school.roster,p);
-    if(!member){summary.missingOrAmbiguousPlayer++;continue}
+    const match=rosterMatch(school.roster,p,providerNames);
+    if(!match){summary.missingOrAmbiguousPlayer++;continue}
+    const member=match.member;
+    if(match.method==='full-name')summary.fullNameMatchedRows++;
     const key=member.playerId+'|'+c;
     const entry=group.get(key)||{member,c,fields:new Map()};
     for(const [h,raw] of Object.entries(p.values||{})){
@@ -106,31 +158,32 @@
      created=true;
     }
     summary.playerCategoriesMatched++;
-    let added=0;
+    let added=0;const accepted=new Set();
     for(const [f,cell] of entry.fields){
      if(cell.values.size!==1){summary.conflictingProviderFields++;continue}
      const sourceValue=[...cell.values][0];
      const existingKeys=Object.keys(row.values||{}).filter(k=>field(k)===f);
-     if(existingKeys.length>1){
-      // A duplicated local alias can silently display the stale number;
-      // do not rewrite unless the row can be made unambiguous.
-      summary.conflictingProviderFields++;continue;
-     }
-     const k=existingKeys[0]||cell.header,prior=row.values?.[k];
-     const oldText=text(prior);
-     if(oldText&&numberValue(f,oldText)===sourceValue){
-      summary.sameValueFields++;
+     // A single unambiguous MaxPreps field resolves every spelling/case alias.
+     const keys=existingKeys.length?existingKeys:[cell.header];
+     if(keys.length>1)summary.duplicateAliasesReconciled++;
+     accepted.add(f);
+     for(const k of keys){
+      const oldText=text(row.values?.[k]);
+      if(oldText&&numberValue(f,oldText)===sourceValue){
+       summary.sameValueFields++;
+       (row.statSources||={})[k]='MaxPreps (preferred reported; phase unverified)';
+       continue;
+      }
+      if(oldText)summary.overwrittenFields++;
+      else summary.addedFields++;
+      (row.values||={})[k]=sourceValue;
       (row.statSources||={})[k]='MaxPreps (preferred reported; phase unverified)';
-      continue;
+      if(!(section.headers||[]).some(h=>field(h)===f))(section.headers||=[]).push(k);
+      summary.preferredFields++;
+      added++;
      }
-     if(oldText)summary.overwrittenFields++;
-     else summary.addedFields++;
-     (row.values||={})[k]=sourceValue;
-     (row.statSources||={})[k]='MaxPreps (preferred reported; phase unverified)';
-     if(!(section.headers||[]).some(h=>field(h)===f))(section.headers||=[]).push(k);
-     summary.preferredFields++;
-     added++;
     }
+    reconcileRates(row,section,entry.c,accepted,summary);
     if(created&&added){section.rows.push(row)}
     else if(created&&!added){summary.missingOrAmbiguousPlayer++}
     // Every retained Deseret field not covered by MaxPreps remains unchanged.
