@@ -123,5 +123,67 @@
   }
   teamGames.games.sort((a,b)=>String(a.date).localeCompare(String(b.date)));return fields;
  }
- const api={apply,applyTeam,applyGames,evidence};if(typeof module==='object'&&module.exports)module.exports=api;else root.RUSHuntPostseason2026=api;
+ // Fiefia's MaxPreps leader row is explicitly 13 GP, not his 14-game season.
+// Championship report adds 21 carries / 104 yards / 2 TD. Never add twice.
+// The stored pre-final rushing game lines sum to 47 TD (one above the
+// reported 46), so do not rewrite the reviewed regular-season game lines.
+const fiefiaEvidence={
+ team:'RIDGELINE',id:'ridgeline-30-noah-fiefia',name:'Noah Fiefia',number:'30',
+ date:'2026-11-20',opponent:'SKYLINE',teamScore:14,opponentScore:41,
+ url:'https://www.maxpreps.com/ut/football/game/ridgeline-millville-vs-skyline-salt-lake-city/11-20-2026/?c=a15bef87-f472-4538-b92b-860115ce78ae',
+ preFinalSource:'https://www.maxpreps.com/ut/football/26-27/region/4a-region-11/stat-leaders/offense/rushing/yds-g/?leagueid=016c0ce1-12c8-44f4-bbbc-52bf8e5b9a2f',
+ preFinalTDSource:'https://www.deseret.com/sports/2026/11/19/utah-byu-recruits-to-watch-utah-high-school-football-championships/',
+ gameSource:'https://www.deseret.com/sports/2026/11/21/high-school-football-4a-state-championship-ridgeline-skyline/',
+ tdSource:'https://sports.ksl.com/prep/championship-football-friday/579084',
+ game:{CARRIES:'21',YARDS:'104',TD:'2'},
+ preFinal:{CARRIES:'260',YARDS:'2701',TD:'46',games:13},
+ totals:{CARRIES:'281',YARDS:'2805','YARDS/CARRY':'9.98',TD:'48'},
+ reviewedAsOf:'2026-11-25',
+ note:'13-game MaxPreps baseline plus championship reporting. Deseret pregame yardage/carries differ slightly; retain the MaxPreps baseline. KSL confirms 48 rushing TD. Stored pre-final game TD sum differs by one; do not alter locked regular-season values to force agreement.'
+};
+const fiefiaMatch=p=>p.playerId===fiefiaEvidence.id&&norm(p.name)===norm(fiefiaEvidence.name)&&String(p.number)===fiefiaEvidence.number;
+function applyFiefiaTeam(school){
+ if(!school||(school.roster||[]).filter(fiefiaMatch).length!==1)return 0;
+ const sections=(school.stats||[]).filter(s=>norm(s.category)==='RUSHING');if(sections.length!==1)return 0;
+ const section=sections[0],rows=(section.rows||[]).filter(fiefiaMatch);if(rows.length!==1)return 0;
+ const row=rows[0];row.values||={};row.statSources||={};row.statEvidence||={};
+ let n=0;
+ for(const [field,value] of Object.entries(fiefiaEvidence.totals)){
+  const key=keyFor(row.values,field);
+  row.values[key]=value;
+  row.statSources[key]='MaxPreps + championship report (reviewed)';
+  row.statEvidence[key]={scope:'reported-season-including-playoffs',games:14,source:field==='TD'?fiefiaEvidence.tdSource:fiefiaEvidence.gameSource,baselineSource:fiefiaEvidence.preFinalSource,note:fiefiaEvidence.note,reviewedAsOf:fiefiaEvidence.reviewedAsOf};
+  section.headers||=[];if(!section.headers.some(h=>norm(h)===norm(key)))section.headers.push(key);n++;
+ }
+ return n;
+}
+function applyFiefia(payload){
+ if(payload?.season!==2026||!payload.teams)return 0;
+ const hits=Object.entries(payload.teams).filter(([k])=>norm(k)==='RIDGELINE');
+ return hits.length===1?applyFiefiaTeam(hits[0][1]):0;
+}
+function applyFiefiaGames(teamGames){
+ if(!teamGames||!Array.isArray(teamGames.games))return 0;
+ if(teamGames.team&&norm(teamGames.team)!=='RIDGELINE')return 0;
+ const e=fiefiaEvidence,hits=teamGames.games.filter(g=>String(g.date)===e.date&&norm(g.opponent)===norm(e.opponent));
+ if(hits.length>1)return 0;
+ let g=hits[0];
+ if(!g){g={date:e.date,opponent:e.opponent,teamScore:e.teamScore,opponentScore:e.opponentScore,location:'Neutral',url:e.url,maxprepsUrl:e.url,final:true,status:'Final',players:[],scoringPlays:[],manualPartialStats:true};teamGames.games.push(g);}
+ if(Number(g.teamScore)!==e.teamScore||Number(g.opponentScore)!==e.opponentScore)return 0;
+ g.players||=[];const people=g.players.filter(p=>p.playerId===e.id||norm(p.name)===norm(e.name)&&String(p.number)===e.number);
+ if(people.length>1||people.length===1&&!fiefiaMatch(people[0]))return 0;
+ let p=people[0];if(!p){p={playerId:e.id,name:e.name,number:e.number,statLines:[],scoringPlays:[]};g.players.push(p);}
+ const lines=(p.statLines||[]).filter(l=>norm(l.category)==='RUSHING');if(lines.length>1)return 0;
+ let l=lines[0];if(!l){l={category:'Rushing',values:{},statSources:{}};(p.statLines||=[]).push(l);}
+ l.values||={};l.statSources||={};l.statEvidence||={};let n=0;
+ for(const [field,value] of Object.entries(e.game)){
+  const key=keyFor(l.values,field),prior=l.values[key];
+  if(prior!==undefined&&prior!==null&&String(prior).trim()!==''&&String(prior)!==value)continue;
+  l.values[key]=value;l.statSources[key]=field==='TD'?'KSL championship recap':'Deseret News championship recap';
+  l.statEvidence[key]={scope:'postseason',source:field==='TD'?e.tdSource:e.gameSource,partial:true};n++;
+ }
+ teamGames.games.sort((a,b)=>String(a.date).localeCompare(String(b.date)));return n;
+}
+const applyReported=payload=>apply(payload)+applyFiefia(payload);
+const api={apply:applyReported,applyTeam,applyGames,evidence,applyFiefia,applyFiefiaTeam,applyFiefiaGames,fiefiaEvidence};if(typeof module==='object'&&module.exports)module.exports=api;else root.RUSHuntPostseason2026=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
