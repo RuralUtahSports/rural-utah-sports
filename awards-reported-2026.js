@@ -24,8 +24,8 @@
     data=preferred.data;primary=preferred.summary.schoolsWithMaxPreps>0;
    }catch(e){console.warn('MaxPreps-first award source unavailable',e);}
   }
-  // Same late Whitehorse full-season correction as player profiles and stat leaders.
-  root.RUSWhitehorseLate2026?.apply(data);
+  // 2026 player stats are withheld pending source review; preserve raw inputs and locked awards.
+  data={...data,teams:Object.fromEntries(Object.entries(data.teams).filter(([team])=>String(team).toUpperCase().replace(/[^A-Z0-9]/g,'')!=='WHITEHORSE'))};
   root.RUSHuntPostseason2026?.apply(data);
   const teamsWithStats=Object.values(data.teams).filter(t=>(t.stats||[]).some(s=>(s.rows||[]).length)).length;
   if(!teamsWithStats)throw Error('No reported player statistics in 2026 award source');
