@@ -48,6 +48,7 @@
    filledFields:0,createdRows:0,ambiguousOrUnmatched:0,conflictingSourceFields:0,emptyOrInvalid:0,nonblankPreserved:0
   };
   for(const [teamName,team] of Object.entries(output.teams||{})){
+   if(compact(teamName)==='WHITEHORSE')continue; // Separate reviewed full-season source.
    stats.schoolsScanned++;
    const source=Object.entries(cache.teams||{}).filter(([name])=>compact(name)===compact(teamName));
    if(source.length!==1)continue;
