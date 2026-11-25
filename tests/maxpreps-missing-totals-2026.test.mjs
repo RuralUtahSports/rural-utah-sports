@@ -65,3 +65,10 @@ test('does not certify missing player totals as regular-season-only',()=>{
  const {data}=applyMissing(base().reported,base().cache);
  assert.equal(data.teams.A.stats[0].rows[1].statSources.YARDS.includes('unverified season scope'),true);
 });
+
+test('Whitehorse remains outside the generic missing-field fallback',()=>{
+ const {reported,cache}=base();
+ reported.teams.WHITEHORSE=structuredClone(reported.teams.A);
+ cache.teams.WHITEHORSE=structuredClone(cache.teams.A);
+ assert.deepEqual(applyMissing(reported,cache).data.teams.WHITEHORSE,reported.teams.WHITEHORSE);
+});

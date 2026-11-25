@@ -87,3 +87,44 @@ test('both pages apply source preference while keeping the protected verified pu
  assert.match(leaders,/MaxPreps first for uniquely matched players statewide/);
  assert.match(profile,/Uniquely matched MaxPreps statistics updated after the regular season/);
 });
+
+test('excludes Whitehorse from all generic source updates',()=>{
+ const {reported,cache}=sources();
+ reported.teams.WHITEHORSE=structuredClone(reported.teams.A);
+ cache.teams.WHITEHORSE=structuredClone(cache.teams.A);
+ const before=structuredClone(reported.teams.WHITEHORSE);
+ const {data,summary}=applyPrimary(reported,cache,[...meta,{team:'WHITEHORSE',classification:'8P'}]);
+ assert.deepEqual(data.teams.WHITEHORSE,before);
+ assert.equal(summary.whitehorseExcluded,1);
+});
+test('recalculates derived rates from matched MaxPreps operands and aligns duplicate aliases',()=>{
+ const {reported,cache}=sources();
+ const row=reported.teams.A.stats[0].rows[0];
+ row.values.INT='9';
+ row.values['YARDS/COMP.']='14.4';
+ delete cache.teams.A.rows[0].values['COMP%'];
+ const {data,summary}=applyPrimary(reported,cache,meta,{targetTeam:'A'});
+ const v=data.teams.A.stats[0].rows[0].values;
+ assert.equal(v['COMP%'],'60.87');
+ assert.equal(v['YARDS/COMP.'],'14.64');
+ assert.equal(v.Int,'2');assert.equal(v.INT,'2');
+ assert.equal(summary.duplicateAliasesReconciled,1);
+});
+test('unique full name and stable provider UUID can match changed jersey; ambiguous provider identity stays held',()=>{
+ const {reported,cache}=sources();
+ const incoming={category:'Passing',name:'Alex Jones',number:'77',athleteUrl:'/local/player/stats.aspx?athleteid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa&ssid=1',values:{YARDS:'2500','COMP-ATT':'200-300'}};
+ cache.teams.A.rows=[incoming];
+ let result=applyPrimary(reported,cache,meta,{targetTeam:'A'});
+ assert.equal(result.data.teams.A.stats[0].rows[0].values.YARDS,'2500');
+ assert.equal(result.summary.fullNameMatchedRows,1);
+ cache.teams.A.rows.push({...incoming,athleteUrl:'/local/player/stats.aspx?athleteid=bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb&ssid=1'});
+ result=applyPrimary(reported,cache,meta,{targetTeam:'A'});
+ assert.equal(result.data.teams.A.stats[0].rows[0].values.YARDS,'1800');
+});
+test('blank stale derived rate rather than mixing scopes when provider omits denominator',()=>{
+ const {reported,cache}=sources();
+ reported.teams.A.stats[0].rows[0].values['YARDS/COMP.']='14.4';
+ cache.teams.A.rows=[{category:'Passing',name:'Alex Jones',number:'9',values:{YARDS:'2500'}}];
+ const {data}=applyPrimary(reported,cache,meta,{targetTeam:'A'});
+ assert.equal(data.teams.A.stats[0].rows[0].values['YARDS/COMP.'],'');
+});
