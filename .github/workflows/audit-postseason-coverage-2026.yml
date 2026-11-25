@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'scripts/audit_postseason_player_coverage_2026.mjs'
+      - 'scripts/preview_postseason_recovery_2026.mjs'
       - 'scripts/lib/postseason-finals-2026.mjs'
       - 'scripts/merge_maxpreps_game_logs.mjs'
       - 'reviewed-hunt-postseason-2026.js'
@@ -21,7 +22,8 @@ jobs:
       - run: node --test tests/postseason-coverage-2026.test.mjs
       - run: node scripts/merge_maxpreps_game_logs.mjs --self-test
       - run: node scripts/audit_postseason_player_coverage_2026.mjs
+      - run: node scripts/preview_postseason_recovery_2026.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: 2026-postseason-player-coverage
-          path: audit-output/postseason-coverage-2026.json
+          path: audit-output/
