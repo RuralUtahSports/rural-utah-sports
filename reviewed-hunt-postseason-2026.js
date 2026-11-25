@@ -74,11 +74,13 @@
       "location": "Neutral",
       "url": "https://www.maxpreps.com/ut/football/game/corner-canyon-draper-vs-mountain-ridge-herriman/11-12-2026/?c=2f1acc8e-39bd-4a5f-96eb-da00cb6c7801",
       "source": "https://www.maxpreps.com/m/news/aCXb3wx_AE6SA894lgj_HA/football-recap-jaxon-hunts-td-throws-keep-coming.htm",
+      "interceptionSource": "https://www.deseret.com/sports/2026/11/17/high-school-football-6a-championship-preview-corner-canyon-skyridge/",
+      "interceptionNote": "Deseret explicitly reports seven interceptions thrown by Hunt; RUS editor confirmed. MaxPreps recap-derived prior value six and season total 13 remain a source discrepancy.",
       "lines": {
         "Passing": {
           "YARDS": "350",
           "TD": "2",
-          "Int": "6"
+          "Int": "7"
         },
         "Rushing": {
           "TD": "2"
@@ -116,7 +118,7 @@
    for(const [category,values] of Object.entries(contest.lines)){
     const lines=(p.statLines||[]).filter(l=>norm(l.category)===norm(category));if(lines.length>1)continue;
     let line=lines[0];if(!line){line={category,values:{},statSources:{}};(p.statLines||=[]).push(line);}
-    for(const [field,value] of Object.entries(values)){const key=keyFor(line.values,field);if(line.values[key]!==undefined&&String(line.values[key])!==''&&String(line.values[key])!==value)continue;(line.values||={})[key]=value;(line.statSources||={})[key]='Reviewed MaxPreps game recap';(line.statEvidence||={})[key]={source:contest.source,scope:'postseason'};fields++;}
+    for(const [field,value] of Object.entries(values)){const key=keyFor(line.values,field);const reviewedInt=Boolean(contest.interceptionSource&&norm(category)==='PASSING'&&norm(field)==='INT');const prior=line.values?.[key];if(prior!==undefined&&String(prior)!==''&&String(prior)!==value&&!(reviewedInt&&String(prior)==='6'))continue;(line.values||={})[key]=value;(line.statSources||={})[key]=reviewedInt?'Deseret News • editor-reviewed correction':'Reviewed MaxPreps game recap';(line.statEvidence||={})[key]={source:reviewedInt?contest.interceptionSource:contest.source,scope:'postseason',...(reviewedInt?{note:contest.interceptionNote}: {})};fields++;}
    }
   }
   teamGames.games.sort((a,b)=>String(a.date).localeCompare(String(b.date)));return fields;
