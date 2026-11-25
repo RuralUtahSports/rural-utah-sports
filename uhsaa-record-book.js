@@ -76,13 +76,8 @@ function mergedCategoryRows(cat){
   .filter(e=>teamFormat(e.team)===footballFormat&&Number(e.value)>=cutoff)
   .map(e=>({value:Number(e.value),name:e.player||'Player',school:e.team||'',detail:provisionalDetail(e),rusProvisional:true,gameUrl:e.gameUrl||'',date:e.date||'',opponent:e.opponent||''})));
  provisional.push(...seasonYardRows(cat,footballFormat,cutoff));
- // Coach-reported Whitehorse candidates; keep official UHSAA entries unchanged.
- if(footballFormat==='8-player'){
- const whitehorse=[["rush-yards-season","Hunter Tsinigine",2623,"2026"],["rushing-yards-career","Hunter Tsinigine",3321,"2025–2026"],["rushing-attempts-season","Hunter Tsinigine",227,"2026"],["rushing-attempts-career","Hunter Tsinigine",306,"2025–2026"],["rushing-average-yards-per-game-season","Hunter Tsinigine",238.5,"2026"],["rushing-average-yards-per-attempt-season-50-min-att","Hunter Tsinigine",11.56,"2026"],["rushing-100-yard-games-season","Hunter Tsinigine",11,"2026"],["rushing-consecutive-100-yard-games-season","Hunter Tsinigine",11,"2026"],["rushing-100-yard-games-career","Hunter Tsinigine",12,"2025–2026"],["receptions-season","Adam Joe",78,"2026"],["receptions-season","Dillion Leo",73,"2026"],["receptions-career","Adam Joe",114,"2025–2026"],["receiving-yards-career","Adam Joe",2275,"2025–2026"],["receiving-yards-season","Dillion Leo",1250,"2026"],["receiving-yards-season","Adam Joe",1157,"2026"],["receiving-receptions-per-game-season","Adam Joe",7.09,"2026"],["receiving-receptions-per-game-season","Dillion Leo",6.64,"2026"],["receiving-reception-yards-per-game-season","Dillion Leo",113.6,"2026"],["tackles-season","Hunter Tsinigine",141,"2026"],["tackles-season","Adam Joe",138,"2026"],["pass-yards-season","Tyrell Black",2095,"2026"]];
- for(const [id,name,value,years] of whitehorse){if(id!==cat.id||value<cutoff)continue;for(let i=provisional.length-1;i>=0;i--)if(compact(provisional[i].name)===compact(name)&&compact(provisional[i].school)==='WHITEHORSE')provisional.splice(i,1);provisional.push({name,school:'WHITEHORSE',value,detail:years+' • MaxPreps (Nov 18, 2026)',rusProvisional:true});}
- }
  const same=(a,b)=>Number(a.value)===Number(b.value)&&compact(a.name)===compact(b.name)&&compact(a.school)===compact(b.school);
- const unique=provisional.filter((p,i)=>!official.some(o=>same(o,p))&&!provisional.slice(0,i).some(o=>same(o,p)));
+ const unique=provisional.filter((p,i)=>compact(p.school)!=='WHITEHORSE'&&!official.some(o=>same(o,p))&&!provisional.slice(0,i).some(o=>same(o,p)));
  return [...official,...unique].sort((a,b)=>Number(b.value)-Number(a.value)||Number(Boolean(a.rusProvisional))-Number(Boolean(b.rusProvisional))||String(a.name).localeCompare(String(b.name)));
 }
 function currentCategories(){return (data?.categories||[]).filter(c=>c.group===group)}
