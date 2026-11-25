@@ -1,0 +1,41 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const scoring=require('../award-postseason-turnovers-2026.js');
+const html=fs.readFileSync('mvp-race.html','utf8');
+const page=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(m=>m[1]).find(x=>x.includes('function rankedRows('));
+const source=page.slice(0,page.indexOf('async function init()'));
+const evaluate=new Function('window',source+'\nreturn {build,rankedRows,set:(data,meta,contexts)=>{rosterData=data;teams=meta;teamContexts=contexts;},classMultiplier};');
+const player=(id,pos)=>({playerId:id,name:id,number:'1',position:pos});
+function school(players,sections){return{roster:players,stats:sections.map(([category,rows])=>({category,rows:rows.map(([p,values])=>({...p,values}))}))}}
+test('MVP Race uses postseason source and scoring, not the locked publication',()=>{
+ assert.match(html,/RUSAwardsReported2026\.loadReported\(\)/);
+ assert.match(html,/RUSPostseasonAwardScoring2026/);
+ assert.doesNotMatch(html,/fetch\(`regular-season-publication-2026\.json/);
+ const api=evaluate({RUSPostseasonAwardScoring2026:scoring});
+ const qb=player('qb','QB'),rb=player('rb','RB'),lb=player('lb','LB'),rural=player('rural','QB'),wh=player('whitehorse','QB');
+ const passing={YARDS:'2000',TD:'30',INT:'8'};
+ const rushing={YARDS:'1000',TD:'15','FUM LOST':'2'};
+ const defense={TACKLES:'50','PASS INT.':'2','CAUSED FUM':'2','FUM REC':'1'};
+ api.set({teams:{'SCHOOL A':school([qb,rb,lb],[['Passing',[[qb,passing]]],['Rushing',[[rb,rushing]]],['Defense/Special Teams',[[lb,defense]]]]),'SCHOOL B':school([rural],[['Passing',[[rural,{YARDS:'2500',TD:'35',INT:'4'}]]]]),WHITEHORSE:school([wh],[['Passing',[[wh,{YARDS:'99999',TD:'999'}]]]])}},[{team:'SCHOOL A',classification:'6A',region:'1'},{team:'SCHOOL B',classification:'1A',region:'1A North'},{team:'WHITEHORSE',classification:'8P'}],new Map());
+ const players=api.build();
+ assert.equal(players.length,4);
+ assert.equal(players.find(p=>p.id==='qb').off,scoring.sideScore('off',[{cat:'Passing',values:passing}],'QB'));
+ assert.equal(players.find(p=>p.id==='rb').off,scoring.sideScore('off',[{cat:'Rushing',values:rushing}],'RB'));
+ assert.equal(players.find(p=>p.id==='lb').def,scoring.sideScore('def',[{cat:'Defense/Special Teams',values:defense}],'LB'));
+ assert.equal(api.classMultiplier('6A'),1.18);
+ assert.equal(api.classMultiplier('8-Player'),.88);
+ assert.ok(!players.some(p=>p.team==='WHITEHORSE'));
+ const classWinner=api.rankedRows(players,'Overall','Classification','6A')[0];
+ for(const type of ['Offense','Defense'])assert.ok(!api.rankedRows(players,type,'Classification','6A').some(p=>p.id===classWinner.id));
+ const overall=api.rankedRows(players,'Overall','Statewide','')[0];
+ for(const type of ['Offense','Defense','Rural MVP','Big School MVP'])assert.ok(!api.rankedRows(players,type,'Statewide','').some(p=>p.id===overall.id));
+});
+test('size races compare raw scores and scope-specific overall winners',()=>{
+ const api=evaluate({RUSPostseasonAwardScoring2026:scoring});
+ const row=(id,cls,raw,w)=>({id,name:id,class:cls,regionKey:cls+'|1',overallRaw:raw,overall:w,off:raw,def:raw,offRawScore:raw,defRawScore:raw,offScore:w,defScore:w});
+ const rows=[row('state','6A',400,472),row('rural-a','3A',200,200),row('rural-b','1A',210,189),row('big-a','5A',220,250.8),row('big-b','4A',225,243)];
+ assert.equal(api.rankedRows(rows,'Rural MVP','Statewide','')[0].id,'rural-b');
+ assert.equal(api.rankedRows(rows,'Big School MVP','Statewide','')[0].id,'big-b');
+ assert.equal(api.rankedRows(rows,'Offense','Classification','6A').length,0);
+});
