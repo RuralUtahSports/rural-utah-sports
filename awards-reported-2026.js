@@ -26,6 +26,7 @@
   }
   // Same late Whitehorse full-season correction as player profiles and stat leaders.
   root.RUSWhitehorseLate2026?.apply(data);
+  root.RUSHuntPostseason2026?.apply(data);
   const teamsWithStats=Object.values(data.teams).filter(t=>(t.stats||[]).some(s=>(s.rows||[]).length)).length;
   if(!teamsWithStats)throw Error('No reported player statistics in 2026 award source');
   const contextAvailable=Boolean(standings&&root.RUSAwardScoring?.buildTeamContexts);

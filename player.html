@@ -21,6 +21,7 @@
 <script src="reviewed-whitehorse-late-2026.js?v=20261124-late1"></script>
 <script src="verified-player-stats-2026.js?v=20261023-alma-verified1"></script>
 <script src="regular-season-stat-policy-2026.js?v=20261027-gameidentity1"></script>
+<script src="reviewed-hunt-postseason-2026.js?v=20261124-postseason1"></script>
 <script src="reviewed-hunt-passing-2026.js?v=20261029-reviewed-hunt1"></script>
 <script src="maxpreps-primary-reported-2026.js?v=20261029-statewide1"></script>
 <script src="preview-stat-checks-2026.js?v=20261029-6a-preview1"></script>
@@ -80,7 +81,13 @@ if(seasonYear===2026&&id==='mountain-ridge-11-jaxon-hunt'){
  }catch(error){console.warn('Hunt passing yard correction needs re-review',error)}
 }
 if(seasonYear===2026&&id.startsWith('whitehorse-')){window.RUSWhitehorseLate2026?.apply(rosters);profile=findProfile(rosters,id);}
-render(profile,meta,gkey?games.teams[gkey]:null,seasonYear);
+let displayGames=gkey?games.teams[gkey]:null;
+if(seasonYear===2026&&id==='mountain-ridge-11-jaxon-hunt'){
+ window.RUSHuntPostseason2026?.apply(rosters);profile=findProfile(rosters,id);
+ displayGames||={team:profile.team,games:[]};window.RUSHuntPostseason2026?.applyGames(displayGames);
+}
+render(profile,meta,displayGames,seasonYear);
+if(seasonYear===2026&&id==='mountain-ridge-11-jaxon-hunt'){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>Full-season MaxPreps review:</strong> 4,275 passing yards and 53 TDs in 13 games. The three postseason game lines include independently reported fields only. The reviewed game-log passing sum differs from the coach season total by one yard; neither value has been manufactured to match.</p>';}
 if(seasonYear===2026&&id.startsWith('whitehorse-')){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>Whitehorse update:</strong> Selected cumulative stats reflect the November 18 MaxPreps coach update (11 games); available game logs are incomplete.</p>';}
 if(seasonYear===2026){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>Season to date:</strong> Playoff games are included when the reporting source has posted the updated cumulative total; missing playoff reports may leave the displayed total incomplete. The game log is shown separately and may lag behind cumulative sources.</p>';}
 if(maxprepsPreferred){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>2026 reported source order:</strong> Uniquely matched MaxPreps statistics updated after the regular season are preferred statewide. Older or undated snapshots never overwrite existing reports; Deseret News fills uncovered fields. These totals are not individually certified game-by-game.</p>';}
