@@ -17,3 +17,6 @@ test('Hunt postseason evidence only fills reviewed games and preserves conflicti
  data.games[0].players[0].statLines[0].values.YARDS='166';hunt.applyGames(data);assert.equal(data.games[0].players[0].statLines[0].values.YARDS,'166');
  assert.equal(hunt.apply({season:2025,teams:{}}),0);
 });
+
+import {mergeMaxPrepsGameLogs} from '../scripts/merge_maxpreps_game_logs.mjs';
+test('recover a verified playoff final absent from regular season schedule',()=>{const data={teams:{'MOUNTAIN RIDGE':{games:[]}}},row={date:'2026-11-13',opponent:'Corner Canyon',url:'https://www.maxpreps.com/ut/football/game/example/11-12-2026/',playerId:'hunt',name:'Jaxon Hunt',number:'11',statLines:[{category:'Passing',values:{YARDS:'350'}}]},finals=[{date:'2026-11-12',awayTeam:'Corner Canyon',homeTeam:'Mountain Ridge',actualAway:34,actualHome:28,classification:'6A',neutral:true,sourceUrl:'https://www.maxpreps.com/tournament/example'}];const result=mergeMaxPrepsGameLogs(data,{teams:{'MOUNTAIN RIDGE':{games:[row]}}},null,null,[],{playoffFinals:finals});assert.equal(result.gamesAdded,1);const g=data.teams['MOUNTAIN RIDGE'].games[0];assert.equal(g.date,'2026-11-12');assert.equal(g.location,'Neutral');assert.equal(g.teamScore,28);assert.equal(g.players[0].statLines[0].values.YARDS,'350');});
