@@ -21,7 +21,7 @@
 <script src="reviewed-whitehorse-late-2026.js?v=20261124-late1"></script>
 <script src="verified-player-stats-2026.js?v=20261023-alma-verified1"></script>
 <script src="regular-season-stat-policy-2026.js?v=20261027-gameidentity1"></script>
-<script src="reviewed-hunt-postseason-2026.js?v=20261124-postseason1"></script>
+<script src="reviewed-hunt-postseason-2026.js?v=20261125-fiefia1"></script>
 <script src="reviewed-hunt-passing-2026.js?v=20261029-reviewed-hunt1"></script>
 <script src="maxpreps-primary-reported-2026.js?v=20261029-statewide1"></script>
 <script src="preview-stat-checks-2026.js?v=20261029-6a-preview1"></script>
@@ -86,7 +86,12 @@ if(seasonYear===2026&&id==='mountain-ridge-11-jaxon-hunt'){
  window.RUSHuntPostseason2026?.apply(rosters);profile=findProfile(rosters,id);
  displayGames||={team:profile.team,games:[]};window.RUSHuntPostseason2026?.applyGames(displayGames);
 }
+if(seasonYear===2026&&id==='ridgeline-30-noah-fiefia'){
+ window.RUSHuntPostseason2026?.applyFiefia(rosters);profile=findProfile(rosters,id);
+ displayGames||={team:profile.team,games:[]};window.RUSHuntPostseason2026?.applyFiefiaGames(displayGames);
+}
 render(profile,meta,displayGames,seasonYear);
+if(seasonYear===2026&&id==='ridgeline-30-noah-fiefia'){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>Championship correction:</strong> 48 rushing TDs, 281 carries and 2,805 yards from the 13-game MaxPreps baseline plus independently reported title-game statistics (21 carries, 104 yards, 2 TDs). Earlier game logs contain a one-TD discrepancy; the season total is not inferred from those logs.</p>';}
 if(seasonYear===2026&&id==='mountain-ridge-11-jaxon-hunt'){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>Full-season MaxPreps review:</strong> 4,275 passing yards and 53 TDs in 13 games. The three postseason game lines include independently reported fields only. The reviewed game-log passing sum differs from the coach season total by one yard; neither value has been manufactured to match.</p>';}
 
 if(seasonYear===2026){const note=document.querySelector('.source-note');if(note)note.innerHTML+='<p><strong>Season to date:</strong> Playoff games are included when the reporting source has posted the updated cumulative total; missing playoff reports may leave the displayed total incomplete. The game log is shown separately and may lag behind cumulative sources.</p>';}
