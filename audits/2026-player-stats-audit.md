@@ -1,102 +1,102 @@
 # 2026 Football Player Statistics Audit
 
-Generated: 2026-11-25T01:41:48.176Z
+Generated: 2026-11-25T03:19:46.011Z
 
 **118 schools · 6440 roster IDs · 4065 athletes with reported stats · 6926 category rows.**
 
 ## Coverage
 - 2495 rostered athletes lack an individual season stat row (not necessarily a reporting error)
 - 2 teams have no season stats: MONUMENT VAL, UMA-HILLFIELD
-- 1095 finalized team-game logs include player stats
+- 1247 finalized team-game logs include player stats
 - 1 failed school stats fetches
 - 168 stat rows have IDs missing from their own roster (may be MaxPreps-only entries)
 
 ## Review flags
-- SEASON_GT_AVAILABLE_GAME_LOG: 581
-- GAME_SUM_EXCEEDS_SEASON: 560
+- GAME_SUM_EXCEEDS_SEASON: 3499
+- SEASON_GT_AVAILABLE_GAME_LOG: 282
 - RECEIVING_RATE_MISMATCH: 2
 
 ## Highest-priority examples
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Hunter Tsinigine; {"category":"Rushing","field":"YARDS","season":379,"gameLogSum":2372,"difference":1993}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Tyrell Black; {"category":"Passing","field":"YARDS","season":281,"gameLogSum":1997,"difference":1716}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Dillion Leo; {"category":"Receiving","field":"YARDS","season":108,"gameLogSum":1170,"difference":1062}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Adam Joe; {"category":"Receiving","field":"YARDS","season":166,"gameLogSum":1062,"difference":896}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Hunter Tsinigine; {"category":"Rushing","field":"YARDS","season":379,"gameLogSum":2606,"difference":2227}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Tyrell Black; {"category":"Passing","field":"YARDS","season":281,"gameLogSum":2095,"difference":1814}
+- **GAME_SUM_EXCEEDS_SEASON** SKYRIDGE — Jagger Fountaine; {"category":"Passing","field":"YARDS","season":2305,"gameLogSum":3526,"difference":1221}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Dillion Leo; {"category":"Receiving","field":"YARDS","season":108,"gameLogSum":1250,"difference":1142}
+- **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Jaxon Hunt; {"category":"Passing","field":"YARDS","season":3164,"gameLogSum":4278,"difference":1114}
+- **GAME_SUM_EXCEEDS_SEASON** LOGAN — Easton Favero; {"category":"Passing","field":"YARDS","season":3114,"gameLogSum":4194,"difference":1080}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Adam Joe; {"category":"Receiving","field":"YARDS","season":166,"gameLogSum":1157,"difference":991}
+- **GAME_SUM_EXCEEDS_SEASON** OREM — Tanner Lewis; {"category":"Passing","field":"YARDS","season":1070,"gameLogSum":2023,"difference":953}
+- **GAME_SUM_EXCEEDS_SEASON** CORNER CANYON — Jaxon Pehrson; {"category":"Passing","field":"YARDS","season":1595,"gameLogSum":2444,"difference":849}
+- **GAME_SUM_EXCEEDS_SEASON** SAN JUAN — Beau Yeomans; {"category":"Passing","field":"YARDS","season":2515,"gameLogSum":3349,"difference":834}
+- **GAME_SUM_EXCEEDS_SEASON** SKYLINE — Tate Johnson; {"category":"Passing","field":"YARDS","season":1882,"gameLogSum":2645,"difference":763}
+- **GAME_SUM_EXCEEDS_SEASON** WEST — Kamden Lopati; {"category":"Passing","field":"YARDS","season":2666,"gameLogSum":3384,"difference":718}
+- **GAME_SUM_EXCEEDS_SEASON** MILFORD — Braxton Hansen; {"category":"Passing","field":"YARDS","season":1411,"gameLogSum":2118,"difference":707}
+- **GAME_SUM_EXCEEDS_SEASON** SKYLINE — Jonah Mailei; {"category":"Rushing","field":"YARDS","season":709,"gameLogSum":1400,"difference":691}
+- **GAME_SUM_EXCEEDS_SEASON** MORGAN — Owen Gilson; {"category":"Passing","field":"YARDS","season":2409,"gameLogSum":3051,"difference":642}
+- **GAME_SUM_EXCEEDS_SEASON** SAN JUAN — Brigg Palmer; {"category":"Rushing","field":"YARDS","season":1619,"gameLogSum":2202,"difference":583}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Colton Johns; {"category":"Passing","field":"YARDS","season":1171,"gameLogSum":1751,"difference":580}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Jacoby Long; {"category":"Rushing","field":"YARDS","season":2,"gameLogSum":450,"difference":448}
+- **GAME_SUM_EXCEEDS_SEASON** SALEM HILLS — Cash Hollingshead; {"category":"Passing","field":"YARDS","season":2645,"gameLogSum":3225,"difference":580}
+- **GAME_SUM_EXCEEDS_SEASON** HERRIMAN — Filisi Filipe; {"category":"Rushing","field":"YARDS","season":1376,"gameLogSum":1954,"difference":578}
+- **GAME_SUM_EXCEEDS_SEASON** CRIMSON CLIFFS — Tanoai Andresen; {"category":"Passing","field":"YARDS","season":1901,"gameLogSum":2476,"difference":575}
+- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Crew Allred; {"category":"Passing","field":"YARDS","season":557,"gameLogSum":1130,"difference":573}
+- **GAME_SUM_EXCEEDS_SEASON** RIDGELINE — Noah Fiefia; {"category":"Rushing","field":"YARDS","season":2151,"gameLogSum":2701,"difference":550}
+- **GAME_SUM_EXCEEDS_SEASON** SPRINGVILLE — Beckett Burton; {"category":"Passing","field":"YARDS","season":1570,"gameLogSum":2065,"difference":495}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Jacoby Long; {"category":"Rushing","field":"YARDS","season":2,"gameLogSum":495,"difference":493}
+- **GAME_SUM_EXCEEDS_SEASON** RICH — Wilkes Weston; {"category":"Passing","field":"YARDS","season":1539,"gameLogSum":2009,"difference":470}
+- **GAME_SUM_EXCEEDS_SEASON** BOUNTIFUL — Hudson Malmrose; {"category":"Passing","field":"YARDS","season":1821,"gameLogSum":2287,"difference":466}
+- **GAME_SUM_EXCEEDS_SEASON** OREM — Beckham Curtis; {"category":"Rushing","field":"YARDS","season":1109,"gameLogSum":1549,"difference":440}
+- **GAME_SUM_EXCEEDS_SEASON** JUAB — Price Armstrong; {"category":"Passing","field":"YARDS","season":2784,"gameLogSum":3223,"difference":439}
+- **GAME_SUM_EXCEEDS_SEASON** HURRICANE — Titan Borchardt; {"category":"Rushing","field":"YARDS","season":1046,"gameLogSum":1478,"difference":432}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Chris Munroe; {"category":"Rushing","field":"YARDS","season":886,"gameLogSum":1315,"difference":429}
+- **GAME_SUM_EXCEEDS_SEASON** DELTA — Bodey Shurtz; {"category":"Passing","field":"YARDS","season":623,"gameLogSum":1043,"difference":420}
+- **GAME_SUM_EXCEEDS_SEASON** HIGHLAND — Will Bauman; {"category":"Passing","field":"YARDS","season":1706,"gameLogSum":2126,"difference":420}
+- **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Tyson Dunn; {"category":"Rushing","field":"YARDS","season":496,"gameLogSum":915,"difference":419}
+- **GAME_SUM_EXCEEDS_SEASON** CORNER CANYON — Jackson Carruth; {"category":"Rushing","field":"YARDS","season":977,"gameLogSum":1390,"difference":413}
+- **GAME_SUM_EXCEEDS_SEASON** HERRIMAN — Bryson Sweeney; {"category":"Passing","field":"YARDS","season":1731,"gameLogSum":2141,"difference":410}
+- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Jesse Clegg; {"category":"Receiving","field":"YARDS","season":297,"gameLogSum":706,"difference":409}
+- **GAME_SUM_EXCEEDS_SEASON** ALTA — Xavier Cocci; {"category":"Passing","field":"YARDS","season":1560,"gameLogSum":1965,"difference":405}
+- **GAME_SUM_EXCEEDS_SEASON** RICH — Wilkes Weston; {"category":"Rushing","field":"YARDS","season":967,"gameLogSum":1369,"difference":402}
+- **GAME_SUM_EXCEEDS_SEASON** OREM — Brooks Ross; {"category":"Receiving","field":"YARDS","season":575,"gameLogSum":976,"difference":401}
 - **GAME_SUM_EXCEEDS_SEASON** BEN LOMOND — DaShawn Gordan; {"category":"Rushing","field":"YARDS","season":26,"gameLogSum":420,"difference":394}
+- **GAME_SUM_EXCEEDS_SEASON** RIDGELINE — Crew Cox; {"category":"Passing","field":"YARDS","season":1783,"gameLogSum":2175,"difference":392}
+- **GAME_SUM_EXCEEDS_SEASON** SYRACUSE — Ledger Wight; {"category":"Passing","field":"YARDS","season":1821,"gameLogSum":2208,"difference":387}
+- **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Deagan Williams; {"category":"Passing","field":"YARDS","season":1073,"gameLogSum":1456,"difference":383}
+- **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Brandtson Mack; {"category":"Receiving","field":"YARDS","season":559,"gameLogSum":940,"difference":381}
+- **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Tytan DeJong; {"category":"Receiving","field":"YARDS","season":692,"gameLogSum":1070,"difference":378}
 - **GAME_SUM_EXCEEDS_SEASON** KEARNS — Mason Rodarte; {"category":"Passing","field":"YARDS","season":134,"gameLogSum":506,"difference":372}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Cayden Leo; {"category":"Passing","field":"YARDS","season":20,"gameLogSum":330,"difference":310}
+- **GAME_SUM_EXCEEDS_SEASON** FARMINGTON — Alton Dahl; {"category":"Passing","field":"YARDS","season":2157,"gameLogSum":2527,"difference":370}
+- **GAME_SUM_EXCEEDS_SEASON** FREMONT — Calvin Cooper; {"category":"Passing","field":"YARDS","season":1656,"gameLogSum":2024,"difference":368}
+- **GAME_SUM_EXCEEDS_SEASON** CORNER CANYON — Beckham Coon; {"category":"Receiving","field":"YARDS","season":556,"gameLogSum":922,"difference":366}
+- **GAME_SUM_EXCEEDS_SEASON** BEAR RIVER — Preston Wilkinson; {"category":"Passing","field":"YARDS","season":2793,"gameLogSum":3157,"difference":364}
+- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Cayden Leo; {"category":"Passing","field":"YARDS","season":20,"gameLogSum":383,"difference":363}
+- **GAME_SUM_EXCEEDS_SEASON** GUNNISON VALLEY — Axton Sorensen; {"category":"Passing","field":"YARDS","season":0,"gameLogSum":356,"difference":356}
+- **GAME_SUM_EXCEEDS_SEASON** DAVIS — Paden Toula; {"category":"Passing","field":"YARDS","season":1825,"gameLogSum":2178,"difference":353}
+- **GAME_SUM_EXCEEDS_SEASON** SKYRIDGE — Dax Rehrer; {"category":"Receiving","field":"YARDS","season":393,"gameLogSum":745,"difference":352}
+- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Ian Mair; {"category":"Passing","field":"YARDS","season":1397,"gameLogSum":1746,"difference":349}
+- **GAME_SUM_EXCEEDS_SEASON** MANTI — Kingston Wright; {"category":"Passing","field":"YARDS","season":3032,"gameLogSum":3376,"difference":344}
+- **GAME_SUM_EXCEEDS_SEASON** WEST — Kamden Lopati; {"category":"Rushing","field":"YARDS","season":591,"gameLogSum":933,"difference":342}
+- **GAME_SUM_EXCEEDS_SEASON** CRIMSON CLIFFS — Noah Whitmore; {"category":"Receiving","field":"YARDS","season":657,"gameLogSum":998,"difference":341}
+- **GAME_SUM_EXCEEDS_SEASON** WESTLAKE — Ashton Taylor; {"category":"Rushing","field":"YARDS","season":424,"gameLogSum":764,"difference":340}
+- **GAME_SUM_EXCEEDS_SEASON** WEST — Naeata Hamilton; {"category":"Rushing","field":"YARDS","season":787,"gameLogSum":1126,"difference":339}
+- **GAME_SUM_EXCEEDS_SEASON** CEDAR CITY — Colt Kelling; {"category":"Passing","field":"YARDS","season":295,"gameLogSum":628,"difference":333}
+- **GAME_SUM_EXCEEDS_SEASON** NORTH SUMMIT — Tayton Pace; {"category":"Passing","field":"YARDS","season":640,"gameLogSum":969,"difference":329}
+- **GAME_SUM_EXCEEDS_SEASON** SAN JUAN — Randall Black; {"category":"Receiving","field":"YARDS","season":872,"gameLogSum":1201,"difference":329}
+- **GAME_SUM_EXCEEDS_SEASON** RICHFIELD — Colton White; {"category":"Rushing","field":"YARDS","season":1055,"gameLogSum":1380,"difference":325}
+- **GAME_SUM_EXCEEDS_SEASON** RIDGELINE — Owen Leishman; {"category":"Receiving","field":"YARDS","season":797,"gameLogSum":1119,"difference":322}
+- **GAME_SUM_EXCEEDS_SEASON** BEAVER — Davis Carter; {"category":"Rushing","field":"YARDS","season":657,"gameLogSum":976,"difference":319}
+- **GAME_SUM_EXCEEDS_SEASON** LOGAN — Easton Favero; {"category":"Rushing","field":"YARDS","season":576,"gameLogSum":891,"difference":315}
+- **GAME_SUM_EXCEEDS_SEASON** CANYON VIEW — Owen Williams; {"category":"Passing","field":"YARDS","season":2165,"gameLogSum":2478,"difference":313}
+- **GAME_SUM_EXCEEDS_SEASON** SUMMIT ACADEMY — Rigby Young; {"category":"Passing","field":"YARDS","season":2205,"gameLogSum":2514,"difference":309}
+- **GAME_SUM_EXCEEDS_SEASON** LOGAN — Jase Pingree; {"category":"Receiving","field":"YARDS","season":936,"gameLogSum":1242,"difference":306}
+- **GAME_SUM_EXCEEDS_SEASON** MILFORD — Tayon Blackburn; {"category":"Rushing","field":"YARDS","season":837,"gameLogSum":1140,"difference":303}
+- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Dawson Dunlavy; {"category":"Receiving","field":"YARDS","season":333,"gameLogSum":635,"difference":302}
+- **GAME_SUM_EXCEEDS_SEASON** SKYLINE — David Campbell; {"category":"Receiving","field":"YARDS","season":148,"gameLogSum":449,"difference":301}
+- **GAME_SUM_EXCEEDS_SEASON** DUCHESNE — Kyson Despain; {"category":"Rushing","field":"YARDS","season":1391,"gameLogSum":1687,"difference":296}
+- **GAME_SUM_EXCEEDS_SEASON** SNOW CANYON — Parker Olson; {"category":"Passing","field":"YARDS","season":2129,"gameLogSum":2424,"difference":295}
 - **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Synic Harvey; {"category":"Receiving","field":"YARDS","season":288,"gameLogSum":577,"difference":289}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Corbin Black; {"category":"Passing","field":"YARDS","season":1270,"gameLogSum":1556,"difference":286}
+- **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Deagan Williams; {"category":"Rushing","field":"YARDS","season":323,"gameLogSum":609,"difference":286}
 - **GAME_SUM_EXCEEDS_SEASON** GRAND — Cooper Swasey; {"category":"Rushing","field":"YARDS","season":63,"gameLogSum":348,"difference":285}
-- **GAME_SUM_EXCEEDS_SEASON** LAYTON — Tillman Thomas; {"category":"Passing","field":"YARDS","season":1896,"gameLogSum":2175,"difference":279}
-- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Jesse Clegg; {"category":"Receiving","field":"YARDS","season":297,"gameLogSum":549,"difference":252}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Tyrell Black; {"category":"Rushing","field":"YARDS","season":109,"gameLogSum":356,"difference":247}
-- **GAME_SUM_EXCEEDS_SEASON** GUNNISON VALLEY — Axton Sorensen; {"category":"Passing","field":"YARDS","season":0,"gameLogSum":227,"difference":227}
-- **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Jaxon Hunt; {"category":"Passing","field":"YARDS","season":3164,"gameLogSum":3389,"difference":225}
-- **GAME_SUM_EXCEEDS_SEASON** GRAND — Kalvin Hopkins; {"category":"Receiving","field":"YARDS","season":59,"gameLogSum":275,"difference":216}
-- **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Deacon Virgin; {"category":"Passing","field":"YARDS","season":1584,"gameLogSum":1799,"difference":215}
-- **GAME_SUM_EXCEEDS_SEASON** WESTLAKE — Ashton Taylor; {"category":"Rushing","field":"YARDS","season":424,"gameLogSum":627,"difference":203}
-- **GAME_SUM_EXCEEDS_SEASON** GRAND — Beto Carroll; {"category":"Receiving","field":"YARDS","season":861,"gameLogSum":1060,"difference":199}
-- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Crew Allred; {"category":"Passing","field":"YARDS","season":557,"gameLogSum":748,"difference":191}
-- **GAME_SUM_EXCEEDS_SEASON** FARMINGTON — Alton Dahl; {"category":"Passing","field":"YARDS","season":2157,"gameLogSum":2347,"difference":190}
-- **GAME_SUM_EXCEEDS_SEASON** GRAND — Corbin Black; {"category":"Rushing","field":"YARDS","season":31,"gameLogSum":221,"difference":190}
-- **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Deagan Williams; {"category":"Passing","field":"YARDS","season":1073,"gameLogSum":1241,"difference":168}
-- **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Brandtson Mack; {"category":"Receiving","field":"YARDS","season":559,"gameLogSum":726,"difference":167}
-- **GAME_SUM_EXCEEDS_SEASON** WATER CANYON — Deagan Williams; {"category":"Rushing","field":"YARDS","season":323,"gameLogSum":489,"difference":166}
-- **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Ayden Laws; {"category":"Rushing","field":"YARDS","season":360,"gameLogSum":525,"difference":165}
-- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Carter Bell; {"category":"Rushing","field":"YARDS","season":530,"gameLogSum":690,"difference":160}
-- **GAME_SUM_EXCEEDS_SEASON** KEARNS — Abdifatah Osman; {"category":"Receiving","field":"YARDS","season":64,"gameLogSum":216,"difference":152}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Hunter Tsinigine; {"category":"Rushing","field":"CARRIES","season":52,"gameLogSum":204,"difference":152}
-- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Dawson Dunlavy; {"category":"Receiving","field":"YARDS","season":333,"gameLogSum":480,"difference":147}
-- **GAME_SUM_EXCEEDS_SEASON** ALTAMONT — Dallan Ledbetter; {"category":"Rushing","field":"YARDS","season":1240,"gameLogSum":1383,"difference":143}
-- **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Miles Coleman; {"category":"Receiving","field":"YARDS","season":13,"gameLogSum":156,"difference":143}
-- **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Xander Thayer; {"category":"Receiving","field":"YARDS","season":751,"gameLogSum":892,"difference":141}
-- **GAME_SUM_EXCEEDS_SEASON** GRAND — Everett Hill; {"category":"Receiving","field":"YARDS","season":34,"gameLogSum":170,"difference":136}
-- **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Jahmi Harrison-Bismillah; {"category":"Receiving","field":"YARDS","season":366,"gameLogSum":502,"difference":136}
-- **GAME_SUM_EXCEEDS_SEASON** KEARNS — Ismail Muse; {"category":"Receiving","field":"YARDS","season":6,"gameLogSum":136,"difference":130}
-- **GAME_SUM_EXCEEDS_SEASON** MOUNTAIN RIDGE — Tyson Dunn; {"category":"Rushing","field":"YARDS","season":496,"gameLogSum":610,"difference":114}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Jacoby Long; {"category":"Receiving","field":"YARDS","season":4,"gameLogSum":117,"difference":113}
-- **GAME_SUM_EXCEEDS_SEASON** VIEWMONT — Miles Frey; {"category":"Rushing","field":"YARDS","season":405,"gameLogSum":516,"difference":111}
-- **GAME_SUM_EXCEEDS_SEASON** CANYON VIEW — Preston Higgins; {"category":"Receiving","field":"YARDS","season":523,"gameLogSum":629,"difference":106}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Hunter Tsinigine; {"category":"Defense/Special Teams","field":"TACKLES","season":23,"gameLogSum":128,"difference":105}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Adam Joe; {"category":"Defense/Special Teams","field":"TACKLES","season":22,"gameLogSum":125,"difference":103}
-- **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Pili Mounga; {"category":"Rushing","field":"YARDS","season":255,"gameLogSum":357,"difference":102}
-- **GAME_SUM_EXCEEDS_SEASON** BEN LOMOND — DaShawn Gordan; {"category":"Rushing","field":"CARRIES","season":10,"gameLogSum":108,"difference":98}
-- **GAME_SUM_EXCEEDS_SEASON** GUNNISON VALLEY — Mccoy Coates; {"category":"Rushing","field":"YARDS","season":19,"gameLogSum":117,"difference":98}
-- **GAME_SUM_EXCEEDS_SEASON** FARMINGTON — Brogan Jeppesen; {"category":"Rushing","field":"YARDS","season":316,"gameLogSum":410,"difference":94}
-- **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Marshall Durfey; {"category":"Passing","field":"YARDS","season":306,"gameLogSum":400,"difference":94}
-- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Kash Atkinson; {"category":"Receiving","field":"YARDS","season":14,"gameLogSum":103,"difference":89}
-- **GAME_SUM_EXCEEDS_SEASON** CLEARFIELD — Jayce Ellis; {"category":"Passing","field":"YARDS","season":3,"gameLogSum":88,"difference":85}
-- **GAME_SUM_EXCEEDS_SEASON** GRAND — Everett Hill; {"category":"Rushing","field":"YARDS","season":10,"gameLogSum":94,"difference":84}
-- **GAME_SUM_EXCEEDS_SEASON** GRAND — Cooper Swasey; {"category":"Receiving","field":"YARDS","season":29,"gameLogSum":113,"difference":84}
-- **GAME_SUM_EXCEEDS_SEASON** MANTI — Ben Taulapapa; {"category":"Rushing","field":"YARDS","season":251,"gameLogSum":335,"difference":84}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Cayden Leo; {"category":"Rushing","field":"YARDS","season":5,"gameLogSum":89,"difference":84}
-- **GAME_SUM_EXCEEDS_SEASON** ALTAMONT — Payson Evans; {"category":"Rushing","field":"YARDS","season":291,"gameLogSum":367,"difference":76}
-- **GAME_SUM_EXCEEDS_SEASON** SOUTH SUMMIT — Tuff Thornton; {"category":"Receiving","field":"YARDS","season":99,"gameLogSum":175,"difference":76}
-- **GAME_SUM_EXCEEDS_SEASON** GRAND — Jonathan Gonzalez; {"category":"Rushing","field":"YARDS","season":43,"gameLogSum":117,"difference":74}
-- **GAME_SUM_EXCEEDS_SEASON** CANYON VIEW — Karson Greenland; {"category":"Receiving","field":"YARDS","season":437,"gameLogSum":510,"difference":73}
-- **GAME_SUM_EXCEEDS_SEASON** GRANTSVILLE — Ty Holm; {"category":"Receiving","field":"YARDS","season":332,"gameLogSum":404,"difference":72}
-- **GAME_SUM_EXCEEDS_SEASON** TAYLORSVILLE — Skyler Bills; {"category":"Receiving","field":"YARDS","season":-2,"gameLogSum":70,"difference":72}
-- **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Chris Munroe; {"category":"Rushing","field":"CARRIES","season":62,"gameLogSum":132,"difference":70}
-- **GAME_SUM_EXCEEDS_SEASON** MANTI — Hudson Crane; {"category":"Receiving","field":"YARDS","season":785,"gameLogSum":855,"difference":70}
-- **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Brandtson Mack; {"category":"Rushing","field":"YARDS","season":48,"gameLogSum":118,"difference":70}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Hunter Tsinigine; {"category":"Receiving","field":"YARDS","season":21,"gameLogSum":91,"difference":70}
-- **GAME_SUM_EXCEEDS_SEASON** VIEWMONT — Josh Lewis; {"category":"Receiving","field":"YARDS","season":301,"gameLogSum":369,"difference":68}
-- **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Dillon Sykes; {"category":"Receiving","field":"YARDS","season":141,"gameLogSum":205,"difference":64}
-- **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Seth Brown; {"category":"Rushing","field":"YARDS","season":886,"gameLogSum":949,"difference":63}
-- **GAME_SUM_EXCEEDS_SEASON** WESTLAKE — Silas Taumoepeau; {"category":"Passing","field":"YARDS","season":968,"gameLogSum":1031,"difference":63}
-- **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Isaac Andresen; {"category":"Receiving","field":"YARDS","season":363,"gameLogSum":425,"difference":62}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Dillion Leo; {"category":"Receiving","field":"RECEPTIONS","season":5,"gameLogSum":66,"difference":61}
-- **GAME_SUM_EXCEEDS_SEASON** MONTICELLO — Miles Coleman; {"category":"Rushing","field":"YARDS","season":343,"gameLogSum":403,"difference":60}
-- **GAME_SUM_EXCEEDS_SEASON** JUAN DIEGO — Jacoby Ahlstrom; {"category":"Passing","field":"YARDS","season":1219,"gameLogSum":1278,"difference":59}
-- **GAME_SUM_EXCEEDS_SEASON** LAYTON CHRISTIAN — Djaylan Gomes; {"category":"Receiving","field":"YARDS","season":240,"gameLogSum":299,"difference":59}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Jacoby Long; {"category":"Rushing","field":"CARRIES","season":2,"gameLogSum":61,"difference":59}
-- **GAME_SUM_EXCEEDS_SEASON** DESERT HILLS — Brett Heiner; {"category":"Receiving","field":"YARDS","season":196,"gameLogSum":254,"difference":58}
-- **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Caleb Brady; {"category":"Passing","field":"YARDS","season":8,"gameLogSum":66,"difference":58}
-- **GAME_SUM_EXCEEDS_SEASON** WHITEHORSE — Adam Joe; {"category":"Receiving","field":"RECEPTIONS","season":12,"gameLogSum":70,"difference":58}
-- **GAME_SUM_EXCEEDS_SEASON** LONE PEAK — Jakob Cloward; {"category":"Receiving","field":"YARDS","season":37,"gameLogSum":94,"difference":57}
+- **GAME_SUM_EXCEEDS_SEASON** AMERICAN FORK — Nate Childs; {"category":"Passing","field":"YARDS","season":554,"gameLogSum":835,"difference":281}
 
 ## Method / limitations
 This is a comprehensive machine audit of the stored roster, season stat sections, and linked game logs. A flag is **not proof of error**. School-reported gaps, incomplete per-game player stats, and source snapshot timing require review. No automated changes to player scores, awards, or draft selections were made.
