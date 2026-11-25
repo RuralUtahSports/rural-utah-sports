@@ -1,0 +1,32 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const scoring=require('../award-postseason-turnovers-2026.js');
+const review=require('../awards-reported-2026.js');
+const ledger=require('../audits/2026-postseason-defense-review.json');
+const html=fs.readFileSync('mvp-race.html','utf8');
+const page=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(m=>m[1]).find(x=>x.includes('function defensiveSummary('));
+const source=page.slice(0,page.indexOf('async function init()'));
+const evaluate=new Function('window',source+'\nreturn {defensiveSummary,summary};');
+test('complete defensive display orders fields, retains explicit zeroes, and omits missing fields',()=>{
+ const api=evaluate({RUSPostseasonAwardScoring2026:scoring});
+ const line={cat:'Defense/Special Teams',pts:100,values:{TACKLES:'145',SOLO:'36',ASST:'109','TCK/G':'11.2',TFL:'8',SACKS:'1','PASS INT.':'3','CAUSED FUM':'3','FUM REC':'1',GP:'13',PD:'4','BLK FGS':'0','FR YDS':'',HURS:null}};
+ const s=api.defensiveSummary([line]);
+ for(const expected of ['GP 13','TKL 145','SOLO 36','AST 109','TKL/G 11.2','TFL 8','SACKS 1','INT 3','FF 3','FR 1','PD 4','BLK FG 0'])assert.ok(s.includes(expected),expected);
+ assert.ok(!s.includes('FR YDS'));assert.ok(!s.includes('QB HUR'));
+ const full=api.summary({lines:[{cat:'Passing',pts:900,values:{YARDS:1000,TD:5}},{cat:'Rushing',pts:800,values:{YARDS:500,TD:4}},line]},'Defense');
+ assert.ok(full.startsWith('Defense:'));assert.ok(full.includes('FF 3'));assert.ok(full.includes('Passing:'));
+ assert.match(api.defensiveSummary([{values:{TACKLES:15,'TOT TCKS':16}}]),/conflicting reports/);
+});
+test('reviewed 2026 defense source uses exact roster identity and preserves other fields',()=>{
+ const r=ledger.rows[0],member={playerId:r.playerId,name:r.name,number:r.number};
+ const values={TACKLES:'99','TOTAL TACKLES':'99',SACKS:'1','PASS INT.':'3','CAUSED FUM':'2',PD:'4'};
+ const school={roster:[member],stats:[{category:'Defense/Special Teams',headers:Object.keys(values),rows:[{...member,values}]}]};
+ const data={season:2026,teams:{SKYRIDGE:school}};
+ assert.equal(review.applyDefenseReview(data,ledger),Object.keys(r.fields).length);
+ assert.equal(values.TACKLES,'145');assert.equal(values['TOTAL TACKLES'],undefined);
+ assert.equal(values['CAUSED FUM'],'3');assert.equal(values.PD,'4');assert.equal(values.TFL,'8');
+ assert.equal(review.applyDefenseReview({season:2025,teams:data.teams},ledger),0);
+ assert.equal(review.applyDefenseReview(data,{...ledger,rows:[{...r,name:'Wrong player'}]}),0);
+ assert.equal(review.applyDefenseReview(data,{...ledger,rows:[{...r,team:'WHITEHORSE'}]}),0);
+});
